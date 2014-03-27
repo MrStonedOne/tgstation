@@ -11,3 +11,7 @@
 *.lk
 *.int
 /data/mode.txt
+config/silicon_laws.txt
+config/game_options.txt
+config/config.txt
+config/admins.txt
