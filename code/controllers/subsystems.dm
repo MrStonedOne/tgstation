@@ -51,7 +51,7 @@
 /datum/subsystem/proc/stat_entry(msg)
 	var/dwait = ""
 	if (dynamic_wait)
-		dwait = "DWait:[wait]ds "
+		dwait = "DWait:[round(wait,world.tick_lag)]ds "
 
 	stat(name, "[round(cost,0.001)]ds\t[dwait][msg]")
 
