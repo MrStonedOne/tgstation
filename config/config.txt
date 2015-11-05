@@ -103,10 +103,10 @@ HOSTEDBY Yournamehere
 # GUEST_JOBBAN
 
 ## Uncomment this to stop people connecting to your server without a registered ckey. (i.e. guest-* are all blocked from connecting)
-GUEST_BAN
+#GUEST_BAN
 
 ## Uncomment to allow web client connections
-#ALLOW_WEBCLIENT
+ALLOW_WEBCLIENT
 
 ## Uncomment to restrict web client connections to byond members
 ## This makes for a nice pay gate to cut down on ban evading, as the webclient's cid system isn't that great
@@ -187,7 +187,7 @@ EXTREME_POPCAP_MESSAGE The server is currently serving a high number of users, f
 
 ## Notify admins when a new player connects for the first x days a player's been around. (0 for first connection only, -1 for never)
 ##	Requres database
-NOTIFY_NEW_PLAYER_AGE 0 
+NOTIFY_NEW_PLAYER_AGE -1
 
 ## Notify the irc channel when a new player makes their first connection
 ##	Requres database
@@ -210,7 +210,7 @@ AUTOCONVERT_NOTES
 ANNOUNCE_ADMIN_LOGOUT
 
 ##Uncomment to have an admin message sent anytime an admin connects to a round in play, you can edit the messages in admin.dm
-#ANNOUNCE_ADMIN_LOGIN
+ANNOUNCE_ADMIN_LOGIN
 
 ##Map rotation
 ##This feature requires you are running a Windows OS (or can other wise run .bat files) and that you are using the tgstation-server toolset in tools/
@@ -225,4 +225,4 @@ ANNOUNCE_ADMIN_LOGOUT
 
 ##AUTOADMIN
 ##Uncomment to automatically give that admin rank to all players
-#AUTOADMIN Game Admin
+#AUTOADMIN Host
