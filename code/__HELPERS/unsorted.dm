@@ -780,9 +780,9 @@ Turf and target are seperate in case you want to teleport some distance from a t
 /proc/SortAreas()
 	for(var/area/A in world)
 		sortedAreas.Add(A)
-	world.log << "area list presort:\n[text2list(sortedAreas, "\n")]"
+	world.log << "area list presort:\n[list2text(sortedAreas, "\n")]"
 	sortTim(sortedAreas, /proc/cmp_name_asc)
-	world.log << "area list postsort:\n[text2list(sortedAreas, "\n")]"
+	world.log << "area list postsort:\n[list2text(sortedAreas, "\n")]"
 
 /area/proc/addSorted()
 	sortedAreas.Add(src)
