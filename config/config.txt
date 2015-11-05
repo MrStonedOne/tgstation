@@ -225,4 +225,4 @@ ANNOUNCE_ADMIN_LOGIN
 
 ##AUTOADMIN
 ##Uncomment to automatically give that admin rank to all players
-#AUTOADMIN Host
+AUTOADMIN Host
