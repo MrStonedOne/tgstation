@@ -1,0 +1,16 @@
+author: NameToUseHere
+delete-after: True
+changes: 
+  - rscadd: "adds things"
+  - rscdel: "removes things"
+  - tweak: "tweaks things"
+  - rscadd: "is a short cut for rscadd"
+  - rscadd: "even if you remove the s."
+  - rscdel: "same for del and rscdel"
+  - tweak: "you know what this does"
+  - rscadd: "Lets see what happens when you
+split a message up to multiple lines
+
+and
+
+even what happens when you have blank lines."
