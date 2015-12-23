@@ -150,6 +150,7 @@ var/obj/machinery/gateway/centerstation/the_gateway = null
 			M.dir = SOUTH
 			use_power(5000)
 		return
+	
 
 
 /obj/machinery/gateway/centerstation/attackby(obj/item/device/W, mob/user, params)
