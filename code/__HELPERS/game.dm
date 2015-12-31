@@ -389,7 +389,8 @@
 				continue
 		spawn(0)
 			G << 'sound/misc/notice2.ogg' //Alerting them to their consideration
-			switch(askuser(G,Question,"Please answer in [poll_time/10] seconds!","Yes","No", StealFocus=0, Timeout=poll_time))
+			var/selectedButtonNumber = askuser(G,Question,"Please answer in [poll_time/10] seconds!","Yes","No", StealFocus=0, Timeout=poll_time)
+			switch(selectedButtonNumber)
 				if(1)
 					G << "<span class='notice'>Choice registered: Yes.</span>"
 					if((world.time-time_passed)>poll_time)
