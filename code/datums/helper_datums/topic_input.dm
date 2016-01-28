@@ -10,10 +10,12 @@
 /datum/topic_input/proc/get(i)
 	return listgetindex(href_list,i)
 
-/datum/topic_input/proc/getAndLocate(i)
+/datum/topic_input/proc/getAndLocate(i, allowtext = 1)
 	var/t = get(i)
 	if(t)
 		t = locate(t)
+	if (istext(t))
+		t = null
 	return t || null
 
 /datum/topic_input/proc/getNum(i)
