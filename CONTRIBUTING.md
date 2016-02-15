@@ -144,7 +144,10 @@ Make these #defines with a name that more clearly states what it's for.
 ###Control statements:
 (if,while,for,etc)
 
+* All control statements must have a space before the expression (eg: `if (blah)` not `if(blah)`)
 * All control statements must not contain code on the same line as the statement (`if (blah) return`)
+* All control statements that mix the use of && and || must use nested parentheses to make it clear to the reader the order it is parsed.
+* for loops should use ; not , to separate expressions (eg: `for (var/i=1; i < 10; i++)` not `for (var/i=1,i < 10,i++)`)
 * All control statements comparing a variable to a number should use the formula of `thing` `operator` `number`, not the reverse (eg: `if (count <= 10)` not `if (10 >= count)`)
 
 ###Use early return.
@@ -192,6 +195,14 @@ This prevents nesting levels from getting deeper then they need to be.
 * You are expected to help maintain the code that you add, meaning if there is a problem then you are likely to be approached in order to fix any issues, runtimes or bugs.
 
 * Do not divide when you can easily convert it to a multiplication. (ie `4/2` should be done as `4*0.5`)
+
+####Enforced not enforced
+The following different coding styles are not only not enforced, but it is generally frown upon to change them over from one to the other for little reason:
+
+* English/British spelling on var/proc names
+	* Color/Colour nobody cares,
+* Spaces after control statements
+	* if() if () nobody cares.
 
 ####Operators and spaces:
 (this is not strictly enforced, but more a guideline for readability's sake)
