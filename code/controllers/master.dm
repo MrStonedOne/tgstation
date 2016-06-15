@@ -315,7 +315,7 @@ var/CURRENT_TICKLIMIT = TICK_LIMIT_RUNNING
 	var/ran_non_ticker = FALSE
 	var/bg_calc //have we swtiched current_tick_budget to background mode yet?
 	var/tick_usage
-
+	var/current_ss_name = "[queue_head]" //debugging
 	//keep running while we have stuff to run and we haven't gone over a tick
 	//	this is so subsystems paused eariler can use tick time that later subsystems never used
 	while (ran && queue_head && world.tick_usage < TICK_LIMIT_MC)
@@ -323,9 +323,20 @@ var/CURRENT_TICKLIMIT = TICK_LIMIT_RUNNING
 		bg_calc = FALSE
 		current_tick_budget = queue_priority_count
 		for (queue_node = queue_head; istype(queue_node); queue_node = queue_node.queue_next)
+			current_ss_name = "[queue_node](\ref[queue_node])"
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
+
 			if (ran && world.tick_usage > TICK_LIMIT_RUNNING)
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				break
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
+
 			queue_node_flags = queue_node.flags
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node_priority = queue_node.queued_priority
 
 			//super special case, subsystems where we can't make them pause mid way through
@@ -334,78 +345,160 @@ var/CURRENT_TICKLIMIT = TICK_LIMIT_RUNNING
 			//(unless we haven't even ran anything this tick, since its unlikely they will ever be able run
 			//	in those cases, so we just let them run)
 			if (queue_node_flags & SS_NO_TICK_CHECK)
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				if (queue_node.tick_usage > TICK_LIMIT_RUNNING - world.tick_usage && ran_non_ticker)
 					queue_node.queued_priority += queue_priority_count * 0.10
 					queue_priority_count -= queue_node_priority
 					queue_priority_count += queue_node.queued_priority
 					current_tick_budget -= queue_node_priority
+					if (!istype(queue_node))
+						world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 					continue
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 
 			if ((queue_node_flags & SS_BACKGROUND) && !bg_calc)
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				current_tick_budget = queue_priority_count_bg
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				bg_calc = TRUE
 
 			tick_remaining = TICK_LIMIT_RUNNING - world.tick_usage
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 
 			if (current_tick_budget > 0 && queue_node_priority > 0)
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				tick_precentage = tick_remaining / (current_tick_budget / queue_node_priority)
 			else
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				tick_precentage = tick_remaining
 
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			CURRENT_TICKLIMIT = world.tick_usage + tick_precentage
 
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			if (!(queue_node_flags & SS_TICKER))
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				ran_non_ticker = TRUE
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			ran = TRUE
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			tick_usage = world.tick_usage
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node_paused = queue_node.paused
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.paused = FALSE
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			last_type_processed = queue_node
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 
 			queue_node.fire(queue_node_paused)
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 
 			current_tick_budget -= queue_node_priority
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			tick_usage = world.tick_usage - tick_usage
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 
 			if (tick_usage < 0)
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				tick_usage = 0
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 
 			if (queue_node.paused)
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 
 				queue_node.paused_ticks++
 				queue_node.paused_tick_usage += tick_usage
 				continue
 
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.ticks = MC_AVERAGE(queue_node.ticks, queue_node.paused_ticks)
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			tick_usage += queue_node.paused_tick_usage
 
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.tick_usage = MC_AVERAGE_FAST(queue_node.tick_usage, tick_usage)
 
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.cost = MC_AVERAGE_FAST(queue_node.cost, TICK_DELTA_TO_MS(tick_usage))
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.paused_ticks = 0
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.paused_tick_usage = 0
 
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			if (queue_node_flags & SS_BACKGROUND) //update our running total
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				queue_priority_count_bg -= queue_node_priority
 			else
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				queue_priority_count -= queue_node_priority
 
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.last_fire = world.time
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.times_fired++
 
 			if (queue_node_flags & SS_TICKER)
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				queue_node.next_fire = world.time + (world.tick_lag * queue_node.wait)
 			else if (queue_node_flags & SS_POST_FIRE_TIMING)
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				queue_node.next_fire = world.time + queue_node.wait
 			else if (queue_node_flags & SS_KEEP_TIMING)
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				queue_node.next_fire += queue_node.wait
 			else
+				if (!istype(queue_node))
+					world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 				queue_node.next_fire = queue_node.queued_time + queue_node.wait
 
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.queued_time = 0
 
 			//remove from queue
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 			queue_node.dequeue()
+			if (!istype(queue_node))
+				world.log << "[__FILE__]:[__LINE__] queue_node bad, now equals: [queue_node](\ref[queue_node]) used to equal [current_ss_name]"
 
 	CURRENT_TICKLIMIT = TICK_LIMIT_RUNNING
 	. = 1
