@@ -843,12 +843,10 @@
 		qdel(O)
 	else
 		if(O)
-			O.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 			O.clean_blood()
 
 /datum/reagent/space_cleaner/reaction_turf(turf/T, reac_volume)
 	if(reac_volume >= 1)
-		T.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 		T.clean_blood()
 		for(var/obj/effect/decal/cleanable/C in T)
 			qdel(C)
@@ -858,7 +856,6 @@
 
 /datum/reagent/space_cleaner/reaction_mob(mob/M, method=TOUCH, reac_volume)
 	if(method == TOUCH || method == VAPOR)
-		M.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 		if(iscarbon(M))
 			var/mob/living/carbon/C = M
 			if(ishuman(M))
@@ -1183,23 +1180,23 @@
 
 /datum/reagent/colorful_reagent/on_mob_life(mob/living/M)
 	if(M && isliving(M))
-		M.add_atom_colour(pick(random_color_list), WASHABLE_COLOUR_PRIORITY)
+		M.color = pick(random_color_list)
 	..()
 	return
 
 /datum/reagent/colorful_reagent/reaction_mob(mob/living/M, reac_volume)
 	if(M && isliving(M))
-		M.add_atom_colour(pick(random_color_list), WASHABLE_COLOUR_PRIORITY)
+		M.color = pick(random_color_list)
 	..()
 
 /datum/reagent/colorful_reagent/reaction_obj(obj/O, reac_volume)
 	if(O)
-		O.add_atom_colour(pick(random_color_list), WASHABLE_COLOUR_PRIORITY)
+		O.color = pick(random_color_list)
 	..()
 
 /datum/reagent/colorful_reagent/reaction_turf(turf/T, reac_volume)
 	if(T)
-		T.add_atom_colour(pick(random_color_list), WASHABLE_COLOUR_PRIORITY)
+		T.color = pick(random_color_list)
 	..()
 
 /datum/reagent/hair_dye

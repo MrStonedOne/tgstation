@@ -145,14 +145,15 @@
 
 /mob/living/proc/exit_blood_effect(obj/effect/decal/cleanable/B)
 	playsound(get_turf(src), 'sound/magic/exit_blood.ogg', 100, 1, -1)
+	var/oldcolor = src.color
 	//Makes the mob have the color of the blood pool it came out of
-	var/newcolor = rgb(149, 10, 10)
 	if(istype(B, /obj/effect/decal/cleanable/xenoblood))
-		newcolor = rgb(43, 186, 0)
-	add_atom_colour(newcolor, TEMPORARY_COLOUR_PRIORITY)
+		src.color = rgb(43, 186, 0)
+	else
+		src.color = rgb(149, 10, 10)
 	// but only for a few seconds
 	spawn(30)
-		remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, newcolor)
+		src.color = oldcolor
 
 /mob/living/proc/phasein(obj/effect/decal/cleanable/B)
 	if(src.notransform)

@@ -456,10 +456,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_state = "lighter"
 
 /obj/item/weapon/lighter/greyscale/New()
-	..()
 	var/image/I = image(icon,"lighter-overlay")
-	var/newcolor = color2hex(randomColor(1))
-	add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
+	I.color = color2hex(randomColor(1))
 	add_overlay(I)
 
 /obj/item/weapon/lighter/greyscale/ignition_effect(atom/A, mob/user)

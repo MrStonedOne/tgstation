@@ -350,8 +350,7 @@
 		V.vehicle_move_delay = 0
 
 	user <<"<span class='notice'>You slather the red gunk over the [C], making it faster.</span>"
-	C.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-	C.add_atom_colour("#FF0000", FIXED_COLOUR_PRIORITY)
+	C.color = "#FF0000"
 	qdel(src)
 
 
@@ -376,8 +375,7 @@
 		return ..()
 	user <<"<span class='notice'>You slather the blue gunk over the [C], fireproofing it.</span>"
 	C.name = "fireproofed [C.name]"
-	C.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-	C.add_atom_colour("#000080", FIXED_COLOUR_PRIORITY)
+	C.color = "#000080"
 	C.max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
 	C.heat_protection = C.body_parts_covered
 	C.resistance_flags |= FIRE_PROOF
@@ -653,6 +651,5 @@
 	var/area/A = get_area(src)
 	if(success)
 		for(var/turf/T in A)
-			T.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
-			T.add_atom_colour("#2956B2", FIXED_COLOUR_PRIORITY)
+			T.color = "#2956B2"
 		qdel(src)

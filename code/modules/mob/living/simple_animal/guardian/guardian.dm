@@ -101,7 +101,7 @@ var/global/list/parasites = list() //all currently existing/living guardians
 	bubble_icon = "[namedatum.bubbleicon]"
 
 	if (namedatum.stainself)
-		add_atom_colour(namedatum.colour, FIXED_COLOUR_PRIORITY)
+		color = namedatum.colour
 
 	//Special case holocarp, because #snowflake code
 	if(theme == "carp")

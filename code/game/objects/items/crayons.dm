@@ -656,7 +656,7 @@
 
 	if(istype(target, /obj/structure/window))
 		if(actually_paints)
-			target.add_atom_colour(paint_color, WASHABLE_COLOUR_PRIORITY)
+			target.color = paint_color
 			if(color_hex2num(paint_color) < 255)
 				target.SetOpacity(255)
 			else

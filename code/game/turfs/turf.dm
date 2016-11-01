@@ -363,9 +363,8 @@
 		T.icon_state = icon_state
 	if(T.icon != icon)
 		T.icon = icon
-	if(color)
-		T.atom_colours = atom_colours.Copy()
-		T.update_atom_colour()
+	if(T.color != color)
+		T.color = color
 	if(T.dir != dir)
 		T.setDir(dir)
 	return T

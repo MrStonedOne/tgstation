@@ -46,7 +46,7 @@
 		M.icon_state = icon_dead
 		M.name = name
 		if(toast)
-			M.add_atom_colour("#3A3A3A", FIXED_COLOUR_PRIORITY)
+			M.color = "#3A3A3A"
 			M.desc = "It's toast."
 		qdel(src)
 	else

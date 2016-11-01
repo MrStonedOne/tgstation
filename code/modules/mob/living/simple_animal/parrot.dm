@@ -885,11 +885,11 @@
 		speak += pick("...[longest_survival].", "The things I've seen!", "I have lived many lives!", "What are you before me?")
 		desc += " Old as sin, and just as loud. Claimed to be [rounds_survived]."
 		speak_chance = 20 //His hubris has made him more annoying/easier to justify killing
-		add_atom_colour("#EEEE22", FIXED_COLOUR_PRIORITY)
+		color = "#EEEE22"
 	else if(rounds_survived == longest_deathstreak)
 		speak += pick("What are you waiting for!", "Violence breeds violence!", "Blood! Blood!", "Strike me down if you dare!")
 		desc += " The squawks of [-rounds_survived] dead parrots ring out in your ears..."
-		add_atom_colour("#BB7777", FIXED_COLOUR_PRIORITY)
+		color = "#BB7777"
 	else if(rounds_survived > 0)
 		speak += pick("...again?", "No, It was over!", "Let me out!", "It never ends!")
 		desc += " Over [rounds_survived] shifts without a \"terrible\" \"accident\"!"

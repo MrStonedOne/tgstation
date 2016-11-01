@@ -20,9 +20,9 @@
 
 /mob/living/simple_animal/hostile/blob/update_icons()
 	if(overmind)
-		add_atom_colour(overmind.blob_reagent_datum.color, FIXED_COLOUR_PRIORITY)
+		color = overmind.blob_reagent_datum.color
 	else
-		remove_atom_colour(FIXED_COLOUR_PRIORITY)
+		color = initial(color)
 
 /mob/living/simple_animal/hostile/blob/Destroy()
 	if(overmind)
@@ -174,9 +174,9 @@
 
 /mob/living/simple_animal/hostile/blob/blobspore/update_icons()
 	if(overmind)
-		add_atom_colour(overmind.blob_reagent_datum.complementary_color, FIXED_COLOUR_PRIORITY)
+		color = overmind.blob_reagent_datum.complementary_color
 	else
-		remove_atom_colour(FIXED_COLOUR_PRIORITY)
+		color = initial(color)
 	if(is_zombie)
 		cut_overlays()
 		overlays = human_overlays

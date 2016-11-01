@@ -11,7 +11,7 @@
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/New()
 	..()
-	add_atom_colour("#404040", FIXED_COLOUR_PRIORITY)
+	color = "#404040"
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/can_be_node(obj/machinery/atmospherics/pipe/heat_exchanging/target)
 	if(!istype(target))

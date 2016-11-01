@@ -121,6 +121,7 @@
 	name = "eradication beam"
 	icon_state = "chronobolt"
 	range = CHRONO_BEAM_RANGE
+	color = null
 	nodamage = 1
 	var/obj/item/weapon/gun/energy/chrono_gun/gun = null
 

@@ -344,7 +344,15 @@
 			if(ishuman(mob))
 				var/mob/living/carbon/human/H = mob
 				if(H.dna && H.dna.species)
-					H.dna.species.handle_hair(H,"#1d2953") //will be reset when blight is cured
+					H.dna.species.handle_mutant_bodyparts(H,"#1d2953")
+					H.dna.species.handle_hair(H,"#1d2953")
+					var/old_color = H.color
+					H.color = "#1d2953"
+					spawn(20)
+						if(H && H.dna && H.dna.species)
+							H.dna.species.handle_mutant_bodyparts(H)
+							H.dna.species.handle_hair(H)
+							H.color = old_color
 				var/blightfound = 0
 				for(var/datum/disease/revblight/blight in H.viruses)
 					blightfound = 1
@@ -359,11 +367,11 @@
 		else
 			mob.adjustToxLoss(5)
 	for(var/obj/structure/spacevine/vine in T) //Fucking with botanists, the ability.
-		vine.add_atom_colour("#823abb", TEMPORARY_COLOUR_PRIORITY)
+		vine.color = "#823abb"
 		PoolOrNew(/obj/effect/overlay/temp/revenant, vine.loc)
 		QDEL_IN(vine, 10)
 	for(var/obj/structure/glowshroom/shroom in T)
-		shroom.add_atom_colour("#823abb", TEMPORARY_COLOUR_PRIORITY)
+		shroom.color = "#823abb"
 		PoolOrNew(/obj/effect/overlay/temp/revenant, shroom.loc)
 		QDEL_IN(shroom, 10)
 	for(var/obj/machinery/hydroponics/tray in T)

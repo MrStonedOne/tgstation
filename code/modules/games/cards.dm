@@ -19,19 +19,17 @@
 /obj/item/weapon/deck/New()
 	. = ..()
 
-	var/cardcolor
+	var/color
 	var/datum/playingcard/card
 
 	for (var/suit in list("spades", "clubs", "diamonds", "hearts"))
-		if (suit == "spades" || suit == "clubs")
-			cardcolor = "black_"
-		else
-			cardcolor = "red_"
+		if (suit == "spades" || suit == "clubs") color = "black_"
+		else                                     color = "red_"
 
 		for (var/number in list("ace", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"))
 			card               = new()
 			card.name          = "[number] of [suit]"
-			card.card_icon     = "[cardcolor]num"
+			card.card_icon     = "[color]num"
 			card.suit          = suit
 			card.number        = number
 
@@ -40,7 +38,7 @@
 		for (var/number in list("jack", "queen", "king"))
 			card               = new()
 			card.name          = "[number] of [suit]"
-			card.card_icon     = "[cardcolor]col"
+			card.card_icon     = "[color]col"
 			card.suit          = suit
 			card.number        = number
 

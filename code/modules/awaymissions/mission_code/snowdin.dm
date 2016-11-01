@@ -241,4 +241,3 @@ obj/effect/mob_spawn/human/syndicatesoldier/coldres/alive/female
 	name = "icey rocks"
 	color = rgb(114,228,250)
 
-

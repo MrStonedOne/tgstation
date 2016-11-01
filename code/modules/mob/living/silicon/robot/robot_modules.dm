@@ -259,7 +259,7 @@
 	drying_agent = new(src)
 	drying_agent.reagents.add_reagent("drying_agent", 250)
 	drying_agent.name = "drying agent spray"
-	drying_agent.add_atom_colour("#A000A0", FIXED_COLOUR_PRIORITY)
+	drying_agent.color = "#A000A0"
 	modules += drying_agent
 	emag = new /obj/item/weapon/reagent_containers/spray(src)
 
