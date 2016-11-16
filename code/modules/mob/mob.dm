@@ -932,8 +932,9 @@ var/next_mob_id = 0
 /mob/proc/update_health_hud()
 	return
 
-/mob/living/on_varedit(modified_var)
-	switch(modified_var)
+/mob/living/vv_edit_var(var_name, var_value)
+	. = ..()
+	switch(var_name)
 		if("weakened")
 			SetWeakened(weakened)
 		if("stunned")
@@ -956,7 +957,6 @@ var/next_mob_id = 0
 			updatehealth()
 		if("resize")
 			update_transform()
-	..()
 
 /mob/proc/is_literate()
 	return 0
@@ -966,3 +966,19 @@ var/next_mob_id = 0
 
 /mob/proc/get_idcard()
 	return
+
+/mob/vv_get_dropdown()
+	. = ..()
+	. += "---"
+	.["Gib"] = "?_src_=vars;gib=\ref[src]"
+	.["Give Spell"] = "?_src_=vars;give_spell=\ref[src]"
+	.["Remove Spell"] = "?_src_=vars;remove_spell=\ref[src]"
+	.["Give Disease"] = "?_src_=vars;give_disease=\ref[src]"
+	.["Toggle Godmode"] = "?_src_=vars;godmode=\ref[src]"
+	.["Drop Everything"] = "?_src_=vars;drop_everything=\ref[src]"
+	.["Regenerate Icons"] = "?_src_=vars;regenerateicons=\ref[src]"
+	.["Make Space Ninja"] = "?_src_=vars;ninja=\ref[src]"
+	.["Show player panel"] = "?_src_=vars;mob_player_panel=\ref[src]"
+	.["Toggle Build Mode"] = "?_src_=vars;build_mode=\ref[src]"
+	.["Assume Direct Control"] = "?_src_=vars;direct_control=\ref[src]"
+	.["Offer Control to Ghosts"] = "?_src_=vars;offer_control=\ref[src]"

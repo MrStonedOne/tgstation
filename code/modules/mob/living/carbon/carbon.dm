@@ -795,3 +795,8 @@
 /mob/living/carbon/fakefireextinguish()
 	remove_overlay(FIRE_LAYER)
 
+/mob/living/carbon/vv_get_dropdown()
+	. = ..()
+	. += "---"
+	.["Make AI"] = "?_src_=vars;makeai=\ref[src]"
+	.["Modify organs"] = "?_src_=vars;editorgans=\ref[src]"

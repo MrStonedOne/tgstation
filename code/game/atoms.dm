@@ -436,6 +436,16 @@ var/list/blood_splatter_icons = list()
 /atom/proc/setDir(newdir)
 	dir = newdir
 
-/atom/on_varedit(modified_var)
+/atom/vv_edit_var(var_name, var_value)
+	. = ..()
 	if(!Debug2)
 		admin_spawned = TRUE
+
+/atom/vv_get_dropdown()
+	. = ..()
+	. += "---"
+	var/turf/curturf = get_turf(src)
+	.["Jump to"] = "?_src_=holder;adminplayerobservecoodjump=1;X=[curturf.x];Y=[curturf.y];Z=[curturf.z]"
+	.["Add reagent"] = "?_src_=vars;addreagent=\ref[src]"
+	.["Trigger EM pulse"] = "?_src_=vars;emp=\ref[src]"
+	.["Trigger explosion"] = "?_src_=vars;explode=\ref[src]"

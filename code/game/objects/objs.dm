@@ -229,3 +229,7 @@
 
 /obj/proc/check_uplink_validity()
 	return 1
+
+/obj/vv_get_dropdown()
+	. = ..()
+	.["Delete all of type"] = "?_src_=vars;delall=\ref[src]"

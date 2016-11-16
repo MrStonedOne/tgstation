@@ -364,3 +364,8 @@
 //called when a mob resists while inside a container that is itself inside something.
 /atom/movable/proc/relay_container_resist(mob/living/user, obj/O)
 	return
+
+/atom/movable/vv_get_dropdown()
+	. = ..()
+	. -= "Jump to"
+	.["Follow"] = "?_src_=holder;adminplayerobservefollow=\ref[src]"
