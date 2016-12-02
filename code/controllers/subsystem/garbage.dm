@@ -67,10 +67,11 @@ var/datum/subsystem/garbage_collector/SSgarbage
 		if (MC_TICK_CHECK)
 			break
 		var/ref = tobequeued[1]
-		Queue(ref)
 		tobequeued.Cut(1, 2)
+		if (ref && ref.gc_destroyed == GC_QUEUED_FOR_QUEUING)
+			Queue(ref)
 
-/datum/subsystem/garbage_collector/proc/HandleQueue()
+/datum/subsystem/garbage_collector/proc/HandleQueue(time_to_stop)
 	delslasttick = 0
 	gcedlasttick = 0
 	var/time_to_kill = world.time - collection_timeout // Anything qdel() but not GC'd BEFORE this time needs to be manually del()
@@ -120,13 +121,16 @@ var/datum/subsystem/garbage_collector/SSgarbage
 			++gcedlasttick
 			++totalgcs
 
-/datum/subsystem/garbage_collector/proc/QueueForQueuing(datum/A)
-	if (istype(A) && isnull(A.gc_destroyed))
+/datum/subsystem/garbage_collector/proc/QueueForQueuing(datum/A, willgc = FALSE)
+	if (A && isnull(A.gc_destroyed))
 		tobequeued += A
-		A.gc_destroyed = GC_QUEUED_FOR_QUEUING
+		if (willgc)
+			A.gc_destroyed = world.time
+		else
+			A.gc_destroyed = GC_QUEUED_FOR_QUEUING
 
 /datum/subsystem/garbage_collector/proc/Queue(datum/A)
-	if (!istype(A) || (!isnull(A.gc_destroyed) && A.gc_destroyed >= 0))
+	if (!A || (!isnull(A.gc_destroyed) && A.gc_destroyed >= 0))
 		return
 	if (A.gc_destroyed == GC_QUEUED_FOR_HARD_DEL)
 		del(A)
@@ -142,7 +146,7 @@ var/datum/subsystem/garbage_collector/SSgarbage
 	queue[refid] = gctime
 
 /datum/subsystem/garbage_collector/proc/HardQueue(datum/A)
-	if (istype(A) && isnull(A.gc_destroyed))
+	if (!A || isnull(A.gc_destroyed))
 		tobequeued += A
 		A.gc_destroyed = GC_QUEUED_FOR_HARD_DEL
 
@@ -162,14 +166,17 @@ var/datum/subsystem/garbage_collector/SSgarbage
 #endif
 	if(!istype(D))
 		del(D)
-	else if(isnull(D.gc_destroyed))
+		return
+	if(isnull(D.gc_destroyed))
 		var/hint = D.Destroy(force) // Let our friend know they're about to get fucked up.
 		if(!D)
 			return
 		switch(hint)
 			if (QDEL_HINT_QUEUE)		//qdel should queue the object for deletion.
 				SSgarbage.QueueForQueuing(D)
-			if (QDEL_HINT_LETMELIVE, QDEL_HINT_IWILLGC)	//qdel should let the object live after calling destory.
+			if (QDEL_HINT_IWILLGC)		//qdel should assume the object will delete on it's own
+				SSgarbage.QueueForQueuing(D, willgc = TRUE)
+			if (QDEL_HINT_LETMELIVE)	//qdel should let the object live after calling destory.
 				if(!force)
 					return
 				// Returning LETMELIVE after being told to force destroy
@@ -199,13 +206,11 @@ var/datum/subsystem/garbage_collector/SSgarbage
 					testing("WARNING: [D.type] is not returning a qdel hint. It is being placed in the queue. Further instances of this type will also be queued.")
 				SSgarbage.QueueForQueuing(D)
 
-// Returns 1 if the object has been queued for deletion.
+// Returns TRUE if the object has been queued for deletion. (null objects are assumed to have been deleted, and this returns TRUE for those)
 /proc/qdeleted(datum/D)
-	if(!istype(D))
-		return FALSE
-	if(D.gc_destroyed)
-		return TRUE
-	return FALSE
+	. = TRUE
+	if(D && !D.gc_destroyed)
+		. = FALSE
 
 // Default implementation of clean-up code.
 // This should be overridden to remove all references pointing to the object being destroyed.
@@ -227,7 +232,7 @@ var/datum/subsystem/garbage_collector/SSgarbage
 
 	find_references(FALSE)
 
-/datum/proc/find_references(skip_alert)
+datum/proc/find_references(skip_alert)
 	set background = 1
 	running_find_references = type
 	if(usr && usr.client)
@@ -274,11 +279,11 @@ var/datum/subsystem/garbage_collector/SSgarbage
 	set category = "Debug"
 	if(SSgarbage)
 		while(SSgarbage.queue.len)
-			var/datum/o = locate(SSgarbage.queue[1])
+			var/datum/o = locate(SSgarbage.queue[SSgarbage.queue.len])
 			if(istype(o) && o.gc_destroyed)
 				del(o)
 				SSgarbage.totaldels++
-			SSgarbage.queue.Cut(1, 2)
+			SSgarbage.queue.len--
 
 /datum/verb/qdel_then_find_references()
 	set category = "Debug"
