@@ -99,10 +99,13 @@ var/datum/subsystem/timer/SStimer
 			if (MC_TICK_CHECK)
 				break
 
-	timer_id_dict -= spent
 	bucket_count -= length(spent)
-	for (var/timer in spent)
+	var/list/idstoremove = list()
+	for (var/thing in spent)
+		var/datum/timedevent/timer = thing
+		idstoremove += "timerid[timer.id]"
 		qdel(timer)
+	timer_id_dict -= idstoremove
 	spent.len = 0
 
 
