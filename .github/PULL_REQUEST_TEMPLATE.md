@@ -1,5 +1,5 @@
 [Changelogs]: # (Please make a changelog if you're adding, removing or changing content that'll affect players. This includes, but is not limited to, new features, sprites, sounds; balance changes; map edits and important fixes)
-[]: # (See here for how to easily make a changelog: https://github.com/tgstation/tgstation/wiki/Changelogs. An example changelog has been provided below. Please edit or remove)
+[Changelogs2]: # (See here for how to easily make a changelog: https://github.com/tgstation/tgstation/wiki/Changelogs. An example changelog has been provided below. Please edit or remove)
 
 
 :cl: optional name here
@@ -17,4 +17,4 @@ spellcheck: fixed a few typos
 experiment: added an experimental thingy
 /:cl:
 
-[]: # (Please add a short description of why you think these changes would benefit the game. If you can't justify it in words, it might not be worth adding:)
+[why]: # (Please add a short description of why you think these changes would benefit the game. If you can't justify it in words, it might not be worth adding:) testest
