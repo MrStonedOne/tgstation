@@ -31,18 +31,19 @@ var/list/lighting_update_objects  = list() // List of lighting objects queued fo
 	create_all_lighting_objects()
 	initialized = TRUE
 	
-	fire(FALSE, TRUE)
+	fire(init_tick_checks = TRUE)
 
 	..()
 
-/datum/controller/subsystem/lighting/fire(resumed, init_tick_checks)
+/datum/controller/subsystem/lighting/fire(resumed = FALSE, init_tick_checks = FALSE)
 	var/real_tick_limit = CURRENT_TICKLIMIT
-	CURRENT_TICKLIMIT = (real_tick_limit - world.tick_usage)/3
+	if (!init_tick_checks)
+		CURRENT_TICKLIMIT = ((real_tick_limit - world.tick_usage)/3)+world.tick_usage
 	var/i = 0
 	for (i in 1 to lighting_update_lights.len)
 		var/datum/light_source/L = lighting_update_lights[i]
 
-		if (L.check() || L.destroyed || L.force_update)
+		if (L.destroyed || L.force_update || L.check())
 			L.remove_lum()
 			if (!L.destroyed)
 				L.apply_lum()
@@ -61,8 +62,8 @@ var/list/lighting_update_objects  = list() // List of lighting objects queued fo
 	if (i)
 		lighting_update_lights.Cut(1, i+1)
 		i = 0
-
-	CURRENT_TICKLIMIT = ((real_tick_limit - world.tick_usage)/2)+world.tick_usage
+	if (!init_tick_checks)
+		CURRENT_TICKLIMIT = ((real_tick_limit - world.tick_usage)/2)+world.tick_usage
 
 	for (i in 1 to lighting_update_corners.len)
 		var/datum/lighting_corner/C = lighting_update_corners[i]
@@ -77,8 +78,8 @@ var/list/lighting_update_objects  = list() // List of lighting objects queued fo
 		lighting_update_corners.Cut(1, i+1)
 		i = 0
 
-
-	CURRENT_TICKLIMIT = real_tick_limit
+	if (!init_tick_checks)
+		CURRENT_TICKLIMIT = real_tick_limit
 
 	for (i in 1 to lighting_update_objects.len)
 		var/atom/movable/lighting_object/O = lighting_update_objects[i]
