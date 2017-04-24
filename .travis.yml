@@ -1,4 +1,4 @@
-language: generic
+language: dm
 sudo: false
 
 env:
@@ -19,7 +19,7 @@ cache:
     - tgui/node_modules
     - $HOME/BYOND-${BYOND_MAJOR}.${BYOND_MINOR}
 
-
+ 
 addons:
   apt:
     packages:
