@@ -155,7 +155,7 @@
 					if(!user.drop_item())
 						return
 					cell = C
-					C.loc = src
+					C.forceMove(src)
 					C.add_fingerprint(usr)
 
 					user.visible_message("\The [user] inserts a power cell into \the [src].", "<span class='notice'>You insert the power cell into \the [src].</span>")
@@ -175,7 +175,7 @@
 		return ..()
 
 /obj/machinery/space_heater/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-										datum/tgui/master_ui = null, datum/ui_state/state = GLOB.physical_state)
+										datum/tgui/master_ui = null, datum/ui_state/state = physical_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "space_heater", name, 400, 305, master_ui, state)
@@ -241,7 +241,7 @@
 					settableTemperatureMedian + settableTemperatureRange)
 		if("eject")
 			if(panel_open && cell)
-				cell.loc = get_turf(src)
+				cell.forceMove(get_turf(src))
 				cell = null
 				. = TRUE
 

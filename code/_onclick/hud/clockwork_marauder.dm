@@ -18,6 +18,14 @@
 	using.screen_loc = ui_zonesel
 	static_inventory += using
 
+	blockchance = new /obj/screen/marauder/blockchance()
+	blockchance.screen_loc = ui_hand_position(2)
+	infodisplay += blockchance
+
+	counterchance = new /obj/screen/marauder/counterchance()
+	counterchance.screen_loc = ui_hand_position(1)
+	infodisplay += counterchance
+
 /datum/hud/marauder/Destroy()
 	blockchance = null
 	counterchance = null
@@ -27,6 +35,7 @@
 /mob/living/simple_animal/hostile/clockwork/marauder/create_mob_hud()
 	if(client && !hud_used)
 		hud_used = new /datum/hud/marauder(src, ui_style2icon(client.prefs.UI_style))
+
 
 /obj/screen/marauder
 	icon = 'icons/mob/clockwork_mobs.dmi'
@@ -43,3 +52,13 @@
 			M.try_emerge()
 		else
 			M.return_to_host()
+
+/obj/screen/marauder/blockchance
+	icon_state = "marauder_block"
+	name = "Block Chance"
+	desc = "Clang."
+
+/obj/screen/marauder/counterchance
+	icon_state = "marauder_counter"
+	name = "Counter Chance"
+	desc = "Slash."

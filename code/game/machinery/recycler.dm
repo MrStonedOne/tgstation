@@ -1,4 +1,4 @@
-#define SAFETY_COOLDOWN 100
+var/const/SAFETY_COOLDOWN = 100
 
 /obj/machinery/recycler
 	name = "recycler"
@@ -12,7 +12,7 @@
 	var/icon_name = "grinder-o"
 	var/blood = 0
 	var/eat_dir = WEST
-	var/amount_produced = 50
+	var/amount_produced = 1
 	var/datum/material_container/materials
 	var/crush_damage = 1000
 	var/eat_victim_items = TRUE
@@ -40,9 +40,9 @@
 		mat_mod = 2 * B.rating
 	mat_mod *= 50000
 	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
-		amt_made = 12.5 * M.rating //% of materials salvaged
+		amt_made = 25 * M.rating //% of materials salvaged
 	materials.max_amount = mat_mod
-	amount_produced = min(50, amt_made) + 50
+	amount_produced = min(100, amt_made)
 
 /obj/machinery/recycler/examine(mob/user)
 	..()
@@ -109,12 +109,9 @@
 		eat(AM)
 
 /obj/machinery/recycler/proc/eat(atom/AM0, sound=TRUE)
-	var/list/to_eat
+	var/list/to_eat = list(AM0)
 	if(istype(AM0, /obj/item))
-		to_eat = AM0.GetAllContents()
-	else
-		to_eat = list(AM0)
-
+		to_eat += AM0.GetAllContents()
 	var/items_recycled = 0
 
 	for(var/i in to_eat)
@@ -133,13 +130,13 @@
 			items_recycled++
 		else
 			playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, 0)
-			AM.loc = src.loc
+			AM.forceMove(src.loc)
 
 	if(items_recycled && sound)
 		playsound(src.loc, item_recycle_sound, 50, 1)
 
 /obj/machinery/recycler/proc/recycle_item(obj/item/I)
-	I.loc = src.loc
+	I.forceMove(src.loc)
 
 	var/material_amount = materials.get_item_material_amount(I)
 	if(!material_amount)
@@ -154,7 +151,7 @@
 	playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, 0)
 	safety_mode = TRUE
 	update_icon()
-	L.loc = src.loc
+	L.forceMove(src.loc)
 	addtimer(CALLBACK(src, .proc/reboot), SAFETY_COOLDOWN)
 
 /obj/machinery/recycler/proc/reboot()
@@ -164,7 +161,7 @@
 
 /obj/machinery/recycler/proc/crush_living(mob/living/L)
 
-	L.loc = src.loc
+	L.forceMove(src.loc)
 
 	if(issilicon(L))
 		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
@@ -186,7 +183,7 @@
 	// Remove and recycle the equipped items
 	if(eat_victim_items)
 		for(var/obj/item/I in L.get_equipped_items())
-			if(L.dropItemToGround(I))
+			if(L.unEquip(I))
 				eat(I, sound=FALSE)
 
 	// Instantly lie down, also go unconscious from the pain, before you die.
@@ -207,5 +204,3 @@
 /obj/item/weapon/paper/recycler
 	name = "paper - 'garbage duty instructions'"
 	info = "<h2>New Assignment</h2> You have been assigned to collect garbage from trash bins, located around the station. The crewmembers will put their trash into it and you will collect the said trash.<br><br>There is a recycling machine near your closet, inside maintenance; use it to recycle the trash for a small chance to get useful minerals. Then deliver these minerals to cargo or engineering. You are our last hope for a clean station, do not screw this up!"
-
-#undef SAFETY_COOLDOWN

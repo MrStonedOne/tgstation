@@ -8,17 +8,17 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	armor = list(melee = 80, bullet = 70, laser = -25, energy = 0, bomb = 60, bio = 0, rad = 0, fire = 100, acid = 100)
 
-/obj/item/clothing/head/helmet/clockwork/Initialize()
-	. = ..()
+/obj/item/clothing/head/helmet/clockwork/New()
+	..()
 	ratvar_act()
-	GLOB.all_clockwork_objects += src
+	all_clockwork_objects += src
 
 /obj/item/clothing/head/helmet/clockwork/Destroy()
-	GLOB.all_clockwork_objects -= src
+	all_clockwork_objects -= src
 	return ..()
 
 /obj/item/clothing/head/helmet/clockwork/ratvar_act()
-	if(GLOB.ratvar_awakens)
+	if(ratvar_awakens)
 		armor = list(melee = 100, bullet = 100, laser = 100, energy = 100, bomb = 100, bio = 100, rad = 100, fire = 100, acid = 100)
 		flags |= STOPSPRESSUREDMAGE
 		max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
@@ -44,7 +44,7 @@
 			user.emote("scream")
 			user.apply_damage(30, BRUTE, "head")
 			user.adjustBrainLoss(30)
-		addtimer(CALLBACK(user, /mob/living.proc/dropItemToGround), src, 1) //equipped happens before putting stuff on(but not before picking items up), 1). thus, we need to wait for it to be on before forcing it off.
+		addtimer(CALLBACK(user, /mob/living.proc/unEquip), src, 1) //equipped happens before putting stuff on(but not before picking items up), 1). thus, we need to wait for it to be on before forcing it off.
 
 /obj/item/clothing/head/helmet/clockwork/mob_can_equip(mob/M, mob/equipper, slot, disable_warning = 0)
 	if(equipper && !is_servant_of_ratvar(equipper))
@@ -64,17 +64,17 @@
 	armor = list(melee = 80, bullet = 70, laser = -25, energy = 0, bomb = 60, bio = 0, rad = 0, fire = 100, acid = 100)
 	allowed = list(/obj/item/clockwork, /obj/item/clothing/glasses/wraith_spectacles, /obj/item/clothing/glasses/judicial_visor, /obj/item/device/mmi/posibrain/soul_vessel)
 
-/obj/item/clothing/suit/armor/clockwork/Initialize()
-	. = ..()
+/obj/item/clothing/suit/armor/clockwork/New()
+	..()
 	ratvar_act()
-	GLOB.all_clockwork_objects += src
+	all_clockwork_objects += src
 
 /obj/item/clothing/suit/armor/clockwork/Destroy()
-	GLOB.all_clockwork_objects -= src
+	all_clockwork_objects -= src
 	return ..()
 
 /obj/item/clothing/suit/armor/clockwork/ratvar_act()
-	if(GLOB.ratvar_awakens)
+	if(ratvar_awakens)
 		armor = list(melee = 100, bullet = 100, laser = 100, energy = 100, bomb = 100, bio = 100, rad = 100, fire = 100, acid = 100)
 		flags |= STOPSPRESSUREDMAGE
 		max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
@@ -106,7 +106,7 @@
 			user.apply_damage(15, BURN, "chest")
 			user.adjust_fire_stacks(2)
 			user.IgniteMob()
-		addtimer(CALLBACK(user, /mob/living.proc/dropItemToGround, src, TRUE), 1)
+		addtimer(CALLBACK(user, /mob/living.proc/unEquip, src, 1), 1)
 
 /obj/item/clothing/gloves/clockwork
 	name = "clockwork gauntlets"
@@ -125,17 +125,17 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	armor = list(melee = 80, bullet = 70, laser = -25, energy = 0, bomb = 60, bio = 0, rad = 0, fire = 100, acid = 100)
 
-/obj/item/clothing/gloves/clockwork/Initialize()
-	. = ..()
+/obj/item/clothing/gloves/clockwork/New()
+	..()
 	ratvar_act()
-	GLOB.all_clockwork_objects += src
+	all_clockwork_objects += src
 
 /obj/item/clothing/gloves/clockwork/Destroy()
-	GLOB.all_clockwork_objects -= src
+	all_clockwork_objects -= src
 	return ..()
 
 /obj/item/clothing/gloves/clockwork/ratvar_act()
-	if(GLOB.ratvar_awakens)
+	if(ratvar_awakens)
 		armor = list(melee = 100, bullet = 100, laser = 100, energy = 100, bomb = 100, bio = 100, rad = 100, fire = 100, acid = 100)
 		flags |= STOPSPRESSUREDMAGE
 		max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
@@ -166,7 +166,7 @@
 			user.emote("scream")
 			user.apply_damage(7, BRUTE, "l_arm")
 			user.apply_damage(7, BRUTE, "r_arm")
-		addtimer(CALLBACK(user, /mob/living.proc/dropItemToGround, src, TRUE), 1)
+		addtimer(CALLBACK(user, /mob/living.proc/unEquip, src, 1), 1)
 
 /obj/item/clothing/shoes/clockwork
 	name = "clockwork treads"
@@ -178,20 +178,17 @@
 	put_on_delay = 30
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
-/obj/item/clothing/shoes/clockwork/Initialize()
-	. = ..()
+/obj/item/clothing/shoes/clockwork/New()
+	..()
 	ratvar_act()
-	GLOB.all_clockwork_objects += src
+	all_clockwork_objects += src
 
 /obj/item/clothing/shoes/clockwork/Destroy()
-	GLOB.all_clockwork_objects -= src
+	all_clockwork_objects -= src
 	return ..()
 
-/obj/item/clothing/shoes/clockwork/negates_gravity()
-	return TRUE
-
 /obj/item/clothing/shoes/clockwork/ratvar_act()
-	if(GLOB.ratvar_awakens)
+	if(ratvar_awakens)
 		flags |= NOSLIP
 	else
 		flags &= NOSLIP
@@ -216,4 +213,4 @@
 			user.emote("scream")
 			user.apply_damage(7, BURN, "l_leg")
 			user.apply_damage(7, BURN, "r_leg")
-		addtimer(CALLBACK(user, /mob/living.proc/dropItemToGround, src, TRUE), 1)
+		addtimer(CALLBACK(user, /mob/living.proc/unEquip, src, 1), 1)

@@ -1,13 +1,13 @@
-/mob/living/silicon/ai/say(message, language)
+/mob/living/silicon/ai/say(message)
 	if(parent && istype(parent) && parent.stat != 2) //If there is a defined "parent" AI, it is actually an AI, and it is alive, anything the AI tries to say is said by the parent instead.
-		parent.say(message, language)
+		parent.say(message)
 		return
 	..(message)
 
 /mob/living/silicon/ai/compose_track_href(atom/movable/speaker, namepart)
 	var/mob/M = speaker.GetSource()
 	if(M)
-		return "<a href='?src=\ref[src];track=[html_encode(namepart)]'>"
+		return "<a href='?src=\ref[src];track=[html_encode_ru(namepart)]'>"
 	return ""
 
 /mob/living/silicon/ai/compose_job(atom/movable/speaker, message_langs, raw_message, radio_freq)
@@ -17,7 +17,7 @@
 /mob/living/silicon/ai/IsVocal()
 	return !config.silent_ai
 
-/mob/living/silicon/ai/radio(message, message_mode, list/spans, language)
+/mob/living/silicon/ai/radio(message, message_mode, list/spans)
 	if(!radio_enabled || aiRestorePowerRoutine || stat) //AI cannot speak if radio is disabled (via intellicard) or depowered.
 		to_chat(src, "<span class='danger'>Your radio transmitter is offline!</span>")
 		return 0
@@ -29,17 +29,17 @@
 	else
 		return ..()
 
-/mob/living/silicon/ai/handle_inherent_channels(message, message_mode, language)
+/mob/living/silicon/ai/handle_inherent_channels(message, message_mode)
 	. = ..()
 	if(.)
 		return .
 
 	if(message_mode == MODE_HOLOPAD)
-		holopad_talk(message, language)
+		holopad_talk(message)
 		return 1
 
 //For holopads only. Usable by AI.
-/mob/living/silicon/ai/proc/holopad_talk(message, language)
+/mob/living/silicon/ai/proc/holopad_talk(message)
 	log_say("[key_name(src)] : [message]")
 
 	message = trim(message)
@@ -49,15 +49,21 @@
 
 	var/obj/machinery/holopad/T = current
 	if(istype(T) && T.masters[src])//If there is a hologram and its master is the user.
-		send_speech(message, 7, T, "robot", get_spans(), language)
-		to_chat(src, "<i><span class='game say'>Holopad transmitted, <span class='name'>[real_name]</span> <span class='message robot'>\"[message]\"</span></span></i>")
+		send_speech(message, 7, T, "robot", get_spans())
+		to_chat(src, "<i><span class='game say'>Holopad transmitted, <span class='name'>[real_name]</span> <span class='message robot'>\"[message]\"</span></span></i>")//The AI can "hear" its own message.
+
 	else
 		to_chat(src, "No holopad connected.")
+	return
 
 
 // Make sure that the code compiles with AI_VOX undefined
 #ifdef AI_VOX
-#define VOX_DELAY 600
+
+var/announcing_vox = 0 // Stores the time of the last announcement
+var/const/VOX_CHANNEL = 200
+var/const/VOX_DELAY = 600
+
 /mob/living/silicon/ai/verb/announcement_help()
 
 	set name = "Announcement Help"
@@ -74,10 +80,10 @@
 	<font class='bad'>WARNING:</font><BR>Misuse of the announcement system will get you job banned.<HR>"
 
 	var/index = 0
-	for(var/word in GLOB.vox_sounds)
+	for(var/word in vox_sounds)
 		index++
 		dat += "<A href='?src=\ref[src];say_word=[word]'>[capitalize(word)]</A>"
-		if(index != GLOB.vox_sounds.len)
+		if(index != vox_sounds.len)
 			dat += " / "
 
 	var/datum/browser/popup = new(src, "announce_help", "Announcement Help", 500, 400)
@@ -86,7 +92,6 @@
 
 
 /mob/living/silicon/ai/proc/announcement()
-	var/static/announcing_vox = 0 // Stores the time of the last announcement
 	if(announcing_vox > world.time)
 		to_chat(src, "<span class='notice'>Please wait [round((announcing_vox - world.time) / 10)] seconds.</span>")
 		return
@@ -116,7 +121,7 @@
 		if(!word)
 			words -= word
 			continue
-		if(!GLOB.vox_sounds[word])
+		if(!vox_sounds[word])
 			incorrect_words += word
 
 	if(incorrect_words.len)
@@ -143,30 +148,23 @@
 
 	word = lowertext(word)
 
-	if(GLOB.vox_sounds[word])
+	if(vox_sounds[word])
 
-		var/sound_file = GLOB.vox_sounds[word]
-		var/sound/voice = sound(sound_file, wait = 1, channel = CHANNEL_VOX)
+		var/sound_file = vox_sounds[word]
+		var/sound/voice = sound(sound_file, wait = 1, channel = VOX_CHANNEL)
 		voice.status = SOUND_STREAM
 
  		// If there is no single listener, broadcast to everyone in the same z level
 		if(!only_listener)
 			// Play voice for all mobs in the z level
-			for(var/mob/M in GLOB.player_list)
-				if(M.client && M.can_hear() && (M.client.prefs.toggles & SOUND_ANNOUNCEMENTS))
+			for(var/mob/M in player_list)
+				if(M.client && !M.ear_deaf && (M.client.prefs.toggles & SOUND_ANNOUNCEMENTS))
 					var/turf/T = get_turf(M)
 					if(T.z == z_level)
-						M << voice
+						to_chat(M, voice)
 		else
-			only_listener << voice
+			to_chat(only_listener, voice)
 		return 1
 	return 0
 
 #endif
-
-/mob/living/silicon/ai/could_speak_in_language(datum/language/dt)
-	if(is_servant_of_ratvar(src))
-		// Ratvarian AIs can only speak Ratvarian
-		. = ispath(dt, /datum/language/ratvar)
-	else
-		. = ..()

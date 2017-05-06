@@ -4,6 +4,7 @@
 	icon_state = "megaphone"
 	item_state = "radio"
 	w_class = WEIGHT_CLASS_SMALL
+	flags = FPRINT
 	siemens_coefficient = 1
 	var/spamcheck = 0
 	var/emagged = 0

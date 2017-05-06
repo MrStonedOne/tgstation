@@ -11,15 +11,13 @@
 
 		update_gravity(mob_has_gravity())
 
-		handle_status_effects()
-
 		if(malfhack && malfhack.aidisabled)
 			deltimer(malfhacking)
 			// This proc handles cleanup of screen notifications and
 			// messenging the client
 			malfhacked(malfhack)
 
-		if(!eyeobj || QDELETED(eyeobj) || !eyeobj.loc)
+		if(!eyeobj || qdeleted(eyeobj) || !eyeobj.loc)
 			view_core()
 
 		if(machine)
@@ -53,11 +51,11 @@
 		if(POWER_REQ_NONE)
 			return FALSE
 		if(POWER_REQ_ALL)
-			return !T || !A || ((!A.power_equip || isspaceturf(T)) && !is_type_in_list(loc, list(/obj/item, /obj/mecha)))
+			return !T || !A || ((!A.master.power_equip || isspaceturf(T)) && !is_type_in_list(loc, list(/obj/item, /obj/mecha)))
 		if(POWER_REQ_CLOCKCULT)
-			for(var/obj/effect/clockwork/sigil/transmission/ST in range(src, SIGIL_ACCESS_RANGE))
+			for(var/obj/effect/clockwork/sigil/transmission/ST in range(src, 1))
 				return FALSE
-			return !T || !A || (!istype(T, /turf/open/floor/clockwork) && (!A.power_equip || isspaceturf(T)) && !is_type_in_list(loc, list(/obj/item, /obj/mecha)))
+			return !T || !A || (!istype(T, /turf/open/floor/clockwork) && (!A.master.power_equip || isspaceturf(T)) && !is_type_in_list(loc, list(/obj/item, /obj/mecha)))
 
 /mob/living/silicon/ai/updatehealth()
 	if(status_flags & GODMODE)
@@ -65,7 +63,6 @@
 	health = maxHealth - getOxyLoss() - getToxLoss() - getBruteLoss() - getFireLoss()
 	update_stat()
 	diag_hud_set_health()
-	disconnect_shell()
 
 /mob/living/silicon/ai/update_stat()
 	if(status_flags & GODMODE)
@@ -91,7 +88,6 @@
 
 	if(see_override)
 		see_invisible = see_override
-	sync_lighting_plane_alpha()
 
 
 /mob/living/silicon/ai/proc/start_RestorePowerRoutine()
@@ -99,7 +95,7 @@
 	sleep(50)
 	var/turf/T = get_turf(src)
 	var/area/AIarea = get_area(src)
-	if(AIarea && AIarea.power_equip)
+	if(AIarea && AIarea.master.power_equip)
 		if(!isspaceturf(T))
 			ai_restore_power()
 			return
@@ -121,7 +117,7 @@
 		T = get_turf(src)
 		AIarea = get_area(src)
 		if(AIarea)
-			for(var/area/A in AIarea.related)
+			for(var/area/A in AIarea.master.related)
 				for (var/obj/machinery/power/apc/APC in A)
 					if (!(APC.stat & BROKEN))
 						theAPC = APC
@@ -134,7 +130,7 @@
 					to_chat(src, "Lost connection with the APC!")
 			aiRestorePowerRoutine = POWER_RESTORATION_SEARCH_APC
 			return
-		if(AIarea.power_equip)
+		if(AIarea.master.power_equip)
 			if(!isspaceturf(T))
 				ai_restore_power()
 				return
@@ -148,9 +144,11 @@
 				to_chat(src, "Receiving control information from APC.")
 				sleep(2)
 				apc_override = 1
-				theAPC.ui_interact(src, state = GLOB.conscious_state)
+				theAPC.ui_interact(src, state = conscious_state)
 				apc_override = 0
 				aiRestorePowerRoutine = POWER_RESTORATION_APC_FOUND
+				to_chat(src, "Here are your current laws:")
+				show_laws()
 		sleep(50)
 		theAPC = null
 
@@ -165,7 +163,6 @@
 		update_sight()
 
 /mob/living/silicon/ai/proc/ai_lose_power()
-	disconnect_shell()
 	aiRestorePowerRoutine = POWER_RESTORATION_START
 	blind_eyes(1)
 	update_sight()

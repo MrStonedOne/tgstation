@@ -13,7 +13,7 @@
 	armor = list(melee = 30, bullet = 30, laser = 30, energy = 10, bomb = 25, bio = 0, rad = 0, fire = 50, acid = 50)
 
 /obj/item/clothing/suit/armor/vest
-	name = "armor vest"
+	name = "armor"
 	desc = "A slim armored vest that protects against most types of damage."
 	icon_state = "armoralt"
 	item_state = "armoralt"
@@ -119,7 +119,7 @@
 	icon_state = "bulletproof"
 	item_state = "armor"
 	blood_overlay_type = "armor"
-	armor = list(melee = 15, bullet = 60, laser = 10, energy = 10, bomb = 40, bio = 0, rad = 0, fire = 50, acid = 50)
+	armor = list(melee = 15, bullet = 80, laser = 10, energy = 10, bomb = 40, bio = 0, rad = 0, fire = 50, acid = 50)
 	strip_delay = 70
 	put_on_delay = 50
 
@@ -140,7 +140,7 @@
 		return 1
 
 /obj/item/clothing/suit/armor/vest/det_suit
-	name = "detective's armor vest"
+	name = "armor"
 	desc = "An armored vest with a detective's badge on it."
 	icon_state = "detective-armor"
 	allowed = list(/obj/item/weapon/tank/internals/emergency_oxygen,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/ballistic,/obj/item/ammo_box,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/restraints/handcuffs,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/lighter,/obj/item/device/detective_scanner,/obj/item/device/taperecorder,/obj/item/weapon/melee/classic_baton)
@@ -155,8 +155,9 @@
 	var/active = 0
 	var/reactivearmor_cooldown_duration = 0 //cooldown specific to reactive armor
 	var/reactivearmor_cooldown = 0
-	icon_state = "reactiveoff"
-	item_state = "reactiveoff"
+	icon = 'icons/fallout/clothing/suits.dmi'
+	icon_state = "tesla_chestplate_off"
+	item_state = "tesla_chestplate_off"
 	blood_overlay_type = "armor"
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 100, acid = 100)
 	actions_types = list(/datum/action/item_action/toggle)
@@ -168,19 +169,19 @@
 	src.active = !( src.active )
 	if (src.active)
 		to_chat(user, "<span class='notice'>[src] is now active.</span>")
-		src.icon_state = "reactive"
-		src.item_state = "reactive"
+		src.icon_state = "tesla_chestplate"
+		src.item_state = "tesla_chestplate"
 	else
 		to_chat(user, "<span class='notice'>[src] is now inactive.</span>")
-		src.icon_state = "reactiveoff"
-		src.item_state = "reactiveoff"
+		src.icon_state = "tesla_chestplate_off"
+		src.item_state = "tesla_chestplate_off"
 	src.add_fingerprint(user)
 	return
 
 /obj/item/clothing/suit/armor/reactive/emp_act(severity)
 	active = 0
-	src.icon_state = "reactiveoff"
-	src.item_state = "reactiveoff"
+	src.icon_state = "tesla_chestplate_off"
+	src.item_state = "tesla_chestplate_off"
 	reactivearmor_cooldown = world.time + 200
 	..()
 
@@ -268,11 +269,6 @@
 /obj/item/clothing/suit/armor/reactive/tesla
 	name = "reactive tesla armor"
 	desc = "An experimental suit of armor with sensitive detectors hooked up to a huge capacitor grid, with emitters strutting out of it. Zap."
-	siemens_coefficient = -1
-	var/tesla_power = 25000
-	var/tesla_range = 20
-	var/tesla_boom = FALSE
-	var/tesla_stun = FALSE
 
 /obj/item/clothing/suit/armor/reactive/tesla/hit_reaction(mob/living/carbon/human/owner, attack_text)
 	if(!active)
@@ -282,10 +278,15 @@
 			var/datum/effect_system/spark_spread/sparks = new /datum/effect_system/spark_spread
 			sparks.set_up(1, 1, src)
 			sparks.start()
-			owner.visible_message("<span class='danger'>The tesla capacitors on [owner]'s reactive tesla armor are still recharging! The armor merely emits some sparks.</spawn>")
+			owner.visible_message("<span class='danger'>The tesla capacitors on [owner]'s reactive telsa armor are still recharging! The armor merely emits some sparks.</spawn>")
 			return
 		owner.visible_message("<span class='danger'>The [src] blocks the [attack_text], sending out arcs of lightning!</span>")
-		tesla_zap(owner,tesla_range,tesla_power,tesla_boom, tesla_stun)
+		for(var/mob/living/M in view(6, owner))
+			if(M == owner)
+				continue
+			owner.Beam(M,icon_state="lightning[rand(1, 12)]",time=5)
+			M.adjustFireLoss(25)
+			playsound(M, 'sound/machines/defib_zap.ogg', 50, 1, -1)
 		reactivearmor_cooldown = world.time + reactivearmor_cooldown_duration
 		return 1
 
@@ -378,28 +379,3 @@
 	desc = "Pukish armor."	//classy.
 	icon_state = "tdgreen"
 	item_state = "tdgreen"
-
-
-/obj/item/clothing/suit/armor/riot/knight
-	name = "plate armour"
-	desc = "A classic suit of plate armour, highly effective at stopping melee attacks."
-	icon_state = "knight_green"
-	item_state = "knight_green"
-
-/obj/item/clothing/suit/armor/riot/knight/yellow
-	icon_state = "knight_yellow"
-	item_state = "knight_yellow"
-
-/obj/item/clothing/suit/armor/riot/knight/blue
-	icon_state = "knight_blue"
-	item_state = "knight_blue"
-
-/obj/item/clothing/suit/armor/riot/knight/red
-	icon_state = "knight_red"
-	item_state = "knight_red"
-
-/obj/item/clothing/suit/armor/riot/knight/templar
-	name = "crusader armour"
-	desc = "God wills it!"
-	icon_state = "knight_templar"
-	item_state = "knight_templar"

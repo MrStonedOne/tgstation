@@ -22,6 +22,7 @@
 	air_contents = new
 	air_contents.volume = volume
 	air_contents.temperature = T20C
+	air_contents.holder = src
 
 	return 1
 
@@ -83,7 +84,7 @@
 			var/obj/item/weapon/tank/T = W
 			if(holding || !user.drop_item())
 				return
-			T.loc = src
+			T.forceMove(src)
 			holding = T
 			update_icon()
 	else if(istype(W, /obj/item/weapon/wrench))

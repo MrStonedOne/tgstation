@@ -14,8 +14,6 @@
 	icon_state = "captain"
 	item_state = "b_suit"
 	item_color = "captain"
-	sensor_mode = SENSOR_COORDS
-	random_sensor = 0
 
 /obj/item/clothing/under/rank/cargo
 	name = "quartermaster's jumpsuit"
@@ -137,7 +135,7 @@
 	can_adjust = 1
 	alt_covers_chest = 1
 
-/obj/item/clothing/under/rank/curator
+/obj/item/clothing/under/rank/librarian
 	name = "sensible suit"
 	desc = "It's very... sensible."
 	icon_state = "red_suit"
@@ -145,7 +143,7 @@
 	item_color = "red_suit"
 	can_adjust = 0
 
-/obj/item/clothing/under/rank/curator/treasure_hunter
+/obj/item/clothing/under/rank/librarian/curator
 	name = "treasure hunter uniform"
 	desc = "A rugged uniform suitable for treasure hunting."
 	icon_state = "curator"

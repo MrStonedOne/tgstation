@@ -24,7 +24,7 @@
 	dynamic_lighting = DYNAMIC_LIGHTING_DISABLED
 	requires_power = 0
 	has_gravity = 1
-	ambientsounds = list('sound/ambience/shore.ogg', 'sound/ambience/seag1.ogg','sound/ambience/seag2.ogg','sound/ambience/seag2.ogg')
+	ambientsounds = list('sound/ambience/shore.ogg', 'sound/ambience/seag1.ogg','sound/ambience/seag2.ogg','sound/ambience/seag3.ogg','sound/ambience/seag4.ogg')
 
 /area/awaymission/errorroom
 	name = "Super Secret Room"
@@ -123,32 +123,32 @@
 
 /area/awaymission/centcomAway/general
 	name = "XCC-P5831"
-	music = 'sound/ambience/ambigen3.ogg'
+	music = "music/ambigen3.ogg"
 
 /area/awaymission/centcomAway/maint
 	name = "XCC-P5831 Maintenance"
 	icon_state = "away1"
-	music = 'sound/ambience/ambisin1.ogg'
+	music = "music/ambisin1.ogg"
 
 /area/awaymission/centcomAway/thunderdome
 	name = "XCC-P5831 Thunderdome"
 	icon_state = "away2"
-	music = 'sound/ambience/ambisin2.ogg'
+	music = "music/ambisin2.ogg"
 
 /area/awaymission/centcomAway/cafe
 	name = "XCC-P5831 Kitchen Arena"
 	icon_state = "away3"
-	music = 'sound/ambience/ambisin3.ogg'
+	music = "music/ambisin3.ogg"
 
 /area/awaymission/centcomAway/courtroom
 	name = "XCC-P5831 Courtroom"
 	icon_state = "away4"
-	music = 'sound/ambience/ambisin4.ogg'
+	music = "music/ambisin4.ogg"
 
 /area/awaymission/centcomAway/hangar
 	name = "XCC-P5831 Hangars"
 	icon_state = "away4"
-	music = 'sound/ambience/ambigen5.ogg'
+	music = "music/ambigen5.ogg"
 
 
 /*Cabin areas*/

@@ -1,4 +1,4 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "a" = (
 /turf/closed/wall/mineral/wood,
 /area/shuttle/escape)
@@ -112,7 +112,7 @@
 /turf/open/floor/wood,
 /area/shuttle/escape)
 "v" = (
-/obj/structure/chair/office/dark,
+/obj/structure/chair/office/blue,
 /turf/open/floor/wood,
 /area/shuttle/escape)
 "w" = (

@@ -15,7 +15,7 @@ CHANGING ICONS
 Several new procs have been added to the /icon datum to simplify working with icons. To use them,
 remember you first need to setup an /icon var like so:
 
-GLOBAL_DATUM_INIT(my_icon, /icon, new('iconfile.dmi'))
+var/icon/my_icon = new('iconfile.dmi')
 
 icon/ChangeOpacity(amount = 1)
     A very common operation in DM is to try to make an icon more or less transparent. Making an icon more
@@ -107,7 +107,7 @@ AngleToHue(hue)
     Converts an angle to a hue in the valid range.
 RotateHue(hsv, angle)
     Takes an HSV or HSVA value and rotates the hue forward through red, green, and blue by an angle from 0 to 360.
-    (Rotating red by 60Â° produces yellow.) The result is another HSV or HSVA color with the same saturation and value
+    (Rotating red by 60° produces yellow.) The result is another HSV or HSVA color with the same saturation and value
     as the original, but a different hue.
 GrayScale(rgb)
     Takes an RGB or RGBA color and converts it to grayscale. Returns an RGB or RGBA string.
@@ -154,7 +154,7 @@ mob
 		// Testing object types (and layers)
 		add_overlay(/obj/effect/overlayTest)
 
-		loc = locate (10,10,1)
+		forceMove(locate (10,10,1))
 	verb
 		Browse_Icon()
 			set name = "1. Browse Icon"
@@ -167,7 +167,7 @@ mob
 
 		Output_Icon()
 			set name = "2. Output Icon"
-			to_chat(src, "Icon is: \icon[getFlatIcon(src)]")
+			to_chat(src, "Icon is: [bicon(getFlatIcon(src))]")
 
 		Label_Icon()
 			set name = "3. Label Icon"
@@ -866,23 +866,24 @@ The _flatIcons list is a cache for generated icon files.
 
 	var/image/text_image = new(loc = A)
 	text_image.maptext = "<font size = 4>[letter]</font>"
+	text_image.color = AverageColour(atom_icon)
 	text_image.pixel_x = 7
 	text_image.pixel_y = 5
-	qdel(atom_icon)
+	del(atom_icon)
 	return text_image
 
-GLOBAL_LIST_EMPTY(friendly_animal_types)
+var/global/list/friendly_animal_types = list()
 
 // Pick a random animal instead of the icon, and use that instead
 /proc/getRandomAnimalImage(atom/A)
-	if(!GLOB.friendly_animal_types.len)
+	if(!friendly_animal_types.len)
 		for(var/T in typesof(/mob/living/simple_animal))
 			var/mob/living/simple_animal/SA = T
 			if(initial(SA.gold_core_spawnable) == 2)
-				GLOB.friendly_animal_types += SA
+				friendly_animal_types += SA
 
 
-	var/mob/living/simple_animal/SA = pick(GLOB.friendly_animal_types)
+	var/mob/living/simple_animal/SA = pick(friendly_animal_types)
 
 	var/icon = initial(SA.icon)
 	var/icon_state = initial(SA.icon_state)
@@ -895,6 +896,25 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 	// For debugging
 	final_image.text = initial(SA.name)
 	return final_image
+
+//Find's the average colour of the icon
+//By vg's ComicIronic
+/proc/AverageColour(icon/I)
+	var/list/colours = list()
+	for(var/x_pixel = 1 to I.Width())
+		for(var/y_pixel = 1 to I.Height())
+			var/this_colour = I.GetPixel(x_pixel, y_pixel)
+			if(this_colour)
+				colours.Add(this_colour)
+
+	if(!colours.len)
+		return null
+
+	var/final_average = colours[1]
+	for(var/colour in (colours - colours[1]))
+		final_average = BlendRGB(final_average, colour, 1)
+	return final_average
+
 
 //Interface for using DrawBox() to draw 1 pixel on a coordinate.
 //Returns the same icon specifed in the argument, but with the pixel drawn
@@ -923,18 +943,37 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 		return J
 	return 0
 
+/atom/proc/cut_overlays()
+	overlays.Cut()
+	overlays += priority_overlays
+
+/atom/proc/add_overlay(image, priority = 0)
+	var/list/new_overlays = overlays.Copy()
+	new_overlays -= image
+	if(priority)
+		if(!priority_overlays)
+			priority_overlays = list()
+		priority_overlays += image
+		new_overlays += image
+	else
+		if(priority_overlays)
+			new_overlays -= priority_overlays
+			new_overlays += image
+			new_overlays += priority_overlays
+		else
+			new_overlays += image
+	overlays = new_overlays
+
+var/global/list/humanoid_icon_cache = list()
 //For creating consistent icons for human looking simple animals
-/proc/get_flat_human_icon(icon_id, datum/job/J, datum/preferences/prefs)
-	var/static/list/humanoid_icon_cache = list()
+/proc/get_flat_human_icon(var/icon_id,var/outfit,var/datum/preferences/prefs)
 	if(!icon_id || !humanoid_icon_cache[icon_id])
 		var/mob/living/carbon/human/dummy/body = new()
 
 		if(prefs)
 			prefs.copy_to(body)
-		if(J)
-			J.equip(body, TRUE, FALSE)
-
-		SSoverlays.Flush()
+		if(outfit)
+			body.equipOutfit(outfit, TRUE)
 
 		var/icon/out_icon = icon('icons/effects/effects.dmi', "nothing")
 
@@ -968,13 +1007,14 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 /image/proc/setDir(newdir)
 	dir = newdir
 
+// Used to make the frozen item visuals for Freon.
+var/list/freeze_item_icons = list()
+
 /atom/proc/freeze_icon_index()
 	return "\ref[initial(icon)]-[initial(icon_state)]"
 
 /obj/proc/make_frozen_visual()
-	// Used to make the frozen item visuals for Freon.
-	var/static/list/freeze_item_icons = list()
-	if(!HAS_SECONDARY_FLAG(src, FROZEN) && (initial(icon) && initial(icon_state)))
+	if(!is_frozen && (initial(icon) && initial(icon_state)))
 		var/index = freeze_icon_index()
 		var/icon/IC
 		var/icon/P = freeze_item_icons[index]
@@ -988,10 +1028,10 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 			freeze_item_icons[index] = P
 		icon = P
 		name = "frozen [name]"
-		SET_SECONDARY_FLAG(src, FROZEN)
+		is_frozen = TRUE
 
 //Assumes already frozed
-/obj/proc/make_unfrozen()
+obj/proc/make_unfrozen()
 	icon = initial(icon)
 	name = replacetext(name, "frozen ", "")
-	CLEAR_SECONDARY_FLAG(src, FROZEN)
+	is_frozen = FALSE

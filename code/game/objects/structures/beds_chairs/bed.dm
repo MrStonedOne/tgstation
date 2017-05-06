@@ -11,7 +11,7 @@
 	name = "bed"
 	desc = "This is used to lie in, sleep in or strap on."
 	icon_state = "bed"
-	icon = 'icons/obj/objects.dmi'
+	icon = 'icons/fallout/objects/structures/furniture.dmi'
 	anchored = 1
 	can_buckle = 1
 	buckle_lying = 1
@@ -19,6 +19,7 @@
 	obj_integrity = 100
 	max_integrity = 100
 	integrity_failure = 30
+	can_crawled = 1
 	var/buildstacktype = /obj/item/stack/sheet/metal
 	var/buildstackamount = 2
 
@@ -47,6 +48,7 @@
 	icon_state = "down"
 	anchored = 0
 	resistance_flags = 0
+	can_crawled = 0
 	var/foldabletype = /obj/item/roller
 
 /obj/structure/bed/roller/attackby(obj/item/weapon/W, mob/user, params)
@@ -146,7 +148,7 @@
 /obj/item/roller/robo/deploy_roller(mob/user, atom/location)
 	if(loaded)
 		var/obj/structure/bed/roller/R = loaded
-		R.loc = location
+		R.forceMove(location)
 		user.visible_message("[user] deploys [loaded].", "<span class='notice'>You deploy [loaded].</span>")
 		loaded = null
 	else
@@ -166,4 +168,25 @@
 /obj/structure/bed/alien
 	name = "resting contraption"
 	desc = "This looks similar to contraptions from earth. Could aliens be stealing our technology?"
-	icon_state = "abed"
+	icon_state = "alienbed"
+
+/obj/structure/bed/mattress
+	name = "mattress"
+	desc = "A nosy little dummy, are you?<br>A mattress is a large pad for supporting the reclining body, of course most of wasteland dwellers can't afford having a bed, so this is the most common sleeping spot around."
+	icon_state = "mattress"
+
+/obj/structure/bed/mattress/pillow
+	name = "soft mattress"
+	desc = "A common soft matress.<br>Most of wasteland dwellers can't afford having a bed, so this is the most common sleeping spot around.<br>Wow, there's a soft pillow on top of it!"
+	icon_state = "mattress_pillow"
+
+/obj/structure/bed/mattress/holey
+	name = "holey mattress"
+	desc = "A common, not that soft matress.<br>Someone or something has made a several holes in it."
+	icon_state = "mattress_holey"
+
+/obj/structure/bed/mattress/dirty/New()
+	..()
+	name = "dirty mattress"
+	desc = "An awfully smelly, dirty mattress.<br>It has soaked with something foul, so now it smells worse than a ghoul's piss..."
+	icon_state = pick("mattress_dirty","mattress_bloody","mattress_dried","mattress_mossy")

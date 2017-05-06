@@ -4,10 +4,10 @@
 	id = "jelly"
 	default_color = "00FF90"
 	say_mod = "chirps"
+	eyes = "jelleyes"
 	species_traits = list(MUTCOLORS,EYECOLOR,NOBLOOD,VIRUSIMMUNE,TOXINLOVER)
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/slime
 	exotic_blood = "slimejelly"
-	damage_overlay_type = ""
 	var/datum/action/innate/regenerate_limbs/regenerate_limbs
 
 /datum/species/jelly/on_species_loss(mob/living/carbon/C)
@@ -99,8 +99,10 @@
 	name = "Slimeperson"
 	id = "slime"
 	default_color = "00FFFF"
+	darksight = 3
 	species_traits = list(MUTCOLORS,EYECOLOR,HAIR,FACEHAIR,NOBLOOD,VIRUSIMMUNE, TOXINLOVER)
 	say_mod = "says"
+	eyes = "eyes"
 	hair_color = "mutcolor"
 	hair_alpha = 150
 	ignored_by = list(/mob/living/simple_animal/slime)
@@ -177,9 +179,11 @@
 		if(H.blood_volume >= BLOOD_VOLUME_SLIME_SPLIT)
 			make_dupe()
 		else
-			to_chat(H, "<span class='warning'>...but there is not enough of you to go around! You must attain more mass to split!</span>")
+			to_chat(H, "<span class='warning'>...but there is not enough of you to \
+				go around! You must attain more mass to split!</span>")
 	else
-		to_chat(H, "<span class='warning'>...but fail to stand perfectly still!</span>")
+		to_chat(H, "<span class='warning'>...but fail to stand perfectly still!\
+			</span>")
 
 	H.notransform = FALSE
 
@@ -227,7 +231,7 @@
 	else
 		ui_interact(owner)
 
-/datum/action/innate/swap_body/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.conscious_state)
+/datum/action/innate/swap_body/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = conscious_state)
 
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
@@ -244,10 +248,10 @@
 	var/list/data = list()
 	data["bodies"] = list()
 	for(var/b in SS.bodies)
-		var/mob/living/carbon/human/body = b
-		if(!body || QDELETED(body) || !isslimeperson(body))
+		if(!b || qdeleted(b) || !isslimeperson(b))
 			SS.bodies -= b
 			continue
+		var/mob/living/carbon/human/body = b
 
 		var/list/L = list()
 		// HTML colors need a # prefix
@@ -307,7 +311,7 @@
 			var/mob/living/carbon/human/selected = locate(params["ref"])
 			if(!(selected in SS.bodies))
 				return
-			if(!selected || QDELETED(selected) || !isslimeperson(selected))
+			if(!selected || qdeleted(selected) || !isslimeperson(selected))
 				SS.bodies -= selected
 				return
 			if(M.current == selected)

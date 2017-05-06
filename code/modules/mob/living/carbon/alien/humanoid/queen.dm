@@ -33,20 +33,20 @@
 /datum/action/small_sprite/Trigger()
 	..()
 	if(!small)
-		var/image/I = image(icon = 'icons/mob/alien.dmi' , icon_state = "alienq", loc = owner)
+		var/image/I = image(icon = 'icons/mob/alien.dmi' , icon_state = "alienq_running", loc = owner)
 		I.override = 1
 		I.pixel_x -= owner.pixel_x
 		I.pixel_y -= owner.pixel_y
-		owner.add_alt_appearance(/datum/atom_hud/alternate_appearance/basic, "smallqueen", I)
+		owner.add_alt_appearance("smallqueen", I, list(owner))
 
 		small = 1
 	else
 		owner.remove_alt_appearance("smallqueen")
 		small = 0
 
-/mob/living/carbon/alien/humanoid/royal/queen/Initialize()
+/mob/living/carbon/alien/humanoid/royal/queen/New()
 	//there should only be one queen
-	for(var/mob/living/carbon/alien/humanoid/royal/queen/Q in GLOB.living_mob_list)
+	for(var/mob/living/carbon/alien/humanoid/royal/queen/Q in living_mob_list)
 		if(Q == src)
 			continue
 		if(Q.stat == DEAD)

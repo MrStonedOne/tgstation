@@ -28,7 +28,7 @@
 	desc = "A terribly ragged and frayed grey jumpsuit. It looks like it hasn't been washed in over a decade."
 
 /obj/item/clothing/under/color/grey/glorf/hit_reaction(mob/living/carbon/human/owner)
-	owner.forcesay(GLOB.hit_appends)
+	owner.forcesay(hit_appends)
 	return 0
 
 /obj/item/clothing/under/color/blue
@@ -75,29 +75,35 @@
 	item_state = "y_suit"
 	item_color = "yellow"
 
-/obj/item/clothing/under/color/darkblue
-	name = "darkblue jumpsuit"
-	icon_state = "darkblue"
+/obj/item/clothing/under/color/lightblue
+	name = "lightblue jumpsuit"
+	icon_state = "lightblue"
 	item_state = "b_suit"
-	item_color = "darkblue"
+	item_color = "lightblue"
 
-/obj/item/clothing/under/color/teal
-	name = "teal jumpsuit"
-	icon_state = "teal"
+/obj/item/clothing/under/color/aqua
+	name = "aqua jumpsuit"
+	icon_state = "aqua"
 	item_state = "b_suit"
-	item_color = "teal"
+	item_color = "aqua"
+
+/obj/item/clothing/under/color/purple
+	name = "purple jumpsuit"
+	icon_state = "purple"
+	item_state = "p_suit"
+	item_color = "purple"
 
 /obj/item/clothing/under/color/lightpurple
-	name = "purple jumpsuit"
+	name = "lightpurple jumpsuit"
 	icon_state = "lightpurple"
 	item_state = "p_suit"
 	item_color = "lightpurple"
 
-/obj/item/clothing/under/color/darkgreen
-	name = "darkgreen jumpsuit"
-	icon_state = "darkgreen"
+/obj/item/clothing/under/color/lightgreen
+	name = "lightgreen jumpsuit"
+	icon_state = "lightgreen"
 	item_state = "g_suit"
-	item_color = "darkgreen"
+	item_color = "lightgreen"
 
 /obj/item/clothing/under/color/lightbrown
 	name = "lightbrown jumpsuit"
@@ -110,6 +116,30 @@
 	icon_state = "brown"
 	item_state = "lb_suit"
 	item_color = "brown"
+
+/obj/item/clothing/under/color/yellowgreen
+	name = "yellowgreen jumpsuit"
+	icon_state = "yellowgreen"
+	item_state = "y_suit"
+	item_color = "yellowgreen"
+
+/obj/item/clothing/under/color/darkblue
+	name = "darkblue jumpsuit"
+	icon_state = "darkblue"
+	item_state = "b_suit"
+	item_color = "darkblue"
+
+/obj/item/clothing/under/color/lightred
+	name = "lightred jumpsuit"
+	icon_state = "lightred"
+	item_state = "r_suit"
+	item_color = "lightred"
+
+/obj/item/clothing/under/color/darkred
+	name = "darkred jumpsuit"
+	icon_state = "darkred"
+	item_state = "r_suit"
+	item_color = "darkred"
 
 /obj/item/clothing/under/color/maroon
 	name = "maroon jumpsuit"

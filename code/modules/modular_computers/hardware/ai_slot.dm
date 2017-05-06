@@ -32,10 +32,13 @@
 	if(stored_card)
 		to_chat(user, "<span class='warning'>You try to insert \the [I] into \the [src], but the slot is occupied.</span>")
 		return FALSE
-	if(user && !user.transferItemToLoc(I, src))
+	if(user && !user.unEquip(I))
 		return FALSE
 
+
 	stored_card = I
+
+	I.forceMove(src)
 	to_chat(user, "<span class='notice'>You insert \the [I] into \the [src].</span>")
 
 	return TRUE

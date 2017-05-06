@@ -1,10 +1,7 @@
 /* In this file:
  * Wood floor
  * Grass floor
- * Fake Basalt
  * Carpet floor
- * Fake pits
- * Fake space
  */
 
 /turf/open/floor/wood
@@ -16,43 +13,13 @@
 	if(..())
 		return
 	if(istype(C, /obj/item/weapon/screwdriver))
-		pry_tile(C, user)
+		if(broken || burnt)
+			return
+		to_chat(user, "<span class='danger'>You unscrew the planks.</span>")
+		new floor_tile(src)
+		make_plating()
+		playsound(src, C.usesound, 80, 1)
 		return
-
-/turf/open/floor/wood/try_replace_tile(obj/item/stack/tile/T, mob/user, params)
-	if(T.turf_type == type)
-		return
-	var/obj/item/weapon/tool = user.is_holding_item_of_type(/obj/item/weapon/screwdriver)
-	if(!tool)
-		tool = user.is_holding_item_of_type(/obj/item/weapon/crowbar)
-	if(!tool)
-		return
-	var/turf/open/floor/plating/P = pry_tile(tool, user, TRUE)
-	if(!istype(P))
-		return
-	P.attackby(T, user, params)
-
-/turf/open/floor/wood/pry_tile(obj/item/C, mob/user, silent = FALSE)
-	var/is_screwdriver = istype(C, /obj/item/weapon/screwdriver)
-	playsound(src, C.usesound, 80, 1)
-	return remove_tile(user, silent, make_tile = is_screwdriver)
-
-/turf/open/floor/wood/remove_tile(mob/user, silent = FALSE, make_tile = TRUE)
-	if(broken || burnt)
-		broken = 0
-		burnt = 0
-		if(user && !silent)
-			to_chat(user, "<span class='danger'>You remove the broken planks.</span>")
-	else
-		if(make_tile)
-			if(user && !silent)
-				to_chat(user, "<span class='danger'>You unscrew the planks.</span>")
-			if(floor_tile)
-				new floor_tile(src)
-		else
-			if(user && !silent)
-				to_chat(user, "<span class='danger'>You forcefully pry off the planks, destroying them in the process.</span>")
-	return make_plating()
 
 /turf/open/floor/wood/cold
 	temperature = 255.37
@@ -68,17 +35,17 @@
 	broken_states = list("sand")
 	flags = NONE
 	var/ore_type = /obj/item/weapon/ore/glass
-	var/turfverb = "uproot"
 
-/turf/open/floor/grass/Initialize()
+/turf/open/floor/grass/New()
 	..()
-	update_icon()
+	spawn(1)
+		update_icon()
 
 /turf/open/floor/grass/attackby(obj/item/C, mob/user, params)
 	if(istype(C, /obj/item/weapon/shovel) && params)
 		new ore_type(src)
 		new ore_type(src) //Make some sand if you shovel grass
-		user.visible_message("<span class='notice'>[user] digs up [src].</span>", "<span class='notice'>You [src.turfverb] [src].</span>")
+		user.visible_message("<span class='notice'>[user] digs up [src].</span>", "<span class='notice'>You uproot [src].</span>")
 		playsound(src, 'sound/effects/shovel_dig.ogg', 50, 1)
 		make_plating()
 	if(..())
@@ -95,6 +62,7 @@
 	initial_gas_mix = "o2=22;n2=82;TEMP=180"
 	slowdown = 2
 
+
 /turf/open/floor/grass/snow/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/crowbar))//You need to dig this turf out instead of crowbarring it
 		return
@@ -108,28 +76,13 @@
 	initial_gas_mix = "o2=14;n2=23;TEMP=300"
 	slowdown = 0
 
-/turf/open/floor/grass/snow/basalt/Initialize()
+/turf/open/floor/grass/snow/basalt/New()
 	..()
 	if(prob(15))
 		icon_state = "basalt[rand(0, 12)]"
-		set_basalt_light(src)
-
-
-/turf/open/floor/grass/fakebasalt //Heart is not a real planeteer power
-	name = "aesthetic volcanic flooring"
-	desc = "Safely recreated turf for your hellplanet-scaping"
-	icon = 'icons/turf/floors.dmi'
-	icon_state = "basalt"
-	floor_tile = /obj/item/stack/tile/basalt
-	ore_type = /obj/item/weapon/ore/glass/basalt
-	turfverb = "dig up"
-	slowdown = 0
-
-/turf/open/floor/grass/fakebasalt/Initialize()
-	..()
-	if(prob(15))
-		icon_state = "basalt[rand(0, 12)]"
-		set_basalt_light(src)
+		switch(icon_state)
+			if("basalt1", "basalt2", "basalt3")
+				set_light(1, 1)
 
 
 /turf/open/floor/carpet
@@ -140,12 +93,13 @@
 	floor_tile = /obj/item/stack/tile/carpet
 	broken_states = list("damaged")
 	smooth = SMOOTH_TRUE
-	canSmoothWith = list(/turf/open/floor/carpet, /turf/open/chasm)
+	canSmoothWith = null
 	flags = NONE
 
-/turf/open/floor/carpet/Initialize()
+/turf/open/floor/carpet/New()
 	..()
-	update_icon()
+	spawn(1)
+		update_icon()
 
 /turf/open/floor/carpet/update_icon()
 	if(!..())
@@ -170,14 +124,6 @@
 	update_icon()
 
 
-
-turf/open/floor/fakepit
-	desc = "A clever illusion designed to look like a bottomless pit."
-	smooth = SMOOTH_TRUE | SMOOTH_BORDER | SMOOTH_MORE
-	canSmoothWith = list(/turf/open/floor/fakepit, /turf/open/chasm)
-	icon = 'icons/turf/floors/Chasms.dmi'
-	icon_state = "smooth"
-
 /turf/open/floor/fakespace
 	icon = 'icons/turf/space.dmi'
 	icon_state = "0"
@@ -185,6 +131,6 @@ turf/open/floor/fakepit
 	broken_states = list("damaged")
 	plane = PLANE_SPACE
 
-/turf/open/floor/fakespace/Initialize()
+/turf/open/floor/fakespace/New()
 	..()
 	icon_state = "[rand(0,25)]"

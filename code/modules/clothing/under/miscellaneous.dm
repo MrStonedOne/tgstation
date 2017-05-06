@@ -61,8 +61,8 @@
 	icon_state = "prisoner"
 	item_state = "o_suit"
 	item_color = "prisoner"
-	has_sensor = LOCKED_SENSORS
-	sensor_mode = SENSOR_COORDS
+	has_sensor = 2
+	sensor_mode = 3
 	random_sensor = 0
 
 /obj/item/clothing/under/rank/mailman
@@ -78,14 +78,6 @@
 	icon_state = "psyche"
 	item_state = "p_suit"
 	item_color = "psyche"
-
-/obj/item/clothing/under/rank/clown/sexy
-	name = "sexy-clown suit"
-	desc = "It makes you look HONKable!"
-	icon_state = "sexyclown"
-	item_state = "sexyclown"
-	item_color = "sexyclown"
-	can_adjust = 0
 
 /obj/item/clothing/under/jabroni
 	name = "Jabroni Outfit"
@@ -199,14 +191,14 @@
 
 /obj/item/clothing/under/suit_jacket/really_black
 	name = "executive suit"
-	desc = "A formal black suit and red tie, intended for the station's finest."
+	desc = "A formal black suit and red tie, intended for the government finest."
 	icon_state = "really_black_suit"
 	item_state = "bl_suit"
 	item_color = "black_suit"
 
 /obj/item/clothing/under/suit_jacket/female
 	name = "executive suit"
-	desc = "A formal trouser suit for women, intended for the station's finest."
+	desc = "A formal trouser suit for women, intended for the government finest."
 	icon_state = "black_suit_fem"
 	item_state = "black_suit_fem"
 	item_color = "black_suit_fem"
@@ -267,74 +259,6 @@
 	item_state = "burial"
 	item_color = "burial"
 
-/obj/item/clothing/under/skirt/black
-	name = "black skirt"
-	desc = "A black skirt, very fancy!"
-	icon_state = "blackskirt"
-	item_color = "blackskirt"
-	body_parts_covered = CHEST|GROIN|ARMS
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-/obj/item/clothing/under/skirt/blue
-	name = "blue skirt"
-	desc = "A blue, casual skirt."
-	icon_state = "blueskirt"
-	item_color = "blueskirt"
-	item_state = "b_suit"
-	body_parts_covered = CHEST|GROIN|ARMS
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-/obj/item/clothing/under/skirt/red
-	name = "red skirt"
-	desc = "A red, casual skirt."
-	icon_state = "redskirt"
-	item_color = "redskirt"
-	item_state = "r_suit"
-	body_parts_covered = CHEST|GROIN|ARMS
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-/obj/item/clothing/under/skirt/purple
-	name = "purple skirt"
-	desc = "A purple, casual skirt."
-	icon_state = "purpleskirt"
-	item_color = "purpleskirt"
-	item_state = "p_suit"
-	body_parts_covered = CHEST|GROIN|ARMS
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-
-/obj/item/clothing/under/schoolgirl
-	name = "blue schoolgirl uniform"
-	desc = "It's just like one of my Japanese animes!"
-	icon_state = "schoolgirl"
-	item_state = "schoolgirl"
-	item_color = "schoolgirl"
-	body_parts_covered = CHEST|GROIN|ARMS
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-/obj/item/clothing/under/schoolgirl/red
-	name = "red schoolgirl uniform"
-	icon_state = "schoolgirlred"
-	item_state = "schoolgirlred"
-	item_color = "schoolgirlred"
-
-/obj/item/clothing/under/schoolgirl/green
-	name = "green schoolgirl uniform"
-	icon_state = "schoolgirlgreen"
-	item_state = "schoolgirlgreen"
-	item_color = "schoolgirlgreen"
-
-/obj/item/clothing/under/schoolgirl/orange
-	name = "orange schoolgirl uniform"
-	icon_state = "schoolgirlorange"
-	item_state = "schoolgirlorange"
-	item_color = "schoolgirlorange"
-
 /obj/item/clothing/under/overalls
 	name = "laborer's overalls"
 	desc = "A set of durable overalls for getting the job done."
@@ -381,16 +305,6 @@
 	desc = "You're the only one worthy of this kilt."
 	flags = NODROP
 
-/obj/item/clothing/under/sexymime
-	name = "sexy mime outfit"
-	desc = "The only time when you DON'T enjoy looking at someone's rack."
-	icon_state = "sexymime"
-	item_state = "sexymime"
-	item_color = "sexymime"
-	body_parts_covered = CHEST|GROIN|LEGS
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
 /obj/item/clothing/under/gladiator
 	name = "gladiator uniform"
 	desc = "Are you not entertained? Is that not why you are here?"
@@ -404,17 +318,7 @@
 
 /obj/item/clothing/under/gladiator/ash_walker
 	desc = "This gladiator uniform appears to be covered in ash and fairly dated."
-	has_sensor = NO_SENSORS
-
-/obj/item/clothing/under/sundress
-	name = "sundress"
-	desc = "Makes you want to frolic in a field of daisies."
-	icon_state = "sundress"
-	item_state = "sundress"
-	item_color = "sundress"
-	body_parts_covered = CHEST|GROIN
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
+	has_sensor = 0
 
 /obj/item/clothing/under/captainparade
 	name = "captain's parade uniform"
@@ -432,15 +336,6 @@
 	item_color = "hos_parade_male"
 	can_adjust = 0
 
-/obj/item/clothing/under/hosparadefem
-	name = "head of security's parade uniform"
-	desc = "A female head of security's luxury-wear, for special occasions."
-	icon_state = "hos_parade_fem"
-	item_state = "r_suit"
-	item_color = "hos_parade_fem"
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
 /obj/item/clothing/under/assistantformal
 	name = "assistant's formal uniform"
 	desc = "An assistant's formal-wear. Why an assistant needs formal-wear is still unknown."
@@ -448,92 +343,6 @@
 	item_state = "gy_suit"
 	item_color = "assistant_formal"
 	can_adjust = 0
-
-/obj/item/clothing/under/blacktango
-	name = "black tango dress"
-	desc = "Filled with Latin fire."
-	icon_state = "black_tango"
-	item_state = "wcoat"
-	item_color = "black_tango"
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-/obj/item/clothing/under/stripeddress
-	name = "striped dress"
-	desc = "Fashion in space."
-	icon_state = "striped_dress"
-	item_state = "stripeddress"
-	item_color = "striped_dress"
-	fitted = FEMALE_UNIFORM_FULL
-	can_adjust = 0
-
-/obj/item/clothing/under/sailordress
-	name = "sailor dress"
-	desc = "Formal wear for a leading lady."
-	icon_state = "sailor_dress"
-	item_state = "sailordress"
-	item_color = "sailor_dress"
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-/obj/item/clothing/under/redeveninggown
-	name = "red evening gown"
-	desc = "Fancy dress for space bar singers."
-	icon_state = "red_evening_gown"
-	item_state = "redeveninggown"
-	item_color = "red_evening_gown"
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-/obj/item/clothing/under/maid
-	name = "maid costume"
-	desc = "Maid in China."
-	icon_state = "maid"
-	item_state = "maid"
-	item_color = "maid"
-	body_parts_covered = CHEST|GROIN
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-/obj/item/clothing/under/janimaid
-	name = "maid uniform"
-	desc = "A simple maid uniform for housekeeping."
-	icon_state = "janimaid"
-	item_state = "janimaid"
-	item_color = "janimaid"
-	body_parts_covered = CHEST|GROIN
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 0
-
-/obj/item/clothing/under/plaid_skirt
-	name = "red plaid skirt"
-	desc = "A preppy red skirt with a white blouse."
-	icon_state = "plaid_red"
-	item_state = "plaid_red"
-	item_color = "plaid_red"
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 1
-	alt_covers_chest = 1
-
-/obj/item/clothing/under/plaid_skirt/blue
-	name = "blue plaid skirt"
-	desc = "A preppy blue skirt with a white blouse."
-	icon_state = "plaid_blue"
-	item_state = "plaid_blue"
-	item_color = "plaid_blue"
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 1
-	alt_covers_chest = 1
-
-/obj/item/clothing/under/plaid_skirt/purple
-	name = "purple plaid skirt"
-	desc = "A preppy purple skirt with a white blouse."
-	icon_state = "plaid_purple"
-	item_state = "plaid_purple"
-	item_color = "plaid_purple"
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 1
-	alt_covers_chest = 1
 
 /obj/item/clothing/under/singery
 	name = "yellow performer's outfit"
@@ -555,16 +364,6 @@
 	fitted = FEMALE_UNIFORM_TOP
 	can_adjust = 0
 
-/obj/item/clothing/under/plaid_skirt/green
-	name = "green plaid skirt"
-	desc = "A preppy green skirt with a white blouse."
-	icon_state = "plaid_green"
-	item_state = "plaid_green"
-	item_color = "plaid_green"
-	fitted = FEMALE_UNIFORM_TOP
-	can_adjust = 1
-	alt_covers_chest = 1
-
 /obj/item/clothing/under/jester
 	name = "jester suit"
 	desc = "A jolly dress, well suited to entertain your master, nuncle."
@@ -579,24 +378,9 @@
 	item_color = "geisha"
 	can_adjust = 0
 
-/obj/item/clothing/under/villain
-	name = "villain suit"
-	desc = "A change of wardrobe is necessary if you ever want to catch a real superhero."
-	icon_state = "villain"
-	item_color = "villain"
-	can_adjust = 0
-
-/obj/item/clothing/under/sailor
-	name = "sailor suit"
-	desc = "Skipper's in the wardroom drinkin gin'."
-	icon_state = "sailor"
-	item_state = "b_suit"
-	item_color = "sailor"
-	can_adjust = 0
-
 /obj/item/clothing/under/plasmaman
-	name = "plasma envirosuit"
-	desc = "A special containment suit that allows plasma-based lifeforms to exist safely in an oxygenated environment, and automatically extinguishes them in a crisis. Despite being airtight, it's not spaceworthy."
+	name = "Plasma-man Jumpsuit"
+	desc = "A specially designed suit that allows Plasma based life forms to exist in an oxygenated environment."
 	icon_state = "plasmaman"
 	item_state = "plasmaman"
 	item_color = "plasmaman"
@@ -611,7 +395,7 @@
 
 /obj/item/clothing/under/plasmaman/examine(mob/user)
 	..()
-	to_chat(user, "<span class='notice'>There are [extinguishes_left] extinguisher charges left in this suit.</span>")
+	to_chat(user, "<span class='notice'>There are [extinguishes_left] extinguisher canisters left in this suit.</span>")
 
 
 /obj/item/clothing/under/plasmaman/proc/Extinguish(mob/living/carbon/human/H)
@@ -626,7 +410,7 @@
 			extinguishes_left--
 			H.visible_message("<span class='warning'>[H]'s suit automatically extinguishes them!</span>","<span class='warning'>Your suit automatically extinguishes you.</span>")
 			H.ExtinguishMob()
-			new /obj/effect/particle_effect/water(get_turf(H))
+			PoolOrNew(/obj/effect/particle_effect/water, get_turf(H))
 	return 0
 
 /obj/item/clothing/under/plasmaman/attackby(obj/item/E, mob/user, params)
@@ -636,15 +420,15 @@
 			return
 		else
 			extinguishes_left = 5
-			to_chat(user, "<span class='notice'>You refill the suit's built-in extinguisher, using up the cartridge.</span>")
+			to_chat(user, "<span class='notice'>You refill the suits inbuilt extinguisher, using up the refill pack.</span>")
 			qdel(E)
 			return
 		return
 	return
 
 /obj/item/device/extinguisher_refill
-	name = "envirosuit extinguisher cartridge"
-	desc = "A cartridge loaded with a compressed extinguisher mix, used to refill the automatic extinguisher on plasma envirosuits."
+	name = "Plasma-man jumpsuit refill pack"
+	desc = "A compressed water pack used to refill plasma-man jumpsuit auto-extinguishers."
 	icon_state = "plasmarefill"
 	origin_tech = "materials=2;plasmatech=3;biotech=1"
 

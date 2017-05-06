@@ -9,7 +9,7 @@
 	var/obj/item/weapon/electronics/airlock/board
 	var/device_type = null
 	var/id = null
-	var/initialized_button = 0
+	var/initialized = 0
 	armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 10, bio = 100, rad = 100, fire = 90, acid = 70)
 	anchored = 1
 	use_power = 1
@@ -68,16 +68,18 @@
 
 	if(panel_open)
 		if(!device && istype(W, /obj/item/device/assembly))
-			if(!user.transferItemToLoc(W, src))
+			if(!user.unEquip(W))
 				to_chat(user, "<span class='warning'>\The [W] is stuck to you!</span>")
 				return
+			W.forceMove(src)
 			device = W
 			to_chat(user, "<span class='notice'>You add [W] to the button.</span>")
 
 		if(!board && istype(W, /obj/item/weapon/electronics/airlock))
-			if(!user.transferItemToLoc(W, src))
+			if(!user.unEquip(W))
 				to_chat(user, "<span class='warning'>\The [W] is stuck to you!</span>")
 				return
+			W.forceMove(src)
 			board = W
 			if(board.one_access)
 				req_one_access = board.accesses
@@ -115,19 +117,19 @@
 	if(id && istype(device, /obj/item/device/assembly/control))
 		var/obj/item/device/assembly/control/A = device
 		A.id = id
-	initialized_button = 1
+	initialized = 1
 
 /obj/machinery/button/attack_hand(mob/user)
-	if(!initialized_button)
+	if(!initialized)
 		setup_device()
 	src.add_fingerprint(user)
 	if(panel_open)
 		if(device || board)
 			if(device)
-				device.loc = get_turf(src)
+				device.forceMove(get_turf(src))
 				device = null
 			if(board)
-				board.loc = get_turf(src)
+				board.forceMove(get_turf(src))
 				req_access = list()
 				req_one_access = list()
 				board = null
@@ -215,6 +217,7 @@
 /obj/item/wallframe/button
 	name = "button frame"
 	desc = "Used for building buttons."
-	icon_state = "button"
+	icon = 'icons/obj/apc_repair.dmi'
+	icon_state = "button_frame"
 	result_path = /obj/machinery/button
 	materials = list(MAT_METAL=MINERAL_MATERIAL_AMOUNT)

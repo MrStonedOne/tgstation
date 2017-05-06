@@ -9,6 +9,8 @@
 	anchored = 1
 	var/obj/item/weapon/card/id/inserted_id
 	var/list/prize_list = list( //if you add something to this, please, for the love of god, use tabs and not spaces.
+		new /datum/data/mining_equipment("Stimpack",			/obj/item/weapon/reagent_containers/hypospray/medipen/stimpack,			50),
+		new /datum/data/mining_equipment("Stimpack Bundle",		/obj/item/weapon/storage/box/medipens/utility,							200),
 		new /datum/data/mining_equipment("Whiskey",				/obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey,			100),
 		new /datum/data/mining_equipment("Absinthe",			/obj/item/weapon/reagent_containers/food/drinks/bottle/absinthe/premium,100),
 		new /datum/data/mining_equipment("Cigar",				/obj/item/clothing/mask/cigarette/cigar/havana,							150),
@@ -116,7 +118,7 @@
 	if(href_list["choice"])
 		if(istype(inserted_id))
 			if(href_list["choice"] == "eject")
-				inserted_id.loc = loc
+				inserted_id.forceMove(loc)
 				inserted_id.verb_pickup()
 				inserted_id = null
 		else if(href_list["choice"] == "insert")
@@ -124,7 +126,7 @@
 			if(istype(I))
 				if(!usr.drop_item())
 					return
-				I.loc = src
+				I.forceMove(src)
 				inserted_id = I
 			else to_chat(usr, "<span class='danger'>No valid ID.</span>")
 	if(href_list["purchase"])
@@ -136,7 +138,7 @@
 			else
 				inserted_id.mining_points -= prize.cost
 				new prize.equipment_path(src.loc)
-				SSblackbox.add_details("mining_equipment_bought",
+				feedback_add_details("mining_equipment_bought",
 					"[src.type]|[prize.equipment_path]")
 				// Add src.type to keep track of free golem purchases
 				// seperately.
@@ -152,7 +154,7 @@
 		if(istype(C) && !istype(inserted_id))
 			if(!usr.drop_item())
 				return
-			C.loc = src
+			C.forceMove(src)
 			inserted_id = C
 			interact(user)
 		return
@@ -167,7 +169,7 @@
 	var/items = list("Survival Capsule and Explorer's Webbing", "Resonator and Advanced Scanner", "Mining Drone", "Extraction and Rescue Kit", "Crusher Kit", "Mining Conscription Kit")
 
 	var/selection = input(redeemer, "Pick your equipment", "Mining Voucher Redemption") as null|anything in items
-	if(!selection || !Adjacent(redeemer) || QDELETED(voucher) || voucher.loc != redeemer)
+	if(!selection || !Adjacent(redeemer) || qdeleted(voucher) || voucher.loc != redeemer)
 		return
 	switch(selection)
 		if("Survival Capsule and Explorer's Webbing")
@@ -189,11 +191,13 @@
 		if("Mining Conscription Kit")
 			new /obj/item/weapon/storage/backpack/dufflebag/mining_conscript(loc)
 
-	SSblackbox.add_details("mining_voucher_redeemed", selection)
+	feedback_add_details("mining_voucher_redeemed", selection)
 	qdel(voucher)
 
 /obj/machinery/mineral/equipment_vendor/ex_act(severity, target)
-	do_sparks(5, TRUE, src)
+	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+	s.set_up(5, 1, src)
+	s.start()
 	if(prob(50 / severity) && severity < 3)
 		qdel(src)
 
@@ -207,7 +211,6 @@
 	..()
 	desc += "\nIt seems a few selections have been added."
 	prize_list += list(
-		new /datum/data/mining_equipment("Extra Id",       			/obj/item/weapon/card/id/mining, 				                   	250),
 		new /datum/data/mining_equipment("Science Goggles",       	/obj/item/clothing/glasses/science, 				                   	250),
 		new /datum/data/mining_equipment("Monkey Cube",				/obj/item/weapon/reagent_containers/food/snacks/monkeycube,        		300),
 		new /datum/data/mining_equipment("Toolbelt",				/obj/item/weapon/storage/belt/utility,	    							350),
@@ -270,10 +273,10 @@
 /obj/item/weapon/card/mining_access_card/afterattack(atom/movable/AM, mob/user, proximity)
 	if(istype(AM, /obj/item/weapon/card/id) && proximity)
 		var/obj/item/weapon/card/id/I = AM
-		I.access |=	GLOB.access_mining
-		I.access |= GLOB.access_mining_station
-		I.access |= GLOB.access_mineral_storeroom
-		I.access |= GLOB.access_cargo
+		I.access |=	access_mining
+		I.access |= access_mining_station
+		I.access |= access_mineral_storeroom
+		I.access |= access_cargo
 		to_chat(user, "You upgrade [I] with mining access.")
 		qdel(src)
 	..()

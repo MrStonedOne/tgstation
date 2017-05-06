@@ -96,8 +96,9 @@
 	var/mob/living/silicon/robot/mymobR = mymob
 	var/obj/screen/using
 
-	using = new/obj/screen/language_menu
-	using.screen_loc = ui_borg_language_menu
+	using = new/obj/screen/wheel/talk
+	using.screen_loc = ui_borg_talk_wheel
+	wheels += using
 	static_inventory += using
 
 //Radio
@@ -150,9 +151,10 @@
 	mymobR.thruster_button = using
 
 //Intent
-	action_intent = new /obj/screen/act_intent/robot()
-	action_intent.icon_state = mymob.a_intent
-	static_inventory += action_intent
+	using = new /obj/screen/act_intent/robot()
+	using.icon_state = mymob.a_intent
+	static_inventory += using
+	action_intent = using
 
 //Health
 	healths = new /obj/screen/healths/robot()

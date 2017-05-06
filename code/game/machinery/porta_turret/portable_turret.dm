@@ -12,9 +12,11 @@
 	use_power = 1				//this turret uses and requires power
 	idle_power_usage = 50		//when inactive, this turret takes up constant 50 Equipment power
 	active_power_usage = 300	//when active, this turret takes up constant 300 Equipment power
-	req_access = list(GLOB.access_security)
+	req_access = list(access_security)
 	power_channel = EQUIP	//drains power from the EQUIPMENT channel
 
+	var/turret_open = 'sound/f13machines/turret_open.ogg'
+	var/turret_close = 'sound/f13machines/turret_close.ogg'
 	var/base_icon_state = "standard"
 
 	var/emp_vunerable = 1 // Can be empd
@@ -68,8 +70,6 @@
 
 	var/datum/effect_system/spark_spread/spark_system	//the spark system, used for generating... sparks?
 
-	var/obj/machinery/turretid/cp = null
-
 /obj/machinery/porta_turret/New(loc)
 	..()
 	if(!base)
@@ -85,7 +85,7 @@
 		cover = new /obj/machinery/porta_turret_cover(loc)
 		cover.parent_turret = src
 	if(!has_cover)
-		INVOKE_ASYNC(src, .proc/popUp)
+		popUp()
 
 /obj/machinery/porta_turret/update_icon()
 	cut_overlays()
@@ -141,15 +141,6 @@
 	if(cover)
 		qdel(cover)
 		cover = null
-	base = null
-	if(cp)
-		cp.turrets -= src
-		cp = null
-	if(stored_gun)
-		qdel(stored_gun)
-		stored_gun = null
-	qdel(spark_system)
-	spark_system = null
 	return ..()
 
 
@@ -311,11 +302,9 @@
 		if(prob(30))
 			spark_system.start()
 		if(on && !attacked && !emagged)
-			attacked = TRUE
-			addtimer(CALLBACK(src, .proc/reset_attacked), 60)
-
-/obj/machinery/porta_turret/proc/reset_attacked()
-	attacked = FALSE
+			attacked = 1
+			spawn(60)
+				attacked = 0
 
 /obj/machinery/porta_turret/deconstruct(disassembled = TRUE)
 	qdel(src)
@@ -364,10 +353,6 @@
 	var/list/targets = list()
 	var/turretview = view(scan_range, base)
 	for(var/A in turretview)
-		var/atom/AA = A
-		if(AA.invisibility>SEE_INVISIBLE_LIVING)
-			continue
-
 		if(check_anomalies)//if it's set to check for simple animals
 			if(istype(A, /mob/living/simple_animal))
 				var/mob/living/simple_animal/SA = A
@@ -421,6 +406,7 @@
 	invisibility = 0
 	raising = 1
 	if(cover)
+		playsound(src.loc, turret_open, 50, 0, 0)
 		flick("popup", cover)
 	sleep(10)
 	raising = 0
@@ -437,6 +423,7 @@
 	layer = OBJ_LAYER
 	raising = 1
 	if(cover)
+		playsound(src.loc, turret_close, 50, 0, 0)
 		flick("popdown", cover)
 	sleep(10)
 	raising = 0
@@ -471,7 +458,7 @@
 
 	if(check_records)	//if the turret can check the records, check if they are set to *Arrest* on records
 		var/perpname = perp.get_face_name(perp.get_id_name())
-		var/datum/data/record/R = find_record("name", perpname, GLOB.data_core.security)
+		var/datum/data/record/R = find_record("name", perpname, data_core.security)
 		if(!R || (R.fields["criminal"] == "*Arrest*"))
 			threatcount += 4
 
@@ -575,53 +562,6 @@
 /obj/machinery/porta_turret/ai/assess_perp(mob/living/carbon/human/perp)
 	return 10 //AI turrets shoot at everything not in their faction
 
-/obj/machinery/porta_turret/aux_base
-	name = "perimeter defense turret"
-	desc = "A plasma beam turret calibrated to defend outposts against non-humanoid fauna. It is more effective when exposed to the environment."
-	installation = null
-	lethal_projectile = /obj/item/projectile/plasma/turret
-	lethal_projectile_sound = 'sound/weapons/plasma_cutter.ogg'
-	mode = TURRET_LETHAL //It would be useless in stun mode anyway
-	faction = "neutral" //Minebots, medibots, etc that should not be shot.
-
-/obj/machinery/porta_turret/aux_base/assess_perp(mob/living/carbon/human/perp)
-	return 0 //Never shoot humanoids. You are on your own if Ashwalkers or the like attack!
-
-/obj/machinery/porta_turret/aux_base/setup()
-	return
-
-/obj/machinery/porta_turret/aux_base/interact(mob/user) //Controlled solely from the base console.
-	return
-
-/obj/machinery/porta_turret/aux_base/New()
-	..()
-	cover.name = name
-	cover.desc = desc
-
-/obj/machinery/porta_turret/centcomm_shuttle
-	installation = null
-	obj_integrity = 260
-	max_integrity = 260
-	always_up = 1
-	use_power = 0
-	has_cover = 0
-	scan_range = 9
-	stun_projectile = /obj/item/projectile/beam/laser
-	lethal_projectile = /obj/item/projectile/beam/laser
-	lethal_projectile_sound = 'sound/weapons/plasma_cutter.ogg'
-	stun_projectile_sound = 'sound/weapons/plasma_cutter.ogg'
-	icon_state = "syndie_off"
-	base_icon_state = "syndie"
-	faction = "turret"
-	emp_vunerable = 0
-	mode = TURRET_LETHAL
-
-/obj/machinery/porta_turret/centcomm_shuttle/assess_perp(mob/living/carbon/human/perp)
-	return 0
-
-/obj/machinery/porta_turret/centcomm_shuttle/setup()
-	return
-
 ////////////////////////
 //Turret Control Panel//
 ////////////////////////
@@ -638,7 +578,7 @@
 	var/locked = 1
 	var/control_area = null //can be area name, path or nothing.
 	var/ailock = 0 // AI cannot use this
-	req_access = list(GLOB.access_ai_upload)
+	req_access = list(access_ai_upload)
 	var/list/obj/machinery/porta_turret/turrets = list()
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
@@ -651,27 +591,23 @@
 		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
 	power_change() //Checks power and initial settings
 
-/obj/machinery/turretid/Destroy()
-	turrets.Cut()
-	return ..()
-
-/obj/machinery/turretid/Initialize(mapload) //map-placed turrets autolink turrets
-	..()
-	if(!mapload)
-		return
+/obj/machinery/turretid/initialize() //map-placed turrets autolink turrets
 	if(control_area && istext(control_area))
-		for(var/V in GLOB.sortedAreas)
+		for(var/V in sortedAreas)
 			var/area/A = V
 			if(A.name == control_area)
 				control_area = A
 				break
 
 	if(!control_area)
-		control_area = get_area(src)
+		var/area/CA = get_area(src)
+		if(CA.master && CA.master != CA)
+			control_area = CA.master
+		else
+			control_area = CA
 
 	for(var/obj/machinery/porta_turret/T in control_area)
 		turrets |= T
-		T.cp = src
 
 /obj/machinery/turretid/attackby(obj/item/I, mob/user, params)
 	if(stat & BROKEN) return
@@ -788,7 +724,8 @@
 /obj/item/wallframe/turret_control
 	name = "turret control frame"
 	desc = "Used for building turret control panels"
-	icon_state = "apc"
+	icon = 'icons/obj/apc_repair.dmi'
+	icon_state = "apc_frame"
 	result_path = /obj/machinery/turretid
 	materials = list(MAT_METAL=MINERAL_MATERIAL_AMOUNT)
 
@@ -848,7 +785,7 @@
 	. = ..()
 
 /obj/machinery/porta_turret/lasertag
-	req_access = list(GLOB.access_maint_tunnels, GLOB.access_theatre)
+	req_access = list(access_maint_tunnels, access_theatre)
 	check_records = 0
 	criminals = 0
 	auth_weapons = 1

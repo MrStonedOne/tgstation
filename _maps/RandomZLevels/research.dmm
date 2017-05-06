@@ -1,4 +1,4 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "aa" = (
 /turf/open/space,
 /area/space)
@@ -65,7 +65,7 @@
 /turf/open/floor/plating/airless,
 /area/awaymission/research/interior/engineering)
 "an" = (
-/turf/open/floor/mineral/plastitanium,
+/turf/open/floor/plasteel/shuttle/red/syndicate,
 /area/awaymission/research/interior/engineering)
 "ao" = (
 /obj/structure/window/reinforced,
@@ -82,20 +82,20 @@
 /obj/structure/chair{
 	dir = 4
 	},
-/turf/open/floor/mineral/plastitanium,
+/turf/open/floor/plasteel/shuttle/red/syndicate,
 /area/awaymission/research/interior/engineering)
 "aq" = (
 /obj/structure/chair{
 	dir = 8
 	},
-/turf/open/floor/mineral/plastitanium,
+/turf/open/floor/plasteel/shuttle/red/syndicate,
 /area/awaymission/research/interior/engineering)
 "ar" = (
 /turf/closed/wall/r_wall,
 /area/awaymission/research/interior/engineering)
 "as" = (
 /mob/living/simple_animal/hostile/syndicate/ranged,
-/turf/open/floor/mineral/plastitanium,
+/turf/open/floor/plasteel/shuttle/red/syndicate,
 /area/awaymission/research/interior/engineering)
 "at" = (
 /obj/machinery/suit_storage_unit/engine,
@@ -136,7 +136,7 @@
 	dir = 8
 	},
 /mob/living/simple_animal/hostile/syndicate,
-/turf/open/floor/mineral/plastitanium,
+/turf/open/floor/plasteel/shuttle/red/syndicate,
 /area/awaymission/research/interior/engineering)
 "az" = (
 /obj/effect/gibspawner/human,
@@ -188,20 +188,20 @@
 	id = "spacebattlepod2";
 	name = "Hull Door Control"
 	},
-/turf/open/floor/mineral/plastitanium,
+/turf/open/floor/plasteel/shuttle/red/syndicate,
 /area/awaymission/research/interior/engineering)
 "aK" = (
 /obj/effect/mob_spawn/human/syndicatesoldier{
 	brute_damage = 200
 	},
-/turf/open/floor/mineral/plastitanium,
+/turf/open/floor/plasteel/shuttle/red/syndicate,
 /area/awaymission/research/interior/engineering)
 "aL" = (
 /obj/structure/table,
 /obj/item/weapon/c4,
 /obj/item/weapon/c4,
 /obj/item/weapon/storage/toolbox/syndicate,
-/turf/open/floor/mineral/plastitanium,
+/turf/open/floor/plasteel/shuttle/red/syndicate,
 /area/awaymission/research/interior/engineering)
 "aM" = (
 /obj/item/weapon/stock_parts/cell/high/empty,
@@ -479,31 +479,26 @@
 /obj/machinery/gateway{
 	dir = 9
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/darkwarning{
+	tag = "icon-warndark (NORTHWEST)";
 	dir = 9
-	},
-/turf/open/floor/plasteel/black{
-	tag = "icon-warndark (NORTHWEST)"
 	},
 /area/awaymission/research/interior/gateway)
 "bB" = (
 /obj/machinery/gateway{
 	dir = 1
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/darkwarning{
 	dir = 1
 	},
-/turf/open/floor/plasteel/black,
 /area/awaymission/research/interior/gateway)
 "bC" = (
 /obj/machinery/gateway{
 	dir = 5
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/darkwarning{
+	tag = "icon-warndark (NORTHEAST)";
 	dir = 5
-	},
-/turf/open/floor/plasteel/black{
-	tag = "icon-warndark (NORTHEAST)"
 	},
 /area/awaymission/research/interior/gateway)
 "bD" = (
@@ -614,17 +609,18 @@
 /turf/open/floor/plasteel/black,
 /area/awaymission/research/interior/gateway)
 "bR" = (
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/plasteel/black,
 /area/awaymission/research/interior/gateway)
 "bS" = (
 /obj/machinery/gateway{
 	dir = 8
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/darkwarning{
 	dir = 8
 	},
-/turf/open/floor/plasteel/black,
 /area/awaymission/research/interior/gateway)
 "bT" = (
 /obj/machinery/gateway/centeraway{
@@ -636,11 +632,9 @@
 /obj/machinery/gateway{
 	dir = 4
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/darkwarning{
+	tag = "icon-warndark (EAST)";
 	dir = 4
-	},
-/turf/open/floor/plasteel/black{
-	tag = "icon-warndark (EAST)"
 	},
 /area/awaymission/research/interior/gateway)
 "bV" = (
@@ -675,28 +669,25 @@
 /obj/machinery/gateway{
 	dir = 10
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/darkwarning{
+	tag = "icon-warndark (SOUTHWEST)";
 	dir = 10
-	},
-/turf/open/floor/plasteel/black{
-	tag = "icon-warndark (SOUTHWEST)"
 	},
 /area/awaymission/research/interior/gateway)
 "bZ" = (
 /obj/machinery/gateway,
-/obj/effect/landmark/awaystart,
-/obj/effect/turf_decal/stripes/line,
-/turf/open/floor/plasteel/black,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
+/turf/open/floor/plasteel/darkwarning,
 /area/awaymission/research/interior/gateway)
 "ca" = (
 /obj/machinery/gateway{
 	dir = 6
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/darkwarning{
+	tag = "icon-warndark (SOUTHEAST)";
 	dir = 6
-	},
-/turf/open/floor/plasteel/black{
-	tag = "icon-warndark (SOUTHEAST)"
 	},
 /area/awaymission/research/interior/gateway)
 "cb" = (
@@ -770,7 +761,9 @@
 /area/awaymission/research/interior/gateway)
 "cj" = (
 /obj/structure/window/reinforced,
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/plasteel/black,
 /area/awaymission/research/interior/gateway)
 "ck" = (
@@ -779,7 +772,9 @@
 	icon_state = "right";
 	dir = 2
 	},
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/plasteel/black,
 /area/awaymission/research/interior/gateway)
 "cl" = (
@@ -1066,7 +1061,7 @@
 /turf/open/floor/plasteel/purple,
 /area/awaymission/research/interior/genetics)
 "cV" = (
-/obj/structure/chair/office/dark{
+/obj/structure/chair/office/blue{
 	dir = 1
 	},
 /turf/open/floor/plasteel/darkpurple,
@@ -3269,7 +3264,7 @@
 /turf/open/floor/plasteel/purple,
 /area/awaymission/research/interior/genetics)
 "iy" = (
-/obj/structure/chair/office/dark,
+/obj/structure/chair/office/blue,
 /obj/effect/decal/cleanable/blood,
 /turf/open/floor/plasteel/darkpurple,
 /area/awaymission/research/interior/genetics)
@@ -3291,7 +3286,9 @@
 	icon_state = "toilet00";
 	dir = 8
 	},
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /obj/machinery/light/small{
 	dir = 4
 	},
@@ -3736,7 +3733,9 @@
 "jU" = (
 /obj/structure/bed,
 /obj/item/weapon/bedsheet/blue,
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/wood,
 /area/awaymission/research/interior/dorm)
 "jV" = (
@@ -4477,7 +4476,9 @@
 "lT" = (
 /obj/structure/bed,
 /obj/item/weapon/bedsheet/patriot,
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/wood,
 /area/awaymission/research/interior/dorm)
 "lU" = (
@@ -4561,9 +4562,9 @@
 "mf" = (
 /turf/open/floor/plating/asteroid/airless,
 /obj/structure/shuttle/engine/propulsion/burst{
-	dir = 4;
+	tag = "icon-propulsion (WEST)";
 	icon_state = "propulsion";
-	tag = "icon-propulsion (WEST)"
+	dir = 8
 	},
 /turf/closed/wall/mineral/titanium/interior,
 /area/awaymission/research/exterior)
@@ -4627,7 +4628,7 @@
 /obj/effect/mob_spawn/human/doctor{
 	brute_damage = 200
 	},
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle,
 /area/awaymission/research/exterior)
 "ms" = (
 /obj/structure/chair{
@@ -4641,13 +4642,13 @@
 	uniform = /obj/item/clothing/under/rank/geneticist;
 	name = "Geneticist"
 	},
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle,
 /area/awaymission/research/exterior)
 "mt" = (
 /obj/machinery/door/airlock/titanium{
 	name = "Escape Pod Airlock"
 	},
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle,
 /area/awaymission/research/exterior)
 "mu" = (
 /obj/machinery/door/airlock/external{

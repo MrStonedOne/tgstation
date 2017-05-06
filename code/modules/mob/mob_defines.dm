@@ -5,11 +5,8 @@
 	flags = HEAR
 	hud_possible = list(ANTAG_HUD)
 	pressure_resistance = 8
-	var/lighting_alpha = LIGHTING_PLANE_ALPHA_VISIBLE
 	var/datum/mind/mind
 	var/list/datum/action/actions = list()
-
-	var/static/next_mob_id = 0
 
 	var/stat = 0 //Whether a mob is alive or dead. TODO: Move this to living - Nodrak
 
@@ -29,7 +26,7 @@
 	var/computer_id = null
 	var/lastattacker = null
 	var/lastattacked = null
-	var/list/logging = list(INDIVIDUAL_ATTACK_LOG, INDIVIDUAL_SAY_LOG, INDIVIDUAL_EMOTE_LOG, INDIVIDUAL_OOC_LOG)
+	var/attack_log = list( )
 	var/obj/machinery/machine = null
 	var/other_mobs = null
 	var/disabilities = 0	//Carbon
@@ -42,6 +39,8 @@
 	var/notransform = null	//Carbon
 	var/eye_blind = 0		//Carbon
 	var/eye_blurry = 0		//Carbon
+	var/ear_deaf = 0		//Carbon
+	var/ear_damage = 0		//Carbon
 	var/stuttering = 0		//Carbon
 	var/slurring = 0		//Carbon
 	var/cultslurring = 0	//Carbon
@@ -65,7 +64,8 @@
 	var/drowsyness = 0//Carbon
 	var/dizziness = 0//Carbon
 	var/jitteriness = 0//Carbon
-	var/nutrition = NUTRITION_LEVEL_FED + 50//Carbon
+	var/nutrition = NUTRITION_LEVEL_FULL //Carbon
+	var/water_level = THIRST_LEVEL_FULL  //Carbon
 	var/satiety = 0//Carbon
 
 	var/overeatduration = 0		// How long this guy is overeating //Carbon
@@ -130,7 +130,11 @@
 	var/digitalinvis = 0 //Are they ivisible to the AI?
 	var/image/digitaldisguise = null  //what does the AI see instead of them?
 
+	var/weakeyes = 0 //Are they vulnerable to flashes?
+
 	var/has_unlimited_silicon_privilege = 0 // Can they interact with station electronics
+
+	var/force_compose = 0 //If this is nonzero, the mob will always compose it's own hear message instead of using the one given in the arguments.
 
 	var/obj/control_object //Used by admins to possess objects. All mobs should have this var
 	var/atom/movable/remote_control //Calls relaymove() to whatever it is
@@ -145,4 +149,6 @@
 	var/list/observers = null	//The list of people observing this mob.
 
 	var/list/progressbars = null	//for stacking do_after bars
-	var/list/can_ride_typecache = list()
+
+	var/atom/mouse_on_atom //using to fire target checking
+	var/mouse_on_params

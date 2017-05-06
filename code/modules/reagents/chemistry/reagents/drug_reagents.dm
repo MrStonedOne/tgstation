@@ -2,7 +2,6 @@
 	name = "Drug"
 	id = "drug"
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
-	taste_description = "bitterness"
 
 /datum/reagent/drug/space_drugs
 	name = "Space drugs"
@@ -15,7 +14,7 @@
 	M.set_drugginess(15)
 	if(isturf(M.loc) && !isspaceturf(M.loc))
 		if(M.canmove)
-			if(prob(10)) step(M, pick(GLOB.cardinal))
+			if(prob(10)) step(M, pick(cardinal))
 	if(prob(7))
 		M.emote(pick("twitch","drool","moan","giggle"))
 	..()
@@ -36,7 +35,6 @@
 	reagent_state = LIQUID
 	color = "#60A584" // rgb: 96, 165, 132
 	addiction_threshold = 30
-	taste_description = "smoke"
 
 /datum/reagent/drug/nicotine/on_mob_life(mob/living/M)
 	if(prob(1))
@@ -48,14 +46,6 @@
 	M.adjustStaminaLoss(-0.5*REM, 0)
 	..()
 	. = 1
-
-/datum/reagent/drug/menthol
-	name = "Menthol"
-	id = "menthol"
-	description = "Tastes naturally minty, and imparts a very mild numbing sensation."
-	taste_description = "mint"
-	reagent_state = LIQUID
-	color = "#80AF9C"
 
 /datum/reagent/drug/crank
 	name = "Crank"
@@ -184,7 +174,7 @@
 /datum/reagent/drug/methamphetamine/overdose_process(mob/living/M)
 	if(M.canmove && !istype(M.loc, /atom/movable))
 		for(var/i in 1 to 4)
-			step(M, pick(GLOB.cardinal))
+			step(M, pick(cardinal))
 	if(prob(20))
 		M.emote("laugh")
 	if(prob(33))
@@ -213,7 +203,7 @@
 /datum/reagent/drug/methamphetamine/addiction_act_stage3(mob/living/M)
 	if(M.canmove && !istype(M.loc, /atom/movable))
 		for(var/i = 0, i < 4, i++)
-			step(M, pick(GLOB.cardinal))
+			step(M, pick(cardinal))
 	M.Jitter(15)
 	M.Dizzy(15)
 	if(prob(40))
@@ -223,7 +213,7 @@
 /datum/reagent/drug/methamphetamine/addiction_act_stage4(mob/living/carbon/human/M)
 	if(M.canmove && !istype(M.loc, /atom/movable))
 		for(var/i = 0, i < 8, i++)
-			step(M, pick(GLOB.cardinal))
+			step(M, pick(cardinal))
 	M.Jitter(20)
 	M.Dizzy(20)
 	M.adjustToxLoss(5, 0)
@@ -240,7 +230,6 @@
 	color = "#FAFAFA"
 	overdose_threshold = 20
 	addiction_threshold = 10
-	taste_description = "salt" // because they're bathsalts?
 
 
 /datum/reagent/drug/bath_salts/on_mob_life(mob/living/M)
@@ -255,8 +244,8 @@
 	M.adjustToxLoss(0.1, 0)
 	M.hallucination += 10
 	if(M.canmove && !istype(M.loc, /atom/movable))
-		step(M, pick(GLOB.cardinal))
-		step(M, pick(GLOB.cardinal))
+		step(M, pick(cardinal))
+		step(M, pick(cardinal))
 	..()
 	. = 1
 
@@ -264,7 +253,7 @@
 	M.hallucination += 10
 	if(M.canmove && !istype(M.loc, /atom/movable))
 		for(var/i in 1 to 8)
-			step(M, pick(GLOB.cardinal))
+			step(M, pick(cardinal))
 	if(prob(20))
 		M.emote(pick("twitch","drool","moan"))
 	if(prob(33))
@@ -277,7 +266,7 @@
 	M.hallucination += 10
 	if(M.canmove && !istype(M.loc, /atom/movable))
 		for(var/i = 0, i < 8, i++)
-			step(M, pick(GLOB.cardinal))
+			step(M, pick(cardinal))
 	M.Jitter(5)
 	M.adjustBrainLoss(10)
 	if(prob(20))
@@ -288,7 +277,7 @@
 	M.hallucination += 20
 	if(M.canmove && !istype(M.loc, /atom/movable))
 		for(var/i = 0, i < 8, i++)
-			step(M, pick(GLOB.cardinal))
+			step(M, pick(cardinal))
 	M.Jitter(10)
 	M.Dizzy(10)
 	M.adjustBrainLoss(10)
@@ -300,7 +289,7 @@
 	M.hallucination += 30
 	if(M.canmove && !istype(M.loc, /atom/movable))
 		for(var/i = 0, i < 12, i++)
-			step(M, pick(GLOB.cardinal))
+			step(M, pick(cardinal))
 	M.Jitter(15)
 	M.Dizzy(15)
 	M.adjustBrainLoss(10)
@@ -312,7 +301,7 @@
 	M.hallucination += 40
 	if(M.canmove && !istype(M.loc, /atom/movable))
 		for(var/i = 0, i < 16, i++)
-			step(M, pick(GLOB.cardinal))
+			step(M, pick(cardinal))
 	M.Jitter(50)
 	M.Dizzy(50)
 	M.adjustToxLoss(5, 0)

@@ -17,14 +17,14 @@
 	if(!can_install_component(H, user))
 		return FALSE
 
-	if(user && !user.transferItemToLoc(H, src))
+	if(user && !user.unEquip(H))
 		return FALSE
 
 	all_components[H.device_type] = H
 
 	to_chat(user, "<span class='notice'>You install \the [H] into \the [src].</span>")
-	H.holder = src
 	H.forceMove(src)
+	H.holder = src
 	H.on_install(src, user)
 
 

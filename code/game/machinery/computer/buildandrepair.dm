@@ -1,6 +1,7 @@
 /obj/structure/frame/computer
 	name = "computer frame"
 	icon_state = "0"
+	anchored = 0
 	state = 0
 
 /obj/structure/frame/computer/attackby(obj/item/P, mob/user, params)
@@ -47,7 +48,7 @@
 				icon_state = "1"
 				circuit = P
 				circuit.add_fingerprint(user)
-				P.loc = null
+				P.forceMove(null)
 				return
 
 			else if(istype(P, /obj/item/weapon/circuitboard) && !circuit)
@@ -64,7 +65,7 @@
 				to_chat(user, "<span class='notice'>You remove the circuit board.</span>")
 				state = 1
 				icon_state = "0"
-				circuit.loc = src.loc
+				circuit.forceMove(src.loc)
 				circuit.add_fingerprint(user)
 				circuit = null
 				return
@@ -171,14 +172,7 @@
 	name = "Security Cameras (Computer Board)"
 	build_path = /obj/machinery/computer/security
 	origin_tech = "programming=2;combat=2"
-/obj/item/weapon/circuitboard/computer/xenobiology
-	name = "circuit board (Xenobiology Console)"
-	build_path = /obj/machinery/computer/camera_advanced/xenobio
-	origin_tech = "programming=3;bio=3"
-/obj/item/weapon/circuitboard/computer/base_construction
-	name = "circuit board (Aux Mining Base Construction Console)"
-	build_path = /obj/machinery/computer/camera_advanced/base_construction
-	origin_tech = "programming=3;engineering=3"
+
 /obj/item/weapon/circuitboard/computer/aiupload
 	name = "AI Upload (Computer Board)"
 	build_path = /obj/machinery/computer/upload/ai
@@ -304,17 +298,17 @@
 	build_path = /obj/machinery/computer/gulag_teleporter_computer
 
 /obj/item/weapon/circuitboard/computer/rdconsole
-	name = "R&D Console (Computer Board)"
+	name = "RD Console (Computer Board)"
 	build_path = /obj/machinery/computer/rdconsole/core
 
 /obj/item/weapon/circuitboard/computer/rdconsole/attackby(obj/item/I, mob/user, params)
 	if(istype(I,/obj/item/weapon/screwdriver))
 		if(build_path == /obj/machinery/computer/rdconsole/core)
-			name = "R&D Console - Robotics (Computer Board)"
+			name = "RD Console - Robotics (Computer Board)"
 			build_path = /obj/machinery/computer/rdconsole/robotics
 			to_chat(user, "<span class='notice'>Access protocols successfully updated.</span>")
 		else
-			name = "R&D Console (Computer Board)"
+			name = "RD Console (Computer Board)"
 			build_path = /obj/machinery/computer/rdconsole/core
 			to_chat(user, "<span class='notice'>Defaulting access protocols.</span>")
 	else
@@ -361,10 +355,6 @@
 /obj/item/weapon/circuitboard/computer/cargo/request
 	name = "Supply Request Console (Computer Board)"
 	build_path = /obj/machinery/computer/cargo/request
-/obj/item/weapon/circuitboard/computer/stockexchange
-	name = "circuit board (Stock Exchange Console)"
-	build_path = /obj/machinery/computer/stockexchange
-	origin_tech = "programming=3"
 
 /obj/item/weapon/circuitboard/computer/operating
 	name = "Operating Computer (Computer Board)"
@@ -416,9 +406,6 @@
 /obj/item/weapon/circuitboard/computer/white_ship
 	name = "White Ship (Computer Board)"
 	build_path = /obj/machinery/computer/shuttle/white_ship
-/obj/item/weapon/circuitboard/computer/auxillary_base
-	name = "Auxillary Base Management Console (Computer Board)"
-	build_path = /obj/machinery/computer/auxillary_base
 /obj/item/weapon/circuitboard/computer/holodeck// Not going to let people get this, but it's just here for future
 	name = "Holodeck Control (Computer Board)"
 	build_path = /obj/machinery/computer/holodeck
@@ -452,8 +439,3 @@
 			to_chat(user, "<span class='notice'>Access protocols successfully updated.</span>")
 	else
 		return ..()
-
-/obj/item/weapon/circuitboard/computer/apc_control
-	name = "\improper Power Flow Control Console (Computer Board)"
-	build_path = /obj/machinery/computer/apc_control
-	origin_tech = "programming=3;engineering=3;powerstorage=2"

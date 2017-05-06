@@ -77,10 +77,9 @@ field_generator power level display
 	else
 		to_chat(user, "<span class='warning'>The [src] needs to be firmly secured to the floor first!</span>")
 
-/obj/machinery/field/generator/can_be_unfasten_wrench(mob/user, silent)
+/obj/machinery/field/generator/can_be_unfasten_wrench(mob/user)
 	if(state == FG_WELDED)
-		if(!silent)
-			to_chat(user, "<span class='warning'>[src] is welded to the floor!</span>")
+		to_chat(user, "<span class='warning'>[src] is welded to the floor!</span>")
 		return FAILED_UNFASTEN
 	return ..()
 
@@ -288,7 +287,7 @@ field_generator power level display
 		if(!locate(/obj/machinery/field/containment) in T)
 			var/obj/machinery/field/containment/CF = new/obj/machinery/field/containment()
 			CF.set_master(src,G)
-			CF.loc = T
+			CF.forceMove(T)
 			CF.setDir(field_dir)
 			fields += CF
 			G.fields += CF
@@ -319,7 +318,7 @@ field_generator power level display
 	//I want to avoid using global variables.
 	spawn(1)
 		var/temp = 1 //stops spam
-		for(var/obj/singularity/O in GLOB.singularities)
+		for(var/obj/singularity/O in world)
 			if(O.last_warning && temp)
 				if((world.time - O.last_warning) > 50) //to stop message-spam
 					temp = 0

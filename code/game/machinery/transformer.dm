@@ -15,8 +15,7 @@
 	var/cooldown_timer
 	var/robot_cell_charge = 5000
 	var/obj/effect/countdown/transformer/countdown
-	var/mob/living/silicon/ai/masterAI
-	
+
 /obj/machinery/transformer/New()
 	// On us
 	..()
@@ -57,7 +56,7 @@
 		var/move_dir = get_dir(loc, AM.loc)
 		var/mob/living/carbon/human/H = AM
 		if((transform_standing || H.lying) && move_dir == EAST)// || move_dir == WEST)
-			AM.loc = src.loc
+			AM.forceMove(src.loc)
 			do_transform(AM)
 
 /obj/machinery/transformer/CanPass(atom/movable/mover, turf/target, height=0)
@@ -104,10 +103,6 @@
 
  	// So he can't jump out the gate right away.
 	R.SetLockdown()
-	if(masterAI)
-		R.connected_ai = masterAI
-		R.lawsync()
-		R.lawupdate = 1
 	addtimer(CALLBACK(src, .proc/unlock_new_robot, R), 50)
 
 /obj/machinery/transformer/proc/unlock_new_robot(mob/living/silicon/robot/R)
@@ -115,7 +110,7 @@
 	sleep(30)
 	if(R)
 		R.SetLockdown(0)
-		R.notify_ai(NEW_BORG)
+		R.notify_ai(1)
 
 /obj/machinery/transformer/conveyor/New()
 	..()

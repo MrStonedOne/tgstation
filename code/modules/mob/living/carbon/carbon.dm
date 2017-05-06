@@ -1,7 +1,7 @@
 /mob/living/carbon
 	blood_volume = BLOOD_VOLUME_NORMAL
 
-/mob/living/carbon/Initialize()
+/mob/living/carbon/New()
 	create_reagents(1000)
 	update_body_parts() //to update the carbon's new bodyparts appearance
 	..()
@@ -40,7 +40,7 @@
 
 				if(prob(src.getBruteLoss() - 50))
 					for(var/atom/movable/A in stomach_contents)
-						A.loc = loc
+						A.forceMove(loc)
 						stomach_contents.Remove(A)
 					src.gib()
 
@@ -91,29 +91,20 @@
 					return 1
 	return ..()
 
-/mob/living/carbon/throw_impact(atom/hit_atom, throwingdatum)
+/mob/living/carbon/throw_impact(atom/hit_atom)
 	. = ..()
-	var/hurt = TRUE
-	if(istype(throwingdatum, /datum/thrownthing))
-		var/datum/thrownthing/D = throwingdatum
-		if(iscyborg(D.thrower))
-			var/mob/living/silicon/robot/R = D.thrower
-			if(!R.emagged)
-				hurt = FALSE
 	if(hit_atom.density && isturf(hit_atom))
-		if(hurt)
-			Weaken(1)
-			take_bodypart_damage(10)
+		Weaken(1)
+		take_bodypart_damage(10)
 	if(iscarbon(hit_atom) && hit_atom != src)
 		var/mob/living/carbon/victim = hit_atom
 		if(victim.movement_type & FLYING)
 			return
-		if(hurt)
-			victim.take_bodypart_damage(10)
-			take_bodypart_damage(10)
-			victim.Weaken(1)
-			Weaken(1)
-			visible_message("<span class='danger'>[src] crashes into [victim], knocking them both over!</span>", "<span class='userdanger'>You violently crash into [victim]!</span>")
+		victim.Weaken(1)
+		Weaken(1)
+		victim.take_bodypart_damage(10)
+		take_bodypart_damage(10)
+		visible_message("<span class='danger'>[src] crashes into [victim], knocking them both over!</span>", "<span class='userdanger'>You violently crash into [victim]!</span>")
 		playsound(src,'sound/weapons/punch1.ogg',50,1)
 
 
@@ -166,7 +157,7 @@
 
 	else if(!(I.flags & (NODROP|ABSTRACT)))
 		thrown_thing = I
-		dropItemToGround(I)
+		unEquip(I)
 
 	if(thrown_thing)
 		visible_message("<span class='danger'>[src] has thrown [thrown_thing].</span>")
@@ -219,8 +210,8 @@
 			var/slot = text2num(href_list["internal"])
 			var/obj/item/ITEM = get_item_by_slot(slot)
 			if(ITEM && istype(ITEM, /obj/item/weapon/tank) && wear_mask && (wear_mask.flags & MASKINTERNALS))
-				visible_message("<span class='danger'>[usr] tries to [internal ? "close" : "open"] the valve on [src]'s [ITEM.name].</span>", \
-								"<span class='userdanger'>[usr] tries to [internal ? "close" : "open"] the valve on [src]'s [ITEM.name].</span>")
+				visible_message("<span class='danger'>[usr] tries to [internal ? "close" : "open"] the valve on [src]'s [ITEM].</span>", \
+								"<span class='userdanger'>[usr] tries to [internal ? "close" : "open"] the valve on [src]'s [ITEM].</span>")
 				if(do_mob(usr, src, POCKET_STRIP_DELAY))
 					if(internal)
 						internal = null
@@ -230,15 +221,33 @@
 							internal = ITEM
 							update_internals_hud_icon(1)
 
-					visible_message("<span class='danger'>[usr] [internal ? "opens" : "closes"] the valve on [src]'s [ITEM.name].</span>", \
-									"<span class='userdanger'>[usr] [internal ? "opens" : "closes"] the valve on [src]'s [ITEM.name].</span>")
+					visible_message("<span class='danger'>[usr] [internal ? "opens" : "closes"] the valve on [src]'s [ITEM].</span>", \
+									"<span class='userdanger'>[usr] [internal ? "opens" : "closes"] the valve on [src]'s [ITEM].</span>")
 
 
 /mob/living/carbon/fall(forced)
-    loc.handle_fall(src, forced)//it's loc so it doesn't call the mob's handle_fall which does nothing
+	if(loc)
+		loc.handle_fall(src, forced)//it's loc so it doesn't call the mob's handle_fall which does nothing
 
 /mob/living/carbon/is_muzzled()
 	return(istype(src.wear_mask, /obj/item/clothing/mask/muzzle))
+
+/mob/living/carbon/proc/spin(spintime, speed)
+	set waitfor = 0
+	var/D = dir
+	while(spintime >= speed)
+		sleep(speed)
+		switch(D)
+			if(NORTH)
+				D = EAST
+			if(SOUTH)
+				D = WEST
+			if(EAST)
+				D = SOUTH
+			if(WEST)
+				D = NORTH
+		setDir(D)
+		spintime -= speed
 
 /mob/living/carbon/resist_buckle()
 	if(restrained())
@@ -271,20 +280,13 @@
 
 /mob/living/carbon/resist_restraints()
 	var/obj/item/I = null
-	var/type = 0
 	if(handcuffed)
 		I = handcuffed
-		type = 1
 	else if(legcuffed)
 		I = legcuffed
-		type = 2
 	if(I)
-		if(type == 1)
-			changeNext_move(CLICK_CD_BREAKOUT)
-			last_special = world.time + CLICK_CD_BREAKOUT
-		if(type == 2)
-			changeNext_move(CLICK_CD_RANGE)
-			last_special = world.time + CLICK_CD_RANGE
+		changeNext_move(CLICK_CD_BREAKOUT)
+		last_special = world.time + CLICK_CD_BREAKOUT
 		cuff_resist(I)
 
 
@@ -321,12 +323,11 @@
 		if (client)
 			client.screen -= W
 		if (W)
-			W.loc = loc
+			W.forceMove(loc)
 			W.dropped(src)
 			if (W)
 				W.layer = initial(W.layer)
 				W.plane = initial(W.plane)
-		changeNext_move(0)
 	if (legcuffed)
 		var/obj/item/weapon/W = legcuffed
 		legcuffed = null
@@ -334,12 +335,11 @@
 		if (client)
 			client.screen -= W
 		if (W)
-			W.loc = loc
+			W.forceMove(loc)
 			W.dropped(src)
 			if (W)
 				W.layer = initial(W.layer)
 				W.plane = initial(W.plane)
-		changeNext_move(0)
 
 /mob/living/carbon/proc/clear_cuffs(obj/item/I, cuff_break)
 	if(!I.loc || buckled)
@@ -361,7 +361,7 @@
 
 	else
 		if(I == handcuffed)
-			handcuffed.loc = loc
+			handcuffed.forceMove(loc)
 			handcuffed.dropped(src)
 			handcuffed = null
 			if(buckled && buckled.buckle_requires_restraints)
@@ -369,13 +369,14 @@
 			update_handcuffed()
 			return
 		if(I == legcuffed)
-			legcuffed.loc = loc
+			legcuffed.forceMove(loc)
 			legcuffed.dropped()
 			legcuffed = null
 			update_inv_legcuffed()
 			return
 		else
-			dropItemToGround(I)
+			unEquip(I)
+			I.dropped()
 			return
 		return TRUE
 
@@ -393,7 +394,7 @@
 	if(!I || (I.flags & (NODROP|ABSTRACT)))
 		return
 
-	dropItemToGround(I)
+	unEquip(I)
 
 	var/modifier = 0
 	if(disabilities & CLUMSY)
@@ -484,23 +485,13 @@
 				adjustBruteLoss(3)
 		else
 			if(T)
-				T.add_vomit_floor(src, toxic)//toxic barf looks different
+				T.add_vomit_floor(src, 0)//toxic barf looks different
 			nutrition -= lost_nutrition
 			adjustToxLoss(-3)
 		T = get_step(T, dir)
 		if (is_blocked_turf(T))
 			break
 	return 1
-
-/mob/living/carbon/proc/spew_organ(power = 5)
-	if(!internal_organs.len)
-		return //Guess we're out of organs
-	var/obj/item/organ/guts = pick(internal_organs)
-	var/turf/T = get_turf(src)
-	guts.Remove(src)
-	guts.forceMove(T)
-	var/atom/throw_target = get_edge_target_turf(guts, dir)
-	guts.throw_at(throw_target, power, 4, src)
 
 
 /mob/living/carbon/fully_replace_character_name(oldname,newname)
@@ -533,48 +524,29 @@
 		see_invisible = SEE_INVISIBLE_OBSERVER
 		return
 
+	see_invisible = initial(see_invisible)
+	see_in_dark = initial(see_in_dark)
 	sight = initial(sight)
-	lighting_alpha = initial(lighting_alpha)
-	var/obj/item/organ/eyes/E = getorganslot("eye_sight")
-	if(!E)
-		update_tint()
-	else
-		see_invisible = E.see_invisible
-		see_in_dark = E.see_in_dark
-		sight |= E.sight_flags
-		if(!isnull(E.lighting_alpha))
-			lighting_alpha = E.lighting_alpha
 
 	if(client.eye != src)
 		var/atom/A = client.eye
 		if(A.update_remote_sight(src)) //returns 1 if we override all other sight updates.
 			return
 
-	if(glasses)
-		var/obj/item/clothing/glasses/G = glasses
-		sight |= G.vision_flags
-		see_in_dark = max(G.darkness_view, see_in_dark)
-		if(G.invis_override)
-			see_invisible = G.invis_override
-		else
-			see_invisible = min(G.invis_view, see_invisible)
-		if(!isnull(G.lighting_alpha))
-			lighting_alpha = min(lighting_alpha, G.lighting_alpha)
-	if(dna)
-		for(var/X in dna.mutations)
-			var/datum/mutation/M = X
-			if(M.name == XRAY)
-				sight |= (SEE_TURFS|SEE_MOBS|SEE_OBJS)
-				see_in_dark = max(see_in_dark, 8)
+	for(var/obj/item/organ/cyberimp/eyes/E in internal_organs)
+		sight |= E.sight_flags
+		if(E.dark_view)
+			see_in_dark = max(see_in_dark,E.dark_view)
+		if(E.see_invisible)
+			see_invisible = min(see_invisible, E.see_invisible)
 
 	if(see_override)
 		see_invisible = see_override
-	. = ..()
 
 
 //to recalculate and update the mob's total tint from tinted equipment it's wearing.
 /mob/living/carbon/proc/update_tint()
-	if(!GLOB.tinted_weldhelh)
+	if(!tinted_weldhelh)
 		return
 	tinttotal = get_total_tint()
 	if(tinttotal >= TINT_BLIND)
@@ -591,13 +563,6 @@
 		. += HT.tint
 	if(wear_mask)
 		. += wear_mask.tint
-
-	var/obj/item/organ/eyes/E = getorganslot("eye_sight")
-	if(E)
-		. += E.tint
-
-	else
-		. += INFINITY
 
 //this handles hud updates
 /mob/living/carbon/update_damage_hud()
@@ -683,7 +648,7 @@
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
-		if(health<= HEALTH_THRESHOLD_DEAD)
+		if(health<= HEALTH_THRESHOLD_DEAD || !getorgan(/obj/item/organ/brain))
 			death()
 			return
 		if(paralysis || sleeping || getOxyLoss() > 50 || (status_flags & FAKEDEATH) || health <= HEALTH_THRESHOLD_CRIT)
@@ -732,17 +697,14 @@
 		if(reagents)
 			reagents.addiction_list = list()
 	..()
-	// heal ears after healing disabilities, since ears check DEAF disability
-	// when healing.
-	restoreEars()
 
 /mob/living/carbon/can_be_revived()
 	. = ..()
-	if(!getorgan(/obj/item/organ/brain) && (!mind || !mind.changeling))
+	if(!getorgan(/obj/item/organ/brain))
 		return 0
 
 /mob/living/carbon/harvest(mob/living/user)
-	if(QDELETED(src))
+	if(qdeleted(src))
 		return
 	var/organs_amt = 0
 	for(var/X in internal_organs)
@@ -750,7 +712,7 @@
 		if(prob(50))
 			organs_amt++
 			O.Remove(src)
-			O.loc = get_turf(src)
+			O.forceMove(get_turf(src))
 	if(organs_amt)
 		to_chat(user, "<span class='notice'>You retrieve some of [src]\'s internal organs!</span>")
 
@@ -764,7 +726,7 @@
 	..()
 
 /mob/living/carbon/fakefire(var/fire_icon = "Generic_mob_burning")
-	var/mutable_appearance/new_fire_overlay = mutable_appearance('icons/mob/OnFire.dmi', fire_icon, -FIRE_LAYER)
+	var/image/new_fire_overlay = image("icon"='icons/mob/OnFire.dmi', "icon_state"= fire_icon, "layer"=-FIRE_LAYER)
 	new_fire_overlay.appearance_flags = RESET_COLOR
 	overlays_standing[FIRE_LAYER] = new_fire_overlay
 	apply_overlay(FIRE_LAYER)

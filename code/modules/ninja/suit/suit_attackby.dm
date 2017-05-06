@@ -13,10 +13,12 @@
 					R.volume -= amount_to_transfer//Remove from reagent volume. Don't want to delete the reagent now since we need to perserve the name.
 					reagents.add_reagent(reagent_id, amount_to_transfer)//Add to suit. Reactions are not important.
 					total_reagent_transfer += amount_to_transfer//Add to total reagent trans.
-					to_chat(U, "Added [amount_to_transfer] units of [R.name].")
+					to_chat(U, "Added [amount_to_transfer] units of [R.name].")//Reports on the specific reagent added.
+
 					I.reagents.update_total()//Now we manually update the total to make sure everything is properly shoved under the rug.
 
-			to_chat(U, "Replenished a total of [total_reagent_transfer ? total_reagent_transfer : "zero"] chemical units.")
+			to_chat(U, "Replenished a total of [total_reagent_transfer ? total_reagent_transfer : "zero"] chemical units.")//Let the player know how much total volume was added.
+
 			return
 
 		else if(istype(I, /obj/item/weapon/stock_parts/cell))
@@ -25,7 +27,7 @@
 				to_chat(U, "<span class='notice'>Higher maximum capacity detected.\nUpgrading...</span>")
 				if (n_gloves && n_gloves.candrain && do_after(U,s_delay, target = src))
 					U.drop_item()
-					CELL.loc = src
+					CELL.forceMove(src)
 					CELL.charge = min(CELL.charge+cell.charge, CELL.maxcharge)
 					var/obj/item/weapon/stock_parts/cell/old_cell = cell
 					old_cell.charge = 0
@@ -63,7 +65,7 @@
 				else
 					to_chat(U, "<span class='userdanger'>ERROR</span>: Procedure interrupted. Process terminated.")
 			else
-				I.loc = src
+				I.forceMove(src)
 				t_disk = I
 				to_chat(U, "<span class='notice'>You slot \the [I] into \the [src].</span>")
 			return

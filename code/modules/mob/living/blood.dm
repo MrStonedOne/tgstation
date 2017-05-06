@@ -6,13 +6,11 @@
 	if(bleedsuppress)
 		return
 	else
-		bleedsuppress = TRUE
-		addtimer(CALLBACK(src, .proc/resume_bleeding), amount)
-
-/mob/living/carbon/human/proc/resume_bleeding()
-	bleedsuppress = 0
-	if(stat != DEAD && bleed_rate)
-		to_chat(src, "<span class='warning'>The blood soaks through your bandage.</span>")
+		bleedsuppress = 1
+		spawn(amount)
+			bleedsuppress = 0
+			if(stat != DEAD && bleed_rate)
+				to_chat(src, "<span class='warning'>The blood soaks through your bandage.</span>")
 
 
 /mob/living/carbon/monkey/handle_blood()
@@ -35,21 +33,22 @@
 			blood_volume += 0.1 // regenerate blood VERY slowly
 
 		//Effects of bloodloss
-		var/word = pick("dizzy","woozy","faint")
 		switch(blood_volume)
 			if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 				if(prob(5))
-					to_chat(src, "<span class='warning'>You feel [word].</span>")
+					to_chat(src, "<span class='warning'>You feel [pick("dizzy","woozy","faint")].</span>")
 				adjustOxyLoss(round((BLOOD_VOLUME_NORMAL - blood_volume) * 0.01, 1))
 			if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
 				adjustOxyLoss(round((BLOOD_VOLUME_NORMAL - blood_volume) * 0.02, 1))
 				if(prob(5))
 					blur_eyes(6)
+					var/word = pick("dizzy","woozy","faint")
 					to_chat(src, "<span class='warning'>You feel very [word].</span>")
 			if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 				adjustOxyLoss(5)
 				if(prob(15))
 					Paralyse(rand(1,3))
+					var/word = pick("dizzy","woozy","faint")
 					to_chat(src, "<span class='warning'>You feel extremely [word].</span>")
 			if(0 to BLOOD_VOLUME_SURVIVE)
 				death()
@@ -64,12 +63,16 @@
 			listclearnulls(BP.embedded_objects)
 			temp_bleed += 0.5*BP.embedded_objects.len
 
-			if(brutedamage >= 20)
-				temp_bleed += (brutedamage * 0.013)
+			if(brutedamage > 30)
+				temp_bleed += 0.5
+			if(brutedamage > 50)
+				temp_bleed += 1
+			if(brutedamage > 70)
+				temp_bleed += 2
 
 		bleed_rate = max(bleed_rate - 0.5, temp_bleed)//if no wounds, other bleed effects (heparin) naturally decreases
 
-		if(bleed_rate && !bleedsuppress && !(status_flags & FAKEDEATH))
+		if(bleed_rate && !bleedsuppress)
 			bleed(bleed_rate)
 
 //Makes a blood drop, leaking amt units of blood from the mob
@@ -233,7 +236,7 @@
 		if(drop)
 			if(drop.drips < 3)
 				drop.drips++
-				drop.add_overlay(pick(drop.random_icon_states))
+				drop.overlays |= pick(drop.random_icon_states)
 				drop.transfer_mob_blood_dna(src)
 				return
 			else

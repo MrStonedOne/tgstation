@@ -75,13 +75,13 @@
 	colour = "red"
 
 /datum/client_colour/glass_colour/green
-	colour = "#aaffaa"
+	colour = "#00ff00"
 
 /datum/client_colour/glass_colour/lightgreen
 	colour = "#ccffcc"
 
 /datum/client_colour/glass_colour/blue
-	colour = "#aaaaff"
+	colour = "#0000ff"
 
 /datum/client_colour/glass_colour/lightblue
 	colour = "#ccccff"
@@ -90,7 +90,7 @@
 	colour = "#ffff66"
 
 /datum/client_colour/glass_colour/red
-	colour = "#ffaaaa"
+	colour = "#ff0000"
 
 /datum/client_colour/glass_colour/darkred
 	colour = "#bb5555"

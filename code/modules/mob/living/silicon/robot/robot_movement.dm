@@ -7,6 +7,9 @@
 	. = ..()
 	. += speed
 	. += config.robot_delay
+	. += get_pulling_delay()
+	if(contents_weight)
+		. += contents_weight/RATIO_WEIGHT
 
 /mob/living/silicon/robot/mob_negates_gravity()
 	return magpulse
@@ -17,8 +20,3 @@
 /mob/living/silicon/robot/experience_pressure_difference(pressure_difference, direction)
 	if(!magpulse)
 		return ..()
-
-/mob/living/silicon/robot/Moved()
-	. = ..()
-	if(riding_datum)
-		riding_datum.on_vehicle_move()

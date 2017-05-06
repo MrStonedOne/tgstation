@@ -1,4 +1,4 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "aa" = (
 /turf/template_noop,
 /area/template_noop)
@@ -123,7 +123,7 @@
 	},
 /area/ruin/powered)
 "at" = (
-/obj/structure/chair/office/dark{
+/obj/structure/chair/office/blue{
 	dir = 1
 	},
 /turf/open/floor/plasteel/cmo{
@@ -131,7 +131,7 @@
 	},
 /area/ruin/powered)
 "au" = (
-/obj/structure/chair/office/dark{
+/obj/structure/chair/office/blue{
 	dir = 4
 	},
 /turf/open/floor/plasteel/cmo{
@@ -218,7 +218,7 @@
 	},
 /area/ruin/powered)
 "aE" = (
-/turf/closed/wall/mineral/titanium/nodiagonal{
+/turf/closed/wall/shuttle/smooth/nodiagonal{
 	baseturf = /turf/open/floor/plating/lava/smooth/lava_land_surface
 	},
 /area/ruin/powered)
@@ -238,12 +238,12 @@
 /area/ruin/powered)
 "aH" = (
 /obj/structure/extinguisher_cabinet,
-/turf/closed/wall/mineral/titanium/nodiagonal{
+/turf/closed/wall/shuttle/smooth/nodiagonal{
 	baseturf = /turf/open/floor/plating/lava/smooth/lava_land_surface
 	},
 /area/ruin/powered)
 "aI" = (
-/turf/closed/wall/mineral/titanium,
+/turf/closed/wall/shuttle/smooth,
 /area/ruin/powered)
 "aJ" = (
 /turf/open/floor/plasteel/grimy{
@@ -507,7 +507,7 @@
 	},
 /area/ruin/powered)
 "br" = (
-/obj/structure/chair/office/dark,
+/obj/structure/chair/office/blue,
 /turf/open/floor/plasteel{
 	baseturf = /turf/open/floor/plating/lava/smooth/lava_land_surface
 	},
@@ -590,7 +590,7 @@
 	},
 /area/ruin/powered)
 "bC" = (
-/obj/structure/chair/office/light{
+/obj/structure/chair/office/white{
 	dir = 1
 	},
 /turf/open/floor/plasteel/white{
@@ -700,7 +700,7 @@
 	},
 /area/lavaland/surface/outdoors)
 "bP" = (
-/obj/structure/chair/office/light{
+/obj/structure/chair/office/white{
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,

@@ -7,12 +7,13 @@
 	mouse_opacity = 1
 	move_on_shuttle = 1
 	see_in_dark = 8
+	see_invisible = SEE_INVISIBLE_MINIMUM
 	invisibility = INVISIBILITY_OBSERVER
 	layer = FLY_LAYER
 
 	pass_flags = PASSBLOB
 	faction = list("blob")
-	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
+
 	var/obj/structure/blob/core/blob_core = null // The blob overmind's core
 	var/blob_points = 0
 	var/max_blob_points = 100
@@ -20,6 +21,7 @@
 	var/datum/reagent/blob/blob_reagent_datum = new/datum/reagent/blob()
 	var/list/blob_mobs = list()
 	var/list/resource_blobs = list()
+	var/ghostimage = null
 	var/free_chem_rerolls = 1 //one free chemical reroll
 	var/nodes_required = 1 //if the blob needs nodes to place resource and factory blobs
 	var/placed = 0
@@ -27,7 +29,7 @@
 	var/manualplace_min_time = 600 //in deciseconds //a minute, to get bearings
 	var/autoplace_max_time = 3600 //six minutes, as long as should be needed
 
-/mob/camera/blob/Initialize(mapload, pre_placed = 0, mode_made = 0, starting_points = 60)
+/mob/camera/blob/New(loc, pre_placed = 0, mode_made = 0, starting_points = 60)
 	blob_points = starting_points
 	if(pre_placed) //we already have a core!
 		manualplace_min_time = 0
@@ -39,7 +41,7 @@
 		else
 			manualplace_min_time += world.time
 		autoplace_max_time += world.time
-	GLOB.overminds += src
+	overminds += src
 	var/new_name = "[initial(name)] ([rand(1, 999)])"
 	name = new_name
 	real_name = new_name
@@ -50,6 +52,9 @@
 	if(blob_core)
 		blob_core.update_icon()
 
+	ghostimage = image(src.icon,src,src.icon_state)
+	ghost_darkness_images |= ghostimage //so ghosts can see the blob cursor when they disable darkness
+	updateallghostimages()
 	..()
 
 /mob/camera/blob/Life()
@@ -66,7 +71,7 @@
 	..()
 
 /mob/camera/blob/Destroy()
-	for(var/BL in GLOB.blobs)
+	for(var/BL in blobs)
 		var/obj/structure/blob/B = BL
 		if(B && B.overmind == src)
 			B.overmind = null
@@ -76,8 +81,12 @@
 		if(BM)
 			BM.overmind = null
 			BM.update_icons()
-	GLOB.overminds -= src
-
+	overminds -= src
+	if(ghostimage)
+		ghost_darkness_images -= ghostimage
+		qdel(ghostimage)
+		ghostimage = null
+		updateallghostimages()
 	return ..()
 
 /mob/camera/blob/Login()
@@ -131,7 +140,7 @@
 	var/message_a = say_quote(message, get_spans())
 	var/rendered = "<span class='big'><font color=\"#EE4000\"><b>\[Blob Telepathy\] [name](<font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</font>)</b> [message_a]</font></span>"
 
-	for(var/mob/M in GLOB.mob_list)
+	for(var/mob/M in mob_list)
 		if(isovermind(M) || istype(M, /mob/living/simple_animal/hostile/blob))
 			to_chat(M, rendered)
 		if(isobserver(M))
@@ -150,11 +159,11 @@
 		if(blob_core)
 			stat(null, "Core Health: [blob_core.obj_integrity]")
 		stat(null, "Power Stored: [blob_points]/[max_blob_points]")
-		if(SSticker && istype(SSticker.mode, /datum/game_mode/blob))
-			var/datum/game_mode/blob/B = SSticker.mode
-			stat(null, "Blobs to Win: [GLOB.blobs_legit.len]/[B.blobwincount]")
+		if(ticker && istype(ticker.mode, /datum/game_mode/blob))
+			var/datum/game_mode/blob/B = ticker.mode
+			stat(null, "Blobs to Win: [blobs_legit.len]/[B.blobwincount]")
 		else
-			stat(null, "Total Blobs: [GLOB.blobs.len]")
+			stat(null, "Total Blobs: [blobs.len]")
 		if(free_chem_rerolls)
 			stat(null, "You have [free_chem_rerolls] Free Chemical Reroll\s Remaining")
 		if(!placed)
@@ -166,12 +175,12 @@
 	if(placed)
 		var/obj/structure/blob/B = locate() in range("3x3", NewLoc)
 		if(B)
-			loc = NewLoc
+			forceMove(NewLoc)
 		else
 			return 0
 	else
 		var/area/A = get_area(NewLoc)
 		if(isspaceturf(NewLoc) || istype(A, /area/shuttle)) //if unplaced, can't go on shuttles or space tiles
 			return 0
-		loc = NewLoc
+		forceMove(NewLoc)
 		return 1

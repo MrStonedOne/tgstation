@@ -3,8 +3,6 @@
 	desc = "A strong door."
 	icon = 'icons/obj/doors/windoor.dmi'
 	icon_state = "left"
-	layer = ABOVE_WINDOW_LAYER
-	closingLayer = ABOVE_WINDOW_LAYER
 	resistance_flags = ACID_PROOF
 	var/base_state = "left"
 	obj_integrity = 150 //If you change this, consider changing ../door/window/brigdoor/ health at the bottom of this .dm file
@@ -70,7 +68,7 @@
 			else
 				do_animate("deny")
 		return
-	if (!( SSticker ))
+	if (!( ticker ))
 		return
 	var/mob/M = AM
 	if(M.restrained() || ((isdrone(M) || iscyborg(M)) && M.stat))
@@ -128,6 +126,8 @@
 
 /obj/machinery/door/window/open(forced=0)
 	if (src.operating == 1) //doors can still open when emag-disabled
+		return 0
+	if(!ticker || !ticker.mode)
 		return 0
 	if(!forced)
 		if(!hasPower())
@@ -275,7 +275,7 @@
 						else
 							ae = electronics
 							electronics = null
-							ae.loc = src.loc
+							ae.forceMove(src.loc)
 
 						qdel(src)
 				return
@@ -328,7 +328,7 @@
 
 /obj/machinery/door/window/clockwork/setDir(direct)
 	if(!made_glow)
-		var/obj/effect/E = new /obj/effect/overlay/temp/ratvar/door/window(get_turf(src))
+		var/obj/effect/E = PoolOrNew(/obj/effect/overlay/temp/ratvar/door/window, get_turf(src))
 		E.setDir(direct)
 		made_glow = TRUE
 	..()
@@ -337,13 +337,8 @@
 	change_construction_value(-2)
 	return ..()
 
-/obj/machinery/door/window/clockwork/emp_act(severity)
-	if(prob(80/severity))
-		open()
-
 /obj/machinery/door/window/clockwork/ratvar_act()
-	if(GLOB.ratvar_awakens)
-		obj_integrity = max_integrity
+	obj_integrity = max_integrity
 
 /obj/machinery/door/window/clockwork/hasPower()
 	return TRUE //yup that's power all right

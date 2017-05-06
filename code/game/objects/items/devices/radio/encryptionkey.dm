@@ -1,3 +1,4 @@
+
 /obj/item/device/encryptionkey
 	name = "standard encryption key"
 	desc = "An encryption key for a radio headset.  Has no special codes in it.  WHY DOES IT EXIST?  ASK NANOTRASEN."
@@ -6,8 +7,9 @@
 	w_class = WEIGHT_CLASS_TINY
 	origin_tech = "engineering=2;bluespace=1"
 	var/translate_binary = 0
+	var/translate_hive = 0
 	var/syndie = 0
-	var/independent = FALSE
+	var/centcom = 0
 	var/list/channels = list()
 
 /obj/item/device/encryptionkey/syndicate
@@ -125,7 +127,7 @@
 	name = "centcom radio encryption key"
 	desc = "An encryption key for a radio headset.  To access the centcom channel, use :y."
 	icon_state = "cent_cypherkey"
-	independent = TRUE
+	centcom = 1
 	channels = list("Centcom" = 1)
 
 /obj/item/device/encryptionkey/ai //ported from NT, this goes 'inside' the AI.

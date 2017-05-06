@@ -1,11 +1,11 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "a" = (
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "b" = (
 /obj/structure/lattice,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "c" = (
 /obj/structure/grille,
 /turf/open/floor/plating/airless,
@@ -54,7 +54,7 @@
 /turf/open/floor/plasteel,
 /area/ruin/turretedoutpost)
 "n" = (
-/obj/structure/chair/office/dark{
+/obj/structure/chair/office/blue{
 	dir = 8
 	},
 /turf/open/floor/plasteel,
@@ -205,7 +205,7 @@
 	},
 /area/ruin/turretedoutpost)
 "K" = (
-/obj/structure/chair/office/dark,
+/obj/structure/chair/office/blue,
 /turf/open/floor/plasteel,
 /area/ruin/turretedoutpost)
 "L" = (

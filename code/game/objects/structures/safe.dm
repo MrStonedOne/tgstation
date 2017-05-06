@@ -32,18 +32,13 @@ FLOOR SAFES
 	tumbler_2_open = rand(0, 71)
 
 
-/obj/structure/safe/Initialize(mapload)
-	..()
-
-	if(!mapload)
-		return
-
+/obj/structure/safe/initialize()
 	for(var/obj/item/I in loc)
 		if(space >= maxspace)
 			return
 		if(I.w_class + space <= maxspace)
 			space += I.w_class
-			I.loc = src
+			I.forceMove(src)
 
 
 /obj/structure/safe/proc/check_unlocked(mob/user, canhear)
@@ -147,7 +142,6 @@ FLOOR SAFES
 		if(open)
 			if(P && in_range(src, user))
 				user.put_in_hands(P)
-				space -= P.w_class
 				updateUsrDialog()
 
 
@@ -191,11 +185,10 @@ FLOOR SAFES
 	layer = LOW_OBJ_LAYER
 
 
-/obj/structure/safe/floor/Initialize(mapload)
+/obj/structure/safe/floor/initialize()
 	..()
-	if(mapload)
-		var/turf/T = loc
-		hide(T.intact)
+	var/turf/T = loc
+	hide(T.intact)
 
 
 /obj/structure/safe/floor/hide(var/intact)

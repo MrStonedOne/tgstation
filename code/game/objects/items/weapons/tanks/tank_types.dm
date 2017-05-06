@@ -95,10 +95,10 @@
 		var/obj/item/weapon/flamethrower/F = W
 		if ((!F.status)||(F.ptank))
 			return
-		if(!user.transferItemToLoc(src, F))
-			return
 		src.master = F
 		F.ptank = src
+		user.unEquip(src)
+		src.forceMove(F)
 		F.update_icon()
 	else
 		return ..()
@@ -115,8 +115,8 @@
  */
 
 /obj/item/weapon/tank/internals/plasmaman
-	name = "plasma internals tank"
-	desc = "A tank of plasma gas designed specifically for use as internals, particularly for plasma-based lifeforms. If you're not a Plasmaman, you probably shouldn't use this."
+	name = "plasmaman plasma tank"
+	desc = "A tank of plasma gas."
 	icon_state = "plasmaman_tank"
 	item_state = "plasmaman_tank"
 	force = 10

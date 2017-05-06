@@ -16,7 +16,7 @@
 
 /obj/item/weapon/c4/New()
 	wires = new /datum/wires/explosive/c4(src)
-	plastic_overlay = mutable_appearance(icon, "plastic-explosive2")
+	image_overlay = image('icons/obj/grenade.dmi', "plastic-explosive2")
 	..()
 
 /obj/item/weapon/c4/Destroy()
@@ -82,28 +82,29 @@
 	to_chat(user, "<span class='notice'>You start planting the bomb...</span>")
 
 	if(do_after(user, 50, target = AM))
-		if(!user.temporarilyRemoveItemFromInventory(src))
+		if(!user.unEquip(src))
 			return
 		src.target = AM
 		forceMove(null)
 
 		var/message = "[ADMIN_LOOKUPFLW(user)] planted [name] on [target.name] at [ADMIN_COORDJMP(target)] with [timer] second fuse"
-		GLOB.bombers += message
+		bombers += message
 		message_admins(message,0,1)
 		log_game("[key_name(user)] planted [name] on [target.name] at [COORD(target)] with [timer] second fuse")
 
-		target.add_overlay(plastic_overlay, 1)
+		target.add_overlay(image_overlay, 1)
 		to_chat(user, "<span class='notice'>You plant the bomb. Timer counting down from [timer].</span>")
 		addtimer(CALLBACK(src, .proc/explode), timer * 10)
 
 /obj/item/weapon/c4/proc/explode()
-	if(QDELETED(src))
+	if(qdeleted(src))
 		return
 	var/turf/location
 	if(target)
-		if(!QDELETED(target))
+		if(!qdeleted(target))
 			location = get_turf(target)
-			target.cut_overlay(plastic_overlay, TRUE)
+			target.overlays -= image_overlay
+			target.priority_overlays -= image_overlay
 	else
 		location = get_turf(src)
 	if(location)

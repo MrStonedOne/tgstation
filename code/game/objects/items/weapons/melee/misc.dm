@@ -34,12 +34,10 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "arm_blade"
 	item_state = "arm_blade"
-	origin_tech = "combat=5;biotech=5"
+	origin_tech = "combat=5,biotech=5"
 	w_class = WEIGHT_CLASS_HUGE
-	force = 20
+	force = 15
 	throwforce = 10
-	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	sharpness = IS_SHARP
 
 /obj/item/weapon/melee/sabre
@@ -144,8 +142,8 @@
 		playsound(loc, 'sound/weapons/batonextend.ogg', 50, 1)
 		add_fingerprint(user)
 	sleep(3)
-	if (H && !QDELETED(H))
-		if (B && !QDELETED(B))
+	if (H && !qdeleted(H))
+		if (B && !qdeleted(B))
 			H.internal_organs -= B
 			qdel(B)
 		new /obj/effect/gibspawner/generic(H.loc, H.viruses, H.dna)
@@ -199,7 +197,7 @@
 		return
 	if(!isturf(src.loc))
 		var/atom/target = src.loc
-		loc = target.loc
+		forceMove(target.loc)
 		consume_everything(target)
 	else
 		var/turf/T = get_turf(src)

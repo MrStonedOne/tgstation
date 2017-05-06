@@ -29,8 +29,9 @@
 
 /obj/item/weapon/clipboard/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/paper))
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
+		W.forceMove(src)
 		toppaper = W
 		to_chat(user, "<span class='notice'>You clip the paper onto \the [src].</span>")
 		update_icon()
@@ -69,7 +70,7 @@
 
 		if(href_list["pen"])
 			if(haspen)
-				haspen.loc = usr.loc
+				haspen.forceMove(usr.loc)
 				usr.put_in_hands(haspen)
 				haspen = null
 
@@ -78,8 +79,9 @@
 				var/obj/item/held = usr.get_active_held_item()
 				if(istype(held, /obj/item/weapon/pen))
 					var/obj/item/weapon/pen/W = held
-					if(!usr.transferItemToLoc(W, src))
+					if(!usr.unEquip(W))
 						return
+					W.forceMove(src)
 					haspen = W
 					to_chat(usr, "<span class='notice'>You slot [W] into [src].</span>")
 
@@ -92,7 +94,7 @@
 		if(href_list["remove"])
 			var/obj/item/P = locate(href_list["remove"])
 			if(istype(P) && P.loc == src)
-				P.loc = usr.loc
+				P.forceMove(usr.loc)
 				usr.put_in_hands(P)
 				if(P == toppaper)
 					toppaper = null

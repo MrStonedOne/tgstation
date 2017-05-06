@@ -16,7 +16,8 @@
 	max_integrity = 150
 	var/folder_path = /obj/item/weapon/folder //this is the path of the folder that gets spawned in New()
 
-/obj/item/weapon/storage/briefcase/PopulateContents()
+/obj/item/weapon/storage/briefcase/New()
+	..()
 	new /obj/item/weapon/pen(src)
 	var/obj/item/weapon/folder/folder = new folder_path(src)
 	for(var/i in 1 to 6)
@@ -25,7 +26,7 @@
 /obj/item/weapon/storage/briefcase/lawyer
 	folder_path = /obj/item/weapon/folder/blue
 
-/obj/item/weapon/storage/briefcase/lawyer/PopulateContents()
+/obj/item/weapon/storage/briefcase/lawyer/New()
 	new /obj/item/weapon/stamp/law(src)
 	..()
 
@@ -46,8 +47,8 @@
 	obj_integrity = 150
 	max_integrity = 150
 
-/obj/item/weapon/storage/briefcase/sniperbundle/PopulateContents()
-	..() // in case you need any paperwork done after your rampage
+/obj/item/weapon/storage/briefcase/sniperbundle/New()
+	..()
 	new /obj/item/weapon/gun/ballistic/automatic/sniper_rifle/syndicate(src)
 	new /obj/item/clothing/neck/tie/red(src)
 	new /obj/item/clothing/under/syndicate/sniper(src)

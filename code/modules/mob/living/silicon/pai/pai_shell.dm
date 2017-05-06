@@ -26,10 +26,11 @@
 		P.visible_message("<span class='notice'>[src] ejects itself from [P]!</span>")
 	if(istype(card.loc, /mob/living))
 		var/mob/living/L = card.loc
-		if(!L.temporarilyRemoveItemFromInventory(card))
+		if(!L.unEquip(card))
 			to_chat(src, "<span class='warning'>Error: Unable to expand to mobile form. Chassis is restrained by some device or person.</span>")
 			return FALSE
-	forceMove(get_turf(card))
+	var/turf/T = get_turf(card)
+	forceMove(T)
 	card.forceMove(src)
 	if(client)
 		client.perspective = EYE_PERSPECTIVE
@@ -99,7 +100,3 @@
 	else
 		set_light(0)
 		to_chat(src, "<span class='notice'>You disable your integrated light.</span>")
-
-/mob/living/silicon/pai/movement_delay()
-	. = ..()
-	. += 1 //A bit slower than humans, so they're easier to smash

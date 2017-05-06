@@ -1,9 +1,12 @@
-/mob/living/carbon/human/say_mod(input, message_mode)
+/mob/living/carbon/human/say_quote(input, spans)
+	if(!input)
+		return "says, \"...\""	//not the best solution, but it will stop a large number of runtimes. The cause is somewhere in the Tcomms code
 	verb_say = dna.species.say_mod
-	if(slurring)
-		return "slurs"
-	else
-		. = ..()
+	if(src.slurring)
+		input = attach_spans(input, spans)
+		return "slurs, \"[input]\""
+
+	return ..()
 
 /mob/living/carbon/human/treat_message(message)
 	message = dna.species.handle_speech(message,src)
@@ -72,7 +75,7 @@
 		if(!istype(dongle)) return 0
 		if(dongle.translate_binary) return 1
 
-/mob/living/carbon/human/radio(message, message_mode, list/spans, language)
+/mob/living/carbon/human/radio(message, message_mode, list/spans)
 	. = ..()
 	if(. != 0)
 		return .
@@ -80,17 +83,17 @@
 	switch(message_mode)
 		if(MODE_HEADSET)
 			if (ears)
-				ears.talk_into(src, message, , spans, language)
+				ears.talk_into(src, message, , spans)
 			return ITALICS | REDUCE_RANGE
 
 		if(MODE_DEPARTMENT)
 			if (ears)
-				ears.talk_into(src, message, message_mode, spans, language)
+				ears.talk_into(src, message, message_mode, spans)
 			return ITALICS | REDUCE_RANGE
 
-	if(message_mode in GLOB.radiochannels)
+	if(message_mode in radiochannels)
 		if(ears)
-			ears.talk_into(src, message, message_mode, spans, language)
+			ears.talk_into(src, message, message_mode, spans)
 			return ITALICS | REDUCE_RANGE
 
 	return 0

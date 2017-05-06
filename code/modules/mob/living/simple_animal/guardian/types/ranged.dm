@@ -62,23 +62,12 @@
 			P.color = namedatum.colour
 
 /mob/living/simple_animal/hostile/guardian/ranged/ToggleLight()
-	var/msg
-	switch(lighting_alpha)
-		if (LIGHTING_PLANE_ALPHA_VISIBLE)
-			lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE
-			msg = "You activate your night vision."
-		if (LIGHTING_PLANE_ALPHA_MOSTLY_VISIBLE)
-			lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
-			msg = "You increase your night vision."
-		if (LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE)
-			lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
-			msg = "You maximize your night vision."
-		else
-			lighting_alpha = LIGHTING_PLANE_ALPHA_VISIBLE
-			msg = "You deactivate your night vision."
-
-	to_chat(src, "<span class='notice'>[msg]</span>")
-
+	if(see_invisible == SEE_INVISIBLE_MINIMUM)
+		to_chat(src, "<span class='notice'>You deactivate your night vision.</span>")
+		see_invisible = SEE_INVISIBLE_LIVING
+	else
+		to_chat(src, "<span class='notice'>You activate your night vision.</span>")
+		see_invisible = SEE_INVISIBLE_MINIMUM
 
 /mob/living/simple_animal/hostile/guardian/ranged/verb/Snare()
 	set name = "Set Surveillance Snare"

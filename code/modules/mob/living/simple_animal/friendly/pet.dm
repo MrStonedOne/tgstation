@@ -2,16 +2,16 @@
 	icon = 'icons/mob/pets.dmi'
 	mob_size = MOB_SIZE_SMALL
 	var/obj/item/clothing/neck/petcollar/pcollar = null
-	var/collar = ""
-	var/pettag = ""
+	var/image/collar = null
+	var/image/pettag = null
 	blood_volume = BLOOD_VOLUME_NORMAL
 
 /mob/living/simple_animal/pet/attackby(obj/item/O, mob/user, params)
 	if(istype(O, /obj/item/clothing/neck/petcollar) && !pcollar)
 		var/obj/item/clothing/neck/petcollar/P = O
 		pcollar = P
-		collar = "[icon_state]collar"
-		pettag = "[icon_state]tag"
+		collar = image('icons/mob/pets.dmi', src, "[icon_state]collar")
+		pettag = image('icons/mob/pets.dmi', src, "[icon_state]tag")
 		regenerate_icons()
 		to_chat(user, "<span class='notice'>You put the [P] around [src]'s neck.</span>")
 		if(P.tagname)
@@ -29,7 +29,7 @@
 	else
 		..()
 
-/mob/living/simple_animal/pet/Initialize()
+/mob/living/simple_animal/pet/New()
 	..()
 	if(pcollar)
 		pcollar = new(src)
@@ -46,7 +46,5 @@
 
 /mob/living/simple_animal/pet/regenerate_icons()
 	cut_overlays()
-	if(collar)
-		add_overlay(collar)
-	if(pettag)
-		add_overlay(pettag)
+	add_overlay(collar)
+	add_overlay(pettag)

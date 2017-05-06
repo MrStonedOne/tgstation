@@ -1,4 +1,6 @@
-SUBSYSTEM_DEF(orbit)
+var/datum/subsystem/orbit/SSorbit
+
+/datum/subsystem/orbit
 	name = "Orbits"
 	priority = 35
 	wait = 2
@@ -7,11 +9,15 @@ SUBSYSTEM_DEF(orbit)
 	var/list/currentrun = list()
 	var/list/processing = list()
 
-/datum/controller/subsystem/orbit/stat_entry()
+/datum/subsystem/orbit/New()
+	NEW_SS_GLOBAL(SSorbit)
+
+
+/datum/subsystem/orbit/stat_entry()
 	..("P:[processing.len]")
 
 
-/datum/controller/subsystem/orbit/fire(resumed = 0)
+/datum/subsystem/orbit/fire(resumed = 0)
 	if (!resumed)
 		src.currentrun = processing.Copy()
 

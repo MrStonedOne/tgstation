@@ -29,7 +29,7 @@
 /obj/item/weapon/melee/baton/throw_impact(atom/hit_atom)
 	..()
 	//Only mob/living types have stun handling
-	if(status && prob(throw_hit_chance) && iscarbon(hit_atom))
+	if(status && prob(throw_hit_chance) && isliving(hit_atom))
 		baton_stun(hit_atom)
 
 /obj/item/weapon/melee/baton/loaded/New() //this one starts with a cell pre-installed.
@@ -73,8 +73,9 @@
 			if(C.maxcharge < hitcost)
 				to_chat(user, "<span class='notice'>[src] requires a higher capacity cell.</span>")
 				return
-			if(!user.transferItemToLoc(W, src))
+			if(!user.unEquip(W))
 				return
+			W.forceMove(src)
 			bcell = W
 			to_chat(user, "<span class='notice'>You install a cell in [src].</span>")
 			update_icon()
@@ -82,7 +83,7 @@
 	else if(istype(W, /obj/item/weapon/screwdriver))
 		if(bcell)
 			bcell.updateicon()
-			bcell.loc = get_turf(src.loc)
+			bcell.forceMove(get_turf(src.loc))
 			bcell = null
 			to_chat(user, "<span class='notice'>You remove the cell from [src].</span>")
 			status = 0
@@ -164,7 +165,7 @@
 
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
-		H.forcesay(GLOB.hit_appends)
+		H.forcesay(hit_appends)
 
 
 	return 1

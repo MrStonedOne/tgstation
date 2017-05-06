@@ -15,7 +15,7 @@
 	var/throw_message = "bounces off of"
 	var/icon_aggro = null // for swapping to when we get aggressive
 	see_in_dark = 8
-	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
+	see_invisible = SEE_INVISIBLE_MINIMUM
 	mob_size = MOB_SIZE_LARGE
 
 /mob/living/simple_animal/hostile/asteroid/Aggro()
@@ -48,7 +48,7 @@
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/death(gibbed)
-	SSblackbox.add_details("mobs_killed_mining","[src.type]")
+	feedback_add_details("mobs_killed_mining","[src.type]")
 	..(gibbed)
 
 /mob/living/simple_animal/hostile/asteroid/basilisk
@@ -141,7 +141,7 @@
 	var/chase_time = 100
 	var/will_burrow = TRUE
 
-/mob/living/simple_animal/hostile/asteroid/goldgrub/Initialize()
+/mob/living/simple_animal/hostile/asteroid/goldgrub/New()
 	..()
 	var/i = rand(1,3)
 	while(i)
@@ -165,7 +165,7 @@
 	if(istype(target, /obj/item/weapon/ore))
 		EatOre(target)
 		return
-	return ..()
+	..()
 
 /mob/living/simple_animal/hostile/asteroid/goldgrub/proc/EatOre(atom/targeted_ore)
 	for(var/obj/item/weapon/ore/O in targeted_ore.loc)
@@ -233,7 +233,6 @@
 
 /mob/living/simple_animal/hostile/asteroid/hivelord/AttackingTarget()
 	OpenFire()
-	return TRUE
 
 /mob/living/simple_animal/hostile/asteroid/hivelord/death(gibbed)
 	mouse_opacity = 1
@@ -250,7 +249,7 @@
 	var/inert = 0
 	var/preserved = 0
 
-/obj/item/organ/hivelord_core/Initialize()
+/obj/item/organ/hivelord_core/New()
 	..()
 	addtimer(CALLBACK(src, .proc/inert_check), 2400)
 
@@ -266,15 +265,15 @@
 	update_icon()
 
 	if(implanted)
-		SSblackbox.add_details("hivelord_core", "[type]|implanted")
+		feedback_add_details("hivelord_core", "[type]|implanted")
 	else
-		SSblackbox.add_details("hivelord_core", "[type]|stabilizer")
+		feedback_add_details("hivelord_core", "[type]|stabilizer")
 
 
 /obj/item/organ/hivelord_core/proc/go_inert()
 	inert = TRUE
 	desc = "The remains of a hivelord that have become useless, having been left alone too long after being harvested."
-	SSblackbox.add_details("hivelord_core", "[src.type]|inert")
+	feedback_add_details("hivelord_core", "[src.type]|inert")
 	update_icon()
 
 /obj/item/organ/hivelord_core/ui_action_click()
@@ -298,10 +297,10 @@
 				return
 			if(H != user)
 				H.visible_message("[user] forces [H] to apply [src]... [H.p_they()] quickly regenerate all injuries!")
-				SSblackbox.add_details("hivelord_core","[src.type]|used|other")
+				feedback_add_details("hivelord_core","[src.type]|used|other")
 			else
 				to_chat(user, "<span class='notice'>You start to smear [src] on yourself. It feels and smells disgusting, but you feel amazingly refreshed in mere moments.</span>")
-				SSblackbox.add_details("hivelord_core","[src.type]|used|self")
+				feedback_add_details("hivelord_core","[src.type]|used|self")
 			H.revive(full_heal = 1)
 			qdel(src)
 	..()
@@ -338,7 +337,7 @@
 	pass_flags = PASSTABLE
 	del_on_death = 1
 
-/mob/living/simple_animal/hostile/asteroid/hivelordbrood/Initialize()
+/mob/living/simple_animal/hostile/asteroid/hivelordbrood/New()
 	..()
 	addtimer(CALLBACK(src, .proc/death), 100)
 
@@ -356,13 +355,13 @@
 		reagents.reaction(get_turf(src))
 	..()
 
-/mob/living/simple_animal/hostile/asteroid/hivelordbrood/blood/Initialize()
+/mob/living/simple_animal/hostile/asteroid/hivelordbrood/blood/New()
 	create_reagents(30)
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/hivelordbrood/blood/AttackingTarget()
-	. = ..()
-	if(. && iscarbon(target))
+	..()
+	if(iscarbon(target))
 		transfer_reagents(target, 1)
 
 
@@ -502,7 +501,7 @@
 	for(var/obj/effect/goliath_tentacle/original/O in loc)//No more GG NO RE from 2+ goliaths simultaneously tentacling you
 		if(O != src)
 			qdel(src)
-	var/list/directions = GLOB.cardinal.Copy()
+	var/list/directions = cardinal.Copy()
 	var/counter
 	for(counter = 1, counter <= 3, counter++)
 		var/spawndir = pick(directions)
@@ -897,7 +896,7 @@
 	wanted_objects = list(/obj/effect/decal/cleanable/xenoblood/xgibs, /obj/effect/decal/cleanable/blood/gibs/)
 	var/obj/item/udder/gutlunch/udder = null
 
-/mob/living/simple_animal/hostile/asteroid/gutlunch/Initialize()
+/mob/living/simple_animal/hostile/asteroid/gutlunch/New()
 	udder = new()
 	..()
 
@@ -925,7 +924,7 @@
 		regenerate_icons()
 		visible_message("<span class='notice'>[src] slurps up [target].</span>")
 		qdel(target)
-	return ..()
+	..()
 
 
 /obj/item/udder/gutlunch
@@ -947,7 +946,7 @@
 	name = "gubbuck"
 	gender = MALE
 
-/mob/living/simple_animal/hostile/asteroid/gutlunch/gubbuck/Initialize()
+/mob/living/simple_animal/hostile/asteroid/gutlunch/gubbuck/New()
 	..()
 	add_atom_colour(pick("#E39FBB", "#D97D64", "#CF8C4A"), FIXED_COLOUR_PRIORITY)
 	resize = 0.85
@@ -980,7 +979,7 @@
 	icon_dead = "tendril"
 	faction = list("mining")
 	weather_immunities = list("lava","ash")
-	luminosity = 1
+	light_range = 1
 	health = 250
 	maxHealth = 250
 	max_mobs = 3
@@ -994,7 +993,7 @@
 	del_on_death = 1
 	var/gps = null
 
-/mob/living/simple_animal/hostile/spawner/lavaland/Initialize()
+/mob/living/simple_animal/hostile/spawner/lavaland/New()
 	..()
 	for(var/F in RANGE_TURFS(1, src))
 		if(ismineralturf(F))
@@ -1009,7 +1008,7 @@
 #define MEDAL_PREFIX "Tendril"
 /mob/living/simple_animal/hostile/spawner/lavaland/death()
 	var/last_tendril = TRUE
-	for(var/mob/living/simple_animal/hostile/spawner/lavaland/other in GLOB.mob_list)
+	for(var/mob/living/simple_animal/hostile/spawner/lavaland/other in mob_list)
 		if(other != src)
 			last_tendril = FALSE
 			break
@@ -1030,7 +1029,7 @@
 /obj/effect/collapse
 	name = "collapsing necropolis tendril"
 	desc = "Get clear!"
-	luminosity = 1
+	light_range = 1
 	layer = ABOVE_OPEN_TURF_LAYER
 	icon = 'icons/mob/nest.dmi'
 	icon_state = "tendril"
@@ -1040,7 +1039,7 @@
 	..()
 	visible_message("<span class='boldannounce'>The tendril writhes in fury as the earth around it begins to crack and break apart! Get back!</span>")
 	visible_message("<span class='warning'>Something falls free of the tendril!</span>")
-	playsound(get_turf(src),'sound/effects/tendril_destroyed.ogg', 200, 0, 50, 1, 1)
+	playsound(get_turf(src),'sound/misc/gameover.ogg', 200, 0, 50, 1, 1)
 	spawn(50)
 		for(var/mob/M in range(7,src))
 			shake_camera(M, 15, 1)

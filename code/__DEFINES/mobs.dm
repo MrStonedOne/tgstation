@@ -10,7 +10,7 @@
 #define BLOOD_VOLUME_MAXIMUM		2000
 #define BLOOD_VOLUME_SLIME_SPLIT	1120
 #define BLOOD_VOLUME_NORMAL			560
-#define BLOOD_VOLUME_SAFE			475
+#define BLOOD_VOLUME_SAFE			501
 #define BLOOD_VOLUME_OKAY			336
 #define BLOOD_VOLUME_BAD			224
 #define BLOOD_VOLUME_SURVIVE		122
@@ -37,9 +37,6 @@
 #define BODYPART_ORGANIC   1
 #define BODYPART_ROBOTIC   2
 
-#define DEFAULT_BODYPART_ICON_ORGANIC 'icons/mob/human_parts_greyscale.dmi'
-#define DEFAULT_BODYPART_ICON_ROBOTIC 'icons/mob/augments.dmi'
-
 #define MONKEY_BODYPART "monkey"
 #define ALIEN_BODYPART "alien"
 #define LARVA_BODYPART "larva"
@@ -53,6 +50,12 @@
 #define NUTRITION_LEVEL_FED 350
 #define NUTRITION_LEVEL_HUNGRY 250
 #define NUTRITION_LEVEL_STARVING 150
+
+#define THIRST_LEVEL_FULL 200
+#define THIRST_LEVEL_LIGHT 150
+#define THIRST_LEVEL_MIDDLE 100
+#define THIRST_LEVEL_HARD 75
+#define THIRST_LEVEL_DEADLY 40
 
 //Slime evolution threshold. Controls how fast slimes can split/grow
 #define SLIME_EVOLUTION_THRESHOLD 10
@@ -104,21 +107,3 @@
 #define SNPC_STEALTH 2
 #define SNPC_MARTYR 3
 #define SNPC_PSYCHO 4
-
-//Individual logging defines
-#define INDIVIDUAL_ATTACK_LOG "Attack log"
-#define INDIVIDUAL_SAY_LOG "Say log"
-#define INDIVIDUAL_EMOTE_LOG "Emote log"
-#define INDIVIDUAL_OOC_LOG "OOC log"
-#define INDIVIDUAL_SHOW_ALL_LOG "All logs"
-
-#define TK_MAXRANGE 15
-
-#define NO_SLIP_WHEN_WALKING 1
-#define SLIDE 2
-#define GALOSHES_DONT_HELP 4
-#define SLIDE_ICE 8
-
-#define MAX_CHICKENS 50
-
-#define UNHEALING_EAR_DAMAGE 100

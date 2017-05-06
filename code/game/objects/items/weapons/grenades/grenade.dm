@@ -19,7 +19,7 @@
 /obj/item/weapon/grenade/deconstruct(disassembled = TRUE)
 	if(!disassembled)
 		prime()
-	if(!QDELETED(src))
+	if(!qdeleted(src))
 		qdel(src)
 
 /obj/item/weapon/grenade/proc/clown_check(mob/living/carbon/human/user)
@@ -56,7 +56,7 @@
 			var/turf/bombturf = get_turf(src)
 			var/area/A = get_area(bombturf)
 			var/message = "[ADMIN_LOOKUPFLW(user)]) has primed a [name] for detonation at [ADMIN_COORDJMP(bombturf)]"
-			GLOB.bombers += message
+			bombers += message
 			message_admins(message)
 			log_game("[key_name(usr)] has primed a [name] for detonation at [A.name] [COORD(bombturf)].")
 			if(iscarbon(user))
@@ -71,7 +71,7 @@
 /obj/item/weapon/grenade/proc/update_mob()
 	if(ismob(loc))
 		var/mob/M = loc
-		M.dropItemToGround(src)
+		M.unEquip(src)
 
 
 /obj/item/weapon/grenade/attackby(obj/item/weapon/W, mob/user, params)

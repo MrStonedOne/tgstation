@@ -26,20 +26,20 @@
 /mob/living/proc/spread_bodyparts()
 	return
 
-/mob/living/dust(just_ash = FALSE)
+/mob/living/dust()
 	death(1)
 
 	if(buckled)
 		buckled.unbuckle_mob(src,force=1)
 
 	dust_animation()
-	spawn_dust(just_ash)
+	spawn_dust()
 	qdel(src)
 
 /mob/living/proc/dust_animation()
 	return
 
-/mob/living/proc/spawn_dust(just_ash = FALSE)
+/mob/living/proc/spawn_dust()
 	new /obj/effect/decal/cleanable/ash(loc)
 
 
@@ -49,15 +49,16 @@
 	timeofdeath = world.time
 	tod = worldtime2text()
 	var/turf/T = get_turf(src)
-	if(mind && mind.name && mind.active && (!(T.flags & NO_DEATHRATTLE)))
+	if(mind && mind.name && mind.active && (T.z != ZLEVEL_CENTCOM))
 		var/area/A = get_area(T)
 		var/rendered = "<span class='deadsay'><b>[mind.name]</b> has died at <b>[A.name]</b>.</span>"
-		deadchat_broadcast(rendered, follow_target = src, turf_target = T, message_type=DEADCHAT_DEATHRATTLE)
+		deadchat_broadcast(rendered, follow_target = src, message_type=DEADCHAT_DEATHRATTLE)
 	if(mind)
 		mind.store_memory("Time of death: [tod]", 0)
-	GLOB.living_mob_list -= src
+	living_mob_list -= src
 	if(!gibbed)
-		GLOB.dead_mob_list += src
+		dead_mob_list += src
+	to_chat(src, "Wait for respawn at look at this screen. OOC -> Respawn.")
 	paralysis = 0
 	stunned = 0
 	weakened = 0
@@ -65,19 +66,13 @@
 	SetSleeping(0, 0)
 	blind_eyes(1)
 	reset_perspective(null)
-	reload_fullscreen()
+	hide_fullscreens()
 	update_action_buttons_icon()
 	update_damage_hud()
 	update_health_hud()
 	update_canmove()
 	med_hud_set_health()
 	med_hud_set_status()
-
-	for(var/s in ownedSoullinks)
-		var/datum/soullink/S = s
-		S.ownerDies(gibbed)
-	for(var/s in sharedSoullinks)
-		var/datum/soullink/S = s
-		S.sharerDies(gibbed)
-
+	if(client)
+		client.screen += PoolOrNew(/obj/screen/fullscreen/death)
 	return TRUE

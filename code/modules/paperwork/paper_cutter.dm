@@ -48,7 +48,7 @@
 			return
 		playsound(loc, "pageturn", 60, 1)
 		to_chat(user, "<span class='notice'>You place [P] in [src].</span>")
-		P.loc = src
+		P.forceMove(src)
 		storedpaper = P
 		update_icon()
 		return
@@ -56,7 +56,7 @@
 		if(!user.drop_item())
 			return
 		to_chat(user, "<span class='notice'>You replace [src]'s [P].</span>")
-		P.loc = src
+		P.forceMove(src)
 		storedcutter = P
 		update_icon()
 		return
@@ -100,7 +100,10 @@
 
 	else if(istype(over_object, /obj/screen/inventory/hand))
 		var/obj/screen/inventory/hand/H = over_object
-		M.putItemFromInventoryInHandIfPossible(src, H.held_index)
+		if(!remove_item_from_storage(M))
+			if(!M.unEquip(src))
+				return
+		M.put_in_hand(src, H.held_index)
 	add_fingerprint(M)
 
 

@@ -4,6 +4,8 @@
 // Navigates via floor navbeacons
 // Remote Controlled from QM's PDA
 
+var/global/mulebot_count = 0
+
 #define SIGH 0
 #define ANNOYED 1
 #define DELIGHT 2
@@ -46,7 +48,7 @@
 	var/obj/item/weapon/stock_parts/cell/cell
 	var/bloodiness = 0
 
-/mob/living/simple_animal/bot/mulebot/Initialize()
+/mob/living/simple_animal/bot/mulebot/New()
 	..()
 	wires = new /datum/wires/mulebot(src)
 	var/datum/job/cargo_tech/J = new/datum/job/cargo_tech
@@ -56,10 +58,10 @@
 	cell.charge = 2000
 	cell.maxcharge = 2000
 
-	var/static/mulebot_count = 0
-	mulebot_count += 1
-	if(!suffix)
-		set_suffix("#[mulebot_count]")
+	spawn(10) // must wait for map loading to finish
+		mulebot_count += 1
+		if(!suffix)
+			set_suffix("#[mulebot_count]")
 
 /mob/living/simple_animal/bot/mulebot/Destroy()
 	unload(0)
@@ -87,13 +89,13 @@
 		if(!user.drop_item())
 			return
 		var/obj/item/weapon/stock_parts/cell/C = I
-		C.loc = src
+		C.forceMove(src)
 		cell = C
 		visible_message("[user] inserts a cell into [src].",
 						"<span class='notice'>You insert the new cell into [src].</span>")
 	else if(istype(I, /obj/item/weapon/crowbar) && open && cell)
 		cell.add_fingerprint(usr)
-		cell.loc = loc
+		cell.forceMove(loc)
 		cell = null
 		visible_message("[user] crowbars out the power cell from [src].",
 						"<span class='notice'>You pry the powercell out of [src].</span>")
@@ -163,7 +165,7 @@
 		ui_interact(user)
 
 /mob/living/simple_animal/bot/mulebot/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-										datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+										datum/tgui/master_ui = null, datum/ui_state/state = default_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "mulebot", name, 600, 375, master_ui, state)
@@ -229,7 +231,7 @@
 			if(mode == BOT_IDLE || mode == BOT_DELIVER)
 				start_home()
 		if("destination")
-			var/new_dest = input(user, "Enter Destination:", name, destination) as null|anything in GLOB.deliverybeacontags
+			var/new_dest = input(user, "Enter Destination:", name, destination) as null|anything in deliverybeacontags
 			if(new_dest)
 				set_destination(new_dest)
 		if("setid")
@@ -237,7 +239,7 @@
 			if(new_id)
 				set_suffix(new_id)
 		if("sethome")
-			var/new_home = input(user, "Enter Home:", name, home_destination) as null|anything in GLOB.deliverybeacontags
+			var/new_home = input(user, "Enter Home:", name, home_destination) as null|anything in deliverybeacontags
 			if(new_home)
 				home_destination = new_home
 		if("unload")
@@ -363,7 +365,7 @@
 		if(!load_mob(AM))
 			return
 	else
-		AM.loc = src
+		AM.forceMove(src)
 
 	load = AM
 	mode = BOT_IDLE
@@ -403,7 +405,7 @@
 	unbuckle_all_mobs()
 
 	if(load)
-		load.loc = loc
+		load.forceMove(loc)
 		load.pixel_y = initial(load.pixel_y)
 		load.layer = initial(load.layer)
 		load.plane = initial(load.plane)
@@ -432,7 +434,7 @@
 		return
 	if(on)
 		var/speed = (wires.is_cut(WIRE_MOTOR1) ? 0 : 1) + (wires.is_cut(WIRE_MOTOR2) ? 0 : 2)
-		//to_chat(world, "speed: [speed]")
+//		to_chat(world, "speed: [speed]")
 		var/num_steps = 0
 		switch(speed)
 			if(0)
@@ -474,7 +476,7 @@
 					path -= next
 					return
 				if(isturf(next))
-					//to_chat(world, "at ([x],[y]) moving to ([next.x],[next.y])")
+//					to_chat(world, "at ([x],[y]) moving to ([next.x],[next.y])")
 
 					if(bloodiness)
 						var/obj/effect/decal/cleanable/blood/tracks/B = new(loc)
@@ -497,7 +499,7 @@
 					var/moved = step_towards(src, next)	// attempt to move
 					if(cell) cell.use(1)
 					if(moved && oldloc!=loc)	// successful move
-						//to_chat(world, "Successful move.")
+//						to_chat(world, "Successful move.")
 						blockcount = 0
 						path -= loc
 
@@ -508,7 +510,7 @@
 
 					else		// failed to move
 
-						//to_chat(world, "Unable to move.")
+//						to_chat(world, "Unable to move.")
 						blockcount++
 						mode = BOT_BLOCKED
 						if(blockcount == 3)
@@ -528,16 +530,16 @@
 						return
 				else
 					buzz(ANNOYED)
-					//to_chat(world, "Bad turf.")
+//					to_chat(world, "Bad turf.")
 					mode = BOT_NAV
 					return
 			else
-				//to_chat(world, "No path.")
+//				to_chat(world, "No path.")
 				mode = BOT_NAV
 				return
 
 		if(BOT_NAV)	// calculate new path
-			//to_chat(world, "Calc new path.")
+//			to_chat(world, "Calc new path.")
 			mode = BOT_WAIT_FOR_NAV
 			spawn(0)
 				calc_path()
@@ -596,7 +598,7 @@
 		if(pathset) //The AI called us here, so notify it of our arrival.
 			loaddir = dir //The MULE will attempt to load a crate in whatever direction the MULE is "facing".
 			if(calling_ai)
-				to_chat(calling_ai, "<span class='notice'>\icon[src] [src] wirelessly plays a chiming sound!</span>")
+				to_chat(calling_ai, "<span class='notice'>[bicon(src)] [src] wirelessly plays a chiming sound!</span>")
 				playsound(calling_ai, 'sound/machines/chime.ogg',40, 0)
 				calling_ai = null
 				radio_channel = "AI Private" //Report on AI Private instead if the AI is controlling us.
@@ -684,7 +686,7 @@
 	if(!on || wires.is_cut(WIRE_BEACON))
 		return
 
-	for(var/obj/machinery/navbeacon/NB in GLOB.deliverybeacons)
+	for(var/obj/machinery/navbeacon/NB in deliverybeacons)
 		if(NB.location == new_destination)	// if the beacon location matches the set destination
 									// the we will navigate there
 			destination = new_destination
@@ -715,11 +717,13 @@
 	new /obj/item/stack/rods(Tsec)
 	new /obj/item/stack/cable_coil/cut(Tsec)
 	if(cell)
-		cell.loc = Tsec
+		cell.forceMove(Tsec)
 		cell.update_icon()
 		cell = null
 
-	do_sparks(3, TRUE, src)
+	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+	s.set_up(3, 1, src)
+	s.start()
 
 	new /obj/effect/decal/cleanable/oil(loc)
 	..()
@@ -750,4 +754,4 @@
 #undef DELIGHT
 
 /obj/machinery/bot_core/mulebot
-	req_access = list(GLOB.access_cargo)
+	req_access = list(access_cargo)

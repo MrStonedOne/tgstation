@@ -13,6 +13,9 @@
 	var/sheet_type = /obj/item/stack/sheet/metal
 	var/sheet_amount = 2
 	var/girder_type = /obj/structure/girder
+	var/plating_type = /turf/open/floor/plating
+	var/disasemblable = 1
+	var/grider = 1
 
 	canSmoothWith = list(
 	/turf/closed/wall,
@@ -42,15 +45,24 @@
 			var/obj/structure/sign/poster/P = O
 			P.roll_and_drop(src)
 
-	ChangeTurf(/turf/open/floor/plating)
+	var/turf/open/floor/F = ChangeTurf(plating_type)
+	if(!F)
+		return
+
+	if(explode && prob(33))
+		F.ChangeTurf(F.baseturf)
 
 /turf/closed/wall/proc/break_wall()
-	new sheet_type(src, sheet_amount)
-	return new girder_type(src)
+	if(sheet_type)
+		new sheet_type(src, sheet_amount)
+	if(grider)
+		return new girder_type(src)
 
 /turf/closed/wall/proc/devastate_wall()
-	new sheet_type(src, sheet_amount)
-	new /obj/item/stack/sheet/metal(src)
+	if(sheet_type)
+		new sheet_type(src, sheet_amount)
+	if(grider)
+		new /obj/item/stack/sheet/metal(src)
 
 /turf/closed/wall/ex_act(severity, target)
 	if(target == src)
@@ -58,25 +70,23 @@
 		return
 	switch(severity)
 		if(1)
-			//SN src = null
-			var/turf/NT = ChangeTurf(baseturf)
-			NT.contents_explosion(severity, target)
-			return
+			take_damage(rand(100,150))
 		if(2)
-			if (prob(50))
-				dismantle_wall(0,1)
-			else
-				dismantle_wall(1,1)
+			take_damage(rand(30,50))
 		if(3)
-			if (prob(hardness))
-				dismantle_wall(0,1)
+			take_damage(rand(5,30))
 	if(!density)
 		..()
 
 
 /turf/closed/wall/blob_act(obj/structure/blob/B)
-	if(prob(50))
-		dismantle_wall()
+	..()
+	take_damage(rand(10,20))
+
+/turf/closed/wall/bullet_act(var/obj/item/projectile/Proj)
+	..()
+	if(Proj.damage > hardness/4)
+		take_damage(Proj.damage/20)
 
 /turf/closed/wall/mech_melee_attack(obj/mecha/M)
 	M.do_attack_animation(src)
@@ -84,8 +94,7 @@
 		if(BRUTE)
 			playsound(src, 'sound/weapons/punch4.ogg', 50, 1)
 			visible_message("<span class='danger'>[M.name] has hit [src]!</span>", null, null, COMBAT_MESSAGE_RANGE)
-			if(prob(hardness + M.force) && M.force > 20)
-				dismantle_wall(1)
+			if(take_damage(M.force))
 				playsound(src, 'sound/effects/meteorimpact.ogg', 100, 1)
 		if(BURN)
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
@@ -102,16 +111,15 @@
 	M.changeNext_move(CLICK_CD_MELEE)
 	M.do_attack_animation(src)
 	if(M.environment_smash >= 2)
-		playsound(src, 'sound/effects/meteorimpact.ogg', 100, 1)
-		dismantle_wall(1)
+		playsound(src, 'sound/effects/bang.ogg', 50, 1)
+		var/dam = rand(M.melee_damage_lower, M.melee_damage_upper)
+		take_damage(dam > src.hardness/2? dam : 0)
 		return
 
 /turf/closed/wall/attack_hulk(mob/user, does_attack_animation = 0)
 	..(user, 1)
-	if(prob(hardness))
-		playsound(src, 'sound/effects/meteorimpact.ogg', 100, 1)
+	if(take_damage(rand(15,30)))
 		user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ))
-		dismantle_wall(1)
 	else
 		playsound(src, 'sound/effects/bang.ogg', 50, 1)
 		to_chat(user, text("<span class='notice'>You punch the wall.</span>"))
@@ -143,19 +151,22 @@
 			thermitemelt(user)
 			return
 
+	if(!disasemblable)
+		return
+
 	var/turf/T = user.loc	//get user's location for delay checks
 
 	//the istype cascade has been spread among various procs for easy overriding
 	if(try_wallmount(W,user,T) || try_decon(W,user,T) || try_destroy(W,user,T))
-		return
+		return 1
 
 
 /turf/closed/wall/proc/try_wallmount(obj/item/weapon/W, mob/user, turf/T)
 	//check for wall mounted frames
 	if(istype(W,/obj/item/wallframe))
 		var/obj/item/wallframe/F = W
-		if(F.try_build(src, user))
-			F.attach(src, user)
+		if(F.try_build(src))
+			F.attach(src)
 		return 1
 	//Poster stuff
 	else if(istype(W,/obj/item/weapon/poster))
@@ -206,7 +217,7 @@
 
 
 /turf/closed/wall/proc/thermitemelt(mob/user)
-	cut_overlays()
+	overlays = list()
 	var/obj/effect/overlay/O = new/obj/effect/overlay( src )
 	O.name = "thermite"
 	O.desc = "Looks hot."
@@ -221,7 +232,7 @@
 
 	if(thermite >= 50)
 		var/burning_time = max(100,300 - thermite)
-		var/turf/open/floor/F = ChangeTurf(/turf/open/floor/plating)
+		var/turf/open/floor/F = ChangeTurf(plating_type)
 		F.burn_tile()
 		F.add_hiddenprint(user)
 		QDEL_IN(O, burning_time)
@@ -231,18 +242,16 @@
 
 /turf/closed/wall/singularity_pull(S, current_size)
 	if(current_size >= STAGE_FIVE)
-		if(prob(50))
-			dismantle_wall()
+		take_damage(40)
 		return
 	if(current_size == STAGE_FOUR)
-		if(prob(30))
-			dismantle_wall()
+		take_damage(20)
 
 /turf/closed/wall/narsie_act()
 	if(prob(20))
 		ChangeTurf(/turf/closed/wall/mineral/cult)
 
-/turf/closed/wall/ratvar_act(force, ignore_mobs)
+/turf/closed/wall/ratvar_act(force)
 	. = ..()
 	if(.)
 		ChangeTurf(/turf/closed/wall/clockwork)
@@ -257,17 +266,3 @@
 
 /turf/closed/wall/acid_melt()
 	dismantle_wall(1)
-
-/turf/closed/wall/rcd_vals(mob/user, obj/item/weapon/construction/rcd/the_rcd)
-	switch(the_rcd.mode)
-		if(RCD_DECONSTRUCT)
-			return list("mode" = RCD_DECONSTRUCT, "delay" = 40, "cost" = 26)
-	return FALSE
-
-/turf/closed/wall/rcd_act(mob/user, obj/item/weapon/construction/rcd/the_rcd, passed_mode)
-	switch(passed_mode)
-		if(RCD_DECONSTRUCT)
-			to_chat(user, "<span class='notice'>You deconstruct the wall.</span>")
-			ChangeTurf(/turf/open/floor/plating)
-			return TRUE
-	return FALSE

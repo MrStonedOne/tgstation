@@ -6,8 +6,6 @@
 	icon_state = "spatial_gateway"
 	density = 1
 	light_range = 2
-	light_power = 3
-	light_color = "#6A4D2F"
 	var/sender = TRUE //If this gateway is made for sending, not receiving
 	var/both_ways = FALSE
 	var/lifetime = 25 //How many deciseconds this portal will last
@@ -15,8 +13,8 @@
 	var/obj/effect/clockwork/spatial_gateway/linked_gateway //The gateway linked to this one
 	var/timerid
 
-/obj/effect/clockwork/spatial_gateway/Initialize()
-	. = ..()
+/obj/effect/clockwork/spatial_gateway/New()
+	..()
 	addtimer(CALLBACK(src, .proc/check_setup), 1)
 
 /obj/effect/clockwork/spatial_gateway/Destroy()
@@ -98,12 +96,12 @@
 	if(severity == 1 && uses)
 		uses = 0
 		visible_message("<span class='warning'>[src] is disrupted!</span>")
-		animate(src, alpha = 0, transform = matrix()*2, time = 10, flags = ANIMATION_END_NOW)
+		animate(src, alpha = 0, transform = matrix()*2, time = 10)
 		deltimer(timerid)
 		timerid = QDEL_IN(src, 10)
 		linked_gateway.uses = 0
 		linked_gateway.visible_message("<span class='warning'>[linked_gateway] is disrupted!</span>")
-		animate(linked_gateway, alpha = 0, transform = matrix()*2, time = 10, flags = ANIMATION_END_NOW)
+		animate(linked_gateway, alpha = 0, transform = matrix()*2, time = 10)
 		deltimer(linked_gateway.timerid)
 		linked_gateway.timerid = QDEL_IN(linked_gateway, 10)
 		return TRUE
@@ -111,7 +109,7 @@
 
 /obj/effect/clockwork/spatial_gateway/Bumped(atom/A)
 	..()
-	if(A && !QDELETED(A))
+	if(isliving(A) || istype(A, /obj/item))
 		pass_through_gateway(A)
 
 /obj/effect/clockwork/spatial_gateway/proc/pass_through_gateway(atom/movable/A, no_cost)
@@ -130,9 +128,9 @@
 	playsound(src, 'sound/effects/EMPulse.ogg', 50, 1)
 	playsound(linked_gateway, 'sound/effects/EMPulse.ogg', 50, 1)
 	transform = matrix() * 1.5
-	animate(src, transform = matrix() / 1.5, time = 10, flags = ANIMATION_END_NOW)
+	animate(src, transform = matrix() / 1.5, time = 10)
 	linked_gateway.transform = matrix() * 1.5
-	animate(linked_gateway, transform = matrix() / 1.5, time = 10, flags = ANIMATION_END_NOW)
+	animate(linked_gateway, transform = matrix() / 1.5, time = 10)
 	A.forceMove(get_turf(linked_gateway))
 	if(!no_cost)
 		uses = max(0, uses - 1)
@@ -150,13 +148,13 @@
 	var/list/possible_targets = list()
 	var/list/teleportnames = list()
 
-	for(var/obj/structure/destructible/clockwork/powered/clockwork_obelisk/O in GLOB.all_clockwork_objects)
+	for(var/obj/structure/destructible/clockwork/powered/clockwork_obelisk/O in all_clockwork_objects)
 		if(!O.Adjacent(invoker) && O != src && (O.z <= ZLEVEL_SPACEMAX) && O.anchored) //don't list obelisks that we're next to
 			var/area/A = get_area(O)
 			var/locname = initial(A.name)
 			possible_targets[avoid_assoc_duplicate_keys("[locname] [O.name]", teleportnames)] = O
 
-	for(var/mob/living/L in GLOB.living_mob_list)
+	for(var/mob/living/L in living_mob_list)
 		if(!L.stat && is_servant_of_ratvar(L) && !L.Adjacent(invoker) && (L.z <= ZLEVEL_SPACEMAX)) //People right next to the invoker can't be portaled to, for obvious reasons
 			possible_targets[avoid_assoc_duplicate_keys("[L.name] ([L.real_name])", teleportnames)] = L
 

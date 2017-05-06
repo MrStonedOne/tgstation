@@ -3,12 +3,11 @@
 	var/obj/effect/proc_holder/changeling/thepower = null
 
 	for(var/path in subtypesof(/obj/effect/proc_holder/changeling))
-		var/obj/effect/proc_holder/changeling/S = path
-		if(initial(S.name) == sting_name)
-			thepower = new path()
-			break
+		var/obj/effect/proc_holder/changeling/S = new path()
+		if(S.name == sting_name)
+			thepower = S
 
-	if(!thepower)
+	if(thepower == null)
 		to_chat(user, "This is awkward. Changeling power purchase failed, please report this bug to a coder!")
 		return
 
@@ -45,13 +44,13 @@
 		to_chat(user, "<span class='notice'>We have removed our evolutions from this form, and are now ready to readapt.</span>")
 		user.remove_changeling_powers(1)
 		canrespec = 0
-		user.make_changeling(TRUE)
+		user.make_changeling()
 		return 1
 	else
 		to_chat(user, "<span class='danger'>You lack the power to readapt your evolutions!</span>")
 		return 0
 
-/mob/proc/make_changeling(is_respec)
+/mob/proc/make_changeling()
 	if(!mind)
 		return
 	if(!ishuman(src) && !ismonkey(src))
@@ -66,19 +65,12 @@
 		if(!S.dna_cost)
 			if(!mind.changeling.has_sting(S))
 				mind.changeling.purchasedpowers+=S
-			S.on_purchase(src, is_respec)
-	if(is_respec)
-		SSblackbox.add_details("changeling_power_purchase","Readapt")
+			S.on_purchase(src)
 
 	var/mob/living/carbon/C = src	//only carbons have dna now, so we have to typecaste
 	if(ishuman(C))
 		var/datum/changelingprofile/prof = mind.changeling.add_new_profile(C, src)
 		mind.changeling.first_prof = prof
-
-		var/obj/item/organ/brain/B = C.getorganslot("brain")
-		if(B)
-			B.vital = FALSE
-			B.decoy_override = TRUE
 	return 1
 
 /datum/changeling/proc/reset()

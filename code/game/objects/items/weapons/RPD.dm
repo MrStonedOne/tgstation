@@ -31,7 +31,7 @@ RPD
 
 /datum/pipe_info/New(pid,direction,dt)
 	src.id=pid
-	src.icon_state=GLOB.pipeID2State["[pid]"]
+	src.icon_state=pipeID2State["[pid]"]
 	src.dir = direction
 	src.dirtype=dt
 
@@ -48,7 +48,7 @@ RPD
 /datum/pipe_info/meter/Render(dispenser,label)
 	return "<li><a href='?src=\ref[dispenser];makemeter=1;type=[dirtype]'>[label]</a></li>" //hardcoding is no
 
-GLOBAL_LIST_INIT(disposalpipeID2State, list(
+var/global/list/disposalpipeID2State=list(
 	"pipe-s",
 	"pipe-c",
 	"pipe-j1",
@@ -59,7 +59,8 @@ GLOBAL_LIST_INIT(disposalpipeID2State, list(
 	"outlet",
 	"intake",
 	"pipe-j1s",
-	"pipe-j2s"))
+	"pipe-j2s"
+)
 
 /datum/pipe_info/disposal
 	categoryId = CATEGORY_DISPOSALS
@@ -68,7 +69,7 @@ GLOBAL_LIST_INIT(disposalpipeID2State, list(
 
 /datum/pipe_info/disposal/New(var/pid,var/dt)
 	src.id=pid
-	src.icon_state=GLOB.disposalpipeID2State[pid+1]
+	src.icon_state=disposalpipeID2State[pid+1]
 	src.dir = SOUTH
 	src.dirtype=dt
 	if(pid<DISP_END_BIN || pid>DISP_END_CHUTE)
@@ -78,7 +79,7 @@ GLOBAL_LIST_INIT(disposalpipeID2State, list(
 	return "<li><a href='?src=\ref[dispenser];dmake=[id];type=[dirtype]'>[label]</a></li>" //avoid hardcoding.
 
 //find these defines in code\game\machinery\pipe\consruction.dm
-GLOBAL_LIST_INIT(RPD_recipes, list(
+var/global/list/RPD_recipes=list(
 	"Regular Pipes" = list(
 		"Pipe"           = new /datum/pipe_info(PIPE_SIMPLE,			1, PIPE_BENDABLE),
 		//"Bent Pipe"      = new /datum/pipe_info(PIPE_SIMPLE,	 		5, PIPE_BENT),
@@ -94,10 +95,10 @@ GLOBAL_LIST_INIT(RPD_recipes, list(
 		"Passive Gate"   = new /datum/pipe_info(PIPE_PASSIVE_GATE,		1, PIPE_UNARY),
 		"Volume Pump"    = new /datum/pipe_info(PIPE_VOLUME_PUMP,		1, PIPE_UNARY),
 		"Scrubber"       = new /datum/pipe_info(PIPE_SCRUBBER,			1, PIPE_UNARY),
-		"Injector"       = new /datum/pipe_info(PIPE_INJECTOR,     		1, PIPE_UNARY),
 		"Meter"          = new /datum/pipe_info/meter(),
 		"Gas Filter"     = new /datum/pipe_info(PIPE_GAS_FILTER,		1, PIPE_TRIN_M),
 		"Gas Mixer"      = new /datum/pipe_info(PIPE_GAS_MIXER,			1, PIPE_TRIN_M),
+//		"Injector"       = new /datum/pipe_info(PIPE_INJECTOR,     		1, PIPE_UNARY),
 	),
 	"Heat Exchange" = list(
 		"Pipe"           = new /datum/pipe_info(PIPE_HE,				1, PIPE_BENDABLE),
@@ -118,7 +119,7 @@ GLOBAL_LIST_INIT(RPD_recipes, list(
 		"Chute"         = new /datum/pipe_info/disposal(DISP_END_CHUTE,		PIPE_UNARY),
 		"Sort Junction" = new /datum/pipe_info/disposal(DISP_SORTJUNCTION,	PIPE_TRINARY),
 	)
-))
+)
 /obj/item/weapon/pipe_dispenser
 	name = "Rapid Piping Device (RPD)"
 	desc = "A device used to rapidly pipe things."
@@ -204,8 +205,8 @@ GLOBAL_LIST_INIT(RPD_recipes, list(
 
 	var/icon/preview=null
 	var/datbuild = ""
-	for(var/category in GLOB.RPD_recipes)
-		var/list/cat = GLOB.RPD_recipes[category]
+	for(var/category in RPD_recipes)
+		var/list/cat=RPD_recipes[category]
 		for(var/label in cat)
 			var/datum/pipe_info/I = cat[label]
 			var/found=0
@@ -517,43 +518,55 @@ GLOBAL_LIST_INIT(RPD_recipes, list(
 		show_menu(usr)
 
 
-/obj/item/weapon/pipe_dispenser/pre_attackby(atom/A, mob/user)
-	if(!user.IsAdvancedToolUser() || istype(A,/turf/open/space/transit))
-		return ..()
+/obj/item/weapon/pipe_dispenser/afterattack(atom/A, mob/user)
+	if(!in_range(A,user) || loc != user)
+		return 0
 
-	//make sure what we're clicking is valid for the current mode
-	var/is_paintable = (p_class == PAINT_MODE && istype(A, /obj/machinery/atmospherics/pipe))
-	var/is_consumable = (p_class == EATING_MODE && (istype(A, /obj/item/pipe) || istype(A, /obj/item/pipe_meter) || istype(A, /obj/structure/disposalconstruct)))
-	var/can_make_pipe = ((p_class == ATMOS_MODE || p_class == METER_MODE || p_class == DISPOSALS_MODE) && isturf(A))
+	if(!user.IsAdvancedToolUser())
+		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
+		return 0
 
-	if(!is_paintable && !is_consumable && !can_make_pipe)
-		return ..()
+	if(istype(A,/area/shuttle)||istype(A,/turf/open/space/transit))
+		return 0
 
 	//So that changing the menu settings doesn't affect the pipes already being built.
 	var/queued_p_type = p_type
 	var/queued_p_dir = p_dir
 	var/queued_p_flipped = p_flipped
 
-	. = FALSE
-	switch(p_class) //if we've gotten this var, the target is valid
-		if(PAINT_MODE) //Paint pipes
+	switch(p_class)
+		if(PAINT_MODE) // Paint pipes
+			if(!istype(A,/obj/machinery/atmospherics/pipe))
+				// Avoid spewing errors about invalid mode -2 when clicking on stuff that aren't pipes.
+				to_chat(user, "<span class='warning'>\The [src]'s error light flickers!  Perhaps you need to only use it on pipes and pipe meters?</span>")
+				return 0
 			var/obj/machinery/atmospherics/pipe/P = A
 			playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 			P.add_atom_colour(paint_colors[paint_color], FIXED_COLOUR_PRIORITY)
 			P.pipe_color = paint_colors[paint_color]
 			user.visible_message("<span class='notice'>[user] paints \the [P] [paint_color].</span>","<span class='notice'>You paint \the [P] [paint_color].</span>")
+			//P.update_icon()
 			P.update_node_icon()
-			return
+			return 1
+		if(EATING_MODE) // Eating pipes
+			// Must click on an actual pipe or meter.
+			if(istype(A,/obj/item/pipe) || istype(A,/obj/item/pipe_meter) || istype(A,/obj/structure/disposalconstruct))
+				to_chat(user, "<span class='notice'>You start destroying pipe...</span>")
+				playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
+				if(do_after(user, 2, target = A))
+					activate()
+					qdel(A)
+					return 1
+				return 0
 
-		if(EATING_MODE) //Eating pipes
-			to_chat(user, "<span class='notice'>You start destroying a pipe...</span>")
-			playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
-			if(do_after(user, 2, target = A))
-				activate()
-				qdel(A)
-
-		if(ATMOS_MODE) //Making pipes
-			to_chat(user, "<span class='notice'>You start building a pipe...</span>")
+			// Avoid spewing errors about invalid mode -1 when clicking on stuff that aren't pipes.
+			to_chat(user, "<span class='warning'>The [src]'s error light flickers!  Perhaps you need to only use it on pipes and pipe meters?</span>")
+			return 0
+		if(ATMOS_MODE)
+			if(!isturf(A))
+				to_chat(user, "<span class='warning'>The [src]'s error light flickers!</span>")
+				return 0
+			to_chat(user, "<span class='notice'>You start building pipes...</span>")
 			playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 			if(do_after(user, 2, target = A))
 				activate()
@@ -561,36 +574,44 @@ GLOBAL_LIST_INIT(RPD_recipes, list(
 				P.flipped = queued_p_flipped
 				P.update()
 				P.add_fingerprint(usr)
+				return 1
+			return 0
 
-		if(METER_MODE) //Making pipe meters
+		if(METER_MODE)
+			if(!isturf(A))
+				to_chat(user, "<span class='warning'>The [src]'s error light flickers!</span>")
+				return 0
 			to_chat(user, "<span class='notice'>You start building a meter...</span>")
 			playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
 			if(do_after(user, 2, target = A))
 				activate()
 				new /obj/item/pipe_meter(A)
+				return 1
+			return 0
 
-		if(DISPOSALS_MODE) //Making disposals pipes
-			if(is_anchored_dense_turf(A))
-				to_chat(user, "<span class='warning'>The [src]'s error light flickers; there's something in the way!</span>")
-				return
-			to_chat(user, "<span class='notice'>You start building a disposals pipe...</span>")
+		if(DISPOSALS_MODE)
+			if(!isturf(A) || is_anchored_dense_turf(A))
+				to_chat(user, "<span class='warning'>The [src]'s error light flickers!</span>")
+				return 0
+			to_chat(user, "<span class='notice'>You start building pipes...</span>")
 			playsound(get_turf(src), 'sound/machines/click.ogg', 50, 1)
-			if(do_after(user, 4, target = A))
+			if(do_after(user, 20, target = A))
 				var/obj/structure/disposalconstruct/C = new (A, queued_p_type ,queued_p_dir)
 
 				if(!C.can_place())
 					to_chat(user, "<span class='warning'>There's not enough room to build that here!</span>")
 					qdel(C)
-					return
+					return 0
 
 				activate()
 
 				C.add_fingerprint(usr)
 				C.update_icon()
-				return
-
+				return 1
+			return 0
 		else
-			return ..()
+			..()
+			return 0
 
 
 /obj/item/weapon/pipe_dispenser/proc/activate()

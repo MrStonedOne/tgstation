@@ -54,7 +54,7 @@
 	idle_power_usage = 4
 	active_power_usage = 8
 	power_channel = ENVIRON
-	req_access = list(GLOB.access_atmospherics)
+	req_access = list(access_atmospherics)
 	obj_integrity = 250
 	max_integrity = 250
 	integrity_failure = 80
@@ -133,11 +133,13 @@
 		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
 		pixel_y = (dir & 3)? (dir == 1 ? -24 : 24) : 0
 
-	var/area/A = get_area(src)
+	var/area/A = get_area_master(src)
 	if(name == initial(name))
 		name = "[A.name] Air Alarm"
 
 	update_icon()
+	if(ticker && ticker.current_state == 3)//if the game is running
+		initialize()
 
 /obj/machinery/airalarm/Destroy()
 	if(SSradio)
@@ -146,8 +148,7 @@
 	wires = null
 	return ..()
 
-/obj/machinery/airalarm/Initialize(mapload)
-	..()
+/obj/machinery/airalarm/initialize()
 	set_frequency(frequency)
 
 /obj/machinery/airalarm/ui_status(mob/user)
@@ -158,7 +159,7 @@
 	return UI_CLOSE
 
 /obj/machinery/airalarm/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-									datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+									datum/tgui/master_ui = null, datum/ui_state/state = default_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "airalarm", name, 440, 650, master_ui, state)
@@ -277,11 +278,11 @@
 		thresholds[thresholds.len]["settings"] += list(list("env" = "temperature", "val" = "max1", "selected" = selected.max1))
 		thresholds[thresholds.len]["settings"] += list(list("env" = "temperature", "val" = "max2", "selected" = selected.max2))
 
-		for(var/gas_id in GLOB.meta_gas_info)
+		for(var/gas_id in meta_gas_info)
 			if(!(gas_id in TLV)) // We're not interested in this gas, it seems.
 				continue
 			selected = TLV[gas_id]
-			thresholds += list(list("name" = GLOB.meta_gas_info[gas_id][META_GAS_NAME], "settings" = list()))
+			thresholds += list(list("name" = meta_gas_info[gas_id][META_GAS_NAME], "settings" = list()))
 			thresholds[thresholds.len]["settings"] += list(list("env" = gas_id, "val" = "min2", "selected" = selected.min2))
 			thresholds[thresholds.len]["settings"] += list(list("env" = gas_id, "val" = "min1", "selected" = selected.min1))
 			thresholds[thresholds.len]["settings"] += list(list("env" = gas_id, "val" = "max1", "selected" = selected.max1))
@@ -311,7 +312,7 @@
 			send_signal(device_id, list("checks" = text2num(params["val"])^2))
 			. = TRUE
 		if("set_external_pressure")
-			var/area/A = get_area(src)
+			var/area/A = get_area_master(src)
 			var/target = input("New target pressure:", name, A.air_vent_info[device_id]["external"]) as num|null
 			if(!isnull(target) && !..())
 				send_signal(device_id, list("set_external_pressure" = target))
@@ -337,12 +338,12 @@
 			apply_mode()
 			. = TRUE
 		if("alarm")
-			var/area/A = get_area(src)
+			var/area/A = get_area_master(src)
 			if(A.atmosalert(2, src))
 				post_alert(2)
 			. = TRUE
 		if("reset")
-			var/area/A = get_area(src)
+			var/area/A = get_area_master(src)
 			if(A.atmosalert(0, src))
 				post_alert(0)
 			. = TRUE
@@ -374,7 +375,7 @@
 		return 0
 
 /obj/machinery/airalarm/proc/refresh_all()
-	var/area/A = get_area(src)
+	var/area/A = get_area_master(src)
 	for(var/id_tag in A.air_vent_names)
 		var/list/I = A.air_vent_info[id_tag]
 		if(I && I["timestamp"] + AALARM_REPORT_TIMEOUT / 2 > world.time)
@@ -389,7 +390,7 @@
 /obj/machinery/airalarm/proc/set_frequency(new_frequency)
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
-	radio_connection = SSradio.add_object(src, frequency, GLOB.RADIO_TO_AIRALARM)
+	radio_connection = SSradio.add_object(src, frequency, RADIO_TO_AIRALARM)
 
 /obj/machinery/airalarm/proc/send_signal(target, list/command)//sends signal 'command' to 'target'. Returns 0 if no radio connection, 1 otherwise
 	if(!radio_connection)
@@ -403,13 +404,13 @@
 	signal.data["tag"] = target
 	signal.data["sigtype"] = "command"
 
-	radio_connection.post_signal(src, signal, GLOB.RADIO_FROM_AIRALARM)
+	radio_connection.post_signal(src, signal, RADIO_FROM_AIRALARM)
 //			to_chat(world, text("Signal [] Broadcasted to []", command, target))
 
 	return 1
 
 /obj/machinery/airalarm/proc/apply_mode()
-	var/area/A = get_area(src)
+	var/area/A = get_area_master(src)
 	switch(mode)
 		if(AALARM_MODE_SCRUBBING)
 			for(var/device_id in A.air_scrub_names)
@@ -541,7 +542,7 @@
 		icon_state = "alarmp"
 		return
 
-	var/area/A = get_area(src)
+	var/area/A = get_area_master(src)
 	switch(max(danger_level, A.atmosalm))
 		if(0)
 			icon_state = "alarm0"
@@ -596,7 +597,7 @@
 	if(!frequency)
 		return
 
-	var/area/A = get_area(src)
+	var/area/A = get_area_master(src)
 
 	var/datum/signal/alert_signal = new
 	alert_signal.source = src
@@ -614,7 +615,7 @@
 	frequency.post_signal(src, alert_signal,null,-1)
 
 /obj/machinery/airalarm/proc/apply_danger_level()
-	var/area/A = get_area(src)
+	var/area/A = get_area_master(src)
 
 	var/new_area_danger_level = 0
 	for(var/area/R in A.related)
@@ -691,7 +692,7 @@
 				return
 		if(0)
 			if(istype(W, /obj/item/weapon/electronics/airalarm))
-				if(user.temporarilyRemoveItemFromInventory(W))
+				if(user.unEquip(W))
 					to_chat(user, "<span class='notice'>You insert the circuit.</span>")
 					buildstage = 1
 					update_icon()
@@ -730,14 +731,3 @@
 			I.obj_integrity = I.max_integrity * 0.5
 		new /obj/item/stack/cable_coil(loc, 3)
 	qdel(src)
-
-#undef AALARM_MODE_SCRUBBING
-#undef AALARM_MODE_VENTING
-#undef AALARM_MODE_PANIC
-#undef AALARM_MODE_REPLACEMENT
-#undef AALARM_MODE_OFF
-#undef AALARM_MODE_FLOOD
-#undef AALARM_MODE_SIPHON
-#undef AALARM_MODE_CONTAMINATED
-#undef AALARM_MODE_REFILL
-#undef AALARM_REPORT_TIMEOUT

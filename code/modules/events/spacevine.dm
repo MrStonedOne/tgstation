@@ -19,7 +19,7 @@
 
 	if(turfs.len) //Pick a turf to spawn at if we can
 		var/turf/T = pick(turfs)
-		new /datum/spacevine_controller(T) //spawn a controller at turf
+		new/obj/effect/spacevine_controller(T) //spawn a controller at turf
 
 
 /datum/spacevine_mutation
@@ -80,7 +80,12 @@
 /datum/spacevine_mutation/space_covering/New()
 	. = ..()
 	if(!coverable_turfs)
-		coverable_turfs = typecacheof(list(/turf/open/space)) - /turf/open/space/transit
+		coverable_turfs = typecacheof(list(
+			/turf/open/space
+		))
+		coverable_turfs -= typecacheof(list(
+			/turf/open/space/transit
+		))
 
 /datum/spacevine_mutation/space_covering/on_grow(obj/structure/spacevine/holder)
 	process_mutation(holder)
@@ -114,7 +119,7 @@
 
 /datum/spacevine_mutation/light/on_grow(obj/structure/spacevine/holder)
 	if(holder.energy)
-		holder.set_light(severity, 0.3)
+		holder.set_light(severity, 3)
 
 /datum/spacevine_mutation/toxicity
 	name = "toxic"
@@ -141,10 +146,10 @@
 
 /datum/spacevine_mutation/explosive/on_explosion(explosion_severity, target, obj/structure/spacevine/holder)
 	if(explosion_severity < 3)
-		qdel(holder)
+		qdel(src)
 	else
 		. = 1
-		QDEL_IN(holder, 5)
+		QDEL_IN(src, 5)
 
 /datum/spacevine_mutation/explosive/on_death(obj/structure/spacevine/holder, mob/hitter, obj/item/I)
 	explosion(holder.loc, 0, 0, severity, 0, 0)
@@ -319,10 +324,10 @@
 	obj_integrity = 50
 	max_integrity = 50
 	var/energy = 0
-	var/datum/spacevine_controller/master = null
+	var/obj/effect/spacevine_controller/master = null
 	var/list/mutations = list()
 
-/obj/structure/spacevine/Initialize()
+/obj/structure/spacevine/New()
 	..()
 	add_atom_colour("#ffffff", FIXED_COLOUR_PRIORITY)
 
@@ -342,7 +347,13 @@
 	for(var/datum/spacevine_mutation/SM in mutations)
 		SM.on_death(src)
 	if(master)
-		master.VineDestroyed(src)
+		master.vines -= src
+		master.growth_queue -= src
+		if(!master.vines.len)
+			var/obj/item/seeds/kudzu/KZ = new(loc)
+			KZ.mutations |= mutations
+			KZ.potency = min(100, master.mutativeness * 10)
+			KZ.production = (master.spread_cap / initial(master.spread_cap)) * 5
 	mutations = list()
 	set_opacity(0)
 	if(has_buckled_mobs())
@@ -417,49 +428,41 @@
 /obj/structure/spacevine/attack_alien(mob/living/user)
 	eat(user)
 
-/datum/spacevine_controller
-	var/list/obj/structure/spacevine/vines
-	var/list/growth_queue
+/obj/effect/spacevine_controller
+	invisibility = INVISIBILITY_ABSTRACT
+	var/list/obj/structure/spacevine/vines = list()
+	var/list/growth_queue = list()
 	var/spread_multiplier = 5
 	var/spread_cap = 30
-	var/list/vine_mutations_list
+	var/list/mutations_list = list()
 	var/mutativeness = 1
 
-/datum/spacevine_controller/New(turf/location, list/muts, potency, production)
-	vines = list()
-	growth_queue = list()
-	spawn_spacevine_piece(location, null, muts)
+/obj/effect/spacevine_controller/New(loc, list/muts, potency, production)
+	add_atom_colour("#ffffff", FIXED_COLOUR_PRIORITY)
+	spawn_spacevine_piece(loc, , muts)
 	START_PROCESSING(SSobj, src)
-	vine_mutations_list = list()
-	init_subtypes(/datum/spacevine_mutation/, vine_mutations_list)
+	init_subtypes(/datum/spacevine_mutation/, mutations_list)
 	if(potency != null)
 		mutativeness = potency / 10
 	if(production != null)
 		spread_cap *= production / 5
 		spread_multiplier /= production / 5
+	..()
 
-/datum/spacevine_controller/vv_get_dropdown()
-	. = ..()
-	. += "---"
-	.["Delete Vines"] = "?_src_=\ref[src];purge_vines=1"
+/obj/effect/spacevine_controller/ex_act() //only killing all vines will end this suffering
+	return
 
-/datum/spacevine_controller/Topic(href, href_list)
-	if(..() || !check_rights(R_ADMIN, FALSE))
-		return
-	
-	if(href_list["purge_vines"])
-		if(alert(usr, "Are you sure you want to delete this spacevine cluster?", "Delete Vines", "Yes", "No") != "Yes")
-			return
-		DeleteVines()
+/obj/effect/spacevine_controller/singularity_act()
+	return
 
-/datum/spacevine_controller/proc/DeleteVines()	//this is kill
-	QDEL_LIST(vines)	//this will also qdel us
+/obj/effect/spacevine_controller/singularity_pull()
+	return
 
-/datum/spacevine_controller/Destroy()
+/obj/effect/spacevine_controller/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/datum/spacevine_controller/proc/spawn_spacevine_piece(turf/location, obj/structure/spacevine/parent, list/muts)
+/obj/effect/spacevine_controller/proc/spawn_spacevine_piece(turf/location, obj/structure/spacevine/parent, list/muts)
 	var/obj/structure/spacevine/SV = new(location)
 	growth_queue += SV
 	vines += SV
@@ -473,25 +476,14 @@
 		var/parentcolor = parent.atom_colours[FIXED_COLOUR_PRIORITY]
 		SV.add_atom_colour(parentcolor, FIXED_COLOUR_PRIORITY)
 		if(prob(mutativeness))
-			var/datum/spacevine_mutation/randmut = pick(vine_mutations_list - SV.mutations)
+			var/datum/spacevine_mutation/randmut = pick(mutations_list - SV.mutations)
 			randmut.add_mutation_to_vinepiece(SV)
 
 	for(var/datum/spacevine_mutation/SM in SV.mutations)
 		SM.on_birth(SV)
 
-/datum/spacevine_controller/proc/VineDestroyed(obj/structure/spacevine/S)
-	S.master = null
-	vines -= S
-	growth_queue -= S
-	if(!vines.len)
-		var/obj/item/seeds/kudzu/KZ = new(S.loc)
-		KZ.mutations |= S.mutations
-		KZ.set_potency(mutativeness * 10)
-		KZ.set_production((spread_cap / initial(spread_cap)) * 5)
-		qdel(src)
-
-/datum/spacevine_controller/process()
-	if(!LAZYLEN(vines))
+/obj/effect/spacevine_controller/process()
+	if(!vines)
 		qdel(src) //space vines exterminated. Remove the controller
 		return
 	if(!growth_queue)
@@ -505,7 +497,7 @@
 	var/list/obj/structure/spacevine/queue_end = list()
 
 	for(var/obj/structure/spacevine/SV in growth_queue)
-		if(QDELETED(SV))
+		if(qdeleted(SV))
 			continue
 		i++
 		queue_end += SV
@@ -555,7 +547,7 @@
 		buckle_mob(V, 1)
 
 /obj/structure/spacevine/proc/spread()
-	var/direction = pick(GLOB.cardinal)
+	var/direction = pick(cardinal)
 	var/turf/stepturf = get_step(src,direction)
 	for(var/datum/spacevine_mutation/SM in mutations)
 		SM.on_spread(src, stepturf)

@@ -44,9 +44,14 @@
 	// new display
 	// register for radio system
 
-/obj/machinery/status_display/Initialize()
+/obj/machinery/status_display/New()
 	..()
-	SSradio.add_object(src, frequency)
+	if(SSradio)
+		SSradio.add_object(src, frequency)
+
+/obj/machinery/status_display/initialize()
+	if(SSradio)
+		SSradio.add_object(src, frequency)
 
 /obj/machinery/status_display/Destroy()
 	if(SSradio)
@@ -124,8 +129,6 @@
 	switch(mode)
 		if(1,2,4,5)
 			to_chat(user, "The display says:<br>\t<xmp>[message1]</xmp><br>\t<xmp>[message2]</xmp>")
-	if(mode == 1 && SSshuttle.emergency)
-		to_chat(user, "Current Shuttle: [SSshuttle.emergency.name]")
 
 
 /obj/machinery/status_display/proc/set_message(m1, m2)
@@ -146,7 +149,7 @@
 /obj/machinery/status_display/proc/set_picture(state)
 	picture_state = state
 	remove_display()
-	add_overlay(picture_state)
+	add_overlay(image('icons/obj/status_display.dmi', icon_state=picture_state))
 
 /obj/machinery/status_display/proc/update_display(line1, line2)
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
@@ -154,7 +157,8 @@
 		maptext = new_text
 
 /obj/machinery/status_display/proc/remove_display()
-	cut_overlays()
+	if(overlays.len)
+		cut_overlays()
 	if(maptext)
 		maptext = ""
 
@@ -277,8 +281,9 @@
 
 /obj/machinery/ai_status_display/proc/set_picture(state)
 	picture_state = state
-	cut_overlays()
-	add_overlay(picture_state)
+	if(overlays.len)
+		cut_overlays()
+	add_overlay(image('icons/obj/status_display.dmi', icon_state=picture_state))
 
 #undef CHARS_PER_LINE
 #undef FOND_SIZE

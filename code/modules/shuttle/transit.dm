@@ -5,10 +5,10 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "at_shield1"
 
-/obj/effect/landmark/transit/Initialize()
+/obj/effect/landmark/transit/New()
 	. = ..()
-	GLOB.transit_markers += src
+	transit_markers += src
 
 /obj/effect/landmark/transit/Destroy()
-	GLOB.transit_markers -= src
+	transit_markers -= src
 	. = ..()

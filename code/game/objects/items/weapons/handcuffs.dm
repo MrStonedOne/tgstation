@@ -21,6 +21,7 @@
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 50, acid = 50)
 	var/cuffsound = 'sound/weapons/handcuffs.ogg'
 	var/trashtype = null //for disposable cuffs
+	self_weight = 0.3
 
 /obj/item/weapon/restraints/handcuffs/attack(mob/living/carbon/C, mob/living/carbon/human/user)
 	if(!istype(C))
@@ -45,7 +46,10 @@
 			if(do_mob(user, C, 30) && (C.get_num_arms() >= 2 || C.get_arm_ignore()))
 				apply_cuffs(C,user)
 				to_chat(user, "<span class='notice'>You handcuff [C].</span>")
-				SSblackbox.add_details("handcuffs","[type]")
+				if(istype(src, /obj/item/weapon/restraints/handcuffs/cable))
+					feedback_add_details("handcuffs","C")
+				else
+					feedback_add_details("handcuffs","H")
 
 				add_logs(user, C, "handcuffed")
 			else
@@ -66,7 +70,7 @@
 	else if(dispense)
 		cuffs = new type()
 
-	cuffs.loc = target
+	cuffs.forceMove(target)
 	target.handcuffed = cuffs
 
 	target.update_handcuffed()
@@ -162,7 +166,8 @@
 		var/obj/item/stack/rods/R = I
 		if (R.use(1))
 			var/obj/item/weapon/wirerod/W = new /obj/item/weapon/wirerod
-			remove_item_from_storage(user)
+			if(!remove_item_from_storage(user))
+				user.unEquip(src)
 			user.put_in_hands(W)
 			to_chat(user, "<span class='notice'>You wrap the cable restraint around the top of the rod.</span>")
 			qdel(src)
@@ -182,7 +187,8 @@
 			M.use(6)
 			user.put_in_hands(S)
 			to_chat(user, "<span class='notice'>You make some weights out of [I] and tie them to [src].</span>")
-			remove_item_from_storage(user)
+			if(!remove_item_from_storage(user))
+				user.unEquip(src)
 			qdel(src)
 	else
 		return ..()
@@ -244,7 +250,7 @@
 	var/armed = 0
 	var/trap_damage = 20
 
-/obj/item/weapon/restraints/legcuffs/beartrap/Initialize()
+/obj/item/weapon/restraints/legcuffs/beartrap/New()
 	..()
 	icon_state = "[initial(icon_state)][armed]"
 
@@ -273,9 +279,9 @@
 					def_zone = pick("l_leg", "r_leg")
 					if(!C.legcuffed && C.get_num_legs() >= 2) //beartrap can't cuff your leg if there's already a beartrap or legcuffs, or you don't have two legs.
 						C.legcuffed = src
-						src.loc = C
+						src.forceMove(C)
 						C.update_inv_legcuffed()
-						SSblackbox.add_details("handcuffs","[type]")
+						feedback_add_details("handcuffs","B") //Yes, I know they're legcuffs. Don't change this, no need for an extra variable. The "B" is used to tell them apart.
 			else if(isanimal(L))
 				var/mob/living/simple_animal/SA = L
 				if(SA.mob_size > MOB_SIZE_TINY)
@@ -304,7 +310,9 @@
 
 /obj/item/weapon/restraints/legcuffs/beartrap/energy/proc/dissipate()
 	if(!istype(loc, /mob))
-		do_sparks(1, TRUE, src)
+		var/datum/effect_system/spark_spread/sparks = new /datum/effect_system/spark_spread
+		sparks.set_up(1, 1, src)
+		sparks.start()
 		qdel(src)
 
 /obj/item/weapon/restraints/legcuffs/beartrap/energy/attack_hand(mob/user)
@@ -314,12 +322,14 @@
 	breakouttime = 20 // Cyborgs shouldn't have a strong restraint
 
 /obj/item/weapon/restraints/legcuffs/bola
-	name = "bola"
+	name = "makeshift bola"
 	desc = "A restraining device designed to be thrown at the target. Upon connecting with said target, it will wrap around their legs, making it difficult for them to move quickly."
+	icon = 'icons/fallout/objects/melee.dmi'
 	icon_state = "bola"
-	breakouttime = 35//easy to apply, easy to break out of
+	breakouttime = 30//easy to apply, easy to break out of
 	gender = NEUTER
 	origin_tech = "engineering=3;combat=1"
+	throwforce = 5
 	var/weaken = 0
 
 /obj/item/weapon/restraints/legcuffs/bola/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback)
@@ -334,27 +344,35 @@
 	if(!C.legcuffed && C.get_num_legs() >= 2)
 		visible_message("<span class='danger'>\The [src] ensnares [C]!</span>")
 		C.legcuffed = src
-		src.loc = C
+		src.forceMove(C)
 		C.update_inv_legcuffed()
-		SSblackbox.add_details("handcuffs","[type]")
+		feedback_add_details("handcuffs","B")
 		to_chat(C, "<span class='userdanger'>\The [src] ensnares you!</span>")
 		C.Weaken(weaken)
 
-/obj/item/weapon/restraints/legcuffs/bola/tactical//traitor variant
-	name = "reinforced bola"
-	desc = "A strong bola, made with a long steel chain. It looks heavy, enough so that it could trip somebody."
+/obj/item/weapon/restraints/legcuffs/bola/raider
+	name = "raiding bola"
+	desc = "A classic bola used by raiders to weaken and capture their victims."
 	icon_state = "bola_r"
-	breakouttime = 70
-	origin_tech = "engineering=4;combat=3"
+	breakouttime = 50 //Slightly harder to break out of
+
+/obj/item/weapon/restraints/legcuffs/bola/tribal
+	name = "reinforced bola"
+	desc = "A strong bola, made by elderly tribal craftsman. It looks heavy, enough so that it could trip somebody."
+	icon_state = "bola_t"
+	breakouttime = 100 //Way harder to break out of
+	throwforce = 10
 	weaken = 1
 
 /obj/item/weapon/restraints/legcuffs/bola/energy //For Security
 	name = "energy bola"
 	desc = "A specialized hard-light bola designed to ensnare fleeing criminals and aid in arrests."
+	icon = 'icons/obj/items.dmi'
 	icon_state = "ebola"
 	hitsound = 'sound/weapons/taserhit.ogg'
 	w_class = WEIGHT_CLASS_SMALL
 	breakouttime = 60
+	origin_tech = "engineering=4;combat=3"
 
 /obj/item/weapon/restraints/legcuffs/bola/energy/throw_impact(atom/hit_atom)
 	if(iscarbon(hit_atom))

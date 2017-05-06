@@ -1,12 +1,13 @@
 /datum/personal_crafting
 	var/busy
 	var/viewing_category = 1 //typical powergamer starting on the Weapons tab
-	var/list/categories = list(CAT_WEAPON,
-				CAT_AMMO,
-				CAT_ROBOT,
+	var/list/categories = list(
+				CAT_WEAPON,
+/*				CAT_AMMO,
+				CAT_ROBOT,*/
 				CAT_MISC,
 				CAT_PRIMAL,
-				CAT_BREAD,
+/*				CAT_BREAD,
 				CAT_BURGER,
 				CAT_CAKE,
 				CAT_EGG,
@@ -18,7 +19,7 @@
 				CAT_SALAD,
 				CAT_SANDWICH,
 				CAT_SOUP,
-				CAT_SPAGHETTI)
+				CAT_SPAGHETTI*/)
 	var/datum/action/innate/crafting/button
 	var/display_craftable_only = FALSE
 	var/display_compact = TRUE
@@ -70,14 +71,14 @@
 		if(T.Adjacent(user))
 			for(var/B in T)
 				var/atom/movable/AM = B
-				if(HAS_SECONDARY_FLAG(AM, HOLOGRAM))
+				if(AM.flags & HOLOGRAM)
 					continue
 				. += AM
 
 /datum/personal_crafting/proc/get_surroundings(mob/user)
 	. = list()
 	for(var/obj/item/I in get_environment(user))
-		if(HAS_SECONDARY_FLAG(I, HOLOGRAM))
+		if(I.flags & HOLOGRAM)
 			continue
 		if(istype(I, /obj/item/stack))
 			var/obj/item/stack/S = I
@@ -124,7 +125,7 @@
 				var/atom/movable/I = new R.result (get_turf(user.loc))
 				I.CheckParts(parts, R)
 				if(send_feedback)
-					SSblackbox.add_details("object_crafted","[I.type]")
+					feedback_add_details("object_crafted","[I.type]")
 				return 0
 			return "."
 		return ", missing tool."
@@ -253,7 +254,7 @@
 		qdel(DL)
 
 
-/datum/personal_crafting/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.not_incapacitated_turf_state)
+/datum/personal_crafting/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = not_incapacitated_turf_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "personal_crafting", "Crafting Menu", 700, 800, master_ui, state)
@@ -273,7 +274,7 @@
 	var/list/surroundings = get_surroundings(user)
 	var/list/can_craft = list()
 	var/list/cant_craft = list()
-	for(var/rec in GLOB.crafting_recipes)
+	for(var/rec in crafting_recipes)
 		var/datum/crafting_recipe/R = rec
 		if(R.category != cur_category)
 			continue

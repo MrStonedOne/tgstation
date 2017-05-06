@@ -1,13 +1,12 @@
 /obj/machinery/computer/aifixer
 	name = "\improper AI system integrity restorer"
 	desc = "Used with intelliCards containing nonfunctioning AIs to restore them to working order."
-	req_access = list(GLOB.access_captain, GLOB.access_robotics, GLOB.access_heads)
+	req_access = list(access_captain, access_robotics, access_heads)
 	var/mob/living/silicon/ai/occupier = null
 	var/active = 0
 	circuit = /obj/item/weapon/circuitboard/computer/aifixer
 	icon_keyboard = "tech_key"
 	icon_screen = "ai-fixer"
-	light_color = LIGHT_COLOR_PINK
 
 /obj/machinery/computer/aifixer/attackby(obj/I, mob/user, params)
 	if(occupier && istype(I, /obj/item/weapon/screwdriver))
@@ -71,24 +70,10 @@
 	popup.open()
 	return
 
-/obj/machinery/computer/aifixer/proc/Fix()
-	use_power(1000)
-	occupier.adjustOxyLoss(-1, 0)
-	occupier.adjustFireLoss(-1, 0)
-	occupier.adjustToxLoss(-1, 0)
-	occupier.adjustBruteLoss(-1, 0)
-	occupier.updatehealth()
-	occupier.updatehealth()
-	if(occupier.health >= 0 && occupier.stat == DEAD)
-		occupier.revive()
-	return occupier.health < 100
-
 /obj/machinery/computer/aifixer/process()
 	if(..())
-		if(active)
-			active = Fix()
-		updateDialog()
-		update_icon()
+		src.updateDialog()
+		return
 
 /obj/machinery/computer/aifixer/Topic(href, href_list)
 	if(..())
@@ -96,8 +81,23 @@
 	if(href_list["fix"])
 		to_chat(usr, "<span class='notice'>Reconstruction in progress. This will take several minutes.</span>")
 		playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 25, 0)
-		active = TRUE
+		active = 1
+		while (occupier.health < 100)
+			occupier.adjustOxyLoss(-1, 0)
+			occupier.adjustFireLoss(-1, 0)
+			occupier.adjustToxLoss(-1, 0)
+			occupier.adjustBruteLoss(-1, 0)
+			occupier.updatehealth()
+			if(occupier.health >= 0 && occupier.stat == DEAD)
+				occupier.revive()
+			updateUsrDialog()
+			update_icon()
+			sleep(10)
+		active = 0
 		add_fingerprint(usr)
+	updateUsrDialog()
+	update_icon()
+
 
 /obj/machinery/computer/aifixer/update_icon()
 	..()
@@ -136,7 +136,7 @@
 		if(occupier && !active)
 			to_chat(occupier, "You have been downloaded to a mobile storage device. Still no remote access.")
 			to_chat(user, "<span class='boldnotice'>Transfer successful</span>: [occupier.name] ([rand(1000,9999)].exe) removed from host terminal and stored within local memory.")
-			occupier.loc = card
+			occupier.forceMove(card)
 			card.AI = occupier
 			occupier = null
 			update_icon()

@@ -1,5 +1,5 @@
 
-GLOBAL_LIST_EMPTY(rad_collectors)
+var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector
 	name = "Radiation Collector Array"
@@ -8,7 +8,7 @@ GLOBAL_LIST_EMPTY(rad_collectors)
 	icon_state = "ca"
 	anchored = 0
 	density = 1
-	req_access = list(GLOB.access_engine_equip)
+	req_access = list(access_engine_equip)
 //	use_power = 0
 	obj_integrity = 350
 	max_integrity = 350
@@ -21,10 +21,10 @@ GLOBAL_LIST_EMPTY(rad_collectors)
 
 /obj/machinery/power/rad_collector/New()
 	..()
-	GLOB.rad_collectors += src
+	rad_collectors += src
 
 /obj/machinery/power/rad_collector/Destroy()
-	GLOB.rad_collectors -= src
+	rad_collectors -= src
 	return ..()
 
 /obj/machinery/power/rad_collector/process()
@@ -46,19 +46,16 @@ GLOBAL_LIST_EMPTY(rad_collectors)
 			toggle_power()
 			user.visible_message("[user.name] turns the [src.name] [active? "on":"off"].", \
 			"<span class='notice'>You turn the [src.name] [active? "on":"off"].</span>")
-			var/fuel = loaded_tank.air_contents.gases["plasma"]
-			fuel = fuel ? fuel[MOLES] : 0
-			investigate_log("turned [active?"<font color='green'>on</font>":"<font color='red'>off</font>"] by [user.key]. [loaded_tank?"Fuel: [round(fuel/0.29)]%":"<font color='red'>It is empty</font>"].","singulo")
+			investigate_log("turned [active?"<font color='green'>on</font>":"<font color='red'>off</font>"] by [user.key]. [loaded_tank?"Fuel: [round(loaded_tank.air_contents.gases["plasma"][MOLES]/0.29)]%":"<font color='red'>It is empty</font>"].","singulo")
 			return
 		else
 			to_chat(user, "<span class='warning'>The controls are locked!</span>")
 			return
 ..()
 
-/obj/machinery/power/rad_collector/can_be_unfasten_wrench(mob/user, silent)
+/obj/machinery/power/rad_collector/can_be_unfasten_wrench(mob/user)
 	if(loaded_tank)
-		if(!silent)
-			to_chat(user, "<span class='warning'>Remove the plasma tank first!</span>")
+		to_chat(user, "<span class='warning'>Remove the plasma tank first!</span>")
 		return FAILED_UNFASTEN
 	return ..()
 
@@ -119,7 +116,7 @@ GLOBAL_LIST_EMPTY(rad_collectors)
 	var/obj/item/weapon/tank/internals/plasma/Z = src.loaded_tank
 	if (!Z)
 		return
-	Z.loc = get_turf(src)
+	Z.forceMove(get_turf(src))
 	Z.layer = initial(Z.layer)
 	Z.plane = initial(Z.plane)
 	src.loaded_tank = null
@@ -131,7 +128,7 @@ GLOBAL_LIST_EMPTY(rad_collectors)
 /obj/machinery/power/rad_collector/proc/receive_pulse(pulse_strength)
 	if(loaded_tank && active)
 		var/power_produced = loaded_tank.air_contents.gases["plasma"] ? loaded_tank.air_contents.gases["plasma"][MOLES] : 0
-		power_produced *= pulse_strength*10
+		power_produced *= pulse_strength*20
 		add_avail(power_produced)
 		last_power = power_produced
 		return
@@ -141,11 +138,11 @@ GLOBAL_LIST_EMPTY(rad_collectors)
 /obj/machinery/power/rad_collector/proc/update_icons()
 	cut_overlays()
 	if(loaded_tank)
-		add_overlay("ptank")
+		add_overlay(image('icons/obj/singularity.dmi', "ptank"))
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(active)
-		add_overlay("on")
+		add_overlay(image('icons/obj/singularity.dmi', "on"))
 
 
 /obj/machinery/power/rad_collector/proc/toggle_power()

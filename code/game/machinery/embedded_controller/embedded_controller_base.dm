@@ -77,8 +77,7 @@
 		SSradio.remove_object(src,frequency)
 	return ..()
 
-/obj/machinery/embedded_controller/radio/Initialize()
-	..()
+/obj/machinery/embedded_controller/radio/initialize()
 	set_frequency(frequency)
 
 /obj/machinery/embedded_controller/radio/post_signal(datum/signal/signal)

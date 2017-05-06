@@ -1,9 +1,11 @@
 
-/datum/controller/subsystem
+
+/datum/subsystem
 	// Metadata; you should define these.
-	name = "fire coderbus" //name of the subsystem
-	var/init_order = INIT_ORDER_DEFAULT		//order of initialization. Higher numbers are initialized first, lower numbers later. Use defines in __DEFINES/subsystems.dm for easy understanding of order.
+	var/name = "fire coderbus" //name of the subsystem
+	var/init_order = 0		//order of initialization. Higher numbers are initialized first, lower numbers later. Can be decimal and negative values.
 	var/wait = 20			//time to wait (in deciseconds) between each call to fire(). Must be a positive integer.
+	var/display_order = 100	//display affects the order the subsystem is displayed in the MC tab
 	var/priority = 50		//When mutiple subsystems need to run in the same tick, higher priority subsystems will run first and be given a higher share of the tick before MC_TICK_CHECK triggers a sleep
 
 	var/flags = 0			//see MC.dm in __DEFINES Most flags must be set on world start to take full effect. (You can also restart the mc to force them to process again)
@@ -25,23 +27,22 @@
 	var/queued_time = 0		//time we entered the queue, (for timing and priority reasons)
 	var/queued_priority 	//we keep a running total to make the math easier, if priority changes mid-fire that would break our running total, so we store it here
 	//linked list stuff for the queue
-	var/datum/controller/subsystem/queue_next
-	var/datum/controller/subsystem/queue_prev
+	var/datum/subsystem/queue_next
+	var/datum/subsystem/queue_prev
 
-	var/static/failure_strikes = 0 //How many times we suspect this subsystem has crashed the MC, 3 strikes and you're out!
 
-//Do not override
-/datum/controller/subsystem/New()
-	return
+	// The object used for the clickable stat() button.
+	var/obj/effect/statclick/statclick
 
 // Used to initialize the subsystem BEFORE the map has loaded
-// Called AFTER Recover if that is called
-// Prefer to use Initialize if possible
-/datum/controller/subsystem/proc/PreInit()
+/datum/subsystem/New()
+
+//cleanup actions
+/datum/subsystem/proc/Shutdown()
 	return
 
 //This is used so the mc knows when the subsystem sleeps. do not override.
-/datum/controller/subsystem/proc/ignite(resumed = 0)
+/datum/subsystem/proc/ignite(resumed = 0)
 	set waitfor = 0
 	. = SS_SLEEPING
 	fire(resumed)
@@ -57,11 +58,11 @@
 //previously, this would have been named 'process()' but that name is used everywhere for different things!
 //fire() seems more suitable. This is the procedure that gets called every 'wait' deciseconds.
 //Sleeping in here prevents future fires until returned.
-/datum/controller/subsystem/proc/fire(resumed = 0)
+/datum/subsystem/proc/fire(resumed = 0)
 	flags |= SS_NO_FIRE
 	throw EXCEPTION("Subsystem [src]([type]) does not fire() but did not set the SS_NO_FIRE flag. Please add the SS_NO_FIRE flag to any subsystem that doesn't fire so it doesn't get added to the processing list and waste cpu.")
 
-/datum/controller/subsystem/Destroy()
+/datum/subsystem/Destroy()
 	dequeue()
 	can_fire = 0
 	flags |= SS_NO_FIRE
@@ -71,10 +72,10 @@
 //Queue it to run.
 //	(we loop thru a linked list until we get to the end or find the right point)
 //	(this lets us sort our run order correctly without having to re-sort the entire already sorted list)
-/datum/controller/subsystem/proc/enqueue()
+/datum/subsystem/proc/enqueue()
 	var/SS_priority = priority
 	var/SS_flags = flags
-	var/datum/controller/subsystem/queue_node
+	var/datum/subsystem/queue_node
 	var/queue_node_priority
 	var/queue_node_flags
 
@@ -129,7 +130,7 @@
 		queue_node.queue_prev = src
 
 
-/datum/controller/subsystem/proc/dequeue()
+/datum/subsystem/proc/dequeue()
 	if (queue_next)
 		queue_next.queue_prev = queue_prev
 	if (queue_prev)
@@ -143,31 +144,30 @@
 		state = SS_IDLE
 
 
-/datum/controller/subsystem/proc/pause()
+/datum/subsystem/proc/pause()
 	. = 1
-	switch(state)
-		if(SS_RUNNING)
-			state = SS_PAUSED
-		if(SS_SLEEPING)
-			state = SS_PAUSING
+	if (state == SS_RUNNING)
+		state = SS_PAUSED
+	else if (state == SS_SLEEPING)
+		state = SS_PAUSING
 
 
 //used to initialize the subsystem AFTER the map has loaded
-/datum/controller/subsystem/Initialize(start_timeofday)
-	var/time = (REALTIMEOFDAY - start_timeofday) / 10
-	var/msg = "Initialized [name] subsystem within [time] second[time == 1 ? "" : "s"]!"
+/datum/subsystem/proc/Initialize(start_timeofday)
+	var/time = (world.timeofday - start_timeofday) / 10
+	var/msg = "Initialized [name] subsystem within [time] seconds!"
 	to_chat(world, "<span class='boldannounce'>[msg]</span>")
-	log_world(msg)
+	world.log << msg
 	return time
 
 //hook for printing stats to the "MC" statuspanel for admins to see performance and related stats etc.
-/datum/controller/subsystem/stat_entry(msg)
+/datum/subsystem/proc/stat_entry(msg)
 	if(!statclick)
-		statclick = new/obj/effect/statclick/debug(null, "Initializing...", src)
+		statclick = new/obj/effect/statclick/debug("Initializing...", src)
 
 
 
-	if(can_fire && !(SS_NO_FIRE in flags))
+	if(can_fire)
 		msg = "[round(cost,1)]ms|[round(tick_usage,1)]%|[round(ticks,0.1)]\t[msg]"
 	else
 		msg = "OFFLINE\t[msg]"
@@ -178,7 +178,7 @@
 
 	stat(title, statclick.update(msg))
 
-/datum/controller/subsystem/proc/state_letter()
+/datum/subsystem/proc/state_letter()
 	switch (state)
 		if (SS_RUNNING)
 			. = "R"
@@ -193,15 +193,15 @@
 
 //could be used to postpone a costly subsystem for (default one) var/cycles, cycles
 //for instance, during cpu intensive operations like explosions
-/datum/controller/subsystem/proc/postpone(cycles = 1)
+/datum/subsystem/proc/postpone(cycles = 1)
 	if(next_fire - world.time < wait)
 		next_fire += (wait*cycles)
 
-//usually called via datum/controller/subsystem/New() when replacing a subsystem (i.e. due to a recurring crash)
+//usually called via datum/subsystem/New() when replacing a subsystem (i.e. due to a recurring crash)
 //should attempt to salvage what it can from the old instance of subsystem
-/datum/controller/subsystem/Recover()
+/datum/subsystem/proc/Recover()
 
-/datum/controller/subsystem/vv_edit_var(var_name, var_value)
+/datum/subsystem/vv_edit_var(var_name, var_value)
 	switch (var_name)
 		if ("can_fire")
 			//this is so the subsystem doesn't rapid fire to make up missed ticks causing more lag

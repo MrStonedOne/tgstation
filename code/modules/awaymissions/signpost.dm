@@ -22,7 +22,8 @@
 			if(T)
 				var/area/A = get_area(T)
 				user.forceMove(T)
-				to_chat(user, "<span class='notice'>You blink and find yourself in [A.name].</span>")
+				to_chat(user, "<span class='notice'>You blink and find yourself \
+					in [A.name].</span>")
 			else
 				to_chat(user, "Nothing happens. You feel that this is a bad sign.")
 		if("No")

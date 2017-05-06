@@ -1,4 +1,4 @@
-GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
+var/datum/events/keycard_events = new()
 
 /obj/machinery/keycard_auth
 	name = "Keycard Authentication Device"
@@ -10,7 +10,7 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	idle_power_usage = 2
 	active_power_usage = 6
 	power_channel = ENVIRON
-	req_access = list(GLOB.access_keycard_auth)
+	req_access = list(access_keycard_auth)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	var/datum/callback/ev
 	var/event = ""
@@ -18,17 +18,17 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	var/mob/triggerer = null
 	var/waiting = 0
 
-/obj/machinery/keycard_auth/Initialize()
+/obj/machinery/keycard_auth/New()
 	. = ..()
-	ev = GLOB.keycard_events.addEvent("triggerEvent", CALLBACK(src, .proc/triggerEvent))
+	ev = keycard_events.addEvent("triggerEvent", CALLBACK(src, .proc/triggerEvent))
 
 /obj/machinery/keycard_auth/Destroy()
-	GLOB.keycard_events.clearEvent("triggerEvent", ev)
+	keycard_events.clearEvent("triggerEvent", ev)
 	qdel(ev)
 	. = ..()
 
 /obj/machinery/keycard_auth/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-					datum/tgui/master_ui = null, datum/ui_state/state = GLOB.physical_state)
+					datum/tgui/master_ui = null, datum/ui_state/state = physical_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "keycard_auth", name, 375, 125, master_ui, state)
@@ -39,7 +39,7 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	data["waiting"] = waiting
 	data["auth_required"] = event_source ? event_source.event : 0
 	data["red_alert"] = (seclevel2num(get_security_level()) >= SEC_LEVEL_RED) ? 1 : 0
-	data["emergency_maint"] = GLOB.emergency_access
+	data["emergency_maint"] = emergency_access
 	return data
 
 /obj/machinery/keycard_auth/ui_status(mob/user)
@@ -72,7 +72,7 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	triggerer = usr
 	event = event_type
 	waiting = 1
-	GLOB.keycard_events.fireEvent("triggerEvent", src)
+	keycard_events.fireEvent("triggerEvent", src)
 	addtimer(CALLBACK(src, .proc/eventSent), 20)
 
 /obj/machinery/keycard_auth/proc/eventSent()
@@ -95,20 +95,20 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	switch(event)
 		if("Red Alert")
 			set_security_level(SEC_LEVEL_RED)
-			SSblackbox.inc("alert_keycard_auth_red",1)
+			feedback_inc("alert_keycard_auth_red",1)
 		if("Emergency Maintenance Access")
 			make_maint_all_access()
-			SSblackbox.inc("alert_keycard_auth_maint",1)
+			feedback_inc("alert_keycard_auth_maint",1)
 
 
-GLOBAL_VAR_INIT(emergency_access, FALSE)
+/var/emergency_access = 0
 /proc/make_maint_all_access()
 	for(var/area/maintenance/A in world)
 		for(var/obj/machinery/door/airlock/D in A)
 			D.emergency = 1
 			D.update_icon(0)
 	minor_announce("Access restrictions on maintenance and external airlocks have been lifted.", "Attention! Station-wide emergency declared!",1)
-	GLOB.emergency_access = TRUE
+	emergency_access = 1
 
 /proc/revoke_maint_all_access()
 	for(var/area/maintenance/A in world)
@@ -116,4 +116,4 @@ GLOBAL_VAR_INIT(emergency_access, FALSE)
 			D.emergency = 0
 			D.update_icon(0)
 	minor_announce("Access restrictions in maintenance areas have been restored.", "Attention! Station-wide emergency rescinded:")
-	GLOB.emergency_access = FALSE
+	emergency_access = 0

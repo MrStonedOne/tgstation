@@ -1,5 +1,4 @@
-GLOBAL_LIST_EMPTY(admin_datums)
-GLOBAL_PROTECT(admin_datums)
+var/list/admin_datums = list()
 
 /datum/admins
 	var/datum/admin_rank/rank
@@ -9,8 +8,6 @@ GLOBAL_PROTECT(admin_datums)
 
 	var/datum/marked_datum
 
-	var/spamcooldown = 0
-
 	var/admincaster_screen = 0	//TODO: remove all these 5 variables, they are completly unacceptable
 	var/datum/newscaster/feed_message/admincaster_feed_message = new /datum/newscaster/feed_message
 	var/datum/newscaster/wanted_message/admincaster_wanted_message = new /datum/newscaster/wanted_message
@@ -19,16 +16,18 @@ GLOBAL_PROTECT(admin_datums)
 
 /datum/admins/New(datum/admin_rank/R, ckey)
 	if(!ckey)
-		QDEL_IN(src, 0)
+		spawn(0)
+			del(src)
 		throw EXCEPTION("Admin datum created without a ckey")
 		return
 	if(!istype(R))
-		QDEL_IN(src, 0)
+		spawn(0)
+			del(src)
 		throw EXCEPTION("Admin datum created without a rank")
 		return
 	rank = R
 	admin_signature = "Nanotrasen Officer #[rand(0,9)][rand(0,9)][rand(0,9)]"
-	GLOB.admin_datums[ckey] = src
+	admin_datums[ckey] = src
 
 /datum/admins/proc/associate(client/C)
 	if(istype(C))
@@ -36,11 +35,11 @@ GLOBAL_PROTECT(admin_datums)
 		owner.holder = src
 		owner.add_admin_verbs()	//TODO
 		owner.verbs -= /client/proc/readmin
-		GLOB.admins |= C
+		admins |= C
 
 /datum/admins/proc/disassociate()
 	if(owner)
-		GLOB.admins -= owner
+		admins -= owner
 		owner.remove_admin_verbs()
 		owner.holder = null
 		owner = null

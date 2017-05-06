@@ -9,7 +9,7 @@
 	density = 0
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	use_power = 0
-	luminosity = 4
+	light_range = 4
 	layer = ABOVE_OBJ_LAYER
 	var/obj/machinery/field/generator/FG1 = null
 	var/obj/machinery/field/generator/FG2 = null
@@ -123,7 +123,9 @@
 	if(hasShocked)
 		return 0
 	hasShocked = 1
-	do_sparks(5, TRUE, AM.loc)
+	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+	s.set_up(5, 1, AM.loc)
+	s.start()
 	var/atom/target = get_edge_target_turf(AM, get_dir(src, get_step_away(AM, src)))
 	AM.throw_at(target, 200, 4)
 	addtimer(CALLBACK(src, .proc/clear_shock), 5)

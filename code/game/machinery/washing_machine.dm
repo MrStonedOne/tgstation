@@ -6,6 +6,7 @@
 	density = 1
 	anchored = 1
 	state_open = 1
+	var/sound_wash = 'sound/f13machines/washing_machine.ogg'
 	var/busy = 0
 	var/bloody_mess = 0
 	var/has_corgi = 0
@@ -36,6 +37,7 @@
 
 	busy = 1
 	update_icon()
+	playsound(src, sound_wash, 100, 1, -3)
 	sleep(200)
 	wash_cycle()
 
@@ -186,7 +188,7 @@
 		var/full = contents.len ? 1 : 0
 		icon_state = "wm_[state_open]_[full]"
 	if(panel_open)
-		add_overlay("wm_panel")
+		add_overlay(image(icon, icon_state = "wm_panel"))
 
 /obj/machinery/washing_machine/attackby(obj/item/weapon/W, mob/user, params)
 	if(default_deconstruction_screwdriver(user, null, null, W))
@@ -207,12 +209,13 @@
 			to_chat(user, "<span class='warning'>The washing machine is full!</span>")
 			return 1
 
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			to_chat(user, "<span class='warning'>\The [W] is stuck to your hand, you cannot put it in the washing machine!</span>")
 			return 1
 
 		if(istype(W,/obj/item/toy/crayon) || istype(W,/obj/item/weapon/stamp))
 			color_source = W
+		W.forceMove(src)
 		update_icon()
 
 	else

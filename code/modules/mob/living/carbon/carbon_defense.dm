@@ -1,16 +1,12 @@
 
 /mob/living/carbon/get_eye_protection()
 	var/number = ..()
-
-	var/obj/item/organ/eyes/E = getorganslot("eye_sight")
-	if(!E)
-		number = INFINITY //Can't get flashed without eyes
-	else
-		number += E.flash_protect
+	for(var/obj/item/organ/cyberimp/eyes/EFP in internal_organs)
+		number += EFP.flash_protect
 	return number
 
 /mob/living/carbon/get_ear_protection()
-	if(head && HAS_SECONDARY_FLAG(head, BANG_PROTECT))
+	if(head && (head.flags & HEADBANGPROTECT))
 		return 1
 
 /mob/living/carbon/check_projectile_dismemberment(obj/item/projectile/P, def_zone)
@@ -119,7 +115,9 @@
 				visible_message("<span class='danger'>The [M.name] has shocked [src]!</span>", \
 				"<span class='userdanger'>The [M.name] has shocked [src]!</span>")
 
-				do_sparks(5, TRUE, src)
+				var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+				s.set_up(5, 1, src)
+				s.start()
 				var/power = M.powerlevel + rand(0,3)
 				Weaken(power)
 				if(stuttering < power)
@@ -166,9 +164,7 @@
 		O.emp_act(severity)
 	..()
 
-/mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, override = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
-	if(tesla_shock && HAS_SECONDARY_FLAG(src, TESLA_IGNORE))
-		return FALSE
+/mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, override = 0, tesla_shock = 0, illusion = 0)
 	shock_damage *= siemens_coeff
 	if(dna && dna.species)
 		shock_damage *= dna.species.siemens_coeff
@@ -188,11 +184,11 @@
 	jitteriness += 1000 //High numbers for violent convulsions
 	do_jitter_animation(jitteriness)
 	stuttering += 2
-	if((!tesla_shock || (tesla_shock && siemens_coeff > 0.5)) && stun)
+	if(!tesla_shock || (tesla_shock && siemens_coeff > 0.5))
 		Stun(2)
 	spawn(20)
 		jitteriness = max(jitteriness - 990, 10) //Still jittery, but vastly less
-		if((!tesla_shock || (tesla_shock && siemens_coeff > 0.5)) && stun)
+		if(!tesla_shock || (tesla_shock && siemens_coeff > 0.5))
 			Stun(3)
 			Weaken(3)
 	if(override)
@@ -210,9 +206,6 @@
 		if(lying)
 			M.visible_message("<span class='notice'>[M] shakes [src] trying to get [p_them()] up!</span>", \
 							"<span class='notice'>You shake [src] trying to get [p_them()] up!</span>")
-		else if(check_zone(M.zone_selected) == "head")
-			M.visible_message("<span class='notice'>[M] gives [src] a pat on the head to make [p_them()] feel better!</span>", \
-						"<span class='notice'>You give [src] a pat on the head to make [p_them()] feel better!</span>")
 		else
 			M.visible_message("<span class='notice'>[M] hugs [src] to make [p_them()] feel better!</span>", \
 						"<span class='notice'>You hug [src] to make [p_them()] feel better!</span>")
@@ -234,6 +227,8 @@
 	if(.) // we've been flashed
 		if(visual)
 			return
+		if(weakeyes)
+			Stun(2)
 
 		if (damage == 1)
 			to_chat(src, "<span class='warning'>Your eyes sting a little.</span>")
@@ -273,26 +268,22 @@
 
 /mob/living/carbon/soundbang_act(intensity = 1, stun_pwr = 1, damage_pwr = 5, deafen_pwr = 15)
 	var/ear_safety = get_ear_protection()
-	var/obj/item/organ/ears/ears = getorganslot("ears")
 	if(ear_safety < 2) //has ears
 		var/effect_amount = intensity - ear_safety
 		if(effect_amount > 0)
 			if(stun_pwr)
 				Stun(stun_pwr*effect_amount)
 				Weaken(stun_pwr*effect_amount)
-			if(istype(ears) && (deafen_pwr || damage_pwr))
-				ears.ear_damage += damage_pwr * effect_amount
-				ears.deaf = max(ears.deaf, deafen_pwr * effect_amount)
-
-				if(ears.ear_damage >= 15)
+			if(deafen_pwr || damage_pwr)
+				setEarDamage(ear_damage + damage_pwr*effect_amount, max(ear_deaf, deafen_pwr*effect_amount))
+				if (ear_damage >= 15)
 					to_chat(src, "<span class='warning'>Your ears start to ring badly!</span>")
-					if(prob(ears.ear_damage - 5))
-						to_chat(src, "<span class='userdanger'>You can't hear anything!</span>")
-						ears.ear_damage = min(ears.ear_damage, UNHEALING_EAR_DAMAGE)
-						// you need earmuffs, inacusiate, or replacement
-				else if(ears.ear_damage >= 5)
+					if(prob(ear_damage - 5))
+						to_chat(src, "<span class='warning'>You can't hear anything!</span>")
+						disabilities |= DEAF
+				else if(ear_damage >= 5)
 					to_chat(src, "<span class='warning'>Your ears start to ring!</span>")
-				src << sound('sound/weapons/flash_ring.ogg',0,1,0,250)
+				to_chat(src, sound('sound/weapons/flash_ring.ogg',0,1,0,250))
 		return effect_amount //how soundbanged we are
 
 
@@ -311,8 +302,3 @@
 		if(hit_clothes)
 			hit_clothes.take_damage(damage_amount, damage_type, damage_flag, 0)
 
-/mob/living/carbon/can_hear()
-	. = FALSE
-	var/obj/item/organ/ears/ears = getorganslot("ears")
-	if(istype(ears) && !ears.deaf)
-		. = TRUE

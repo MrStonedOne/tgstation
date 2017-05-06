@@ -30,7 +30,7 @@
 	var/mob/living/simple_animal/mouse/movement_target
 	gold_core_spawnable = 2
 
-/mob/living/simple_animal/pet/cat/Initialize()
+/mob/living/simple_animal/pet/cat/New()
 	..()
 	verbs += /mob/living/proc/lay_down
 
@@ -85,7 +85,7 @@
 	var/cats_deployed = 0
 	var/memory_saved = 0
 
-/mob/living/simple_animal/pet/cat/Runtime/Initialize()
+/mob/living/simple_animal/pet/cat/Runtime/New()
 	if(prob(5))
 		icon_state = "original"
 		icon_living = "original"
@@ -94,9 +94,9 @@
 	..()
 
 /mob/living/simple_animal/pet/cat/Runtime/Life()
-	if(!cats_deployed && SSticker.current_state >= GAME_STATE_SETTING_UP)
+	if(!cats_deployed && ticker.current_state >= GAME_STATE_SETTING_UP)
 		Deploy_The_Cats()
-	if(!stat && SSticker.current_state == GAME_STATE_FINISHED && !memory_saved)
+	if(!stat && ticker.current_state == GAME_STATE_FINISHED && !memory_saved)
 		Write_Memory()
 	..()
 
@@ -129,7 +129,7 @@
 				family[C.type] += 1
 			else
 				family[C.type] = 1
-	S["family"]				<< family
+				to_chat(S["family"], family)
 	memory_saved = 1
 
 /mob/living/simple_animal/pet/cat/Runtime/proc/Deploy_The_Cats()

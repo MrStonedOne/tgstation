@@ -45,7 +45,7 @@
 	mouse_opacity = 2 // Easier to click on in melee, they're giant targets anyway
 
 /mob/living/simple_animal/hostile/megafauna/Destroy()
-	QDEL_NULL(internal)
+	qdel(internal)
 	. = ..()
 
 /mob/living/simple_animal/hostile/megafauna/death(gibbed)
@@ -53,7 +53,7 @@
 		return
 	else
 		if(!admin_spawned)
-			SSblackbox.set_details("megafauna_kills","[initial(name)]")
+			feedback_set_details("megafauna_kills","[initial(name)]")
 			if(!elimination)	//used so the achievment only occurs for the last legion to die.
 				grant_achievement(medal_type,score_type)
 		..()
@@ -71,8 +71,8 @@
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/AttackingTarget()
-	. = ..()
-	if(. && isliving(target))
+	..()
+	if(isliving(target))
 		var/mob/living/L = target
 		if(L.stat != DEAD)
 			if(!client && ranged && ranged_cooldown <= world.time)
@@ -86,7 +86,10 @@
 	if(!.)
 		return
 	var/turf/newloc = loc
-	message_admins("Megafauna [src] [ADMIN_FLW(src)] moved via shuttle from [ADMIN_COORDJMP(oldloc)] to [ADMIN_COORDJMP(newloc)]")
+	message_admins("Megafauna [src] \
+		(<A HREF='?_src_=holder;adminplayerobservefollow=\ref[src]'>FLW</A>) \
+		moved via shuttle from ([oldloc.x],[oldloc.y],[oldloc.z]) to \
+		([newloc.x],[newloc.y],[newloc.z])")
 
 /mob/living/simple_animal/hostile/megafauna/proc/devour(mob/living/L)
 	if(!L)
@@ -94,8 +97,7 @@
 	visible_message(
 		"<span class='danger'>[src] devours [L]!</span>",
 		"<span class='userdanger'>You feast on [L], restoring your health!</span>")
-	if(z != ZLEVEL_STATION && !client) //NPC monsters won't heal while on station
-		adjustBruteLoss(-L.maxHealth/2)
+	adjustBruteLoss(-L.maxHealth/2)
 	L.gib()
 
 /mob/living/simple_animal/hostile/megafauna/ex_act(severity, target)
@@ -112,11 +114,12 @@
 
 
 /mob/living/simple_animal/hostile/megafauna/proc/grant_achievement(medaltype,scoretype)
+
 	if(medal_type == "Boss")	//Don't award medals if the medal type isn't set
-		return FALSE
+		return
 
 	if(admin_spawned)
-		return FALSE
+		return
 
 	if(global.medal_hub && global.medal_pass && global.medals_enabled)
 		for(var/mob/living/L in view(7,src))
@@ -129,7 +132,6 @@
 				UnlockMedal("[medaltype] [suffixm]",C)
 				SetScore(BOSS_SCORE,C,1)
 				SetScore(score_type,C,1)
-	return TRUE
 
 /proc/UnlockMedal(medal,client/player)
 

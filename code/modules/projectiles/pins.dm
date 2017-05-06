@@ -26,12 +26,12 @@
 		if(istype(target, /obj/item/weapon/gun))
 			var/obj/item/weapon/gun/G = target
 			if(G.pin && (force_replace || G.pin.pin_removeable))
-				G.pin.loc = get_turf(G)
+				G.pin.forceMove(get_turf(G))
 				G.pin.gun_remove(user)
 				to_chat(user, "<span class ='notice'>You remove [G]'s old pin.</span>")
 
 			if(!G.pin)
-				if(!user.temporarilyRemoveItemFromInventory(src))
+				if(!user.unEquip(src))
 					return
 				gun_insert(user, G)
 				to_chat(user, "<span class ='notice'>You insert [src] into [G].</span>")
@@ -95,8 +95,9 @@
 	var/obj/item/weapon/implant/req_implant = null
 
 /obj/item/device/firing_pin/implant/pin_auth(mob/living/user)
-	if(istype(user))
-		for(var/obj/item/weapon/implant/I in user.implants)
+	if(iscarbon(user))
+		var/mob/living/carbon/C = user
+		for(var/obj/item/weapon/implant/I in C.implants)
 			if(req_implant && I.type == req_implant)
 				return 1
 	return 0

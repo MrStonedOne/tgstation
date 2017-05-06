@@ -1,5 +1,4 @@
-#define BUTTON_COOLDOWN 60 // cant delay the bomb forever
-#define BUTTON_DELAY	50 //five seconds
+#define BUTTON_COOLDOWN 30
 
 /obj/machinery/syndicatebomb
 	icon = 'icons/obj/assemblies.dmi'
@@ -12,8 +11,8 @@
 	layer = BELOW_MOB_LAYER //so people can't hide it and it's REALLY OBVIOUS
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
-	var/minimum_timer = 90
-	var/timer_set = 90
+	var/minimum_timer = 60
+	var/timer_set = 60
 	var/maximum_timer = 60000
 
 	var/can_unanchor = TRUE
@@ -143,7 +142,7 @@
 		if(open_panel && wires.is_all_cut())
 			if(payload)
 				to_chat(user, "<span class='notice'>You carefully pry out [payload].</span>")
-				payload.loc = user.loc
+				payload.forceMove(user.loc)
 				payload = null
 			else
 				to_chat(user, "<span class='warning'>There isn't anything in here to remove!</span>")
@@ -157,7 +156,7 @@
 				return
 			payload = I
 			to_chat(user, "<span class='notice'>You place [payload] into [src].</span>")
-			payload.loc = src
+			payload.forceMove(src)
 		else
 			to_chat(user, "<span class='warning'>[payload] is already loaded into [src]! You'll have to remove it first.</span>")
 	else if(istype(I, /obj/item/weapon/weldingtool))
@@ -210,14 +209,14 @@
 	var/new_timer = input(user, "Please set the timer.", "Timer", "[timer_set]") as num
 	if(in_range(src, user) && isliving(user)) //No running off and setting bombs from across the station
 		timer_set = Clamp(new_timer, minimum_timer, maximum_timer)
-		src.loc.visible_message("<span class='notice'>\icon[src] timer set for [timer_set] seconds.</span>")
+		src.loc.visible_message("<span class='notice'>[bicon(src)] timer set for [timer_set] seconds.</span>")
 	if(alert(user,"Would you like to start the countdown now?",,"Yes","No") == "Yes" && in_range(src, user) && isliving(user))
 		if(defused || active)
 			if(defused)
-				src.loc.visible_message("<span class='warning'>\icon[src] Device error: User intervention required.</span>")
+				src.loc.visible_message("<span class='warning'>[bicon(src)] Device error: User intervention required.</span>")
 			return
 		else
-			src.loc.visible_message("<span class='danger'>\icon[src] [timer_set] seconds until detonation, please clear the area.</span>")
+			src.loc.visible_message("<span class='danger'>[bicon(src)] [timer_set] seconds until detonation, please clear the area.</span>")
 			activate()
 			update_icon()
 			add_fingerprint(user)
@@ -249,6 +248,9 @@
 	payload = /obj/item/weapon/bombcore/badmin/summon/clown
 	beepsound = 'sound/items/bikehorn.ogg'
 
+/obj/machinery/syndicatebomb/badmin/varplosion
+	payload = /obj/item/weapon/bombcore/badmin/explosion
+
 /obj/machinery/syndicatebomb/empty
 	name = "bomb"
 	icon_state = "base-bomb"
@@ -260,12 +262,6 @@
 /obj/machinery/syndicatebomb/empty/New()
 	..()
 	wires.cut_all()
-
-/obj/machinery/syndicatebomb/self_destruct
-	name = "self destruct device"
-	desc = "Do not taunt. Warranty invalid if exposed to high temperature. Not suitable for agents under 3 years of age."
-	payload = /obj/item/weapon/bombcore/large
-	can_unanchor = FALSE
 
 ///Bomb Cores///
 
@@ -279,10 +275,6 @@
 	origin_tech = "syndicate=5;combat=6"
 	resistance_flags = FLAMMABLE //Burnable (but the casing isn't)
 	var/adminlog = null
-	var/range_heavy = 3
-	var/range_medium = 9
-	var/range_light = 17
-	var/range_flame = 17
 
 /obj/item/weapon/bombcore/ex_act(severity, target) // Little boom can chain a big boom.
 	detonate()
@@ -296,7 +288,7 @@
 	if(adminlog)
 		message_admins(adminlog)
 		log_game(adminlog)
-	explosion(get_turf(src), range_heavy, range_medium, range_light, flame_range = range_flame)
+	explosion(get_turf(src), 3, 9, 17, flame_range = 17)
 	if(loc && istype(loc,/obj/machinery/syndicatebomb/))
 		qdel(loc)
 	qdel(src)
@@ -331,7 +323,7 @@
 	var/obj/machinery/syndicatebomb/holder = loc
 	if(istype(holder))
 		attempts++
-		holder.loc.visible_message("<span class='danger'>\icon[holder] Alert: Bomb has detonated. Your score is now [defusals] for [attempts]. Resetting wires...</span>")
+		holder.loc.visible_message("<span class='danger'>[bicon(holder)] Alert: Bomb has detonated. Your score is now [defusals] for [attempts]. Resetting wires...</span>")
 		reset()
 	else
 		qdel(src)
@@ -341,7 +333,7 @@
 	if(istype(holder))
 		attempts++
 		defusals++
-		holder.loc.visible_message("<span class='notice'>\icon[holder] Alert: Bomb has been defused. Your score is now [defusals] for [attempts]! Resetting wires in 5 seconds...</span>")
+		holder.loc.visible_message("<span class='notice'>[bicon(holder)] Alert: Bomb has been defused. Your score is now [defusals] for [attempts]! Resetting wires in 5 seconds...</span>")
 		sleep(50)	//Just in case someone is trying to remove the bomb core this gives them a little window to crowbar it out
 		if(istype(holder))
 			reset()
@@ -374,23 +366,26 @@
 	playsound(src.loc, 'sound/misc/sadtrombone.ogg', 50)
 	..()
 
-/obj/item/weapon/bombcore/large
-	name = "large bomb payload"
-	range_heavy = 5
-	range_medium = 10
-	range_light = 20
-	range_flame = 20
+/obj/item/weapon/bombcore/badmin/explosion
+	var/HeavyExplosion = 5
+	var/MediumExplosion = 10
+	var/LightExplosion = 20
+	var/Flames = 20
 
-/obj/item/weapon/bombcore/large/underwall
-	layer = ABOVE_OPEN_TURF_LAYER
+/obj/item/weapon/bombcore/badmin/explosion/detonate()
+	explosion(get_turf(src), HeavyExplosion, MediumExplosion, LightExplosion, flame_range = Flames)
+	qdel(src)
 
 /obj/item/weapon/bombcore/miniature
 	name = "small bomb core"
 	w_class = WEIGHT_CLASS_SMALL
-	range_heavy = 1
-	range_medium = 2
-	range_light = 4
-	range_flame = 2
+
+/obj/item/weapon/bombcore/miniature/detonate()
+	if(adminlog)
+		message_admins(adminlog)
+		log_game(adminlog)
+	explosion(src.loc, 1, 2, 4, flame_range = 2) //Identical to a minibomb
+	qdel(src)
 
 /obj/item/weapon/bombcore/chemical
 	name = "chemical payload"
@@ -459,7 +454,7 @@
 	if(istype(I, /obj/item/weapon/crowbar) && beakers.len > 0)
 		playsound(loc, I.usesound, 50, 1)
 		for (var/obj/item/B in beakers)
-			B.loc = get_turf(src)
+			B.forceMove(get_turf(src))
 			beakers -= B
 		return
 	else if(istype(I, /obj/item/weapon/reagent_containers/glass/beaker) || istype(I, /obj/item/weapon/reagent_containers/glass/bottle))
@@ -468,7 +463,7 @@
 				return
 			beakers += I
 			to_chat(user, "<span class='notice'>You load [src] with [I].</span>")
-			I.loc = src
+			I.forceMove(src)
 		else
 			to_chat(user, "<span class='warning'>The [I] wont fit! The [src] can only hold up to [max_beakers] containers.</span>")
 			return
@@ -491,9 +486,9 @@
 			for(var/obj/item/slime_extract/S in LG.beakers) // And slime cores.
 				if(beakers.len < max_beakers)
 					beakers += S
-					S.loc = src
+					S.forceMove(src)
 				else
-					S.loc = get_turf(src)
+					S.forceMove(get_turf(src))
 
 		if(istype(G, /obj/item/weapon/grenade/chem_grenade/cryo))
 			spread_range -= 1 // Reduced range, but increased density.
@@ -508,9 +503,9 @@
 		for(var/obj/item/weapon/reagent_containers/glass/B in G)
 			if(beakers.len < max_beakers)
 				beakers += B
-				B.loc = src
+				B.forceMove(src)
 			else
-				B.loc = get_turf(src)
+				B.forceMove(get_turf(src))
 
 		qdel(G)
 
@@ -521,7 +516,7 @@
 
 /obj/item/device/syndicatedetonator
 	name = "big red button"
-	desc = "Your standard issue bomb synchronizing button. Five second safety delay to prevent 'accidents'"
+	desc = "Nothing good can come of pressing a button this garish..."
 	icon = 'icons/obj/assemblies.dmi'
 	icon_state = "bigred"
 	item_state = "electronic"
@@ -533,9 +528,9 @@
 
 /obj/item/device/syndicatedetonator/attack_self(mob/user)
 	if(timer < world.time)
-		for(var/obj/machinery/syndicatebomb/B in GLOB.machines)
+		for(var/obj/machinery/syndicatebomb/B in machines)
 			if(B.active)
-				B.detonation_timer = world.time + BUTTON_DELAY
+				B.explode_now = TRUE
 				detonated++
 			existant++
 		playsound(user, 'sound/machines/click.ogg', 20, 1)
@@ -545,7 +540,7 @@
 			var/area/A = get_area(T)
 			detonated--
 			var/log_str = "[ADMIN_LOOKUPFLW(user)] has remotely detonated [detonated ? "syndicate bombs" : "a syndicate bomb"] using a [name] at [A.name] [ADMIN_JMP(T)]</a>."
-			GLOB.bombers += log_str
+			bombers += log_str
 			message_admins(log_str)
 			log_game("[key_name(user)] has remotely detonated [detonated ? "syndicate bombs" : "a syndicate bomb"] using a [name] at [A.name][COORD(T)]")
 		detonated =	0
@@ -555,4 +550,3 @@
 
 
 #undef BUTTON_COOLDOWN
-#undef BUTTON_DELAY

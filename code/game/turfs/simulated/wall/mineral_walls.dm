@@ -101,8 +101,8 @@
 
 /turf/closed/wall/mineral/plasma/attackby(obj/item/weapon/W, mob/user, params)
 	if(W.is_hot() > 300)//If the temperature of the object is over 300, then ignite
-		message_admins("Plasma wall ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(src)]",0,1)
-		log_game("Plasma wall ignited by [key_name(user)] in [COORD(src)]")
+		message_admins("Plasma wall ignited by [key_name_admin(user)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
+		log_game("Plasma wall ignited by [key_name(user)] in ([x],[y],[z])")
 		ignite(W.is_hot())
 		return
 	..()
@@ -137,7 +137,42 @@
 	sheet_type = /obj/item/stack/sheet/mineral/wood
 	hardness = 70
 	explosion_block = 0
-	canSmoothWith = list(/turf/closed/wall/mineral/wood, /obj/structure/falsewall/wood)
+	smooth = SMOOTH_FALSE
+	//canSmoothWith = list(/turf/closed/wall/mineral/wood, /obj/structure/falsewall/wood)
+
+/turf/closed/wall/mineral/wood/New()
+	..()
+	for(var/turf/closed/wall/mineral/wood/W in range(src,1))
+		W.relativewall()
+	..()
+
+/turf/closed/wall/mineral/wood/Del()
+	for(var/turf/closed/wall/mineral/wood/W in range(src,1))
+		W.relativewall()
+	..()
+
+//Bringing back an old version of wall smoothing code because this has a bit of a special icon.
+/turf/closed/wall/mineral/wood/proc/relativewall()
+	var/junction = 0
+
+	for(var/cdir in cardinal)
+		var/turf/T = get_step(src,cdir)
+		if(istype(T, /turf/closed/wall/mineral/wood))
+			junction |= cdir
+			continue
+		for(var/atom/A in T)
+			if(istype(A, /obj/structure/window/fulltile))
+				junction |= cdir
+				break
+
+
+	switch(junction)
+		if(3)
+			icon_state = "wood1"
+		if(12)
+			icon_state = "wood2"
+		else
+			icon_state = "wood"
 
 /turf/closed/wall/mineral/iron
 	name = "rough metal wall"
@@ -174,7 +209,7 @@
 	icon_state = "map-shuttle"
 	sheet_type = /obj/item/stack/sheet/mineral/titanium
 	smooth = SMOOTH_MORE|SMOOTH_DIAGONAL
-	canSmoothWith = list(/turf/closed/wall/mineral/titanium, /obj/machinery/door/airlock/shuttle, /obj/machinery/door/airlock/, /turf/closed/wall/shuttle, /obj/structure/window/shuttle, /obj/structure/shuttle/engine/heater, /obj/structure/falsewall/titanium)
+	canSmoothWith = list(/turf/closed/wall/mineral/titanium, /obj/machinery/door/airlock/shuttle, /obj/machinery/door/airlock/, /turf/closed/wall/shuttle, /obj/structure/window/shuttle, /obj/structure/shuttle/engine, /obj/structure/shuttle/engine/heater, )
 
 /turf/closed/wall/mineral/titanium/nodiagonal
 	smooth = SMOOTH_MORE
@@ -211,20 +246,6 @@
 /turf/closed/wall/mineral/titanium/copyTurf(turf/T)
 	. = ..()
 	T.transform = transform
-
-/turf/closed/wall/mineral/titanium/survival
-	name = "pod wall"
-	desc = "An easily-compressable wall used for temporary shelter."
-	icon = 'icons/turf/walls/survival_pod_walls.dmi'
-	icon_state = "smooth"
-	smooth = SMOOTH_MORE|SMOOTH_DIAGONAL
-	canSmoothWith = list(/turf/closed/wall/mineral/titanium/survival, /obj/machinery/door/airlock/survival_pod, /obj/structure/window/shuttle/survival_pod, /obj/structure/shuttle/engine)
-
-/turf/closed/wall/mineral/titanium/survival/nodiagonal
-	smooth = SMOOTH_MORE
-
-/turf/closed/wall/mineral/titanium/survival/pod
-	canSmoothWith = list(/turf/closed/wall/mineral/titanium/survival, /obj/machinery/door/airlock, /obj/structure/window/fulltile, /obj/structure/window/reinforced/fulltile, /obj/structure/window/reinforced/tinted/fulltile, /obj/structure/window/shuttle, /obj/structure/shuttle/engine)
 
 /turf/closed/wall/mineral/plastitanium
 	name = "wall"

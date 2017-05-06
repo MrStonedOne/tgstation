@@ -1,3 +1,5 @@
+var/explosionid = 1
+
 /proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog = 1, ignorecap = 0, flame_range = 0 ,silent = 0, smoke = 1)
 	set waitfor = 0
 	src = null //so we don't abort once src is deleted
@@ -12,11 +14,11 @@
 
 	if(!ignorecap && epicenter.z != ZLEVEL_MINING)
 		//Clamp all values to MAX_EXPLOSION_RANGE
-		devastation_range = min(GLOB.MAX_EX_DEVESTATION_RANGE, devastation_range)
-		heavy_impact_range = min(GLOB.MAX_EX_HEAVY_RANGE, heavy_impact_range)
-		light_impact_range = min(GLOB.MAX_EX_LIGHT_RANGE, light_impact_range)
-		flash_range = min(GLOB.MAX_EX_FLASH_RANGE, flash_range)
-		flame_range = min(GLOB.MAX_EX_FLAME_RANGE, flame_range)
+		devastation_range = min(MAX_EX_DEVESTATION_RANGE, devastation_range)
+		heavy_impact_range = min(MAX_EX_HEAVY_RANGE, heavy_impact_range)
+		light_impact_range = min(MAX_EX_LIGHT_RANGE, light_impact_range)
+		flash_range = min(MAX_EX_FLASH_RANGE, flash_range)
+		flame_range = min(MAX_EX_FLAME_RANGE, flame_range)
 
 	//DO NOT REMOVE THIS SLEEP, IT BREAKS THINGS
 	//not sleeping causes us to ex_act() the thing that triggered the explosion
@@ -27,7 +29,6 @@
 	//and somethings expect us to ex_act them so they can qdel()
 	sleep(1) //tldr, let the calling proc call qdel(src) before we explode
 
-	var/static/explosionid = 1
 	var/id = explosionid++
 	var/start = world.timeofday
 
@@ -35,7 +36,7 @@
 	var/list/cached_exp_block = list()
 
 	if(adminlog)
-		message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range], [flame_range]) in area: [get_area(epicenter)] [ADMIN_COORDJMP(epicenter)]")
+		message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range], [flame_range]) in area [epicenter.loc.name] ([epicenter.x],[epicenter.y],[epicenter.z] - <a href='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>JMP</a>)")
 		log_game("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range], [flame_range]) in area [epicenter.loc.name] ([epicenter.x],[epicenter.y],[epicenter.z])")
 
 	// Play sounds; we want sounds to be different depending on distance so we will manually do it ourselves.
@@ -50,8 +51,7 @@
 
 	if(!silent)
 		var/frequency = get_rand_frequency()
-		var/ex_sound = get_sfx("explosion")
-		for(var/mob/M in GLOB.player_list)
+		for(var/mob/M in player_list)
 			// Double check for client
 			if(M && M.client)
 				var/turf/M_turf = get_turf(M)
@@ -59,25 +59,29 @@
 					var/dist = get_dist(M_turf, epicenter)
 					// If inside the blast radius + world.view - 2
 					if(dist <= round(max_range + world.view - 2, 1))
-						M.playsound_local(epicenter, ex_sound, 100, 1, frequency, falloff = 5)
+						M.playsound_local(epicenter, get_sfx("explosion"), 100, 1, frequency, falloff = 5) // get_sfx() is so that everyone gets the same sound
 					// You hear a far explosion if you're outside the blast radius. Small bombs shouldn't be heard all over the station.
 					else if(dist <= far_dist)
-						var/far_volume = Clamp(far_dist, 30, 50) // Volume is based on explosion size and dist
-						far_volume += (dist <= far_dist * 0.5 ? 50 : 0) // add 50 volume if the mob is pretty close to the explosion
-						M.playsound_local(epicenter, 'sound/effects/explosionfar.ogg', far_volume, 1, frequency, falloff = 5)
+						var/far_volume = Clamp(far_dist, 30, 200) // Volume is based on explosion size and dist
+						far_volume += (dist <= far_dist * 0.5 ? 50 : 5) // add 50 volume if the mob is pretty close to the explosion
+						M.playsound_local(epicenter, get_sfx("explosion_far"), far_volume, 1, frequency, falloff = 5)
 
 	//postpone processing for a bit
 	var/postponeCycles = max(round(devastation_range/8),1)
 	SSlighting.postpone(postponeCycles)
-	SSmachines.postpone(postponeCycles)
+	SSmachine.postpone(postponeCycles)
 
 	if(heavy_impact_range > 1)
 		if(smoke)
 			var/datum/effect_system/explosion/smoke/E = new/datum/effect_system/explosion/smoke()
+			if(heavy_impact_range > 3)
+				E.epic = 1
 			E.set_up(epicenter)
 			E.start()
 		else
 			var/datum/effect_system/explosion/E = new/datum/effect_system/explosion()
+			if(heavy_impact_range > 3)
+				E.epic = 1
 			E.set_up(epicenter)
 			E.start()
 
@@ -100,6 +104,10 @@
 			for(var/obj/structure/window/W in T)
 				if(W.reinf && W.fulltile)
 					cached_exp_block[T] += W.explosion_block
+
+			for(var/obj/structure/simple_door/D in T)
+				if(D.density && D.explosion_block)
+					cached_exp_block[T] += D.explosion_block
 
 			for(var/obj/structure/blob/B in T)
 				cached_exp_block[T] += B.explosion_block
@@ -145,7 +153,7 @@
 
 		if(T)
 			if(flame_dist && prob(40) && !isspaceturf(T) && !T.density)
-				new /obj/effect/hotspot(T) //Mostly for ambience!
+				PoolOrNew(/obj/effect/hotspot, T) //Mostly for ambience!
 			if(dist > 0)
 				T.explosion_level = max(T.explosion_level, dist)	//let the bigger one have it
 				T.explosion_id = id
@@ -162,9 +170,10 @@
 				I.throw_speed = 4 //Temporarily change their throw_speed for embedding purposes (Reset when it finishes throwing, regardless of hitting anything)
 				I.throw_at(throw_at, throw_range, I.throw_speed)
 
-		if(TICK_CHECK)
+		if(world.tick_usage > CURRENT_TICKLIMIT)
 			stoplag()
-			var/circumference = (PI * (init_dist + 4) * 2) //+4 to radius to prevent shit gaps
+
+			var/circumference = (PI * init_dist * 2) + 8 //+8 to prevent shit gaps
 			if(exploded_this_tick.len > circumference)	//only do this every revolution
 				for(var/Unexplode in exploded_this_tick)
 					var/turf/UnexplodeT = Unexplode
@@ -179,11 +188,11 @@
 
 	var/took = (world.timeofday-start)/10
 	//You need to press the DebugGame verb to see these now....they were getting annoying and we've collected a fair bit of data. Just -test- changes  to explosion code using this please so we can compare
-	if(GLOB.Debug2)
-		log_world("## DEBUG: Explosion([x0],[y0],[z0])(d[devastation_range],h[heavy_impact_range],l[light_impact_range]): Took [took] seconds.")
+	if(Debug2)
+		world.log << "## DEBUG: Explosion([x0],[y0],[z0])(d[devastation_range],h[heavy_impact_range],l[light_impact_range]): Took [took] seconds."
 
 	//Machines which report explosions.
-	for(var/array in GLOB.doppler_arrays)
+	for(var/array in doppler_arrays)
 		var/obj/machinery/doppler_array/A = array
 		A.sense_explosion(epicenter,devastation_range,heavy_impact_range,light_impact_range,took,orig_dev_range,orig_heavy_range,orig_light_range)
 
@@ -277,7 +286,7 @@
 	if(!power)
 		return
 	var/range = 0
-	range = round((2 * power)**GLOB.DYN_EX_SCALE)
+	range = round((2 * power)**DYN_EX_SCALE)
 	explosion(epicenter, round(range * 0.25), round(range * 0.5), round(range), flash_range*range, adminlog, ignorecap, flame_range*range, silent, smoke)
 
 // Using default dyn_ex scale:

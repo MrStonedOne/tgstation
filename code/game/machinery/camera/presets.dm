@@ -4,7 +4,7 @@
 /obj/machinery/camera/emp_proof
 	start_active = 1
 
-/obj/machinery/camera/emp_proof/Initialize()
+/obj/machinery/camera/emp_proof/New()
 	..()
 	upgradeEmpProof()
 
@@ -14,7 +14,7 @@
 	start_active = 1
 	icon_state = "xraycam" // Thanks to Krutchen for the icons.
 
-/obj/machinery/camera/xray/Initialize()
+/obj/machinery/camera/xray/New()
 	..()
 	upgradeXRay()
 
@@ -23,7 +23,7 @@
 	start_active = 1
 	name = "motion-sensitive security camera"
 
-/obj/machinery/camera/motion/Initialize()
+/obj/machinery/camera/motion/New()
 	..()
 	upgradeMotion()
 
@@ -31,7 +31,7 @@
 /obj/machinery/camera/all
 	start_active = 1
 
-/obj/machinery/camera/all/Initialize()
+/obj/machinery/camera/all/New()
 	..()
 	upgradeEmpProof()
 	upgradeXRay()
@@ -43,23 +43,20 @@
 	var/number = 0 //camera number in area
 
 //This camera type automatically sets it's name to whatever the area that it's in is called.
-/obj/machinery/camera/autoname/Initialize(mapload)
-	if(mapload)
-		..()
-		return TRUE
-	else
-		if(!initialized)
-			..()
+/obj/machinery/camera/autoname/New()
+	..()
+	spawn(10)
 		number = 1
 		var/area/A = get_area(src)
 		if(A)
-			for(var/obj/machinery/camera/autoname/C in GLOB.machines)
+			for(var/obj/machinery/camera/autoname/C in machines)
 				if(C == src) continue
 				var/area/CA = get_area(C)
 				if(CA.type == A.type)
 					if(C.number)
 						number = max(number, C.number+1)
 			c_tag = "[A.name] #[number]"
+
 
 // CHECKS
 
@@ -82,7 +79,7 @@
 	assembly.upgrades.Add(new /obj/item/device/analyzer(assembly))
 	upgrades |= CAMERA_UPGRADE_XRAY
 
-// If you are upgrading Motion, and it isn't in the camera's Initialize(), add it to the machines list.
+// If you are upgrading Motion, and it isn't in the camera's New(), add it to the machines list.
 /obj/machinery/camera/proc/upgradeMotion()
 	assembly.upgrades.Add(new /obj/item/device/assembly/prox_sensor(assembly))
 	upgrades |= CAMERA_UPGRADE_MOTION

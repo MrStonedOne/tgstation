@@ -58,10 +58,10 @@
 
 			if(!user.drop_item())
 				return 1
-			G.loc = src
+			G.forceMove(src)
 			charging = G
 			use_power = 2
-			update_icon(scan = TRUE)
+			update_icon()
 		else
 			to_chat(user, "<span class='notice'>[src] isn't connected to anything!</span>")
 		return 1
@@ -85,7 +85,7 @@
 	add_fingerprint(user)
 	if(charging)
 		charging.update_icon()
-		charging.loc = loc
+		charging.forceMove(loc)
 		user.put_in_hands(charging)
 		charging = null
 		use_power = 1
@@ -97,7 +97,7 @@
 /obj/machinery/recharger/attack_tk(mob/user)
 	if(charging)
 		charging.update_icon()
-		charging.loc = loc
+		charging.forceMove(loc)
 		charging = null
 		use_power = 1
 		update_icon()
@@ -162,11 +162,8 @@
 	..()
 
 
-/obj/machinery/recharger/update_icon(using_power = 0, scan)	//we have an update_icon() in addition to the stuff in process to make it feel a tiny bit snappier.
+/obj/machinery/recharger/update_icon(using_power = 0)	//we have an update_icon() in addition to the stuff in process to make it feel a tiny bit snappier.
 	if(stat & (NOPOWER|BROKEN) || !anchored)
-		icon_state = "rechargeroff"
-		return
-	if(scan)
 		icon_state = "rechargeroff"
 		return
 	if(panel_open)

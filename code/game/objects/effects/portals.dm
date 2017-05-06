@@ -14,9 +14,6 @@
 /obj/effect/portal/Bumped(mob/M as mob|obj)
 	teleport(M)
 
-/obj/effect/portal/attack_tk(mob/user)
-	return
-
 /obj/effect/portal/attack_hand(mob/user)
 	if(Adjacent(user))
 		teleport(user)
@@ -30,7 +27,7 @@
 
 /obj/effect/portal/New(loc, turf/target, creator=null, lifespan=300)
 	..()
-	GLOB.portals += src
+	portals += src
 	src.target = target
 	src.creator = creator
 
@@ -39,10 +36,11 @@
 		qdel(src)
 		return
 	if(lifespan > 0)
-		QDEL_IN(src, lifespan)
+		spawn(lifespan)
+			qdel(src)
 
 /obj/effect/portal/Destroy()
-	GLOB.portals -= src
+	portals -= src
 	if(istype(creator, /obj/item/weapon/hand_tele))
 		var/obj/item/weapon/hand_tele/O = creator
 		O.active_portals--
@@ -63,7 +61,7 @@
 		return
 	if (istype(M, /atom/movable))
 		if(ismegafauna(M))
-			message_admins("[M] [ADMIN_FLW(M)] has teleported through [src].")
+			message_admins("[M] (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[M]'>FLW</A>) has teleported through [src].")
 		do_teleport(M, target, precision) ///You will appear adjacent to the beacon
 
 

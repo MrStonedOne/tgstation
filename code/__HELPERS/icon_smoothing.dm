@@ -1,7 +1,7 @@
 
 //generic (by snowflake) tile smoothing code; smooth your icons with this!
 /*
-	Each tile is divided in 4 corners, each corner has an appearance associated to it; the tile is then overlayed by these 4 appearances
+	Each tile is divided in 4 corners, each corner has an image associated to it; the tile is then overlayed by these 4 images
 	To use this, just set your atom's 'smooth' var to 1. If your atom can be moved/unanchored, set its 'can_be_unanchored' var to 1.
 	If you don't want your atom's icon to smooth with anything but atoms of the same type, set the list 'canSmoothWith' to null;
 	Otherwise, put all types you want the atom icon to smooth with in 'canSmoothWith' INCLUDING THE TYPE OF THE ATOM ITSELF.
@@ -33,17 +33,18 @@
 #define N_SOUTHEAST	64
 #define N_SOUTHWEST	1024
 
-#define SMOOTH_FALSE	0	//not smooth
-#define SMOOTH_TRUE		1	//smooths with exact specified types or just itself
-#define SMOOTH_MORE		2	//smooths with all subtypes of specified types or just itself (this value can replace SMOOTH_TRUE)
-#define SMOOTH_DIAGONAL	4	//if atom should smooth diagonally, this should be present in 'smooth' var
-#define SMOOTH_BORDER	8	//atom will smooth with the borders of the map
-#define SMOOTH_QUEUED	16	//atom is currently queued to smooth.
+#define SMOOTH_FALSE	0 //not smooth
+#define SMOOTH_TRUE		1 //smooths with exact specified types or just itself
+#define SMOOTH_MORE		2 //smooths with all subtypes of specified types or just itself (this value can replace SMOOTH_TRUE)
+#define SMOOTH_DIAGONAL	4 //if atom should smooth diagonally, this should be present in 'smooth' var
+#define SMOOTH_BORDER	8 //atom will smooth with the borders of the map
+#define SMOOTH_OLD	    16
 
 #define NULLTURF_BORDER 123456789
 
 #define DEFAULT_UNDERLAY_ICON 			'icons/turf/floors.dmi'
 #define DEFAULT_UNDERLAY_ICON_STATE 	"plating"
+#define DEFAULT_UNDERLAY_IMAGE			image(DEFAULT_UNDERLAY_ICON, DEFAULT_UNDERLAY_ICON_STATE)
 
 /atom/var/smooth = SMOOTH_FALSE
 /atom/var/top_left_corner
@@ -66,7 +67,7 @@
 		if(AM.can_be_unanchored && !AM.anchored)
 			return 0
 
-	for(var/direction in GLOB.cardinal)
+	for(var/direction in cardinal)
 		AM = find_type_in_direction(A, direction)
 		if(AM == NULLTURF_BORDER)
 			if((A.smooth & SMOOTH_BORDER))
@@ -110,14 +111,17 @@
 
 //do not use, use queue_smooth(atom)
 /proc/smooth_icon(atom/A)
-	if(!A || !A.smooth)
+	if(!A || !A.smooth || !A.z)
 		return
-	A.smooth &= ~SMOOTH_QUEUED
-	if (!A.z)
+	if(qdeleted(A))
 		return
-	if(QDELETED(A))
-		return
-	if((A.smooth & SMOOTH_TRUE) || (A.smooth & SMOOTH_MORE))
+
+
+	if(A.smooth & SMOOTH_OLD)
+		A:recalculate_junction()
+		A:relative()
+
+	else if((A.smooth & SMOOTH_TRUE) || (A.smooth & SMOOTH_MORE))
 		var/adjacencies = calculate_adjacencies(A)
 
 		if(A.smooth & SMOOTH_DIAGONAL)
@@ -152,42 +156,24 @@
 	icon_state = ""
 	return adjacencies
 
-//only walls should have a need to handle underlays
-/turf/closed/wall/diagonal_smooth(adjacencies)
-	adjacencies = reverse_ndir(..())
-	if(adjacencies)
-		var/mutable_appearance/underlay_appearance = mutable_appearance(layer = TURF_LAYER)
-		var/list/U = list(underlay_appearance)
-		if(fixed_underlay)
-			if(fixed_underlay["space"])
-				underlay_appearance.icon = 'icons/turf/space.dmi'
-				underlay_appearance.icon_state = SPACE_ICON_STATE
-				underlay_appearance.plane = PLANE_SPACE
-			else
-				underlay_appearance.icon = fixed_underlay["icon"]
-				underlay_appearance.icon_state = fixed_underlay["icon_state"]
+/atom/proc/make_underlays()
+	return
+
+/turf/make_underlays()
+	var/list/U = list()
+	if(fixed_underlay)
+		if(fixed_underlay["space"])
+			var/image/I = image('icons/turf/space.dmi', SPACE_ICON_STATE, layer=TURF_LAYER)
+			I.plane = PLANE_SPACE
+			U += I
 		else
-			var/turf/T = get_step(src, turn(adjacencies, 180))
-			if(T && (T.density || T.smooth))
-				T = get_step(src, turn(adjacencies, 135))
-				if(T && (T.density || T.smooth))
-					T = get_step(src, turn(adjacencies, 225))
-
-			if(isspaceturf(T) && !istype(T, /turf/open/space/transit))
-				underlay_appearance.icon = 'icons/turf/space.dmi'
-				underlay_appearance.icon_state = SPACE_ICON_STATE
-				underlay_appearance.plane = PLANE_SPACE
-			else if(T && !T.density && !T.smooth)
-				underlay_appearance.icon = T.icon
-				underlay_appearance.icon_state = T.icon_state
-			else if(baseturf && !initial(baseturf.density) && !initial(baseturf.smooth))
-				underlay_appearance.icon = initial(baseturf.icon)
-				underlay_appearance.icon_state = initial(baseturf.icon_state)
-			else
-				underlay_appearance.icon = DEFAULT_UNDERLAY_ICON
-				underlay_appearance.icon_state = DEFAULT_UNDERLAY_ICON_STATE
-		underlays = U
-
+			U += image(fixed_underlay["icon"], fixed_underlay["icon_state"], layer=TURF_LAYER)
+	else
+		if(baseturf && !initial(baseturf.density) && !initial(baseturf.smooth))
+			U += image(icon=initial(baseturf.icon), icon_state=baseturf_icon, layer=TURF_LAYER, dir=baseturf_dir)
+		else
+			U += DEFAULT_UNDERLAY_IMAGE
+	underlays = U
 
 /proc/cardinal_smooth(atom/A, adjacencies)
 	//NW CORNER
@@ -242,30 +228,31 @@
 		else if(adjacencies & N_EAST)
 			se = "4-e"
 
-	var/list/New
+	var/list/New = list()
 
 	if(A.top_left_corner != nw)
-		A.cut_overlay(A.top_left_corner)
+		A.overlays -= A.top_left_corner
 		A.top_left_corner = nw
-		LAZYADD(New, nw)
+		New += nw
 
 	if(A.top_right_corner != ne)
-		A.cut_overlay(A.top_right_corner)
+		A.overlays -= A.top_right_corner
 		A.top_right_corner = ne
-		LAZYADD(New, ne)
+		New += ne
 
 	if(A.bottom_right_corner != sw)
-		A.cut_overlay(A.bottom_right_corner)
+		A.overlays -= A.bottom_right_corner
 		A.bottom_right_corner = sw
-		LAZYADD(New, sw)
+		New += sw
 
 	if(A.bottom_left_corner != se)
-		A.cut_overlay(A.bottom_left_corner)
+		A.overlays -= A.bottom_left_corner
 		A.bottom_left_corner = se
-		LAZYADD(New, se)
+		New += se
 
-	if(New)
+	if(New.len)
 		A.add_overlay(New)
+
 
 /proc/find_type_in_direction(atom/source, direction)
 	var/turf/target_turf = get_step(source, direction)
@@ -315,13 +302,13 @@
 					queue_smooth(A)
 
 /atom/proc/clear_smooth_overlays()
-	cut_overlay(top_left_corner)
+	overlays -= top_left_corner
 	top_left_corner = null
-	cut_overlay(top_right_corner)
+	overlays -= top_right_corner
 	top_right_corner = null
-	cut_overlay(bottom_right_corner)
+	overlays -= bottom_right_corner
 	bottom_right_corner = null
-	cut_overlay(bottom_left_corner)
+	overlays -= bottom_left_corner
 	bottom_left_corner = null
 
 /atom/proc/replace_smooth_overlays(nw, ne, sw, se)
@@ -383,13 +370,11 @@
 
 //SSicon_smooth
 /proc/queue_smooth(atom/A)
-	if(!A.smooth || A.smooth & SMOOTH_QUEUED)
-		return
-
-	SSicon_smooth.smooth_queue += A
-	SSicon_smooth.can_fire = 1
-	A.smooth |= SMOOTH_QUEUED
-
+	if(SSicon_smooth)
+		SSicon_smooth.smooth_queue[A] = A
+		SSicon_smooth.can_fire = 1
+	else
+		smooth_icon(A)
 
 //Example smooth wall
 /turf/closed/wall/smooth
@@ -398,3 +383,25 @@
 	icon_state = "smooth"
 	smooth = SMOOTH_TRUE|SMOOTH_DIAGONAL|SMOOTH_BORDER
 	canSmoothWith = null
+
+///OLD SMOOTH SYSTEM
+
+/atom
+	var/icontype
+	var/junction
+
+/atom/proc/recalculate_junction()
+	junction = 0
+
+	for(var/cdir in cardinal)
+		var/turf/T = get_step(src,cdir)
+		if(!T)
+			continue
+		for(var/a_type in canSmoothWith)
+			var/A = locate(a_type) in T
+			if(A || T.type == a_type)
+				junction |= cdir
+				break
+
+atom/proc/relative(custom_junction = junction)
+	icon_state = "[src.icontype][custom_junction]"

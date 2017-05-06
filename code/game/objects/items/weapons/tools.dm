@@ -1,4 +1,4 @@
-#define WELDER_FUEL_BURN_INTERVAL 13
+
 
 /* Tools!
  * Note: Multitools are /obj/item/device
@@ -44,7 +44,6 @@
 /obj/item/weapon/wrench/brass
 	name = "brass wrench"
 	desc = "A brass wrench. It's faintly warm to the touch."
-	resistance_flags = FIRE_PROOF | ACID_PROOF
 	icon_state = "wrench_brass"
 	toolspeed = 0.5
 
@@ -74,8 +73,9 @@
 	playsound(get_turf(user),'sound/items/change_drill.ogg',50,1)
 	var/obj/item/weapon/wirecutters/power/s_drill = new /obj/item/weapon/screwdriver/power
 	to_chat(user, "<span class='notice'>You attach the screw driver bit to [src].</span>")
-	qdel(src)
+	user.unEquip(src)
 	user.put_in_active_hand(s_drill)
+	qdel(src)
 
 /obj/item/weapon/wrench/power/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] is pressing [src] against [user.p_their()] head! It looks like [user.p_theyre()] trying to commit suicide!")
@@ -106,7 +106,7 @@
 		return
 
 	for(var/obj/item/W in user)
-		user.dropItemToGround(W)
+		user.unEquip(W)
 
 	var/obj/item/weapon/wrench/medical/W = new /obj/item/weapon/wrench/medical(loc)
 	W.add_fingerprint(user)
@@ -168,7 +168,6 @@
 /obj/item/weapon/screwdriver/brass
 	name = "brass screwdriver"
 	desc = "A screwdriver made of brass. The handle feels freezing cold."
-	resistance_flags = FIRE_PROOF | ACID_PROOF
 	icon_state = "screwdriver_brass"
 	toolspeed = 0.5
 
@@ -204,8 +203,9 @@
 	playsound(get_turf(user),'sound/items/change_drill.ogg',50,1)
 	var/obj/item/weapon/wrench/power/b_drill = new /obj/item/weapon/wrench/power
 	to_chat(user, "<span class='notice'>You attach the bolt driver bit to [src].</span>")
-	qdel(src)
+	user.unEquip(src)
 	user.put_in_active_hand(b_drill)
+	qdel(src)
 
 /obj/item/weapon/screwdriver/cyborg
 	name = "powered screwdriver"
@@ -218,7 +218,7 @@
  */
 /obj/item/weapon/wirecutters
 	name = "wirecutters"
-	desc = "This cuts wires."
+	desc = "This cuts wires and cloth, just like scissors."
 	icon = 'icons/obj/tools.dmi'
 	icon_state = null
 	flags = CONDUCT
@@ -231,10 +231,8 @@
 	attack_verb = list("pinched", "nipped")
 	hitsound = 'sound/items/Wirecutter.ogg'
 	usesound = 'sound/items/Wirecutter.ogg'
-	origin_tech = "materials=1;engineering=1"
 	toolspeed = 1
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 50, acid = 30)
-
 
 /obj/item/weapon/wirecutters/New(loc, var/param_color = null)
 	..()
@@ -263,7 +261,6 @@
 /obj/item/weapon/wirecutters/brass
 	name = "brass wirecutters"
 	desc = "A pair of wirecutters made of brass. The handle feels freezing cold to the touch."
-	resistance_flags = FIRE_PROOF | ACID_PROOF
 	icon_state = "cutters_brass"
 	toolspeed = 0.5
 
@@ -302,11 +299,12 @@
 	return (BRUTELOSS)
 
 /obj/item/weapon/wirecutters/power/attack_self(mob/user)
-	playsound(get_turf(user), 'sound/items/change_jaws.ogg', 50, 1)
+	playsound(get_turf(user),"sound/items/change_jaws.ogg",50,1)
 	var/obj/item/weapon/crowbar/power/pryjaws = new /obj/item/weapon/crowbar/power
 	to_chat(user, "<span class='notice'>You attach the pry jaws to [src].</span>")
-	qdel(src)
+	user.unEquip(src)
 	user.put_in_active_hand(pryjaws)
+	qdel(src)
 /*
  * Welding Tool
  */
@@ -338,7 +336,6 @@
 	var/change_icons = 1
 	var/can_off_process = 0
 	var/light_intensity = 2 //how powerful the emitted light is when used.
-	var/burned_fuel_for = 0	//when fuel was last removed
 	heat = 3800
 	toolspeed = 1
 
@@ -384,8 +381,7 @@
 		if(1)
 			force = 15
 			damtype = "fire"
-			++burned_fuel_for
-			if(burned_fuel_for >= WELDER_FUEL_BURN_INTERVAL)
+			if(prob(5))
 				remove_fuel(1)
 			update_icon()
 
@@ -416,11 +412,10 @@
 	if(affecting && affecting.status == BODYPART_ROBOTIC && user.a_intent != INTENT_HARM)
 		if(src.remove_fuel(1))
 			playsound(loc, usesound, 50, 1)
-			if(user == H)
-				user.visible_message("<span class='notice'>[user] starts to fix some of the dents on [H]'s [affecting.name].</span>", "<span class='notice'>You start fixing some of the dents on [H]'s [affecting.name].</span>")
-				if(!do_mob(user, H, 50))
-					return
-			item_heal_robotic(H, user, 15, 0)
+			user.visible_message("<span class='notice'>[user] starts to fix some of the dents on [H]'s [affecting.name].</span>", "<span class='notice'>You start fixing some of the dents on [H]'s [affecting.name].</span>")
+			if(!do_mob(user, H, 50))
+				return
+			item_heal_robotic(H, user, 5, 0)
 	else
 		return ..()
 
@@ -445,8 +440,7 @@
 /obj/item/weapon/weldingtool/attack_self(mob/user)
 	switched_on(user)
 	if(welding)
-		set_light(light_intensity)
-
+		set_light(0)
 	update_icon()
 
 
@@ -459,8 +453,6 @@
 /obj/item/weapon/weldingtool/proc/remove_fuel(amount = 1, mob/living/M = null)
 	if(!welding || !check_fuel())
 		return 0
-	if(amount)
-		burned_fuel_for = 0
 	if(get_fuel() >= amount)
 		reagents.remove_reagent("welding_fuel", amount)
 		check_fuel()
@@ -519,7 +511,6 @@
 	hitsound = "swing_hit"
 	update_icon()
 
-
 /obj/item/weapon/weldingtool/examine(mob/user)
 	..()
 	to_chat(user, "It contains [get_fuel()] unit\s of fuel out of [max_fuel].")
@@ -549,7 +540,8 @@
 		if (R.use(1))
 			var/obj/item/weapon/flamethrower/F = new /obj/item/weapon/flamethrower(user.loc)
 			if(!remove_item_from_storage(F))
-				user.transferItemToLoc(src, F, TRUE)
+				user.unEquip(src)
+				forceMove(F)
 			F.weldtool = src
 			add_fingerprint(user)
 			to_chat(user, "<span class='notice'>You add a rod to a welder, starting to build a flamethrower.</span>")
@@ -616,25 +608,24 @@
 	materials = list(MAT_METAL=70, MAT_GLASS=120)
 	origin_tech = "engineering=3;plasmatech=2"
 
-/obj/item/weapon/weldingtool/experimental
-	name = "experimental welding tool"
-	desc = "An experimental welder capable of self-fuel generation and less harmful to the eyes."
-	icon_state = "exwelder"
-	item_state = "exwelder"
+/obj/item/weapon/weldingtool/experimental //Moded for Fallout 13 blowtorch
+	name = "blowtorch"
+	desc = "A fuel-burning tool used for applying flame and heat to various applications, usually metalworking."
+	icon_state = "blowtorch"
+	item_state = "blowtorch"
 	max_fuel = 40
 	materials = list(MAT_METAL=70, MAT_GLASS=120)
 	origin_tech = "materials=4;engineering=4;bluespace=3;plasmatech=4"
 	var/last_gen = 0
 	change_icons = 0
-	can_off_process = 1
-	light_intensity = 1
-	toolspeed = 0.5
+	can_off_process = 0
+	light_intensity = 2
+	toolspeed = 1
 	var/nextrefueltick = 0
 
 /obj/item/weapon/weldingtool/experimental/brass
 	name = "brass welding tool"
 	desc = "A brass welder that seems to constantly refuel itself. It is faintly warm to the touch."
-	resistance_flags = FIRE_PROOF | ACID_PROOF
 	icon_state = "brasswelder"
 	item_state = "brasswelder"
 
@@ -658,7 +649,7 @@
 	usesound = 'sound/items/Crowbar.ogg'
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
-	force = 5
+	force = 10
 	throwforce = 7
 	w_class = WEIGHT_CLASS_SMALL
 	materials = list(MAT_METAL=50)
@@ -674,12 +665,11 @@
 
 /obj/item/weapon/crowbar/red
 	icon_state = "crowbar_red"
-	force = 8
+	force = 15
 
 /obj/item/weapon/crowbar/brass
 	name = "brass crowbar"
 	desc = "A brass crowbar. It feels faintly warm to the touch."
-	resistance_flags = FIRE_PROOF | ACID_PROOF
 	icon_state = "crowbar_brass"
 	toolspeed = 0.5
 
@@ -695,7 +685,7 @@
 /obj/item/weapon/crowbar/large
 	name = "crowbar"
 	desc = "It's a big crowbar. It doesn't fit in your pockets, because it's big."
-	force = 12
+	force = 15
 	w_class = WEIGHT_CLASS_NORMAL
 	throw_speed = 3
 	throw_range = 3
@@ -719,7 +709,7 @@
 	materials = list(MAT_METAL=150,MAT_SILVER=50,MAT_TITANIUM=25)
 	origin_tech = "materials=2;engineering=2"
 	usesound = 'sound/items/jaws_pry.ogg'
-	force = 15
+	force = 20
 	toolspeed = 0.25
 
 /obj/item/weapon/crowbar/power/suicide_act(mob/user)
@@ -728,10 +718,9 @@
 	return (BRUTELOSS)
 
 /obj/item/weapon/crowbar/power/attack_self(mob/user)
-	playsound(get_turf(user), 'sound/items/change_jaws.ogg', 50, 1)
+	playsound(get_turf(user),"sound/items/change_jaws.ogg",50,1)
 	var/obj/item/weapon/wirecutters/power/cutjaws = new /obj/item/weapon/wirecutters/power
 	to_chat(user, "<span class='notice'>You attach the cutting jaws to [src].</span>")
-	qdel(src)
+	user.unEquip(src)
 	user.put_in_active_hand(cutjaws)
-
-#undef WELDER_FUEL_BURN_INTERVAL
+	qdel(src)

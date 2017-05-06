@@ -32,14 +32,16 @@
 	else if(mind) // Let's make this a feature
 		egg.origin = mind
 	for(var/obj/item/organ/I in src)
-		I.loc = egg
+		I.forceMove(egg)
 	visible_message("<span class='warning'>[src] plants something in [victim]'s flesh!</span>", \
 					"<span class='danger'>We inject our egg into [victim]'s body!</span>")
 	egg_lain = 1
 
 /mob/living/simple_animal/hostile/headcrab/AttackingTarget()
-	. = ..()
-	if(. && !egg_lain && iscarbon(target) && !ismonkey(target))
+	if(egg_lain)
+		target.attack_animal(src)
+		return
+	if(iscarbon(target) && !ismonkey(target))
 		// Changeling egg can survive in aliens!
 		var/mob/living/carbon/C = target
 		if(C.stat == DEAD)
@@ -48,7 +50,13 @@
 				return
 			Infect(target)
 			to_chat(src, "<span class='userdanger'>With our egg laid, our death approaches rapidly...</span>")
-			addtimer(CALLBACK(src, .proc/death), 100)
+			spawn(100)
+				death()
+			return
+	target.attack_animal(src)
+
+
+
 
 /obj/item/organ/body_egg/changeling_egg
 	name = "changeling egg"

@@ -135,7 +135,7 @@
 		busy = 0
 		return 1
 
-	if(HAS_SECONDARY_FLAG(O, HOLOGRAM))
+	if(O.flags & HOLOGRAM)
 		return 1
 
 	var/material_amount = materials.get_item_material_amount(O)
@@ -145,7 +145,7 @@
 	if(!materials.has_space(material_amount))
 		to_chat(user, "<span class='warning'>The autolathe is full. Please remove metal or glass from the autolathe in order to insert more.</span>")
 		return 1
-	if(!user.temporarilyRemoveItemFromInventory(O))
+	if(!user.unEquip(O))
 		to_chat(user, "<span class='warning'>\The [O] is stuck to you and cannot be placed into the autolathe.</span>")
 		return 1
 
@@ -159,15 +159,10 @@
 				flick("autolathe_r",src)//plays glass insertion animation
 			to_chat(user, "<span class='notice'>You insert [inserted] sheet[inserted>1 ? "s" : ""] to the autolathe.</span>")
 			use_power(inserted*100)
-			if(!QDELETED(O))
-				user.put_in_active_hand(O)
 		else
 			to_chat(user, "<span class='notice'>You insert a material total of [inserted] to the autolathe.</span>")
 			use_power(max(500,inserted/10))
 			qdel(O)
-	else
-		user.put_in_active_hand(O)
-
 	busy = 0
 	updateUsrDialog()
 	return 1

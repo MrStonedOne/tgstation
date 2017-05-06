@@ -16,7 +16,7 @@
 		return list("reason"="invalid login data", "desc"="Error: Could not check ban status, Please try again. Error message: Your computer provided an invalid Computer ID.)")
 	var/admin = 0
 	var/ckey = ckey(key)
-	if((ckey in GLOB.admin_datums) || (ckey in GLOB.deadmins))
+	if((ckey in admin_datums) || (ckey in deadmins))
 		admin = 1
 
 	//Whitelist
@@ -32,10 +32,10 @@
 
 	//Guest Checking
 	if(IsGuestKey(key))
-		if (!GLOB.guests_allowed)
+		if (!guests_allowed)
 			log_access("Failed Login: [key] - Guests not allowed")
 			return list("reason"="guest", "desc"="\nReason: Guests not allowed. Please sign in with a byond account.")
-		if (config.panic_bunker && SSdbcore && SSdbcore.IsConnected())
+		if (config.panic_bunker && dbcon && dbcon.IsConnected())
 			log_access("Failed Login: [key] - Guests not allowed during panic bunker")
 			return list("reason"="guest", "desc"="\nReason: Sorry but the server is currently not accepting connections from never before seen players or guests. If you have played on this server with a byond account before, please log in to the byond account you have played from.")
 
@@ -61,30 +61,33 @@
 
 		var/ckeytext = ckey(key)
 
-		if(!SSdbcore.Connect())
-			log_world("Ban database connection failure. Key [ckeytext] not checked")
-			GLOB.world_game_log << "Ban database connection failure. Key [ckeytext] not checked"
+		if(!establish_db_connection())
+			world.log << "Ban database connection failure. Key [ckeytext] not checked"
+			diary << "Ban database connection failure. Key [ckeytext] not checked"
 			return
 
 		var/ipquery = ""
 		var/cidquery = ""
 		if(address)
-			ipquery = " OR ip = INET_ATON('[address]') "
+			ipquery = " OR ip = '[address]' "
 
 		if(computer_id)
 			cidquery = " OR computerid = '[computer_id]' "
 
-		var/datum/DBQuery/query_ban_check = SSdbcore.NewQuery("SELECT ckey, a_ckey, reason, expiration_time, duration, bantime, bantype FROM [format_table_name("ban")] WHERE (ckey = '[ckeytext]' [ipquery] [cidquery]) AND (bantype = 'PERMABAN' OR bantype = 'ADMIN_PERMABAN' OR ((bantype = 'TEMPBAN' OR bantype = 'ADMIN_TEMPBAN') AND expiration_time > Now())) AND isnull(unbanned)")
-		if(!query_ban_check.Execute())
-			return
-		while(query_ban_check.NextRow())
-			var/pckey = query_ban_check.item[1]
-			var/ackey = query_ban_check.item[2]
-			var/reason = query_ban_check.item[3]
-			var/expiration = query_ban_check.item[4]
-			var/duration = query_ban_check.item[5]
-			var/bantime = query_ban_check.item[6]
-			var/bantype = query_ban_check.item[7]
+		var/DBQuery/query = dbcon.NewQuery("SELECT ckey, ip, computerid, a_ckey, reason, expiration_time, duration, bantime, bantype FROM [format_table_name("ban")] WHERE (ckey = '[ckeytext]' [ipquery] [cidquery]) AND (bantype = 'PERMABAN' OR bantype = 'ADMIN_PERMABAN' OR ((bantype = 'TEMPBAN' OR bantype = 'ADMIN_TEMPBAN') AND expiration_time > Now())) AND isnull(unbanned)")
+
+		query.Execute()
+
+		while(query.NextRow())
+			var/pckey = query.item[1]
+			//var/pip = query.item[2]
+			//var/pcid = query.item[3]
+			var/ackey = query.item[4]
+			var/reason = query.item[5]
+			var/expiration = query.item[6]
+			var/duration = query.item[7]
+			var/bantime = query.item[8]
+			var/bantype = query.item[9]
 			if (bantype == "ADMIN_PERMABAN" || bantype == "ADMIN_TEMPBAN")
 				//admin bans MUST match on ckey to prevent cid-spoofing attacks
 				//	as well as dynamic ip abuse
@@ -120,7 +123,7 @@
 			bannedckey = ban["ckey"]
 
 		var/newmatch = FALSE
-		var/client/C = GLOB.directory[ckey]
+		var/client/C = directory[ckey]
 		var/cachedban = SSstickyban.cache[bannedckey]
 
 		//rogue ban in the process of being reverted.

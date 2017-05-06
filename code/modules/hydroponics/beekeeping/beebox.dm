@@ -25,7 +25,7 @@
 
 /obj/structure/beebox
 	name = "apiary"
-	desc = "Dr Miles Manners is just your average wasp-themed super hero by day, but by night he becomes DR BEES!"
+	desc = "Dr Miles Manners is just your average Wasp themed super hero by day, but by night he becomes DR BEES!"
 	icon = 'icons/obj/hydroponics/equipment.dmi'
 	icon_state = "beebox"
 	anchored = 1
@@ -63,7 +63,7 @@
 	var/datum/reagent/R = null
 	if(random_reagent)
 		R = pick(subtypesof(/datum/reagent))
-		R = GLOB.chemical_reagents_list[initial(R.id)]
+		R = chemical_reagents_list[initial(R.id)]
 
 	queen_bee = new(src)
 	queen_bee.beehome = src
@@ -127,7 +127,7 @@
 
 	var/half_bee = get_max_bees()*0.5
 	if(half_bee && (bees.len >= half_bee))
-		to_chat(user, "<span class='notice'>This place is aBUZZ with activity... there are lots of bees!</span>")
+		to_chat(user, "<span class='notice'>This place is a BUZZ with activity... there are lots of bees!</span>")
 
 	to_chat(user, "<span class='notice'>[bee_resources]/100 resource supply.</span>")
 	to_chat(user, "<span class='notice'>[bee_resources]% towards a new honeycomb.</span>")
@@ -146,11 +146,11 @@
 		var/obj/item/honey_frame/HF = I
 		if(honey_frames.len < BEEBOX_MAX_FRAMES)
 			visible_message("<span class='notice'>[user] adds a frame to the apiary.</span>")
-			if(!user.transferItemToLoc(HF, src))
-				return
+			user.unEquip(HF)
+			HF.forceMove(src)
 			honey_frames += HF
 		else
-			to_chat(user, "<span class='warning'>There's no room for any more frames in the apiary!</span>")
+			to_chat(user, "<span class='warning'>There's no room for anymore frames in the apiary!</span>")
 
 	if(istype(I, /obj/item/weapon/wrench))
 		if(default_unfasten_wrench(user, I, time = 20))
@@ -162,7 +162,7 @@
 			return
 
 		var/obj/item/queen_bee/qb = I
-		user.temporarilyRemoveItemFromInventory(qb)
+		user.unEquip(qb)
 
 		qb.queen.forceMove(src)
 		bees += qb.queen
@@ -178,13 +178,13 @@
 					bees -= B
 					B.beehome = null
 					if(B.loc == src)
-						B.loc = get_turf(src)
+						B.forceMove(get_turf(src))
 					relocated++
 			if(relocated)
 				to_chat(user, "<span class='warning'>This queen has a different reagent to some of the bees who live here, those bees will not return to this apiary!</span>")
 
 		else
-			to_chat(user, "<span class='warning'>The queen bee disappeared! Disappearing bees have been in the news lately...</span>")
+			to_chat(user, "<span class='warning'>The queen bee disappeared! bees disappearing has been in the news lately...</span>")
 
 		qdel(qb)
 
@@ -198,13 +198,13 @@
 			if(B.isqueen)
 				continue
 			if(B.loc == src)
-				B.loc = get_turf(src)
+				B.forceMove(get_turf(src))
 			B.target = user
 			bees = TRUE
 		if(bees)
 			visible_message("<span class='danger'>[user] disturbs the bees!</span>")
 	else
-		var/option = alert(user, "What action do you wish to perform?","Apiary","Remove a Honey Frame","Remove the Queen Bee")
+		var/option = alert(user, "What Action do you wish to perform?","Apiary","Remove a Honey Frame","Remove the Queen Bee")
 		if(!Adjacent(user))
 			return
 		switch(option)
@@ -216,7 +216,7 @@
 				var/obj/item/honey_frame/HF = pick_n_take(honey_frames)
 				if(HF)
 					if(!user.put_in_active_hand(HF))
-						HF.loc = get_turf(src)
+						HF.forceMove(get_turf(src))
 					visible_message("<span class='notice'>[user] removes a frame from the apiary.</span>")
 
 					var/amtH = HF.honeycomb_capacity
@@ -224,7 +224,7 @@
 					while(honeycombs.len && amtH) //let's pretend you always grab the frame with the most honeycomb on it
 						var/obj/item/weapon/reagent_containers/honeycomb/HC = pick_n_take(honeycombs)
 						if(HC)
-							HC.loc = get_turf(user)
+							HC.forceMove(get_turf(user))
 							amtH--
 							fallen++
 					if(fallen)
@@ -236,11 +236,11 @@
 					to_chat(user, "<span class='warning'>There is no queen bee to remove!</span>")
 					return
 				var/obj/item/queen_bee/QB = new()
-				queen_bee.loc = QB
+				queen_bee.forceMove(QB)
 				bees -= queen_bee
 				QB.queen = queen_bee
 				QB.name = queen_bee.name
 				if(!user.put_in_active_hand(QB))
-					QB.loc = get_turf(src)
+					QB.forceMove(get_turf(src))
 				visible_message("<span class='notice'>[user] removes the queen from the apiary.</span>")
 				queen_bee = null

@@ -22,7 +22,7 @@
 	var/new_location = get_turf(loc)
 	var/obj/item/weapon/broken_bottle/B = new /obj/item/weapon/broken_bottle(new_location)
 	if(ranged)
-		B.loc = new_location
+		B.forceMove(new_location)
 	else
 		user.drop_item()
 		user.put_in_active_hand(B)
@@ -372,12 +372,12 @@
 		var/turf/bombturf = get_turf(src)
 		var/area/bombarea = get_area(bombturf)
 		var/message = "[ADMIN_LOOKUP(user)] has primed a [name] for detonation at [ADMIN_COORDJMP(bombturf)]."
-		GLOB.bombers += message
+		bombers += message
 		message_admins(message)
 		log_game("[key_name(user)] has primed a [name] for detonation at [bombarea] [COORD(bombturf)].")
 
 		to_chat(user, "<span class='info'>You light [src] on fire.</span>")
-		add_overlay(GLOB.fire_overlay)
+		add_overlay(fire_overlay)
 		if(!isGlass)
 			spawn(50)
 				if(active)
@@ -399,5 +399,5 @@
 			to_chat(user, "<span class='danger'>The flame's spread too far on it!</span>")
 			return
 		to_chat(user, "<span class='info'>You snuff out the flame on [src].</span>")
-		cut_overlay(GLOB.fire_overlay)
+		overlays -= fire_overlay
 		active = 0

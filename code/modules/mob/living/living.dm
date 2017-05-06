@@ -1,8 +1,8 @@
-/mob/living/Initialize()
+/mob/living/New()
 	. = ..()
 	generateStaticOverlay()
 	if(staticOverlays.len)
-		for(var/mob/living/simple_animal/drone/D in GLOB.player_list)
+		for(var/mob/living/simple_animal/drone/D in player_list)
 			if(D && D.seeStatic)
 				if(D.staticChoice in staticOverlays)
 					D.staticOverlays |= staticOverlays[D.staticChoice]
@@ -13,9 +13,11 @@
 	if(unique_name)
 		name = "[name] ([rand(1, 1000)])"
 		real_name = name
-	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
+	var/datum/atom_hud/data/human/medical/advanced/medhud = huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_to_hud(src)
-	faction += "\ref[src]"
+	faction |= "\ref[src]"
+	if(ambient_sound != null)
+		BeginAmbient()
 
 
 /mob/living/prepare_huds()
@@ -27,20 +29,12 @@
 	med_hud_set_status()
 
 /mob/living/Destroy()
-	if(LAZYLEN(status_effects))
-		for(var/s in status_effects)
-			var/datum/status_effect/S = s
-			if(S.on_remove_on_mob_delete) //the status effect calls on_remove when its mob is deleted
-				qdel(S)
-			else
-				S.be_replaced()
 	if(ranged_ability)
 		ranged_ability.remove_ranged_ability(src)
 	if(buckled)
 		buckled.unbuckle_mob(src,force=1)
-	QDEL_NULL(riding_datum)
 
-	for(var/mob/living/simple_animal/drone/D in GLOB.player_list)
+	for(var/mob/living/simple_animal/drone/D in player_list)
 		for(var/image/I in staticOverlays)
 			D.staticOverlays.Remove(I)
 			D.client.images.Remove(I)
@@ -196,12 +190,9 @@
 					return
 		if(pulling == AM)
 			stop_pulling()
-		var/current_dir
-		if(isliving(AM))
-			current_dir = AM.dir
 		step(AM, t)
-		if(current_dir)
-			AM.setDir(current_dir)
+		if(client)
+			client.move_delay += (AM.self_weight + AM.contents_weight)/RATIO_WEIGHT
 		now_pushing = 0
 
 //mob verbs are a lot faster than object verbs
@@ -210,7 +201,7 @@
 	set name = "Pull"
 	set category = "Object"
 
-	if(istype(AM) && Adjacent(AM))
+	if(istype(AM) && AM.Adjacent(src))
 		start_pulling(AM)
 	else
 		stop_pulling()
@@ -229,7 +220,7 @@
 /mob/living/verb/succumb(whispered as null)
 	set hidden = 1
 	if (InCritical())
-		src.log_message("Has [whispered ? "whispered his final words" : "succumbed to death"] with [round(health, 0.1)] points of health!", INDIVIDUAL_ATTACK_LOG)
+		src.attack_log += "[src] has [whispered ? "whispered his final words" : "succumbed to death"] with [round(health, 0.1)] points of health!"
 		src.adjustOxyLoss(src.health - HEALTH_THRESHOLD_DEAD)
 		updatehealth()
 		if(!whispered)
@@ -292,12 +283,21 @@
 /mob/proc/get_contents()
 
 /mob/living/proc/lay_down()
-	set name = "Rest"
+	set name = "Crawl"
 	set category = "IC"
 
-	resting = !resting
-	to_chat(src, "<span class='notice'>You are now [resting ? "resting" : "getting up"].</span>")
-	update_canmove()
+	if(stat)
+		return
+
+	if(!under_object)
+		resting = !resting
+		to_chat(src, "<span class='notice'>You are now [resting ? "lying" : "getting up"].</span>")
+		update_canmove()
+	else
+		playsound(loc, pick('sound/f13weapons/pan.ogg', 'sound/items/trayhit2.ogg', 'sound/items/trayhit1.ogg'), 50, 1)
+		Stun(1)
+		apply_damage(5, BRUTE, get_bodypart("head"))
+		to_chat(src, "<span class='danger'>As you try to get up, you bang [under_object] with your head!<br>Ouch!</span>")
 
 //Recursive function to find everything a mob is holding.
 /mob/living/get_contents(obj/item/weapon/storage/Storage = null)
@@ -349,8 +349,8 @@
 	if(full_heal)
 		fully_heal(admin_revive)
 	if(stat == DEAD && can_be_revived()) //in some cases you can't revive (e.g. no brain)
-		GLOB.dead_mob_list -= src
-		GLOB.living_mob_list += src
+		dead_mob_list -= src
+		living_mob_list += src
 		suiciding = 0
 		stat = UNCONSCIOUS //the mob starts unconscious,
 		blind_eyes(1)
@@ -359,6 +359,7 @@
 		update_sight()
 		reload_fullscreen()
 		. = 1
+	clear_fullscreen("death", 0)
 
 //proc used to completely heal a mob.
 /mob/living/proc/fully_heal(admin_revive = 0)
@@ -373,7 +374,8 @@
 	SetWeakened(0, 0)
 	SetSleeping(0, 0)
 	radiation = 0
-	nutrition = NUTRITION_LEVEL_FED + 50
+	nutrition = NUTRITION_LEVEL_FULL
+	water_level = THIRST_LEVEL_FULL
 	bodytemperature = 310
 	set_blindness(0)
 	set_blurriness(0)
@@ -382,6 +384,8 @@
 	cure_blind()
 	cure_husk()
 	disabilities = 0
+	ear_deaf = 0
+	ear_damage = 0
 	hallucination = 0
 	heal_overall_damage(100000, 100000, 0, 0, 1) //heal brute and burn dmg on both organic and robotic limbs, and update health right away.
 	ExtinguishMob()
@@ -449,6 +453,11 @@
 	if (s_active && !(s_active.ClickAccessible(src, depth=STORAGE_VIEW_DEPTH) || s_active.Adjacent(src)))
 		s_active.close(src)
 
+	for(var/mob/M in oview(src))
+		M.update_vision_cone()
+
+	update_vision_cone()
+
 /mob/living/movement_delay(ignorewalk = 0)
 	. = ..()
 	if(isopenturf(loc) && !is_flying())
@@ -485,14 +494,14 @@
 						newdir = NORTH
 					else if(newdir == 12) //E + W
 						newdir = EAST
-				if((newdir in GLOB.cardinal) && (prob(50)))
+				if((newdir in cardinal) && (prob(50)))
 					newdir = turn(get_dir(T, src.loc), 180)
 				if(!blood_exists)
 					new /obj/effect/decal/cleanable/trail_holder(src.loc)
 				for(var/obj/effect/decal/cleanable/trail_holder/TH in src.loc)
 					if((!(newdir in TH.existing_dirs) || trail_type == "trails_1" || trail_type == "trails_2") && TH.existing_dirs.len <= 16) //maximum amount of overlays is 16 (all light & heavy directions filled)
 						TH.existing_dirs += newdir
-						TH.add_overlay(image('icons/effects/blood.dmi', trail_type, dir = newdir))
+						TH.overlays.Add(image('icons/effects/blood.dmi',trail_type,dir = newdir))
 						TH.transfer_mob_blood_dna(src)
 
 /mob/living/carbon/human/makeTrail(turf/T)
@@ -600,7 +609,7 @@
 	return name
 
 /mob/living/update_gravity(has_gravity,override = 0)
-	if(!SSticker.HasRoundStarted())
+	if(!ticker || !ticker.mode)
 		return
 	if(has_gravity)
 		clear_alert("weightless")
@@ -609,7 +618,7 @@
 	if(!override)
 		float(!has_gravity)
 
-/mob/living/float(on)
+/mob/living/proc/float(on)
 	if(throwing)
 		return
 	var/fixed = 0
@@ -638,11 +647,11 @@
 			if(islist(where))
 				var/list/L = where
 				if(what == who.get_item_for_held_index(L[2]))
-					if(who.dropItemToGround(what))
-						add_logs(src, who, "stripped", addition="of [what]")
-			if(what == who.get_item_by_slot(where))
-				if(who.dropItemToGround(what))
+					who.unEquip(what)
 					add_logs(src, who, "stripped", addition="of [what]")
+			if(what == who.get_item_by_slot(where))
+				who.unEquip(what)
+				add_logs(src, who, "stripped", addition="of [what]")
 
 // The src mob is trying to place an item on someone
 // Override if a certain mob should be behave differently when placing items (can't, for example)
@@ -653,27 +662,25 @@
 		return
 	if(what)
 		var/list/where_list
-		var/final_where
-
 		if(islist(where))
 			where_list = where
-			final_where = where[1]
+			if(!what.mob_can_equip(who, src, where[1], 1))
+				to_chat(src, "<span class='warning'>\The [what.name] doesn't fit in that place!</span>")
+				return
 		else
-			final_where = where
-
-		if(!what.mob_can_equip(who, src, final_where, TRUE))
-			to_chat(src, "<span class='warning'>\The [what.name] doesn't fit in that place!</span>")
-			return
-
+			if(!what.mob_can_equip(who, src, where, 1))
+				to_chat(src, "<span class='warning'>\The [what.name] doesn't fit in that place!</span>")
+				return
 		visible_message("<span class='notice'>[src] tries to put [what] on [who].</span>")
 		if(do_mob(src, who, what.put_on_delay))
-			if(what && Adjacent(who) && what.mob_can_equip(who, src, final_where, TRUE))
-				if(temporarilyRemoveItemFromInventory(what))
-					if(where_list)
-						if(!who.put_in_hand(what, where_list[2]))
-							what.forceMove(get_turf(who))
-					else
-						who.equip_to_slot(what, where, TRUE)
+			if(what && Adjacent(who))
+				unEquip(what)
+				if(where_list)
+					who.put_in_hand(what, where_list[2])
+				else
+					who.equip_to_slot_if_possible(what, where, 0, 1)
+				add_logs(src, who, "equipped", what)
+
 
 /mob/living/singularity_pull(S, current_size)
 	if(current_size >= STAGE_SIX)
@@ -728,14 +735,15 @@
 	..()
 
 	if(statpanel("Status"))
-		if(SSticker && SSticker.mode)
-			for(var/datum/gang/G in SSticker.mode.gangs)
+		if(ticker && ticker.mode)
+			for(var/datum/gang/G in ticker.mode.gangs)
 				if(G.is_dominating)
 					stat(null, "[G.name] Gang Takeover: [max(G.domination_time_remaining(), 0)]")
-			if(istype(SSticker.mode, /datum/game_mode/blob))
-				var/datum/game_mode/blob/B = SSticker.mode
+			if(istype(ticker.mode, /datum/game_mode/blob))
+				var/datum/game_mode/blob/B = ticker.mode
 				if(B.message_sent)
-					stat(null, "Blobs to Blob Win: [GLOB.blobs_legit.len]/[B.blobwincount]")
+					stat(null, "Blobs to Blob Win: [blobs_legit.len]/[B.blobwincount]")
+		stat(null, "Weight: [weight2feeling(contents_weight)]")
 
 /mob/living/cancel_camera()
 	..()
@@ -768,7 +776,7 @@
 	return 0
 
 /mob/living/proc/harvest(mob/living/user)
-	if(QDELETED(src))
+	if(qdeleted(src))
 		return
 	if(butcher_results)
 		for(var/path in butcher_results)
@@ -805,6 +813,9 @@
 			setStaminaLoss(health - 2)
 	update_health_hud()
 
+/mob/proc/update_sight()
+	return
+
 /mob/living/proc/owns_soul()
 	if(mind)
 		return mind.soulOwner == mind
@@ -839,9 +850,9 @@
 	. = ..()
 
 // Called when we are hit by a bolt of polymorph and changed
-// Generally the mob we are currently in is about to be deleted
+// Generally the mob we are currently in, is about to be deleted
 /mob/living/proc/wabbajack_act(mob/living/new_mob)
-	new_mob.name = real_name
+	new_mob.name = name
 	new_mob.real_name = real_name
 
 	if(mind)
@@ -853,7 +864,8 @@
 		var/mob/living/simple_animal/hostile/guardian/G = para
 		G.summoner = new_mob
 		G.Recall()
-		to_chat(G, "<span class='holoparasite'>Your summoner has changed form!</span>")
+		to_chat(G, "<span class='holoparasite'>Your summoner has changed \
+			form!</span>")
 
 /mob/living/proc/fakefireextinguish()
 	return
@@ -869,7 +881,7 @@
 		on_fire = 1
 		src.visible_message("<span class='warning'>[src] catches fire!</span>", \
 						"<span class='userdanger'>You're set on fire!</span>")
-		src.set_light(3)
+		set_light(3)
 		throw_alert("fire", /obj/screen/alert/fire)
 		update_fire()
 		return TRUE
@@ -879,7 +891,7 @@
 	if(on_fire)
 		on_fire = 0
 		fire_stacks = 0
-		src.set_light(0)
+		set_light(0)
 		clear_alert("fire")
 		update_fire()
 
@@ -910,22 +922,11 @@
 
 // used by secbot and monkeys Crossed
 /mob/living/proc/knockOver(var/mob/living/carbon/C)
-	if(C.key) //save us from monkey hordes
-		C.visible_message("<span class='warning'>[pick( \
-						"[C] dives out of [src]'s way!", \
-						"[C] stumbles over [src]!", \
-						"[C] jumps out of [src]'s path!", \
-						"[C] trips over [src] and falls!", \
-						"[C] topples over [src]!", \
-						"[C] leaps out of [src]'s way!")]</span>")
+	C.visible_message("<span class='warning'>[pick( \
+					  "[C] dives out of [src]'s way!", \
+					  "[C] stumbles over [src]!", \
+					  "[C] jumps out of [src]'s path!", \
+					  "[C] trips over [src] and falls!", \
+					  "[C] topples over [src]!", \
+					  "[C] leaps out of [src]'s way!")]</span>")
 	C.Weaken(2)
-
-/mob/living/post_buckle_mob(mob/living/M)
-	if(riding_datum)
-		riding_datum.handle_vehicle_offsets()
-		riding_datum.handle_vehicle_layer()
-
-/mob/living/ConveyorMove()
-	if((movement_type & FLYING) && !stat)
-		return
-	..()

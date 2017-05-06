@@ -64,7 +64,7 @@
 			if("To Kill")
 				to_chat(user, "<B>Your wish is granted, but at a terrible cost...</B>")
 				to_chat(user, "The Wish Granter punishes you for your wickedness, claiming your soul and warping your body to match the darkness in your heart.")
-				SSticker.mode.traitors += user.mind
+				ticker.mode.traitors += user.mind
 				user.mind.special_role = "traitor"
 				var/datum/objective/hijack/hijack = new
 				hijack.owner = user.mind
@@ -75,7 +75,7 @@
 			if("Peace")
 				to_chat(user, "<B>Whatever alien sentience that the Wish Granter possesses is satisfied with your wish. There is a distant wailing as the last of the Faithless begin to die, then silence.</B>")
 				to_chat(user, "You feel as if you just narrowly avoided a terrible fate...")
-				for(var/mob/living/simple_animal/hostile/faithless/F in GLOB.mob_list)
+				for(var/mob/living/simple_animal/hostile/faithless/F in mob_list)
 					F.death()
 
 
@@ -120,8 +120,11 @@
 	if(!C.stat)
 		to_chat(C, "<span class='notice'>You're not dead yet!</span>")
 		return
-	if(C.has_status_effect(STATUS_EFFECT_WISH_GRANTERS_GIFT))
-		to_chat(C, "<span class='warning'>You're already resurrecting!</span>")
-		return
-	C.apply_status_effect(STATUS_EFFECT_WISH_GRANTERS_GIFT)
+	to_chat(C, "<span class='notice'>Death is not your end!</span>")
+
+	spawn(rand(80,120))
+		C.revive(full_heal = 1, admin_revive = 1)
+		to_chat(C, "<span class='notice'>You have regenerated.</span>")
+		C.visible_message("<span class='warning'>[usr] appears to wake from the dead, having healed all wounds.</span>")
+		C.update_canmove()
 	return 1

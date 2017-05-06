@@ -1,4 +1,4 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "aa" = (
 /turf/open/space,
 /area/space)
@@ -201,8 +201,7 @@
 /obj/machinery/door/poddoor{
 	id = "UO45_Elevator"
 	},
-/obj/effect/turf_decal/delivery,
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/delivery{
 	heat_capacity = 1e+006;
 	name = "floor"
 	},
@@ -211,10 +210,8 @@
 	name = "UO45 Central Hall"
 	})
 "at" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a1{
@@ -250,7 +247,9 @@
 	name = "UO45 Central Hall"
 	})
 "ax" = (
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/plasteel{
 	heat_capacity = 1e+006
 	},
@@ -263,7 +262,9 @@
 	icon_state = "comfychair";
 	dir = 4
 	},
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/plasteel/grimy{
 	heat_capacity = 1e+006
 	},
@@ -278,7 +279,9 @@
 	icon_state = "beacon";
 	name = "tracking beacon"
 	},
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/plasteel/neutral/side{
 	dir = 4;
 	heat_capacity = 1e+006
@@ -303,7 +306,9 @@
 	scrub_N2O = 0;
 	scrub_Toxins = 0
 	},
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/plasteel/neutral/side{
 	dir = 4;
 	heat_capacity = 1e+006
@@ -366,8 +371,11 @@
 	name = "UO45 Central Hall"
 	})
 "aH" = (
-/obj/structure/sign/poster/official/nanotrasen_logo{
-	pixel_y = 32
+/obj/structure/sign/poster{
+	icon_state = "poster2_legit";
+	pixel_x = 0;
+	pixel_y = 32;
+	serial_number = 2
 	},
 /turf/open/floor/plasteel{
 	heat_capacity = 1e+006
@@ -398,8 +406,11 @@
 "aK" = (
 /obj/structure/closet/emcloset,
 /obj/item/clothing/mask/breath,
-/obj/structure/sign/poster/official/safety_internals{
-	pixel_x = -32
+/obj/structure/sign/poster{
+	icon_state = "poster19_legit";
+	pixel_x = -32;
+	pixel_y = 0;
+	serial_number = 19
 	},
 /turf/open/floor/plasteel/black{
 	heat_capacity = 1e+006
@@ -490,7 +501,9 @@
 	name = "UO45 Central Hall"
 	})
 "aT" = (
-/obj/effect/landmark/awaystart,
+/obj/effect/landmark{
+	name = "awaystart"
+	},
 /turf/open/floor/plasteel/grimy{
 	heat_capacity = 1e+006
 	},
@@ -1008,8 +1021,11 @@
 	name = "UO45 Central Hall"
 	})
 "bK" = (
-/obj/structure/sign/poster/official/nanotrasen_logo{
-	pixel_y = -32
+/obj/structure/sign/poster{
+	icon_state = "poster2_legit";
+	pixel_x = 0;
+	pixel_y = -32;
+	serial_number = 2
 	},
 /turf/open/floor/plasteel{
 	heat_capacity = 1e+006
@@ -1037,10 +1053,13 @@
 	name = "UO45 Central Hall"
 	})
 "bN" = (
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/official/nanotrasen_logo{
-	pixel_y = -32
+/obj/structure/sign/poster{
+	icon_state = "poster2_legit";
+	pixel_x = 0;
+	pixel_y = -32;
+	serial_number = 2
 	},
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plasteel{
 	heat_capacity = 1e+006
 	},
@@ -1504,7 +1523,7 @@
 /obj/machinery/atmospherics/pipe/simple/supply/hidden{
 	dir = 10
 	},
-/obj/structure/chair/wood/normal{
+/obj/structure/chair/wood/modern{
 	icon_state = "wooden_chair";
 	dir = 4
 	},
@@ -1589,7 +1608,7 @@
 	on = 1;
 	pressure_checks = 1
 	},
-/obj/structure/chair/wood/normal{
+/obj/structure/chair/wood/modern{
 	icon_state = "wooden_chair";
 	dir = 1
 	},
@@ -1870,7 +1889,7 @@
 	dir = 5
 	},
 /obj/structure/closet,
-/obj/item/weapon/poster/random_contraband,
+/obj/item/weapon/poster/contraband,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -2973,7 +2992,7 @@
 	name = "UO45 Central Hall"
 	})
 "eL" = (
-/obj/structure/chair/office/dark{
+/obj/structure/chair/office/blue{
 	dir = 4
 	},
 /turf/open/floor/plasteel/red/side{
@@ -3140,8 +3159,10 @@
 /obj/item/weapon/screwdriver{
 	pixel_y = 10
 	},
-/obj/structure/sign/poster/official/safety_report{
-	pixel_y = -32
+/obj/structure/sign/poster{
+	icon_state = "poster21_legit";
+	pixel_y = -32;
+	serial_number = 21
 	},
 /turf/open/floor/plasteel/red/side{
 	heat_capacity = 1e+006
@@ -3549,7 +3570,7 @@
 	on = 1;
 	pressure_checks = 1
 	},
-/obj/structure/chair/wood/normal,
+/obj/structure/chair/wood/modern,
 /turf/open/floor/carpet{
 	heat_capacity = 1e+006
 	},
@@ -3653,10 +3674,13 @@
 	dir = 2;
 	icon_state = "pipe-c"
 	},
-/obj/effect/decal/cleanable/dirt,
-/obj/structure/sign/poster/contraband/eat{
-	pixel_x = 32
+/obj/structure/sign/poster{
+	icon_state = "poster14";
+	pixel_x = 32;
+	pixel_y = 0;
+	serial_number = 14
 	},
+/obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plasteel/green/corner{
 	dir = 4;
 	heat_capacity = 1e+006
@@ -4820,10 +4844,8 @@
 	})
 "hB" = (
 /obj/machinery/r_n_d/destructive_analyzer,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -4832,10 +4854,8 @@
 	})
 "hC" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -4844,10 +4864,8 @@
 	})
 "hD" = (
 /obj/machinery/r_n_d/protolathe,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -4855,10 +4873,8 @@
 	name = "UO45 Research"
 	})
 "hE" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 8;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -5440,10 +5456,8 @@
 /obj/structure/sign/nosmoking_2{
 	pixel_x = -32
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -5458,10 +5472,8 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{
 	dir = 4
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -5475,10 +5487,8 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{
 	dir = 4
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -5492,10 +5502,8 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{
 	dir = 4
 	},
-/obj/effect/turf_decal/stripes/corner{
-	dir = 4
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite/corner{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -6239,10 +6247,8 @@
 	})
 "jF" = (
 /obj/structure/closet/l3closet/scientist,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -6251,10 +6257,8 @@
 	})
 "jG" = (
 /obj/structure/closet/l3closet/scientist,
-/obj/effect/turf_decal/stripes/line{
-	dir = 5
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
+	dir = 5;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -6387,8 +6391,11 @@
 "jR" = (
 /obj/structure/closet/emcloset,
 /obj/item/clothing/mask/breath,
-/obj/structure/sign/poster/official/safety_internals{
-	pixel_y = 32
+/obj/structure/sign/poster{
+	icon_state = "poster19_legit";
+	pixel_x = 0;
+	pixel_y = 32;
+	serial_number = 19
 	},
 /turf/open/floor/plasteel{
 	burnt = 1;
@@ -6896,10 +6903,8 @@
 	},
 /obj/item/device/assembly/prox_sensor,
 /obj/item/device/assembly/prox_sensor,
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -6921,10 +6926,8 @@
 "kA" = (
 /obj/structure/tank_dispenser/oxygen,
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -6938,10 +6941,8 @@
 	scrub_N2O = 0;
 	scrub_Toxins = 0
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -6955,10 +6956,8 @@
 /obj/machinery/light/small{
 	dir = 4
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -7254,8 +7253,7 @@
 	id = "UO45_biohazard";
 	name = "biohazard containment door"
 	},
-/obj/effect/turf_decal/delivery,
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/delivery{
 	heat_capacity = 1e+006;
 	name = "floor"
 	},
@@ -7271,10 +7269,8 @@
 /obj/structure/sign/nosmoking_2{
 	pixel_x = -32
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 9
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 9;
 	heat_capacity = 1e+006
 	},
 /area/space)
@@ -7282,10 +7278,8 @@
 /obj/machinery/shower{
 	pixel_y = 15
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -7296,10 +7290,8 @@
 /obj/structure/sink{
 	pixel_y = 25
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 5
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 5;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -7478,10 +7470,8 @@
 /obj/structure/sign/nosmoking_2{
 	pixel_x = -32
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -8148,10 +8138,8 @@
 	})
 "lZ" = (
 /obj/machinery/suit_storage_unit/engine,
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 8;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -8169,10 +8157,8 @@
 	pixel_x = 3;
 	pixel_y = -7
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -8307,10 +8293,8 @@
 	})
 "ml" = (
 /obj/structure/closet/firecloset,
-/obj/effect/turf_decal/stripes/line{
-	dir = 10
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 10;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -8325,10 +8309,8 @@
 	pixel_y = -32
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/line{
-	dir = 2
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 2;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -8337,10 +8319,8 @@
 	})
 "mn" = (
 /obj/structure/closet/emcloset,
-/obj/effect/turf_decal/stripes/line{
-	dir = 6
-	},
-/turf/open/floor/plasteel/white{
+/turf/open/floor/plasteel/warnwhite{
+	dir = 6;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -8451,7 +8431,7 @@
 	pixel_y = 23;
 	req_access = null
 	},
-/obj/structure/chair/wood/normal{
+/obj/structure/chair/wood/modern{
 	dir = 8
 	},
 /turf/open/floor/carpet{
@@ -8548,10 +8528,8 @@
 /obj/item/device/flashlight,
 /obj/item/device/flashlight,
 /obj/item/device/flashlight,
-/obj/effect/turf_decal/stripes/corner{
-	dir = 8
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning/corner{
+	dir = 8;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -8559,10 +8537,8 @@
 	name = "UO45 Gateway"
 	})
 "mC" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -8579,10 +8555,8 @@
 	layer = 2.9
 	},
 /obj/item/weapon/tank/jetpack/carbondioxide,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -8607,10 +8581,8 @@
 	layer = 2.9
 	},
 /obj/item/clothing/shoes/magboots,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -8628,10 +8600,8 @@
 	layer = 2.9
 	},
 /obj/item/clothing/shoes/magboots,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -8640,10 +8610,8 @@
 	})
 "mG" = (
 /obj/structure/reagent_dispensers/watertank,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -8652,10 +8620,8 @@
 	})
 "mH" = (
 /obj/structure/reagent_dispensers/fueltank,
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a6{
@@ -8875,7 +8841,7 @@
 	req_access_txt = "0";
 	specialfunctions = 4
 	},
-/obj/structure/chair/wood/normal{
+/obj/structure/chair/wood/modern{
 	icon_state = "wooden_chair";
 	dir = 1
 	},
@@ -9102,7 +9068,7 @@
 	name = "UO45 Research"
 	})
 "np" = (
-/obj/structure/chair/office/dark{
+/obj/structure/chair/office/blue{
 	dir = 1
 	},
 /turf/open/floor/plasteel{
@@ -9279,8 +9245,10 @@
 	})
 "nz" = (
 /obj/machinery/vending/cigarette,
-/obj/structure/sign/poster/contraband/smoke{
-	pixel_y = 32
+/obj/structure/sign/poster{
+	icon_state = "poster7";
+	pixel_y = 32;
+	serial_number = 7
 	},
 /turf/open/floor/plasteel/black{
 	heat_capacity = 1e+006
@@ -9405,10 +9373,8 @@
 	d2 = 4;
 	icon_state = "2-4"
 	},
-/obj/effect/turf_decal/stripes/corner{
-	dir = 2
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning/corner{
+	dir = 2;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -9432,10 +9398,8 @@
 	icon_state = "4-8";
 	pixel_x = 0
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 2
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 2;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -9448,10 +9412,8 @@
 	d2 = 8;
 	icon_state = "2-8"
 	},
-/obj/effect/turf_decal/stripes/corner{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning/corner{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -10087,10 +10049,8 @@
 	icon_state = "1-2";
 	pixel_y = 0
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -10136,10 +10096,8 @@
 	icon_state = "1-2";
 	pixel_y = 0
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 8;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -10204,7 +10162,7 @@
 	name = "UO45 Research"
 	})
 "oz" = (
-/obj/structure/chair/office/light{
+/obj/structure/chair/office/white{
 	dir = 1;
 	pixel_y = 3
 	},
@@ -10494,10 +10452,8 @@
 	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -10579,10 +10535,8 @@
 /obj/machinery/light/small{
 	dir = 4
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 8;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -10956,10 +10910,8 @@
 	dir = 4
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/corner{
-	dir = 8
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning/corner{
+	dir = 8;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -10976,10 +10928,8 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/visible{
 	dir = 4
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -11001,10 +10951,8 @@
 	icon_state = "intact";
 	dir = 10
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -11018,10 +10966,8 @@
 	icon_state = "4-8";
 	pixel_x = 0
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -11034,10 +10980,8 @@
 	d2 = 8;
 	icon_state = "1-8"
 	},
-/obj/effect/turf_decal/stripes/corner{
-	dir = 4
-	},
-/turf/open/floor/plasteel/black{
+/turf/open/floor/plasteel/darkwarning/corner{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a3{
@@ -11441,7 +11385,7 @@
 	pressure_checks = 2;
 	pump_direction = 0
 	},
-/turf/open/floor/circuit{
+/turf/open/floor/bluegrid{
 	name = "Server Base";
 	initial_gas_mix = "n2=500,TEMP=80"
 	},
@@ -11585,7 +11529,7 @@
 	name = "UO45 Research"
 	})
 "qs" = (
-/obj/structure/chair/wood/normal,
+/obj/structure/chair/wood/modern,
 /turf/open/floor/carpet{
 	heat_capacity = 1e+006
 	},
@@ -11928,10 +11872,7 @@
 	initialize_directions = 10
 	},
 /obj/machinery/portable_atmospherics/scrubber,
-/obj/effect/turf_decal/bot{
-	dir = 2
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/bot{
 	dir = 2;
 	heat_capacity = 1e+006
 	},
@@ -11941,10 +11882,7 @@
 	})
 "qN" = (
 /obj/machinery/portable_atmospherics/canister/air,
-/obj/effect/turf_decal/bot{
-	dir = 2
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/bot{
 	dir = 2;
 	heat_capacity = 1e+006
 	},
@@ -11982,7 +11920,7 @@
 	id_with_upload_string = "3";
 	req_access = null
 	},
-/turf/open/floor/circuit{
+/turf/open/floor/bluegrid{
 	name = "Server Base";
 	initial_gas_mix = "n2=500,TEMP=80"
 	},
@@ -12035,7 +11973,7 @@
 /obj/machinery/atmospherics/pipe/simple{
 	dir = 9
 	},
-/obj/structure/chair/office/light,
+/obj/structure/chair/office/white,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plasteel/black{
 	heat_capacity = 1e+006
@@ -12120,7 +12058,7 @@
 	name = "UO45 Crew Quarters"
 	})
 "qZ" = (
-/obj/structure/chair/wood/normal{
+/obj/structure/chair/wood/modern{
 	dir = 8
 	},
 /turf/open/floor/carpet{
@@ -12494,10 +12432,7 @@
 "rx" = (
 /obj/machinery/atmospherics/pipe/simple/cyan/visible,
 /obj/machinery/portable_atmospherics/scrubber,
-/obj/effect/turf_decal/bot{
-	dir = 2
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/bot{
 	dir = 2;
 	heat_capacity = 1e+006
 	},
@@ -12573,7 +12508,7 @@
 "rD" = (
 /obj/structure/closet/crate,
 /obj/item/weapon/storage/box/lights/mixed,
-/obj/item/weapon/poster/random_contraband,
+/obj/item/weapon/poster/contraband,
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating{
 	burnt = 1;
@@ -13626,7 +13561,7 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{
 	dir = 4
 	},
-/obj/structure/chair/office/dark{
+/obj/structure/chair/office/blue{
 	dir = 8
 	},
 /obj/machinery/atmospherics/components/unary/vent_pump{
@@ -14638,10 +14573,7 @@
 	dir = 1
 	},
 /obj/machinery/portable_atmospherics/canister/air,
-/obj/effect/turf_decal/bot{
-	dir = 2
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/bot{
 	dir = 2;
 	heat_capacity = 1e+006
 	},
@@ -14803,10 +14735,8 @@
 	})
 "us" = (
 /obj/structure/closet/firecloset,
-/obj/effect/turf_decal/stripes/line{
-	dir = 9
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 9;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -14818,10 +14748,8 @@
 	icon_state = "manifold";
 	dir = 8
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 1;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -14835,10 +14763,8 @@
 	},
 /obj/structure/table/reinforced,
 /obj/item/weapon/wrench,
-/obj/effect/turf_decal/stripes/line{
-	dir = 5
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 5;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -15032,10 +14958,8 @@
 	dir = 8
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 8;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -15057,10 +14981,8 @@
 /obj/machinery/atmospherics/components/binary/valve{
 	dir = 2
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -15184,7 +15106,7 @@
 	dir = 5;
 	level = 1
 	},
-/obj/structure/chair/office/dark{
+/obj/structure/chair/office/blue{
 	dir = 8
 	},
 /turf/open/floor/plasteel{
@@ -15270,8 +15192,7 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{
 	dir = 4
 	},
-/obj/effect/turf_decal/delivery,
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/delivery{
 	heat_capacity = 1e+006;
 	name = "floor"
 	},
@@ -15294,8 +15215,7 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden{
 	dir = 9
 	},
-/obj/effect/turf_decal/delivery,
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/delivery{
 	heat_capacity = 1e+006;
 	name = "floor"
 	},
@@ -15313,8 +15233,7 @@
 	name = "engineering security door"
 	},
 /obj/machinery/atmospherics/pipe/simple/supply/hidden,
-/obj/effect/turf_decal/delivery,
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/delivery{
 	heat_capacity = 1e+006;
 	name = "floor"
 	},
@@ -15380,10 +15299,8 @@
 	})
 "vh" = (
 /obj/machinery/portable_atmospherics/scrubber,
-/obj/effect/turf_decal/stripes/line{
-	dir = 10
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 10;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -15395,8 +15312,7 @@
 	dir = 1
 	},
 /obj/machinery/portable_atmospherics/canister/air,
-/obj/effect/turf_decal/stripes/line,
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -15408,10 +15324,8 @@
 	dir = 1
 	},
 /obj/machinery/portable_atmospherics/canister/air,
-/obj/effect/turf_decal/stripes/line{
-	dir = 6
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 6;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a5{
@@ -15933,8 +15847,11 @@
 	dir = 4
 	},
 /obj/machinery/vending/tool,
-/obj/structure/sign/poster/official/build{
-	pixel_y = -32
+/obj/structure/sign/poster{
+	icon_state = "poster5_legit";
+	pixel_x = 0;
+	pixel_y = -32;
+	serial_number = 21
 	},
 /turf/open/floor/plasteel{
 	burnt = 1;
@@ -15979,10 +15896,7 @@
 /obj/machinery/atmospherics/pipe/simple/supply/hidden{
 	dir = 4
 	},
-/obj/effect/turf_decal/bot{
-	dir = 2
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/bot{
 	dir = 2;
 	heat_capacity = 1e+006
 	},
@@ -15995,10 +15909,7 @@
 /obj/machinery/atmospherics/pipe/simple/supply/hidden{
 	dir = 4
 	},
-/obj/effect/turf_decal/bot{
-	dir = 2
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/bot{
 	dir = 2;
 	heat_capacity = 1e+006
 	},
@@ -16011,10 +15922,7 @@
 /obj/machinery/atmospherics/pipe/simple/supply/hidden{
 	dir = 9
 	},
-/obj/effect/turf_decal/bot{
-	dir = 2
-	},
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/bot{
 	dir = 2;
 	heat_capacity = 1e+006
 	},
@@ -16035,7 +15943,7 @@
 /obj/machinery/light/small{
 	dir = 1
 	},
-/obj/structure/chair/wood/normal{
+/obj/structure/chair/wood/modern{
 	dir = 8
 	},
 /turf/open/floor/carpet{
@@ -16543,7 +16451,7 @@
 	name = "UO45 Engineering"
 	})
 "wM" = (
-/obj/structure/chair/wood/normal,
+/obj/structure/chair/wood/modern,
 /turf/open/floor/carpet{
 	heat_capacity = 1e+006
 	},
@@ -16768,7 +16676,7 @@
 	name = "UO45 Engineering"
 	})
 "xc" = (
-/obj/structure/chair/office/light{
+/obj/structure/chair/office/white{
 	dir = 1;
 	pixel_y = 3
 	},
@@ -16918,10 +16826,8 @@
 	dir = 2;
 	id = "UO45_mining"
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a4{
@@ -16935,10 +16841,8 @@
 	input_dir = 4;
 	output_dir = 8
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 5
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 5;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a4{
@@ -16994,10 +16898,8 @@
 /obj/structure/sign/nosmoking_2{
 	pixel_x = -32
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a4{
@@ -17067,10 +16969,8 @@
 	dir = 1;
 	output_dir = 2
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 5
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 5;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a4{
@@ -17186,10 +17086,8 @@
 /obj/machinery/light/small{
 	dir = 8
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 4
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 4;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a4{
@@ -17401,10 +17299,8 @@
 	input_dir = 8;
 	output_dir = 4
 	},
-/obj/effect/turf_decal/stripes/line{
-	dir = 5
-	},
-/turf/open/floor/plating{
+/turf/open/floor/plating/warnplate{
+	dir = 5;
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a4{
@@ -17524,8 +17420,7 @@
 	})
 "yc" = (
 /obj/structure/ore_box,
-/obj/effect/turf_decal/stripes/line,
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a4{
@@ -17534,8 +17429,7 @@
 	})
 "yd" = (
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/line,
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a4{
@@ -17555,8 +17449,7 @@
 	pixel_y = 0
 	},
 /obj/effect/decal/cleanable/dirt,
-/obj/effect/turf_decal/stripes/line,
-/turf/open/floor/plasteel{
+/turf/open/floor/plasteel/warning{
 	heat_capacity = 1e+006
 	},
 /area/awaycontent/a4{
@@ -18116,7 +18009,9 @@
 	})
 "yJ" = (
 /obj/item/weapon/shard,
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -18130,7 +18025,9 @@
 /obj/item/weapon/shard{
 	icon_state = "medium"
 	},
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -18144,7 +18041,9 @@
 /obj/item/weapon/shard{
 	icon_state = "small"
 	},
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -18155,7 +18054,9 @@
 	poweralm = 0
 	})
 "yM" = (
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -18171,7 +18072,9 @@
 	broken = 1;
 	icon_state = "brokengrille"
 	},
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -18183,7 +18086,9 @@
 	})
 "yO" = (
 /obj/item/stack/rods,
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -18195,7 +18100,9 @@
 	})
 "yP" = (
 /obj/item/stack/cable_coil,
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -18209,7 +18116,9 @@
 /obj/item/stack/cable_coil{
 	amount = 5
 	},
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -18225,7 +18134,9 @@
 	icon_state = "coil_red2";
 	item_state = "coil_red2"
 	},
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -18241,7 +18152,9 @@
 	icon_state = "coil_red1";
 	item_state = "coil_red1"
 	},
-/turf/open/floor/mineral/titanium/blue,
+/turf/open/floor/plasteel/shuttle{
+	icon_state = "floor3"
+	},
 /area/awaycontent/a7{
 	always_unpowered = 1;
 	has_gravity = 1;
@@ -37704,8 +37617,8 @@ ab
 ab
 ab
 ab
-yM
-yM
+zc
+zc
 ab
 aa
 aa

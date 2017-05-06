@@ -8,8 +8,8 @@
 	sheet_amount = 1
 	girder_type = /obj/structure/girder/cult
 
-/turf/closed/wall/mineral/cult/Initialize()
-	new /obj/effect/overlay/temp/cult/turf(src)
+/turf/closed/wall/mineral/cult/New()
+	PoolOrNew(/obj/effect/overlay/temp/cult/turf, src)
 	..()
 
 /turf/closed/wall/mineral/cult/devastate_wall()
@@ -31,11 +31,11 @@
 	desc = "A cold stone wall engraved with indecipherable symbols. Studying them causes your head to pound."
 
 /turf/closed/wall/mineral/cult/artificer/break_wall()
-	new /obj/effect/overlay/temp/cult/turf(get_turf(src))
+	PoolOrNew(/obj/effect/overlay/temp/cult/turf, get_turf(src))
 	return null //excuse me we want no runed metal here
 
 /turf/closed/wall/mineral/cult/artificer/devastate_wall()
-	new /obj/effect/overlay/temp/cult/turf(get_turf(src))
+	PoolOrNew(/obj/effect/overlay/temp/cult/turf, get_turf(src))
 
 //Clockwork wall: Causes nearby tinkerer's caches to generate components.
 /turf/closed/wall/clockwork
@@ -43,18 +43,18 @@
 	desc = "A huge chunk of warm metal. The clanging of machinery emanates from within."
 	explosion_block = 2
 	hardness = 10
-	slicing_duration = 80
+	slicing_duration = 120
 	sheet_type = /obj/item/stack/tile/brass
 	sheet_amount = 1
 	girder_type = /obj/structure/destructible/clockwork/wall_gear
 	var/obj/effect/clockwork/overlay/wall/realappearence
 	var/obj/structure/destructible/clockwork/cache/linkedcache
 
-/turf/closed/wall/clockwork/Initialize()
+/turf/closed/wall/clockwork/New()
 	..()
-	new /obj/effect/overlay/temp/ratvar/wall(src)
-	new /obj/effect/overlay/temp/ratvar/beam(src)
-	realappearence = new /obj/effect/clockwork/overlay/wall(src)
+	PoolOrNew(/obj/effect/overlay/temp/ratvar/wall, src)
+	PoolOrNew(/obj/effect/overlay/temp/ratvar/beam, src)
+	realappearence = PoolOrNew(/obj/effect/clockwork/overlay/wall, src)
 	realappearence.linked = src
 	change_construction_value(5)
 
@@ -102,7 +102,7 @@
 			var/obj/structure/sign/poster/P = O
 			P.roll_and_drop(src)
 		else
-			O.loc = src
+			O.forceMove(src)
 
 /turf/closed/wall/clockwork/devastate_wall()
 	for(var/i in 1 to 2)

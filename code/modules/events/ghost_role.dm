@@ -63,7 +63,7 @@
 	else
 		regular_candidates = list()
 
-	shuffle_inplace(regular_candidates)
+	shuffle(regular_candidates)
 
 	var/list/candidates = priority_candidates + regular_candidates
 

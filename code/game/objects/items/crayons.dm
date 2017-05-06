@@ -31,10 +31,10 @@
 	var/drawtype
 	var/text_buffer = ""
 
-	var/list/graffiti = list("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa","body","cyka","arrow","star","poseur tag")
+	var/list/graffiti = list("poseur tag","arrow","exclamation","question","ampersand","plus","minus","times","divided","equals","percent","dollar","heart","square","circle","peace","triangle","star","betterstar","pentagram","smile","frown","neutral","amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa","body","cyka","tech_direction","tech_outline","tech_fill")
 	var/list/letters = list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
 	var/list/numerals = list("0","1","2","3","4","5","6","7","8","9")
-	var/list/oriented = list("arrow","body") // These turn to face the same way as the drawer
+	var/list/oriented = list("arrow","body","heart","triangle","tech_direction") // These turn to face the same way as the drawer
 	var/list/runes = list("rune1","rune2","rune3","rune4","rune5","rune6")
 	var/list/randoms = list(RANDOM_ANY, RANDOM_RUNE, RANDOM_ORIENTED,
 		RANDOM_NUMBER, RANDOM_GRAFFITI, RANDOM_LETTER)
@@ -124,7 +124,7 @@
 /obj/item/toy/crayon/proc/check_empty(mob/user)
 	// When eating a crayon, check_empty() can be called twice producing
 	// two messages unless we check for being deleted first
-	if(QDELETED(src))
+	if(qdeleted(src))
 		return TRUE
 
 	. = FALSE
@@ -137,7 +137,7 @@
 			qdel(src)
 		. = TRUE
 
-/obj/item/toy/crayon/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.hands_state)
+/obj/item/toy/crayon/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = hands_state)
 	// tgui is a plague upon this codebase
 
 	SStgui.try_update_ui(user, src, ui_key, ui, force_open)
@@ -402,14 +402,16 @@
 
 	var/occupying_gang = territory_claimed(A, user)
 	if(occupying_gang && !spraying_over)
-		to_chat(user, "<span class='danger'>[A] has already been tagged by the [occupying_gang] gang! You must get rid of or spray over the old tag first!</span>")
+		to_chat(user, "<span class='danger'>[A] has already been tagged \
+			by the [occupying_gang] gang! You must get rid of or spray over \
+			the old tag first!</span>")
 		return FALSE
 
 	// If you pass the gaunlet of checks, you're good to proceed
 	return TRUE
 
 /obj/item/toy/crayon/proc/territory_claimed(area/territory, mob/user)
-	for(var/datum/gang/G in SSticker.mode.gangs)
+	for(var/datum/gang/G in ticker.mode.gangs)
 		if(territory.type in (G.territory|G.territory_new))
 			. = G.name
 			break
@@ -465,13 +467,11 @@
 	icon_state = "crayonblack"
 	paint_color = "#1C1C1C" //Not completely black because total black looks bad. So Mostly Black.
 	item_color = "black"
-	reagent_contents = list("nutriment" = 1, "blackcrayonpowder" = 1)
 
 /obj/item/toy/crayon/white
 	icon_state = "crayonwhite"
 	paint_color = "#FFFFFF"
 	item_color = "white"
-	reagent_contents = list("nutriment" = 1, "whitecrayonpowder" = 1)
 
 /obj/item/toy/crayon/mime
 	icon_state = "crayonmime"
@@ -523,7 +523,7 @@
 /obj/item/weapon/storage/crayons/update_icon()
 	cut_overlays()
 	for(var/obj/item/toy/crayon/crayon in contents)
-		add_overlay(mutable_appearance('icons/obj/crayons.dmi', crayon.item_color))
+		add_overlay(image('icons/obj/crayons.dmi',crayon.item_color))
 
 /obj/item/weapon/storage/crayons/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/toy/crayon))
@@ -669,9 +669,10 @@
 	icon_state = is_capped ? icon_capped : icon_uncapped
 	if(use_overlays)
 		cut_overlays()
-		var/mutable_appearance/spray_overlay = mutable_appearance('icons/obj/crayons.dmi', "[is_capped ? "spraycan_cap_colors" : "spraycan_colors"]")
-		spray_overlay.color = paint_color
-		add_overlay(spray_overlay)
+		var/image/I = image('icons/obj/crayons.dmi',
+			icon_state = "[is_capped ? "spraycan_cap_colors" : "spraycan_colors"]")
+		I.color = paint_color
+		add_overlay(I)
 
 /obj/item/toy/crayon/spraycan/gang
 	//desc = "A modified container containing suspicious paint."

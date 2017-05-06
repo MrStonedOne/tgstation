@@ -12,7 +12,7 @@
 		method = vv_subtype_prompt(A.type)
 
 	src.massmodify_variables(A, var_name, method)
-	SSblackbox.add_details("admin_verb","Mass Edit Variables") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","MEV") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/massmodify_variables(datum/O, var_name = "", method = 0)
 	if(!check_rights(R_VAREDIT))
@@ -32,21 +32,21 @@
 	else
 		variable = var_name
 
-	if(!variable || !O.can_vv_get(variable))
+	if(!variable)
 		return
 	var/default
 	var/var_value = O.vars[variable]
 
-	if(variable in GLOB.VVckey_edit)
+	if(variable in VVckey_edit)
 		to_chat(src, "It's forbidden to mass-modify ckeys. It'll crash everyone's client you dummy.")
 		return
-	if(variable in GLOB.VVlocked)
+	if(variable in VVlocked)
 		if(!check_rights(R_DEBUG))
 			return
-	if(variable in GLOB.VVicon_edit_lock)
+	if(variable in VVicon_edit_lock)
 		if(!check_rights(R_FUN|R_DEBUG))
 			return
-	if(variable in GLOB.VVpixelmovement)
+	if(variable in VVpixelmovement)
 		if(!check_rights(R_DEBUG))
 			return
 		var/prompt = alert(src, "Editing this var may irreparably break tile gliding for the rest of the round. THIS CAN'T BE UNDONE", "DANGER", "ABORT ", "Continue", " ABORT")
@@ -193,7 +193,7 @@
 	if (rejected)
 		to_chat(src, "[rejected] out of [count] objects rejected your edit")
 
-	log_world("### MassVarEdit by [src]: [O.type] (A/R [accepted]/[rejected]) [variable]=[html_encode("[O.vars[variable]]")]([list2params(value)])")
+	world.log << "### MassVarEdit by [src]: [O.type] (A/R [accepted]/[rejected]) [variable]=[html_encode_ru("[O.vars[variable]]")]([list2params(value)])"
 	log_admin("[key_name(src)] mass modified [original_name]'s [variable] to [O.vars[variable]] ([accepted] objects modified)")
 	message_admins("[key_name_admin(src)] mass modified [original_name]'s [variable] to [O.vars[variable]] ([accepted] objects modified)")
 
@@ -205,19 +205,19 @@
 		typecache = typecacheof(typecache)
 	. = list()
 	if (ispath(T, /mob))
-		for(var/mob/thing in GLOB.mob_list)
+		for(var/mob/thing in mob_list)
 			if (typecache[thing.type])
 				. += thing
 			CHECK_TICK
 
 	else if (ispath(T, /obj/machinery/door))
-		for(var/obj/machinery/door/thing in GLOB.airlocks)
+		for(var/obj/machinery/door/thing in airlocks)
 			if (typecache[thing.type])
 				. += thing
 			CHECK_TICK
 
 	else if (ispath(T, /obj/machinery))
-		for(var/obj/machinery/thing in GLOB.machines)
+		for(var/obj/machinery/thing in machines)
 			if (typecache[thing.type])
 				. += thing
 			CHECK_TICK
@@ -247,7 +247,7 @@
 			CHECK_TICK
 
 	else if (ispath(T, /client))
-		for(var/client/thing in GLOB.clients)
+		for(var/client/thing in clients)
 			if (typecache[thing.type])
 				. += thing
 			CHECK_TICK

@@ -15,7 +15,10 @@
 		to_chat(user, "<span class='notice'>We distort our form to hide from the AI</span>")
 		user.digitalcamo = 1
 		user.digitalinvis = 1
-	return TRUE
+
+
+	feedback_add_details("changeling_powers","CAM")
+	return 1
 
 /obj/effect/proc_holder/changeling/digitalcamo/on_refund(mob/user)
 	user.digitalcamo = 0

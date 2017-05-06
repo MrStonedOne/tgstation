@@ -1,6 +1,7 @@
 /datum/job
 	//The name of the job
 	var/title = "NOPE"
+	var/desc = "No description"
 
 	//Job access. The use of minimal_access or access is determined by a config setting: config.jobs_have_minimal_access
 	var/list/minimal_access = list()		//Useful for servers which prefer to only have access given to the places a job absolutely needs (Larger server population)
@@ -17,7 +18,7 @@
 	var/department_flag = 0
 
 	//Players will be allowed to spawn in as jobs that are set to "Station"
-	var/faction = "None"
+	var/faction = "none"
 
 	//How many players can be this job
 	var/total_positions = 0
@@ -34,6 +35,9 @@
 	//Sellection screen color
 	var/selection_color = "#ffffff"
 
+	var/list/allowed_packs = list("default") //Packs which will be available to this job
+	var/list/required_items = list() // Items which available by default
+	var/list/denied_items = list() // Items which can't be set up on this job anyway
 
 	//If this is set to 1, a text is printed to the player when jobs are assigned, telling him that he should let admins know that he has to disconnect.
 	var/req_admin_notify
@@ -44,9 +48,7 @@
 	var/outfit = null
 
 //Only override this proc
-//H is usually a human unless an /equip override transformed it
-/datum/job/proc/after_spawn(mob/living/H, mob/M)
-	//do actions on H but send messages to M as the key may not have been transferred_yet
+/datum/job/proc/after_spawn(mob/living/carbon/human/H)
 
 
 /datum/job/proc/announce(mob/living/carbon/human/H)
@@ -54,26 +56,31 @@
 		announce_head(H, head_announce)
 
 
-//Don't override this unless the job transforms into a non-human (Silicons do this for example)
-/datum/job/proc/equip(mob/living/carbon/human/H, visualsOnly = FALSE, announce = TRUE)
+//But don't override this
+/datum/job/proc/equip(mob/living/carbon/human/H, visualsOnly = FALSE, announce = TRUE, override_outfit)
 	if(!H)
 		return 0
 
 	//Equip the rest of the gear
 	H.dna.species.before_equip_job(src, H, visualsOnly)
 
-	if(outfit)
+	if(override_outfit)
+		H.equipOutfit(override_outfit, visualsOnly)
+	else if(H.client && H.client.prefs)
+		H.equipOutfit(H.client.prefs.GetOutfit(src), visualsOnly)
+	else if(outfit)
 		H.equipOutfit(outfit, visualsOnly)
 
 	H.dna.species.after_equip_job(src, H, visualsOnly)
 
-	if(!visualsOnly && announce)
-		announce(H)
+	H.set_faction(faction)
+	H.set_status(status)
+	var/datum/f13_faction/F = get_faction_datum(H.social_faction)
+	if(F && F.flags & HAVE_FREQ)
+		H.add_memory("[F.name] is using freq ([F.freq]) with encryption key ([F.encryption_key])")
 
-	if(config.enforce_human_authority && (title in GLOB.command_positions))
-		H.dna.features["tail_human"] = "None"
-		H.dna.features["ears"] = "None"
-		H.regenerate_icons()
+//	if(!visualsOnly && announce)
+//		announce(H)
 
 /datum/job/proc/get_access()
 	if(!config)	//Needed for robots.
@@ -87,12 +94,13 @@
 		. = src.access.Copy()
 
 	if(config.jobs_have_maint_access & EVERYONE_HAS_MAINT_ACCESS) //Config has global maint access set
-		. |= list(GLOB.access_maint_tunnels)
+		. |= list(access_maint_tunnels)
 
 /datum/job/proc/announce_head(var/mob/living/carbon/human/H, var/channels) //tells the given channel that the given mob is the new department head. See communications.dm for valid channels.
-	if(H && GLOB.announcement_systems.len)
-		//timer because these should come after the captain announcement
-		SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, .proc/addtimer, CALLBACK(pick(GLOB.announcement_systems), /obj/machinery/announcement_system/proc/announce, "NEWHEAD", H.real_name, H.job, channels), 1))
+	spawn(4) //to allow some initialization
+		if(H && announcement_systems.len)
+			var/obj/machinery/announcement_system/announcer = pick(announcement_systems)
+			announcer.announce("NEWHEAD", H.real_name, H.job, channels)
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/C)
@@ -116,8 +124,6 @@
 /datum/job/proc/config_check()
 	return 1
 
-/datum/job/proc/map_check()
-	return TRUE
 
 
 /datum/outfit/job
@@ -125,39 +131,19 @@
 
 	var/jobtype = null
 
-	uniform = /obj/item/clothing/under/color/grey
-	id = /obj/item/weapon/card/id
-	ears = /obj/item/device/radio/headset
-	belt = /obj/item/device/pda
-	back = /obj/item/weapon/storage/backpack
+	uniform = /obj/item/clothing/under/f13/lumberjack
 	shoes = /obj/item/clothing/shoes/sneakers/black
 
 	var/list/implants = null
 
-	var/backpack = /obj/item/weapon/storage/backpack
-	var/satchel  = /obj/item/weapon/storage/backpack/satchel
-	var/dufflebag = /obj/item/weapon/storage/backpack/dufflebag
-	var/box = /obj/item/weapon/storage/box/survival
+	var/backpack = null
+	var/satchel  = null
+	var/dufflebag = null
+	var/box = null
 
 	var/pda_slot = slot_belt
 
 /datum/outfit/job/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
-	switch(H.backbag)
-		if(GBACKPACK)
-			back = /obj/item/weapon/storage/backpack //Grey backpack
-		if(GSATCHEL)
-			back = /obj/item/weapon/storage/backpack/satchel //Grey satchel
-		if(GDUFFLEBAG)
-			back = /obj/item/weapon/storage/backpack/dufflebag //Grey Dufflebag
-		if(LSATCHEL)
-			back = /obj/item/weapon/storage/backpack/satchel/leather //Leather Satchel
-		if(DSATCHEL)
-			back = satchel //Department satchel
-		if(DDUFFLEBAG)
-			back = dufflebag //Department dufflebag
-		else
-			back = backpack //Department backpack
-
 	if(box)
 		backpack_contents.Insert(1, box) // Box always takes a first slot in backpack
 		backpack_contents[box] = 1

@@ -105,96 +105,10 @@ switch (strtolower($_SERVER['HTTP_X_GITHUB_EVENT'])) {
 		print_r($payload); # For debug only. Can be found in GitHub hook log.
 		die();
 }
-
-//rip bs-12
-function tag_pr($payload, $opened) {
-	global $apiKey;
-
-	//We need to reget the pull_request part of the payload to actually see the mergeable field populated
-	//http://stackoverflow.com/questions/30619549/why-does-github-api-return-an-unknown-mergeable-state-in-a-pull-request
-	$scontext = array('http' => array(
-		'method'	=> 'GET',
-		'header'	=>
-			"Content-type: application/json\r\n".
-			'Authorization: token ' . $apiKey,
-		'ignore_errors' => true,
-		'user_agent' 	=> 'tgstation13.org-Github-Automation-Tools'
-	));
-
-	$url = $payload['pull_request']['url'];
-	$payload['pull_request'] = json_decode(file_get_contents($url, false, stream_context_create($scontext)), true);
-	if($payload['pull_request']['mergeable'] == null) {
-		//STILL not ready. Give it a bit, then try one more time
-		sleep(10);
-		$payload['pull_request'] = json_decode(file_get_contents($url, false, stream_context_create($scontext)), true);
-	}
-
-	$tags = array();
-	$title = $payload['pull_request']['title'];
-	if($opened) {	//you only have one shot on these ones so as to not annoy maintainers
-		$tags = checkchangelog($payload, true, false);
-
-		if(strpos(strtolower($title), 'refactor') !== FALSE)
-			$tags[] = 'Refactor';
-	}
-
-	$remove = array();
-
-	$mergeable = $payload['pull_request']['mergeable'];
-	if($mergeable === TRUE)	//only look for the false value
-		$remove[] = 'Merge Conflict';
-	else if ($mergable === FALSE)
-		$tags[] = 'Merge Conflict';
-
-	if(has_tree_been_edited($payload, '_maps'))
-		$tags[] = 'Map Edit';
-	else
-		$remove[] = 'Map Edit';
-
-	if(has_tree_been_edited($payload, 'tools'))
-		$tags[] = 'Tools';
-	else
-		$remove[] = 'Tools';
-
-	//only maintners should be able to remove these
-	if(strpos($title, '[DNM]') !== FALSE)
-		$tags[] = 'Do Not Merge';
-
-	if(strpos($title, '[WIP]') !== FALSE)
-		$tags[] = 'Work In Progress';
-
-	$url = $payload['pull_request']['base']['repo']['url'] . '/issues/' . $payload['pull_request']['number'] . '/labels';
-
-	$existing_labels = file_get_contents($url, false, stream_context_create($scontext));
-	$existing_labels = json_decode($existing_labels, true);
-
-	$existing = array();
-	foreach($existing_labels as $label)
-		$existing[] = $label['name'];
-	$tags = array_merge($tags, $existing);
-	$tags = array_unique($tags);
-	$tags = array_diff($tags, $remove);
-
-	$final = array();
-	foreach($tags as $t)
-		$final[] = $t;
-
-	$scontext['http']['method'] = 'PUT';
-	$scontext['http']['content'] = json_encode($final);
-
-	echo file_get_contents($url, false, stream_context_create($scontext));
-}
-
 function handle_pr($payload) {
 	$action = 'opened';
 	switch ($payload["action"]) {
 		case 'opened':
-			tag_pr($payload, true);
-			break;
-		case 'edited':
-		case 'synchronize':
-			tag_pr($payload, false);
-			return;
 		case 'reopened':
 			$action = $payload['action'];
 			break;
@@ -204,7 +118,7 @@ function handle_pr($payload) {
 			}
 			else {
 				$action = 'merged';
-				checkchangelog($payload, true, true);
+				checkchangelog($payload, true);
 			}
 			break;
 		default:
@@ -217,20 +131,11 @@ function handle_pr($payload) {
 	}
 	
 	$msg = 'Pull Request '.$action.' by '.htmlSpecialChars($payload['sender']['login']).': <a href="'.$payload['pull_request']['html_url'].'">'.htmlSpecialChars('#'.$payload['pull_request']['number'].' '.$payload['pull_request']['user']['login'].' - '.$payload['pull_request']['title']).'</a>';
-	sendtoallservers('?announce='.urlencode($msg), $payload);
+	sendtoallservers('?announce='.urlencode($msg));
 
 }
 
-function has_tree_been_edited($payload, $tree){
-	//go to the diff url
-	$url = $payload['pull_request']['diff_url'];
-	$content = file_get_contents($url);
-	//find things in the _maps/map_files tree
-	//e.g. diff --git a/_maps/map_files/Cerestation/cerestation.dmm b/_maps/map_files/Cerestation/cerestation.dmm
-	return $content !== FALSE && strpos($content, 'diff --git a/' . $tree) !== FALSE;
-}
-
-function checkchangelog($payload, $merge = false, $compile = true) {
+function checkchangelog($payload, $merge = false) {
 	global $apiKey;
 	if (!$merge)
 		return;
@@ -241,15 +146,8 @@ function checkchangelog($payload, $merge = false, $compile = true) {
 		return;
 	}
 	$body = $payload['pull_request']['body'];
-
-	$tags = array();
-
-	if(preg_match('/(?i)(fix|fixes|fixed|resolve|resolves|resolved)\s*#[0-9]+/',$body))	//github autoclose syntax
-		$tags[] = 'Fix';
-
 	$body = str_replace("\r\n", "\n", $body);
 	$body = explode("\n", $body);
-
 	$username = $payload['pull_request']['user']['login'];
 	$incltag = false;
 	$changelogbody = array();
@@ -261,11 +159,8 @@ function checkchangelog($payload, $merge = false, $compile = true) {
 			$incltag = true;
 			$foundcltag = true;
 			$pos = strpos($line, " ");
-			if ($pos) {
-				$tmp = substr($line, $pos+1);
-				if (trim($tmp) != 'optional name here')
-					$username = $tmp;
-			}
+			if ($pos)
+				$username = substr($line, $pos+1);
 			continue;
 		} else if (substr($line,0,5) == '/:cl:' || substr($line,0,6) == '/ :cl:' || substr($line,0,5) == ':/cl:' || substr($line,0,5) == '/🆑' || substr($line,0,6) == '/ 🆑' ) {
 			$incltag = false;
@@ -302,83 +197,45 @@ function checkchangelog($payload, $merge = false, $compile = true) {
 			case 'fix':
 			case 'fixes':
 			case 'bugfix':
-				if($item != 'fixed a few things') {
-					$tags[] = 'Fix';
-					$currentchangelogblock[] = array('type' => 'bugfix', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'bugfix', 'body' => $item);
 				break;
 			case 'wip':
-				if($item != 'added a few works in progress')
-					$currentchangelogblock[] = array('type' => 'wip', 'body' => $item);
+				$currentchangelogblock[] = array('type' => 'wip', 'body' => $item);
 				break;
 			case 'rsctweak':
 			case 'tweaks':
 			case 'tweak':
-				if($item != 'tweaked a few things') {
-					$tags[] = 'Tweak';
-					$currentchangelogblock[] = array('type' => 'tweak', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'tweak', 'body' => $item);
 				break;
 			case 'soundadd':
-				if($item != 'added a new sound thingy') {
-					$tags[] = 'Sound';
-					$currentchangelogblock[] = array('type' => 'soundadd', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'soundadd', 'body' => $item);
 				break;
 			case 'sounddel':
-				if($item != 'removed an old sound thingy') {
-					$tags[] = 'Sound';
-					$tags[] = 'Revert/Removal';
-					$currentchangelogblock[] = array('type' => 'sounddel', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'sounddel', 'body' => $item);
 				break;
 			case 'add':
 			case 'adds':
 			case 'rscadd':
-				if($item != 'Added new things' && $item != 'Added more things') {
-					$tags[] = 'Feature';
-					$currentchangelogblock[] = array('type' => 'rscadd', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'rscadd', 'body' => $item);
 				break;
 			case 'del':
 			case 'dels':
 			case 'rscdel':
-				if($item != 'Removed old things') {
-					$tags[] = 'Revert/Removal';
-					$currentchangelogblock[] = array('type' => 'rscdel', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'rscdel', 'body' => $item);
 				break;
 			case 'imageadd':
-				if($item != 'added some icons and images') {
-					$tags[] = 'Sprites';
-					$currentchangelogblock[] = array('type' => 'imageadd', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'imageadd', 'body' => $item);
 				break;
 			case 'imagedel':
-				if($item != 'deleted some icons and images') {
-					$tags[] = 'Sprites';
-					$tags[] = 'Revert/Removal';
-					$currentchangelogblock[] = array('type' => 'imagedel', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'imagedel', 'body' => $item);
 				break;
 			case 'typo':
 			case 'spellcheck':
-				if($item != 'fixed a few typos') {
-					$tags[] = 'Grammar and Formatting';
-					$currentchangelogblock[] = array('type' => 'spellcheck', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'spellcheck', 'body' => $item);
 				break;
 			case 'experimental':
 			case 'experiment':
-				if($item != 'added an experimental thingy')
-					$currentchangelogblock[] = array('type' => 'experiment', 'body' => $item);
-				break;
-			case 'balance':
-			case 'rebalance':
-				if($item != 'rebalanced something'){
-					$tags[] = 'Balance/Rebalance';
-					$currentchangelogblock[] = array('type' => 'balance', 'body' => $item);
-				}
+				$currentchangelogblock[] = array('type' => 'experiment', 'body' => $item);
 				break;
 			case 'tgs':
 				$currentchangelogblock[] = array('type' => 'tgs', 'body' => $item);
@@ -390,9 +247,9 @@ function checkchangelog($payload, $merge = false, $compile = true) {
 				break;
 		}
 	}
-
-	if (!count($changelogbody) || !$compile)
-		return $tags;
+	
+	if (!count($changelogbody))
+		return;
 
 	$file = 'author: "'.trim(str_replace(array("\\", '"'), array("\\\\", "\\\""), $username)).'"'."\n";
 	$file .= "delete-after: True\n";
@@ -421,15 +278,14 @@ function checkchangelog($payload, $merge = false, $compile = true) {
 	echo file_get_contents($payload['pull_request']['base']['repo']['url'].'/contents'.$filename, false, stream_context_create($scontext));
 }
 
-function sendtoallservers($str, $payload = null) {
+function sendtoallservers($str) {
 	global $servers;
-	if (!empty($payload))
-		$str .= '&payload='.urlencode(json_encode($payload));
 	foreach ($servers as $serverid => $server) {
-		$msg = $str;
 		if (isset($server['comskey']))
-			$msg .= '&key='.urlencode($server['comskey']);
-		$rtn = export($server['address'], $server['port'], $msg);
+			$rtn = export($server['address'], $server['port'], $str.'&key='.$server['comskey']);
+		else 
+			$rtn = export($server['address'], $server['port'], $str);
+	
 		echo "Server Number $serverid replied: $rtn\n";
 	}
 }
@@ -437,6 +293,7 @@ function sendtoallservers($str, $payload = null) {
 
 
 function export($addr, $port, $str) {
+	global $error;
 	// All queries must begin with a question mark (ie "?players")
 	if($str{0} != '?') $str = ('?' . $str);
 	
@@ -447,7 +304,8 @@ function export($addr, $port, $str) {
 	$server = socket_create(AF_INET,SOCK_STREAM,SOL_TCP) or exit("ERROR");
 	socket_set_option($server, SOL_SOCKET, SO_SNDTIMEO, array('sec' => 2, 'usec' => 0)); //sets connect and send timeout to 2 seconds
 	if(!socket_connect($server,$addr,$port)) {
-		return "ERROR: Connection failed";
+		$error = true;
+		return "ERROR";
 	}
 
 	
@@ -458,8 +316,7 @@ function export($addr, $port, $str) {
 		//echo $bytessent.'<br>';
 		$result = socket_write($server,substr($query,$bytessent),$bytestosend-$bytessent);
 		//echo 'Sent '.$result.' bytes<br>';
-		if ($result===FALSE) 
-			return "ERROR: " . socket_strerror(socket_last_error());
+		if ($result===FALSE) die(socket_strerror(socket_last_error()));
 		$bytessent += $result;
 	}
 	
@@ -490,7 +347,9 @@ function export($addr, $port, $str) {
 				return $unpackstr;
 			}
 		}
-	}
-	return "";
+	}	
+	//if we get to this point, something went wrong;
+	$error = true;
+	return "ERROR";
 }
 ?>

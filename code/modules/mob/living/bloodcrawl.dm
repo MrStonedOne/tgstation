@@ -19,6 +19,9 @@
 /obj/effect/dummy/slaughter/singularity_act()
 	return
 
+/obj/effect/dummy/slaughter/Destroy()
+	..()
+	return QDEL_HINT_PUTINPOOL
 
 
 /mob/living/proc/phaseout(obj/effect/decal/cleanable/B)
@@ -50,7 +53,7 @@
 	playsound(get_turf(src), 'sound/magic/enter_blood.ogg', 100, 1, -1)
 	// Extinguish, unbuckle, stop being pulled, set our location into the
 	// dummy object
-	var/obj/effect/dummy/slaughter/holder = new /obj/effect/dummy/slaughter(mobloc)
+	var/obj/effect/dummy/slaughter/holder = PoolOrNew(/obj/effect/dummy/slaughter,mobloc)
 	src.ExtinguishMob()
 
 	// Keep a reference to whatever we're pulling, because forceMove()
@@ -160,7 +163,7 @@
 		return
 	if(!B)
 		return
-	src.loc = B.loc
+	src.forceMove(B.loc)
 	src.client.eye = src
 	src.visible_message("<span class='warning'><B>[src] rises out of the pool of blood!</B>")
 	exit_blood_effect(B)
@@ -168,6 +171,7 @@
 		var/mob/living/carbon/C = src
 		for(var/obj/item/weapon/bloodcrawl/BC in C)
 			BC.flags = null
+			C.unEquip(BC)
 			qdel(BC)
 	qdel(src.holder)
 	src.holder = null

@@ -7,7 +7,7 @@
 
 /obj/item/ammo_casing/caseless/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread)
 	if (..()) //successfully firing
-		loc = null
+		forceMove(null)
 		return 1
 	else
 		return 0
@@ -87,8 +87,9 @@
 	else if (istype(A, /obj/item/weapon/pen))
 		if(modified)
 			if(!FD.pen)
-				if(!user.transferItemToLoc(A, FD))
+				if(!user.unEquip(A))
 					return
+				A.forceMove(FD)
 				FD.pen = A
 				FD.damage = 5
 				FD.nodamage = 0

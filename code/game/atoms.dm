@@ -2,10 +2,7 @@
 	layer = TURF_LAYER
 	plane = GAME_PLANE
 	var/level = 2
-
 	var/flags = 0
-	var/list/secondary_flags
-
 	var/list/fingerprints
 	var/list/fingerprintshidden
 	var/list/blood_DNA
@@ -21,87 +18,36 @@
 	//Value used to increment ex_act() if reactionary_explosions is on
 	var/explosion_block = 0
 
+	//overlays that should remain on top and not normally be removed, like c4.
+	var/list/priority_overlays
+
 	var/list/atom_colours	 //used to store the different colors on an atom
 							//its inherent color, the colored paint applied on it, special color effect etc...
-	var/initialized = FALSE
 
-	var/list/our_overlays	//our local copy of (non-priority) overlays without byond magic. Use procs in SSoverlays to manipulate
-	var/list/priority_overlays	//overlays that should remain on top and not normally removed when using cut_overlay functions, like c4.
 
-	var/datum/proximity_monitor/proximity_monitor
-
-/atom/New(loc, ...)
+/atom/New()
 	//atom creation method that preloads variables at creation
-	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
-		GLOB._preloader.load(src)
-
-	//. = ..() //uncomment if you are dumb enough to add a /datum/New() proc
-
-	var/do_initialize = SSatoms.initialized
-	if(do_initialize > INITIALIZATION_INSSATOMS)
-		args[1] = do_initialize == INITIALIZATION_INNEW_MAPLOAD
-		if(SSatoms.InitAtom(src, args))
-			//we were deleted
-			return
-
-	var/list/created = SSatoms.created_atoms
-	if(created)
-		created += src
-
-//Called after New if the map is being loaded. mapload = TRUE
-//Called from base of New if the map is being loaded. mapload = FALSE
-//This base must be called or derivatives must set initialized to TRUE
-//must not sleep
-//Other parameters are passed from New (excluding loc), this does not happen if mapload is TRUE
-//Must return an Initialize hint. Defined in __DEFINES/subsystems.dm
-
-//Note: the following functions don't call the base for optimization and must copypasta:
-// /turf/Initialize
-// /turf/open/space/Initialize
-// /mob/dead/new_player/Initialize
-
-//Do also note that this proc always runs in New for /mob/dead
-/atom/proc/Initialize(mapload, ...)
-	if(initialized)
-		stack_trace("Warning: [src]([type]) initialized multiple times!")
-	initialized = TRUE
-
+	if(use_preloader && (src.type == _preloader.target_path))//in case the instanciated atom is creating other atoms in New()
+		_preloader.load(src)
 	//atom color stuff
 	if(color)
 		add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 
-	if (light_power && light_range)
-		update_light()
-
-	if (opacity && isturf(loc))
-		var/turf/T = loc
-		T.has_opaque_atom = TRUE // No need to recalculate it in this case, it's guaranteed to be on afterwards anyways.
-	return INITIALIZE_HINT_NORMAL
-
-//called if Initialize returns INITIALIZE_HINT_LATELOAD
-//This version shouldn't be called
-/atom/proc/LateInitialize()
-	var/static/list/warned_types = list()
-	if(!warned_types[type])
-		WARNING("Old style LateInitialize behaviour detected in [type]!")
-		warned_types[type] = TRUE
-	Initialize(FALSE)
+	//. = ..() //uncomment if you are dumb enough to add a /datum/New() proc
 
 /atom/Destroy()
 	if(alternate_appearances)
-		for(var/K in alternate_appearances)
-			var/datum/atom_hud/alternate_appearance/AA = alternate_appearances[K]
-			AA.remove_from_hud(src)
-
+		for(var/aakey in alternate_appearances)
+			var/datum/alternate_appearance/AA = alternate_appearances[aakey]
+			qdel(AA)
+		alternate_appearances = null
+	if(viewing_alternate_appearances)
+		for(var/aakey in viewing_alternate_appearances)
+			for(var/aa in viewing_alternate_appearances[aakey])
+				var/datum/alternate_appearance/AA = aa
+				AA.hide(list(src))
 	if(reagents)
 		qdel(reagents)
-
-	LAZYCLEARLIST(overlays)
-	LAZYCLEARLIST(priority_overlays)
-	//SSoverlays.processing -= src	//we COULD do this, but it's better to just let it fall out of the processing queue
-
-	QDEL_NULL(light)
-
 	return ..()
 
 /atom/proc/CanPass(atom/movable/mover, turf/target, height=1.5)
@@ -154,9 +100,8 @@
 			var/atom/movable/M = A
 			if(isliving(M.loc))
 				var/mob/living/L = M.loc
-				L.transferItemToLoc(M, src)
-			else
-				M.forceMove(src)
+				L.unEquip(M)
+			M.forceMove(src)
 
 /atom/proc/assume_air(datum/gas_mixture/giver)
 	qdel(giver)
@@ -187,6 +132,16 @@
 /atom/proc/is_transparent()
 	return container_type & TRANSPARENT
 
+/*//Convenience proc to see whether a container can be accessed in a certain way.
+
+/atom/proc/can_subract_container()
+	return flags & EXTRACT_CONTAINER
+
+/atom/proc/can_add_container()
+	return flags & INSERT_CONTAINER
+*/
+
+
 /atom/proc/allow_drop()
 	return 1
 
@@ -197,8 +152,7 @@
 	return
 
 /atom/proc/emp_act(severity)
-	if(istype(wires) && !HAS_SECONDARY_FLAG(src, NO_EMP_WIRES))
-		wires.emp_pulse()
+	return
 
 /atom/proc/bullet_act(obj/item/projectile/P, def_zone)
 	. = P.on_hit(src, 0, def_zone)
@@ -246,12 +200,12 @@
 			f_name = "a "
 		f_name += "<span class='danger'>blood-stained</span> [name]!"
 
-	to_chat(user, "\icon[src] That's [f_name]")
+	to_chat(user, "[bicon(src)] That's [f_name]")
 
 	if(desc)
 		to_chat(user, desc)
 	// *****RM
-	//to_chat(user, "[name]: Dn:[density] dir:[dir] cont:[contents] icon:[icon] is:[icon_state] loc:[loc]")
+//	to_chat(user, "[name]: Dn:[density] dir:[dir] cont:[contents] icon:[icon] is:[icon_state] loc:[loc]")
 
 	if(reagents && (is_open_container() || is_transparent())) //is_open_container() isn't really the right proc for this, but w/e
 		to_chat(user, "It contains:")
@@ -284,13 +238,11 @@
 
 /atom/proc/hitby(atom/movable/AM, skipcatch, hitpush, blocked)
 	if(density && !has_gravity(AM)) //thrown stuff bounces off dense stuff in no grav, unless the thrown stuff ends up inside what it hit(embedding, bola, etc...).
-		addtimer(CALLBACK(src, .proc/hitby_react, AM), 2)
+		spawn(2) //very short wait, so we can actually see the impact.
+			if(AM && isturf(AM.loc))
+				step(AM, turn(AM.dir, 180))
 
-/atom/proc/hitby_react(atom/movable/AM)
-	if(AM && isturf(AM.loc))
-		step(AM, turn(AM.dir, 180))
-
-GLOBAL_LIST_EMPTY(blood_splatter_icons)
+var/list/blood_splatter_icons = list()
 
 /atom/proc/blood_splatter_index()
 	return "\ref[initial(icon)]-[initial(icon_state)]"
@@ -364,13 +316,13 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	if(initial(icon) && initial(icon_state))
 		//try to find a pre-processed blood-splatter. otherwise, make a new one
 		var/index = blood_splatter_index()
-		var/icon/blood_splatter_icon = GLOB.blood_splatter_icons[index]
+		var/icon/blood_splatter_icon = blood_splatter_icons[index]
 		if(!blood_splatter_icon)
 			blood_splatter_icon = icon(initial(icon), initial(icon_state), , 1)		//we only want to apply blood-splatters to the initial icon_state for each object
 			blood_splatter_icon.Blend("#fff", ICON_ADD) 			//fills the icon_state with white (except where it's transparent)
 			blood_splatter_icon.Blend(icon('icons/effects/blood.dmi', "itemblood"), ICON_MULTIPLY) //adds blood and the remaining white areas become transparant
 			blood_splatter_icon = fcopy_rsc(blood_splatter_icon)
-			GLOB.blood_splatter_icons[index] = blood_splatter_icon
+			blood_splatter_icons[index] = blood_splatter_icon
 		add_overlay(blood_splatter_icon)
 
 /obj/item/clothing/gloves/add_blood(list/blood_dna)
@@ -409,12 +361,12 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	return 1
 
 /atom/proc/get_global_map_pos()
-	if(!islist(GLOB.global_map) || isemptylist(GLOB.global_map)) return
+	if(!islist(global_map) || isemptylist(global_map)) return
 	var/cur_x = null
 	var/cur_y = null
 	var/list/y_arr = null
-	for(cur_x=1,cur_x<=GLOB.global_map.len,cur_x++)
-		y_arr = GLOB.global_map[cur_x]
+	for(cur_x=1,cur_x<=global_map.len,cur_x++)
+		y_arr = global_map[cur_x]
 		cur_y = y_arr.Find(src.z)
 		if(cur_y)
 			break
@@ -435,7 +387,6 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 
 /atom/proc/handle_slip()
 	return
-
 /atom/proc/singularity_act()
 	return
 
@@ -454,23 +405,28 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 /atom/proc/ratvar_act()
 	return
 
-/atom/proc/rcd_vals(mob/user, obj/item/weapon/construction/rcd/the_rcd)
-	return FALSE
-
-/atom/proc/rcd_act(mob/user, obj/item/weapon/construction/rcd/the_rcd, passed_mode)
-	return FALSE
-
 /atom/proc/storage_contents_dump_act(obj/item/weapon/storage/src_object, mob/user)
     return 0
 
 //This proc is called on the location of an atom when the atom is Destroy()'d
 /atom/proc/handle_atom_del(atom/A)
 
-//called when the turf the atom resides on is ChangeTurfed
-/atom/proc/HandleTurfChange(turf/T)
-	for(var/a in src)
-		var/atom/A = a
-		A.HandleTurfChange(T)
+// Byond seemingly calls stat, each tick.
+// Calling things each tick can get expensive real quick.
+// So we slow this down a little.
+// See: http://www.byond.com/docs/ref/info.html#/client/proc/Stat
+/atom/Stat()
+	. = ..()
+	sleep(1)
+	stoplag()
+
+//This is called just before maps and objects are initialized, use it to spawn other mobs/objects
+//effects at world start up without causing runtimes
+/atom/proc/spawn_atom_to_world()
+
+//This will be called after the map and objects are loaded
+/atom/proc/initialize()
+	return
 
 //the vision impairment to give to the mob whose perspective is set to that atom (e.g. an unfocused camera giving you an impaired vision when looking through it)
 /atom/proc/get_remote_view_fullscreens(mob/user)
@@ -482,7 +438,7 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M, toxvomit = 0)
 	if(isturf(src))
-		var/obj/effect/decal/cleanable/vomit/V = new /obj/effect/decal/cleanable/vomit(src)
+		var/obj/effect/decal/cleanable/vomit/V = PoolOrNew(/obj/effect/decal/cleanable/vomit, src)
 		// Make toxins vomit look different
 		if(toxvomit)
 			V.icon_state = "vomittox_[pick(1,4)]"
@@ -505,10 +461,6 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 /atom/proc/mech_melee_attack(obj/mecha/M)
 	return
 
-//If a mob logouts/logins in side of an object you can use this proc
-/atom/proc/on_log(login)
-	if(loc)
-		loc.on_log(login)
 
 
 /*
@@ -569,7 +521,7 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 			return
 
 /atom/vv_edit_var(var_name, var_value)
-	if(!GLOB.Debug2)
+	if(!Debug2)
 		admin_spawned = TRUE
 	. = ..()
 	switch(var_name)

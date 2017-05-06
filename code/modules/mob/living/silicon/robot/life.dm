@@ -37,8 +37,8 @@
 	update_cell_hud_icon()
 
 	if(syndicate)
-		if(SSticker.mode.name == "traitor")
-			for(var/datum/mind/tra in SSticker.mode.traitors)
+		if(ticker.mode.name == "traitor")
+			for(var/datum/mind/tra in ticker.mode.traitors)
 				if(tra.current)
 					var/I = image('icons/mob/mob.dmi', loc = tra.current, icon_state = "traitor") //no traitor sprite in that dmi!
 					src.client.images += I
@@ -48,7 +48,7 @@
 		if(mind)
 			if(!mind.special_role)
 				mind.special_role = "traitor"
-				SSticker.mode.traitors += mind
+				ticker.mode.traitors += mind
 
 
 /mob/living/silicon/robot/update_health_hud()
@@ -102,11 +102,9 @@
 	return
 
 /mob/living/silicon/robot/update_fire()
-	var/mutable_appearance/fire_overlay = mutable_appearance('icons/mob/OnFire.dmi', "Generic_mob_burning")
+	overlays -= image("icon"='icons/mob/OnFire.dmi', "icon_state"="Generic_mob_burning")
 	if(on_fire)
-		add_overlay(fire_overlay)
-	else
-		cut_overlay(fire_overlay)
+		add_overlay(image("icon"='icons/mob/OnFire.dmi', "icon_state"="Generic_mob_burning"))
 
 /mob/living/silicon/robot/update_canmove()
 	if(stat || buckled || lockcharge)

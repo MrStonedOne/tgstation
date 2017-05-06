@@ -1,7 +1,7 @@
 /obj/item/weapon/folder
 	name = "folder"
 	desc = "A folder."
-	icon = 'icons/obj/bureaucracy.dmi'
+	icon = 'icons/fallout/objects/bureaucracy.dmi'
 	icon_state = "folder"
 	w_class = WEIGHT_CLASS_SMALL
 	pressure_resistance = 2
@@ -19,6 +19,11 @@
 	desc = "A yellow folder."
 	icon_state = "folder_yellow"
 
+/obj/item/weapon/folder/yellow/secret
+	name = "folder- 'TOP SECRET'"
+	desc = "A folder stamped \"Top Secret - Property of Vault-Tec Corporation. Unauthorized distribution is punishable by the law.\""
+	icon_state = "folder_secret"
+
 /obj/item/weapon/folder/white
 	desc = "A white folder."
 	icon_state = "folder_white"
@@ -32,8 +37,9 @@
 
 /obj/item/weapon/folder/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/weapon/photo) || istype(W, /obj/item/documents))
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
+		W.forceMove(src)
 		to_chat(user, "<span class='notice'>You put [W] into [src].</span>")
 		update_icon()
 	else if(istype(W, /obj/item/weapon/pen))
@@ -62,7 +68,7 @@
 		if(href_list["remove"])
 			var/obj/item/I = locate(href_list["remove"])
 			if(istype(I) && I.loc == src)
-				I.loc = usr.loc
+				I.forceMove(usr.loc)
 				usr.put_in_hands(I)
 
 		if(href_list["read"])

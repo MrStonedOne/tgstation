@@ -29,16 +29,10 @@
 /obj/item/seeds/kudzu/proc/plant(mob/user)
 	if(isspaceturf(user.loc))
 		return
-	if(!isturf(user.loc))
-		to_chat(user, "<span class='warning'>You need more space to plant [src].</span>")
-		return FALSE
-	if(locate(/obj/structure/spacevine) in user.loc)
-		to_chat(user, "<span class='warning'>There is too much kudzu here to plant [src].</span>")
-		return FALSE
-	to_chat(user, "<span class='notice'>You plant [src].</span>")
-	message_admins("Kudzu planted by [ADMIN_LOOKUPFLW(user)] at [ADMIN_COORDJMP(user)]",0,1)
-	investigate_log("was planted by [key_name(user)] at [COORD(user)]","botany")
-	new /datum/spacevine_controller(get_turf(user), mutations, potency, production)
+	var/turf/T = get_turf(src)
+	message_admins("Kudzu planted by [key_name_admin(user)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) at ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>(JMP)</a>)",0,1)
+	investigate_log("was planted by [key_name(user)] at ([T.x],[T.y],[T.z])","kudzu")
+	new /obj/effect/spacevine_controller(user.loc, mutations, potency, production)
 	qdel(src)
 
 /obj/item/seeds/kudzu/attack_self(mob/user)
@@ -60,7 +54,7 @@
 		for(var/datum/spacevine_mutation/SM in mutations)
 			if(SM.quality == NEGATIVE)
 				temp_mut_list += SM
-		if(prob(20) && temp_mut_list.len)
+		if(prob(20))
 			mutations.Remove(pick(temp_mut_list))
 		temp_mut_list.Cut()
 
@@ -68,7 +62,7 @@
 		for(var/datum/spacevine_mutation/SM in mutations)
 			if(SM.quality == POSITIVE)
 				temp_mut_list += SM
-		if(prob(20) && temp_mut_list.len)
+		if(prob(20))
 			mutations.Remove(pick(temp_mut_list))
 		temp_mut_list.Cut()
 
@@ -76,21 +70,21 @@
 		for(var/datum/spacevine_mutation/SM in mutations)
 			if(SM.quality == MINOR_NEGATIVE)
 				temp_mut_list += SM
-		if(prob(20) && temp_mut_list.len)
+		if(prob(20))
 			mutations.Remove(pick(temp_mut_list))
 		temp_mut_list.Cut()
 
 	if(S.has_reagent("blood", 15))
-		adjust_production(rand(15, -5))
+		production = Clamp(production + rand(15, -5),1,10)
 
 	if(S.has_reagent("amatoxin", 5))
-		adjust_production(rand(5, -15))
+		production = Clamp(production + rand(5, -15),1,10)
 
 	if(S.has_reagent("plasma", 5))
-		adjust_potency(rand(5, -15))
+		potency = Clamp(potency + rand(5, -15),0,100)
 
 	if(S.has_reagent("holywater", 10))
-		adjust_potency(rand(15, -5))
+		potency = Clamp(potency + rand(15, -5),0,100)
 
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/kudzupod

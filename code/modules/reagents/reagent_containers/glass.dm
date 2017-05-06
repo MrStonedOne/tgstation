@@ -28,10 +28,6 @@
 				for(var/datum/reagent/A in reagents.reagent_list)
 					R += A.id + " ("
 					R += num2text(A.volume) + "),"
-			if(isturf(target) && reagents.reagent_list.len && thrownby)
-				add_logs(thrownby, target, "splashed [english_list(reagents.reagent_list)]", "at [target][COORD(target)]")
-				log_game("[key_name(thrownby)] splashed [english_list(reagents.reagent_list)] at [COORD(target)].")
-				message_admins("[key_name_admin(thrownby)] splashed [english_list(reagents.reagent_list)] at [ADMIN_COORDJMP(target)].")
 			reagents.reaction(M, TOUCH)
 			add_logs(user, M, "splashed", R)
 			reagents.clear_reagents()
@@ -122,8 +118,8 @@
 	item_state = "beaker"
 	materials = list(MAT_GLASS=500)
 
-/obj/item/weapon/reagent_containers/glass/beaker/Initialize()
-	. = ..()
+/obj/item/weapon/reagent_containers/glass/beaker/New()
+	..()
 	update_icon()
 
 /obj/item/weapon/reagent_containers/glass/beaker/on_reagent_change()
@@ -133,7 +129,7 @@
 	cut_overlays()
 
 	if(reagents.total_volume)
-		var/mutable_appearance/filling = mutable_appearance('icons/obj/reagentfillings.dmi', "[icon_state]10")
+		var/image/filling = image('icons/obj/reagentfillings.dmi', src, "[icon_state]10")
 
 		var/percent = round((reagents.total_volume / volume) * 100)
 		switch(percent)
@@ -176,8 +172,8 @@
 	origin_tech = "materials=2;engineering=3;plasmatech=3"
 	flags = OPENCONTAINER
 
-/obj/item/weapon/reagent_containers/glass/beaker/noreact/Initialize()
-	. = ..()
+/obj/item/weapon/reagent_containers/glass/beaker/noreact/New()
+	..()
 	reagents.set_reacting(FALSE)
 
 /obj/item/weapon/reagent_containers/glass/beaker/bluespace
@@ -223,8 +219,8 @@
 
 /obj/item/weapon/reagent_containers/glass/bucket
 	name = "bucket"
-	desc = "It's a bucket."
-	icon = 'icons/obj/janitor.dmi'
+	desc = "An old tin bucket."
+	icon = 'icons/fallout/objects/items.dmi'
 	icon_state = "bucket"
 	item_state = "bucket"
 	materials = list(MAT_METAL=200)
@@ -259,6 +255,7 @@
 	else if(isprox(O))
 		to_chat(user, "<span class='notice'>You add [O] to [src].</span>")
 		qdel(O)
+		user.unEquip(src)
 		qdel(src)
 		user.put_in_hands(new /obj/item/weapon/bucket_sensor)
 	else
@@ -279,27 +276,3 @@
 		slot_equipment_priority.Insert(index, slot_head)
 		return
 	return ..()
-
-/obj/item/weapon/reagent_containers/glass/beaker/waterbottle
-	name = "bottle of water"
-	desc = "A bottle of water filled at an old Earth bottling facility,"
-	icon = 'icons/obj/drinks.dmi'
-	icon_state = "smallbottle"
-	item_state = "bottle"
-	list_reagents = list("water" = 49.5, "fluorine" = 0.5)//see desc, don't think about it too hard
-	materials = list(MAT_GLASS=0)
-	volume = 50
-	amount_per_transfer_from_this = 10
-	origin_tech = null
-
-/obj/item/weapon/reagent_containers/glass/beaker/waterbottle/large
-	desc = "A fresh commercial-sized bottle of water."
-	icon_state = "largebottle"
-	materials = list(MAT_GLASS=0)
-	list_reagents = list("water" = 100)
-	volume = 100
-	amount_per_transfer_from_this = 20
-
-
-
-

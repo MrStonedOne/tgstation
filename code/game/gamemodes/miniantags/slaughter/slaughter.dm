@@ -32,9 +32,9 @@
 	melee_damage_lower = 30
 	melee_damage_upper = 30
 	see_in_dark = 8
-	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 	var/boost = 0
 	bloodcrawl = BLOODCRAWL_EAT
+	see_invisible = SEE_INVISIBLE_MINIMUM
 	var/playstyle_string = "<B><font size=3 color='red'>You are a slaughter demon,</font> a terrible creature from another realm. You have a single desire: To kill.  \
 							You may use the \"Blood Crawl\" ability near blood pools to travel through them, appearing and disappearing from the station at will. \
 							Pulling a dead or unconscious mob while you enter a pool will pull them in with you, allowing you to feast and regain your health. \
@@ -46,7 +46,7 @@
 	del_on_death = 1
 	deathmessage = "screams in anger as it collapses into a puddle of viscera!"
 
-/mob/living/simple_animal/slaughter/Initialize()
+/mob/living/simple_animal/slaughter/New()
 	..()
 	var/obj/effect/proc_holder/spell/bloodcrawl/bloodspell = new
 	AddSpell(bloodspell)
@@ -125,7 +125,7 @@
 	attacktext = "wildly tickles"
 
 	attack_sound = 'sound/items/bikehorn.ogg'
-	feast_sound = 'sound/spookoween/scary_horn2.ogg'
+	feast_sound = 'sound/misc/gameover.ogg'
 	death_sound = 'sound/misc/sadtrombone.ogg'
 
 	icon_state = "bowmon"
@@ -178,7 +178,8 @@
 		if(M.revive(full_heal = TRUE, admin_revive = TRUE))
 			M.grab_ghost(force = TRUE)
 			playsound(T, feast_sound, 50, 1, -1)
-			to_chat(M, "<span class='clown'>You leave [src]'s warm embrace,	and feel ready to take on the world.</span>")
+			to_chat(M, "<span class='clown'>You leave [src]'s warm embrace, \
+				and feel ready to take on the world.</span>")
 
 /mob/living/simple_animal/slaughter/laughter/bloodcrawl_swallow(var/mob/living/victim)
 	if(consumed_mobs)

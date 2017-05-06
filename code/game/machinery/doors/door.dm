@@ -40,7 +40,7 @@
 		layer = OPEN_DOOR_LAYER //Under all objects if opened. 2.7 due to tables being at 2.6
 	update_freelook_sight()
 	air_update_turf(1)
-	GLOB.airlocks += src
+	airlocks += src
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(2, 1, src)
 
@@ -50,7 +50,7 @@
 	density = 0
 	air_update_turf(1)
 	update_freelook_sight()
-	GLOB.airlocks -= src
+	airlocks -= src
 	if(spark_system)
 		qdel(spark_system)
 		spark_system = null
@@ -83,7 +83,7 @@
 				if(world.time - mecha.occupant.last_bumped <= 10)
 					return
 				mecha.occupant.last_bumped = world.time
-			if(mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access)))
+			if(mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access) || emergency == 1))
 				open()
 			else
 				do_animate("deny")
@@ -108,7 +108,7 @@
 		user = null
 
 	if(density && !emagged)
-		if(allowed(user))
+		if(allowed(user) || src.emergency == 1)
 			open()
 		else
 			do_animate("deny")
@@ -133,7 +133,7 @@
 		return
 	if(!requiresID())
 		user = null //so allowed(user) always succeeds
-	if(allowed(user))
+	if(allowed(user) || emergency == 1)
 		if(density)
 			open()
 		else
@@ -141,11 +141,6 @@
 		return
 	if(density)
 		do_animate("deny")
-
-/obj/machinery/door/allowed(mob/M)
-	if(emergency)
-		return TRUE
-	return ..()
 
 /obj/machinery/door/proc/try_to_weld(obj/item/weapon/weldingtool/W, mob/user)
 	return
@@ -163,7 +158,8 @@
 	else if(!(I.flags & NOBLUDGEON) && user.a_intent != INTENT_HARM)
 		try_to_activate_door(user)
 		return 1
-	return ..()
+	else
+		return ..()
 
 /obj/machinery/door/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
 	if(damage_flag == "melee" && damage_amount < damage_deflection)
@@ -190,7 +186,7 @@
 
 /obj/machinery/door/emp_act(severity)
 	if(prob(20/severity) && (istype(src,/obj/machinery/door/airlock) || istype(src,/obj/machinery/door/window)) )
-		INVOKE_ASYNC(src, .proc/open)
+		addtimer(CALLBACK(src, .proc/open), 0)
 	if(prob(40/severity))
 		if(secondsElectrified == 0)
 			secondsElectrified = -1
@@ -229,6 +225,8 @@
 		return 1
 	if(operating)
 		return
+	if(!ticker || !ticker.mode)
+		return 0
 	operating = 1
 	do_animate("opening")
 	set_opacity(0)
@@ -283,7 +281,6 @@
 
 /obj/machinery/door/proc/crush()
 	for(var/mob/living/L in get_turf(src))
-		L.visible_message("<span class='warning'>[src] closes on [L], crushing them!</span>", "<span class='userdanger'>[src] closes on you and crushes you!</span>")
 		if(isalien(L))  //For xenos
 			L.adjustBruteLoss(DOOR_CRUSH_DAMAGE * 1.5) //Xenos go into crit after aproximately the same amount of crushes as humans.
 			L.emote("roar")
@@ -303,7 +300,7 @@
 		M.take_damage(DOOR_CRUSH_DAMAGE)
 
 /obj/machinery/door/proc/autoclose()
-	if(!QDELETED(src) && !density && !operating && !locked && !welded && autoclose)
+	if(!qdeleted(src) && !density && !operating && !locked && !welded && autoclose)
 		close()
 
 /obj/machinery/door/proc/requiresID()
@@ -313,8 +310,8 @@
 	return !(stat & NOPOWER)
 
 /obj/machinery/door/proc/update_freelook_sight()
-	if(!glass && GLOB.cameranet)
-		GLOB.cameranet.updateVisibility(src, 0)
+	if(!glass && cameranet)
+		cameranet.updateVisibility(src, 0)
 
 /obj/machinery/door/BlockSuperconductivity() // All non-glass airlocks block heat, this is intended.
 	if(opacity || heat_proof)

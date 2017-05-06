@@ -12,14 +12,13 @@
 	var/turf/target //Used for one-time-use teleport cards (such as clown planet coordinates.)
 						 //Setting this to 1 will set src.locked to null after a player enters the portal and will not allow hand-teles to open portals to that location.
 
-	light_color = LIGHT_COLOR_BLUE
-
 /obj/machinery/computer/teleporter/New()
 	src.id = "[rand(1000, 9999)]"
+	link_power_station()
 	..()
+	return
 
-/obj/machinery/computer/teleporter/Initialize()
-	..()
+/obj/machinery/computer/teleporter/initialize()
 	link_power_station()
 
 /obj/machinery/computer/teleporter/Destroy()
@@ -41,9 +40,10 @@
 	if(istype(I, /obj/item/device/gps))
 		var/obj/item/device/gps/L = I
 		if(L.locked_location && !(stat & (NOPOWER|BROKEN)))
-			if(!user.transferItemToLoc(L, src))
+			if(!user.unEquip(L))
 				to_chat(user, "<span class='warning'>\the [I] is stuck to your hand, you cannot put it in \the [src]!</span>")
 				return
+			L.forceMove(src)
 			locked = L
 			to_chat(user, "<span class='caution'>You insert the GPS device into the [name]'s slot.</span>")
 	else
@@ -158,14 +158,14 @@
 
 /obj/machinery/computer/teleporter/proc/eject()
 	if(locked)
-		locked.loc = loc
+		locked.forceMove(loc)
 		locked = null
 
 /obj/machinery/computer/teleporter/proc/set_target(mob/user)
 	var/list/L = list()
 	var/list/areaindex = list()
 	if(regime_set == "Teleporter")
-		for(var/obj/item/device/radio/beacon/R in GLOB.teleportbeacons)
+		for(var/obj/item/device/radio/beacon/R in teleportbeacons)
 			var/turf/T = get_turf(R)
 			if(!T)
 				continue
@@ -173,7 +173,7 @@
 				continue
 			L[avoid_assoc_duplicate_keys(T.loc.name, areaindex)] = R
 
-		for(var/obj/item/weapon/implant/tracking/I in GLOB.tracked_implants)
+		for(var/obj/item/weapon/implant/tracking/I in tracked_implants)
 			if(!I.imp_in || !ismob(I.loc))
 				continue
 			else
@@ -235,6 +235,7 @@
 
 /obj/machinery/teleport/hub/New()
 	..()
+	link_power_station()
 	var/obj/item/weapon/circuitboard/machine/B = new /obj/item/weapon/circuitboard/machine/teleporter_hub(null)
 	B.apply_default_parts(src)
 
@@ -247,8 +248,7 @@
 							/obj/item/weapon/stock_parts/matter_bin = 1)
 	def_components = list(/obj/item/weapon/ore/bluespace_crystal = /obj/item/weapon/ore/bluespace_crystal/artificial)
 
-/obj/machinery/teleport/hub/Initialize()
-	..()
+/obj/machinery/teleport/hub/initialize()
 	link_power_station()
 
 /obj/machinery/teleport/hub/Destroy()
@@ -350,6 +350,7 @@
 	..()
 	var/obj/item/weapon/circuitboard/machine/B = new /obj/item/weapon/circuitboard/machine/teleporter_station(null)
 	B.apply_default_parts(src)
+	link_console_and_hub()
 
 /obj/item/weapon/circuitboard/machine/teleporter_station
 	name = "Teleporter Station (Machine Board)"
@@ -361,8 +362,7 @@
 							/obj/item/weapon/stock_parts/console_screen = 1)
 	def_components = list(/obj/item/weapon/ore/bluespace_crystal = /obj/item/weapon/ore/bluespace_crystal/artificial)
 
-/obj/machinery/teleport/station/Initialize()
-	..()
+/obj/machinery/teleport/station/initialize()
 	link_console_and_hub()
 
 /obj/machinery/teleport/station/RefreshParts()

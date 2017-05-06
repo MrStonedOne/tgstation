@@ -3,7 +3,7 @@ AI
 */
 /datum/job/ai
 	title = "AI"
-	flag = AI_JF
+	flag = AI
 	department_flag = ENGSEC
 	faction = "Station"
 	total_positions = 0
@@ -14,17 +14,8 @@ AI
 	minimal_player_age = 30
 
 /datum/job/ai/equip(mob/living/carbon/human/H)
-	return H.AIize(FALSE)
-
-/datum/job/ai/after_spawn(mob/living/silicon/ai/AI, mob/M)
-	AI.rename_self("ai", M.client)
-
-	//we may have been created after our borg
-	if(SSticker.current_state == GAME_STATE_SETTING_UP)
-		for(var/mob/living/silicon/robot/R in GLOB.silicon_mobs)
-			if(!R.connected_ai)
-				R.TryConnectToAI()
-
+	if(!H)
+		return 0
 
 /datum/job/ai/config_check()
 	if(config && config.allow_ai)
@@ -46,8 +37,6 @@ Cyborg
 	minimal_player_age = 21
 
 /datum/job/cyborg/equip(mob/living/carbon/human/H)
-	return H.Robotize(FALSE, FALSE)
-
-/datum/job/cyborg/after_spawn(mob/living/silicon/robot/R, mob/M)
-	if(config.rename_cyborg)	//name can't be set in robot/New without the client
-		R.rename_self("cyborg", M.client)
+	if(!H)
+		return 0
+	return H.Robotize()

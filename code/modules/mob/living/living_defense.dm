@@ -40,6 +40,7 @@
 	var/armor = run_armor_check(def_zone, P.flag, "","",P.armour_penetration)
 	if(!P.nodamage)
 		apply_damage(P.damage, P.damage_type, def_zone, armor)
+		attacked_trigger(P.firer)
 		if(P.dismemberment)
 			check_projectile_dismemberment(P, def_zone)
 	return P.on_hit(src, armor)
@@ -83,6 +84,7 @@
 			var/armor = run_armor_check(zone, "melee", "Your armor has protected your [parse_zone(zone)].", "Your armor has softened hit to your [parse_zone(zone)].",I.armour_penetration)
 			apply_damage(I.throwforce, dtype, zone, armor)
 			if(I.thrownby)
+				attacked_trigger(I.thrownby)
 				add_logs(I.thrownby, src, "hit", I)
 		else
 			return 1
@@ -109,6 +111,7 @@
 			else
 				return
 		updatehealth()
+		attacked_trigger(M)
 		visible_message("<span class='danger'>[M.name] has hit [src]!</span>", \
 						"<span class='userdanger'>[M.name] has hit [src]!</span>", null, COMBAT_MESSAGE_RANGE)
 		add_logs(M.occupant, src, "attacked", M, "(INTENT: [uppertext(M.occupant.a_intent)]) (DAMTYPE: [uppertext(M.damtype)])")
@@ -122,7 +125,7 @@
 	IgniteMob()
 
 /mob/living/proc/grabbedby(mob/living/carbon/user, supress_message = 0)
-	if(user == src || anchored || !isturf(user.loc))
+	if(user == src || anchored)
 		return 0
 	if(!user.pulling || user.pulling != src)
 		user.start_pulling(src, supress_message)
@@ -172,7 +175,7 @@
 
 
 /mob/living/attack_slime(mob/living/simple_animal/slime/M)
-	if(!SSticker.HasRoundStarted())
+	if(!ticker || !ticker.mode)
 		to_chat(M, "You cannot attack people before the game has started.")
 		return
 
@@ -182,6 +185,7 @@
 		return // can't attack while eating!
 
 	if (stat != DEAD)
+		attacked_trigger(M)
 		add_logs(M, src, "attacked")
 		M.do_attack_animation(src)
 		visible_message("<span class='danger'>The [M.name] glomps [src]!</span>", \
@@ -194,6 +198,7 @@
 		M.visible_message("<span class='notice'>\The [M] [M.friendly] [src]!</span>")
 		return 0
 	else
+		attacked_trigger(M)
 		if(M.attack_sound)
 			playsound(loc, M.attack_sound, 50, 1, 1)
 		M.do_attack_animation(src)
@@ -212,6 +217,7 @@
 		if(M.is_muzzled() || (M.wear_mask && M.wear_mask.flags_cover & MASKCOVERSMOUTH))
 			to_chat(M, "<span class='warning'>You can't bite with your mouth covered!</span>")
 			return 0
+		attacked_trigger(M)
 		M.do_attack_animation(src, ATTACK_EFFECT_BITE)
 		if (prob(75))
 			add_logs(M, src, "attacked")
@@ -231,6 +237,7 @@
 			return 0
 
 		else
+			attacked_trigger(L)
 			L.do_attack_animation(src)
 			if(prob(90))
 				add_logs(L, src, "attacked")
@@ -244,6 +251,10 @@
 	return 0
 
 /mob/living/attack_alien(mob/living/carbon/alien/humanoid/M)
+	if(isturf(loc) && istype(loc.loc, /area/start))
+		to_chat(M, "No attacking people at spawn, you jackass.")
+		return 0
+
 	switch(M.a_intent)
 		if ("help")
 			visible_message("<span class='notice'>[M] caresses [src] with its scythe like arm.</span>")
@@ -253,9 +264,11 @@
 			grabbedby(M)
 			return 0
 		if("harm")
+			attacked_trigger(M)
 			M.do_attack_animation(src)
 			return 1
 		if("disarm")
+			attacked_trigger(M)
 			M.do_attack_animation(src, ATTACK_EFFECT_DISARM)
 			return 1
 
@@ -270,9 +283,8 @@
 	take_bodypart_damage(acidpwr * min(1, acid_volume * 0.1))
 	return 1
 
-/mob/living/proc/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
-	if(tesla_shock && HAS_SECONDARY_FLAG(src, TESLA_IGNORE))
-		return FALSE
+
+/mob/living/proc/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, tesla_shock = 0, illusion = 0)
 	if(shock_damage > 0)
 		if(!illusion)
 			adjustFireLoss(shock_damage)
@@ -296,9 +308,6 @@
 	return(gain)
 
 /mob/living/narsie_act()
-	if(status_flags & GODMODE)
-		return
-
 	if(is_servant_of_ratvar(src) && !stat)
 		to_chat(src, "<span class='userdanger'>You resist Nar-Sie's influence... but not all of it. <i>Run!</i></span>")
 		adjustBruteLoss(35)
@@ -323,19 +332,13 @@
 
 
 /mob/living/ratvar_act()
-	if(status_flags & GODMODE)
-		return
-
-	if(stat != DEAD && !is_servant_of_ratvar(src))
-		for(var/obj/item/weapon/implant/mindshield/M in implants)
-			qdel(M)
-		if(!add_servant_of_ratvar(src))
-			to_chat(src, "<span class='userdanger'>A blinding light boils you alive! <i>Run!</i></span>")
-			adjustFireLoss(35)
-			if(src)
-				adjust_fire_stacks(1)
-				IgniteMob()
-			return FALSE
+	if(stat != DEAD && !is_servant_of_ratvar(src) && !add_servant_of_ratvar(src))
+		to_chat(src, "<span class='userdanger'>A blinding light boils you alive! <i>Run!</i></span>")
+		adjustFireLoss(35)
+		if(src)
+			adjust_fire_stacks(1)
+			IgniteMob()
+		return FALSE
 	return TRUE
 
 
@@ -361,3 +364,7 @@
 	used_item = get_active_held_item()
 	..()
 	floating = 0 // If we were without gravity, the bouncing animation got stopped, so we make sure we restart the bouncing after the next movement.
+
+/mob/living/proc/attacked_trigger(var/mob/living/attacker)
+	for(var/mob/living/simple_animal/hostile/commanded/C in hearers(src,10))
+		C.has_attacked(src, attacker)

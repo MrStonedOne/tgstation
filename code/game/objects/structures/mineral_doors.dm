@@ -166,6 +166,7 @@
 	obj_integrity = 300
 	max_integrity = 300
 	light_range = 2
+	light_color = LIGHT_COLOR_GREEN
 
 /obj/structure/mineral_door/sandstone
 	name = "sandstone door"
@@ -188,9 +189,8 @@
 
 /obj/structure/mineral_door/transparent/plasma/attackby(obj/item/weapon/W, mob/user, params)
 	if(W.is_hot())
-		var/turf/T = get_turf(src)
-		message_admins("Plasma mineral door ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(T)]",0,1)
-		log_game("Plasma mineral door ignited by [key_name(user)] in [COORD(T)]")
+		message_admins("Plasma mineral door ignited by [key_name_admin(user)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
+		log_game("Plasma mineral door ignited by [key_name(user)] in ([x],[y],[z])")
 		TemperatureAct()
 	else
 		return ..()

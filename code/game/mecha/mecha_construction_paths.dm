@@ -96,7 +96,7 @@
 	const_holder.icon = 'icons/mecha/mech_construction.dmi'
 	const_holder.icon_state = "ripley0"
 	const_holder.density = 1
-	const_holder.cut_overlays(TRUE)
+	const_holder.overlays.len = 0
 	qdel(src)
 	return
 
@@ -277,7 +277,7 @@
 
 /datum/construction/reversible/mecha/ripley/spawn_result()
 	..()
-	SSblackbox.inc("mecha_ripley_created",1)
+	feedback_inc("mecha_ripley_created",1)
 	return
 
 
@@ -481,7 +481,8 @@
 			if(diff==FORWARD)
 				user.visible_message("[user] installs scanner module to the [holder].", "<span class='notice'>You install scanner module to the [holder].</span>")
 				var/obj/item/I = used_atom
-				user.transferItemToLoc(I, holder, TRUE)
+				user.unEquip(I)
+				I.forceMove(holder)
 				holder.icon_state = "gygax11"
 			else
 				user.visible_message("[user] unfastens the weapon control module.", "<span class='notice'>You unfasten the weapon control module.</span>")
@@ -493,13 +494,14 @@
 			else
 				user.visible_message("[user] removes the advanced scanner module from the [holder].", "<span class='notice'>You remove the scanner module from the [holder].</span>")
 				var/obj/item/I = locate(/obj/item/weapon/stock_parts/scanning_module) in holder
-				I.loc = get_turf(holder)
+				I.forceMove(get_turf(holder))
 				holder.icon_state = "gygax10"
 		if(8)
 			if(diff==FORWARD)
 				user.visible_message("[user] installs capacitor to the [holder].", "<span class='notice'>You install capacitor to the [holder].</span>")
 				var/obj/item/I = used_atom
-				user.transferItemToLoc(I, holder, TRUE)
+				user.unEquip(I)
+				I.forceMove(holder)
 				holder.icon_state = "gygax13"
 			else
 				user.visible_message("[user] unfastens the  scanner module.", "<span class='notice'>You unfasten the scanner module.</span>")
@@ -511,7 +513,7 @@
 			else
 				user.visible_message("[user] removes the  capacitor from the [holder].", "<span class='notice'>You remove the capacitor from the [holder].</span>")
 				var/obj/item/I = locate(/obj/item/weapon/stock_parts/capacitor) in holder
-				I.loc = get_turf(holder)
+				I.forceMove(get_turf(holder))
 				holder.icon_state = "gygax12"
 		if(6)
 			if(diff==FORWARD)
@@ -562,9 +564,9 @@
 
 /datum/construction/reversible/mecha/gygax/spawn_result()
 	var/obj/mecha/combat/gygax/M = new result(get_turf(holder))
-	M.CheckParts(holder.contents)
+	M.CheckParts(holder)
 	qdel(holder)
-	SSblackbox.inc("mecha_gygax_created",1)
+	feedback_inc("mecha_gygax_created",1)
 	return
 
 /datum/construction/mecha/firefighter_chassis
@@ -786,7 +788,7 @@
 
 /datum/construction/reversible/mecha/firefighter/spawn_result()
 	..()
-	SSblackbox.inc("mecha_firefighter_created",1)
+	feedback_inc("mecha_firefighter_created",1)
 	return
 
 
@@ -864,7 +866,7 @@
 
 /datum/construction/mecha/honker/spawn_result()
 	..()
-	SSblackbox.inc("mecha_honker_created",1)
+	feedback_inc("mecha_honker_created",1)
 	return
 
 /datum/construction/mecha/durand_chassis
@@ -1066,7 +1068,8 @@
 			if(diff==FORWARD)
 				user.visible_message("[user] installs scanner module to the [holder].", "<span class='notice'>You install phasic scanner module to the [holder].</span>")
 				var/obj/item/I = used_atom
-				user.transferItemToLoc(I, holder, TRUE)
+				user.unEquip(I)
+				I.forceMove(holder)
 				holder.icon_state = "durand11"
 			else
 				user.visible_message("[user] unfastens the weapon control module.", "<span class='notice'>You unfasten the weapon control module.</span>")
@@ -1078,13 +1081,14 @@
 			else
 				user.visible_message("[user] removes the scanner module from the [holder].", "<span class='notice'>You remove the scanner module from the [holder].</span>")
 				var/obj/item/I = locate(/obj/item/weapon/stock_parts/scanning_module) in holder
-				I.loc = get_turf(holder)
+				I.forceMove(get_turf(holder))
 				holder.icon_state = "durand10"
 		if(8)
 			if(diff==FORWARD)
 				user.visible_message("[user] installs capacitor to the [holder].", "<span class='notice'>You install capacitor to the [holder].</span>")
 				var/obj/item/I = used_atom
-				user.transferItemToLoc(I, holder, TRUE)
+				user.unEquip(I)
+				I.forceMove(holder)
 				holder.icon_state = "durand13"
 			else
 				user.visible_message("[user] unfastens the scanner module.", "<span class='notice'>You unfasten the scanner module.</span>")
@@ -1096,7 +1100,7 @@
 			else
 				user.visible_message("[user] removes the super capacitor from the [holder].", "<span class='notice'>You remove the capacitor from the [holder].</span>")
 				var/obj/item/I = locate(/obj/item/weapon/stock_parts/capacitor) in holder
-				I.loc = get_turf(holder)
+				I.forceMove(get_turf(holder))
 				holder.icon_state = "durand12"
 		if(6)
 			if(diff==FORWARD)
@@ -1147,9 +1151,9 @@
 
 /datum/construction/reversible/mecha/durand/spawn_result()
 	var/obj/mecha/combat/gygax/M = new result(get_turf(holder))
-	M.CheckParts(holder.contents)
+	M.CheckParts(holder)
 	qdel(holder)
-	SSblackbox.inc("mecha_durand_created",1)
+	feedback_inc("mecha_durand_created",1)
 	return
 
 //PHAZON
@@ -1371,7 +1375,8 @@
 			if(diff==FORWARD)
 				user.visible_message("[user] installs phasic scanner module to the [holder].", "<span class='notice'>You install scanner module to the [holder].</span>")
 				var/obj/item/I = used_atom
-				user.transferItemToLoc(I, holder, TRUE)
+				user.unEquip(I)
+				I.forceMove(holder)
 				holder.icon_state = "phazon11"
 			else
 				user.visible_message("[user] unfastens the weapon control module.", "<span class='notice'>You unfasten the weapon control module.</span>")
@@ -1383,13 +1388,14 @@
 			else
 				user.visible_message("[user] removes the phasic scanner module from the [holder].", "<span class='notice'>You remove the scanner module from the [holder].</span>")
 				var/obj/item/I = locate(/obj/item/weapon/stock_parts/scanning_module) in holder
-				I.loc = get_turf(holder)
+				I.forceMove(get_turf(holder))
 				holder.icon_state = "phazon10"
 		if(12)
 			if(diff==FORWARD)
 				user.visible_message("[user] installs super capacitor to the [holder].", "<span class='notice'>You install capacitor to the [holder].</span>")
 				var/obj/item/I = used_atom
-				user.transferItemToLoc(I, holder, TRUE)
+				user.unEquip(I)
+				I.forceMove(holder)
 				holder.icon_state = "phazon13"
 			else
 				user.visible_message("[user] unfastens the phasic scanner module.", "<span class='notice'>You unfasten the scanner module.</span>")
@@ -1401,7 +1407,7 @@
 			else
 				user.visible_message("[user] removes the super capacitor from the [holder].", "<span class='notice'>You remove the capacitor from the [holder].</span>")
 				var/obj/item/I = locate(/obj/item/weapon/stock_parts/capacitor) in holder
-				I.loc = get_turf(holder)
+				I.forceMove(get_turf(holder))
 				holder.icon_state = "phazon12"
 		if(10)
 			if(diff==FORWARD)
@@ -1479,9 +1485,9 @@
 
 /datum/construction/reversible/mecha/phazon/spawn_result()
 	var/obj/mecha/combat/gygax/M = new result(get_turf(holder))
-	M.CheckParts(holder.contents)
+	M.CheckParts(holder)
 	qdel(holder)
-	SSblackbox.inc("mecha_phazon_created",1)
+	feedback_inc("mecha_phazon_created",1)
 	return
 
 //ODYSSEUS
@@ -1692,5 +1698,5 @@
 
 /datum/construction/reversible/mecha/odysseus/spawn_result()
 	..()
-	SSblackbox.inc("mecha_odysseus_created",1)
+	feedback_inc("mecha_odysseus_created",1)
 	return

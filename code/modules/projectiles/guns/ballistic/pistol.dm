@@ -33,12 +33,7 @@
 
 /obj/item/weapon/gun/ballistic/automatic/pistol/deagle/update_icon()
 	..()
-	if(magazine)
-		cut_overlays()
-		add_overlay("deagle_magazine")
-	else
-		cut_overlays()
-	icon_state = "[initial(icon_state)][chambered ? "" : "-e"]"
+	icon_state = "[initial(icon_state)][magazine ? "" : "-e"]"
 
 /obj/item/weapon/gun/ballistic/automatic/pistol/deagle/gold
 	desc = "A gold plated desert eagle folded over a million times by superior martian gunsmiths. Uses .50 AE ammo."
@@ -72,9 +67,10 @@
 	to_chat(user, "<span class='notice'>As you try to pick up [src], it slips out of your grip..</span>")
 	if(prob(50))
 		to_chat(user, "<span class='notice'>..and vanishes from your vision! Where the hell did it go?</span>")
+		user.unEquip(src)
 		qdel(src)
 		user.update_icons()
 	else
 		to_chat(user, "<span class='notice'>..and falls into view. Whew, that was a close one.</span>")
-		user.dropItemToGround(src)
+		user.unEquip(src)
 

@@ -11,7 +11,10 @@
 	mag_type = /obj/item/ammo_box/magazine/internal/shot
 	casing_ejector = 0
 	var/recentpump = 0 // to prevent spammage
+	var/pumpsound = 'sound/weapons/shotgunpump.ogg'
+	mag_load_sound = 'sound/effects/wep_magazines/insertShotgun.ogg'
 	weapon_weight = WEAPON_MEDIUM
+
 
 /obj/item/weapon/gun/ballistic/shotgun/attackby(obj/item/A, mob/user, params)
 	. = ..()
@@ -20,6 +23,7 @@
 	var/num_loaded = magazine.attackby(A, user, params, 1)
 	if(num_loaded)
 		to_chat(user, "<span class='notice'>You load [num_loaded] shell\s into \the [src]!</span>")
+		playsound(loc, mag_load_sound, 50)
 		A.update_icon()
 		update_icon()
 
@@ -35,10 +39,12 @@
 	return (chambered.BB ? 1 : 0)
 
 /obj/item/weapon/gun/ballistic/shotgun/attack_self(mob/living/user)
-	if(recentpump > world.time)
+	if(recentpump)
 		return
 	pump(user)
-	recentpump = world.time + 10
+	recentpump = 1
+	spawn(10)
+		recentpump = 0
 	return
 
 /obj/item/weapon/gun/ballistic/shotgun/blow_up(mob/user)
@@ -48,7 +54,7 @@
 		. = 1
 
 /obj/item/weapon/gun/ballistic/shotgun/proc/pump(mob/M)
-	playsound(M, 'sound/weapons/shotgunpump.ogg', 60, 1)
+	playsound(M, pumpsound, 60, 1)
 	pump_unload(M)
 	pump_reload(M)
 	update_icon()	//I.E. fix the desc
@@ -56,7 +62,7 @@
 
 /obj/item/weapon/gun/ballistic/shotgun/proc/pump_unload(mob/M)
 	if(chambered)//We have a shell in the chamber
-		chambered.loc = get_turf(src)//Eject casing
+		chambered.forceMove(get_turf(src))//Eject casing
 		chambered.SpinAnimation(5, 1)
 		chambered = null
 
@@ -107,7 +113,7 @@
 	var/bolt_open = 0
 
 /obj/item/weapon/gun/ballistic/shotgun/boltaction/pump(mob/M)
-	playsound(M, 'sound/weapons/shotgunpump.ogg', 60, 1)
+	playsound(M, pumpsound, 60, 1)
 	if(bolt_open)
 		pump_reload(M)
 	else
@@ -161,9 +167,6 @@
 	user.visible_message("<span class='warning'>[user] tosses aside the spent rifle!</span>")
 
 /obj/item/weapon/gun/ballistic/shotgun/boltaction/enchanted/arcane_barrage/discard_gun(mob/user)
-	return
-
-/obj/item/weapon/gun/ballistic/shotgun/boltaction/enchanted/attack_self()
 	return
 
 /obj/item/weapon/gun/ballistic/shotgun/boltaction/enchanted/shoot_live_shot(mob/living/user as mob|obj, pointblank = 0, mob/pbtarget = null, message = 1)

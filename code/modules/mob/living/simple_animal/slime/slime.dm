@@ -1,3 +1,9 @@
+var/list/slime_colours = list("rainbow", "grey", "purple", "metal", "orange",
+	"blue", "dark blue", "dark purple", "yellow", "silver", "pink", "red",
+	"gold", "green", "adamantine", "oil", "light pink", "bluespace",
+	"cerulean", "sepia", "black", "pyrite")
+
+
 /mob/living/simple_animal/slime
 	name = "grey baby slime (123)"
 	icon = 'icons/mob/slimes.dmi'
@@ -7,7 +13,9 @@
 	gender = NEUTER
 	var/is_adult = 0
 	var/docile = 0
-	faction = list("slime","neutral")
+	languages_spoken = SLIME | HUMAN
+	languages_understood = SLIME | HUMAN
+	faction = list("slime")
 
 	harm_intent_damage = 5
 	icon_living = "grey baby slime"
@@ -18,7 +26,6 @@
 	emote_see = list("jiggles", "bounces in place")
 	speak_emote = list("telepathically chirps")
 	bubble_icon = "slime"
-	initial_language_holder = /datum/language_holder/slime
 
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 
@@ -71,12 +78,7 @@
 	var/coretype = /obj/item/slime_extract/grey
 	var/list/slime_mutation[4]
 
-	var/static/list/slime_colours = list("rainbow", "grey", "purple", "metal", "orange",
-	"blue", "dark blue", "dark purple", "yellow", "silver", "pink", "red",
-	"gold", "green", "adamantine", "oil", "light pink", "bluespace",
-	"cerulean", "sepia", "black", "pyrite")
-
-/mob/living/simple_animal/slime/Initialize(mapload, new_colour="grey", new_is_adult=FALSE)
+/mob/living/simple_animal/slime/New(loc, new_colour="grey", new_is_adult=FALSE)
 	var/datum/action/innate/slime/feed/F = new
 	F.Grant(src)
 
@@ -92,7 +94,7 @@
 		E.Grant(src)
 	create_reagents(100)
 	set_colour(new_colour)
-	. = ..()
+	..()
 
 /mob/living/simple_animal/slime/proc/set_colour(new_colour)
 	colour = new_colour
@@ -118,7 +120,7 @@
 	if(stat != DEAD)
 		icon_state = icon_text
 		if(mood && !stat)
-			add_overlay("aslime-[mood]")
+			add_overlay(image('icons/mob/slimes.dmi', icon_state = "aslime-[mood]"))
 	else
 		icon_state = icon_dead
 	..()
@@ -220,7 +222,7 @@
 			Feedon(Food)
 	..()
 
-/mob/living/simple_animal/slime/doUnEquip(obj/item/W)
+/mob/living/simple_animal/slime/unEquip(obj/item/W)
 	return
 
 /mob/living/simple_animal/slime/start_pulling(atom/movable/AM)
@@ -246,8 +248,7 @@
 			M.updatehealth()
 
 /mob/living/simple_animal/slime/attack_animal(mob/living/simple_animal/M)
-	. = ..()
-	if(.)
+	if(..())
 		attacked += 10
 
 
@@ -347,7 +348,7 @@
 
 /mob/living/simple_animal/slime/examine(mob/user)
 
-	var/msg = "<span class='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n"
+	var/msg = "<span class='info'>*---------*\nThis is [bicon(src)] \a <EM>[src]</EM>!\n"
 	if (src.stat == DEAD)
 		msg += "<span class='deadsay'>It is limp and unresponsive.</span>\n"
 	else
@@ -421,5 +422,5 @@
 	if(..())
 		return 3
 
-/mob/living/simple_animal/slime/random/Initialize(mapload, new_colour, new_is_adult)
-	. = ..(mapload, pick(slime_colours), prob(50))
+/mob/living/simple_animal/slime/random/New(loc, new_colour, new_is_adult)
+	. = ..(loc, pick(slime_colours), prob(50))

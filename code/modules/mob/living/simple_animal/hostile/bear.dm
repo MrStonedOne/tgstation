@@ -71,7 +71,9 @@
 /mob/living/simple_animal/hostile/bear/update_icons()
 	..()
 	if(armored)
-		add_overlay("armor_bear")
+		var/image/B = image(icon = 'icons/mob/animal.dmi', icon_state = "armor_bear")
+		if(B)
+			add_overlay(B)
 
 /obj/item/bear_armor
 	name = "pile of bear armor"

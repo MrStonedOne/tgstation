@@ -93,7 +93,7 @@
 
 	while(processing_atoms.len)
 		var/atom/a = processing_atoms[1]
-		for(var/step_dir in GLOB.cardinal)
+		for(var/step_dir in cardinal)
 			var/obj/machinery/hydroponics/h = locate() in get_step(a, step_dir)
 			// Soil plots aren't dense
 			if(h && h.using_irrigation && h.density && !(h in connected) && !(h in processing_atoms))
@@ -119,7 +119,7 @@
 	var/needs_update = 0 // Checks if the icon needs updating so we don't redraw empty trays every time
 
 	if(myseed && (myseed.loc != src))
-		myseed.loc = src
+		myseed.forceMove(src)
 
 	if(self_sustaining)
 		adjustNutri(1)
@@ -259,7 +259,7 @@
 		if(istype(src, /obj/machinery/hydroponics/soil))
 			add_atom_colour(rgb(255, 175, 0), FIXED_COLOUR_PRIORITY)
 		else
-			overlays += mutable_appearance('icons/obj/hydroponics/equipment.dmi', "gaia_blessing")
+			overlays += image('icons/obj/hydroponics/equipment.dmi', icon_state = "gaia_blessing")
 		set_light(3)
 
 	update_icon_hoses()
@@ -271,7 +271,7 @@
 	if(!self_sustaining)
 		if(myseed && myseed.get_gene(/datum/plant_gene/trait/glow))
 			var/datum/plant_gene/trait/glow/G = myseed.get_gene(/datum/plant_gene/trait/glow)
-			set_light(G.glow_range(myseed), G.glow_power(myseed), G.glow_color)
+			set_light(G.get_lum(myseed), l_color = G.color)
 		else
 			set_light(0)
 
@@ -279,7 +279,7 @@
 
 /obj/machinery/hydroponics/proc/update_icon_hoses()
 	var/n = 0
-	for(var/Dir in GLOB.cardinal)
+	for(var/Dir in cardinal)
 		var/obj/machinery/hydroponics/t = locate() in get_step(src,Dir)
 		if(t && t.using_irrigation && using_irrigation)
 			n += Dir
@@ -287,30 +287,31 @@
 	icon_state = "hoses-[n]"
 
 /obj/machinery/hydroponics/proc/update_icon_plant()
-	var/mutable_appearance/plant_overlay = mutable_appearance(myseed.growing_icon, layer = OBJ_LAYER + 0.01)
+	var/image/I
 	if(dead)
-		plant_overlay.icon_state = myseed.icon_dead
+		I = image(icon = myseed.growing_icon, icon_state = myseed.icon_dead)
 	else if(harvest)
 		if(!myseed.icon_harvest)
-			plant_overlay.icon_state = "[myseed.icon_grow][myseed.growthstages]"
+			I = image(icon = myseed.growing_icon, icon_state = "[myseed.icon_grow][myseed.growthstages]")
 		else
-			plant_overlay.icon_state = myseed.icon_harvest
+			I = image(icon = myseed.growing_icon, icon_state = myseed.icon_harvest)
 	else
-		var/t_growthstate = min(round((age / myseed.maturation) * myseed.growthstages), myseed.growthstages)
-		plant_overlay.icon_state = "[myseed.icon_grow][t_growthstate]"
-	add_overlay(plant_overlay)
+		var/t_growthstate = min(max(round((age / myseed.maturation) * myseed.growthstages), 1), myseed.growthstages)
+		I = image(icon = myseed.growing_icon, icon_state = "[myseed.icon_grow][t_growthstate]")
+	I.layer = OBJ_LAYER + 0.01
+	add_overlay(I)
 
 /obj/machinery/hydroponics/proc/update_icon_lights()
 	if(waterlevel <= 10)
-		add_overlay(mutable_appearance('icons/obj/hydroponics/equipment.dmi', "over_lowwater3"))
+		add_overlay(image('icons/obj/hydroponics/equipment.dmi', icon_state = "over_lowwater3"))
 	if(nutrilevel <= 2)
-		add_overlay(mutable_appearance('icons/obj/hydroponics/equipment.dmi', "over_lownutri3"))
+		add_overlay(image('icons/obj/hydroponics/equipment.dmi', icon_state = "over_lownutri3"))
 	if(plant_health <= (myseed.endurance / 2))
-		add_overlay(mutable_appearance('icons/obj/hydroponics/equipment.dmi', "over_lowhealth3"))
+		add_overlay(image('icons/obj/hydroponics/equipment.dmi', icon_state = "over_lowhealth3"))
 	if(weedlevel >= 5 || pestlevel >= 5 || toxic >= 40)
-		add_overlay(mutable_appearance('icons/obj/hydroponics/equipment.dmi', "over_alert3"))
+		add_overlay(image('icons/obj/hydroponics/equipment.dmi', icon_state = "over_alert3"))
 	if(harvest)
-		add_overlay(mutable_appearance('icons/obj/hydroponics/equipment.dmi', "over_harvest3"))
+		add_overlay(image('icons/obj/hydroponics/equipment.dmi', icon_state = "over_harvest3"))
 
 
 /obj/machinery/hydroponics/examine(user)
@@ -336,7 +337,8 @@
 		to_chat(user, "<span class='warning'>[src] is filled with weeds!</span>")
 	if(pestlevel >= 5)
 		to_chat(user, "<span class='warning'>[src] is filled with tiny worms!</span>")
-	to_chat(user, "" )
+	to_chat(user, "")// Empty line for readability.
+
 
 
 /obj/machinery/hydroponics/proc/weedinvasion() // If a weed growth is sufficient, this happens.
@@ -684,7 +686,7 @@
 			return
 		if(alert(user, "This will make [src] self-sustaining but consume [O] forever. Are you sure?", "[name]", "I'm Sure", "Abort") == "Abort" || !user)
 			return
-		if(!O || QDELETED(O))
+		if(!O || qdeleted(O))
 			return
 		if(!Adjacent(user))
 			return
@@ -701,13 +703,31 @@
 		self_sustaining = TRUE
 		update_icon()
 
+	else if(!myseed && istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown))
+		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = O
+		if(G.seed)
+			if(istype(G.seed, /obj/item/seeds/kudzu))
+				investigate_log("had Kudzu planted in it by [user.ckey]([user]) at ([x],[y],[z])","kudzu")
+			user.unEquip(G)
+			to_chat(user, "<span class='notice'>You plant [G].</span>")
+			dead = 0
+			myseed = new G.seed()
+			age = 1
+			plant_health = myseed.endurance
+			lastcycle = world.time
+			myseed.forceMove(src)
+			qdel(G)
+			update_icon()
+
+
 	else if(istype(O, /obj/item/weapon/reagent_containers) )  // Syringe stuff (and other reagent containers now too)
 		var/obj/item/weapon/reagent_containers/reagent_source = O
 
 		if(istype(reagent_source, /obj/item/weapon/reagent_containers/syringe))
 			var/obj/item/weapon/reagent_containers/syringe/syr = reagent_source
 			if(syr.mode != 1)
-				to_chat(user, "<span class='warning'>You can't get any extract out of this plant.</span>"		)
+				to_chat(user, "<span class='warning'>You can't get any extract out of this plant.</span>")//That. Gives me an idea...
+
 				return
 
 		if(!reagent_source.reagents.total_volume)
@@ -771,21 +791,22 @@
 		if(!myseed)
 			if(istype(O, /obj/item/seeds/kudzu))
 				investigate_log("had Kudzu planted in it by [user.ckey]([user]) at ([x],[y],[z])","kudzu")
-			if(!user.transferItemToLoc(O, src))
-				return
+			user.unEquip(O)
 			to_chat(user, "<span class='notice'>You plant [O].</span>")
 			dead = 0
 			myseed = O
 			age = 1
 			plant_health = myseed.endurance
 			lastcycle = world.time
+			O.forceMove(src)
 			update_icon()
 		else
 			to_chat(user, "<span class='warning'>[src] already has seeds in it!</span>")
 
 	else if(istype(O, /obj/item/device/plant_analyzer))
 		if(myseed)
-			to_chat(user, "*** <B>[myseed.plantname]</B> ***" )
+			to_chat(user, "*** <B>[myseed.plantname]</B> ***")//Carn: now reports the plants growing, not the seeds.
+
 			to_chat(user, "- Plant Age: <span class='notice'>[age]</span>")
 			var/list/text_string = myseed.get_analyzer_text()
 			if(text_string)

@@ -12,10 +12,8 @@
 	obj_integrity = 200
 	max_integrity = 200
 	resistance_flags = FIRE_PROOF
-	interact_open = TRUE
 	var/datum/gas_mixture/air_contents	// internal reservoir
-	var/full_pressure = FALSE
-	var/pressure_charging = TRUE
+	var/mode = PRESSURE_ON
 	var/flush = 0	// true if flush handle is pulled
 	var/obj/structure/disposalpipe/trunk/trunk = null // the attached pipe trunk
 	var/flushing = 0	// true if flushing in progress
@@ -26,11 +24,12 @@
 	// create a new disposal
 	// find the attached trunk (if present) and init gas resvr.
 
-/obj/machinery/disposal/Initialize(mapload, obj/structure/disposalconstruct/make_from)
-	. = ..()
+/obj/machinery/disposal/New(loc, var/obj/structure/disposalconstruct/make_from)
+	..()
+
 	if(make_from)
 		setDir(make_from.dir)
-		make_from.loc = 0
+		make_from.forceMove(0)
 		stored = make_from
 	else
 		stored = new /obj/structure/disposalconstruct(0,DISP_END_BIN,dir)
@@ -44,11 +43,11 @@
 /obj/machinery/disposal/proc/trunk_check()
 	trunk = locate() in loc
 	if(!trunk)
-		pressure_charging = FALSE
-		flush = FALSE
+		mode = PRESSURE_OFF
+		flush = 0
 	else
-		if(initial(pressure_charging))
-			pressure_charging = TRUE
+		if(initial(mode))
+			mode = PRESSURE_ON
 		flush = initial(flush)
 		trunk.linked = src // link the pipe trunk to self
 
@@ -62,11 +61,7 @@
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
 
-/obj/machinery/disposal/Initialize(mapload)
-	..()
-	return INITIALIZE_HINT_LATELOAD //we need turfs to have air
-
-/obj/machinery/disposal/LateInitialize()
+/obj/machinery/disposal/initialize()
 	//this will get a copy of the air turf and take a SEND PRESSURE amount of air from it
 	var/atom/L = loc
 	var/datum/gas_mixture/env = new
@@ -77,18 +72,21 @@
 
 /obj/machinery/disposal/attackby(obj/item/I, mob/user, params)
 	add_fingerprint(user)
-	if(!pressure_charging && !full_pressure && !flush)
+	if(mode != PRESSURE_ON && mode != PRESSURE_MAXED && !flush)
 		if(istype(I, /obj/item/weapon/screwdriver))
-			panel_open = !panel_open
-			playsound(get_turf(src), I.usesound, 50, 1)
-			to_chat(user, "<span class='notice'>You [panel_open ? "remove":"attach"] the screws around the power connection.</span>")
+			if(mode == PRESSURE_OFF)
+				mode = SCREWS_OUT
+			else
+				mode = PRESSURE_OFF
+			playsound(src.loc, I.usesound, 50, 1)
+			to_chat(user, "<span class='notice'>You [mode == SCREWS_OUT ? "remove":"attach"] the screws around the power connection.</span>")
 			return
-		else if(istype(I,/obj/item/weapon/weldingtool) && panel_open)
+		else if(istype(I,/obj/item/weapon/weldingtool) && mode == SCREWS_OUT)
 			var/obj/item/weapon/weldingtool/W = I
 			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				to_chat(user, "<span class='notice'>You start slicing the floorweld off \the [src]...</span>")
-				if(do_after(user,20*I.toolspeed, target = src) && panel_open)
+				if(do_after(user,20*I.toolspeed, target = src) && mode == SCREWS_OUT)
 					if(!W.isOn())
 						return
 					to_chat(user, "<span class='notice'>You slice the floorweld off \the [src].</span>")
@@ -188,22 +186,22 @@
 	return
 
 /obj/machinery/disposal/proc/flush()
-	flushing = TRUE
+	flushing = 1
 	flushAnimation()
 	sleep(10)
 	if(last_sound < world.time + 1)
 		playsound(src, 'sound/machines/disposalflush.ogg', 50, 0, 0)
 		last_sound = world.time
 	sleep(5)
-	if(QDELETED(src))
+	if(qdeleted(src))
 		return
 	var/obj/structure/disposalholder/H = new()
 	newHolderDestination(H)
 	H.init(src)
 	air_contents = new()
 	H.start(src)
-	flushing = FALSE
-	flush = FALSE
+	flushing = 0
+	flush = 0
 
 /obj/machinery/disposal/proc/newHolderDestination(obj/structure/disposalholder/H)
 	for(var/obj/item/smallDelivery/O in src)
@@ -284,7 +282,7 @@
 // handle machine interaction
 
 /obj/machinery/disposal/bin/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-									datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+									datum/tgui/master_ui = null, datum/ui_state/state = default_state)
 	if(stat & BROKEN)
 		return
 	if(user.loc == src)
@@ -298,9 +296,7 @@
 /obj/machinery/disposal/bin/ui_data(mob/user)
 	var/list/data = list()
 	data["flush"] = flush
-	data["full_pressure"] = full_pressure
-	data["pressure_charging"] = pressure_charging
-	data["panel_open"] = panel_open
+	data["mode"] = mode
 	var/per = Clamp(100* air_contents.return_pressure() / (SEND_PRESSURE), 0, 100)
 	data["per"] = round(per, 1)
 	data["isai"] = isAI(user)
@@ -311,22 +307,22 @@
 		return
 	switch(action)
 		if("handle-0")
-			flush = FALSE
+			flush = 0
 			update_icon()
 			. = TRUE
 		if("handle-1")
-			if(!panel_open)
-				flush = TRUE
+			if(mode != SCREWS_OUT)
+				flush = 1
 				update_icon()
 			. = TRUE
 		if("pump-0")
-			if(pressure_charging)
-				pressure_charging = FALSE
+			if(mode == PRESSURE_ON)
+				mode = PRESSURE_OFF
 				update_icon()
 			. = TRUE
 		if("pump-1")
-			if(!pressure_charging)
-				pressure_charging = TRUE
+			if(mode == PRESSURE_OFF)
+				mode = PRESSURE_ON
 				update_icon()
 			. = TRUE
 		if("eject")
@@ -340,44 +336,44 @@
 			return
 		if(prob(75))
 			I.forceMove(src)
-			visible_message("<span class='notice'>[I] lands in [src].</span>")
+			visible_message("<span class='notice'>\the [I] lands in \the [src].</span>")
 			update_icon()
 		else
-			visible_message("<span class='notice'>[I] bounces off of [src]'s rim!</span>")
+			visible_message("<span class='notice'>\the [I] bounces off of \the [src]'s rim!</span>")
 		return 0
 	else
 		return ..(mover, target, height)
 
 /obj/machinery/disposal/bin/flush()
 	..()
-	full_pressure = FALSE
-	pressure_charging = TRUE
+	if(mode == PRESSURE_MAXED)
+		mode = PRESSURE_ON
 	update_icon()
 
 /obj/machinery/disposal/bin/update_icon()
 	cut_overlays()
 	if(stat & BROKEN)
-		pressure_charging = FALSE
-		flush = FALSE
+		mode = PRESSURE_OFF
+		flush = 0
 		return
 
 	//flush handle
 	if(flush)
-		add_overlay("dispover-handle")
+		add_overlay(image('icons/obj/atmospherics/pipes/disposal.dmi', "dispover-handle"))
 
 	//only handle is shown if no power
-	if(stat & NOPOWER || panel_open)
+	if(stat & NOPOWER || mode == SCREWS_OUT)
 		return
 
 	//check for items in disposal - occupied light
 	if(contents.len > 0)
-		add_overlay("dispover-full")
+		add_overlay(image('icons/obj/atmospherics/pipes/disposal.dmi', "dispover-full"))
 
 	//charging and ready light
-	if(pressure_charging)
-		add_overlay("dispover-charge")
-	else if(full_pressure)
-		add_overlay("dispover-ready")
+	if(mode == PRESSURE_ON)
+		add_overlay(image('icons/obj/atmospherics/pipes/disposal.dmi', "dispover-charge"))
+	else if(mode == PRESSURE_MAXED)
+		add_overlay(image('icons/obj/atmospherics/pipes/disposal.dmi', "dispover-ready"))
 
 //timed process
 //charge the gas reservoir and perform flush if ready
@@ -388,23 +384,23 @@
 	flush_count++
 	if(flush_count >= flush_every_ticks)
 		if(contents.len)
-			if(full_pressure)
+			if(mode == PRESSURE_MAXED)
 				spawn(0)
-					SSblackbox.inc("disposal_auto_flush",1)
+					feedback_inc("disposal_auto_flush",1)
 					flush()
 		flush_count = 0
 
 	updateDialog()
 
 	if(flush && air_contents.return_pressure() >= SEND_PRESSURE) // flush can happen even without power
-		INVOKE_ASYNC(src, .proc/flush)
+		addtimer(CALLBACK(src, .proc/flush), 0)
 
 	if(stat & NOPOWER) // won't charge if no power
 		return
 
 	use_power(100) // base power usage
 
-	if(!pressure_charging) // if off or ready, no need to charge
+	if(mode != PRESSURE_ON) // if off or ready, no need to charge
 		return
 
 	// otherwise charge
@@ -426,8 +422,7 @@
 
 	//if full enough, switch to ready mode
 	if(air_contents.return_pressure() >= SEND_PRESSURE)
-		full_pressure = TRUE
-		pressure_charging = FALSE
+		mode = PRESSURE_MAXED
 		update_icon()
 	return
 
@@ -442,10 +437,10 @@
 	desc = "A chute for big and small packages alike!"
 	density = 1
 	icon_state = "intake"
-	pressure_charging = FALSE // the chute doesn't need charging and always works
+	mode = PRESSURE_OFF // the chute doesn't need charging and always works
 
-/obj/machinery/disposal/deliveryChute/Initialize(mapload, obj/structure/disposalconstruct/make_from)
-	. = ..()
+/obj/machinery/disposal/deliveryChute/New(loc,var/obj/structure/disposalconstruct/make_from)
+	..()
 	stored.ptype = DISP_END_CHUTE
 	spawn(5)
 		trunk = locate() in loc
@@ -472,7 +467,7 @@
 
 	if(isobj(AM))
 		var/obj/O = AM
-		O.loc = src
+		O.forceMove(src)
 	else if(istype(AM, /mob))
 		var/mob/M = AM
 		if(prob(2)) // to prevent mobs being stuck in infinite loops

@@ -87,13 +87,18 @@
 /obj/item/device/assembly/flash/proc/flash_carbon(mob/living/carbon/M, mob/user = null, power = 15, targeted = 1)
 	add_logs(user, M, "flashed", src)
 	if(user && targeted)
+		if(M.weakeyes)
+			M.Weaken(3) //quick weaken bypasses eye protection but has no eye flash
 		if(M.flash_act(1, 1))
 			M.confused += power
 			terrible_conversion_proc(M, user)
-			M.Weaken(rand(4,6))
+			M.Stun(1)
 			visible_message("<span class='disarm'>[user] blinds [M] with the flash!</span>")
 			to_chat(user, "<span class='danger'>You blind [M] with the flash!</span>")
 			to_chat(M, "<span class='userdanger'>[user] blinds you with the flash!</span>")
+			if(M.weakeyes)
+				M.Stun(2)
+				M.visible_message("<span class='disarm'>[M] gasps and shields their eyes!</span>", "<span class='userdanger'>You gasp and shield your eyes!</span>")
 		else
 			visible_message("<span class='disarm'>[user] fails to blind [M] with the flash!</span>")
 			to_chat(user, "<span class='warning'>You fail to blind [M] with the flash!</span>")
@@ -114,7 +119,7 @@
 		var/mob/living/silicon/robot/R = M
 		add_logs(user, R, "flashed", src)
 		update_icon(1)
-		M.Weaken(rand(4,6))
+		M.Weaken(6)
 		R.confused += 5
 		R.flash_act(affect_silicon = 1)
 		user.visible_message("<span class='disarm'>[user] overloads [R]'s sensors with the flash!</span>", "<span class='danger'>You overload [R]'s sensors with the flash!</span>")
@@ -144,14 +149,14 @@
 
 /obj/item/device/assembly/flash/proc/terrible_conversion_proc(mob/M, mob/user)
 	if(ishuman(M) && ishuman(user) && M.stat != DEAD)
-		if(user.mind && (user.mind in SSticker.mode.head_revolutionaries))
+		if(user.mind && (user.mind in ticker.mode.head_revolutionaries))
 			if(M.client)
 				if(M.stat == CONSCIOUS)
 					M.mind_initialize() //give them a mind datum if they don't have one.
 					var/resisted
 					if(!M.isloyal())
-						if(user.mind in SSticker.mode.head_revolutionaries)
-							if(SSticker.mode.add_revolutionary(M.mind))
+						if(user.mind in ticker.mode.head_revolutionaries)
+							if(ticker.mode.add_revolutionary(M.mind))
 								M.Stun(3)
 								times_used -- //Flashes less likely to burn out for headrevs when used for conversion
 							else
@@ -172,11 +177,11 @@
 
 /obj/item/device/assembly/flash/cyborg/attack(mob/living/M, mob/user)
 	..()
-	new /obj/effect/overlay/temp/borgflash(get_turf(src))
+	PoolOrNew(/obj/effect/overlay/temp/borgflash, get_turf(src))
 
 /obj/item/device/assembly/flash/cyborg/attack_self(mob/user)
 	..()
-	new /obj/effect/overlay/temp/borgflash(get_turf(src))
+	PoolOrNew(/obj/effect/overlay/temp/borgflash, get_turf(src))
 
 /obj/item/device/assembly/flash/cyborg/attackby(obj/item/weapon/W, mob/user, params)
 	return
@@ -252,7 +257,7 @@
 		else
 			to_chat(user, "You begin to replace the bulb.")
 			if(do_after(user, 20, target = src))
-				if(flash.crit_fail || !flash || QDELETED(flash))
+				if(flash.crit_fail || !flash || qdeleted(flash))
 					return
 				crit_fail = FALSE
 				times_used = 0
@@ -277,7 +282,3 @@
 
 	if(holder)
 		holder.update_icon()
-
-/obj/item/device/assembly/flash/shield/hit_reaction(obj/item/weapon/W, mob/user, params)
-	activate()
-	return ..()

@@ -6,8 +6,8 @@
 	icon_state = "syndballoon"
 	var/baseturf = /turf/open/floor/plating/lava/smooth/lava_land_surface
 
-/obj/effect/baseturf_helper/Initialize()
-	. = ..()
+/obj/effect/baseturf_helper/initialize()
+	..()
 	var/area/thearea = get_area(src)
 	for(var/turf/T in get_area_turfs(thearea, z))
 		if(T.baseturf != T.type) //Don't break indestructible walls and the like

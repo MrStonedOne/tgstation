@@ -36,31 +36,27 @@
 	return
 
 /client/verb/github()
-	set name = "github"
-	set desc = "Visit Github"
+	set name = "discord"
+	set desc = "Join to discord"
 	set hidden = 1
-	if(config.githuburl)
-		if(alert("This will open the Github repository in your browser. Are you sure?",,"Yes","No")=="No")
+	if(config.discord)
+		if(alert("This will open discord invite in your browser. Are you sure?",,"Yes","No")=="No")
 			return
-		src << link(config.githuburl)
+		src << link(config.discord)
 	else
-		to_chat(src, "<span class='danger'>The Github URL is not set in the server configuration.</span>")
+		to_chat(src, "<span class='danger'>Discord invite URL is not set in the server configuration.</span>")
 	return
 
 /client/verb/reportissue()
 	set name = "report-issue"
 	set desc = "Report an issue"
 	set hidden = 1
-	if(config.githuburl)
-		var/message = "This will open the Github issue reporter in your browser. Are you sure?"
-		if(GLOB.revdata.testmerge.len)
-			message += "<br>The following experimental changes are active and are probably the cause of any new or sudden issues you may experience. If possible, please try to find a specific thread for your issue instead of posting to the general issue tracker:<br>"
-			message += GLOB.revdata.GetTestMergeInfo(FALSE)
-		if(tgalert(src, message, "Report Issue","Yes","No")=="No")
+	if(config.bitbucket)
+		if(alert("This will open BitBucket in your browser. Are you sure?",,"Yes","No")=="No")
 			return
-		src << link("[config.githuburl]/issues/new")
+		src << link(config.bitbucket)
 	else
-		to_chat(src, "<span class='danger'>The Github URL is not set in the server configuration.</span>")
+		to_chat(src, "<span class='danger'>BitBucket URL is not set in the server configuration.</span>")
 	return
 
 /client/verb/hotkeys_help()
@@ -69,10 +65,13 @@
 
 	var/adminhotkeys = {"<font color='purple'>
 Admin:
-\tF5 = Aghost (admin-ghost)
+\tF5 = admin chat (asay)
 \tF6 = player-panel
 \tF7 = admin-pm
+\tCtrl+F7 = Stealth-Mode
 \tF8 = Invisimin
+\tF9 = aghost
+\tF11 = buildmode
 </font>"}
 
 	mob.hotkey_help()
@@ -83,16 +82,33 @@ Admin:
 /client/verb/changelog()
 	set name = "Changelog"
 	set category = "OOC"
-	var/datum/asset/changelog = get_asset_datum(/datum/asset/simple/changelog)
-	changelog.send(src)
+	getFiles(
+		'html/88x31.png',
+		'html/bug-minus.png',
+		'html/cross-circle.png',
+		'html/hard-hat-exclamation.png',
+		'html/image-minus.png',
+		'html/image-plus.png',
+		'html/music-minus.png',
+		'html/music-plus.png',
+		'html/tick-circle.png',
+		'html/wrench-screwdriver.png',
+		'html/spell-check.png',
+		'html/burn-exclamation.png',
+		'html/chevron.png',
+		'html/chevron-expand.png',
+		'html/changelog.css',
+		'html/changelog.html'
+		)
 	src << browse('html/changelog.html', "window=changes;size=675x650")
-	if(prefs.lastchangelog != GLOB.changelog_hash)
-		prefs.lastchangelog = GLOB.changelog_hash
+	if(prefs.lastchangelog != changelog_hash)
+		prefs.lastchangelog = changelog_hash
 		prefs.save_preferences()
 		winset(src, "infowindow.changelog", "font-style=;")
 
 
 /mob/proc/hotkey_help()
+	//h = talk-wheel has a nonsense tag in it because \th is an escape sequence in BYOND.
 	var/hotkey_mode = {"<font color='purple'>
 Hotkey-Mode: (hotkey-mode must be on)
 \tTAB = toggle hotkey-mode
@@ -105,6 +121,7 @@ Hotkey-Mode: (hotkey-mode must be on)
 \tr = throw
 \tm = me
 \tt = say
+\t<B></B>h = talk-wheel
 \to = OOC
 \tb = resist
 \tx = swap-hand
@@ -116,7 +133,6 @@ Hotkey-Mode: (hotkey-mode must be on)
 \t3 = grab-intent
 \t4 = harm-intent
 \tNumpad = Body target selection (Press 8 repeatedly for Head->Eyes->Mouth)
-\tAlt(HOLD) = Alter movement intent
 </font>"}
 
 	var/other = {"<font color='purple'>
@@ -129,6 +145,7 @@ Any-Mode: (hotkey doesn't need to be on)
 \tCtrl+e = equip
 \tCtrl+r = throw
 \tCtrl+b = resist
+\tCtrl+h = talk-wheel
 \tCtrl+o = OOC
 \tCtrl+x = swap-hand
 \tCtrl+z = activate held object (or Ctrl+y)
@@ -138,8 +155,6 @@ Any-Mode: (hotkey doesn't need to be on)
 \tCtrl+2 = disarm-intent
 \tCtrl+3 = grab-intent
 \tCtrl+4 = harm-intent
-\tCtrl+'+/-' OR
-\tShift+Mousewheel = Ghost zoom in/out
 \tDEL = pull
 \tINS = cycle-intents-right
 \tHOME = drop
@@ -179,6 +194,10 @@ Hotkey-Mode: (hotkey-mode must be on)
 
 	var/other = {"<font color='purple'>
 Any-Mode: (hotkey doesn't need to be on)
+\tF1 = admin help (ahelp)
+\tF2 = OOC
+\tF3 = say
+\tF4 = emote (me)
 \tCtrl+a = left
 \tCtrl+s = down
 \tCtrl+d = right

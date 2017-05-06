@@ -1,12 +1,12 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "a" = (
 /turf/open/space,
 /area/space)
 "b" = (
 /obj/structure/shuttle/engine/propulsion/burst/left{
-	dir = 8;
+	tag = "icon-burst_l (EAST)";
 	icon_state = "burst_l";
-	tag = "icon-burst_l (EAST)"
+	dir = 4
 	},
 /turf/open/space,
 /area/ruin/powered{
@@ -43,9 +43,9 @@
 	})
 "f" = (
 /obj/structure/shuttle/engine/propulsion/burst/right{
-	dir = 8;
+	tag = "icon-burst_r (EAST)";
 	icon_state = "burst_r";
-	tag = "icon-burst_r (EAST)"
+	dir = 4
 	},
 /turf/open/space,
 /area/ruin/powered{

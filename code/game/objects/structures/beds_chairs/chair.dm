@@ -1,7 +1,7 @@
 /obj/structure/chair
 	name = "chair"
 	desc = "You sit in this. Either by will or force.\n<span class='notice'>Drag your sprite to sit in the chair. Alt-click to rotate it clockwise.</span>"
-	icon = 'icons/obj/chairs.dmi'
+	icon = 'icons/fallout/objects/structures/furniture.dmi'
 	icon_state = "chair"
 	anchored = 1
 	can_buckle = 1
@@ -10,22 +10,11 @@
 	obj_integrity = 250
 	max_integrity = 250
 	integrity_failure = 25
+	can_crawled = 1
 	var/buildstacktype = /obj/item/stack/sheet/metal
 	var/buildstackamount = 1
 	var/item_chair = /obj/item/chair // if null it can't be picked up
 	layer = OBJ_LAYER
-
-/obj/structure/chair/Initialize()
-	..()
-	if(!anchored)	//why would you put these on the shuttle?
-		addtimer(CALLBACK(src, .proc/RemoveFromLatejoin), 0)
-
-/obj/structure/chair/Destroy()
-	RemoveFromLatejoin()
-	return ..()
-
-/obj/structure/chair/proc/RemoveFromLatejoin()
-	GLOB.latejoin -= src	//These may be here due to the arrivals shuttle
 
 /obj/structure/chair/deconstruct()
 	// If we have materials, and don't have the NOCONSTRUCT flag
@@ -54,14 +43,14 @@
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		E.setDir(dir)
 		E.part = SK
-		SK.loc = E
+		SK.forceMove(E)
 		SK.master = E
 		qdel(src)
 	else
 		return ..()
 
 /obj/structure/chair/attack_tk(mob/user)
-	if(!anchored || has_buckled_mobs())
+	if(has_buckled_mobs())
 		..()
 	else
 		rotate()
@@ -75,7 +64,7 @@
 
 /obj/structure/chair/proc/handle_layer()
 	if(has_buckled_mobs() && dir == NORTH)
-		layer = ABOVE_MOB_LAYER
+		layer = ABOVE_ALL_MOB_LAYER
 	else
 		layer = OBJ_LAYER
 
@@ -116,9 +105,9 @@
 
 // Chair types
 /obj/structure/chair/wood
-	icon_state = "wooden_chair"
+	icon_state = "wooden_chair_settler"
 	name = "wooden chair"
-	desc = "Old is never too old to not be in fashion."
+	desc = "A chair built from scavenged wood.<br>A work was done by a carpentering amateur - the wasteland settler."
 	resistance_flags = FLAMMABLE
 	obj_integrity = 70
 	max_integrity = 70
@@ -129,12 +118,18 @@
 /obj/structure/chair/wood/narsie_act()
 	return
 
-/obj/structure/chair/wood/normal //Kept for map compatibility
+/obj/structure/chair/wood/modern
+	icon_state = "wooden_chair_new"
+	desc = "This chair is good as new.<br>Old is never too old to not be in fashion."
 
+/obj/structure/chair/wood/worn
+	icon_state = "wooden_chair_old"
+	desc = "The furnish has faded and it's not so shiny anymore.<br>Still a good chair though."
 
-/obj/structure/chair/wood/wings
-	icon_state = "wooden_chair_wings"
-	item_chair = /obj/item/chair/wood/wings
+/obj/structure/chair/wood/fancy
+	icon_state = "wooden_chair_fancy"
+	name = "fancy wooden chair"
+	desc = "An elegant chair made of luxurious wood."
 
 /obj/structure/chair/comfy
 	name = "comfy chair"
@@ -145,16 +140,12 @@
 	obj_integrity = 70
 	max_integrity = 70
 	buildstackamount = 2
-	var/mutable_appearance/armrest
+	var/image/armrest = null
 	item_chair = null
 
-/obj/structure/chair/comfy/Initialize()
-	armrest = mutable_appearance('icons/obj/chairs.dmi', "comfychair_armrest")
+/obj/structure/chair/comfy/New()
+	armrest = image("icons/obj/chairs.dmi", "comfychair_armrest")
 	armrest.layer = ABOVE_MOB_LAYER
-	return ..()
-
-/obj/structure/chair/comfy/Destroy()
-	QDEL_NULL(armrest)
 	return ..()
 
 /obj/structure/chair/comfy/post_buckle_mob(mob/living/M)
@@ -162,7 +153,7 @@
 	if(has_buckled_mobs())
 		add_overlay(armrest)
 	else
-		cut_overlay(armrest)
+		overlays -= armrest
 
 
 /obj/structure/chair/comfy/brown
@@ -185,11 +176,23 @@
 	buildstackamount = 5
 	item_chair = null
 
-/obj/structure/chair/office/light
-	icon_state = "officechair_white"
+/obj/structure/chair/office/white
+	icon_state = "office_chair"
 
-/obj/structure/chair/office/dark
-	icon_state = "officechair_dark"
+/obj/structure/chair/office/red
+	icon_state = "office_chair_r"
+
+/obj/structure/chair/office/yellow
+	icon_state = "office_chair_y"
+
+/obj/structure/chair/office/green
+	icon_state = "office_chair_g"
+
+/obj/structure/chair/office/blue
+	icon_state = "office_chair_b"
+
+/obj/structure/chair/office/purple
+	icon_state = "office_chair_p"
 
 //Stool
 
@@ -216,6 +219,26 @@
 		var/C = new item_chair(loc)
 		usr.put_in_hands(C)
 		qdel(src)
+
+/obj/structure/chair/stool/red
+	name = "red stool"
+	desc = "Apply butt."
+	icon_state = "stool_r"
+
+/obj/structure/chair/stool/yellow
+	name = "yellow stool"
+	desc = "Apply butt."
+	icon_state = "stool_y"
+
+/obj/structure/chair/stool/green
+	name = "green stool"
+	desc = "Apply butt."
+	icon_state = "stool_g"
+
+/obj/structure/chair/stool/blue
+	name = "blue stool"
+	desc = "Apply butt."
+	icon_state = "stool_b"
 
 /obj/structure/chair/stool/bar
 	name = "bar stool"
@@ -270,6 +293,7 @@
 	if(remaining_mats)
 		for(var/M=1 to remaining_mats)
 			new stack_type(get_turf(loc))
+	user.unEquip(src,1) //Even NODROP chairs are destroyed.
 	qdel(src)
 
 
@@ -323,10 +347,6 @@
 
 /obj/item/chair/wood/narsie_act()
 	return
-
-/obj/item/chair/wood/wings
-	icon_state = "wooden_chair_wings_toppled"
-	origin_type = /obj/structure/chair/wood/wings
 
 /obj/structure/chair/old
 	name = "strange chair"

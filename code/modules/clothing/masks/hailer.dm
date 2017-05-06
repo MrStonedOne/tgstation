@@ -4,9 +4,8 @@
 /obj/item/clothing/mask/gas/sechailer
 	name = "security gas mask"
 	desc = "A standard issue Security gas mask with integrated 'Compli-o-nator 3000' device. Plays over a dozen pre-recorded compliance phrases designed to get scumbags to stand still whilst you taze them. Do not tamper with the device."
-	actions_types = list(/datum/action/item_action/halt, /datum/action/item_action/adjust)
+	actions_types = list(/datum/action/item_action/halt)
 	icon_state = "sechailer"
-	item_state = "sechailer"
 	flags = BLOCK_GAS_SMOKE_EFFECT | MASKINTERNALS
 	flags_inv = HIDEFACIALHAIR|HIDEFACE
 	w_class = WEIGHT_CLASS_SMALL
@@ -14,6 +13,7 @@
 	visor_flags_inv = HIDEFACE
 	flags_cover = MASKCOVERSMOUTH
 	visor_flags_cover = MASKCOVERSMOUTH
+	self_weight = 0.3
 	var/aggressiveness = 2
 	var/cooldown_special
 	var/recent_uses = 0
@@ -25,7 +25,6 @@
 	desc = "A close-fitting tactical mask with an especially aggressive Compli-o-nator 3000."
 	actions_types = list(/datum/action/item_action/halt)
 	icon_state = "swat"
-	item_state = "swat"
 	aggressiveness = 3
 	flags_inv = HIDEFACIALHAIR|HIDEFACE|HIDEEYES|HIDEEARS|HIDEHAIR
 	visor_flags_inv = 0

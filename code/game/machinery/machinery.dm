@@ -1,8 +1,8 @@
 /*
 Overview:
-   Used to create objects that need a per step proc call.  Default definition of 'Initialize()'
+   Used to create objects that need a per step proc call.  Default definition of 'New()'
    stores a reference to src machine in global 'machines list'.  Default definition
-   of 'Destroy' removes reference to src machine in global 'machines list'.
+   of 'Del' removes reference to src machine in global 'machines list'.
 
 Class Variables:
    use_power (num)
@@ -44,7 +44,7 @@ Class Variables:
          EMPED:16 -- temporary broken by EMP pulse
 
 Class Procs:
-   Initialize()                     'game/machinery/machine.dm'
+   New()                     'game/machinery/machine.dm'
 
    Destroy()                   'game/machinery/machine.dm'
 
@@ -118,30 +118,28 @@ Class Procs:
 	var/panel_open = 0
 	var/state_open = 0
 	var/critical_machine = FALSE //If this machine is critical to station operation and should have the area be excempted from power failures.
-	var/list/occupant_typecache = list(/mob/living) // turned into typecache in Initialize
-	var/atom/movable/occupant = null
+	var/mob/living/occupant = null
 	var/unsecuring_tool = /obj/item/weapon/wrench
 	var/interact_open = 0 // Can the machine be interacted with when in maint/when the panel is open.
 	var/interact_offline = 0 // Can the machine be interacted with while de-powered.
 	var/speed_process = 0 // Process as fast as possible?
+	var/brightness_on = 0
 
-/obj/machinery/Initialize()
-	if(!armor)
+/obj/machinery/New()
+	if (!armor)
 		armor = list(melee = 25, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 50, acid = 70)
-	. = ..()
-	GLOB.machines += src
+	..()
+	machines += src
 	if(!speed_process)
-		START_PROCESSING(SSmachines, src)
+		START_PROCESSING(SSmachine, src)
 	else
 		START_PROCESSING(SSfastprocess, src)
 	power_change()
 
-	occupant_typecache = typecacheof(occupant_typecache)
-
 /obj/machinery/Destroy()
-	GLOB.machines.Remove(src)
+	machines.Remove(src)
 	if(!speed_process)
-		STOP_PROCESSING(SSmachines, src)
+		STOP_PROCESSING(SSmachine, src)
 	else
 		STOP_PROCESSING(SSfastprocess, src)
 	dropContents()
@@ -159,7 +157,7 @@ Class Procs:
 /obj/machinery/emp_act(severity)
 	if(use_power && !stat)
 		use_power(7500/severity)
-		new /obj/effect/overlay/temp/emp(loc)
+		PoolOrNew(/obj/effect/overlay/temp/emp, loc)
 	..()
 
 /obj/machinery/proc/open_machine(drop = 1)
@@ -179,24 +177,16 @@ Class Procs:
 			L.update_canmove()
 	occupant = null
 
-/obj/machinery/proc/close_machine(atom/movable/target = null)
+/obj/machinery/proc/close_machine(mob/living/target = null)
 	state_open = 0
 	density = 1
 	if(!target)
-		for(var/am in loc)
-			if(!is_type_in_typecache(am, occupant_typecache))
+		for(var/mob/living/carbon/C in loc)
+			if(C.buckled || C.has_buckled_mobs())
 				continue
-			var/atom/movable/AM = am
-			if(AM.has_buckled_mobs())
-				continue
-			if(isliving(AM))
-				var/mob/living/L = am
-				if(L.buckled)
-					continue
-			target = am
-
-	var/mob/living/mobtarget = target
-	if(target && !target.has_buckled_mobs() && (!isliving(target) || !mobtarget.buckled))
+			else
+				target = C
+	if(target && !target.buckled && !target.has_buckled_mobs())
 		occupant = target
 		target.forceMove(src)
 	updateUsrDialog()
@@ -224,12 +214,9 @@ Class Procs:
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-/obj/machinery/interact(mob/user, special_state)
+/obj/machinery/interact(mob/user)
 	add_fingerprint(user)
-	if(special_state)
-		ui_interact(user, state = special_state)
-	else
-		ui_interact(user)
+	ui_interact(user)
 
 /obj/machinery/ui_status(mob/user)
 	if(is_interactable())
@@ -370,13 +357,13 @@ Class Procs:
 		return 1
 	return 0
 
-/obj/proc/can_be_unfasten_wrench(mob/user, silent) //if we can unwrench this object; returns SUCCESSFUL_UNFASTEN and FAILED_UNFASTEN, which are both TRUE, or CANT_UNFASTEN, which isn't.
+/obj/proc/can_be_unfasten_wrench(mob/user)
 	if(!isfloorturf(loc) && !anchored)
 		to_chat(user, "<span class='warning'>[src] needs to be on the floor to be secured!</span>")
 		return FAILED_UNFASTEN
 	return SUCCESSFUL_UNFASTEN
 
-/obj/proc/default_unfasten_wrench(mob/user, obj/item/weapon/wrench/W, time = 20) //try to unwrench an object in a WONDERFUL DYNAMIC WAY
+/obj/proc/default_unfasten_wrench(mob/user, obj/item/weapon/wrench/W, time = 20)
 	if(istype(W) && !(flags & NODECONSTRUCT))
 		var/can_be_unfasten = can_be_unfasten_wrench(user)
 		if(!can_be_unfasten || can_be_unfasten == FAILED_UNFASTEN)
@@ -386,20 +373,16 @@ Class Procs:
 		playsound(loc, W.usesound, 50, 1)
 		var/prev_anchored = anchored
 		//as long as we're the same anchored state and we're either on a floor or are anchored, toggle our anchored state
-		if(!time || do_after(user, time*W.toolspeed, target = src, extra_checks = CALLBACK(src, .proc/unfasten_wrench_check, prev_anchored, user)))
+		if(!time || (do_after(user, time*W.toolspeed, target = src) && anchored == prev_anchored))
+			can_be_unfasten = can_be_unfasten_wrench(user)
+			if(!can_be_unfasten || can_be_unfasten == FAILED_UNFASTEN)
+				return can_be_unfasten
 			to_chat(user, "<span class='notice'>You [anchored ? "un" : ""]secure [src].</span>")
 			anchored = !anchored
 			playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 			return SUCCESSFUL_UNFASTEN
 		return FAILED_UNFASTEN
 	return CANT_UNFASTEN
-
-/obj/proc/unfasten_wrench_check(prev_anchored, mob/user) //for the do_after, this checks if unfastening conditions are still valid
-	if(anchored != prev_anchored)
-		return FALSE
-	if(can_be_unfasten_wrench(user, TRUE) != SUCCESSFUL_UNFASTEN) //if we aren't explicitly successful, cancel the fuck out
-		return FALSE
-	return TRUE
 
 /obj/machinery/proc/exchange_parts(mob/user, obj/item/weapon/storage/part_replacer/W)
 	if(!istype(W))
@@ -425,7 +408,7 @@ Class Procs:
 							W.handle_item_insertion(A, 1)
 							component_parts -= A
 							component_parts += B
-							B.loc = null
+							B.forceMove(null)
 							to_chat(user, "<span class='notice'>[A.name] replaced with [B.name].</span>")
 							shouldplaysound = 1 //Only play the sound when parts are actually replaced!
 							break
@@ -440,7 +423,7 @@ Class Procs:
 /obj/machinery/proc/display_parts(mob/user)
 	to_chat(user, "<span class='notice'>Following parts detected in the machine:</span>")
 	for(var/obj/item/C in component_parts)
-		to_chat(user, "<span class='notice'>\icon[C] [C.name]</span>")
+		to_chat(user, "<span class='notice'>[bicon(C)] [C.name]</span>")
 
 /obj/machinery/examine(mob/user)
 	..()
@@ -451,12 +434,14 @@ Class Procs:
 			to_chat(user, "<span class='warning'>It's on fire!</span>")
 		var/healthpercent = (obj_integrity/max_integrity) * 100
 		switch(healthpercent)
-			if(50 to 99)
-				to_chat(user,  "It looks slightly damaged.")
+			if(100 to INFINITY)
+				to_chat(user, "It seems pristine and undamaged.")
+			if(50 to 100)
+				to_chat(user, "It looks slightly damaged.")
 			if(25 to 50)
-				to_chat(user,  "It appears heavily damaged.")
+				to_chat(user, "It appears heavily damaged.")
 			if(0 to 25)
-				to_chat(user,  "<span class='warning'>It's falling apart!</span>")
+				to_chat(user, "<span class='warning'>It's falling apart!</span>")
 	if(user.research_scanner && component_parts)
 		display_parts(user)
 

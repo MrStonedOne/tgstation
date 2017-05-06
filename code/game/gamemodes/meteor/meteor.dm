@@ -11,18 +11,18 @@
 
 
 /datum/game_mode/meteor/process()
-	if(nometeors || meteordelay > world.time - SSticker.round_start_time)
+	if(nometeors || meteordelay > world.time - round_start_time)
 		return
 
-	var/list/wavetype = GLOB.meteors_normal
-	var/meteorminutes = (world.time - SSticker.round_start_time - meteordelay) / 10 / 60
+	var/list/wavetype = meteors_normal
+	var/meteorminutes = (world.time - round_start_time - meteordelay) / 10 / 60
 
 
 	if (prob(meteorminutes))
-		wavetype = GLOB.meteors_threatening
+		wavetype = meteors_threatening
 
 	if (prob(meteorminutes/2))
-		wavetype = GLOB.meteors_catastrophic
+		wavetype = meteors_catastrophic
 
 	var/ramp_up_final = Clamp(round(meteorminutes/rampupdelta), 1, 10)
 
@@ -33,7 +33,7 @@
 	var/text
 	var/survivors = 0
 
-	for(var/mob/living/player in GLOB.player_list)
+	for(var/mob/living/player in player_list)
 		if(player.stat != DEAD)
 			++survivors
 
@@ -50,8 +50,8 @@
 	else
 		to_chat(world, "<span class='boldnotice'>Nobody survived the meteor storm!</span>")
 
-	SSblackbox.set_details("round_end_result","end - evacuation")
-	SSblackbox.set_val("round_end_result",survivors)
+	feedback_set_details("round_end_result","end - evacuation")
+	feedback_set("round_end_result",survivors)
 
 	..()
 	return 1

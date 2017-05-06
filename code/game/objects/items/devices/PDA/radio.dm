@@ -28,14 +28,18 @@
 	var/last_transmission
 	var/datum/radio_frequency/radio_connection
 
+/obj/item/radio/integrated/signal/New()
+	..()
+	if(SSradio)
+		initialize()
+
 /obj/item/radio/integrated/signal/Destroy()
 	if(SSradio)
 		SSradio.remove_object(src, frequency)
 	radio_connection = null
 	return ..()
 
-/obj/item/radio/integrated/signal/Initialize()
-	..()
+/obj/item/radio/integrated/signal/initialize()
 	if (src.frequency < 1200 || src.frequency > 1600)
 		src.frequency = sanitize_frequency(src.frequency)
 
@@ -54,7 +58,7 @@
 
 	var/time = time2text(world.realtime,"hh:mm:ss")
 	var/turf/T = get_turf(src)
-	GLOB.lastsignalers.Add("[time] <B>:</B> [usr.key] used [src] @ location ([T.x],[T.y],[T.z]) <B>:</B> [format_frequency(frequency)]/[code]")
+	lastsignalers.Add("[time] <B>:</B> [usr.key] used [src] @ location ([T.x],[T.y],[T.z]) <B>:</B> [format_frequency(frequency)]/[code]")
 
 	var/datum/signal/signal = new
 	signal.source = src

@@ -383,7 +383,7 @@
 				if (holding_still)
 					holding_still = max(holding_still - hungry, 0)
 				else if(canmove && isturf(loc) && prob(50))
-					step(src, pick(GLOB.cardinal))
+					step(src, pick(cardinal))
 
 			else
 				if(holding_still)
@@ -391,9 +391,9 @@
 				else if (docile && pulledby)
 					holding_still = 10
 				else if(canmove && isturf(loc) && prob(33))
-					step(src, pick(GLOB.cardinal))
+					step(src, pick(cardinal))
 		else if(!AIproc)
-			INVOKE_ASYNC(src, .proc/AIprocess)
+			addtimer(CALLBACK(src, .proc/AIprocess), 0)
 
 /mob/living/simple_animal/slime/handle_automated_movement()
 	return //slime random movement is currently handled in handle_targets()

@@ -8,6 +8,7 @@
 	var/cell_type = /obj/item/weapon/stock_parts/cell
 	var/modifystate = 0
 	var/list/ammo_type = list(/obj/item/ammo_casing/energy)
+	var/list/ammo_instances
 	var/select = 1 //The state of the select fire switch. Determines from the ammo_type list what kind of shot is fired next.
 	var/can_charge = 1 //Can it be charged in a recharger?
 	var/charge_sections = 4
@@ -40,13 +41,12 @@
 
 /obj/item/weapon/gun/energy/proc/update_ammo_types()
 	var/obj/item/ammo_casing/energy/shot
-	for (var/i = 1, i <= ammo_type.len, i++)
-		var/shottype = ammo_type[i]
+	ammo_instances = list()
+	for (var/shottype in ammo_type)
 		shot = new shottype(src)
-		ammo_type[i] = shot
-	shot = ammo_type[select]
+		ammo_instances += shot
+	shot = ammo_instances[select]
 	fire_sound = shot.fire_sound
-	fire_delay = shot.delay
 
 /obj/item/weapon/gun/energy/Destroy()
 	if(power_supply)
@@ -68,27 +68,46 @@
 			recharge_newshot(1)
 		update_icon()
 
-/obj/item/weapon/gun/energy/attack_self(mob/living/user as mob)
-	if(ammo_type.len > 1)
-		select_fire(user)
+/obj/item/weapon/gun/energy/attackby(obj/item/A, mob/user, params)
+	..()
+	if (istype(A, /obj/item/weapon/stock_parts/cell))
+		user.remove_from_mob(A)
+		power_supply = A
+		power_supply.forceMove(src)
+		to_chat(user, "<span class='notice'>You load a new power cell into \the [src].</span>")
 		update_icon()
 
+/obj/item/weapon/gun/energy/attack_self(mob/living/user as mob)
+/*
+	if(ammo_instances.len > 1)
+		select_fire(user)
+		update_icon()
+*/
+	if(power_supply)
+		power_supply.forceMove(get_turf(src.loc))
+		user.put_in_hands(power_supply)
+		power_supply = null
+		update_icon()
+		to_chat(user, "<span class='notice'>You pull the cell out of \the [src].</span>")
+	else
+		to_chat(user, "<span class='warning'>There is no battery.</span>")
+
 /obj/item/weapon/gun/energy/can_shoot()
-	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+	var/obj/item/ammo_casing/energy/shot = ammo_instances[select]
 	return power_supply.charge >= shot.e_cost
 
 /obj/item/weapon/gun/energy/recharge_newshot(no_cyborg_drain)
-	if (!ammo_type || !power_supply)
+	if (!ammo_instances || !power_supply)
 		return
 	if(use_cyborg_cell && !no_cyborg_drain)
 		if(iscyborg(loc))
 			var/mob/living/silicon/robot/R = loc
 			if(R.cell)
-				var/obj/item/ammo_casing/energy/shot = ammo_type[select] //Necessary to find cost of shot
+				var/obj/item/ammo_casing/energy/shot = ammo_instances[select] //Necessary to find cost of shot
 				if(R.cell.use(shot.e_cost)) 		//Take power from the borg...
 					power_supply.give(shot.e_cost)	//... to recharge the shot
 	if(!chambered)
-		var/obj/item/ammo_casing/energy/AC = ammo_type[select]
+		var/obj/item/ammo_casing/energy/AC = ammo_instances[select]
 		if(power_supply.charge >= AC.e_cost) //if there's enough power in the power_supply cell...
 			chambered = AC //...prepare a new shot based on the current ammo type selected
 			if(!chambered.BB)
@@ -103,9 +122,9 @@
 
 /obj/item/weapon/gun/energy/proc/select_fire(mob/living/user)
 	select++
-	if (select > ammo_type.len)
+	if (select > ammo_instances.len)
 		select = 1
-	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+	var/obj/item/ammo_casing/energy/shot = ammo_instances[select]
 	fire_sound = shot.fire_sound
 	fire_delay = shot.delay
 	if (shot.select_name)
@@ -117,9 +136,9 @@
 
 /obj/item/weapon/gun/energy/update_icon()
 	cut_overlays()
-	var/ratio = Ceiling((power_supply.charge / power_supply.maxcharge) * charge_sections)
-	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+	var/ratio = 0
 	var/iconState = "[icon_state]_charge"
+	var/obj/item/ammo_casing/energy/shot = ammo_instances[select]
 	var/itemState = null
 	if(!initial(item_state))
 		itemState = icon_state
@@ -128,24 +147,20 @@
 		iconState += "_[shot.select_name]"
 		if(itemState)
 			itemState += "[shot.select_name]"
-	if(power_supply.charge < shot.e_cost)
+	if(!power_supply || power_supply.charge < shot.e_cost)
 		add_overlay("[icon_state]_empty")
 	else
+		ratio = Ceiling((power_supply.charge / power_supply.maxcharge) * charge_sections)
 		if(!shaded_charge)
-			var/mutable_appearance/charge_overlay = mutable_appearance(icon, iconState)
 			for(var/i = ratio, i >= 1, i--)
-				charge_overlay.pixel_x = ammo_x_offset * (i - 1)
-				add_overlay(charge_overlay)
+				add_overlay(image(icon = icon, icon_state = iconState, pixel_x = ammo_x_offset * (i -1)))
 		else
-			add_overlay("[icon_state]_charge[ratio]")
+			add_overlay(image(icon = icon, icon_state = "[icon_state]_charge[ratio]"))
 	if(gun_light && can_flashlight)
 		var/iconF = "flight"
 		if(gun_light.on)
 			iconF = "flight_on"
-		var/mutable_appearance/flashlight_overlay = mutable_appearance(icon, iconF)
-		flashlight_overlay.pixel_x = flight_x_offset
-		flashlight_overlay.pixel_y = flight_y_offset
-		add_overlay(flashlight_overlay)
+		add_overlay(image(icon = icon, icon_state = iconF, pixel_x = flight_x_offset, pixel_y = flight_y_offset))
 	if(itemState)
 		itemState += "[ratio]"
 		item_state = itemState
@@ -160,7 +175,7 @@
 		if(user.is_holding(src))
 			user.visible_message("<span class='suicide'>[user] melts [user.p_their()] face off with [src]!</span>")
 			playsound(loc, fire_sound, 50, 1, -1)
-			var/obj/item/ammo_casing/energy/shot = ammo_type[select]
+			var/obj/item/ammo_casing/energy/shot = ammo_instances[select]
 			power_supply.use(shot.e_cost)
 			update_icon()
 			return(FIRELOSS)
@@ -182,31 +197,3 @@
 				STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-
-/obj/item/weapon/gun/energy/ignition_effect(atom/A, mob/living/user)
-	if(!can_shoot() || !ammo_type[select])
-		shoot_with_empty_chamber()
-		. = ""
-	else
-		var/obj/item/ammo_casing/energy/E = ammo_type[select]
-		var/obj/item/projectile/energy/BB = E.BB
-		if(!BB)
-			. = ""
-		else if(BB.nodamage || !BB.damage || BB.damage_type == STAMINA)
-			user.visible_message("<span class='danger'>[user] tries to light their [A.name] with [src], but it doesn't do anything. Dumbass.</span>")
-			playsound(user, E.fire_sound, 50, 1)
-			playsound(user, BB.hitsound, 50, 1)
-			power_supply.use(E.e_cost)
-			. = ""
-		else if(BB.damage_type != BURN)
-			user.visible_message("<span class='danger'>[user] tries to light their [A.name] with [src], but only succeeds in utterly destroying it. Dumbass.</span>")
-			playsound(user, E.fire_sound, 50, 1)
-			playsound(user, BB.hitsound, 50, 1)
-			power_supply.use(E.e_cost)
-			qdel(A)
-			. = ""
-		else
-			playsound(user, E.fire_sound, 50, 1)
-			playsound(user, BB.hitsound, 50, 1)
-			power_supply.use(E.e_cost)
-			. = "<span class='danger'>[user] casually lights their [A.name] with [src]. Damn.</span>"

@@ -9,20 +9,23 @@
 	var/on = 1
 	var/area/area = null
 	var/otherarea = null
-	//	luminosity = 1
+	//	light_range = 1
 
-/obj/machinery/light_switch/Initialize()
+/obj/machinery/light_switch/New()
 	..()
-	area = get_area(src)
+	spawn(5)
+		src.area = src.loc.loc
 
-	if(otherarea)
-		area = locate(text2path("/area/[otherarea]"))
+		if(otherarea)
+			src.area = locate(text2path("/area/[otherarea]"))
 
-	if(!name)
-		name = "light switch ([area.name])"
+		if(!name)
+			name = "light switch ([area.name])"
 
-	on = area.lightswitch
-	updateicon()
+		src.on = src.area.lightswitch
+		updateicon()
+
+
 
 /obj/machinery/light_switch/proc/updateicon()
 	if(stat & NOPOWER)
@@ -45,7 +48,7 @@
 
 	on = !on
 
-	for(var/area/A in area.related)
+	for(var/area/A in area.master.related)
 		A.lightswitch = on
 		A.updateicon()
 
@@ -53,7 +56,7 @@
 			L.on = on
 			L.updateicon()
 
-	area.power_change()
+	area.master.power_change()
 
 /obj/machinery/light_switch/power_change()
 

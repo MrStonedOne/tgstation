@@ -7,28 +7,28 @@
 	anchored = 0
 	density = 1
 	opacity = 0
-	var/case_type = ""
+	var/case_type = null
 	var/gun_category = /obj/item/weapon/gun
 	var/open = 1
 	var/capacity = 4
 
-/obj/structure/guncase/Initialize(mapload)
+/obj/structure/guncase/New()
 	..()
-	if(mapload)
-		for(var/obj/item/I in loc.contents)
-			if(istype(I, gun_category))
-				I.forceMove(src)
-			if(contents.len >= capacity)
-				break
+	update_icon()
+
+/obj/structure/guncase/initialize()
+	..()
+	for(var/obj/item/I in loc.contents)
+		if(istype(I, gun_category))
+			I.forceMove(src)
+		if(contents.len >= capacity)
+			break
 	update_icon()
 
 /obj/structure/guncase/update_icon()
 	cut_overlays()
-	if(case_type && LAZYLEN(contents))
-		var/mutable_appearance/gun_overlay = mutable_appearance(icon, case_type)
-		for(var/i in 1 to contents.len)
-			gun_overlay.pixel_x = 3 * (i - 1)
-			add_overlay(gun_overlay)
+	for(var/i = contents.len, i >= 1, i--)
+		add_overlay(image(icon = src.icon, icon_state = "[case_type]", pixel_x = 4 * (i -1) ))
 	if(open)
 		add_overlay("[icon_state]_open")
 	else
@@ -37,16 +37,14 @@
 /obj/structure/guncase/attackby(obj/item/I, mob/user, params)
 	if(iscyborg(user) || isalien(user))
 		return
-	if(istype(I, gun_category) && open)
-		if(LAZYLEN(contents) < capacity)
+	if(istype(I, gun_category))
+		if(contents.len < capacity && open)
 			if(!user.drop_item())
 				return
-			I.forceMove(src)
+			contents += I
 			to_chat(user, "<span class='notice'>You place [I] in [src].</span>")
 			update_icon()
-		else
-			to_chat(user, "<span class='warning'>[src] is full.</span>")
-		return
+			return
 
 	else if(user.a_intent != INTENT_HARM)
 		open = !open
@@ -67,10 +65,9 @@
 	var/dat = {"<div class='block'>
 				<h3>Stored Guns</h3>
 				<table align='center'>"}
-	if(LAZYLEN(contents))
-		for(var/i in 1 to contents.len)
-			var/obj/item/I = contents[i]
-			dat += "<tr><A href='?src=\ref[src];retrieve=\ref[I]'>[I.name]</A><br>"
+	for(var/i = contents.len, i >= 1, i--)
+		var/obj/item/I = contents[i]
+		dat += "<tr><A href='?src=\ref[src];retrieve=\ref[I]'>[I.name]</A><br>"
 	dat += "</table></div>"
 
 	var/datum/browser/popup = new(user, "gunlocker", "<div align='center'>[name]</div>", 350, 300)
@@ -82,7 +79,7 @@
 		var/obj/item/O = locate(href_list["retrieve"]) in contents
 		if(!O || !istype(O))
 			return
-		if(!usr.canUseTopic(src) || !open)
+		if(!usr.canUseTopic(src))
 			return
 		if(ishuman(usr))
 			if(!usr.put_in_hands(O))

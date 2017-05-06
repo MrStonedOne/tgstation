@@ -16,7 +16,16 @@
 		to_chat(user, "<span class='notice'>You pet [src]. You swear it looks up at you.</span>")
 		owner = user
 		owned = 1
-	else return ..()
+	return ..()
+
+
+/obj/item/toy/carpplushie/dehy_carp/afterattack(obj/O, mob/user,proximity)
+	if(!proximity) return
+	if(istype(O,/obj/structure/sink))
+		user.drop_item()
+		forceMove(get_turf(O))
+		return Swell()
+	..()
 
 /obj/item/toy/carpplushie/dehy_carp/proc/Swell()
 	desc = "It's growing!"
@@ -27,7 +36,7 @@
 	flick("carp_swell", src)
 	//Wait for animation to end
 	sleep(6)
-	if(!src || QDELETED(src))//we got toasted while animating
+	if(!src || qdeleted(src))//we got toasted while animating
 		return
 	//Make space carp
 	var/mob/living/M = new mobtype(get_turf(src))

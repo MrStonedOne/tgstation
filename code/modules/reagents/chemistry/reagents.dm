@@ -12,12 +12,6 @@
 	var/name = "Reagent"
 	var/id = "reagent"
 	var/description = ""
-	var/taste_description = "metaphorical salt"
-	var/taste_mult = 1 //how this taste compares to others. Higher values means it is more noticable
-	var/glass_name = "glass of ...what?" // use for specialty drinks.
-	var/glass_desc = "You can't really tell what this is."
-	var/glass_icon_state = null // Otherwise just sets the icon to a normal glass with the mixture of the reagents in the glass.
-	var/shot_glass_icon_state = null
 	var/datum/reagents/holder = null
 	var/reagent_state = LIQUID
 	var/list/data
@@ -30,6 +24,7 @@
 	var/overdose_threshold = 0
 	var/addiction_threshold = 0
 	var/addiction_stage = 0
+	var/water_factor = 0
 	var/overdosed = 0 // You fucked up and this is now triggering its overdose effects, purge that shit quick.
 
 /datum/reagent/Destroy() // This should only be called by the holder, so it's already handled clearing its references
@@ -55,6 +50,7 @@
 
 /datum/reagent/proc/on_mob_life(mob/living/M)
 	current_cycle++
+	M.water_level += water_factor
 	holder.remove_reagent(src.id, metabolization_rate * M.metabolism_efficiency) //By default it slowly disappears.
 	return
 

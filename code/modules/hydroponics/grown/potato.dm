@@ -39,9 +39,10 @@
 	if(W.is_sharp())
 		to_chat(user, "<span class='notice'>You cut the potato into wedges with [W].</span>")
 		var/obj/item/weapon/reagent_containers/food/snacks/grown/potato/wedges/Wedges = new /obj/item/weapon/reagent_containers/food/snacks/grown/potato/wedges
-		remove_item_from_storage(user)
-		qdel(src)
+		if(!remove_item_from_storage(user))
+			user.unEquip(src)
 		user.put_in_hands(Wedges)
+		qdel(src)
 	else
 		return ..()
 

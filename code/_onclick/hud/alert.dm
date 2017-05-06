@@ -3,7 +3,7 @@
 //PUBLIC -  call these wherever you want
 
 
-/mob/proc/throw_alert(category, type, severity, obj/new_master, override = FALSE)
+/mob/proc/throw_alert(category, type, severity, obj/new_master)
 
 /* Proc to create or update an alert. Returns the alert if the alert is new or updated, 0 if it was thrown already
  category is a text string. Each mob may only have one alert per category; the previous one will be replaced
@@ -11,73 +11,63 @@
  severity is an optional number that will be placed at the end of the icon_state for this alert
  For example, high pressure's icon_state is "highpressure" and can be serverity 1 or 2 to get "highpressure1" or "highpressure2"
  new_master is optional and sets the alert's icon state to "template" in the ui_style icons with the master as an overlay.
- Clicks are forwarded to master
- Override makes it so the alert is not replaced until cleared by a clear_alert with clear_override, and it's used for hallucinations.
- */
+ Clicks are forwarded to master */
 
 	if(!category)
 		return
 
-	var/obj/screen/alert/thealert
+	var/obj/screen/alert/alert
 	if(alerts[category])
-		thealert = alerts[category]
-		if(thealert.override_alerts)
-			return 0
-		if(new_master && new_master != thealert.master)
-			WARNING("[src] threw alert [category] with new_master [new_master] while already having that alert with master [thealert.master]")
-
+		alert = alerts[category]
+		if(new_master && new_master != alert.master)
+			WARNING("[src] threw alert [category] with new_master [new_master] while already having that alert with master [alert.master]")
 			clear_alert(category)
 			return .()
-		else if(thealert.type != type)
+		else if(alert.type != type)
 			clear_alert(category)
 			return .()
-		else if(!severity || severity == thealert.severity)
-			if(thealert.timeout)
+		else if(!severity || severity == alert.severity)
+			if(alert.timeout)
 				clear_alert(category)
 				return .()
 			else //no need to update
 				return 0
 	else
-		thealert = new type()
-		thealert.override_alerts = override
-		if(override)
-			thealert.timeout = null
+		alert = PoolOrNew(type)
 
 	if(new_master)
 		var/old_layer = new_master.layer
 		var/old_plane = new_master.plane
 		new_master.layer = FLOAT_LAYER
 		new_master.plane = FLOAT_PLANE
-		thealert.add_overlay(new_master)
+		alert.overlays += new_master
 		new_master.layer = old_layer
 		new_master.plane = old_plane
-		thealert.icon_state = "template" // We'll set the icon to the client's ui pref in reorganize_alerts()
-		thealert.master = new_master
+		alert.icon_state = "template" // We'll set the icon to the client's ui pref in reorganize_alerts()
+		alert.master = new_master
 	else
-		thealert.icon_state = "[initial(thealert.icon_state)][severity]"
-		thealert.severity = severity
+		alert.icon_state = "[initial(alert.icon_state)][severity]"
+		alert.severity = severity
 
-	alerts[category] = thealert
+	alerts[category] = alert
 	if(client && hud_used)
 		hud_used.reorganize_alerts()
-	thealert.transform = matrix(32, 6, MATRIX_TRANSLATE)
-	animate(thealert, transform = matrix(), time = 2.5, easing = CUBIC_EASING)
+	alert.transform = matrix(32, 6, MATRIX_TRANSLATE)
+	animate(alert, transform = matrix(), time = 2.5, easing = CUBIC_EASING)
 
-	if(thealert.timeout)
-		addtimer(CALLBACK(src, .proc/alert_timeout, thealert, category), thealert.timeout)
-		thealert.timeout = world.time + thealert.timeout - world.tick_lag
-	return thealert
+	if(alert.timeout)
+		addtimer(CALLBACK(src, .proc/alert_timeout, alert, category), alert.timeout)
+		alert.timeout = world.time + alert.timeout - world.tick_lag
+	return alert
 
 /mob/proc/alert_timeout(obj/screen/alert/alert, category)
 	if(alert.timeout && alerts[category] == alert && world.time >= alert.timeout)
 		clear_alert(category)
 
 // Proc to clear an existing alert.
-/mob/proc/clear_alert(category, clear_override = FALSE)
+/mob/proc/clear_alert(category)
 	var/obj/screen/alert/alert = alerts[category]
 	if(!alert)
-		return 0
-	if(alert.override_alerts && !clear_override)
 		return 0
 
 	alerts -= category
@@ -95,7 +85,6 @@
 	var/timeout = 0 //If set to a number, this alert will clear itself after that many deciseconds
 	var/severity = 0
 	var/alerttooltipstyle = ""
-	var/override_alerts = FALSE //If it is overriding other alerts of the same type
 
 
 /obj/screen/alert/MouseEntered(location,control,params)
@@ -140,21 +129,20 @@ The box in your backpack has an oxygen tank and gas mask in it."
 	icon_state = "tox_in_air"
 //End gas alerts
 
+/obj/screen/alert/thirst
+	name = "Thirst"
+	desc = "Drink."
+	icon_state = "water"
 
 /obj/screen/alert/fat
 	name = "Fat"
 	desc = "You ate too much food, lardass. Run around the station and lose some weight."
 	icon_state = "fat"
 
-/obj/screen/alert/hungry
-	name = "Hungry"
-	desc = "Some food would be good right about now."
-	icon_state = "hungry"
-
 /obj/screen/alert/starving
 	name = "Starving"
 	desc = "You're severely malnourished. The hunger pains make moving around a chore."
-	icon_state = "starving"
+	icon_state = "starv"
 
 /obj/screen/alert/hot
 	name = "Too Hot"
@@ -266,8 +254,8 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "no-servants-caches"
 	var/static/list/scripture_states = list(SCRIPTURE_DRIVER = TRUE, SCRIPTURE_SCRIPT = FALSE, SCRIPTURE_APPLICATION = FALSE, SCRIPTURE_REVENANT = FALSE, SCRIPTURE_JUDGEMENT = FALSE)
 
-/obj/screen/alert/clockwork/scripture_reqs/Initialize()
-	. = ..()
+/obj/screen/alert/clockwork/scripture_reqs/New()
+	..()
 	START_PROCESSING(SSprocessing, src)
 	process()
 
@@ -276,7 +264,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	return ..()
 
 /obj/screen/alert/clockwork/scripture_reqs/process()
-	if(GLOB.clockwork_gateway_activated)
+	if(clockwork_gateway_activated)
 		qdel(src)
 		return
 	var/current_state
@@ -288,7 +276,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "no"
 	if(!current_state)
 		name = "Current Objective"
-		for(var/obj/structure/destructible/clockwork/massive/celestial_gateway/G in GLOB.all_clockwork_objects)
+		for(var/obj/structure/destructible/clockwork/massive/celestial_gateway/G in all_clockwork_objects)
 			var/area/gate_area = get_area(G)
 			desc = "<b>Protect the Ark at [gate_area.map_name]!</b>"
 			return
@@ -297,15 +285,17 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	else
 		name = "Next Tier Requirements"
 		var/validservants = 0
-		var/unconverted_ais_exist = get_unconverted_ais()
-		for(var/mob/living/L in GLOB.living_mob_list)
+		var/unconverted_ais_exist = FALSE
+		for(var/mob/living/L in living_mob_list)
 			if(is_servant_of_ratvar(L) && (ishuman(L) || issilicon(L)))
 				validservants++
+			else if(isAI(L))
+				unconverted_ais_exist++
 		var/req_servants = 0
 		var/req_caches = 0
 		var/req_cv = 0
 		var/req_ai = FALSE
-		var/list/textlist = list("Requirements for <b>[current_state] Scripture:</b>")
+		desc = "Requirements for <b>[current_state] Scripture:</b>"
 		switch(current_state) //get our requirements based on the tier
 			if(SCRIPTURE_SCRIPT)
 				req_servants = SCRIPT_SERVANT_REQ
@@ -323,32 +313,31 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 				req_caches = JUDGEMENT_CACHE_REQ
 				req_cv = JUDGEMENT_CV_REQ
 				req_ai = TRUE
-		textlist += "<br><b>[validservants]/[req_servants]</b> Servants"
+		desc += "<br><b>[validservants]/[req_servants]</b> Servants"
 		if(validservants < req_servants)
 			icon_state += "-servants" //in this manner, generate an icon key based on what we're missing
 		else
-			textlist += ": <b><font color=#5A6068>\[CHECK\]</font></b>"
-		textlist += "<br><b>[GLOB.clockwork_caches]/[req_caches]</b> Tinkerer's Caches"
-		if(GLOB.clockwork_caches < req_caches)
+			desc += ": <b><font color=#5A6068>\[CHECK\]</font></b>"
+		desc += "<br><b>[clockwork_caches]/[req_caches]</b> Tinkerer's Caches"
+		if(clockwork_caches < req_caches)
 			icon_state += "-caches"
 		else
-			textlist += ": <b><font color=#5A6068>\[CHECK\]</font></b>"
+			desc += ": <b><font color=#5A6068>\[CHECK\]</font></b>"
 		if(req_cv) //cv only shows up if the tier requires it
-			textlist += "<br><b>[GLOB.clockwork_construction_value]/[req_cv]</b> Construction Value"
-			if(GLOB.clockwork_construction_value < req_cv)
+			desc += "<br><b>[clockwork_construction_value]/[req_cv]</b> Construction Value"
+			if(clockwork_construction_value < req_cv)
 				icon_state += "-cv"
 			else
-				textlist += ": <b><font color=#5A6068>\[CHECK\]</font></b>"
+				desc += ": <b><font color=#5A6068>\[CHECK\]</font></b>"
 		if(req_ai) //same for ai
 			if(unconverted_ais_exist)
 				if(unconverted_ais_exist > 1)
-					textlist += "<br><b>[unconverted_ais_exist] unconverted AIs exist!</b><br>"
+					desc += "<br><b>[unconverted_ais_exist] unconverted AIs exist!</b><br>"
 				else
-					textlist += "<br><b>An unconverted AI exists!</b>"
+					desc += "<br><b>An unconverted AI exists!</b>"
 				icon_state += "-ai"
 			else
-				textlist += "<br>No unconverted AIs exist: <b><font color=#5A6068>\[CHECK\]</font></b>"
-		desc = textlist.Join()
+				desc += "<br>No unconverted AIs exist: <b><font color=#5A6068>\[CHECK\]</font></b>"
 
 /obj/screen/alert/clockwork/infodump
 	name = "Global Records"
@@ -356,65 +345,60 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "clockinfo"
 
 /obj/screen/alert/clockwork/infodump/MouseEntered(location,control,params)
-	if(GLOB.ratvar_awakens)
+	if(ratvar_awakens)
 		desc = "<font size=3><b>CHETR<br>NYY<br>HAGEHUGF-NAQ-UBABE<br>RATVAR.</b></font>"
 	else
 		var/servants = 0
 		var/validservants = 0
-		var/unconverted_ais_exist = get_unconverted_ais()
+		var/unconverted_ais_exist = FALSE
 		var/list/scripture_states = scripture_unlock_check()
-		var/list/textlist
-		for(var/mob/living/L in GLOB.living_mob_list)
+		for(var/mob/living/L in living_mob_list)
 			if(is_servant_of_ratvar(L))
 				servants++
 				if(ishuman(L) || issilicon(L))
 					validservants++
+			else if(isAI(L))
+				unconverted_ais_exist++
 		if(servants > 1)
 			if(validservants > 1)
-				textlist = list("<b>[servants]</b> Servants, <b>[validservants]</b> of which count towards scripture.<br>")
+				desc = "<b>[servants]</b> Servants, <b>[validservants]</b> of which count towards scripture.<br>"
 			else
-				textlist = list("<b>[servants]</b> Servants, [validservants ? "<b>[validservants]</b> of which counts":"none of which count"] towards scripture.<br>")
+				desc = "<b>[servants]</b> Servants, [validservants ? "<b>[validservants]</b> of which counts":"none of which count"] towards scripture.<br>"
 		else
-			textlist = list("<b>[servants]</b> Servant, who [validservants ? "counts":"does not count"] towards scripture.<br>")
-		textlist += "<b>[GLOB.clockwork_caches ? "[GLOB.clockwork_caches]</b> Tinkerer's Caches.":"No Tinkerer's Caches, construct one!</b>"]<br>\
-		<b>[GLOB.clockwork_construction_value]</b> Construction Value.<br>"
-		if(GLOB.clockwork_daemons)
-			textlist += "<b>[GLOB.clockwork_daemons]</b> Tinkerer's Daemons: <b>[servants * 0.2 < GLOB.clockwork_daemons ? "DISABLED":"ACTIVE"]</b><br>"
+			desc = "<b>[servants]</b> Servant, who [validservants ? "counts":"does not count"] towards scripture.<br>"
+		desc += "<b>[clockwork_caches ? "[clockwork_caches]</b> Tinkerer's Caches.":"No Tinkerer's Caches, construct one!</b>"]<br>\
+		<b>[clockwork_construction_value]</b> Construction Value.<br>"
+		if(clockwork_daemons)
+			desc += "<b>[clockwork_daemons]</b> Tinkerer's Daemons: <b>[servants * 0.2 < clockwork_daemons ? "DISABLED":"ACTIVE"]</b><br>"
 		else
-			textlist += "No Tinkerer's Daemons.<br>"
-		for(var/obj/structure/destructible/clockwork/massive/celestial_gateway/G in GLOB.all_clockwork_objects)
+			desc += "No Tinkerer's Daemons.<br>"
+		for(var/obj/structure/destructible/clockwork/massive/celestial_gateway/G in all_clockwork_objects)
 			var/area/gate_area = get_area(G)
-			textlist += "Ark Location: <b>[uppertext(gate_area.map_name)]</b><br>"
-			if(G.still_needs_components())
-				textlist += "Ark Components required: "
-				for(var/i in G.required_components)
-					if(G.required_components[i])
-						textlist += "<b><font color=[get_component_color_bright(i)]>[G.required_components[i]]</font></b> "
-				textlist += "<br>"
+			desc += "Ark Location: <b>[uppertext(gate_area.map_name)]</b><br>"
+			if(G.ratvar_portal)
+				desc += "Seconds until Ratvar's arrival: <b>[G.get_arrival_text(TRUE)]</b><br>"
 			else
-				textlist += "Seconds until Ratvar's arrival: <b>[G.get_arrival_text(TRUE)]</b><br>"
-			break
+				desc += "Seconds until Proselytization: <b>[G.get_arrival_text(TRUE)]</b><br>"
 		if(unconverted_ais_exist)
 			if(unconverted_ais_exist > 1)
-				textlist += "<b>[unconverted_ais_exist] unconverted AIs exist!</b><br>"
+				desc += "<b>[unconverted_ais_exist] unconverted AIs exist!</b><br>"
 			else
-				textlist += "<b>An unconverted AI exists!</b><br>"
+				desc += "<b>An unconverted AI exists!</b><br>"
 		if(scripture_states[SCRIPTURE_REVENANT])
-			var/inathneq_available = GLOB.clockwork_generals_invoked["inath-neq"] <= world.time
-			var/sevtug_available = GLOB.clockwork_generals_invoked["sevtug"] <= world.time
-			var/nezbere_available = GLOB.clockwork_generals_invoked["nezbere"] <= world.time
-			var/nezcrentr_available = GLOB.clockwork_generals_invoked["nzcrentr"] <= world.time
+			var/inathneq_available = clockwork_generals_invoked["inath-neq"] <= world.time
+			var/sevtug_available = clockwork_generals_invoked["sevtug"] <= world.time
+			var/nezbere_available = clockwork_generals_invoked["nezbere"] <= world.time
+			var/nezcrentr_available = clockwork_generals_invoked["nzcrentr"] <= world.time
 			if(inathneq_available || sevtug_available || nezbere_available || nezcrentr_available)
-				textlist += "Generals available:<b>[inathneq_available ? "<br><font color=#1E8CE1>INATH-NEQ</font>":""][sevtug_available ? "<br><font color=#AF0AAF>SEVTUG</font>":""]\
+				desc += "Generals available:<b>[inathneq_available ? "<br><font color=#1E8CE1>INATH-NEQ</font>":""][sevtug_available ? "<br><font color=#AF0AAF>SEVTUG</font>":""]\
 				[nezbere_available ? "<br><font color=#5A6068>NEZBERE</font>":""][nezcrentr_available ? "<br><font color=#DAAA18>NZCRENTR</font>":""]</b><br>"
 			else
-				textlist += "Generals available: <b>NONE</b><br>"
+				desc += "Generals available: <b>NONE</b><br>"
 		else
-			textlist += "Generals available: <b>NONE</b><br>"
+			desc += "Generals available: <b>NONE</b><br>"
 		for(var/i in scripture_states)
 			if(i != SCRIPTURE_DRIVER) //ignore the always-unlocked stuff
-				textlist += "[i] Scripture: <b>[scripture_states[i] ? "UNLOCKED":"LOCKED"]</b><br>"
-		desc = textlist.Join()
+				desc += "[i] Scripture: <b>[scripture_states[i] ? "UNLOCKED":"LOCKED"]</b><br>"
 	..()
 
 //GUARDIANS
@@ -531,7 +515,7 @@ so as to remain in compliance with the most up-to-date laws."
 		if(NOTIFY_JUMP)
 			var/turf/T = get_turf(target)
 			if(T && isturf(T))
-				G.loc = T
+				G.forceMove(T)
 		if(NOTIFY_ORBIT)
 			G.ManualFollow(target)
 
@@ -601,8 +585,8 @@ so as to remain in compliance with the most up-to-date laws."
 		return usr.client.Click(master, location, control, params)
 
 /obj/screen/alert/Destroy()
-	. = ..()
+	..()
 	severity = 0
 	master = null
 	screen_loc = ""
-
+	return QDEL_HINT_PUTINPOOL //Don't destroy me, I have a family!

@@ -43,7 +43,7 @@
 			name = "Instant Summons"
 			marked_item = 		null
 
-		else if(marked_item && QDELETED(marked_item)) //the item was destroyed at some point
+		else if(marked_item && qdeleted(marked_item)) //the item was destroyed at some point
 			message = "<span class='warning'>You sense your marked item has been destroyed!</span>"
 			name = "Instant Summons"
 			marked_item = 		null
@@ -66,11 +66,11 @@
 
 						if(issilicon(M)) //Items in silicons warp the whole silicon
 							M.loc.visible_message("<span class='warning'>[M] suddenly disappears!</span>")
-							M.loc = L.loc
+							M.forceMove(L.loc)
 							M.loc.visible_message("<span class='caution'>[M] suddenly appears!</span>")
 							item_to_retrieve = null
 							break
-						M.dropItemToGround(item_to_retrieve)
+						M.unEquip(item_to_retrieve)
 
 						if(iscarbon(M)) //Edge case housekeeping
 							var/mob/living/carbon/C = M
@@ -101,12 +101,12 @@
 			if(item_to_retrieve.loc)
 				item_to_retrieve.loc.visible_message("<span class='warning'>The [item_to_retrieve.name] suddenly disappears!</span>")
 			if(!L.put_in_hands(item_to_retrieve))
-				item_to_retrieve.loc = L.loc
+				item_to_retrieve.forceMove(L.loc)
 				item_to_retrieve.loc.visible_message("<span class='caution'>The [item_to_retrieve.name] suddenly appears!</span>")
-				playsound(get_turf(L), 'sound/magic/SummonItems_generic.ogg', 50, 1)
+				playsound(get_turf(L),"sound/magic/SummonItems_generic.ogg",50,1)
 			else
 				item_to_retrieve.loc.visible_message("<span class='caution'>The [item_to_retrieve.name] suddenly appears in [L]'s hand!</span>")
-				playsound(get_turf(L), 'sound/magic/SummonItems_generic.ogg', 50, 1)
+				playsound(get_turf(L),"sound/magic/SummonItems_generic.ogg",50,1)
 
 
 		if(message)

@@ -8,88 +8,24 @@
 	icon_state = "rockvault"
 	floor_tile = /obj/item/stack/tile/plasteel
 
-//Circuit flooring, glows a little
-/turf/open/floor/circuit
+/turf/open/floor/bluegrid
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "bcircuit"
-	var/icon_normal = "bcircuit"
-	light_color = LIGHT_COLOR_CYAN
-	floor_tile = /obj/item/stack/tile/circuit
-	var/on = TRUE
+	floor_tile = /obj/item/stack/tile/plasteel
 
-/turf/open/floor/circuit/Initialize()
-	SSmapping.nuke_tiles += src
-	update_icon()
+/turf/open/floor/bluegrid/New()
 	..()
+	SSmapping.nuke_tiles += src
 
-/turf/open/floor/circuit/Destroy()
+/turf/open/floor/bluegrid/Destroy()
 	SSmapping.nuke_tiles -= src
 	return ..()
 
-/turf/open/floor/circuit/update_icon()
-	if(on)
-		if(LAZYLEN(SSmapping.nuke_threats))
-			icon_state = "rcircuitanim"
-			light_color = LIGHT_COLOR_FLARE
-		else
-			icon_state = icon_normal
-			light_color = initial(light_color)
-		set_light(1.4, 0.5)
-	else
-		icon_state = "[icon_normal]off"
-		set_light(0)
-
-/turf/open/floor/circuit/off
-	icon_state = "bcircuitoff"
-	on = FALSE
-
-/turf/open/floor/circuit/airless
-	initial_gas_mix = "TEMP=2.7"
-
-/turf/open/floor/circuit/telecomms
-	initial_gas_mix = "n2=100;TEMP=80"
-
-/turf/open/floor/circuit/green
+/turf/open/floor/greengrid
+	icon = 'icons/turf/floors.dmi'
 	icon_state = "gcircuit"
-	icon_normal = "gcircuit"
-	light_color = LIGHT_COLOR_GREEN
-	floor_tile = /obj/item/stack/tile/circuit/green
+	floor_tile = /obj/item/stack/tile/plasteel
 
-/turf/open/floor/circuit/green/off
-	icon_state = "gcircuitoff"
-	on = FALSE
-
-/turf/open/floor/circuit/green/anim
-	icon_state = "gcircuitanim"
-	icon_normal = "gcircuitanim"
-	floor_tile = /obj/item/stack/tile/circuit/green/anim
-
-/turf/open/floor/circuit/green/airless
-	initial_gas_mix = "TEMP=2.7"
-
-/turf/open/floor/circuit/green/telecomms
-	initial_gas_mix = "n2=100;TEMP=80"
-
-/turf/open/floor/circuit/red
-	icon_state = "rcircuit"
-	icon_normal = "rcircuit"
-	light_color = LIGHT_COLOR_FLARE
-	floor_tile = /obj/item/stack/tile/circuit/red
-
-/turf/open/floor/circuit/red/off
-	icon_state = "rcircuitoff"
-	on = FALSE
-
-/turf/open/floor/circuit/red/anim
-	icon_state = "rcircuitanim"
-	icon_normal = "rcircuitanim"
-	floor_tile = /obj/item/stack/tile/circuit/red/anim
-
-/turf/open/floor/circuit/red/airless
-	initial_gas_mix = "TEMP=2.7"
-
-/turf/open/floor/circuit/red/telecomms
-	initial_gas_mix = "n2=100;TEMP=80"
 
 /turf/open/floor/pod
 	name = "pod floor"
@@ -131,11 +67,11 @@
 	icon_state = "plating"
 	var/obj/effect/clockwork/overlay/floor/realappearence
 
-/turf/open/floor/clockwork/Initialize()
+/turf/open/floor/clockwork/New()
 	..()
-	new /obj/effect/overlay/temp/ratvar/floor(src)
-	new /obj/effect/overlay/temp/ratvar/beam(src)
-	realappearence = new /obj/effect/clockwork/overlay/floor(src)
+	PoolOrNew(/obj/effect/overlay/temp/ratvar/floor, src)
+	PoolOrNew(/obj/effect/overlay/temp/ratvar/beam, src)
+	realappearence = PoolOrNew(/obj/effect/clockwork/overlay/floor, src)
 	realappearence.linked = src
 	change_construction_value(1)
 
@@ -193,7 +129,7 @@
 	return ..()
 
 /turf/open/floor/clockwork/make_plating()
-	new /obj/item/stack/tile/brass(src)
+	PoolOrNew(/obj/item/stack/tile/brass, src)
 	return ..()
 
 /turf/open/floor/clockwork/narsie_act()
@@ -263,5 +199,5 @@
 	. = ..()
 	//Do this *after* the turf has changed as qdel in spacevines will call changeturf again if it hasn't
 	for(var/obj/structure/spacevine/SV in src)
-		if(!QDESTROYING(SV))//Helps avoid recursive loops
+		if(!qdestroying(SV))//Helps avoid recursive loops
 			qdel(SV)

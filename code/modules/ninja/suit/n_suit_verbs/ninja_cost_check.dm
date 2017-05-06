@@ -4,7 +4,8 @@
 /obj/item/clothing/suit/space/space_ninja/proc/ninjacost(cost = 0, specificCheck = 0)
 	var/mob/living/carbon/human/H = affecting
 	if((H.stat || H.incorporeal_move) && (specificCheck != N_ADRENALINE))//Will not return if user is using an adrenaline booster since you can use them when stat==1.
-		to_chat(H, "<span class='danger'>You must be conscious and solid to do this.</span>")
+		to_chat(H, "<span class='danger'>You must be conscious and solid to do this.</span>")//It's not a problem of stat==2 since the ninja will explode anyway if they die.
+
 		return 1
 
 	var/actualCost = cost*10

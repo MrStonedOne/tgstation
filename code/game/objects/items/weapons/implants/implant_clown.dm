@@ -15,9 +15,16 @@
 
 /obj/item/weapon/implanter/sad_trombone
 	name = "implanter (sad_trombone)"
-	imp_type = /obj/item/weapon/implant/sad_trombone
+
+/obj/item/weapon/implanter/sad_trombone/New()
+	imp = new /obj/item/weapon/implant/sad_trombone(src)
+	..()
+
 
 /obj/item/weapon/implantcase/sad_trombone
 	name = "implant case - 'Sad Trombone'"
 	desc = "A glass case containing a sad trombone implant."
-	imp_type = /obj/item/weapon/implant/sad_trombone
+
+/obj/item/weapon/implantcase/sad_trombone/New()
+	imp = new /obj/item/weapon/implant/sad_trombone(src)
+	..()

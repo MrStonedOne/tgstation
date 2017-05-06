@@ -72,7 +72,7 @@
 		return
 
 	src.visible_message("[picked_slime] is sucked into [src].")
-	picked_slime.loc = src
+	picked_slime.forceMove(src)
 
 /datum/food_processor_process
 	var/input
@@ -137,12 +137,12 @@
 	var/mob/living/simple_animal/slime/S = what
 	var/C = S.cores
 	if(S.stat != DEAD)
-		S.loc = loc
+		S.forceMove(loc)
 		S.visible_message("<span class='notice'>[C] crawls free of the processor!</span>")
 		return
 	for(var/i in 1 to (C+processor.rating_amount-1))
 		new S.coretype(loc)
-		SSblackbox.add_details("slime_core_harvested","[replacetext(S.colour," ","_")]")
+		feedback_add_details("slime_core_harvested","[replacetext(S.colour," ","_")]")
 	..()
 
 /datum/food_processor_process/mob/slime/input = /mob/living/simple_animal/slime
@@ -151,7 +151,7 @@
 /datum/food_processor_process/mob/monkey/process_food(loc, what, processor)
 	var/mob/living/carbon/monkey/O = what
 	if (O.client) //grief-proof
-		O.loc = loc
+		O.forceMove(loc)
 		O.visible_message("<span class='notice'>Suddenly [O] jumps out from the processor!</span>", \
 				"<span class='notice'>You jump out from the processor!</span>", \
 				"<span class='italics'>You hear chimpering.</span>")
@@ -208,25 +208,12 @@
 	if(default_deconstruction_crowbar(O))
 		return
 
-	if(istype(O, /obj/item/weapon/storage/bag/tray))
-		var/obj/item/weapon/storage/T = O
-		var/loaded = 0
-		for(var/obj/item/weapon/reagent_containers/food/snacks/S in T.contents)
-			var/datum/food_processor_process/P = select_recipe(S)
-			if(P)
-				T.remove_from_storage(S, src)
-				loaded++
-
-		if(loaded)
-			to_chat(user, "<span class='notice'>You insert [loaded] items into [src].</span>")
-		return
-
 	var/datum/food_processor_process/P = select_recipe(O)
 	if(P)
 		user.visible_message("[user] put [O] into [src].", \
 			"You put [O] into [src].")
 		user.drop_item()
-		O.loc = src
+		O.forceMove(src)
 		return 1
 	else
 		if(user.a_intent != INTENT_HARM)
@@ -292,14 +279,14 @@
 
 /obj/machinery/processor/proc/empty()
 	for (var/obj/O in src)
-		O.loc = src.loc
+		O.forceMove(src.loc)
 	for (var/mob/M in src)
-		M.loc = src.loc
+		M.forceMove(src.loc)
 	return
 
 /obj/machinery/processor/slime
 	name = "Slime processor"
-	desc = "An industrial grinder with a sSSticker saying appropriated for science department. Keep hands clear of intake area while operating."
+	desc = "An industrial grinder with a sticker saying appropriated for science department. Keep hands clear of intake area while operating."
 
 /obj/machinery/processor/slime/New()
 	..()

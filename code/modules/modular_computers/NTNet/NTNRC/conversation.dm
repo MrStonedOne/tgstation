@@ -1,3 +1,5 @@
+var/global/static/ntnrc_uid = 0
+
 /datum/ntnet_conversation
 	var/id = null
 	var/title = "Untitled Conversation"
@@ -5,17 +7,17 @@
 	var/list/messages = list()
 	var/list/clients = list()
 	var/password
-	var/static/ntnrc_uid = 0
 
 /datum/ntnet_conversation/New()
-	id = ntnrc_uid++
-	if(GLOB.ntnet_global)
-		GLOB.ntnet_global.chat_channels.Add(src)
+	id = ntnrc_uid
+	ntnrc_uid++
+	if(ntnet_global)
+		ntnet_global.chat_channels.Add(src)
 	..()
 
 /datum/ntnet_conversation/Destroy()
-	if(GLOB.ntnet_global)
-		GLOB.ntnet_global.chat_channels.Remove(src)
+	if(ntnet_global)
+		ntnet_global.chat_channels.Remove(src)
 	return ..()
 
 /datum/ntnet_conversation/proc/add_message(message, username)

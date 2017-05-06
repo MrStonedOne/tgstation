@@ -1,8 +1,4 @@
-GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/effects/fire.dmi', "fire"))
-
-GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
-// if true, everyone item when created will have its name changed to be
-// more... RPG-like.
+var/global/image/fire_overlay = image("icon" = 'icons/effects/fire.dmi', "icon_state" = "fire")
 
 /obj/item
 	name = "item"
@@ -94,7 +90,6 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 	var/block_chance = 0
 	var/hit_reaction_chance = 0 //If you want to have something unrelated to blocking/armour piercing etc. Maybe not needed, but trying to think ahead/allow more freedom
-	var/reach = 1 //In tiles, how far this weapon can reach; 1 for adjacent, which is default
 
 	//The list of slots by priority. equip_to_appropriate_slot() uses this list. Doesn't matter if a mob type doesn't have a slot.
 	var/list/slot_equipment_priority = null // for default list, see /mob/proc/equip_to_appropriate_slot()
@@ -103,27 +98,20 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	// non-clothing items
 	var/datum/dog_fashion/dog_fashion = null
 
-	var/datum/rpg_loot/rpg_loot = null
-
-/obj/item/Initialize()
+/obj/item/New()
 	if (!materials)
 		materials = list()
-	. = ..()
+	..()
 	for(var/path in actions_types)
 		new path(src)
 	actions_types = null
 
-	if(GLOB.rpg_loot_items)
-		rpg_loot = new(src)
-
 /obj/item/Destroy()
-	flags &= ~DROPDEL	//prevent reqdels
 	if(ismob(loc))
 		var/mob/m = loc
-		m.temporarilyRemoveItemFromInventory(src, TRUE)
+		m.unEquip(src, 1)
 	for(var/X in actions)
 		qdel(X)
-	QDEL_NULL(rpg_loot)
 	return ..()
 
 /obj/item/device
@@ -159,9 +147,9 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 	var/turf/T = src.loc
 
-	src.loc = null
+	src.forceMove(null)
 
-	src.loc = T
+	src.forceMove(T)
 
 /obj/item/examine(mob/user) //This might be spammy. Remove?
 	..()
@@ -171,7 +159,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	else
 		pronoun = "It is"
 	var/size = weightclass2text(src.w_class)
-	to_chat(user, "[pronoun] a [size] item." )
+	to_chat(user, "[pronoun] a [size] item.")//e.g. They are a small item. or It is a bulky item.
+
 
 	if(user.research_scanner) //Mob has a research scanner active.
 		var/msg = "*--------* <BR>"
@@ -245,10 +234,9 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		var/obj/item/weapon/storage/S = loc
 		S.remove_from_storage(src, user.loc)
 
-	if(throwing)
-		throwing.finalize(FALSE)
+	throwing = 0
 	if(loc == user)
-		if(!user.dropItemToGround(src))
+		if(!user.unEquip(src))
 			return
 
 	pickup(user)
@@ -267,10 +255,9 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		var/obj/item/weapon/storage/S = loc
 		S.remove_from_storage(src, user.loc)
 
-	if(throwing)
-		throwing.finalize(FALSE)
+	throwing = 0
 	if(loc == user)
-		if(!user.dropItemToGround(src))
+		if(!user.unEquip(src))
 			return
 
 	pickup(user)
@@ -283,7 +270,7 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 	if(!A.has_fine_manipulation)
 		if(src in A.contents) // To stop Aliens having items stuck in their pockets
-			A.dropItemToGround(src)
+			A.unEquip(src)
 		to_chat(user, "<span class='warning'>Your claws aren't capable of such fine manipulation!</span>")
 		return
 	attack_paw(A)
@@ -302,54 +289,43 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 // I have cleaned it up a little, but it could probably use more.  -Sayu
 // The lack of ..() is intentional, do not add one
 /obj/item/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W,/obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = W
-		if(S.use_to_pickup)
-			if(S.collection_mode) //Mode is set to collect multiple items on a tile and we clicked on a valid one.
-				if(isturf(loc))
-					var/list/rejections = list()
+	if(unique_rename && istype(W, /obj/item/weapon/pen))
+		rewrite(user)
+	else
+		if(istype(W,/obj/item/weapon/storage))
+			var/obj/item/weapon/storage/S = W
+			if(S.use_to_pickup)
+				if(S.collection_mode) //Mode is set to collect multiple items on a tile and we clicked on a valid one.
+					if(isturf(src.loc))
+						var/list/rejections = list()
+						var/success = 0
+						var/failure = 0
 
-					var/list/things = loc.contents.Copy()
-					if (S.collection_mode == 2)
-						things = typecache_filter_list(things, typecacheof(type))
+						for(var/obj/item/I in src.loc)
+							if(S.collection_mode == 2 && !istype(I,src.type)) // We're only picking up items of the target type
+								failure = 1
+								continue
+							if(I.type in rejections) // To limit bag spamming: any given type only complains once
+								continue
+							if(!S.can_be_inserted(I, stop_messages = 1))	// Note can_be_inserted still makes noise when the answer is no
+								if(S.contents.len >= S.storage_slots)
+									break
+								rejections += I.type	// therefore full bags are still a little spammy
+								failure = 1
+								continue
 
-					var/len = things.len
-					if(!len)
-						to_chat(user, "<span class='notice'>You failed to pick up anything with [S].</span>")
-						return
-					var/datum/progressbar/progress = new(user, len, loc)
+							success = 1
+							S.handle_item_insertion(I, 1)	//The 1 stops the "You put the [src] into [S]" insertion message from being displayed.
+						if(success && !failure)
+							to_chat(user, "<span class='notice'>You put everything [S.preposition] [S].</span>")
+						else if(success)
+							to_chat(user, "<span class='notice'>You put some things [S.preposition] [S].</span>")
+						else
+							to_chat(user, "<span class='warning'>You fail to pick anything up with [S]!</span>")
 
-					while (do_after(user, 10, TRUE, S, FALSE, CALLBACK(src, .proc/handle_mass_pickup, S, things, loc, rejections, progress)))
-						sleep(1)
+				else if(S.can_be_inserted(src))
+					S.handle_item_insertion(src)
 
-					qdel(progress)
-
-					to_chat(user, "<span class='notice'>You put everything you could [S.preposition] [S].</span>")
-
-			else if(S.can_be_inserted(src))
-				S.handle_item_insertion(src)
-
-/obj/item/proc/handle_mass_pickup(obj/item/weapon/storage/S, list/things, atom/thing_loc, list/rejections, datum/progressbar/progress)
-	for(var/obj/item/I in things)
-		things -= I
-		if(I.loc != thing_loc)
-			continue
-		if(I.type in rejections) // To limit bag spamming: any given type only complains once
-			continue
-		if(!S.can_be_inserted(I, stop_messages = TRUE))	// Note can_be_inserted still makes noise when the answer is no
-			if(S.contents.len >= S.storage_slots)
-				break
-			rejections += I.type	// therefore full bags are still a little spammy
-			continue
-
-		S.handle_item_insertion(I, TRUE)	//The 1 stops the "You put the [src] into [S]" insertion message from being displayed.
-
-		if (TICK_CHECK)
-			progress.update(progress.goal - things.len)
-			return TRUE
-
-	progress.update(progress.goal - things.len)
-	return FALSE
 
 // afterattack() and attack() prototypes moved to _onclick/item_attack.dm for consistency
 
@@ -359,7 +335,7 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		return 1
 	return 0
 
-/obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language)
+/obj/item/proc/talk_into(mob/M, input, channel, spans)
 	return ITALICS | REDUCE_RANGE
 
 /obj/item/proc/dropped(mob/user)
@@ -367,6 +343,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		var/datum/action/A = X
 		A.Remove(user)
 	if(DROPDEL & flags)
+		//Prevents infinite loops where Destroy() calls an objects dropped() function
+		flags &= ~DROPDEL
 		qdel(src)
 
 // called just as an item is picked up (loc is not yet changed)
@@ -512,9 +490,9 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	if(.)
 		if(initial(icon) && initial(icon_state))
 			var/index = blood_splatter_index()
-			var/icon/blood_splatter_icon = GLOB.blood_splatter_icons[index]
+			var/icon/blood_splatter_icon = blood_splatter_icons[index]
 			if(blood_splatter_icon)
-				cut_overlay(blood_splatter_icon)
+				overlays -= blood_splatter_icon
 
 /obj/item/clothing/gloves/clean_blood()
 	. = ..()
@@ -527,7 +505,7 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	else ..()
 
 /obj/item/throw_impact(atom/A)
-	if(A && !QDELETED(A))
+	if(A && !qdeleted(A))
 		var/itempush = 1
 		if(w_class < 4)
 			itempush = 0 //too light to push anything
@@ -606,19 +584,17 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	return 0
 
 /obj/item/burn()
-	if(!QDELETED(src))
+	if(!qdeleted(src))
 		var/turf/T = get_turf(src)
-		var/ash_type = /obj/effect/decal/cleanable/ash
-		if(w_class == WEIGHT_CLASS_HUGE || w_class == WEIGHT_CLASS_GIGANTIC)
-			ash_type = /obj/effect/decal/cleanable/ash/large
-		var/obj/effect/decal/cleanable/ash/A = new ash_type(T)
-		A.desc += "\nLooks like this used to be \an [name] some time ago."
+		var/obj/effect/decal/cleanable/ash/A = new()
+		A.desc = "Looks like this used to be a [name] some time ago."
+		A.forceMove(T) //so the ash decal is deleted if on top of lava.
 		..()
 
 /obj/item/acid_melt()
-	if(!QDELETED(src))
+	if(!qdeleted(src))
 		var/turf/T = get_turf(src)
-		var/obj/effect/decal/cleanable/molten_object/MO = new(T)
+		var/obj/effect/decal/cleanable/molten_object/MO = new (T)
 		MO.pixel_x = rand(-16,16)
 		MO.pixel_y = rand(-16,16)
 		MO.desc = "Looks like this was \an [src] some time ago."

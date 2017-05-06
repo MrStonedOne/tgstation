@@ -50,7 +50,7 @@
 		S = new /obj/item/solar_assembly(src)
 		S.glass_type = /obj/item/stack/sheet/glass
 		S.anchored = 1
-	S.loc = src
+	S.forceMove(src)
 	if(S.glass_type == /obj/item/stack/sheet/rglass) //if the panel is in reinforced glass
 		max_integrity *= 2 								 //this need to be placed here, because panels already on the map don't have an assembly linked to
 		obj_integrity = max_integrity
@@ -103,9 +103,9 @@
 	..()
 	cut_overlays()
 	if(stat & BROKEN)
-		add_overlay(mutable_appearance(icon, "solar_panel-b", FLY_LAYER))
+		add_overlay(image('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER))
 	else
-		add_overlay(mutable_appearance(icon, "solar_panel", FLY_LAYER))
+		add_overlay(image('icons/obj/power.dmi', icon_state = "solar_panel", layer = FLY_LAYER))
 		src.setDir(angle2dir(adir))
 
 //calculates the fraction of the sunlight that the panel recieves
@@ -281,10 +281,11 @@
 	var/obj/machinery/power/tracker/connected_tracker = null
 	var/list/connected_panels = list()
 
-/obj/machinery/power/solar_control/Initialize()
-	. = ..()
-	if(powernet)
-		set_panels(currentdir)
+
+/obj/machinery/power/solar_control/New()
+	..()
+	if(ticker)
+		initialize()
 	connect_to_network()
 
 /obj/machinery/power/solar_control/Destroy()
@@ -334,6 +335,12 @@
 	set_panels(currentdir)
 	updateDialog()
 
+
+/obj/machinery/power/solar_control/initialize()
+	..()
+	if(!powernet) return
+	set_panels(currentdir)
+
 /obj/machinery/power/solar_control/update_icon()
 	cut_overlays()
 	if(stat & NOPOWER)
@@ -345,11 +352,10 @@
 	else
 		add_overlay(icon_screen)
 	if(currentdir > -1)
-		setDir(angle2dir(currentdir))
-		add_overlay(mutable_appearance(icon, "solcon-o", FLY_LAYER))
+		add_overlay(image('icons/obj/computer.dmi', "solcon-o", FLY_LAYER, angle2dir(currentdir)))
 
 /obj/machinery/power/solar_control/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-												datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+												datum/tgui/master_ui = null, datum/ui_state/state = default_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "solar_control", name, 500, 400, master_ui, state)
@@ -418,7 +424,7 @@
 				new /obj/item/weapon/shard( src.loc )
 				var/obj/item/weapon/circuitboard/computer/solar_control/M = new /obj/item/weapon/circuitboard/computer/solar_control( A )
 				for (var/obj/C in src)
-					C.loc = src.loc
+					C.forceMove(src.loc)
 				A.circuit = M
 				A.state = 3
 				A.icon_state = "3"
@@ -429,7 +435,7 @@
 				var/obj/structure/frame/computer/A = new /obj/structure/frame/computer( src.loc )
 				var/obj/item/weapon/circuitboard/computer/solar_control/M = new /obj/item/weapon/circuitboard/computer/solar_control( A )
 				for (var/obj/C in src)
-					C.loc = src.loc
+					C.forceMove(src.loc)
 				A.circuit = M
 				A.state = 4
 				A.icon_state = "4"

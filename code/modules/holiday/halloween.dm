@@ -129,7 +129,7 @@
 	layer = 4
 	var/timer = 0
 
-/mob/living/simple_animal/shade/howling_ghost/Initialize()
+/mob/living/simple_animal/shade/howling_ghost/New()
 	..()
 	icon_state = pick("ghost","ghostian","ghostian2","ghostking","ghost1","ghost2")
 	icon_living = icon_state
@@ -146,7 +146,7 @@
 		timer = rand(1,15)
 
 /mob/living/simple_animal/shade/howling_ghost/proc/EtherealMove(direction)
-	loc = get_step(src, direction)
+	forceMove(get_step(src, direction))
 	setDir(direction)
 
 /mob/living/simple_animal/shade/howling_ghost/proc/roam()
@@ -193,7 +193,7 @@
 	unsuitable_atmos_damage = 0
 	var/timer
 
-/mob/living/simple_animal/hostile/retaliate/clown/insane/Initialize()
+/mob/living/simple_animal/hostile/retaliate/clown/insane/New()
 	..()
 	timer = rand(5,15)
 	status_flags = (status_flags | GODMODE)
@@ -220,7 +220,7 @@
 		timer = rand(5,15)
 		playsound(M.loc, pick('sound/spookoween/scary_horn.ogg','sound/spookoween/scary_horn2.ogg', 'sound/spookoween/scary_horn3.ogg'), 300, 1)
 		spawn(12)
-			loc = M.loc
+			forceMove(M.loc)
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/MoveToTarget()
 	stalk(target)

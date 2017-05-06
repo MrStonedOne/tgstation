@@ -106,8 +106,6 @@
 
 /obj/item/weapon/twohanded/equip_to_best_slot(mob/M)
 	if(..())
-		if(istype(src, /obj/item/weapon/twohanded/required))
-			return // unwield forces twohanded-required items to be dropped.
 		unwield(M)
 		return
 
@@ -138,7 +136,7 @@
 	var/obj/item/weapon/twohanded/O = user.get_inactive_held_item()
 	if (istype(O) && !istype(O, /obj/item/weapon/twohanded/offhand/))		//If you have a proper item in your other hand that the offhand is for, do nothing. This should never happen.
 		return
-	if (QDELETED(src))
+	if (qdeleted(src))
 		return
 	qdel(src)																//If it's another offhand, or literally anything else, qdel. If I knew how to add logging messages I'd put one here.
 
@@ -171,8 +169,8 @@
 	..()
 	var/slotbit = slotdefine2slotbit(slot)
 	if(slot_flags & slotbit)
-		var/datum/O = user.is_holding_item_of_type(/obj/item/weapon/twohanded/offhand)
-		if(!O || QDELETED(O))
+		var/O = user.is_holding_item_of_type(/obj/item/weapon/twohanded/offhand)
+		if(!O || qdeleted(O))
 			return
 		qdel(O)
 		return
@@ -184,13 +182,13 @@
 /obj/item/weapon/twohanded/required/wield(mob/living/carbon/user)
 	..()
 	if(!wielded)
-		user.dropItemToGround(src)
+		user.unEquip(src)
 
 /obj/item/weapon/twohanded/required/unwield(mob/living/carbon/user, show_message = TRUE)
 	if(show_message)
 		to_chat(user, "<span class='notice'>You drop [src].</span>")
 	..(user, FALSE)
-	user.dropItemToGround(src)
+	user.unEquip(src)
 
 /*
  * Fireaxe
@@ -254,7 +252,6 @@
 	armour_penetration = 35
 	origin_tech = "magnets=4;syndicate=5"
 	item_color = "green"
-	light_color = "#00ff00"//green
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	block_chance = 75
 	obj_integrity = 200
@@ -262,22 +259,10 @@
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 100, acid = 70)
 	resistance_flags = FIRE_PROOF
 	var/hacked = 0
-	var/brightness_on = 6//TWICE AS BRIGHT AS A REGULAR ESWORD
-	var/list/possible_colors = list("red", "blue", "green", "purple")
 
-/obj/item/weapon/twohanded/dualsaber/Initialize()
+/obj/item/weapon/twohanded/dualsaber/New()
 	..()
-	if(LAZYLEN(possible_colors))
-		item_color = pick(possible_colors)
-		switch(item_color)
-			if("red")
-				light_color = LIGHT_COLOR_RED
-			if("green")
-				light_color = LIGHT_COLOR_GREEN
-			if("blue")
-				light_color = LIGHT_COLOR_LIGHT_CYAN
-			if("purple")
-				light_color = LIGHT_COLOR_LAVENDER
+	item_color = pick("red", "blue", "green", "purple")
 
 /obj/item/weapon/twohanded/dualsaber/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -301,12 +286,12 @@
 		impale(user)
 		return
 	if((wielded) && prob(50))
-		INVOKE_ASYNC(src, .proc/jedi_spin, user)
+		addtimer(CALLBACK(src, .proc/jedi_spin, user), 0, TIMER_UNIQUE)
 
 /obj/item/weapon/twohanded/dualsaber/proc/jedi_spin(mob/living/user)
-	for(var/i in list(NORTH,SOUTH,EAST,WEST,EAST,SOUTH,NORTH,SOUTH,EAST,WEST,EAST,SOUTH))
+	for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2))
 		user.setDir(i)
-		if(i == WEST)
+		if(i == 8)
 			user.emote("flip")
 		sleep(1)
 
@@ -338,7 +323,6 @@
 		w_class = w_class_on
 		hitsound = 'sound/weapons/blade1.ogg'
 		START_PROCESSING(SSobj, src)
-		set_light(brightness_on)
 
 /obj/item/weapon/twohanded/dualsaber/unwield() //Specific unwield () to switch hitsounds.
 	sharpness = initial(sharpness)
@@ -346,12 +330,9 @@
 	..()
 	hitsound = "swing_hit"
 	STOP_PROCESSING(SSobj, src)
-	set_light(0)
 
 /obj/item/weapon/twohanded/dualsaber/process()
 	if(wielded)
-		if(hacked)
-			light_color = pick(LIGHT_COLOR_RED, LIGHT_COLOR_GREEN, LIGHT_COLOR_LIGHT_CYAN, LIGHT_COLOR_LAVENDER)
 		open_flame()
 	else
 		STOP_PROCESSING(SSobj, src)
@@ -373,19 +354,13 @@
 	playsound(loc, hitsound, get_clamped_volume(), 1, -1)
 	add_fingerprint(user)
 	// Light your candles while spinning around the room
-	INVOKE_ASYNC(src, .proc/jedi_spin, user)
+	addtimer(CALLBACK(src, .proc/jedi_spin, user), 0, TIMER_UNIQUE)
 
-/obj/item/weapon/twohanded/dualsaber/green
-	possible_colors = list("green")
+/obj/item/weapon/twohanded/dualsaber/green/New()
+	item_color = "green"
 
-/obj/item/weapon/twohanded/dualsaber/red
-	possible_colors = list("red")
-
-/obj/item/weapon/twohanded/dualsaber/blue
-	possible_colors = list("blue")
-
-/obj/item/weapon/twohanded/dualsaber/purple
-	possible_colors = list("purple")
+/obj/item/weapon/twohanded/dualsaber/red/New()
+	item_color = "red"
 
 /obj/item/weapon/twohanded/dualsaber/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/device/multitool))
@@ -399,85 +374,10 @@
 	else
 		return ..()
 
-//spears
-/obj/item/weapon/twohanded/spear
-	icon_state = "spearglass0"
-	name = "spear"
-	desc = "A haphazardly-constructed yet still deadly weapon of ancient design."
-	force = 10
-	w_class = WEIGHT_CLASS_BULKY
-	slot_flags = SLOT_BACK
-	force_unwielded = 10
-	force_wielded = 18
-	throwforce = 20
-	throw_speed = 4
-	embedded_impact_pain_multiplier = 3
-	armour_penetration = 10
-	materials = list(MAT_METAL=1150, MAT_GLASS=2075)
-	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb = list("attacked", "poked", "jabbed", "torn", "gored")
-	sharpness = IS_SHARP
-	obj_integrity = 200
-	max_integrity = 200
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 50, acid = 30)
-	var/obj/item/weapon/grenade/explosive = null
-	var/war_cry = "AAAAARGH!!!"
-
-/obj/item/weapon/twohanded/spear/update_icon()
-	if(explosive)
-		icon_state = "spearbomb[wielded]"
-	else
-		icon_state = "spearglass[wielded]"
-
-/obj/item/weapon/twohanded/spear/afterattack(atom/movable/AM, mob/user, proximity)
-	if(!proximity)
-		return
-	if(isopenturf(AM)) //So you can actually melee with it
-		return
-	if(explosive && wielded)
-		user.say("[war_cry]")
-		explosive.loc = AM
-		explosive.prime()
-		qdel(src)
-
- //THIS MIGHT BE UNBALANCED SO I DUNNO // it totally is.
-/obj/item/weapon/twohanded/spear/throw_impact(atom/target)
-	. = ..()
-	if(!.) //not caught
-		if(explosive)
-			explosive.prime()
-			qdel(src)
-
-/obj/item/weapon/twohanded/spear/AltClick()
-	..()
-	if(!explosive)
-		return
-	if(ismob(loc))
-		var/mob/M = loc
-		var/input = stripped_input(M,"What do you want your war cry to be? You will shout it when you hit someone in melee.", ,"", 50)
-		if(input)
-			src.war_cry = input
-
-/obj/item/weapon/twohanded/spear/CheckParts(list/parts_list)
-	var/obj/item/weapon/twohanded/spear/S = locate() in parts_list
-	if(S)
-		if(S.explosive)
-			S.explosive.forceMove(get_turf(src))
-			S.explosive = null
-		parts_list -= S
-		qdel(S)
-	..()
-	var/obj/item/weapon/grenade/G = locate() in contents
-	if(G)
-		explosive = G
-		name = "explosive lance"
-		desc = "A makeshift spear with [G] attached to it. Alt+click on the spear to set your war cry!"
-	update_icon()
-
 // CHAINSAW
 /obj/item/weapon/twohanded/required/chainsaw
 	name = "chainsaw"
-	desc = "A versatile power tool. Useful for limbing trees and delimbing humans."
+	desc = "A versatile power tool. Useful for limbing trees and delimbing both humans and demons."
 	icon_state = "chainsaw_off"
 	flags = CONDUCT
 	force = 13
@@ -525,7 +425,7 @@
 /obj/item/weapon/twohanded/required/chainsaw/doomslayer/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance, damage, attack_type)
 	if(attack_type == PROJECTILE_ATTACK)
 		owner.visible_message("<span class='danger'>Ranged attacks just make [owner] angrier!</span>")
-		playsound(src, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, 1)
+		playsound(src, pick("sound/weapons/bulletflyby.ogg","sound/weapons/bulletflyby2.ogg","sound/weapons/bulletflyby3.ogg"), 75, 1)
 		return 1
 	return 0
 
@@ -580,9 +480,6 @@
 	force_unwielded = 19
 	force_wielded = 25
 
-/obj/item/weapon/twohanded/pitchfork/demonic/Initialize()
-	set_light(3,6,LIGHT_COLOR_RED)
-
 /obj/item/weapon/twohanded/pitchfork/demonic/greater
 	force = 24
 	throwforce = 50
@@ -620,17 +517,6 @@
 		user.apply_damage(rand(force/2, force), BURN, pick("l_arm", "r_arm"))
 	..()
 
-/obj/item/weapon/twohanded/pitchfork/demonic/ascended/afterattack(atom/target, mob/user, proximity)
-	if(!proximity || !wielded)
-		return
-	if(istype(target, /turf/closed/wall))
-		var/turf/closed/wall/W = target
-		user.visible_message("<span class='danger'>[user] blasts \the [target] with \the [src]!</span>")
-		playsound(target, 'sound/magic/Disintegrate.ogg', 100, 1)
-		W.break_wall()
-		return 1
-	..()
-
 //HF blade
 
 /obj/item/weapon/twohanded/vibro_weapon
@@ -656,7 +542,7 @@
 		if(prob(final_block_chance))
 			if(attack_type == PROJECTILE_ATTACK)
 				owner.visible_message("<span class='danger'>[owner] deflects [attack_text] with [src]!</span>")
-				playsound(src, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, 1)
+				playsound(src, pick("sound/weapons/bulletflyby.ogg","sound/weapons/bulletflyby2.ogg","sound/weapons/bulletflyby3.ogg"), 75, 1)
 				return 1
 			else
 				owner.visible_message("<span class='danger'>[owner] parries [attack_text] with [src]!</span>")
@@ -743,7 +629,7 @@
 	if(source.z == ZLEVEL_STATION && get_dist(turfhit, source) < maxdist || source.z != ZLEVEL_STATION)
 		..()
 		if(do_after_mob(user, src, 5, uninterruptible = 1, progress = 0))
-			if(QDELETED(src))
+			if(qdeleted(src))
 				return
 			var/turf/landing = get_turf(src)
 			if (loc != landing)

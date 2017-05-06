@@ -27,10 +27,7 @@
 			for(var/path in possible_shapes)
 				var/mob/living/simple_animal/A = path
 				animal_list[initial(A.name)] = path
-			var/new_shapeshift_type = input(M, "Choose Your Animal Form!", "It's Morphing Time!", null) as null|anything in animal_list
-			if(shapeshift_type)
-				return
-			shapeshift_type = new_shapeshift_type
+			shapeshift_type = input(M, "Choose Your Animal Form!", "It's Morphing Time!", null) as anything in animal_list
 			if(!shapeshift_type) //If you aren't gonna decide I am!
 				shapeshift_type = pick(animal_list)
 			shapeshift_type = animal_list[shapeshift_type]
@@ -46,7 +43,7 @@
 			return
 
 	var/mob/living/shape = new shapeshift_type(caster.loc)
-	caster.loc = shape
+	caster.forceMove(shape)
 	caster.status_flags |= GODMODE
 
 	current_shapes |= shape
@@ -64,7 +61,7 @@
 			break
 	if(!caster)
 		return
-	caster.loc = shape.loc
+	caster.forceMove(shape.loc)
 	caster.status_flags &= ~GODMODE
 
 	clothes_req = initial(clothes_req)

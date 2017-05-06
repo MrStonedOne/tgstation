@@ -43,14 +43,18 @@
 	..()
 	update_icon()
 
+/obj/mecha/working/ripley/mmi_moved_inside(obj/item/device/mmi/mmi_as_oc,mob/user)
+	..()
+	update_icon()
+
 /obj/mecha/working/ripley/update_icon()
 	..()
 	if (hides)
-		cut_overlays()
+		overlays = null
 		if(hides < 3)
-			add_overlay(occupant ? "ripley-g" : "ripley-g-open")
+			add_overlay(image("icon" = "mecha.dmi", "icon_state" = occupant ? "ripley-g" : "ripley-g-open"))
 		else
-			add_overlay(occupant ? "ripley-g-full" : "ripley-g-full-open")
+			add_overlay(image("icon" = "mecha.dmi", "icon_state" = occupant ? "ripley-g-full" : "ripley-g-full-open"))
 
 
 /obj/mecha/working/ripley/firefighter
@@ -170,7 +174,7 @@
 		if(!user || user.stat != CONSCIOUS || user.loc != src || O.loc != src )
 			return
 		to_chat(user, "<span class='notice'>You successfully pushed [O] out of [src]!</span>")
-		O.loc = loc
+		O.forceMove(loc)
 		cargo -= O
 	else
 		if(user.loc == src) //so we don't get the message if we resisted multiple times and succeeded.

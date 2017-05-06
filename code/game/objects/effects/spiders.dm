@@ -30,7 +30,7 @@
 /obj/structure/spider/stickyweb
 	icon_state = "stickyweb1"
 
-/obj/structure/spider/stickyweb/Initialize()
+/obj/structure/spider/stickyweb/New()
 	if(prob(50))
 		icon_state = "stickyweb2"
 	. = ..()
@@ -57,7 +57,7 @@
 	var/poison_per_bite = 5
 	var/list/faction = list("spiders")
 
-/obj/structure/spider/eggcluster/Initialize()
+/obj/structure/spider/eggcluster/New()
 	pixel_x = rand(3,-3)
 	pixel_y = rand(3,-3)
 	START_PROCESSING(SSobj, src)
@@ -92,7 +92,7 @@
 	var/poison_per_bite = 5
 	var/list/faction = list("spiders")
 
-/obj/structure/spider/spiderling/Initialize()
+/obj/structure/spider/spiderling/New()
 	pixel_x = rand(6,-6)
 	pixel_y = rand(6,-6)
 	START_PROCESSING(SSobj, src)
@@ -106,7 +106,7 @@
 
 /obj/structure/spider/spiderling/Bump(atom/user)
 	if(istype(user, /obj/structure/table))
-		src.loc = user.loc
+		src.forceMove(user.loc)
 	else
 		..()
 
@@ -130,12 +130,12 @@
 								"<span class='italics'>You hear something scampering through the ventilation ducts.</span>")
 
 			spawn(rand(20,60))
-				loc = exit_vent
+				forceMove(exit_vent)
 				var/travel_time = round(get_dist(loc, exit_vent.loc) / 2)
 				spawn(travel_time)
 
 					if(!exit_vent || exit_vent.welded)
-						loc = entry_vent
+						forceMove(entry_vent)
 						entry_vent = null
 						return
 
@@ -144,10 +144,10 @@
 					sleep(travel_time)
 
 					if(!exit_vent || exit_vent.welded)
-						loc = entry_vent
+						forceMove(entry_vent)
 						entry_vent = null
 						return
-					loc = exit_vent.loc
+					forceMove(exit_vent.loc)
 					entry_vent = null
 					var/area/new_area = get_area(loc)
 					if(new_area)
@@ -190,7 +190,7 @@
 	icon_state = "cocoon1"
 	obj_integrity = 60
 
-/obj/structure/spider/cocoon/Initialize()
+/obj/structure/spider/cocoon/New()
 	icon_state = pick("cocoon1","cocoon2","cocoon3")
 	. = ..()
 

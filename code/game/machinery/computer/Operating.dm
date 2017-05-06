@@ -7,14 +7,17 @@
 	var/mob/living/carbon/human/patient = null
 	var/obj/structure/table/optable/table = null
 
-	light_color = LIGHT_COLOR_BLUE
 
-/obj/machinery/computer/operating/Initialize()
+/obj/machinery/computer/operating/New()
 	..()
+	if(ticker)
+		find_table()
+
+/obj/machinery/computer/operating/initialize()
 	find_table()
 
 /obj/machinery/computer/operating/proc/find_table()
-	for(var/dir in GLOB.cardinal)
+	for(var/dir in cardinal)
 		table = locate(/obj/structure/table/optable, get_step(src, dir))
 		if(table)
 			table.computer = src

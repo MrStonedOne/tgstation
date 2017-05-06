@@ -1,3 +1,6 @@
+// Global var to track modular computers
+var/list/global_modular_computers = list()
+
 // Modular Computer - device that runs various programs and operates with hardware
 // DO NOT SPAWN THIS TYPE. Use /laptop/ or /console/ instead.
 /obj/machinery/modular_computer
@@ -31,6 +34,7 @@
 	..()
 	cpu = new(src)
 	cpu.physical = src
+	global_modular_computers.Add(src)
 
 /obj/machinery/modular_computer/Destroy()
 	if(cpu)
@@ -60,7 +64,7 @@
 		if(cpu.active_program)
 			add_overlay(cpu.active_program.program_icon_state ? cpu.active_program.program_icon_state : screen_icon_state_menu)
 		else
-			add_overlay(screen_icon_state_menu)
+			overlays.Add(screen_icon_state_menu)
 
 	if(cpu && cpu.obj_integrity <= cpu.integrity_failure)
 		add_overlay("bsod")
@@ -127,7 +131,7 @@
 	update_icon()
 
 /obj/machinery/modular_computer/attackby(var/obj/item/weapon/W as obj, mob/user)
-	if(cpu && !(flags & NODECONSTRUCT))
+	if(cpu)
 		return cpu.attackby(W, user)
 	return ..()
 
@@ -137,7 +141,6 @@
 /obj/machinery/modular_computer/ex_act(severity)
 	if(cpu)
 		cpu.ex_act(severity)
-	..()
 
 // EMPs are similar to explosions, but don't cause physical damage to the casing. Instead they screw up the components
 /obj/machinery/modular_computer/emp_act(severity)

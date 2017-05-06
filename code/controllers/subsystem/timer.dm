@@ -1,81 +1,59 @@
 #define BUCKET_LEN (world.fps*1*60) //how many ticks should we keep in the bucket. (1 minutes worth)
 #define BUCKET_POS(timer) (round((timer.timeToRun - SStimer.head_offset) / world.tick_lag) + 1)
+var/datum/subsystem/timer/SStimer
 
-SUBSYSTEM_DEF(timer)
+/datum/subsystem/timer
 	name = "Timer"
 	wait = 1 //SS_TICKER subsystem, so wait is in ticks
-	init_order = INIT_ORDER_TIMER
+	init_order = 1
+	display_order = 3
 
 	flags = SS_FIRE_IN_LOBBY|SS_TICKER|SS_NO_INIT
 
-	var/list/datum/timedevent/processing = list()
-	var/list/hashes = list()
+	var/list/datum/timedevent/processing
+	var/list/hashes
 
 	var/head_offset = 0 //world.time of the first entry in the the bucket.
 	var/practical_offset = 0 //index of the first non-empty item in the bucket.
 	var/bucket_resolution = 0 //world.tick_lag the bucket was designed for
 	var/bucket_count = 0 //how many timers are in the buckets
 
-	var/list/bucket_list = list() //list of buckets, each bucket holds every timer that has to run that byond tick.
+	var/list/bucket_list //list of buckets, each bucket holds every timer that has to run that byond tick.
 
-	var/list/timer_id_dict = list() //list of all active timers assoicated to their timer id (for easy lookup)
+	var/list/timer_id_dict //list of all active timers assoicated to their timer id (for easy lookup)
 
-	var/list/clienttime_timers = list() //special snowflake timers that run on fancy pansy "client time"
+	var/list/clienttime_timers //special snowflake timers that run on fancy pansy "client time"
 
-	var/last_invoke_tick = 0
-	var/static/last_invoke_warning = 0
-	var/static/bucket_auto_reset = TRUE
 
-/datum/controller/subsystem/timer/stat_entry(msg)
+/datum/subsystem/timer/New()
+	processing = list()
+	hashes = list()
+	bucket_list = list()
+	timer_id_dict = list()
+
+	clienttime_timers = list()
+
+	NEW_SS_GLOBAL(SStimer)
+
+
+/datum/subsystem/timer/stat_entry(msg)
 	..("B:[bucket_count] P:[length(processing)] H:[length(hashes)] C:[length(clienttime_timers)]")
 
-/datum/controller/subsystem/timer/fire(resumed = FALSE)
-	var/lit = last_invoke_tick
-	var/last_check = world.time - TIMER_NO_INVOKE_WARNING
+/datum/subsystem/timer/fire(resumed = FALSE)
+	if (length(clienttime_timers))
+		for (var/thing in clienttime_timers)
+			var/datum/timedevent/ctime_timer = thing
+			if (ctime_timer.spent)
+				qdel(ctime_timer)
+				continue
+			if (ctime_timer.timeToRun <= REALTIMEOFDAY)
+				var/datum/callback/callBack = ctime_timer.callBack
+				ctime_timer.spent = TRUE
+				callBack.InvokeAsync()
+				qdel(ctime_timer)
 
-	if(!bucket_count)
-		last_invoke_tick = world.time
-
-	if(lit && lit < last_check && last_invoke_warning < last_check)
-		last_invoke_warning = world.time
-		var/msg = "No regular timers processed in the last [TIMER_NO_INVOKE_WARNING] ticks[bucket_auto_reset ? ", resetting buckets" : ""]!"
-		message_admins(msg)
-		WARNING(msg)
-		if(bucket_auto_reset)
-			bucket_resolution = 0
-		
-		log_world("Active timers at tick [world.time]:")
-		for(var/I in processing)
-			var/datum/timedevent/TE = I
-			msg = "Timer: [TE.id]: TTR: [TE.timeToRun], Flags: [TE.flags], "
-			if(TE.spent)
-				msg += "SPENT"
-			else
-				var/datum/callback/CB = TE.callBack
-				msg += "callBack: "
-				if(CB.object == GLOBAL_PROC)
-					msg += "GP: [CB.delegate]"
-				else
-					msg += "[!QDELETED(CB.object) ? CB.object : "SRC DELETED"]: [CB.delegate]("
-					var/first = TRUE
-					for(var/J in CB.arguments)
-						msg += "[first ? "" : ", "][J]"
-						first = FALSE
-					msg += ")"
-			log_world(msg)
-
-	while(length(clienttime_timers))
-		var/datum/timedevent/ctime_timer = clienttime_timers[clienttime_timers.len]
-		if (ctime_timer.timeToRun <= REALTIMEOFDAY)
-			--clienttime_timers.len
-			var/datum/callback/callBack = ctime_timer.callBack
-			ctime_timer.spent = TRUE
-			callBack.InvokeAsync()
-			qdel(ctime_timer)
-		else
-			break	//None of the rest are ready to run
-		if (MC_TICK_CHECK)
-			return
+			if (MC_TICK_CHECK)
+				return
 
 	var/static/list/spent = list()
 	var/static/datum/timedevent/timer
@@ -106,13 +84,12 @@ SUBSYSTEM_DEF(timer)
 			if (!callBack)
 				qdel(timer)
 				bucket_resolution = null //force bucket recreation
-				CRASH("Invalid timer: timer.timeToRun=[timer.timeToRun]||QDELETED(timer)=[QDELETED(timer)]||world.time=[world.time]||head_offset=[head_offset]||practical_offset=[practical_offset]||timer.spent=[timer.spent]")
+				CRASH("Invalid timer: timer.timeToRun=[timer.timeToRun]||qdeleted(timer)=[qdeleted(timer)]||world.time=[world.time]||head_offset=[head_offset]||practical_offset=[practical_offset]||timer.spent=[timer.spent]")
 
 			if (!timer.spent)
 				spent += timer
 				timer.spent = TRUE
 				callBack.InvokeAsync()
-				last_invoke_tick = world.time
 
 			timer = timer.next
 
@@ -132,7 +109,7 @@ SUBSYSTEM_DEF(timer)
 	spent.len = 0
 
 
-/datum/controller/subsystem/timer/proc/shift_buckets()
+/datum/subsystem/timer/proc/shift_buckets()
 	var/list/bucket_list = src.bucket_list
 	var/list/alltimers = list()
 	//collect the timers currently in the bucket
@@ -197,7 +174,7 @@ SUBSYSTEM_DEF(timer)
 	processing = (alltimers - timers_to_remove)
 
 
-/datum/controller/subsystem/timer/Recover()
+/datum/subsystem/timer/Recover()
 	processing |= SStimer.processing
 	hashes |= SStimer.hashes
 	timer_id_dict |= SStimer.timer_id_dict
@@ -231,24 +208,11 @@ SUBSYSTEM_DEF(timer)
 		SStimer.timer_id_dict["timerid[id]"] = src
 
 	if (callBack.object != GLOBAL_PROC)
-		LAZYADD(callBack.object.active_timers, src)
+		LAZYINITLIST(callBack.object.active_timers)
+		callBack.object.active_timers += src
 
 	if (flags & TIMER_CLIENT_TIME)
-		//sorted insert
-		var/list/ctts = SStimer.clienttime_timers
-		var/cttl = length(ctts)
-		if(cttl)
-			var/datum/timedevent/Last = ctts[cttl]
-			if(Last.timeToRun >= timeToRun)
-				ctts += src
-			else if(cttl > 1)
-				for(var/I in cttl to 1)
-					var/datum/timedevent/E = ctts[I]
-					if(E.timeToRun <= timeToRun)
-						ctts.Insert(src, I)
-						break
-		else
-			ctts += src
+		SStimer.clienttime_timers += src
 		return
 
 	//get the list of buckets
@@ -326,20 +290,18 @@ SUBSYSTEM_DEF(timer)
 	prev = null
 	return QDEL_HINT_IWILLGC
 
-/proc/addtimer(datum/callback/callback, wait, flags)
+proc/addtimer(datum/callback/callback, wait, flags)
 	if (!callback)
 		return
 
-	wait = max(wait, 0)
+	if (wait <= 0)
+		callback.InvokeAsync()
+		return
 
 	var/hash
 
 	if (flags & TIMER_UNIQUE)
-		var/list/hashlist
-		if(flags & TIMER_NO_HASH_WAIT)
-			hashlist = list(callback.object, "(\ref[callback.object])", callback.delegate, flags & TIMER_CLIENT_TIME)
-		else
-			hashlist = list(callback.object, "(\ref[callback.object])", callback.delegate, wait, flags & TIMER_CLIENT_TIME)
+		var/list/hashlist = list(callback.object, "(\ref[callback.object])", callback.delegate, wait, flags & TIMER_CLIENT_TIME)
 		hashlist += callback.arguments
 		hash = hashlist.Join("|||||||")
 

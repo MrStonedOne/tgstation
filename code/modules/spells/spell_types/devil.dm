@@ -69,7 +69,7 @@
 			to_chat(user, "<span class='notice'>[C] seems to not be sentient.  You cannot summon a contract for [C.p_them()].</span>")
 
 
-/obj/effect/proc_holder/spell/aimed/fireball/hellish
+/obj/effect/proc_holder/spell/fireball/hellish
 	name = "Hellfire"
 	desc = "This spell launches hellfire at the target."
 
@@ -80,7 +80,7 @@
 	invocation_type = "shout"
 	range = 2
 
-	projectile_type = /obj/item/projectile/magic/aoe/fireball/infernal
+	fireball_type = /obj/item/projectile/magic/fireball/infernal
 
 	action_background_icon_state = "bg_demon"
 
@@ -136,7 +136,7 @@
 	spawn_dust()
 	src.visible_message("<span class='warning'>[src] disappears in a flashfire!</span>")
 	playsound(get_turf(src), 'sound/magic/enter_blood.ogg', 100, 1, -1)
-	var/obj/effect/dummy/slaughter/holder = new /obj/effect/dummy/slaughter(loc)
+	var/obj/effect/dummy/slaughter/holder = PoolOrNew(/obj/effect/dummy/slaughter,loc)
 	src.ExtinguishMob()
 	if(buckled)
 		buckled.unbuckle_mob(src,force=1)
@@ -146,7 +146,7 @@
 		pulledby.stop_pulling()
 	if(pulling)
 		stop_pulling()
-	src.loc = holder
+	src.forceMove(holder)
 	src.holder = holder
 	src.notransform = 0
 	fakefireextinguish()
@@ -156,9 +156,9 @@
 		to_chat(src, "<span class='warning'>You're too busy to jaunt in.</span>")
 		return 0
 	fakefire()
-	src.loc = get_turf(src)
+	src.forceMove(get_turf(src))
 	src.client.eye = src
-	src.visible_message("<span class='warning'><B>[src] appears in a fiery blaze!</B>")
+	src.visible_message("<span class='warning'><B>[src] appears in a firey blaze!</B>")
 	playsound(get_turf(src), 'sound/magic/exit_blood.ogg', 100, 1, -1)
 	addtimer(CALLBACK(src, .proc/fakefireextinguish), 15, TIMER_UNIQUE)
 
@@ -191,7 +191,7 @@
 	for(var/mob/living/carbon/human/H in targets)
 		if(!H.mind)
 			continue
-		if(locate(/datum/objective/sintouched) in H.mind.objectives)
+		for(var/datum/objective/sintouched/A in H.mind.objectives)
 			continue
 		H.influenceSin()
 		H.Weaken(2)
@@ -232,12 +232,9 @@
 			var/turf/T = dancefloor_turfs[i]
 			T.ChangeTurf(dancefloor_turfs_types[i])
 	else
-		var/list/funky_turfs = RANGE_TURFS(1, user)
-		for(var/turf/closed/solid in funky_turfs)
-			to_chat(user, "<span class='warning'>You're too close to a wall.</span>")
-			return
 		dancefloor_exists = TRUE
 		var/i = 1
+		var/list/funky_turfs = RANGE_TURFS(1, user)
 		dancefloor_turfs.len = funky_turfs.len
 		dancefloor_turfs_types.len = funky_turfs.len
 		for(var/t in funky_turfs)

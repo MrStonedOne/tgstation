@@ -7,8 +7,8 @@
 	var/blood_type = null
 	var/labelled = 0
 
-/obj/item/weapon/reagent_containers/blood/Initialize()
-	. = ..()
+/obj/item/weapon/reagent_containers/blood/New()
+	..()
 	if(blood_type != null)
 		reagents.add_reagent("blood", 200, list("donor"=null,"viruses"=null,"blood_DNA"=null,"blood_type"=blood_type,"resistances"=null,"trace_chem"=null))
 		update_icon()
@@ -25,10 +25,13 @@
 
 /obj/item/weapon/reagent_containers/blood/proc/update_pack_name()
 	if(!labelled)
-		if(blood_type)
-			name = "blood pack - [blood_type]"
+		if(volume)
+			if(blood_type)
+				name = "blood pack [blood_type]"
+			else
+				name = "blood pack"
 		else
-			name = "blood pack"
+			name = "empty blood pack"
 
 /obj/item/weapon/reagent_containers/blood/update_icon()
 	var/percent = round((reagents.total_volume / volume) * 100)
@@ -40,9 +43,9 @@
 		if(51 to INFINITY)
 			icon_state = "full"
 
-/obj/item/weapon/reagent_containers/blood/random/Initialize()
+/obj/item/weapon/reagent_containers/blood/random/New()
 	blood_type = pick("A+", "A-", "B+", "B-", "O+", "O-", "L")
-	. = ..()
+	..()
 
 /obj/item/weapon/reagent_containers/blood/APlus
 	blood_type = "A+"
@@ -66,7 +69,7 @@
 	blood_type = "L"
 
 /obj/item/weapon/reagent_containers/blood/empty
-	name = "blood pack"
+	name = "empty blood pack"
 	icon_state = "empty"
 
 /obj/item/weapon/reagent_containers/blood/attackby(obj/item/I, mob/user, params)

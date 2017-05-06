@@ -44,7 +44,7 @@
 /obj/item/weapon/soap/suicide_act(mob/user)
 	user.say(";FFFFFFFFFFFFFFFFUUUUUUUDGE!!")
 	user.visible_message("<span class='suicide'>[user] lifts [src] to their mouth and gnaws on it furiously, producing a thick froth! [user.p_they(TRUE)]'ll never get that BB gun now!")
-	new /obj/effect/particle_effect/foam(loc)
+	PoolOrNew(/obj/effect/particle_effect/foam, loc)
 	return (TOXLOSS)
 
 /obj/item/weapon/soap/Crossed(AM as mob|obj)
@@ -105,7 +105,7 @@
 	throw_speed = 3
 	throw_range = 7
 	attack_verb = list("HONKED")
-	var/next_usable = 0
+	var/spam_flag = 0
 	var/honksound = 'sound/items/bikehorn.ogg'
 	var/cooldowntime = 20
 
@@ -115,15 +115,18 @@
 	return (BRUTELOSS)
 
 /obj/item/weapon/bikehorn/attack(mob/living/carbon/M, mob/living/carbon/user)
-	if(!(next_usable > world.time))
+	if(!spam_flag)
 		playsound(loc, honksound, 50, 1, -1) //plays instead of tap.ogg!
 	return ..()
 
 /obj/item/weapon/bikehorn/attack_self(mob/user)
-	if(!(next_usable > world.time))
-		next_usable = world.time + cooldowntime
+	if(!spam_flag)
+		spam_flag = 1
 		playsound(src.loc, honksound, 50, 1)
 		src.add_fingerprint(user)
+		spawn(cooldowntime)
+			spam_flag = 0
+	return
 
 /obj/item/weapon/bikehorn/Crossed(mob/living/L)
 	if(isliving(L))
@@ -153,12 +156,12 @@
 	..()
 
 /obj/item/weapon/bikehorn/golden/proc/flip_mobs(mob/living/carbon/M, mob/user)
-	if(!(next_usable > world.time))
+	if (!spam_flag)
 		var/turf/T = get_turf(src)
 		for(M in ohearers(7, T))
-			if(ishuman(M) && M.can_hear())
+			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
-				if(istype(H.ears, /obj/item/clothing/ears/earmuffs))
+				if((istype(H.ears, /obj/item/clothing/ears/earmuffs)) || H.ear_deaf)
 					continue
 			M.emote("flip")
 

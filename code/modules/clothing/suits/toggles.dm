@@ -11,9 +11,8 @@
 	..()
 
 /obj/item/clothing/suit/hooded/Destroy()
-	. = ..()
 	qdel(hood)
-	hood = null
+	return ..()
 
 /obj/item/clothing/suit/hooded/proc/MakeHood()
 	if(!hood)
@@ -38,10 +37,9 @@
 	suittoggled = 0
 	if(ishuman(hood.loc))
 		var/mob/living/carbon/H = hood.loc
-		H.transferItemToLoc(hood, src, TRUE)
+		H.unEquip(hood, 1)
 		H.update_inv_wear_suit()
-	else
-		hood.forceMove(src)
+	hood.forceMove(src)
 	for(var/X in actions)
 		var/datum/action/A = X
 		A.UpdateButtonIcon()
@@ -72,10 +70,6 @@
 
 /obj/item/clothing/head/hooded
 	var/obj/item/clothing/suit/hooded/suit
-
-/obj/item/clothing/head/hooded/Destroy()
-	suit = null
-	return ..()
 
 /obj/item/clothing/head/hooded/dropped()
 	..()
@@ -169,12 +163,11 @@
 		var/mob/living/carbon/H = helmet.loc
 		if(helmet.on)
 			helmet.attack_self(H)
-		H.transferItemToLoc(helmet, src, TRUE)
+		H.unEquip(helmet, 1)
 		H.update_inv_wear_suit()
 		to_chat(H, "<span class='notice'>The helmet on the hardsuit disengages.</span>")
 		playsound(src.loc, 'sound/mecha/mechmove03.ogg', 50, 1)
-	else
-		helmet.forceMove(src)
+	helmet.forceMove(src)
 
 /obj/item/clothing/suit/space/hardsuit/dropped()
 	..()

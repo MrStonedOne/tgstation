@@ -5,22 +5,17 @@
 	icon_state = "pussywagon"
 
 	var/obj/item/weapon/storage/bag/trash/mybag = null
-	var/floorbuffer = FALSE
-
-/obj/vehicle/janicart/Initialize(mapload)
-	. = ..()
-	update_icon()
+	var/floorbuffer = 0
 
 /obj/vehicle/janicart/Destroy()
 	if(mybag)
 		qdel(mybag)
 		mybag = null
-	. = ..()
+	return ..()
 
-/obj/vehicle/janicart/buckle_mob(mob/living/buckled_mob, force = 0, check_loc = 0)
+/obj/vehicle/janicart/buckle_mob()
 	. = ..()
 	riding_datum = new/datum/riding/janicart
-
 
 
 /obj/item/key/janitor
@@ -36,6 +31,17 @@
 	origin_tech = "materials=3;engineering=4"
 
 
+/obj/vehicle/janicart/Moved(atom/OldLoc, Dir)
+	if(floorbuffer)
+		var/turf/tile = loc
+		if(isturf(tile))
+			tile.clean_blood()
+			for(var/A in tile)
+				if(is_cleanable(A))
+					qdel(A)
+	. = ..()
+
+
 /obj/vehicle/janicart/examine(mob/user)
 	..()
 	if(floorbuffer)
@@ -49,18 +55,14 @@
 			return
 		if(!user.drop_item())
 			return
-		to_chat(user, "<span class='notice'>You hook the trashbag onto [src].</span>")
-		I.loc = src
+		to_chat(user, "<span class='notice'>You hook the trashbag onto \the [name].</span>")
+		I.forceMove(src)
 		mybag = I
 		update_icon()
 	else if(istype(I, /obj/item/janiupgrade))
-		if(floorbuffer)
-			to_chat(user, "<span class='warning'>[src] already has a floor buffer!</span>")
-			return
-		floorbuffer = TRUE
+		floorbuffer = 1
 		qdel(I)
-		to_chat(user, "<span class='notice'>You upgrade [src] with the floor buffer.</span>")
-		flags |= CLEAN_ON_MOVE
+		to_chat(user, "<span class='notice'>You upgrade \the [name] with the floor buffer.</span>")
 		update_icon()
 	else
 		return ..()
@@ -78,10 +80,7 @@
 	if(..())
 		return 1
 	else if(mybag)
-		mybag.loc = get_turf(user)
+		mybag.forceMove(get_turf(user))
 		user.put_in_hands(mybag)
 		mybag = null
 		update_icon()
-
-/obj/vehicle/janicart/upgraded
-	floorbuffer = TRUE

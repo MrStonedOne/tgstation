@@ -12,3 +12,9 @@
 /proc/format_frequency(frequency)
 	frequency = text2num(frequency)
 	return "[round(frequency / 10)].[frequency % 10]"
+
+/proc/format_encryption_key(key)
+	key = text2num(key)
+	if(length(key) > 4)
+		key = copytext(key,1,5)
+	return key

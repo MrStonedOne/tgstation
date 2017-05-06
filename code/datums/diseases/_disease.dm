@@ -26,6 +26,10 @@
 #define DANGEROUS 	"Dangerous!"
 #define BIOHAZARD	"BIOHAZARD THREAT!"
 
+
+var/list/diseases = subtypesof(/datum/disease)
+
+
 /datum/disease
 	//Flags
 	var/visibility_flags = 0

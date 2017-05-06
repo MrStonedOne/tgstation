@@ -94,9 +94,6 @@
 		return 0
 
 /obj/item/weapon/extinguisher/afterattack(atom/target, mob/user , flag)
-	// Make it so the extinguisher doesn't spray yourself when you click your inventory items
-	if (target.loc == user)
-		return
 	//TODO; Add support for reagents in water.
 	if(refilling)
 		refilling = FALSE
@@ -150,7 +147,7 @@
 
 		for(var/a=0, a<5, a++)
 			spawn(0)
-				var/obj/effect/particle_effect/water/W = new /obj/effect/particle_effect/water(get_turf(src))
+				var/obj/effect/particle_effect/water/W = PoolOrNew( /obj/effect/particle_effect/water, get_turf(src) )
 				var/turf/my_target = pick(the_targets)
 				if(precision)
 					the_targets -= my_target

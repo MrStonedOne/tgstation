@@ -11,6 +11,7 @@
 	anchored = TRUE
 	pixel_x = -16
 	resistance_flags = FIRE_PROOF
+	light_color = LIGHT_COLOR_FIRE
 	var/lit = FALSE
 
 	var/fuel_added = 0
@@ -43,7 +44,8 @@
 		var/space_remaining = MAXIMUM_BURN_TIMER - burn_time_remaining()
 		var/space_for_logs = round(space_remaining / LOG_BURN_TIMER)
 		if(space_for_logs < 1)
-			to_chat(user, "<span class='warning'>You can't fit any more of [T] in [src]!</span>")
+			to_chat(user, "<span class='warning'>You can't fit any more of [T] in \
+				[src]!</span>")
 			return
 		var/logs_used = min(space_for_logs, wood.amount)
 		wood.use(logs_used)

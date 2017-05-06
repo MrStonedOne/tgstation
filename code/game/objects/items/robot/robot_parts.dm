@@ -42,23 +42,23 @@
 /obj/item/robot_suit/proc/updateicon()
 	cut_overlays()
 	if(l_arm)
-		add_overlay("[l_arm.icon_state]+o")
+		add_overlay("l_arm+o")
 	if(r_arm)
-		add_overlay("[r_arm.icon_state]+o")
+		add_overlay("r_arm+o")
 	if(chest)
-		add_overlay("[chest.icon_state]+o")
+		add_overlay("chest+o")
 	if(l_leg)
-		add_overlay("[l_leg.icon_state]+o")
+		add_overlay("l_leg+o")
 	if(r_leg)
-		add_overlay("[r_leg.icon_state]+o")
+		add_overlay("r_leg+o")
 	if(head)
-		add_overlay("[head.icon_state]+o")
+		add_overlay("head+o")
 
 /obj/item/robot_suit/proc/check_completion()
 	if(src.l_arm && src.r_arm)
 		if(src.l_leg && src.r_leg)
 			if(src.chest && src.head)
-				SSblackbox.inc("cyborg_frames_built",1)
+				feedback_inc("cyborg_frames_built",1)
 				return 1
 	return 0
 
@@ -69,20 +69,21 @@
 		if(!l_arm && !r_arm && !l_leg && !r_leg && !chest && !head)
 			if (M.use(1))
 				var/obj/item/weapon/ed209_assembly/B = new /obj/item/weapon/ed209_assembly
-				B.loc = get_turf(src)
+				B.forceMove(get_turf(src))
 				to_chat(user, "<span class='notice'>You arm the robot frame.</span>")
-				var/holding_this = user.get_inactive_held_item()==src
-				qdel(src)
-				if (holding_this)
+				if (user.get_inactive_held_item()==src)
+					user.unEquip(src)
 					user.put_in_inactive_hand(B)
+				qdel(src)
 			else
 				to_chat(user, "<span class='warning'>You need one sheet of metal to start building ED-209!</span>")
 				return
 	else if(istype(W, /obj/item/bodypart/l_leg/robot))
 		if(src.l_leg)
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
+		W.forceMove(src)
 		W.icon_state = initial(W.icon_state)
 		W.cut_overlays()
 		src.l_leg = W
@@ -91,8 +92,9 @@
 	else if(istype(W, /obj/item/bodypart/r_leg/robot))
 		if(src.r_leg)
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
+		W.forceMove(src)
 		W.icon_state = initial(W.icon_state)
 		W.cut_overlays()
 		src.r_leg = W
@@ -101,8 +103,9 @@
 	else if(istype(W, /obj/item/bodypart/l_arm/robot))
 		if(src.l_arm)
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
+		W.forceMove(src)
 		W.icon_state = initial(W.icon_state)
 		W.cut_overlays()
 		src.l_arm = W
@@ -111,8 +114,9 @@
 	else if(istype(W, /obj/item/bodypart/r_arm/robot))
 		if(src.r_arm)
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
+		W.forceMove(src)
 		W.icon_state = initial(W.icon_state)//in case it is a dismembered robotic limb
 		W.cut_overlays()
 		src.r_arm = W
@@ -123,8 +127,9 @@
 		if(src.chest)
 			return
 		if(CH.wired && CH.cell)
-			if(!user.transferItemToLoc(CH, src))
+			if(!user.unEquip(CH))
 				return
+			CH.forceMove(src)
 			CH.icon_state = initial(CH.icon_state) //in case it is a dismembered robotic limb
 			CH.cut_overlays()
 			src.chest = CH
@@ -143,8 +148,9 @@
 		if(src.head)
 			return
 		if(HD.flash2 && HD.flash1)
-			if(!user.transferItemToLoc(HD, src))
+			if(!user.unEquip(HD))
 				return
+			HD.forceMove(src)
 			HD.icon_state = initial(HD.icon_state)//in case it is a dismembered robotic limb
 			HD.cut_overlays()
 			src.head = HD
@@ -185,7 +191,7 @@
 				to_chat(user, "<span class='warning'>This [M.name] does not seem to fit!</span>")
 				return
 
-			if(!user.temporarilyRemoveItemFromInventory(W))
+			if(!user.unEquip(W))
 				return
 
 			var/mob/living/silicon/robot/O = new /mob/living/silicon/robot(get_turf(loc))
@@ -206,7 +212,7 @@
 				lawsync = 0
 				O.connected_ai = null
 			else
-				O.notify_ai(NEW_BORG)
+				O.notify_ai(1)
 				if(forced_ai)
 					O.connected_ai = forced_ai
 			if(!lawsync)
@@ -214,7 +220,7 @@
 				if(M.laws.id == DEFAULT_AI_LAWID)
 					O.make_laws()
 
-			SSticker.mode.remove_antag_for_borging(BM.mind)
+			ticker.mode.remove_antag_for_borging(BM.mind)
 			if(!istype(M.laws, /datum/ai_laws/ratvar))
 				remove_servant_of_ratvar(BM, TRUE)
 			BM.mind.transfer_to(O)
@@ -227,7 +233,7 @@
 			O.job = "Cyborg"
 
 			O.cell = chest.cell
-			chest.cell.loc = O
+			chest.cell.forceMove(O)
 			chest.cell = null
 			W.forceMove(O)//Should fix cybros run time erroring when blown up. It got deleted before, along with the frame.
 			if(O.mmi) //we delete the mmi created by robot/New()
@@ -235,9 +241,9 @@
 			O.mmi = W //and give the real mmi to the borg.
 			O.updatename()
 
-			SSblackbox.inc("cyborg_birth",1)
+			feedback_inc("cyborg_birth",1)
 
-			forceMove(O)
+			src.forceMove(O)
 			O.robot_suit = src
 
 			if(!locomotion)
@@ -247,41 +253,6 @@
 
 		else
 			to_chat(user, "<span class='warning'>The MMI must go in after everything else!</span>")
-
-	else if(istype(W, /obj/item/borg/upgrade/ai))
-		var/obj/item/borg/upgrade/ai/M = W
-		if(check_completion())
-			if(!isturf(loc))
-				to_chat(user, "<span class='warning'>You cannot install[M], the frame has to be standing on the ground to be perfectly precise!</span>")
-				return
-			if(!user.drop_item())
-				to_chat(user, "<span class='warning'>[M] is stuck to your hand!</span>")
-				return
-			qdel(M)
-			var/mob/living/silicon/robot/O = new /mob/living/silicon/robot/shell(get_turf(src))
-
-			if(!aisync)
-				lawsync = FALSE
-				O.connected_ai = null
-			else
-				if(forced_ai)
-					O.connected_ai = forced_ai
-				O.notify_ai(AI_SHELL)
-			if(!lawsync)
-				O.lawupdate = FALSE
-				O.make_laws()
-
-
-			O.cell = chest.cell
-			chest.cell.loc = O
-			chest.cell = null
-			O.locked = panel_locked
-			O.job = "Cyborg"
-			forceMove(O)
-			O.robot_suit = src
-			if(!locomotion)
-				O.lockcharge = TRUE
-				O.update_canmove()
 
 	else if(istype(W,/obj/item/weapon/pen))
 		to_chat(user, "<span class='warning'>You need to use a multitool to name [src]!</span>")

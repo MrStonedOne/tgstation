@@ -146,10 +146,9 @@
 /obj/item/ammo_box/magazine/m556
 	name = "toploader magazine (5.56mm)"
 	icon_state = "5.56m"
-	origin_tech = "combat=5;syndicate=1"
 	ammo_type = /obj/item/ammo_casing/a556
 	caliber = "a556"
-	max_ammo = 30
+	max_ammo = 20
 	multiple_sprites = 2
 
 /obj/item/ammo_box/magazine/m12g
@@ -234,35 +233,35 @@
 
 //// SAW MAGAZINES
 
-/obj/item/ammo_box/magazine/mm195x129
-	name = "box magazine (1.95x129mm)"
+/obj/item/ammo_box/magazine/mm556x45
+	name = "box magazine (5.56x45mm)"
 	icon_state = "a762-50"
 	origin_tech = "combat=2"
-	ammo_type = /obj/item/ammo_casing/mm195x129
-	caliber = "mm195129"
+	ammo_type = /obj/item/ammo_casing/mm556x45
+	caliber = "mm55645"
 	max_ammo = 50
 
-/obj/item/ammo_box/magazine/mm195x129/bleeding
-	name = "box magazine (Bleeding 1.95x129mm)"
+/obj/item/ammo_box/magazine/mm556x45/bleeding
+	name = "box magazine (Bleeding 5.56x45mm)"
 	origin_tech = "combat=3"
-	ammo_type = /obj/item/ammo_casing/mm195x129/bleeding
+	ammo_type = /obj/item/ammo_casing/mm556x45/bleeding
 
-/obj/item/ammo_box/magazine/mm195x129/hollow
-	name = "box magazine (Hollow-Point 1.95x129mm)"
+/obj/item/ammo_box/magazine/mm556x45/hollow
+	name = "box magazine (Hollow-Point 5.56x45mm)"
 	origin_tech = "combat=3"
-	ammo_type = /obj/item/ammo_casing/mm195x129/hollow
+	ammo_type = /obj/item/ammo_casing/mm556x45/hollow
 
-/obj/item/ammo_box/magazine/mm195x129/ap
-	name = "box magazine (Armor Penetrating 1.95x129mm)"
+/obj/item/ammo_box/magazine/mm556x45/ap
+	name = "box magazine (Armor Penetrating 5.56x45mm)"
 	origin_tech = "combat=4"
-	ammo_type = /obj/item/ammo_casing/mm195x129/ap
+	ammo_type = /obj/item/ammo_casing/mm556x45/ap
 
-/obj/item/ammo_box/magazine/mm195x129/incen
-	name = "box magazine (Incendiary 1.95x129mm)"
+/obj/item/ammo_box/magazine/mm556x45/incen
+	name = "box magazine (Incendiary 5.56x45mm)"
 	origin_tech = "combat=4"
-	ammo_type = /obj/item/ammo_casing/mm195x129/incen
+	ammo_type = /obj/item/ammo_casing/mm556x45/incen
 
-/obj/item/ammo_box/magazine/mm195x129/update_icon()
+/obj/item/ammo_box/magazine/mm556x45/update_icon()
 	..()
 	icon_state = "a762-[round(ammo_count(),10)]"
 

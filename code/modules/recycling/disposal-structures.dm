@@ -41,7 +41,7 @@
 	// now everything inside the disposal gets put into the holder
 	// note AM since can contain mobs or objs
 	for(var/atom/movable/AM in D)
-		AM.loc = src
+		AM.forceMove(src)
 		if(istype(AM, /obj/structure/bigDelivery) && !hasmob)
 			var/obj/structure/bigDelivery/T = AM
 			src.destinationTag = T.sortTag
@@ -56,7 +56,7 @@
 	if(!D.trunk)
 		D.expel(src)	// no trunk connected, so expel immediately
 		return
-	loc = D.trunk
+	forceMove(D.trunk)
 	active = 1
 	setDir(DOWN)
 	move()
@@ -100,7 +100,7 @@
 // used when a a holder meets a stuck holder
 /obj/structure/disposalholder/proc/merge(obj/structure/disposalholder/other)
 	for(var/atom/movable/AM in other)
-		AM.loc = src		// move everything in other holder to this one
+		AM.forceMove(src		)// move everything in other holder to this one
 		if(ismob(AM))
 			var/mob/M = AM
 			M.reset_perspective(src)	// if a client mob, update eye to follow this holder
@@ -147,14 +147,14 @@
 	var/obj/structure/disposalconstruct/stored
 
 	// new pipe, set the icon_state as on map
-/obj/structure/disposalpipe/Initialize(mapload, obj/structure/disposalconstruct/make_from)
-	. = ..()
+/obj/structure/disposalpipe/New(loc,var/obj/structure/disposalconstruct/make_from)
+	..()
 
-	if(make_from && !QDELETED(make_from))
+	if(make_from && !qdeleted(make_from))
 		base_icon_state = make_from.base_state
 		setDir(make_from.dir)
 		dpdir = make_from.dpdir
-		make_from.loc = src
+		make_from.forceMove(src)
 		stored = make_from
 	else
 		base_icon_state = icon_state
@@ -176,6 +176,7 @@
 				stored.ptype = DISP_SORTJUNCTION
 			if("pipe-j2s")
 				stored.ptype = DISP_SORTJUNCTION_FLIP
+	return
 
 
 	// pipe is deleted
@@ -211,10 +212,10 @@
 		if(H2 && !H2.active)
 			H.merge(H2)
 
-		H.loc = P
+		H.forceMove(P)
 		return P
 	else			// if wasn't a pipe, then they're now in our turf
-		H.loc = get_turf(src)
+		H.forceMove(get_turf(src))
 		return null
 
 // update the icon_state to reflect hidden status
@@ -253,7 +254,7 @@
 	if(isfloorturf(T)) //intact floor, pop the tile
 		floorturf = T
 		if(floorturf.floor_tile)
-			new floorturf.floor_tile(T)
+			PoolOrNew(floorturf.floor_tile, T)
 		floorturf.make_plating()
 
 	if(direction)		// direction is specified
@@ -321,14 +322,14 @@
 		if(disassembled)
 			if(stored)
 				var/turf/T = loc
-				stored.loc = T
+				stored.forceMove(T)
 				transfer_fingerprints_to(stored)
 				stored.setDir(dir)
 				stored.density = 0
 				stored.anchored = 1
 				stored.update_icon()
 		else
-			for(var/D in GLOB.cardinal)
+			for(var/D in cardinal)
 				if(D & dpdir)
 					var/obj/structure/disposalpipe/broken/P = new(src.loc)
 					P.setDir(D)
@@ -339,16 +340,6 @@
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
 
-//Fixes dpdir on shuttle rotation
-/obj/structure/disposalpipe/shuttleRotate(rotation)
-	..()
-	var/new_dpdir = 0
-	for(var/D in GLOB.cardinal)
-		if(dpdir & D)
-			new_dpdir = new_dpdir | angle2dir(rotation+dir2angle(D))
-	dpdir = new_dpdir
-
-
 // *** TEST verb
 //client/verb/dispstop()
 //	for(var/obj/structure/disposalholder/H in world)
@@ -358,14 +349,15 @@
 /obj/structure/disposalpipe/segment
 	icon_state = "pipe-s"
 
-/obj/structure/disposalpipe/segment/Initialize()
-	. = ..()
+/obj/structure/disposalpipe/segment/New()
+	..()
 	if(stored.ptype == DISP_PIPE_STRAIGHT)
 		dpdir = dir | turn(dir, 180)
 	else
 		dpdir = dir | turn(dir, -90)
 
 	update()
+	return
 
 
 
@@ -374,8 +366,8 @@
 /obj/structure/disposalpipe/junction
 	icon_state = "pipe-j1"
 
-/obj/structure/disposalpipe/junction/Initialize()
-	. = ..()
+/obj/structure/disposalpipe/junction/New()
+	..()
 	switch(stored.ptype)
 		if(DISP_JUNCTION)
 			dpdir = dir | turn(dir, -90) | turn(dir,180)
@@ -384,6 +376,7 @@
 		if(DISP_YJUNCTION)
 			dpdir = dir | turn(dir,90) | turn(dir, -90)
 	update()
+	return
 
 
 // next direction to move
@@ -432,7 +425,7 @@
 	if(sortTypes.len>0)
 		to_chat(user, "It is tagged with the following tags:")
 		for(var/t in sortTypes)
-			to_chat(user, GLOB.TAGGERLOCATIONS[t])
+			to_chat(user, TAGGERLOCATIONS[t])
 	else
 		to_chat(user, "It has no sorting tags set.")
 
@@ -449,8 +442,8 @@
 
 	dpdir = sortdir | posdir | negdir
 
-/obj/structure/disposalpipe/sortjunction/Initialize()
-	. = ..()
+/obj/structure/disposalpipe/sortjunction/New()
+	..()
 
 	// Generate a list of soring tags.
 	if(sortType)
@@ -465,6 +458,7 @@
 
 	updatedir()
 	update()
+	return
 
 /obj/structure/disposalpipe/sortjunction/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/device/destTagger))
@@ -473,10 +467,10 @@
 		if(O.currTag > 0)// Tag set
 			if(O.currTag in sortTypes)
 				sortTypes -= O.currTag
-				to_chat(user, "<span class='notice'>Removed \"[GLOB.TAGGERLOCATIONS[O.currTag]]\" filter.</span>")
+				to_chat(user, "<span class='notice'>Removed \"[TAGGERLOCATIONS[O.currTag]]\" filter.</span>")
 			else
 				sortTypes |= O.currTag
-				to_chat(user, "<span class='notice'>Added \"[GLOB.TAGGERLOCATIONS[O.currTag]]\" filter.</span>")
+				to_chat(user, "<span class='notice'>Added \"[TAGGERLOCATIONS[O.currTag]]\" filter.</span>")
 			playsound(src.loc, 'sound/machines/twobeep.ogg', 100, 1)
 	else
 		return ..()
@@ -512,8 +506,8 @@
 	var/negdir = 0
 	var/sortdir = 0
 
-/obj/structure/disposalpipe/wrapsortjunction/Initialize()
-	. = ..()
+/obj/structure/disposalpipe/wrapsortjunction/New()
+	..()
 	posdir = dir
 	if(stored.ptype == DISP_SORTJUNCTION)
 		sortdir = turn(posdir, -90)
@@ -525,6 +519,7 @@
 	dpdir = sortdir | posdir | negdir
 
 	update()
+	return
 
 // next direction to move
 // if coming in from negdir, then next is primary dir or sortdir
@@ -552,13 +547,14 @@
 	icon_state = "pipe-t"
 	var/obj/linked 	// the linked obj/machinery/disposal or obj/disposaloutlet
 
-/obj/structure/disposalpipe/trunk/Initialize()
-	. = ..()
+/obj/structure/disposalpipe/trunk/New()
+	..()
 	dpdir = dir
 	spawn(1)
 		getlinked()
 
 	update()
+	return
 
 /obj/structure/disposalpipe/trunk/Destroy()
 	if(linked)
@@ -625,8 +621,8 @@
 					// i.e. will be treated as an empty turf
 	desc = "A broken piece of disposal pipe."
 
-/obj/structure/disposalpipe/broken/Initialize()
-	. = ..()
+/obj/structure/disposalpipe/broken/New()
+	..()
 	update()
 
 // the disposal outlet machine
@@ -649,11 +645,12 @@
 	var/start_eject = 0
 	var/eject_range = 2
 
-/obj/structure/disposaloutlet/Initialize(mapload, obj/structure/disposalconstruct/make_from)
-	. = ..()
+/obj/structure/disposaloutlet/New(loc, var/obj/structure/disposalconstruct/make_from)
+	..()
+
 	if(make_from)
 		setDir(make_from.dir)
-		make_from.loc = src
+		make_from.forceMove(src)
 		stored = make_from
 	else
 		stored = new (src, DISP_END_OUTLET,dir)
@@ -712,7 +709,7 @@
 			if(do_after(user,20*I.toolspeed, target = src))
 				if(!src || !W.isOn()) return
 				to_chat(user, "<span class='notice'>You slice the floorweld off \the [src].</span>")
-				stored.loc = loc
+				stored.forceMove(loc)
 				src.transfer_fingerprints_to(stored)
 				stored.update_icon()
 				stored.anchored = 0
@@ -734,7 +731,7 @@
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))
 	else
-		dirs = GLOB.alldirs.Copy()
+		dirs = alldirs.Copy()
 
 	src.streak(dirs)
 
@@ -743,6 +740,6 @@
 	if(direction)
 		dirs = list( direction, turn(direction, -45), turn(direction, 45))
 	else
-		dirs = GLOB.alldirs.Copy()
+		dirs = alldirs.Copy()
 
 	src.streak(dirs)

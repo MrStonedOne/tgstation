@@ -93,7 +93,7 @@
 		if(uses >= max_uses)
 			to_chat(user, "<span class='warning'>[src.name] is full.</span>")
 			return
-		if(!user.temporarilyRemoveItemFromInventory(W))
+		if(!user.unEquip(W))
 			return
 		AddUses(round(increment*0.75))
 		to_chat(user, "<span class='notice'>You insert a shard of glass into the [src.name]. You have [uses] light\s remaining.</span>")
@@ -104,12 +104,12 @@
 		var/obj/item/weapon/light/L = W
 		if(L.status == 0) // LIGHT OKAY
 			if(uses < max_uses)
-				if(!user.temporarilyRemoveItemFromInventory(W))
+				if(!user.unEquip(W))
 					return
 				AddUses(1)
 				qdel(L)
 		else
-			if(!user.temporarilyRemoveItemFromInventory(W))
+			if(!user.unEquip(W))
 				return
 			to_chat(user, "<span class='notice'>You insert the [L.name] into the [src.name]</span>")
 			AddShards(1, user)

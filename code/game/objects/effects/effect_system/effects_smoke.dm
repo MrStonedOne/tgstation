@@ -42,7 +42,7 @@
 
 /obj/effect/particle_effect/smoke/proc/kill_smoke()
 	STOP_PROCESSING(SSobj, src)
-	INVOKE_ASYNC(src, .proc/fade_out)
+	addtimer(CALLBACK(src, .proc/fade_out), 0)
 	QDEL_IN(src, 10)
 
 /obj/effect/particle_effect/smoke/process()
@@ -73,8 +73,6 @@
 
 /obj/effect/particle_effect/smoke/proc/spread_smoke()
 	var/turf/t_loc = get_turf(src)
-	if(!t_loc)
-		return
 	var/list/newsmokes = list()
 	for(var/turf/T in t_loc.GetAtmosAdjacentTurfs())
 		var/obj/effect/particle_effect/smoke/foundsmoke = locate() in T //Don't spread smoke where there's already smoke!
@@ -84,13 +82,13 @@
 			smoke_mob(L)
 		var/obj/effect/particle_effect/smoke/S = new type(T)
 		reagents.copy_to(S, reagents.total_volume)
-		S.setDir(pick(GLOB.cardinal))
+		S.setDir(pick(cardinal))
 		S.amount = amount-1
 		S.add_atom_colour(color, FIXED_COLOUR_PRIORITY)
 		S.lifetime = lifetime
 		if(S.amount>0)
 			if(opaque)
-				S.set_opacity(TRUE)
+				S.set_opacity(1)
 			newsmokes.Add(S)
 
 	if(newsmokes.len)
@@ -257,7 +255,7 @@
 
 /datum/effect_system/smoke_spread/chem/New()
 	..()
-	chemholder = new /obj()
+	chemholder = PoolOrNew(/obj)
 	var/datum/reagents/R = new/datum/reagents(500)
 	chemholder.reagents = R
 	R.my_atom = chemholder

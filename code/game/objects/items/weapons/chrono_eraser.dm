@@ -1,8 +1,8 @@
 #define CHRONO_BEAM_RANGE 3
 #define CHRONO_FRAME_COUNT 22
 /obj/item/weapon/chrono_eraser
-	name = "Timestream Eradication Device"
-	desc = "The result of outlawed time-bluespace research, this device is capable of wiping a being from the timestream. They never are, they never were, they never will be."
+	name = "T.E.D."
+	desc = "Timestream Eradication Device<br>The result of outlawed time-bluespace research, this device is capable of wiping a being from the timestream.<br>They never are, they never were, they never will be."
 	icon = 'icons/obj/chronos.dmi'
 	icon_state = "chronobackpack"
 	item_state = "backpack"
@@ -155,13 +155,13 @@
 	var/mob/living/captured = null
 	var/obj/item/weapon/gun/energy/chrono_gun/gun = null
 	var/tickstokill = 15
-	var/mutable_appearance/mob_underlay
+	var/image/mob_underlay = null
 	var/preloaded = 0
 	var/RPpos = null
 
 /obj/effect/chrono_field/New(loc, var/mob/living/target, var/obj/item/weapon/gun/energy/chrono_gun/G)
 	if(target && isliving(target) && G)
-		target.loc = src
+		target.forceMove(src)
 		src.captured = target
 		var/icon/mob_snapshot = getFlatIcon(target)
 		var/icon/cached_icon = new()
@@ -172,7 +172,7 @@
 			mob_icon.Blend(removing_frame, ICON_MULTIPLY)
 			cached_icon.Insert(mob_icon, "frame[i]")
 
-		mob_underlay = mutable_appearance(cached_icon, "frame1")
+		mob_underlay = new(cached_icon, "frame1")
 		update_icon()
 
 		desc = initial(desc) + "<br><span class='info'>It appears to contain [target.name].</span>"
@@ -196,7 +196,7 @@
 	if(captured)
 		if(tickstokill > initial(tickstokill))
 			for(var/atom/movable/AM in contents)
-				AM.loc = loc
+				AM.forceMove(loc)
 			qdel(src)
 		else if(tickstokill <= 0)
 			to_chat(captured, "<span class='boldnotice'>As the last essence of your being is erased from time, you begin to re-experience your most enjoyable memory. You feel happy...</span>")
@@ -211,7 +211,7 @@
 		else
 			captured.Paralyse(4)
 			if(captured.loc != src)
-				captured.loc = src
+				captured.forceMove(src)
 			update_icon()
 			if(gun)
 				if(gun.field_check(src))

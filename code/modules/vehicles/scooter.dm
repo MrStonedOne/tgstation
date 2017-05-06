@@ -8,18 +8,16 @@
 		to_chat(user, "<span class='notice'>You begin to remove the handlebars...</span>")
 		playsound(get_turf(user), 'sound/items/Ratchet.ogg', 50, 1)
 		if(do_after(user, 40*I.toolspeed, target = src))
-			var/obj/vehicle/scooter/skateboard/S = new /obj/vehicle/scooter/skateboard(get_turf(src))
+			new /obj/vehicle/scooter/skateboard(get_turf(src))
 			new /obj/item/stack/rods(get_turf(src),2)
 			to_chat(user, "<span class='notice'>You remove the handlebars from [src].</span>")
-			if(has_buckled_mobs())
-				var/mob/living/carbon/H = buckled_mobs[1]
-				unbuckle_mob(H)
-				S.buckle_mob(H)
 			qdel(src)
 
-
-/obj/vehicle/scooter/buckle_mob(mob/living/M, force = 0, check_loc = 1)
+/obj/vehicle/scooter/buckle_mob()
+	. = ..()
 	riding_datum = new/datum/riding/scooter
+
+/obj/vehicle/scooter/buckle_mob(mob/living/M, force = 0)
 	if(!istype(M))
 		return 0
 	if(M.get_num_legs() < 2 && M.get_num_arms() <= 0)
@@ -37,7 +35,7 @@
 
 	density = 0
 
-/obj/vehicle/scooter/skateboard/buckle_mob(mob/living/M, force = 0, check_loc = 1)
+/obj/vehicle/scooter/skateboard/buckle_mob()
 	. = ..()
 	riding_datum = new/datum/riding/scooter/skateboard
 
@@ -52,7 +50,7 @@
 	..()
 	if(A.density && has_buckled_mobs())
 		var/mob/living/carbon/H = buckled_mobs[1]
-		var/atom/throw_target = get_edge_target_turf(H, pick(GLOB.cardinal))
+		var/atom/throw_target = get_edge_target_turf(H, pick(cardinal))
 		unbuckle_mob(H)
 		H.throw_at(throw_target, 4, 3)
 		H.Weaken(5)
@@ -110,9 +108,6 @@
 			to_chat(user, "<span class='notice'>You deconstruct the wheels on [src].</span>")
 			new /obj/item/stack/sheet/metal(get_turf(src),5)
 			new /obj/item/scooter_frame(get_turf(src))
-			if(has_buckled_mobs())
-				var/mob/living/carbon/H = buckled_mobs[1]
-				unbuckle_mob(H)
 			qdel(src)
 
 	else if(istype(I, /obj/item/stack/rods))
@@ -126,9 +121,5 @@
 				return
 			to_chat(user, "<span class='notice'>You add the rods to [src], creating handlebars.</span>")
 			C.use(2)
-			var/obj/vehicle/scooter/S = new/obj/vehicle/scooter(get_turf(src))
-			if(has_buckled_mobs())
-				var/mob/living/carbon/H = buckled_mobs[1]
-				unbuckle_mob(H)
-				S.buckle_mob(H)
+			new/obj/vehicle/scooter(get_turf(src))
 			qdel(src)

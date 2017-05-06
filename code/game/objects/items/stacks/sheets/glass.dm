@@ -8,10 +8,10 @@
 /*
  * Glass sheets
  */
-GLOBAL_LIST_INIT(glass_recipes, list ( \
-	new/datum/stack_recipe("directional window", /obj/structure/window/unanchored, time = 0, on_floor = TRUE, window_checks = TRUE), \
-	new/datum/stack_recipe("fulltile window", /obj/structure/window/fulltile/unanchored, 2, time = 0, on_floor = TRUE, window_checks = TRUE) \
-))
+var/global/list/datum/stack_recipe/glass_recipes = list ( \
+//	new/datum/stack_recipe("directional window", /obj/structure/window/unanchored, time = 0, on_floor = TRUE, window_checks = TRUE), \
+	new/datum/stack_recipe("fulltile window", /obj/structure/window/fulltile/unanchored, 2, time = 0, on_floor = TRUE, window_checks = TRUE)
+)
 
 /obj/item/stack/sheet/glass
 	name = "glass"
@@ -32,8 +32,8 @@ GLOBAL_LIST_INIT(glass_recipes, list ( \
 /obj/item/stack/sheet/glass/fifty
 	amount = 50
 
-/obj/item/stack/sheet/glass/Initialize(mapload, new_amount, merge = TRUE)
-	recipes = GLOB.glass_recipes
+/obj/item/stack/sheet/glass/New(loc, amount)
+	recipes = glass_recipes
 	..()
 
 /obj/item/stack/sheet/glass/attackby(obj/item/W, mob/user, params)
@@ -66,16 +66,15 @@ GLOBAL_LIST_INIT(glass_recipes, list ( \
 	else
 		return ..()
 
-
 /*
  * Reinforced glass sheets
  */
-GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
-	new/datum/stack_recipe("windoor frame", /obj/structure/windoor_assembly, 5, time = 0, on_floor = TRUE, window_checks = TRUE), \
+var/global/list/datum/stack_recipe/reinforced_glass_recipes = list ( \
+//	new/datum/stack_recipe("windoor frame", /obj/structure/windoor_assembly, 5, time = 0, on_floor = TRUE, window_checks = TRUE), \
 	null, \
-	new/datum/stack_recipe("directional reinforced window", /obj/structure/window/reinforced/unanchored, time = 0, on_floor = TRUE, window_checks = TRUE), \
-	new/datum/stack_recipe("fulltile reinforced window", /obj/structure/window/reinforced/fulltile/unanchored, 2, time = 0, on_floor = TRUE, window_checks = TRUE) \
-))
+//	new/datum/stack_recipe("directional reinforced window", /obj/structure/window/reinforced/unanchored, time = 0, on_floor = TRUE, window_checks = TRUE), \
+//	new/datum/stack_recipe("fulltile reinforced window", /obj/structure/window/reinforced/fulltile/unanchored, 2, time = 0, on_floor = TRUE, window_checks = TRUE)
+)
 
 
 /obj/item/stack/sheet/rglass
@@ -106,10 +105,9 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	source.add_charge(amount * metcost)
 	glasource.add_charge(amount * glacost)
 
-/obj/item/stack/sheet/rglass/Initialize(mapload, new_amount, merge = TRUE)
-	recipes = GLOB.reinforced_glass_recipes
+/obj/item/stack/sheet/rglass/New(loc, amount)
+	recipes = reinforced_glass_recipes
 	..()
-
 
 /obj/item/weapon/shard
 	name = "shard"
@@ -135,8 +133,7 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	return (BRUTELOSS)
 
 
-/obj/item/weapon/shard/Initialize()
-	. = ..()
+/obj/item/weapon/shard/New()
 	icon_state = pick("large", "medium", "small")
 	switch(icon_state)
 		if("small")
@@ -198,16 +195,15 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 			if(!istype(O))
 				return
 			var/feetCover = (H.wear_suit && H.wear_suit.body_parts_covered & FEET) || (H.w_uniform && H.w_uniform.body_parts_covered & FEET)
-			if(H.shoes || feetCover || H.movement_type & FLYING || H.buckled)
-				return
-			H.apply_damage(5, BRUTE, picked_def_zone)
-			if(cooldown < world.time - 10) //cooldown to avoid message spam.
-				if(!H.incapacitated())
-					H.visible_message("<span class='danger'>[H] steps in the broken glass!</span>", \
-							"<span class='userdanger'>You step in the broken glass!</span>")
-				else
-					H.visible_message("<span class='danger'>[H] slides on the broken glass!</span>", \
-							"<span class='userdanger'>You slide on the broken glass!</span>")
+			if(!H.shoes && !feetCover)
+				H.apply_damage(5, BRUTE, picked_def_zone)
+				if(cooldown < world.time - 10) //cooldown to avoid message spam.
+					if(!H.incapacitated())
+						H.visible_message("<span class='danger'>[H] steps in the broken glass!</span>", \
+								"<span class='userdanger'>You step in the broken glass!</span>")
+					else
+						H.visible_message("<span class='danger'>[H] slides on the broken glass!</span>", \
+								"<span class='userdanger'>You slide on the broken glass!</span>")
 
-				cooldown = world.time
-			H.Weaken(3)
+					cooldown = world.time
+				H.Weaken(3)

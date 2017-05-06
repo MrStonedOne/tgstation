@@ -5,7 +5,7 @@
 /mob/living/simple_animal/hostile/mining_drone
 	name = "nanotrasen minebot"
 	desc = "The instructions printed on the side read: This is a small robot used to support miners, can be set to search and collect loose ore, or to help fend off wildlife. A mining scanner can instruct it to drop loose ore. Field repairs can be done with a welder."
-	icon = 'icons/mob/aibots.dmi'
+	icon = 'icons/obj/aibots.dmi'
 	icon_state = "mining_drone"
 	icon_living = "mining_drone"
 	status_flags = CANSTUN|CANWEAKEN|CANPUSH
@@ -48,7 +48,7 @@
 	var/datum/action/innate/minedrone/toggle_mode/toggle_mode_action
 	var/datum/action/innate/minedrone/dump_ore/dump_ore_action
 
-/mob/living/simple_animal/hostile/mining_drone/Initialize()
+/mob/living/simple_animal/hostile/mining_drone/New()
 	..()
 	toggle_light_action = new()
 	toggle_light_action.Grant(src)
@@ -130,16 +130,16 @@
 	if(istype(target, /obj/item/weapon/ore) && mode ==  MINEDRONE_COLLECT)
 		CollectOre()
 		return
-	return ..()
+	..()
 
 /mob/living/simple_animal/hostile/mining_drone/proc/CollectOre()
 	var/obj/item/weapon/ore/O
 	for(O in src.loc)
-		O.loc = src
-	for(var/dir in GLOB.alldirs)
+		O.forceMove(src)
+	for(var/dir in alldirs)
 		var/turf/T = get_step(src,dir)
 		for(O in T)
-			O.loc = src
+			O.forceMove(src)
 	return
 
 /mob/living/simple_animal/hostile/mining_drone/proc/DropOre(message = 1)
@@ -151,7 +151,7 @@
 		to_chat(src, "<span class='notice'>You dump your stored ore.</span>")
 	for(var/obj/item/weapon/ore/O in contents)
 		contents -= O
-		O.loc = src.loc
+		O.forceMove(src.loc)
 	return
 
 /mob/living/simple_animal/hostile/mining_drone/adjustHealth(amount)
@@ -195,14 +195,13 @@
 
 /datum/action/innate/minedrone/toggle_meson_vision/Activate()
 	var/mob/living/simple_animal/hostile/mining_drone/user = owner
+
 	if(user.sight & SEE_TURFS)
 		user.sight &= ~SEE_TURFS
-		user.lighting_alpha = LIGHTING_PLANE_ALPHA_VISIBLE
+		user.see_invisible = SEE_INVISIBLE_LIVING
 	else
 		user.sight |= SEE_TURFS
-		user.lighting_alpha = LIGHTING_PLANE_ALPHA_INVISIBLE
-
-	user.sync_lighting_plane_alpha()
+		user.see_invisible = SEE_INVISIBLE_MINIMUM
 
 	to_chat(user, "<span class='notice'>You toggle your meson vision [(user.sight & SEE_TURFS) ? "on" : "off"].</span>")
 

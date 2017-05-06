@@ -11,13 +11,25 @@
 	else
 		. += grab_state * 3 //can't go fast while grabbing something.
 
+	. += get_pulling_delay()
+	if(contents_weight)
+		. += contents_weight/RATIO_WEIGHT
+
 	if(!get_leg_ignore()) //ignore the fact we lack legs
 		var/leg_amount = get_num_legs()
 		. += 6 - 3*leg_amount //the fewer the legs, the slower the mob
 		if(!leg_amount)
 			. += 6 - 3*get_num_arms() //crawling is harder with fewer arms
+		else if(lying)
+			. += 5
 		if(legcuffed)
 			. += legcuffed.slowdown
+
+
+var/const/NO_SLIP_WHEN_WALKING = 1
+var/const/SLIDE = 2
+var/const/GALOSHES_DONT_HELP = 4
+var/const/SLIDE_ICE = 8
 
 /mob/living/carbon/slip(s_amount, w_amount, obj/O, lube)
 	if(movement_type & FLYING)

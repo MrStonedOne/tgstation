@@ -30,9 +30,9 @@
 /obj/machinery/door/poddoor/shuttledock/proc/check()
 	var/turf/T = get_step(src, checkdir)
 	if(!istype(T, turftype))
-		INVOKE_ASYNC(src, .proc/open)
+		addtimer(CALLBACK(src, .proc/open), 0, TIMER_UNIQUE)
 	else
-		INVOKE_ASYNC(src, .proc/close)
+		addtimer(CALLBACK(src, .proc/close), 0, TIMER_UNIQUE)
 
 /obj/machinery/door/poddoor/Bumped(atom/AM)
 	if(density)

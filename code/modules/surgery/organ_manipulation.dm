@@ -4,8 +4,7 @@
 	/datum/surgery_step/incise, /datum/surgery_step/manipulate_organs)
 	species = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
 	possible_locs = list("chest", "head")
-	requires_organic_bodypart = FALSE
-	requires_real_bodypart = TRUE
+	requires_organic_bodypart = 0
 
 /datum/surgery/organ_manipulation/soft
 	possible_locs = list("groin", "eyes", "mouth", "l_arm", "r_arm")
@@ -24,7 +23,7 @@
 /datum/surgery_step/manipulate_organs
 	time = 64
 	name = "manipulate organs"
-	implements = list(/obj/item/organ = 100, /obj/item/weapon/reagent_containers/food/snacks/organ = 0, /obj/item/weapon/organ_storage = 100)
+	implements = list(/obj/item/organ = 100, /obj/item/weapon/reagent_containers/food/snacks/organ = 0)
 	var/implements_extract = list(/obj/item/weapon/hemostat = 100, /obj/item/weapon/crowbar = 55)
 	var/implements_mend = list(/obj/item/weapon/cautery = 100, /obj/item/weapon/weldingtool = 70, /obj/item/weapon/lighter = 45, /obj/item/weapon/match = 20)
 	var/current_type
@@ -55,15 +54,6 @@
 
 /datum/surgery_step/manipulate_organs/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
 	I = null
-	if(istype(tool, /obj/item/weapon/organ_storage))
-		if(!tool.contents.len)
-			to_chat(user, "<span class='notice'>There is nothing inside [tool]!</span>")
-			return -1
-		I = tool.contents[1]
-		if(!isorgan(I))
-			to_chat(user, "<span class='notice'>You cannot put [I] into [target]'s [parse_zone(target_zone)]!</span>")
-			return -1
-		tool = I
 	if(isorgan(tool))
 		current_type = "insert"
 		I = tool
@@ -83,7 +73,7 @@
 					"<span class='notice'>You begin to extract [B] from [target]'s [parse_zone(target_zone)]...</span>")
 			return TRUE
 		if(!organs.len)
-			to_chat(user, "<span class='notice'>There are no removeable organs in [target]'s [parse_zone(target_zone)]!</span>")
+			to_chat(user, "<span class='notice'>There is no removeable organs in [target]'s [parse_zone(target_zone)]!</span>")
 			return -1
 		else
 			for(var/obj/item/organ/O in organs)
@@ -117,14 +107,7 @@
 			target.heal_bodypart_damage(45,0)
 		return 1
 	else if(current_type == "insert")
-		if(istype(tool, /obj/item/weapon/organ_storage))
-			I = tool.contents[1]
-			tool.icon_state = "evidenceobj"
-			tool.desc = "A container for holding body parts."
-			tool.cut_overlays()
-			tool = I
-		else
-			I = tool
+		I = tool
 		user.drop_item()
 		I.Insert(target)
 		user.visible_message("[user] inserts [tool] into [target]'s [parse_zone(target_zone)]!",
@@ -143,7 +126,7 @@
 				"<span class='notice'>You successfully extract [I] from [target]'s [parse_zone(target_zone)].</span>")
 			add_logs(user, target, "surgically removed [I.name] from", addition="INTENT: [uppertext(user.a_intent)]")
 			I.Remove(target)
-			I.loc = get_turf(target)
+			I.forceMove(get_turf(target))
 		else
 			user.visible_message("[user] can't seem to extract anything from [target]'s [parse_zone(target_zone)]!",
 				"<span class='notice'>You can't extract anything from [target]'s [parse_zone(target_zone)]!</span>")

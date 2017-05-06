@@ -109,7 +109,7 @@
 	power_environ = 0
 	power_equip = 0
 	power_light = 0
-	ambientsounds = list('sound/ambience/ambilava.ogg')
+	ambience = list('sound/ambience/ambilava.ogg')
 
 
 /area/lavaland/surface/outdoors

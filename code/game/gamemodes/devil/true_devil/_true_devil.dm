@@ -14,9 +14,11 @@
 	ventcrawler = VENTCRAWLER_NONE
 	density = 1
 	pass_flags =  0
-	var/ascended = FALSE
+	var/ascended = 0
 	sight = (SEE_TURFS | SEE_OBJS)
 	status_flags = CANPUSH
+	languages_spoken = ALL //The devil speaks all languages meme
+	languages_understood = ALL //The devil speaks all languages meme
 	mob_size = MOB_SIZE_LARGE
 	var/mob/living/oldform
 	var/list/devil_overlays[DEVIL_TOTAL_LAYERS]
@@ -25,24 +27,21 @@
 
 
 
-/mob/living/carbon/true_devil/Initialize()
+/mob/living/carbon/true_devil/New()
 	create_bodyparts() //initialize bodyparts
 
 	create_internal_organs()
-
-	grant_all_languages(omnitongue=TRUE)
 	..()
 
 /mob/living/carbon/true_devil/create_internal_organs()
 	internal_organs += new /obj/item/organ/brain
 	internal_organs += new /obj/item/organ/tongue
-	internal_organs += new /obj/item/organ/eyes
 	..()
 
 
 /mob/living/carbon/true_devil/proc/convert_to_archdevil()
 	maxHealth = 5000 // not an IMPOSSIBLE amount, but still near impossible.
-	ascended = TRUE
+	ascended = 1
 	health = maxHealth
 	icon_state = "arch_devil"
 
@@ -60,19 +59,20 @@
 	stat = DEAD
 	..(gibbed)
 	drop_all_held_items()
-	INVOKE_ASYNC(mind.devilinfo, /datum/devilinfo/proc/beginResurrectionCheck, src)
+	spawn (0)
+		mind.devilinfo.beginResurrectionCheck(src)
 
 
 /mob/living/carbon/true_devil/examine(mob/user)
-	var/msg = "<span class='info'>*---------*\nThis is \icon[src] <b>[src]</b>!\n"
+	var/msg = "<span class='info'>*---------*\nThis is [bicon(src)] <b>[src]</b>!\n"
 
 	//Left hand items
 	for(var/obj/item/I in held_items)
 		if(!(I.flags & ABSTRACT))
 			if(I.blood_DNA)
-				msg += "<span class='warning'>It is holding \icon[I] [I.gender==PLURAL?"some":"a"] blood-stained [I.name] in its [get_held_index_name(get_held_index_of_item(I))]!</span>\n"
+				msg += "<span class='warning'>It is holding [bicon(I)] [I.gender==PLURAL?"some":"a"] blood-stained [I.name] in its [get_held_index_name(get_held_index_of_item(I))]!</span>\n"
 			else
-				msg += "It is holding \icon[I] \a [I] in its [get_held_index_name(get_held_index_of_item(I))].\n"
+				msg += "It is holding [bicon(I)] \a [I] in its [get_held_index_name(get_held_index_of_item(I))].\n"
 
 	//Braindead
 	if(!client && stat != DEAD)
@@ -152,6 +152,7 @@
 		S.mind.objectives += newobjective
 		to_chat(S, S.playstyle_string)
 		to_chat(S, "<B>Objective #[1]</B>: [newobjective.explanation_text]")
+		return
 	else
 		return ..()
 

@@ -17,12 +17,13 @@
 	var/countdown_colour
 	var/obj/effect/countdown/anomaly/countdown
 
-/obj/effect/anomaly/Initialize(mapload, new_lifespan)
+/obj/effect/anomaly/New()
 	..()
-	GLOB.poi_list |= src
+	poi_list |= src
 	START_PROCESSING(SSobj, src)
 	impact_area = get_area(src)
 
+	set_light(initial(luminosity))
 	aSignal = new(src)
 	aSignal.name = "[name] core"
 	aSignal.code = rand(1,100)
@@ -31,8 +32,6 @@
 	if(IsMultiple(aSignal.frequency, 2))//signaller frequencies are always uneven!
 		aSignal.frequency++
 
-	if(new_lifespan)
-		lifespan = new_lifespan
 	death_time = world.time + lifespan
 	countdown = new(src)
 	if(countdown_colour)
@@ -47,14 +46,14 @@
 		qdel(src)
 
 /obj/effect/anomaly/Destroy()
-	GLOB.poi_list.Remove(src)
+	poi_list.Remove(src)
 	STOP_PROCESSING(SSobj, src)
 	qdel(countdown)
 	return ..()
 
 /obj/effect/anomaly/proc/anomalyEffect()
 	if(prob(movechance))
-		step(src,pick(GLOB.alldirs))
+		step(src,pick(alldirs))
 
 /obj/effect/anomaly/proc/detonate()
 	return
@@ -64,10 +63,10 @@
 		qdel(src)
 
 /obj/effect/anomaly/proc/anomalyNeutralize()
-	new /obj/effect/particle_effect/smoke/bad(loc)
+	PoolOrNew(/obj/effect/particle_effect/smoke/bad, loc)
 
 	for(var/atom/movable/O in src)
-		O.loc = src.loc
+		O.forceMove(src.loc)
 
 	qdel(src)
 
@@ -128,7 +127,6 @@
 	density = 1
 	var/canshock = 0
 	var/shockdamage = 20
-	var/explosive = TRUE
 
 /obj/effect/anomaly/flux/New()
 	..()
@@ -165,10 +163,7 @@
 		"<span class='italics'>You hear a heavy electrical crack.</span>")
 
 /obj/effect/anomaly/flux/detonate()
-	if(explosive)
-		explosion(src, 1, 4, 16, 18) //Low devastation, but hits a lot of stuff.
-	else
-		new /obj/effect/particle_effect/sparks(loc)
+	explosion(src, 1, 4, 16, 18) //Low devastation, but hits a lot of stuff.
 
 
 /////////////////////
@@ -198,7 +193,7 @@
 			// Calculate new position (searches through beacons in world)
 		var/obj/item/device/radio/beacon/chosen
 		var/list/possible = list()
-		for(var/obj/item/device/radio/beacon/W in GLOB.teleportbeacons)
+		for(var/obj/item/device/radio/beacon/W in teleportbeacons)
 			possible += W
 
 		if(possible.len > 0)
@@ -226,7 +221,7 @@
 
 				var/turf/newloc = locate(A.x + x_distance, A.y + y_distance, TO.z) // calculate the new place
 				if(!A.Move(newloc) && newloc) // if the atom, for some reason, can't move, FORCE them to move! :) We try Move() first to invoke any movement-related checks the atom needs to perform after moving
-					A.loc = newloc
+					A.forceMove(newloc)
 
 				spawn()
 					if(ismob(A) && !(A in flashers)) // don't flash if we're already doing an effect
@@ -267,18 +262,13 @@
 		T.atmos_spawn_air("o2=5;plasma=5;TEMP=1000")
 
 /obj/effect/anomaly/pyro/detonate()
-	INVOKE_ASYNC(src, .proc/makepyroslime)
-
-/obj/effect/anomaly/pyro/proc/makepyroslime()
 	var/turf/open/T = get_turf(src)
 	if(istype(T))
 		T.atmos_spawn_air("o2=500;plasma=500;TEMP=1000") //Make it hot and burny for the new slime
+
 	var/new_colour = pick("red", "orange")
 	var/mob/living/simple_animal/slime/S = new(T, new_colour)
-	S.rabid = TRUE
-	S.amount_grown = SLIME_EVOLUTION_THRESHOLD
-	S.Evolve()
-	offer_control(S)
+	S.rabid = 1
 
 /////////////////////
 

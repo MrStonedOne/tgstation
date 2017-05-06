@@ -184,7 +184,7 @@
 	ASSERT(H)
 
 	usr.visible_message("\The [usr] plays \the [card.name].")
-	H.loc = get_step(usr,usr.dir)
+	H.forceMove(get_step(usr,usr.dir))
 
 	src.update_icon()
 
@@ -230,34 +230,35 @@
 			name = "a playing card"
 			desc = "A playing card."
 
-		cut_overlays()
+		overlays.len = 0
 
 		if (cards.len == 1)
 			var/datum/playingcard/P = cards[1]
-			var/mutable_appearance/card_overlay = mutable_appearance(icon, (concealed ? "card_back" : "[P.card_icon]") )
+			var/image/I             = new(src.icon, (concealed ? "card_back" : "[P.card_icon]") )
 
-			card_overlay.pixel_x = card_overlay.pixel_x + (-5 + rand(10))
-			card_overlay.pixel_y = card_overlay.pixel_y + (-5 + rand(10))
+			I.pixel_x               = I.pixel_x + (-5 + rand(10))
+			I.pixel_y               = I.pixel_y + (-5 + rand(10))
 
-			add_overlay(card_overlay)
+			overlays.Add(I)
 		else
-			var/origin = -12
-			var/offset = round(32 / cards.len)
+			var/origin              = -12
+			var/offset              = round(32 / cards.len)
 
-			var/i = 0
-			var/mutable_appearance/card_overlay
+			var/i                   = 0
+			var/image/I
 
 			for(var/datum/playingcard/P in cards)
-				card_overlay = mutable_appearance(icon, (concealed ? "card_back" : P.card_icon))
-				card_overlay.pixel_x = origin + (offset * i)
+				I                   = new(src.icon, (concealed ? "card_back" : "[P.card_icon]") )
+				I.pixel_x           = origin + (offset * i)
 
-				add_overlay(card_overlay)
-				i = i + 1
+				overlays.Add(I)
 
-		var/html = ""
+				i                   = i + 1
+
+		var/html                    = ""
 
 		for(var/datum/playingcard/card in cards)
-			html = html + "<a href=\"byond://?src=\ref[src.hi]&action=play_card&card=\ref[card]\" class=\"card [card.suit] [card.number]\"></a>"
+			html                    = html + "<a href=\"byond://?src=\ref[src.hi]&action=play_card&card=\ref[card]\" class=\"card [card.suit] [card.number]\"></a>"
 
 		src.hi.updateContent("hand", html)
 

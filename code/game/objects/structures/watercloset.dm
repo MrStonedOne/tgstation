@@ -59,7 +59,7 @@
 			if(ishuman(user))
 				user.put_in_hands(I)
 			else
-				I.loc = get_turf(src)
+				I.forceMove(get_turf(src))
 			to_chat(user, "<span class='notice'>You find [I] in the cistern.</span>")
 			w_items -= I.w_class
 	else
@@ -91,7 +91,7 @@
 			if(!user.drop_item())
 				to_chat(user, "<span class='warning'>\The [I] is stuck to your hand, you cannot put it in the cistern!</span>")
 				return
-			I.loc = src
+			I.forceMove(src)
 			w_items += I.w_class
 			to_chat(user, "<span class='notice'>You carefully place [I] into the cistern.</span>")
 
@@ -239,7 +239,7 @@
 		qdel(mymist)
 
 	if(on)
-		add_overlay(mutable_appearance('icons/obj/watercloset.dmi', "water", MOB_LAYER + 1))
+		add_overlay(image('icons/obj/watercloset.dmi', src, "water", MOB_LAYER + 1, dir))
 		if(watertemp == "freezing")
 			return
 		if(!ismist)
@@ -406,7 +406,6 @@
 	desc = "A sink used for washing one's hands and face."
 	anchored = 1
 	var/busy = 0 	//Something's being washed at the moment
-	var/dispensedreagent = "water" // for whenever plumbing happens
 
 
 /obj/structure/sink/attack_hand(mob/living/user)
@@ -456,12 +455,9 @@
 	if(istype(O, /obj/item/weapon/reagent_containers))
 		var/obj/item/weapon/reagent_containers/RG = O
 		if(RG.container_type & OPENCONTAINER)
-			if(!RG.reagents.holder_full())
-				RG.reagents.add_reagent("[dispensedreagent]", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
-				to_chat(user, "<span class='notice'>You fill [RG] from [src].</span>")
-				return TRUE
-			to_chat(user, "<span class='notice'>\The [RG] is full.</span>")
-			return FALSE
+			RG.reagents.add_reagent("water", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
+			to_chat(user, "<span class='notice'>You fill [RG] from [src].</span>")
+			return 1
 
 	if(istype(O, /obj/item/weapon/melee/baton))
 		var/obj/item/weapon/melee/baton/B = O
@@ -479,16 +475,16 @@
 				return
 
 	if(istype(O, /obj/item/weapon/mop))
-		O.reagents.add_reagent("[dispensedreagent]", 5)
+		O.reagents.add_reagent("water", 5)
 		to_chat(user, "<span class='notice'>You wet [O] in [src].</span>")
 		playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
-		return
 
-	if(istype(O, /obj/item/stack/medical/gauze))
-		var/obj/item/stack/medical/gauze/G = O
-		new /obj/item/weapon/reagent_containers/glass/rag(src.loc)
-		to_chat(user, "<span class='notice'>You tear off a strip of gauze and make a rag.</span>")
-		G.use(1)
+	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/monkeycube))
+		var/obj/item/weapon/reagent_containers/food/snacks/monkeycube/M = O
+		to_chat(user, "<span class='notice'>You place [src] under a stream of water...</span>")
+		user.drop_item()
+		M.forceMove(get_turf(src))
+		M.Expand()
 		return
 
 	if(!istype(O))
@@ -505,9 +501,6 @@
 		busy = 0
 		O.clean_blood()
 		O.acid_level = 0
-		create_reagents(5)
-		reagents.add_reagent("[dispensedreagent]", 5)
-		reagents.reaction(O, TOUCH)
 		user.visible_message("<span class='notice'>[user] washes [O] using [src].</span>", \
 							"<span class='notice'>You wash [O] using [src].</span>")
 		return 1
@@ -527,7 +520,6 @@
 
 /obj/structure/sink/puddle	//splishy splashy ^_^
 	name = "puddle"
-	desc = "A puddle used for washing one's hands and face."
 	icon_state = "puddle"
 
 /obj/structure/sink/puddle/attack_hand(mob/M)

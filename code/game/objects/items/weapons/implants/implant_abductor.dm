@@ -1,3 +1,4 @@
+
 /obj/item/weapon/implant/abductor
 	name = "recall implant"
 	desc = "Returns you to the mothership."
@@ -39,7 +40,7 @@
 
 /obj/item/weapon/implant/abductor/proc/get_team_console(var/team)
 	var/obj/machinery/abductor/console/console
-	for(var/obj/machinery/abductor/console/c in GLOB.machines)
+	for(var/obj/machinery/abductor/console/c in machines)
 		if(c.team == team)
 			console = c
 			break

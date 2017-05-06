@@ -4,7 +4,6 @@
 	name = "\improper Unexplored Location"
 	icon_state = "away"
 	has_gravity = 1
-	hidden = TRUE
 
 
 /area/ruin/unpowered
@@ -63,7 +62,7 @@
 
 /area/ruin/powered/aesthetic
 	name = "Aesthetic"
-	ambientsounds = list('sound/ambience/ambivapor1.ogg')
+	ambience = list('sound/ambience/vapor.ogg')
 
 
 //Ruin of Hotel
@@ -121,7 +120,7 @@
 	power_environ = 0
 	valid_territory = 0
 	outdoors = 1
-	ambientsounds = list('sound/ambience/ambispace.ogg','sound/ambience/title2.ogg')
+	ambience = list('sound/ambience/ambispace.ogg')
 	blob_allowed = 0
 
 

@@ -2,10 +2,10 @@
 
 // AI (i.e. game AI, not the AI player) controlled bots
 /mob/living/simple_animal/bot
-	icon = 'icons/mob/aibots.dmi'
+	icon = 'icons/obj/aibots.dmi'
 	layer = MOB_LAYER
 	gender = NEUTER
-	luminosity = 3
+	light_range = 3
 	stop_automated_movement = 1
 	wander = 0
 	healable = 0
@@ -20,7 +20,6 @@
 	verb_ask = "queries"
 	verb_exclaim = "declares"
 	verb_yell = "alarms"
-	initial_language_holder = /datum/language_holder/synthetic
 	bubble_icon = "machine"
 
 	faction = list("neutral", "silicon" , "turret")
@@ -104,7 +103,7 @@
 	if(stat)
 		return 0
 	on = 1
-	set_light(initial(light_range))
+	set_light(initial(luminosity))
 	update_icon()
 	diag_hud_set_botstat()
 	return 1
@@ -115,11 +114,11 @@
 	bot_reset() //Resets an AI's call, should it exist.
 	update_icon()
 
-/mob/living/simple_animal/bot/Initialize()
+/mob/living/simple_animal/bot/New()
 	..()
 	access_card = new /obj/item/weapon/card/id(src)
 //This access is so bots can be immediately set to patrol and leave Robotics, instead of having to be let out first.
-	access_card.access += GLOB.access_robotics
+	access_card.access += access_robotics
 	set_custom_texts()
 	Radio = new/obj/item/device/radio(src)
 	if(radio_key)
@@ -132,7 +131,7 @@
 
 	//Adds bot to the diagnostic HUD system
 	prepare_huds()
-	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	var/datum/atom_hud/data/diagnostic/diag_hud = huds[DATA_HUD_DIAGNOSTIC]
 	diag_hud.add_to_hud(src)
 	diag_hud_set_bothealth()
 	diag_hud_set_botstat()
@@ -287,19 +286,23 @@
 				to_chat(user, "<span class='warning'>The welder must be on for this task!</span>")
 		else
 			if(W.force) //if force is non-zero
-				do_sparks(5, TRUE, src)
+				var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+				s.set_up(5, 1, src)
+				s.start()
 			..()
 
 /mob/living/simple_animal/bot/bullet_act(obj/item/projectile/Proj)
 	if(Proj && (Proj.damage_type == BRUTE || Proj.damage_type == BURN))
 		if(prob(75) && Proj.damage > 0)
-			do_sparks(5, TRUE, src)
+			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+			s.set_up(5, 1, src)
+			s.start()
 	return ..()
 
 /mob/living/simple_animal/bot/emp_act(severity)
 	var/was_on = on
 	stat |= EMPED
-	new /obj/effect/overlay/temp/emp(loc)
+	PoolOrNew(/obj/effect/overlay/temp/emp, loc)
 	if(paicard)
 		paicard.emp_act(severity)
 		src.visible_message("[paicard] is flies out of [bot_name]!","<span class='warning'>You are forcefully ejected from [bot_name]!</span>")
@@ -320,29 +323,30 @@
 	if((!on) || (!message))
 		return
 	if(channel && Radio.channels[channel])// Use radio if we have channel key
-		Radio.talk_into(src, message, channel, get_spans(), get_default_language())
+		Radio.talk_into(src, message, channel, get_spans())
 	else
 		say(message)
+	return
 
 /mob/living/simple_animal/bot/get_spans()
 	return ..() | SPAN_ROBOT
 
-/mob/living/simple_animal/bot/radio(message, message_mode, list/spans, language)
+/mob/living/simple_animal/bot/radio(message, message_mode, list/spans)
 	. = ..()
 	if(. != 0)
 		return .
 
 	switch(message_mode)
 		if(MODE_HEADSET)
-			Radio.talk_into(src, message, , spans, language)
+			Radio.talk_into(src, message, , spans)
 			return REDUCE_RANGE
 
 		if(MODE_DEPARTMENT)
-			Radio.talk_into(src, message, message_mode, spans, language)
+			Radio.talk_into(src, message, message_mode, spans)
 			return REDUCE_RANGE
 
-	if(message_mode in GLOB.radiochannels)
-		Radio.talk_into(src, message, message_mode, spans, language)
+	if(message_mode in radiochannels)
+		Radio.talk_into(src, message, message_mode, spans)
 		return REDUCE_RANGE
 	return 0
 
@@ -469,7 +473,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 	var/area/end_area = get_area(waypoint)
 
 	if(client) //Player bots instead get a location command from the AI
-		to_chat(src, "<span class='noticebig'>Priority waypoint set by \icon[caller] <b>[caller]</b>. Proceed to <b>[end_area.name]<\b>.")
+		to_chat(src, "<span class='noticebig'>Priority waypoint set by [bicon(caller)] <b>[caller]</b>. Proceed to <b>[end_area.name]<\b>.")
 
 	//For giving the bot temporary all-access.
 	var/obj/item/weapon/card/id/all_access = new /obj/item/weapon/card/id
@@ -485,7 +489,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 			turn_on() //Saves the AI the hassle of having to activate a bot manually.
 		access_card = all_access //Give the bot all-access while under the AI's command.
 		if(message)
-			to_chat(calling_ai, "<span class='notice'>\icon[src] [name] called to [end_area.name]. [path.len-1] meters to destination.</span>")
+			to_chat(calling_ai, "<span class='notice'>[bicon(src)] [name] called to [end_area.name]. [path.len-1] meters to destination.</span>")
 		pathset = 1
 		mode = BOT_RESPONDING
 		tries = 0
@@ -500,7 +504,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 	var/success = bot_move(ai_waypoint, 3)
 	if(!success)
 		if(calling_ai)
-			to_chat(calling_ai, "\icon[src] [get_turf(src) == ai_waypoint ? "<span class='notice'>[src] successfully arrived to waypoint.</span>" : "<span class='danger'>[src] failed to reach waypoint.</span>"]")
+			to_chat(calling_ai, "[bicon(src)] [get_turf(src) == ai_waypoint ? "<span class='notice'>[src] successfully arrived to waypoint.</span>" : "<span class='danger'>[src] failed to reach waypoint.</span>"]")
 			calling_ai = null
 		bot_reset()
 
@@ -603,7 +607,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 
 /mob/living/simple_animal/bot/proc/get_next_patrol_target()
 	// search the beacon list for the next target in the list.
-	for(var/obj/machinery/navbeacon/NB in GLOB.navbeacons["[z]"])
+	for(var/obj/machinery/navbeacon/NB in navbeacons["[z]"])
 		if(NB.location == next_destination) //Does the Beacon location text match the destination?
 			destination = new_destination //We now know the name of where we want to go.
 			patrol_target = NB.loc //Get its location and set it as the target.
@@ -611,7 +615,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 			return 1
 
 /mob/living/simple_animal/bot/proc/find_nearest_beacon()
-	for(var/obj/machinery/navbeacon/NB in GLOB.navbeacons["[z]"])
+	for(var/obj/machinery/navbeacon/NB in navbeacons["[z]"])
 		var/dist = get_dist(src, NB)
 		if(nearest_beacon) //Loop though the beacon net to find the true closest beacon.
 			//Ignore the beacon if were are located on it.
@@ -796,7 +800,7 @@ Pass a positive integer as an argument to override a bot's default speed.
 	use_power = 0
 	var/mob/living/simple_animal/bot/owner = null
 
-/obj/machinery/bot_core/Initialize()
+/obj/machinery/bot_core/New(loc)
 	..()
 	owner = loc
 	if(!istype(owner))
@@ -918,5 +922,5 @@ Pass a positive integer as an argument to override a bot's default speed.
 //If a bot has its own HUD (for player bots), provide it.
 	if(!data_hud_type)
 		return
-	var/datum/atom_hud/datahud = GLOB.huds[data_hud_type]
+	var/datum/atom_hud/datahud = huds[data_hud_type]
 	datahud.add_hud_to(src)

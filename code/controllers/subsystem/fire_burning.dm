@@ -1,4 +1,6 @@
-SUBSYSTEM_DEF(fire_burning)
+var/datum/subsystem/fire_burning/SSfire_burning
+
+/datum/subsystem/fire_burning
 	name = "Fire Burning"
 	priority = 40
 	flags = SS_NO_INIT|SS_BACKGROUND
@@ -6,11 +8,15 @@ SUBSYSTEM_DEF(fire_burning)
 	var/list/currentrun = list()
 	var/list/processing = list()
 
-/datum/controller/subsystem/fire_burning/stat_entry()
+/datum/subsystem/fire_burning/New()
+	NEW_SS_GLOBAL(SSfire_burning)
+
+
+/datum/subsystem/fire_burning/stat_entry()
 	..("P:[processing.len]")
 
 
-/datum/controller/subsystem/fire_burning/fire(resumed = 0)
+/datum/subsystem/fire_burning/fire(resumed = 0)
 	if (!resumed)
 		src.currentrun = processing.Copy()
 
@@ -20,7 +26,7 @@ SUBSYSTEM_DEF(fire_burning)
 	while(currentrun.len)
 		var/obj/O = currentrun[currentrun.len]
 		currentrun.len--
-		if (!O || QDELETED(O))
+		if (!O || qdeleted(O))
 			processing -= O
 			if (MC_TICK_CHECK)
 				return
@@ -28,6 +34,10 @@ SUBSYSTEM_DEF(fire_burning)
 
 		if(O.resistance_flags & ON_FIRE)
 			O.take_damage(20, BURN, "fire", 0)
+			var/turf/open/location = get_turf(O)//shity code detected
+			if(istype(location))
+				var/datum/gas_mixture/affected = location.air
+				affected.temperature *= 1.01
 		else
 			processing -= O
 

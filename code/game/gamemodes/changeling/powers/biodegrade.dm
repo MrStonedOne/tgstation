@@ -5,6 +5,9 @@
 	chemical_cost = 30 //High cost to prevent spam
 	dna_cost = 2
 	req_human = 1
+	genetic_damage = 10
+	max_genetic_damage = 0
+
 
 /obj/effect/proc_holder/changeling/biodegrade/sting_action(mob/living/carbon/human/user)
 	var/used = FALSE // only one form of shackles removed per use
@@ -50,16 +53,22 @@
 		addtimer(CALLBACK(src, .proc/dissolve_cocoon, user, C), 25) //Very short because it's just webs
 		used = TRUE
 
-	return used
+	if(used)
+		feedback_add_details("changeling_powers","BD")
+	return 1
 
 /obj/effect/proc_holder/changeling/biodegrade/proc/dissolve_handcuffs(mob/living/carbon/human/user, obj/O)
 	if(O && user.handcuffed == O)
-		visible_message("<span class='warning'>[O] dissolves into a puddle of sizzling goop.</span>")
+		user.unEquip(O)
+		O.visible_message("<span class='warning'>[O] dissolves into a puddle of sizzling goop.</span>")
+		O.forceMove(get_turf(user))
 		qdel(O)
 
 /obj/effect/proc_holder/changeling/biodegrade/proc/dissolve_straightjacket(mob/living/carbon/human/user, obj/S)
 	if(S && user.wear_suit == S)
-		visible_message("<span class='warning'>[S] dissolves into a puddle of sizzling goop.</span>")
+		user.unEquip(S)
+		S.visible_message("<span class='warning'>[S] dissolves into a puddle of sizzling goop.</span>")
+		S.forceMove(get_turf(user))
 		qdel(S)
 
 /obj/effect/proc_holder/changeling/biodegrade/proc/open_closet(mob/living/carbon/human/user, obj/structure/closet/C)

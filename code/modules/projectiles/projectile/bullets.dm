@@ -33,40 +33,32 @@
 
 /obj/item/projectile/bullet/pellet
 	name = "pellet"
-	damage = 12.5
-
-/obj/item/projectile/bullet/pellet/Range()
-	..()
-	damage += -0.75
-	if(damage < 0)
-		qdel(src)
-
-/obj/item/projectile/bullet/pellet/weak
-	damage = 6
+	damage = 15
 
 /obj/item/projectile/bullet/pellet/weak/New()
-	range = rand(1, 8)
-	..()
+	damage = 6
+	range = rand(8)
 
 /obj/item/projectile/bullet/pellet/weak/on_range()
-	do_sparks(1, TRUE, src)
-	..()
-
-/obj/item/projectile/bullet/pellet/overload
-	damage = 3
+ 	var/datum/effect_system/spark_spread/sparks = new /datum/effect_system/spark_spread
+ 	sparks.set_up(1, 1, src)
+ 	sparks.start()
+ 	..()
 
 /obj/item/projectile/bullet/pellet/overload/New()
-	range = rand(1, 10)
-	..()
+	damage = 3
+	range = rand(10)
 
 /obj/item/projectile/bullet/pellet/overload/on_hit(atom/target, blocked = 0)
  	..()
  	explosion(target, 0, 0, 2)
 
 /obj/item/projectile/bullet/pellet/overload/on_range()
-	explosion(src, 0, 0, 2)
-	do_sparks(3, TRUE, src)
-	..()
+ 	explosion(src, 0, 0, 2)
+ 	var/datum/effect_system/spark_spread/sparks = new /datum/effect_system/spark_spread
+ 	sparks.set_up(3, 3, src)
+ 	sparks.start()
+ 	..()
 
 /obj/item/projectile/bullet/midbullet
 	damage = 20
@@ -127,7 +119,7 @@
 	..()
 	var/turf/location = get_turf(src)
 	if(location)
-		new /obj/effect/hotspot(location)
+		PoolOrNew(/obj/effect/hotspot, location)
 		location.hotspot_expose(700, 50, 1)
 
 /obj/item/projectile/bullet/incendiary/shell/dragonsbreath
@@ -334,7 +326,7 @@
 	..()
 	var/turf/location = get_turf(src)
 	if(location)
-		new /obj/effect/hotspot(location)
+		PoolOrNew(/obj/effect/hotspot, location)
 		location.hotspot_expose(700, 50, 1)
 
 /obj/item/projectile/bullet/saw/incen/on_hit(atom/target, blocked = 0)

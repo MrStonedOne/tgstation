@@ -5,24 +5,22 @@
 	icon_state ="book"
 	throw_speed = 2
 	throw_range = 5
-	storage_slots = 1
 	w_class = WEIGHT_CLASS_NORMAL
 	resistance_flags = FLAMMABLE
 	var/title = "book"
 
 /obj/item/weapon/storage/book/attack_self(mob/user)
-	to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
+		to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
 
-GLOBAL_LIST_INIT(biblenames, list("Bible", "Quran", "Scrapbook", "Burning Bible", "Clown Bible", "Banana Bible", "Creeper Bible", "White Bible", "Holy Light",  "The God Delusion", "Tome",        "The King in Yellow", "Ithaqua", "Scientology", "Melted Bible", "Necronomicon"))
-GLOBAL_LIST_INIT(biblestates, list("bible", "koran", "scrapbook", "burning",       "honk1",       "honk2",        "creeper",       "white",       "holylight",   "atheist",          "tome",        "kingyellow",         "ithaqua", "scientology", "melted",       "necronomicon"))
-GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "bible",         "bible",       "bible",        "syringe_kit",   "syringe_kit", "syringe_kit", "syringe_kit",      "syringe_kit", "kingyellow",         "ithaqua", "scientology", "melted",       "necronomicon"))
+var/global/list/biblenames      = list("Bible", "Quran", "Scrapbook", "Burning Bible", "Clown Bible", "Banana Bible", "Creeper Bible", "White Bible", "Holy Light",  "The God Delusion", "Tome",        "The King in Yellow", "Ithaqua", "Scientology", "Melted Bible", "Necronomicon")
+var/global/list/biblestates     = list("bible", "koran", "scrapbook", "burning",       "honk1",       "honk2",        "creeper",       "white",       "holylight",   "atheist",          "tome",        "kingyellow",         "ithaqua", "scientology", "melted",       "necronomicon")
+var/global/list/bibleitemstates = list("bible", "koran", "scrapbook", "bible",         "bible",       "bible",        "syringe_kit",   "syringe_kit", "syringe_kit", "syringe_kit",      "syringe_kit", "kingyellow",         "ithaqua", "scientology", "melted",       "necronomicon")
 
 /obj/item/weapon/storage/book/bible
 	name = "bible"
 	desc = "Apply to head repeatedly."
 	icon = 'icons/obj/storage.dmi'
-	icon_state = "bible"
-	item_state = "bible"
+	icon_state ="bible"
 	var/mob/affecting = null
 	var/deity_name = "Christ"
 
@@ -34,11 +32,12 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "bible",  
 	if(!istype(H))
 		return
 	// If H is the Chaplain, we can set the icon_state of the bible (but only once!)
-	if(!SSreligion.bible_icon_state && H.job == "Chaplain")
+	if(!SSreligion.Bible_icon_state && H.job == "Chaplain")
 		var/dat = "<html><head><title>Pick Bible Style</title></head><body><center><h2>Pick a bible style</h2></center><table>"
-		for(var/i in 1 to GLOB.biblestates.len)
-			var/icon/bibleicon = icon('icons/obj/storage.dmi', GLOB.biblestates[i])
-			var/nicename = GLOB.biblenames[i]
+		var/i
+		for(i = 1, i < biblestates.len, i++)
+			var/icon/bibleicon = icon('icons/obj/storage.dmi', biblestates[i])
+			var/nicename = biblenames[i]
 			H << browse_rsc(bibleicon, nicename)
 			dat += {"<tr><td><img src="[nicename]"></td><td><a href="?src=\ref[src];seticon=[i]">[nicename]</a></td></tr>"}
 		dat += "</table></body></html>"
@@ -47,22 +46,23 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "bible",  
 /obj/item/weapon/storage/book/bible/Topic(href, href_list)
 	if(!usr.canUseTopic(src))
 		return
-	if(href_list["seticon"] && SSreligion && !SSreligion.bible_icon_state)
+	if(href_list["seticon"] && ticker && !SSreligion.Bible_icon_state)
 		var/iconi = text2num(href_list["seticon"])
-		var/biblename = GLOB.biblenames[iconi]
+		var/biblename = biblenames[iconi]
 		var/obj/item/weapon/storage/book/bible/B = locate(href_list["src"])
-		B.icon_state = GLOB.biblestates[iconi]
-		B.item_state = GLOB.bibleitemstates[iconi]
+		B.icon_state = biblestates[iconi]
+		B.item_state = bibleitemstates[iconi]
 
 		if(B.icon_state == "honk1" || B.icon_state == "honk2")
 			var/mob/living/carbon/human/H = usr
+			new /obj/item/weapon/bikehorn(B)
 			H.dna.add_mutation(CLOWNMUT)
 			H.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/clown_hat(H), slot_wear_mask)
 
-		SSreligion.bible_icon_state = B.icon_state
-		SSreligion.bible_item_state = B.item_state
+		SSreligion.Bible_icon_state = B.icon_state
+		SSreligion.Bible_item_state = B.item_state
 
-		SSblackbox.set_details("religion_book","[biblename]")
+		feedback_set_details("religion_book","[biblename]")
 		usr << browse(null, "window=editicon")
 
 /obj/item/weapon/storage/book/bible/proc/bless(mob/living/carbon/human/H, mob/living/user)
@@ -154,5 +154,10 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "bible",  
 /obj/item/weapon/storage/book/bible/booze
 	desc = "To be applied to the head repeatedly."
 
-/obj/item/weapon/storage/book/bible/booze/PopulateContents()
-	new /obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey(src)
+/obj/item/weapon/storage/book/bible/booze/New()
+	..()
+	new /obj/item/weapon/reagent_containers/food/drinks/beer(src)
+	new /obj/item/weapon/reagent_containers/food/drinks/beer(src)
+	new /obj/item/stack/spacecash(src)
+	new /obj/item/stack/spacecash(src)
+	new /obj/item/stack/spacecash(src)

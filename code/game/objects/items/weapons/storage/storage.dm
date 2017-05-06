@@ -45,7 +45,7 @@
 			show_to(M)
 			return
 
-		if(!M.incapacitated())
+		if(!M.restrained() && !M.stat)
 			if(!istype(over_object, /obj/screen))
 				return content_can_dump(over_object, M)
 
@@ -54,9 +54,12 @@
 
 			playsound(loc, "rustle", 50, 1, -5)
 
+
 			if(istype(over_object, /obj/screen/inventory/hand))
 				var/obj/screen/inventory/hand/H = over_object
-				M.putItemFromInventoryInHandIfPossible(src, H.held_index)
+				if(!M.unEquip(src))
+					return
+				M.put_in_hand(src,H.held_index)
 
 			add_fingerprint(usr)
 
@@ -81,34 +84,18 @@
 
 //Object behaviour on storage dump
 /obj/item/weapon/storage/storage_contents_dump_act(obj/item/weapon/storage/src_object, mob/user)
-	var/list/things = src_object.contents.Copy()
-	var/datum/progressbar/progress = new(user, things.len, src)
-	while (do_after(user, 10, TRUE, src, FALSE, CALLBACK(src, .proc/handle_mass_item_insertion, things, src_object, user, progress)))
-		sleep(1)
-	qdel(progress)
+	for(var/obj/item/I in src_object)
+		if(user.s_active != src_object)
+			if(I.on_found(user))
+				return
+		if(can_be_inserted(I,0,user))
+			handle_item_insertion(I, TRUE, user)
 	orient2hud(user)
 	src_object.orient2hud(user)
 	if(user.s_active) //refresh the HUD to show the transfered contents
 		user.s_active.close(user)
 		user.s_active.show_to(user)
 	return 1
-
-/obj/item/weapon/storage/proc/handle_mass_item_insertion(list/things, obj/item/weapon/storage/src_object, mob/user, datum/progressbar/progress)
-	for(var/obj/item/I in things)
-		things -= I
-		if(I.loc != src_object)
-			continue
-		if(user.s_active != src_object)
-			if(I.on_found(user))
-				break
-		if(can_be_inserted(I,0,user))
-			handle_item_insertion(I, TRUE, user)
-		if (TICK_CHECK)
-			progress.update(progress.goal - things.len)
-			return TRUE
-
-	progress.update(progress.goal - things.len)
-	return FALSE
 
 /obj/item/weapon/storage/proc/return_inv()
 	var/list/L = list()
@@ -212,6 +199,7 @@
 			O.maptext = ""
 			O.layer = ABOVE_HUD_LAYER
 			O.plane = ABOVE_HUD_PLANE
+			O.appearance_flags |= NO_CLIENT_COLOR
 			cx++
 			if(cx > (4+cols))
 				cx = 4
@@ -316,14 +304,13 @@
 	if(!istype(W))
 		return 0
 	if(usr)
-		if(!usr.transferItemToLoc(W, src))
+		if(!usr.unEquip(W))
 			return 0
-	else
-		W.forceMove(src)
 	if(silent)
 		prevent_warning = 1
 	if(W.pulledby)
 		W.pulledby.stop_pulling()
+	W.forceMove(src)
 	W.on_enter_storage(src)
 	if(usr)
 		if(usr.client && usr.s_active != src)
@@ -373,6 +360,7 @@
 		W.dropped(M)
 	W.layer = initial(W.layer)
 	W.plane = initial(W.plane)
+	W.appearance_flags &= ~NO_CLIENT_COLOR
 	W.forceMove(new_location)
 
 	for(var/mob/M in can_see_contents())
@@ -404,9 +392,6 @@
 	. = 1 //no afterattack
 	if(iscyborg(user))
 		return	//Robots can't interact with storage items.
-
-	if(contents.len >= storage_slots) //don't use items on the backpack if they don't fit
-		return 1
 
 	if(!can_be_inserted(W, 0 , user))
 		return 0
@@ -472,25 +457,8 @@
 
 	if((!ishuman(usr) && (loc != usr)) || usr.stat || usr.restrained() ||!usr.canmove)
 		return
-	var/turf/T = get_turf(src)
-	var/list/things = contents.Copy()
-	var/datum/progressbar/progress = new(usr, things.len, T)
-	while (do_after(usr, 10, TRUE, T, FALSE, CALLBACK(src, .proc/mass_remove_from_storage, T, things, progress)))
-		sleep(1)
-	qdel(progress)
 
-/obj/item/weapon/storage/proc/mass_remove_from_storage(atom/target, list/things, datum/progressbar/progress)
-	for(var/obj/item/I in things)
-		things -= I
-		if (I.loc != src)
-			continue
-		remove_from_storage(I, target)
-		if (TICK_CHECK)
-			progress.update(progress.goal - things.len)
-			return TRUE
-
-	progress.update(progress.goal - things.len)
-	return FALSE
+	do_quick_empty()
 
 // Empty all the contents onto the current turf, without checking the user's status.
 /obj/item/weapon/storage/proc/do_quick_empty()
@@ -501,7 +469,7 @@
 		remove_from_storage(I, T)
 
 
-/obj/item/weapon/storage/Initialize(mapload)
+/obj/item/weapon/storage/New()
 	..()
 
 	can_hold = typecacheof(can_hold)
@@ -531,8 +499,6 @@
 	closer.plane = ABOVE_HUD_PLANE
 	orient2hud()
 
-	PopulateContents()
-
 
 /obj/item/weapon/storage/Destroy()
 	for(var/obj/O in contents)
@@ -560,13 +526,9 @@
 /obj/item/weapon/storage/handle_atom_del(atom/A)
 	if(A in contents)
 		usr = null
-		remove_from_storage(A, null)
+		remove_from_storage(A, loc)
 
 /obj/item/weapon/storage/contents_explosion(severity, target)
 	for(var/atom/A in contents)
 		A.ex_act(severity, target)
 		CHECK_TICK
-
-//Cyberboss says: "USE THIS TO FILL IT, NOT INITIALIZE OR NEW"
-
-/obj/item/weapon/storage/proc/PopulateContents()

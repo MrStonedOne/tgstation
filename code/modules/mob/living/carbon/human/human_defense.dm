@@ -47,7 +47,7 @@
 	return number
 
 /mob/living/carbon/human/get_ear_protection()
-	if((ears && HAS_SECONDARY_FLAG(ears, BANG_PROTECT)) || (head && HAS_SECONDARY_FLAG(head, BANG_PROTECT)))
+	if((ears && (ears.flags & EARBANGPROTECT)) || (head && (head.flags & HEADBANGPROTECT)))
 		return 1
 
 /mob/living/carbon/human/on_hit(obj/item/projectile/P)
@@ -63,7 +63,7 @@
 		if(prob(martial_art.deflection_chance))
 			if(!lying && dna && !dna.check_mutation(HULK)) //But only if they're not lying down, and hulks can't do it
 				visible_message("<span class='danger'>[src] deflects the projectile; [p_they()] can't be hit with ranged weapons!</span>", "<span class='userdanger'>You deflect the projectile!</span>")
-				playsound(src, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, 1)
+				playsound(src, pick("sound/weapons/bulletflyby.ogg","sound/weapons/bulletflyby2.ogg","sound/weapons/bulletflyby3.ogg"), 75, 1)
 				return 0
 
 	if(!(P.original == src && P.firer == src)) //can't block or reflect when shooting yourself
@@ -151,9 +151,9 @@
 					var/obj/item/bodypart/L = pick(bodyparts)
 					L.embedded_objects |= I
 					I.add_mob_blood(src)//it embedded itself in you, of course it's bloody!
-					I.loc = src
+					I.forceMove(src)
 					L.receive_damage(I.w_class*I.embedded_impact_pain_multiplier)
-					visible_message("<span class='danger'>[I] embeds itself in [src]'s [L.name]!</span>","<span class='userdanger'>[I] embeds itself in your [L.name]!</span>")
+					visible_message("<span class='danger'>\the [I.name] embeds itself in [src]'s [L.name]!</span>","<span class='userdanger'>\the [I.name] embeds itself in your [L.name]!</span>")
 					hitpush = 0
 					skipcatch = 1 //can't catch the now embedded item
 
@@ -174,11 +174,10 @@
 /mob/living/carbon/human/attacked_by(obj/item/I, mob/living/user)
 	if(!I || !user)
 		return 0
-
 	var/obj/item/bodypart/affecting = get_bodypart(ran_zone(user.zone_selected)) //what we're actually ending up trying to hit.
 	var/target_area = parse_zone(check_zone(user.zone_selected)) //our intended target
-	SSblackbox.add_details("item_used_for_combat","[I.type]|[I.force]")
-	SSblackbox.add_details("zone_targeted","[target_area]")
+	feedback_add_details("item_used_for_combat","[I.type]|[I.force]")
+	feedback_add_details("zone_targeted","[target_area]")
 
 	// the attacked_by code varies among species
 	return dna.species.spec_attacked_by(I, user, affecting, a_intent, src)
@@ -198,15 +197,10 @@
 		damage_clothes(15, BRUTE, "melee")
 		return 1
 
-/mob/living/carbon/human/attack_hand(mob/user)
+/mob/living/carbon/human/attack_hand(mob/living/carbon/human/M)
 	if(..())	//to allow surgery to return properly.
 		return
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(H.a_intent == INTENT_DISARM)
-			if(H.buckled_mobs && (src in H.buckled_mobs) && H.riding_datum)
-				H.riding_datum.force_dismount(src)
-		dna.species.spec_attack_hand(H, src)
+	dna.species.spec_attack_hand(M, src)
 
 
 /mob/living/carbon/human/attack_paw(mob/living/carbon/monkey/M)
@@ -217,7 +211,6 @@
 	if(M.a_intent == INTENT_HELP)
 		..() //shaking
 		return 0
-
 	if(M.a_intent == INTENT_DISARM) //Always drop item in hand, if no item, get stunned instead.
 		if(get_active_held_item() && drop_item())
 			playsound(loc, 'sound/weapons/slash.ogg', 25, 1, -1)
@@ -286,7 +279,6 @@
 
 
 /mob/living/carbon/human/attack_larva(mob/living/carbon/alien/larva/L)
-
 	if(..()) //successful larva bite.
 		var/damage = rand(1, 3)
 		if(check_shields(damage, "the [L.name]"))
@@ -302,14 +294,13 @@
 
 
 /mob/living/carbon/human/attack_animal(mob/living/simple_animal/M)
-	. = ..()
-	if(.)
+	if(..())
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 		if(check_shields(damage, "the [M.name]", null, MELEE_ATTACK, M.armour_penetration))
-			return FALSE
+			return 0
 		var/dam_zone = dismembering_strike(M, pick("chest", "l_hand", "r_hand", "l_leg", "r_leg"))
 		if(!dam_zone) //Dismemberment successful
-			return TRUE
+			return 1
 		var/obj/item/bodypart/affecting = get_bodypart(ran_zone(dam_zone))
 		if(!affecting)
 			affecting = get_bodypart("chest")
@@ -404,7 +395,7 @@
 			damage_clothes(200 - bomb_armor, BRUTE, "bomb")
 			if (!istype(ears, /obj/item/clothing/ears/earmuffs))
 				adjustEarDamage(30, 120)
-			if (prob(max(70 - (bomb_armor * 0.5), 0)))
+			if (prob(70))
 				Paralyse(10)
 
 		if(3)
@@ -414,7 +405,7 @@
 			damage_clothes(max(50 - bomb_armor, 0), BRUTE, "bomb")
 			if (!istype(ears, /obj/item/clothing/ears/earmuffs))
 				adjustEarDamage(15,60)
-			if (prob(max(50 - (bomb_armor * 0.5), 0)))
+			if (prob(50))
 				Paralyse(8)
 
 	take_overall_damage(b_loss,f_loss)
@@ -442,7 +433,7 @@
 
 
 //Added a safety check in case you want to shock a human mob directly through electrocute_act.
-/mob/living/carbon/human/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, override = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
+/mob/living/carbon/human/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, override = 0, tesla_shock = 0, illusion = 0)
 	if(tesla_shock)
 		var/total_coeff = 1
 		if(gloves)
@@ -453,24 +444,19 @@
 			var/obj/item/clothing/suit/S = wear_suit
 			if(S.siemens_coefficient <= 0)
 				total_coeff -= 0.95
-			else if(S.siemens_coefficient == (-1))
-				total_coeff -= 1
 		siemens_coeff = total_coeff
-		if(HAS_SECONDARY_FLAG(src, TESLA_IGNORE))
-			siemens_coeff = 0
 	else if(!safety)
 		var/gloves_siemens_coeff = 1
 		if(gloves)
 			var/obj/item/clothing/gloves/G = gloves
 			gloves_siemens_coeff = G.siemens_coefficient
 		siemens_coeff = gloves_siemens_coeff
-	if(undergoing_cardiac_arrest() && !illusion)
+	if(heart_attack && !illusion)
 		if(shock_damage * siemens_coeff >= 1 && prob(25))
-			var/obj/item/organ/heart/heart = getorganslot("heart")
-			heart.beating = TRUE
+			heart_attack = 0
 			if(stat == CONSCIOUS)
 				to_chat(src, "<span class='notice'>You feel your heart beating again!</span>")
-	. = ..(shock_damage,source,siemens_coeff,safety,override,tesla_shock, illusion, stun)
+	. = ..(shock_damage,source,siemens_coeff,safety,override,tesla_shock, illusion)
 	if(.)
 		electrocution_animation(40)
 
@@ -685,7 +671,8 @@
 				to_chat(src, "\t [status == "OK" ? "\blue" : "\red"] Your [LB.name] is [status].")
 
 				for(var/obj/item/I in LB.embedded_objects)
-					to_chat(src, "\t <a href='byond://?src=\ref[src];embedded_object=\ref[I];embedded_limb=\ref[LB]' class='warning'>There is \a [I] embedded in your [LB.name]!</a>")
+					to_chat(src, "\t <a href='byond://?src=\ref[src];embedded_object=\ref[I];embedded_limb=\ref[LB]'>\red There is \a [I] embedded in your [LB.name]!</a>")
+
 
 			for(var/t in missing)
 				to_chat(src, "<span class='boldannounce'>Your [parse_zone(t)] is missing!</span>")

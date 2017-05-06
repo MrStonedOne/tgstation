@@ -38,6 +38,7 @@
 	force = 5
 	throwforce = 5
 	w_class = WEIGHT_CLASS_NORMAL
+	resistance_flags = FLAMMABLE
 	throw_speed = 2
 	throw_range = 3
 	origin_tech = "materials=1"
@@ -54,10 +55,7 @@
 /obj/item/weapon/grown/log/attackby(obj/item/weapon/W, mob/user, params)
 	if(W.sharpness)
 		user.show_message("<span class='notice'>You make [plank_name] out of \the [src]!</span>", 1)
-		var/seed_modifier = 0
-		if(seed)
-			seed_modifier = round(seed.potency / 25)
-		var/obj/item/stack/plank = new plank_type(user.loc, 1 + seed_modifier)
+		var/obj/item/stack/plank = new plank_type(user.loc, 1 + (seed ? round(seed.potency / 25) : 0))
 		var/old_plank_amount = plank.amount
 		for(var/obj/item/stack/ST in user.loc)
 			if(ST != plank && istype(ST, plank_type) && ST.amount < ST.max_amount)
@@ -70,14 +68,21 @@
 		var/obj/item/weapon/reagent_containers/food/snacks/grown/leaf = W
 		if(leaf.dry)
 			user.show_message("<span class='notice'>You wrap \the [W] around the log, turning it into a torch!</span>")
-			var/obj/item/device/flashlight/flare/torch/T = new /obj/item/device/flashlight/flare/torch(user.loc)
-			usr.dropItemToGround(W)
+			var/obj/item/device/flashlight/torch/T = new /obj/item/device/flashlight/torch(user.loc)
+			usr.unEquip(W)
 			usr.put_in_active_hand(T)
 			qdel(leaf)
 			qdel(src)
 			return
 		else
 			to_chat(usr, "<span class ='warning'>You must dry this first!</span>")
+	if(istype(W,/obj/item/stack/sheet/grass))
+		var/obj/item/stack/sheet/grass/G = W
+		if(G.use(1))
+			user.show_message("<span class='notice'>You wrap \the [W] around the log, turning it into a torch!</span>")
+			new /obj/item/device/flashlight/torch(user.loc)
+			qdel(src)
+			return
 	else
 		return ..()
 
@@ -116,9 +121,8 @@
 		can_buckle = 1
 		buckle_requires_restraints = 1
 		to_chat(user, "<span class='italics'>You add a rod to [src].")
-		var/mutable_appearance/rod_underlay = mutable_appearance('icons/obj/hydroponics/equipment.dmi', "bonfire_rod")
-		rod_underlay.pixel_y = 16
-		underlays += rod_underlay
+		var/image/U = image(icon='icons/obj/hydroponics/equipment.dmi',icon_state="bonfire_rod",pixel_y=16)
+		underlays += U
 	if(W.is_hot())
 		StartBurning()
 
@@ -188,10 +192,10 @@
 		set_light(0)
 		STOP_PROCESSING(SSobj, src)
 
-/obj/structure/bonfire/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+/obj/structure/bonfire/buckle_mob(mob/living/M, force = 0)
 	if(..())
 		M.pixel_y += 13
 
-/obj/structure/bonfire/unbuckle_mob(mob/living/buckled_mob, force=FALSE)
+/obj/structure/bonfire/unbuckle_mob(mob/living/buckled_mob, force=0)
 	if(..())
 		buckled_mob.pixel_y -= 13

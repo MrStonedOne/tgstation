@@ -1,3 +1,4 @@
+@echo off
 
 @dm.exe -h >nul 2>nul
 IF %ERRORLEVEL% NEQ 9009 (

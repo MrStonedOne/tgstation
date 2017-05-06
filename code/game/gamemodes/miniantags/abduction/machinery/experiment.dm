@@ -63,31 +63,31 @@
 	var/icon/photo = null
 	var/g = (H.gender == FEMALE) ? "f" : "m"
 	if(!config.mutant_races || H.dna.species.use_skintones)
-		photo = icon("icon" = 'icons/mob/human.dmi', "icon_state" = "[H.skin_tone]_[g]")
+		photo = icon("icon" = 'icons/mob/human.dmi', "icon_state" = "[H.skin_tone]_[g]_s")
 	else
-		photo = icon("icon" = 'icons/mob/human.dmi', "icon_state" = "[H.dna.species.id]_[g]")
+		photo = icon("icon" = 'icons/mob/human.dmi', "icon_state" = "[H.dna.species.id]_[g]_s")
 		photo.Blend("#[H.dna.features["mcolor"]]", ICON_MULTIPLY)
 
-	var/icon/eyes
+	var/icon/eyes_s
 	if(EYECOLOR in H.dna.species.species_traits)
-		eyes = icon("icon" = 'icons/mob/human_face.dmi', "icon_state" = "eyes")
-		eyes.Blend("#[H.eye_color]", ICON_MULTIPLY)
+		eyes_s = icon("icon" = 'icons/mob/human_face.dmi', "icon_state" = "[H.dna.species.eyes]_s")
+		eyes_s.Blend("#[H.eye_color]", ICON_MULTIPLY)
 
 	var/datum/sprite_accessory/S
-	S = GLOB.hair_styles_list[H.hair_style]
+	S = hair_styles_list[H.hair_style]
 	if(S && (HAIR in H.dna.species.species_traits))
-		var/icon/hair = icon("icon" = S.icon, "icon_state" = "[S.icon_state]")
-		hair.Blend("#[H.hair_color]", ICON_MULTIPLY)
-		eyes.Blend(hair, ICON_OVERLAY)
+		var/icon/hair_s = icon("icon" = S.icon, "icon_state" = "[S.icon_state]_s")
+		hair_s.Blend("#[H.hair_color]", ICON_MULTIPLY)
+		eyes_s.Blend(hair_s, ICON_OVERLAY)
 
-	S = GLOB.facial_hair_styles_list[H.facial_hair_style]
+	S = facial_hair_styles_list[H.facial_hair_style]
 	if(S && (FACEHAIR in H.dna.species.species_traits))
-		var/icon/facial = icon("icon" = S.icon, "icon_state" = "[S.icon_state]")
-		facial.Blend("#[H.facial_hair_color]", ICON_MULTIPLY)
-		eyes.Blend(facial, ICON_OVERLAY)
+		var/icon/facial_s = icon("icon" = S.icon, "icon_state" = "[S.icon_state]_s")
+		facial_s.Blend("#[H.facial_hair_color]", ICON_MULTIPLY)
+		eyes_s.Blend(facial_s, ICON_OVERLAY)
 
-	if(eyes)
-		photo.Blend(eyes, ICON_OVERLAY)
+	if(eyes_s)
+		photo.Blend(eyes_s, ICON_OVERLAY)
 
 	var/icon/splat = icon("icon" = 'icons/mob/dam_mob.dmi',"icon_state" = "chest30")
 	photo.Blend(splat,ICON_OVERLAY)
@@ -116,13 +116,12 @@
 	else
 		dat += "<h3>Subject Status : </h3>"
 		dat += "[occupant.name] => "
-		var/mob/living/mob_occupant = occupant
-		switch(mob_occupant.stat)
-			if(CONSCIOUS)
+		switch(occupant.stat)
+			if(0)
 				dat += "<span class='good'>Conscious</span>"
-			if(UNCONSCIOUS)
+			if(1)
 				dat += "<span class='average'>Unconscious</span>"
-			else // DEAD
+			else
 				dat += "<span class='bad'>Deceased</span>"
 	dat += "<br>"
 	dat += "[flash]"
@@ -147,11 +146,9 @@
 	if(href_list["close"])
 		close_machine()
 		return
-	if(occupant)
-		var/mob/living/mob_occupant = occupant
-		if(mob_occupant.stat != DEAD)
-			if(href_list["experiment"])
-				flash = Experiment(occupant,href_list["experiment"])
+	if(occupant && occupant.stat != DEAD)
+		if(href_list["experiment"])
+			flash = Experiment(occupant,href_list["experiment"])
 	updateUsrDialog()
 	add_fingerprint(usr)
 
@@ -163,7 +160,7 @@
 	if(H.stat == DEAD)
 		say("Specimen deceased - please provide fresh sample.")
 		return "<span class='bad'>Specimen deceased.</span>"
-	var/obj/item/organ/heart/gland/GlandTest = locate() in H.internal_organs
+	var/obj/item/organ/gland/GlandTest = locate() in H.internal_organs
 	if(!GlandTest)
 		say("Experimental dissection not detected!")
 		return "<span class='bad'>No glands detected!</span>"
@@ -183,12 +180,12 @@
 		to_chat(H, "<span class='warning'><b>Your mind snaps!</b></span>")
 		var/objtype = pick(subtypesof(/datum/objective/abductee/))
 		var/datum/objective/abductee/O = new objtype()
-		SSticker.mode.abductees += H.mind
+		ticker.mode.abductees += H.mind
 		H.mind.objectives += O
 		H.mind.announce_objectives()
-		SSticker.mode.update_abductor_icons_added(H.mind)
+		ticker.mode.update_abductor_icons_added(H.mind)
 
-		for(var/obj/item/organ/heart/gland/G in H.internal_organs)
+		for(var/obj/item/organ/gland/G in H.internal_organs)
 			G.Start()
 			point_reward++
 		if(point_reward > 0)
@@ -216,7 +213,7 @@
 		H.uncuff()
 		return
 	//Area not chosen / It's not safe area - teleport to arrivals
-	H.forceMove(pick(GLOB.latejoin))
+	H.forceMove(pick(latejoin))
 	H.uncuff()
 	return
 

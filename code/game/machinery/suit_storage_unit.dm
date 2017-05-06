@@ -54,7 +54,6 @@
 /obj/machinery/suit_storage_unit/hos
 	suit_type = /obj/item/clothing/suit/space/hardsuit/security/hos
 	mask_type = /obj/item/clothing/mask/gas/sechailer
-	storage_type = /obj/item/weapon/tank/internals/oxygen
 
 /obj/machinery/suit_storage_unit/atmos
 	suit_type = /obj/item/clothing/suit/space/hardsuit/engine/atmos
@@ -212,12 +211,12 @@
 		locked = TRUE
 		update_icon()
 		if(occupant)
-			var/mob/living/mob_occupant = occupant
 			if(uv_super)
-				mob_occupant.adjustFireLoss(rand(20, 36))
+				occupant.adjustFireLoss(rand(20, 36))
 			else
-				mob_occupant.adjustFireLoss(rand(10, 16))
-			mob_occupant.emote("scream")
+				occupant.adjustFireLoss(rand(10, 16))
+			if(iscarbon(occupant))
+				occupant.emote("scream")
 		addtimer(CALLBACK(src, .proc/cook), 50)
 	else
 		uv_cycles = initial(uv_cycles)
@@ -305,7 +304,7 @@
 				return
 			storage = I
 
-		I.loc = src
+		I.forceMove(src)
 		visible_message("<span class='notice'>[user] inserts [I] into [src]</span>", "<span class='notice'>You load [I] into [src].</span>")
 		update_icon()
 		return
@@ -322,7 +321,7 @@
 	return ..()
 
 /obj/machinery/suit_storage_unit/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-										datum/tgui/master_ui = null, datum/ui_state/state = GLOB.notcontained_state)
+										datum/tgui/master_ui = null, datum/ui_state/state = notcontained_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "suit_storage_unit", name, 400, 305, master_ui, state)
@@ -369,20 +368,24 @@
 				return
 			else
 				if(occupant)
-					var/mob/living/mob_occupant = occupant
-					to_chat(mob_occupant, "<span class='userdanger'>[src]'s confines grow warm, then hot, then scorching. You're being burned [!mob_occupant.stat ? "alive" : "away"]!</span>")
+					to_chat(occupant, "<span class='userdanger'>[src]'s confines grow warm, then hot, then scorching. You're being burned [!occupant.stat ? "alive" : "away"]!</span>")
 				cook()
 				. = TRUE
 		if("dispense")
 			if(!state_open)
 				return
-
-			var/static/list/valid_items = list("helmet", "suit", "mask", "storage")
-			var/item_name = params["item"]
-			if(item_name in valid_items)
-				var/obj/item/I = vars[item_name]
-				vars[item_name] = null
-				if(I)
-					I.forceMove(loc)
+			switch(params["item"])
+				if("helmet")
+					helmet.forceMove(loc)
+					helmet = null
+				if("suit")
+					suit.forceMove(loc)
+					suit = null
+				if("mask")
+					mask.forceMove(loc)
+					mask = null
+				if("storage")
+					storage.forceMove(loc)
+					storage = null
 			. = TRUE
 	update_icon()

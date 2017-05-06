@@ -14,11 +14,11 @@
 		M += ucfirst(P)
 	return jointext(M, " ")
 
-GLOBAL_LIST_EMPTY(FrozenAccounts)
+var/global/list/FrozenAccounts = list()
 
 /proc/list_frozen()
-	for (var/A in GLOB.FrozenAccounts)
-		to_chat(usr, "[A]: [length(GLOB.FrozenAccounts[A])] borrows")
+	for (var/A in FrozenAccounts)
+		to_chat(usr, "[A]: [length(FrozenAccounts[A])] borrows")
 
 /datum/article
 	var/headline = "Something big is happening"
@@ -94,11 +94,11 @@ GLOBAL_LIST_EMPTY(FrozenAccounts)
 /datum/article/proc/generateAuthorName()
 	switch(rand(1,3))
 		if (1)
-			return "[consonant()]. [pick(GLOB.last_names)]"
+			return "[consonant()]. [pick(last_names)]"
 		if (2)
-			return "[prob(50) ? pick(GLOB.first_names_male) : pick(GLOB.first_names_female)] [consonant()].[prob(50) ? "[consonant()]. " : null] [pick(GLOB.last_names)]"
+			return "[prob(50) ? pick(first_names_male) : pick(first_names_female)] [consonant()].[prob(50) ? "[consonant()]. " : null] [pick(last_names)]"
 		if (3)
-			return "[prob(50) ? pick(GLOB.first_names_male) : pick(GLOB.first_names_female)] \"[prob(50) ? pick(GLOB.first_names_male) : pick(GLOB.first_names_female)]\" [pick(GLOB.last_names)]"
+			return "[prob(50) ? pick(first_names_male) : pick(first_names_female)] \"[prob(50) ? pick(first_names_male) : pick(first_names_female)]\" [pick(last_names)]"
 
 /datum/article/proc/formatSpacetime()
 	var/ticksc = round(ticks/100)
@@ -106,7 +106,7 @@ GLOBAL_LIST_EMPTY(FrozenAccounts)
 	var/ticksp = "[ticksc]"
 	while (length(ticksp) < 5)
 		ticksp = "0[ticksp]"
-	spacetime = "[ticksp][time2text(world.realtime, "MM")][time2text(world.realtime, "DD")][text2num(time2text(world.realtime, "YYYY"))+540]"
+	spacetime = "[ticksp][time2text(world.realtime, "MM")][time2text(world.realtime, "DD")]2556"
 
 /datum/article/proc/formatArticle()
 	if (spacetime == "")

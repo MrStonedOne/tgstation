@@ -6,9 +6,7 @@
 	default_color = "00FF00"
 	species_traits = list(MUTCOLORS,EYECOLOR,LIPS)
 	mutant_bodyparts = list("tail_lizard", "snout", "spines", "horns", "frills", "body_markings", "legs")
-	mutanttongue = /obj/item/organ/tongue/lizard
-	coldmod = 1.5
-	heatmod = 0.67
+	mutant_organs = list(/obj/item/organ/tongue/lizard)
 	default_features = list("mcolor" = "0F0", "tail" = "Smooth", "snout" = "Round", "horns" = "None", "frills" = "None", "spines" = "None", "body_markings" = "None", "legs" = "Normal Legs")
 	attack_verb = "slash"
 	attack_sound = 'sound/weapons/slash.ogg'
@@ -16,9 +14,6 @@
 	meat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human/mutant/lizard
 	skinned_type = /obj/item/stack/sheet/animalhide/lizard
 	exotic_bloodtype = "L"
-
-/datum/species/lizard/after_equip_job(datum/job/J, mob/living/carbon/human/H)
-	H.grant_language(/datum/language/draconic)
 
 /datum/species/lizard/random_name(gender,unique,lastname)
 	if(unique)

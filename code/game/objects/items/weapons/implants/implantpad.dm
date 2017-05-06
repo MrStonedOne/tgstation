@@ -35,8 +35,9 @@
 /obj/item/weapon/implantpad/attackby(obj/item/weapon/implantcase/C, mob/user, params)
 	if(istype(C, /obj/item/weapon/implantcase))
 		if(!case)
-			if(!user.transferItemToLoc(C, src))
+			if(!user.unEquip(C))
 				return
+			C.forceMove(src)
 			case = C
 		update_icon()
 	else

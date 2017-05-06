@@ -1,3 +1,5 @@
+var/global/ntnet_card_uid = 1
+
 /obj/item/weapon/computer_hardware/network_card
 	name = "network card"
 	desc = "A basic wireless network card for usage with standard NTNet frequencies."
@@ -10,7 +12,6 @@
 	var/ethernet = 0 // Hard-wired, therefore always on, ignores NTNet wireless checks.
 	malfunction_probability = 1
 	device_type = MC_NET
-	var/global/ntnet_card_uid = 1
 
 /obj/item/weapon/computer_hardware/network_card/diagnostics(var/mob/user)
 	..()
@@ -24,8 +25,9 @@
 		to_chat(user, "OpenEth (Physical Connection) - Physical network connection port")
 
 /obj/item/weapon/computer_hardware/network_card/New(var/l)
-	..()
-	identification_id = ntnet_card_uid++
+	..(l)
+	identification_id = ntnet_card_uid
+	ntnet_card_uid++
 
 // Returns a string identifier of this network card
 /obj/item/weapon/computer_hardware/network_card/proc/get_network_tag()
@@ -42,7 +44,7 @@
 	if(ethernet) // Computer is connected via wired connection.
 		return 3
 
-	if(!GLOB.ntnet_global || !GLOB.ntnet_global.check_function(specific_action)) // NTNet is down and we are not connected via wired connection. No signal.
+	if(!ntnet_global || !ntnet_global.check_function(specific_action)) // NTNet is down and we are not connected via wired connection. No signal.
 		return 0
 
 	if(holder)

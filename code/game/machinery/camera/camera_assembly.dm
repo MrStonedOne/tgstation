@@ -31,12 +31,6 @@
 	if(building)
 		setDir(ndir)
 
-/obj/structure/camera_assembly/Destroy()
-	for(var/I in upgrades)
-		qdel(I)
-	upgrades.Cut()
-	return ..()
-
 /obj/structure/camera_assembly/attackby(obj/item/W, mob/living/user, params)
 	switch(state)
 		if(1)
@@ -93,12 +87,12 @@
 
 				state = 4
 				var/obj/machinery/camera/C = new(src.loc)
-				src.loc = C
+				src.forceMove(C)
 				C.assembly = src
 				C.setDir(src.dir)
 
 				C.network = tempnetwork
-				var/area/A = get_area(src)
+				var/area/A = get_area_master(src)
 				C.c_tag = "[A.name] ([rand(1, 999)])"
 
 
@@ -124,7 +118,7 @@
 		if(U)
 			to_chat(user, "<span class='notice'>You unattach an upgrade from the assembly.</span>")
 			playsound(src.loc, W.usesound, 50, 1)
-			U.loc = get_turf(src)
+			U.forceMove(get_turf(src))
 			upgrades -= U
 		return
 

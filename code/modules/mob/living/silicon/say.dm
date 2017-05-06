@@ -10,10 +10,10 @@
 		desig = trim_left(S.designation + " " + S.job)
 	var/message_a = say_quote(message, get_spans())
 	var/rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
-	for(var/mob/M in GLOB.player_list)
+	for(var/mob/M in player_list)
 		if(M.binarycheck())
 			if(isAI(M))
-				var/renderedAI = "<i><span class='game say'>Robotic Talk, <a href='?src=\ref[M];track=[html_encode(name)]'><span class='name'>[name] ([desig])</span></a> <span class='message'>[message_a]</span></span></i>"
+				var/renderedAI = "<i><span class='game say'>Robotic Talk, <a href='?src=\ref[M];track=[html_encode_ru(name)]'><span class='name'>[name] ([desig])</span></a> <span class='message'>[message_a]</span></span></i>"
 				to_chat(M, renderedAI)
 			else
 				to_chat(M, rendered)
@@ -33,19 +33,19 @@
 /mob/living/silicon/lingcheck()
 	return 0 //Borged or AI'd lings can't speak on the ling channel.
 
-/mob/living/silicon/radio(message, message_mode, list/spans, language)
+/mob/living/silicon/radio(message, message_mode, list/spans)
 	. = ..()
 	if(. != 0)
 		return .
 
 	if(message_mode == "robot")
 		if (radio)
-			radio.talk_into(src, message, , spans, language)
+			radio.talk_into(src, message, , spans)
 		return REDUCE_RANGE
 
-	else if(message_mode in GLOB.radiochannels)
+	else if(message_mode in radiochannels)
 		if(radio)
-			radio.talk_into(src, message, message_mode, spans, language)
+			radio.talk_into(src, message, message_mode, spans)
 			return ITALICS | REDUCE_RANGE
 
 	return 0

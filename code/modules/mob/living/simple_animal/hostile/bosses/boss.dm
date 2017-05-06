@@ -11,7 +11,7 @@
 	var/point_regen_delay = 1
 
 
-/mob/living/simple_animal/hostile/boss/Initialize()
+/mob/living/simple_animal/hostile/boss/New()
 	..()
 
 	atb = new()
@@ -36,7 +36,7 @@
 		AB.boss = null
 		AB.Remove(src)
 		qdel(AB)
-	boss_abilities.Cut()
+	del(boss_abilities)
 	return ..()
 
 
@@ -90,7 +90,7 @@
 
 /datum/boss_active_timed_battle/New()
 	..()
-	START_PROCESSING(SSobj, src)
+	SSobj.processing.Add(src)
 
 
 /datum/boss_active_timed_battle/proc/assign_abilities(list/L)

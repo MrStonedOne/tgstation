@@ -24,6 +24,9 @@
 	var/locked = 0
 	var/opendir = SOUTH
 
+/obj/structure/bodycontainer/New()
+	..()
+
 /obj/structure/bodycontainer/Destroy()
 	open()
 	if(connected)
@@ -31,8 +34,7 @@
 		connected = null
 	return ..()
 
-/obj/structure/bodycontainer/on_log(login)
-	..()
+/obj/structure/bodycontainer/on_log()
 	update_icon()
 
 /obj/structure/bodycontainer/update_icon()
@@ -145,7 +147,7 @@
 /*
  * Crematorium
  */
-GLOBAL_LIST_EMPTY(crematoriums)
+var/global/list/crematoriums = new/list()
 /obj/structure/bodycontainer/crematorium
 	name = "crematorium"
 	desc = "A human incinerator. Works well on barbeque nights."
@@ -158,14 +160,14 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	return
 
 /obj/structure/bodycontainer/crematorium/Destroy()
-	GLOB.crematoriums.Remove(src)
+	crematoriums.Remove(src)
 	return ..()
 
 /obj/structure/bodycontainer/crematorium/New()
 	connected = new/obj/structure/tray/c_tray(src)
 	connected.connected = src
 
-	GLOB.crematoriums.Add(src)
+	crematoriums.Add(src)
 	..()
 
 /obj/structure/bodycontainer/crematorium/update_icon()
@@ -186,10 +188,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 /obj/structure/bodycontainer/crematorium/proc/cremate(mob/user)
 	if(locked)
 		return //don't let you cremate something twice or w/e
-	// Make sure we don't delete the actual morgue and its tray
-	var/list/conts = GetAllContents() - src - connected
 
-	if(conts.len <= 1)
+	if(contents.len <= 1)
 		audible_message("<span class='italics'>You hear a hollow crackle.</span>")
 		return
 
@@ -199,11 +199,11 @@ GLOBAL_LIST_EMPTY(crematoriums)
 		locked = 1
 		update_icon()
 
-		for(var/mob/living/M in conts)
+		for(var/mob/living/M in contents)
 			if (M.stat != DEAD)
 				M.emote("scream")
 			if(user)
-				user.log_message("Cremated <b>[M]/[M.ckey]</b>", INDIVIDUAL_ATTACK_LOG)
+				user.attack_log +="\[[time_stamp()]\] Cremated <b>[M]/[M.ckey]</b>"
 				log_attack("\[[time_stamp()]\] <b>[user]/[user.ckey]</b> cremated <b>[M]/[M.ckey]</b>")
 			else
 				log_attack("\[[time_stamp()]\] <b>UNKNOWN</b> cremated <b>[M]/[M.ckey]</b>")
@@ -212,13 +212,13 @@ GLOBAL_LIST_EMPTY(crematoriums)
 				M.ghostize()
 				qdel(M)
 
-		for(var/obj/O in conts) //obj instead of obj/item so that bodybags and ashes get destroyed. We dont want tons and tons of ash piling up
+		for(var/obj/O in contents) //obj instead of obj/item so that bodybags and ashes get destroyed. We dont want tons and tons of ash piling up
 			if(O != connected) //Creamtorium does not burn hot enough to destroy the tray
 				qdel(O)
 
 		new /obj/effect/decal/cleanable/ash(src)
 		sleep(30)
-		if(!QDELETED(src))
+		if(!qdeleted(src))
 			locked = 0
 			update_icon()
 			playsound(src.loc, 'sound/machines/ding.ogg', 50, 1) //you horrible people
@@ -272,7 +272,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 			return
 	if(!ismob(user) || user.lying || user.incapacitated())
 		return
-	O.loc = src.loc
+	O.forceMove(src.loc)
 	if (user != O)
 		visible_message("<span class='warning'>[user] stuffs [O] into [src].</span>")
 	return

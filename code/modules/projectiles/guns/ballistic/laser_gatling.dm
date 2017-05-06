@@ -12,8 +12,8 @@
 	var/obj/item/weapon/gun/ballistic/minigun/gun = null
 	var/armed = 0 //whether the gun is attached, 0 is attached, 1 is the gun is wielded.
 	var/overheat = 0
-	var/overheat_max = 40
-	var/heat_diffusion = 1
+	var/overheat_max = 100
+	var/heat_diffusion = 2
 
 /obj/item/weapon/minigunpack/New()
 	gun = new(src)
@@ -22,7 +22,7 @@
 
 /obj/item/weapon/minigunpack/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	return ..()
+	..()
 
 /obj/item/weapon/minigunpack/process()
 	overheat = max(0, overheat - heat_diffusion)
@@ -46,13 +46,13 @@
 
 /obj/item/weapon/minigunpack/attackby(obj/item/weapon/W, mob/user, params)
 	if(W == gun) //Don't need armed check, because if you have the gun assume its armed.
-		user.dropItemToGround(gun, TRUE)
+		user.unEquip(gun,1)
 	else
 		..()
 
 /obj/item/weapon/minigunpack/dropped(mob/user)
 	if(armed)
-		user.dropItemToGround(gun, TRUE)
+		user.unEquip(gun,1)
 
 /obj/item/weapon/minigunpack/MouseDrop(atom/over_object)
 	if(armed)
@@ -63,11 +63,13 @@
 		if(!over_object)
 			return
 
-		if(!M.incapacitated())
+		if(!M.restrained() && !M.stat)
 
 			if(istype(over_object, /obj/screen/inventory/hand))
 				var/obj/screen/inventory/hand/H = over_object
-				M.putItemFromInventoryInHandIfPossible(src, H.held_index)
+				if(!M.unEquip(src))
+					return
+				M.put_in_hand(src, H.held_index)
 
 
 /obj/item/weapon/minigunpack/update_icon()
@@ -96,7 +98,7 @@
 	icon_state = "minigun_spin"
 	item_state = "minigun"
 	origin_tech = "combat=6;powerstorage=5;magnets=4"
-	flags = CONDUCT
+	flags = CONDUCT | HANDSLOW
 	slowdown = 1
 	slot_flags = null
 	w_class = WEIGHT_CLASS_HUGE
@@ -109,16 +111,6 @@
 	mag_type = /obj/item/ammo_box/magazine/internal/minigun
 	casing_ejector = 0
 	var/obj/item/weapon/minigunpack/ammo_pack
-
-/obj/item/weapon/gun/ballistic/minigun/New()
-	SET_SECONDARY_FLAG(src, SLOWS_WHILE_IN_HAND)
-
-	if(!ammo_pack)
-		if(istype(loc,/obj/item/weapon/minigunpack)) //We should spawn inside a ammo pack so let's use that one.
-			ammo_pack = loc
-			..()
-		else
-			qdel(src)//No pack, no gun
 
 /obj/item/weapon/gun/ballistic/minigun/attack_self(mob/living/user)
 	return
@@ -141,6 +133,14 @@
 	if(!ammo_pack || ammo_pack.loc != user)
 		to_chat(user, "You need the backpack power source to fire the gun!")
 	..()
+
+/obj/item/weapon/gun/ballistic/minigun/New()
+	if(!ammo_pack)
+		if(istype(loc,/obj/item/weapon/minigunpack)) //We should spawn inside a ammo pack so let's use that one.
+			ammo_pack = loc
+			..()
+		else
+			qdel(src)//No pack, no gun
 
 /obj/item/weapon/gun/ballistic/minigun/dropped(mob/living/user)
 	ammo_pack.attach_gun(user)

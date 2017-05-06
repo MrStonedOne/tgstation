@@ -2,7 +2,7 @@
 /mob/living/simple_animal/bot/cleanbot
 	name = "\improper Cleanbot"
 	desc = "A little cleaning robot, he looks so excited!"
-	icon = 'icons/mob/aibots.dmi'
+	icon = 'icons/obj/aibots.dmi'
 	icon_state = "cleanbot0"
 	density = 0
 	anchored = 0
@@ -31,7 +31,7 @@
 	var/next_dest
 	var/next_dest_loc
 
-/mob/living/simple_animal/bot/cleanbot/Initialize()
+/mob/living/simple_animal/bot/cleanbot/New()
 	..()
 	get_targets()
 	icon_state = "cleanbot[on]"
@@ -136,7 +136,7 @@
 			bot_patrol()
 
 	if(target)
-		if(QDELETED(target) || !isturf(target.loc))
+		if(qdeleted(target) || !isturf(target.loc))
 			target = null
 			mode = BOT_IDLE
 			return
@@ -242,7 +242,7 @@
 					T.MakeSlippery(min_wet_time = 20, wet_time_to_add = 15)
 			else
 				visible_message("<span class='danger'>[src] whirs and bubbles violently, before releasing a plume of froth!</span>")
-				new /obj/effect/particle_effect/foam(loc)
+				PoolOrNew(/obj/effect/particle_effect/foam, loc)
 
 	else
 		..()
@@ -259,11 +259,13 @@
 	if(prob(50))
 		new /obj/item/bodypart/l_arm/robot(Tsec)
 
-	do_sparks(3, TRUE, src)
+	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+	s.set_up(3, 1, src)
+	s.start()
 	..()
 
 /obj/machinery/bot_core/cleanbot
-	req_one_access = list(GLOB.access_janitor, GLOB.access_robotics)
+	req_one_access = list(access_janitor, access_robotics)
 
 
 /mob/living/simple_animal/bot/cleanbot/get_controls(mob/user)

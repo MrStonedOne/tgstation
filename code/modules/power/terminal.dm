@@ -62,7 +62,9 @@
 			if(do_after(user, 50*W.toolspeed, target = src))
 				if(!master || master.can_terminal_dismantle())
 					if(prob(50) && electrocute_mob(user, powernet, src, 1, TRUE))
-						do_sparks(5, TRUE, master)
+						var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+						s.set_up(5, 1, master)
+						s.start()
 						return
 					new /obj/item/stack/cable_coil(loc, 10)
 					to_chat(user, "<span class='notice'>You cut the cables and dismantle the power terminal.</span>")

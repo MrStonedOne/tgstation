@@ -50,13 +50,13 @@ Difficulty: Medium
 	appearance_flags = 0
 	mouse_opacity = 1
 
-/mob/living/simple_animal/hostile/megafauna/legion/Initialize()
-	. = ..()
+/mob/living/simple_animal/hostile/megafauna/legion/New()
+	..()
 	internal = new/obj/item/device/gps/internal/legion(src)
 
 /mob/living/simple_animal/hostile/megafauna/legion/AttackingTarget()
-	. = ..()
-	if(. && ishuman(target))
+	..()
+	if(ishuman(target))
 		var/mob/living/L = target
 		if(L.stat == UNCONSCIOUS)
 			var/mob/living/simple_animal/hostile/asteroid/hivelordbrood/legion/A = new(loc)
@@ -117,7 +117,7 @@ Difficulty: Medium
 		visible_message("<span class='boldannounce'>[src] splits in twain!</span>")
 	else
 		var/last_legion = TRUE
-		for(var/mob/living/simple_animal/hostile/megafauna/legion/other in GLOB.mob_list)
+		for(var/mob/living/simple_animal/hostile/megafauna/legion/other in mob_list)
 			if(other != src)
 				last_legion = FALSE
 				break

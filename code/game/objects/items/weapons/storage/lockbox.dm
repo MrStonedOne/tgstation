@@ -1,3 +1,5 @@
+
+
 /obj/item/weapon/storage/lockbox
 	name = "lockbox"
 	desc = "A locked box."
@@ -7,7 +9,7 @@
 	max_w_class = WEIGHT_CLASS_NORMAL
 	max_combined_w_class = 14 //The sum of the w_classes of all the items in this storage item.
 	storage_slots = 4
-	req_access = list(GLOB.access_armory)
+	req_access = list(access_armory)
 	var/locked = 1
 	var/broken = 0
 	var/icon_locked = "lockbox+l"
@@ -76,9 +78,10 @@
 
 /obj/item/weapon/storage/lockbox/loyalty
 	name = "lockbox of mindshield implants"
-	req_access = list(GLOB.access_security)
+	req_access = list(access_security)
 
-/obj/item/weapon/storage/lockbox/loyalty/PopulateContents()
+/obj/item/weapon/storage/lockbox/loyalty/New()
+	..()
 	for(var/i in 1 to 3)
 		new /obj/item/weapon/implantcase/mindshield(src)
 	new /obj/item/weapon/implanter/mindshield(src)
@@ -87,9 +90,10 @@
 /obj/item/weapon/storage/lockbox/clusterbang
 	name = "lockbox of clusterbangs"
 	desc = "You have a bad feeling about opening this."
-	req_access = list(GLOB.access_security)
+	req_access = list(access_security)
 
-/obj/item/weapon/storage/lockbox/clusterbang/PopulateContents()
+/obj/item/weapon/storage/lockbox/clusterbang/New()
+	..()
 	new /obj/item/weapon/grenade/clusterbuster(src)
 
 /obj/item/weapon/storage/lockbox/medal
@@ -100,12 +104,13 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	max_w_class = WEIGHT_CLASS_SMALL
 	storage_slots = 10
-	req_access = list(GLOB.access_captain)
+	req_access = list(access_captain)
 	icon_locked = "medalbox+l"
 	icon_closed = "medalbox"
 	icon_broken = "medalbox+b"
 
-/obj/item/weapon/storage/lockbox/medal/PopulateContents()
+/obj/item/weapon/storage/lockbox/medal/New()
+	..()
 	new /obj/item/clothing/tie/medal/silver/valor(src)
 	new /obj/item/clothing/tie/medal/bronze_heart(src)
 	for(var/i in 1 to 3)

@@ -68,7 +68,7 @@
 	if(!legend)
 		var/area/A = get_area()
 		if(get_area_type() == AREA_STATION)
-			. += "<p>According to \the [src], you are now in <b>\"[html_encode(A.name)]\"</b>.</p>"
+			. += "<p>According to \the [src], you are now in <b>\"[html_encode_ru(A.name)]\"</b>.</p>"
 			. += "<p>You may <a href='?src=\ref[src];edit_area=1'>make an amendment</a> to the drawing.</p>"
 		. += "<p><a href='?src=\ref[src];view_legend=1'>View wire colour legend</a></p>"
 		if(!viewing)
@@ -146,7 +146,9 @@
 /obj/item/areaeditor/proc/get_area()
 	var/turf/T = get_turf(usr)
 	var/area/A = T.loc
+	A = A.master
 	return A
+
 
 /obj/item/areaeditor/proc/get_area_type(area/A = get_area())
 	if(A.outdoors)
@@ -168,18 +170,18 @@
 
 /obj/item/areaeditor/blueprints/proc/view_wire_devices(mob/user)
 	var/message = "<br>You examine the wire legend.<br>"
-	for(var/wireset in GLOB.wire_color_directory)
-		message += "<br><a href='?src=\ref[src];view_wireset=[wireset]'>[GLOB.wire_name_directory[wireset]]</a>"
+	for(var/wireset in wire_color_directory)
+		message += "<br><a href='?src=\ref[src];view_wireset=[wireset]'>[wire_name_directory[wireset]]</a>"
 	message += "</p>"
 	return message
 
 /obj/item/areaeditor/blueprints/proc/view_wire_set(mob/user, wireset)
 	//for some reason you can't use wireset directly as a derefencer so this is the next best :/
-	for(var/device in GLOB.wire_color_directory)
+	for(var/device in wire_color_directory)
 		if("[device]" == wireset)	//I know... don't change it...
-			var/message = "<p><b>[GLOB.wire_name_directory[device]]:</b>"
-			for(var/Col in GLOB.wire_color_directory[device])
-				var/wire_name = GLOB.wire_color_directory[device][Col]
+			var/message = "<p><b>[wire_name_directory[device]]:</b>"
+			for(var/Col in wire_color_directory[device])
+				var/wire_name = wire_color_directory[device][Col]
 				if(!findtext(wire_name, WIRE_DUD_PREFIX))	//don't show duds
 					message += "<p><span style='color: [Col]'>[Col]</span>: [wire_name]</p>"
 			message += "</p>"
@@ -233,15 +235,9 @@
 			A.contents += T
 			T.change_area(old_area, T)
 	A.has_gravity = old_gravity
-
-	for(var/area/RA in old.related)
-		if(RA.firedoors)
-			for(var/D in RA.firedoors)
-				var/obj/machinery/door/firedoor/FD = D
-				FD.CalculateAffectingAreas()
-
 	to_chat(creator, "<span class='notice'>You have created a new area, named [str]. It is now weather proof, and constructing an APC will allow it to be powered.</span>")
 	return 1
+
 
 /obj/item/areaeditor/proc/edit_area()
 	var/area/A = get_area()
@@ -255,10 +251,6 @@
 	set_area_machinery_title(A,str,prevname)
 	for(var/area/RA in A.related)
 		RA.name = str
-		if(RA.firedoors)
-			for(var/D in RA.firedoors)
-				var/obj/machinery/door/firedoor/FD = D
-				FD.CalculateAffectingAreas()
 	to_chat(usr, "<span class='notice'>You rename the '[prevname]' to '[str]'.</span>")
 	interact()
 	return 1
@@ -309,7 +301,7 @@
 			return ROOM_ERR_TOOLARGE
 		var/turf/T = pending[1] //why byond havent list::pop()?
 		pending -= T
-		for (var/dir in GLOB.cardinal)
+		for (var/dir in cardinal)
 			var/skip = 0
 			for (var/obj/structure/window/W in T)
 				if(dir == W.dir || (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST)))
@@ -343,7 +335,7 @@
 
 	for(var/V in border) //lazy but works
 		var/turf/F = V
-		for(var/direction in GLOB.cardinal)
+		for(var/direction in cardinal)
 			if(direction == border[F])
 				continue //don't want to grab turfs from outside the border
 			var/turf/U = get_step(F, direction)

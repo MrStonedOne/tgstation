@@ -9,13 +9,13 @@
 
 /obj/item/device/radio/beacon/New()
 	..()
-	GLOB.teleportbeacons += src
+	teleportbeacons += src
 
 /obj/item/device/radio/beacon/Destroy()
-	GLOB.teleportbeacons.Remove(src)
+	teleportbeacons.Remove(src)
 	return ..()
 
-/obj/item/device/radio/beacon/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, message_mode)
+/obj/item/device/radio/beacon/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans)
 	return
 
 /obj/item/device/radio/beacon/send_hear()

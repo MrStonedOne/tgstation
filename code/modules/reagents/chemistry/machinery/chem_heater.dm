@@ -12,8 +12,8 @@
 	var/heater_coefficient = 0.10
 	var/on = FALSE
 
-/obj/machinery/chem_heater/Initialize()
-	. = ..()
+/obj/machinery/chem_heater/New()
+	..()
 	var/obj/item/weapon/circuitboard/machine/B = new /obj/item/weapon/circuitboard/machine/chem_heater(null)
 	B.apply_default_parts(src)
 
@@ -63,7 +63,7 @@
 		if(!user.drop_item())
 			return
 		beaker = I
-		I.loc = src
+		I.forceMove(src)
 		to_chat(user, "<span class='notice'>You add the beaker to the machine.</span>")
 		icon_state = "mixer1b"
 		return
@@ -73,7 +73,7 @@
 	eject_beaker()
 
 /obj/machinery/chem_heater/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-										datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+										datum/tgui/master_ui = null, datum/ui_state/state = default_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "chem_heater", name, 275, 400, master_ui, state)
@@ -124,7 +124,7 @@
 
 /obj/machinery/chem_heater/proc/eject_beaker()
 	if(beaker)
-		beaker.loc = get_turf(src)
+		beaker.forceMove(get_turf(src))
 		beaker.reagents.handle_reactions()
 		beaker = null
 		icon_state = "mixer0b"

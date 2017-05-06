@@ -174,4 +174,3 @@
 		obscured += t.obscured
 
 #undef UPDATE_BUFFER
-#undef CHUNK_SIZE

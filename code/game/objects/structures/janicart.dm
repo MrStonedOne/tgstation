@@ -34,7 +34,7 @@
 /obj/structure/janitorialcart/proc/put_in_cart(obj/item/I, mob/user)
 	if(!user.drop_item())
 		return
-	I.loc = src
+	I.forceMove(src)
 	updateUsrDialog()
 	to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
 	return
@@ -58,7 +58,7 @@
 			var/obj/item/weapon/storage/bag/trash/t=I
 			t.janicart_insert(user, src)
 		else
-			to_chat(user,  fail_msg)
+			to_chat(user, fail_msg)
 	else if(istype(I, /obj/item/weapon/reagent_containers/spray/cleaner))
 		if(!myspray)
 			put_in_cart(I, user)

@@ -13,8 +13,8 @@
 
 #define DEVILRESURRECTTIME 600
 
-GLOBAL_LIST_EMPTY(allDevils)
-GLOBAL_LIST_INIT(lawlorify, list (
+var/global/list/allDevils = list()
+var/global/list/lawlorify = list (
 		LORE = list(
 			OBLIGATION_FOOD = "This devil seems to always offer its victims food before slaughtering them.",
 			OBLIGATION_FIDDLE = "This devil will never turn down a musical challenge.",
@@ -59,7 +59,7 @@ GLOBAL_LIST_INIT(lawlorify, list (
 			BAN_CHAPEL = "You must never attempt to enter the chapel.",
 			BAN_HURTPRIEST = "You must never attack a priest.",
 			BAN_AVOIDWATER = "You must never willingly touch a wet surface.",
-			BAN_STRIKEUNCONCIOUS = "You must never strike an unconscious person.",
+			BAN_STRIKEUNCONCIOUS = "You must never strike an unconcious person.",
 			BAN_HURTLIZARD = "You must never harm a lizardman outside of self defense.",
 			BAN_HURTANIMAL = "You must never harm a non-sentient creature or robot outside of self defense.",
 			BANE_SILVER = "Silver, in all of its forms shall be your downfall.",
@@ -77,7 +77,8 @@ GLOBAL_LIST_INIT(lawlorify, list (
 			BANISH_DESTRUCTION = "If your corpse is destroyed, you will be unable to resurrect.",
 			BANISH_FUNERAL_GARB = "If your corpse is clad in funeral garments, you will be unable to resurrect."
 		)
-	))
+	)
+
 /datum/devilinfo
 	var/datum/mind/owner = null
 	var/obligation
@@ -93,7 +94,6 @@ GLOBAL_LIST_INIT(lawlorify, list (
 	/obj/effect/proc_holder/spell/targeted/summon_contract,
 	/obj/effect/proc_holder/spell/targeted/conjure_item/violin,
 	/obj/effect/proc_holder/spell/targeted/summon_dancefloor)
-	var/ascendable = FALSE
 
 
 /datum/devilinfo/New()
@@ -111,11 +111,11 @@ GLOBAL_LIST_INIT(lawlorify, list (
 	return devil
 
 /proc/devilInfo(name, saveDetails = 0)
-	if(GLOB.allDevils[lowertext(name)])
-		return GLOB.allDevils[lowertext(name)]
+	if(allDevils[lowertext(name)])
+		return allDevils[lowertext(name)]
 	else
 		var/datum/devilinfo/devil = randomDevilInfo(name)
-		GLOB.allDevils[lowertext(name)] = devil
+		allDevils[lowertext(name)] = devil
 		devil.exists = saveDetails
 		return devil
 
@@ -187,6 +187,15 @@ GLOBAL_LIST_INIT(lawlorify, list (
 		remove_spells()
 		to_chat(owner.current, "<span class='warning'>As punishment for your failures, all of your powers except contract creation have been revoked.")
 
+/datum/devilinfo/proc/increase_form()
+	switch(form)
+		if(BASIC_DEVIL)
+			increase_blood_lizard()
+		if(BLOOD_LIZARD)
+			increase_true_devil()
+		if(TRUE_DEVIL)
+			increase_arch_devil()
+
 /datum/devilinfo/proc/regress_humanoid()
 	to_chat(owner.current, "<span class='warning'>Your powers weaken, have more contracts be signed to regain power.")
 	if(ishuman(owner.current))
@@ -201,7 +210,7 @@ GLOBAL_LIST_INIT(lawlorify, list (
 /datum/devilinfo/proc/regress_blood_lizard()
 	var/mob/living/carbon/true_devil/D = owner.current
 	to_chat(D, "<span class='warning'>Your powers weaken, have more contracts be signed to regain power.")
-	D.oldform.loc = D.loc
+	D.oldform.forceMove(D.loc)
 	owner.transfer_to(D.oldform)
 	give_lizard_spells()
 	qdel(D)
@@ -232,7 +241,7 @@ GLOBAL_LIST_INIT(lawlorify, list (
 	sleep(50)
 	var/mob/living/carbon/true_devil/A = new /mob/living/carbon/true_devil(owner.current.loc)
 	A.faction |= "hell"
-	owner.current.loc = A
+	owner.current.forceMove(A)
 	A.oldform = owner.current
 	owner.transfer_to(A)
 	A.set_name()
@@ -242,8 +251,6 @@ GLOBAL_LIST_INIT(lawlorify, list (
 
 
 /datum/devilinfo/proc/increase_arch_devil()
-	if(!ascendable)
-		return
 	var/mob/living/carbon/true_devil/D = owner.current
 	to_chat(D, "<span class='warning'>You feel as though your form is about to ascend.")
 	sleep(50)
@@ -277,7 +284,7 @@ GLOBAL_LIST_INIT(lawlorify, list (
 	if(!D)
 		return
 	to_chat(world, "<font size=5><span class='danger'><b>\"SLOTH, WRATH, GLUTTONY, ACEDIA, ENVY, GREED, PRIDE! FIRES OF HELL AWAKEN!!\"</font></span>")
-	world << 'sound/hallucinations/veryfar_noise.ogg'
+	to_chat(world, 'sound/hallucinations/veryfar_noise.ogg')
 	give_arch_spells()
 	D.convert_to_archdevil()
 	if(istype(D.loc, /obj/effect/dummy/slaughter/))
@@ -286,9 +293,9 @@ GLOBAL_LIST_INIT(lawlorify, list (
 	if(A)
 		notify_ghosts("An arch devil has ascended in \the [A.name]. Reach out to the devil to be given a new shell for your soul.", source = owner.current, action=NOTIFY_ATTACK)
 	sleep(50)
-	if(!SSticker.mode.devil_ascended)
-		SSshuttle.emergency.request(null, set_coefficient = 0.3)
-	SSticker.mode.devil_ascended++
+	if(!ticker.mode.devil_ascended)
+		SSshuttle.emergency.request(null, 0.3)
+	ticker.mode.devil_ascended++
 	form = ARCH_DEVIL
 
 /datum/devilinfo/proc/remove_spells()
@@ -303,7 +310,7 @@ GLOBAL_LIST_INIT(lawlorify, list (
 
 /datum/devilinfo/proc/give_base_spells(give_summon_contract = 0)
 	remove_spells()
-	owner.AddSpell(new /obj/effect/proc_holder/spell/aimed/fireball/hellish(null))
+	owner.AddSpell(new /obj/effect/proc_holder/spell/fireball/hellish(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/summon_pitchfork(null))
 	if(give_summon_contract)
 		give_summon_contract()
@@ -315,13 +322,13 @@ GLOBAL_LIST_INIT(lawlorify, list (
 /datum/devilinfo/proc/give_lizard_spells()
 	remove_spells()
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/summon_pitchfork(null))
-	owner.AddSpell(new /obj/effect/proc_holder/spell/aimed/fireball/hellish(null))
+	owner.AddSpell(new /obj/effect/proc_holder/spell/fireball/hellish(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/infernal_jaunt(null))
 
 /datum/devilinfo/proc/give_true_spells()
 	remove_spells()
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/summon_pitchfork/greater(null))
-	owner.AddSpell(new /obj/effect/proc_holder/spell/aimed/fireball/hellish(null))
+	owner.AddSpell(new /obj/effect/proc_holder/spell/fireball/hellish(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/infernal_jaunt(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/sintouch(null))
 
@@ -396,7 +403,7 @@ GLOBAL_LIST_INIT(lawlorify, list (
 
 /datum/devilinfo/proc/hellish_resurrection(mob/living/body)
 	message_admins("[owner.name] (true name is: [truename]) is resurrecting using hellish energy.</a>")
-	if(SOULVALUE < ARCH_THRESHOLD && ascendable) // once ascended, arch devils do not go down in power by any means.
+	if(SOULVALUE <= ARCH_THRESHOLD) // once ascended, arch devils do not go down in power by any means.
 		reviveNumber += LOSS_PER_DEATH
 		update_hud()
 	if(body)
@@ -407,49 +414,40 @@ GLOBAL_LIST_INIT(lawlorify, list (
 			var/mob/living/carbon/true_devil/D = body
 			if(D.oldform)
 				D.oldform.revive(1,0) // Heal the old body too, so the devil doesn't resurrect, then immediately regress into a dead body.
-		if(body.stat == DEAD)
-			create_new_body()
 	else
-		create_new_body()
-	check_regression()
-
-/datum/devilinfo/proc/create_new_body()
-	if(GLOB.blobstart.len > 0)
-		var/turf/targetturf = get_turf(pick(GLOB.blobstart))
-		var/mob/currentMob = owner.current
-		if(!currentMob)
-			currentMob = owner.get_ghost()
+		if(blobstart.len > 0)
+			var/turf/targetturf = get_turf(pick(blobstart))
+			var/mob/currentMob = owner.current
 			if(!currentMob)
-				message_admins("[owner.name]'s devil resurrection failed due to client logoff.  Aborting.")
+				currentMob = owner.get_ghost()
+				if(!currentMob)
+					message_admins("[owner.name]'s devil resurrection failed due to client logoff.  Aborting.")
+					return -1 //
+			if(currentMob.mind != owner)
+				message_admins("[owner.name]'s devil resurrection failed due to becoming a new mob.  Aborting.")
 				return -1
-		if(currentMob.mind != owner)
-			message_admins("[owner.name]'s devil resurrection failed due to becoming a new mob.  Aborting.")
-			return -1
-		currentMob.change_mob_type( /mob/living/carbon/human, targetturf, null, 1)
-		var/mob/living/carbon/human/H = owner.current
-		H.equip_to_slot_or_del(new /obj/item/clothing/under/lawyer/black(H), slot_w_uniform)
-		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/laceup(H), slot_shoes)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/briefcase(H), slot_hands)
-		H.equip_to_slot_or_del(new /obj/item/weapon/pen(H), slot_l_store)
-		if(SOULVALUE >= BLOOD_THRESHOLD)
-			H.set_species(/datum/species/lizard, 1)
-			H.underwear = "Nude"
-			H.undershirt = "Nude"
-			H.socks = "Nude"
-			H.dna.features["mcolor"] = "511"
-			H.regenerate_icons()
-			if(SOULVALUE >= TRUE_THRESHOLD) //Yes, BOTH this and the above if statement are to run if soulpower is high enough.
-				var/mob/living/carbon/true_devil/A = new /mob/living/carbon/true_devil(targetturf)
-				A.faction |= "hell"
-				H.forceMove(A)
-				A.oldform = H
-				A.set_name()
-				owner.transfer_to(A)
-				if(SOULVALUE >= ARCH_THRESHOLD && ascendable)
-					A.convert_to_archdevil()
-	else
-		throw EXCEPTION("Unable to find a blobstart landmark for hellish resurrection")
-
+			currentMob.change_mob_type( /mob/living/carbon/human , targetturf, null, 1)
+			var/mob/living/carbon/human/H  = owner.current
+			give_summon_contract()
+			if(SOULVALUE >= BLOOD_THRESHOLD)
+				H.set_species(/datum/species/lizard, 1)
+				H.underwear = "Nude"
+				H.undershirt = "Nude"
+				H.socks = "Nude"
+				H.dna.features["mcolor"] = "511"
+				H.regenerate_icons()
+				if(SOULVALUE >= TRUE_THRESHOLD) //Yes, BOTH this and the above if statement are to run if soulpower is high enough.
+					var/mob/living/carbon/true_devil/A = new /mob/living/carbon/true_devil(targetturf)
+					A.faction |= "hell"
+					H.forceMove(A)
+					A.oldform = H
+					A.set_name()
+					owner.transfer_to(A)
+					if(SOULVALUE >= ARCH_THRESHOLD)
+						A.convert_to_archdevil()
+		else
+			throw EXCEPTION("Unable to find a blobstart landmark for hellish resurrection")
+	check_regression()
 
 /datum/devilinfo/proc/update_hud()
 	if(istype(owner.current, /mob/living/carbon))

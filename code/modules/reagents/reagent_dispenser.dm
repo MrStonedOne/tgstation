@@ -23,10 +23,10 @@
 	else
 		return ..()
 
-/obj/structure/reagent_dispensers/Initialize()
+/obj/structure/reagent_dispensers/New()
 	create_reagents(tank_volume)
 	reagents.add_reagent(reagent_id, tank_volume)
-	. = ..()
+	..()
 
 /obj/structure/reagent_dispensers/examine(mob/user)
 	..()
@@ -84,14 +84,12 @@
 
 /obj/structure/reagent_dispensers/fueltank/bullet_act(obj/item/projectile/P)
 	..()
-	if(!QDELETED(src)) //wasn't deleted by the projectile's effects.
+	if(!qdeleted(src)) //wasn't deleted by the projectile's effects.
 		if(!P.nodamage && ((P.damage_type == BURN) || (P.damage_type == BRUTE)))
 			var/boom_message = "[key_name_admin(P.firer)] triggered a fueltank explosion via projectile."
-			GLOB.bombers += boom_message
+			bombers += boom_message
 			message_admins(boom_message)
-			var/log_message = "triggered a fueltank explosion via projectile."
-			P.firer.log_message(log_message, INDIVIDUAL_ATTACK_LOG)
-			log_attack("[key_name(P.firer)] [log_message]")
+			log_game("[key_name(P.firer)] triggered a fueltank explosion via projectile.")
 			boom()
 
 /obj/structure/reagent_dispensers/fueltank/attackby(obj/item/I, mob/living/user, params)
@@ -110,12 +108,10 @@
 			update_icon()
 		else
 			user.visible_message("<span class='warning'>[user] catastrophically fails at refilling [user.p_their()] [W.name]!</span>", "<span class='userdanger'>That was stupid of you.</span>")
-			var/message_admins = "[key_name_admin(user)] triggered a fueltank explosion via welding tool."
-			GLOB.bombers += message_admins
-			message_admins(message_admins)
-			var/message_log = "triggered a fueltank explosion via welding tool."
-			user.log_message(message_log, INDIVIDUAL_ATTACK_LOG)
-			log_attack("[key_name(user)] [message_log]")
+			var/message = "[key_name_admin(user)] triggered a fueltank explosion via welding tool."
+			bombers += message
+			message_admins(message)
+			log_game("[key_name(user)] triggered a fueltank explosion via welding tool.")
 			boom()
 		return
 	return ..()
@@ -129,8 +125,8 @@
 	density = 0
 	reagent_id = "condensedcapsaicin"
 
-/obj/structure/reagent_dispensers/peppertank/Initialize()
-	. = ..()
+/obj/structure/reagent_dispensers/peppertank/New()
+	..()
 	if(prob(1))
 		desc = "IT'S PEPPER TIME, BITCH!"
 
@@ -166,7 +162,7 @@
 
 /obj/structure/reagent_dispensers/beerkeg/blob_act(obj/structure/blob/B)
 	explosion(src.loc,0,3,5,7,10)
-	if(!QDELETED(src))
+	if(!qdeleted(src))
 		qdel(src)
 
 

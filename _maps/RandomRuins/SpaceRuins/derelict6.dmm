@@ -1,11 +1,11 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "aa" = (
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ab" = (
 /obj/structure/lattice,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ac" = (
 /turf/open/floor/plating/airless{
 	icon_plating = "platingdmg3";
@@ -30,8 +30,8 @@
 "ae" = (
 /obj/item/stack/sheet/metal,
 /obj/structure/lattice,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "af" = (
 /turf/open/floor/plating/airless{
 	icon_plating = "platingdmg3";
@@ -61,8 +61,8 @@
 	icon_state = "pile";
 	dir = 4
 	},
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ak" = (
 /turf/open/floor/plating/airless{
 	icon_plating = "platingdmg3";
@@ -164,7 +164,7 @@
 	dir = 8
 	},
 /obj/structure/lattice,
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "aA" = (
 /obj/structure/fluff/broken_flooring{
@@ -172,8 +172,8 @@
 	icon_state = "pile";
 	dir = 1
 	},
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "aB" = (
 /obj/item/stack/tile/plasteel,
 /turf/open/floor/plating/airless{
@@ -189,7 +189,7 @@
 /turf/open/floor/plasteel/airless,
 /area/ruin/unpowered)
 "aD" = (
-/turf/template_noop,
+/turf/open/space,
 /turf/open/floor/plating/airless{
 	icon_plating = "platingdmg2";
 	icon_state = "platingdmg2"
@@ -314,8 +314,8 @@
 	icon_state = "pile";
 	dir = 8
 	},
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ba" = (
 /mob/living/simple_animal/hostile/retaliate/ghost,
 /turf/open/floor/plasteel/airless/cafeteria,
@@ -345,8 +345,8 @@
 "bf" = (
 /obj/structure/lattice,
 /obj/item/stack/sheet/metal,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "bg" = (
 /obj/item/stack/sheet/metal,
 /turf/open/floor/plating/airless{
@@ -400,12 +400,12 @@
 "bn" = (
 /obj/structure/lattice,
 /obj/item/weapon/shard,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "bo" = (
 /obj/item/stack/rods,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "bp" = (
 /obj/item/stack/sheet/metal,
 /obj/structure/girder,
@@ -436,8 +436,8 @@
 	icon_state = "singular";
 	dir = 1
 	},
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "bt" = (
 /obj/structure/fluff/broken_flooring{
 	tag = "icon-side (NORTH)";
@@ -445,18 +445,18 @@
 	dir = 1
 	},
 /obj/structure/lattice,
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "bu" = (
 /obj/structure/fluff/broken_flooring,
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "bv" = (
 /obj/structure/fluff/broken_flooring{
 	icon_state = "pile"
 	},
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "bw" = (
 /obj/structure/lattice,
 /obj/structure/fluff/broken_flooring{
@@ -465,7 +465,7 @@
 	icon_state = "plating";
 	dir = 1
 	},
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "bx" = (
 /obj/structure/fluff/broken_flooring{
@@ -475,7 +475,7 @@
 	dir = 4
 	},
 /obj/structure/lattice,
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "by" = (
 /obj/structure/fluff/broken_flooring{
@@ -493,14 +493,14 @@
 	icon_state = "plating";
 	dir = 4
 	},
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "bA" = (
 /obj/structure/fluff/broken_flooring{
 	icon_state = "singular"
 	},
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "bB" = (
 /obj/structure/fluff/broken_flooring{
 	tag = "icon-singular (EAST)";
@@ -508,8 +508,8 @@
 	dir = 4
 	},
 /obj/structure/lattice,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "bC" = (
 /obj/structure/lattice,
 /obj/structure/fluff/broken_flooring{
@@ -517,7 +517,7 @@
 	icon_state = "corner";
 	dir = 1
 	},
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "bD" = (
 /obj/structure/fluff/broken_flooring{
@@ -534,7 +534,7 @@
 	icon_state = "corner";
 	dir = 8
 	},
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "bF" = (
 /obj/structure/lattice,
@@ -543,7 +543,7 @@
 	icon_state = "side";
 	dir = 4
 	},
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "bG" = (
 /obj/structure/fluff/broken_flooring{
@@ -551,15 +551,15 @@
 	icon_state = "singular";
 	dir = 4
 	},
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "bH" = (
 /obj/structure/fluff/broken_flooring{
 	icon_state = "plating";
 	name = "broken plating"
 	},
 /obj/structure/lattice,
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 "bI" = (
 /obj/structure/lattice,
@@ -569,7 +569,7 @@
 	icon_state = "plating";
 	dir = 8
 	},
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/unpowered)
 
 (1,1,1) = {"

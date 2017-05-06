@@ -1,9 +1,8 @@
 /area/holodeck
 	name = "Holodeck"
 	icon_state = "Holodeck"
-	dynamic_lighting = DYNAMIC_LIGHTING_DISABLED
+	dynamic_lighting = 0
 	flags = 0
-	hidden = TRUE
 
 	var/obj/machinery/computer/holodeck/linked
 	var/restricted = 0 // if true, program goes on emag list
@@ -14,9 +13,9 @@
 */
 
 /area/holodeck/powered(var/chan)
-	if(!requires_power)
+	if(!master.requires_power)
 		return 1
-	if(always_unpowered)
+	if(master.always_unpowered)
 		return 0
 	if(!linked)
 		return 0
@@ -96,13 +95,14 @@
 /area/holodeck/rec_center/kobayashi
 	name = "Holodeck - Kobayashi Maru"
 
-/area/holodeck/rec_center/winterwonderland
-	name = "Holodeck - Winter Wonderland"
-
 // Bad programs
 
 /area/holodeck/rec_center/burn
 	name = "Holodeck - Atmospheric Burn Test"
+	restricted = 1
+
+/area/holodeck/rec_center/winterwonderland
+	name = "Holodeck - Winter Wonderland"
 	restricted = 1
 
 /area/holodeck/rec_center/wildlife
@@ -124,3 +124,4 @@
 /area/holodeck/rec_center/thunderdome1218
 	name = "Holodeck - 1218 AD"
 	restricted = 1
+

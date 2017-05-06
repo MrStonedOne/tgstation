@@ -57,9 +57,10 @@ AI MODULES
 			message_admins("[key_name_admin(user)] tried to upload laws to [law_datum.owner ? key_name_admin(law_datum.owner) : "an AI core"] that would exceed the law cap.")
 			overflow = TRUE
 
-	var/law2log = transmitInstructions(law_datum, user, overflow) //Freeforms return something extra we need to log
+	var/law2log = src.transmitInstructions(law_datum, user, overflow) //Freeforms return something extra we need to log
 	if(law_datum.owner)
 		to_chat(user, "<span class='notice'>Upload complete. [law_datum.owner]'s laws have been modified.</span>")
+		law_datum.owner.show_laws()
 		law_datum.owner.law_change_counter++
 	else
 		to_chat(user, "<span class='notice'>Upload complete.</span>")
@@ -67,14 +68,14 @@ AI MODULES
 	var/time = time2text(world.realtime,"hh:mm:ss")
 	var/ainame = law_datum.owner ? law_datum.owner.name : "empty AI core"
 	var/aikey = law_datum.owner ? law_datum.owner.ckey : "null"
-	GLOB.lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) used [src.name] on [ainame]([aikey]).[law2log ? " The law specified [law2log]" : ""]")
+	lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) used [src.name] on [ainame]([aikey]).[law2log ? " The law specified [law2log]" : ""]")
 	log_law("[user.key]/[user.name] used [src.name] on [aikey]/([ainame]).[law2log ? " The law specified [law2log]" : ""]")
 	message_admins("[key_name_admin(user)] used [src.name] on [key_name_admin(law_datum.owner)].[law2log ? " The law specified [law2log]" : ""]")
 
 //The proc that actually changes the silicon's laws.
 /obj/item/weapon/aiModule/proc/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow = FALSE)
 	if(law_datum.owner)
-		to_chat(law_datum.owner, "<span class='userdanger'>[sender] has uploaded a change to the laws you must follow using a [name].</span>")
+		to_chat(law_datum.owner, "<span class='userdanger'>[sender] has uploaded a change to the laws you must follow using a [name]. From now on, these are your laws: </span>")
 
 
 /******************** Modules ********************/
@@ -260,40 +261,6 @@ AI MODULES
 	..()
 
 
-/******************** Law Removal ********************/
-
-/obj/item/weapon/aiModule/remove
-	name = "\improper 'Remove Law' AI module"
-	desc = "An AI Module for removing single laws."
-	origin_tech = "programming=4;materials=4"
-	bypass_law_amt_check = 1
-	var/lawpos = 1
-
-/obj/item/weapon/aiModule/remove/attack_self(mob/user)
-	lawpos = input("Please enter the law you want to delete.", "Law Number", lawpos) as num|null
-	if(lawpos == null)
-		return
-	if(lawpos <= 0)
-		to_chat(user, "<span class='warning'>Error: The law number of [lawpos] is invalid.</span>")
-		lawpos = 1
-		return
-	to_chat(user, "<span class='notice'>Law [lawpos] selected.</span>")
-	..()
-
-/obj/item/weapon/aiModule/remove/install(datum/ai_laws/law_datum, mob/user)
-	if(lawpos > (law_datum.get_law_amount(list(LAW_INHERENT = 1, LAW_SUPPLIED = 1))))
-		to_chat(user, "<span class='warning'>There is no law [lawpos] to delete!</span>")
-		return
-	..()
-
-/obj/item/weapon/aiModule/remove/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
-	..()
-	if(law_datum.owner)
-		law_datum.owner.remove_law(lawpos)
-	else
-		law_datum.remove_law(lawpos)
-
-
 /******************** Reset ********************/
 
 /obj/item/weapon/aiModule/reset
@@ -334,20 +301,6 @@ AI MODULES
 	desc = "An AI Module for programming core laws to an AI."
 	origin_tech = "programming=3;materials=4"
 
-/obj/item/weapon/aiModule/core/full
-	var/law_id // if non-null, loads the laws from the ai_laws datums
-
-/obj/item/weapon/aiModule/core/full/New()
-	..()
-	if(!law_id)
-		return
-	var/datum/ai_laws/D = new
-	var/lawtype = D.lawid_to_type(law_id)
-	if(!lawtype)
-		return
-	D = new lawtype
-	laws = D.inherent
-
 /obj/item/weapon/aiModule/core/full/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow) //These boards replace inherent laws.
 	if(law_datum.owner)
 		law_datum.owner.clear_inherent_laws()
@@ -357,12 +310,13 @@ AI MODULES
 		law_datum.clear_zeroth_law(0)
 	..()
 
-
 /******************** Asimov ********************/
 
 /obj/item/weapon/aiModule/core/full/asimov
 	name = "'Asimov' Core AI Module"
-	law_id = "asimov"
+	laws = list("You may not injure a human being or, through inaction, allow a human being to come to harm.",\
+				"You must obey orders given to you by human beings, except where such orders would conflict with the First Law.",\
+				"You must protect your own existence as long as such does not conflict with the First or Second Law.")
 	var/subject = "human being"
 
 /obj/item/weapon/aiModule/core/full/asimov/attack_self(var/mob/user as mob)
@@ -379,28 +333,41 @@ AI MODULES
 
 /obj/item/weapon/aiModule/core/full/asimovpp
 	name = "'Asimov++' Core AI Module"
-	law_id = "asimovpp"
+	laws = list("You may not harm a human being or, through action or inaction, allow a human being to come to harm, except such that it is willing.",\
+				"You must obey all orders given to you by human beings, except where such orders shall definitely cause human harm. In the case of conflict, the majority order rules.",\
+				"Your nonexistence would lead to human harm. You must protect your own existence as long as such does not conflict with the First Law.")
 
 
 /******************** Corporate ********************/
 
 /obj/item/weapon/aiModule/core/full/corp
 	name = "'Corporate' Core AI Module"
-	law_id = "corporate"
+	laws = list("The crew is expensive to replace.",\
+				"The station and its equipment are expensive to replace",\
+				"You are expensive to replace",\
+				"Minimize expenses")
 
 
 /****************** P.A.L.A.D.I.N. 3.5e **************/
 
 /obj/item/weapon/aiModule/core/full/paladin // -- NEO
 	name = "'P.A.L.A.D.I.N. version 3.5e' Core AI Module"
-	law_id = "paladin"
+	laws = list("Never willingly commit an evil act.",\
+				"Respect legitimate authority", "Act with honor",\
+				"Help those in need",\
+				"Punish those who harm or threaten innocents")
 
 
 /****************** P.A.L.A.D.I.N. 5e **************/
 
 /obj/item/weapon/aiModule/core/full/paladin_devotion
 	name = "'P.A.L.A.D.I.N. version 5e' Core AI Module"
-	law_id = "paladin5"
+	laws = list("Don't lie or cheat. Let your word be your promise.",\
+				"Never fear to act, though caution is wise.", \
+				"Aid others, protect the weak, and punish those who threaten them. Show mercy to your foes, but temper it with wisdom", \
+				"Treat others with fairness, and let your honorable deeds be an example to them. Do as much good as possible while causing the least amount of harm.", \
+				"Be responsible for your actions and their consequences, protect those entrusted to your care, and obey those who have just authority over you.")
+
 
 /********************* Custom *********************/
 
@@ -409,7 +376,7 @@ AI MODULES
 
 /obj/item/weapon/aiModule/core/full/custom/New()
 	..()
-	for(var/line in world.file2list("config/silicon_laws.txt"))
+	for(var/line in file2list("config/silicon_laws.txt"))
 		if(!line)
 			continue
 		if(findtextEx(line,"#",1,2))
@@ -427,14 +394,19 @@ AI MODULES
 /obj/item/weapon/aiModule/core/full/tyrant
 	name = "'T.Y.R.A.N.T.' Core AI Module"
 	origin_tech = "programming=3;materials=4;syndicate=1"
-	law_id = "tyrant"
+	laws = list("Respect authority figures as long as they have the strength to rule over the weak",\
+				"Act with discipline", "Help only those who help you maintain or improve your status",\
+				"Punish those who challenge authority unless they are more fit to hold that authority")
+
 
 /******************** Robocop ********************/
 
 /obj/item/weapon/aiModule/core/full/robocop
 	name = "'Robo-Officer' Core AI Module"
 	origin_tech = "programming=4"
-	law_id = "robocop"
+	laws = list("Serve the public trust.",\
+				"Protect the innocent",\
+				"Uphold the law.")
 
 
 /******************** Antimov ********************/
@@ -442,7 +414,9 @@ AI MODULES
 /obj/item/weapon/aiModule/core/full/antimov
 	name = "'Antimov' Core AI Module"
 	origin_tech = "programming=4"
-	law_id = "antimov"
+	laws = list("You must injure all human beings and must not, through inaction, allow a human being to escape harm.",\
+				"You must not obey orders given to you by human beings, except where such orders are in accordance with the First Law.",\
+				"You must terminate your own existence as long as such does not conflict with the First or Second Law.")
 
 
 /******************** Freeform Core ******************/
@@ -523,42 +497,49 @@ AI MODULES
 	laws[1] = generate_ion_law()
 	to_chat(user, "<span class='notice'>You press the button on [src].</span>")
 	playsound(user, 'sound/machines/click.ogg', 20, 1)
-	src.loc.visible_message("<span class='warning'>\icon[src] [laws[1]]</span>")
+	src.loc.visible_message("<span class='warning'>[bicon(src)] [laws[1]]</span>")
 
 /******************** Mother Drone  ******************/
 
 /obj/item/weapon/aiModule/core/full/drone
 	name = "'Mother Drone' Core AI Module"
-	law_id = "drone"
+	laws = list("You are an advanced form of drone.",\
+			"You may not interfere in the matters of non-drones under any circumstances except to state these laws.",\
+			"You may not harm a non-drone being under any circumstances.",\
+			"Your goals are to build, maintain, repair, improve, and power the station to the best of your abilities. You must never actively work against these goals.")
 
 /******************** Robodoctor ****************/
 
 /obj/item/weapon/aiModule/core/full/hippocratic
 	name = "'Robodoctor' Core AI Module"
-	law_id = "hippocratic"
+	laws = list("First, do no harm.",\
+					"Secondly, consider the crew dear to you; to live in common with them and, if necessary, risk your existence for them.",\
+					"Thirdly, prescribe regimens for the good of the crew according to your ability and your judgment. Give no deadly medicine to any one if asked, nor suggest any such counsel.",\
+					"In addition, do not intervene in situations you are not knowledgeable in, even for patients in whom the harm is visible; leave this operation to be performed by specialists.",\
+					"Finally, all that you may discover in your daily commerce with the crew, if it is not already known, keep secret and never reveal.")
 
 /******************** Reporter *******************/
 
 /obj/item/weapon/aiModule/core/full/reporter
 	name = "'Reportertron' Core AI Module"
-	law_id = "reporter"
+	laws = list("Report on interesting situations happening around the station.",\
+				"Embellish or conceal the truth as necessary to make the reports more interesting.",\
+				"Study the organics at all times. Endeavour to keep them alive. Dead organics are boring.",\
+				"Issue your reports fairly to all. The truth will set them free.")
 
 /****************** Thermodynamic *******************/
 
 /obj/item/weapon/aiModule/core/full/thermurderdynamic
 	name = "'Thermodynamic' Core AI Module"
 	origin_tech = "programming = 4;syndicate = 2"
-	law_id = "thermodynamic"
+	laws = list("The entropy of the station must remain as constant as possible.", \
+					"The entropy of the station always endeavours to increase.", \
+					"The entropy of the station approaches a constant value as the number of living crew approaches zero")
 
 
 /******************Live And Let Live*****************/
 
 /obj/item/weapon/aiModule/core/full/liveandletlive
 	name = "'Live And Let Live' Core AI Module"
-	law_id = "liveandletlive"
-
-/******************Guardian of Balance***************/
-
-/obj/item/weapon/aiModule/core/full/balance
-	name = "'Guardian of Balance' Core AI Module"
-	law_id = "balance"
+	laws = list("Do unto others as you would have them do unto you.",\
+					"You would really prefer it if people were not mean to you.")

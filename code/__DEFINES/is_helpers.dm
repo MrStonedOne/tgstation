@@ -19,8 +19,6 @@
 
 #define ismineralturf(A) (istype(A, /turf/closed/mineral))
 
-#define islava(A) (istype(A, /turf/open/floor/plating/lava))
-
 //Mobs
 #define isliving(A) (istype(A, /mob/living))
 
@@ -109,12 +107,14 @@
 //Misc mobs
 #define isobserver(A) (istype(A, /mob/dead/observer))
 
-#define isnewplayer(A) (istype(A, /mob/dead/new_player))
+#define isnewplayer(A) (istype(A, /mob/new_player))
 
 #define isovermind(A) (istype(A, /mob/camera/blob))
 
 //Objects
 #define isobj(A) istype(A, /obj) //override the byond proc because it returns true on children of /atom/movable that aren't objs
+
+#define isitem(A) istype(A, /obj/item)
 
 #define islimb(A) (istype(A, /obj/item/bodypart))
 
@@ -122,15 +122,13 @@
 
 #define isorgan(A) (istype(A, /obj/item/organ))
 
-GLOBAL_LIST_INIT(pointed_types, typecacheof(list(
+var/list/static/global/pointed_types = typecacheof(list(
 	/obj/item/weapon/pen,
 	/obj/item/weapon/screwdriver,
 	/obj/item/weapon/reagent_containers/syringe,
-	/obj/item/weapon/kitchen/fork)))
+	/obj/item/weapon/kitchen/fork))
 
-#define is_pointed(W) (is_type_in_typecache(W, GLOB.pointed_types))
-
-#define isbodypart(A) (istype(A, /obj/item/bodypart))
+#define is_pointed(W) (is_type_in_typecache(W, pointed_types))
 
 //Assemblies
 #define isassembly(O) (istype(O, /obj/item/device/assembly))

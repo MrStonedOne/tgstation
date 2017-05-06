@@ -7,7 +7,7 @@
 
 
 /datum/round_event_control/shuttle_loan
-	name = "Shuttle Loan"
+	name = "Shuttle loan"
 	typepath = /datum/round_event/shuttle_loan
 	max_occurrences = 1
 	earliest_start = 4000
@@ -80,7 +80,7 @@
 
 		var/list/empty_shuttle_turfs = list()
 		for(var/turf/open/floor/T in SSshuttle.supply.areaInstance)
-			if(is_blocked_turf(T))
+			if(T.density || T.contents.len)
 				continue
 			empty_shuttle_turfs += T
 		if(!empty_shuttle_turfs.len)

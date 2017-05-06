@@ -12,48 +12,46 @@
 	var/listening = 0
 	var/recorded = "" //the activation message
 	var/mode = 1
-	var/static/list/modes = list("inclusive",
+	var/global/list/modes = list("inclusive",
 								 "exclusive",
 								 "recognizer",
 								 "voice sensor")
 
-/obj/item/device/assembly/voice/examine(mob/user)
-	..()
-	to_chat(user, "<span class='notice'>Use a multitool to swap between \"inclusive\", \"exclusive\", \"recognizer\", and \"voice sensor\" mode.</span>")
-
-/obj/item/device/assembly/voice/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, message_mode)
+/obj/item/device/assembly/voice/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans)
 	if(speaker == src)
 		return
 
 	if(listening && !radio_freq)
-		record_speech(speaker, raw_message, message_language)
+		record_speech(speaker, raw_message)
 	else
 		if(check_activation(speaker, raw_message))
-			addtimer(CALLBACK(src, .proc/pulse, 0), 10)
+			spawn(10)
+				pulse(0)
 
-/obj/item/device/assembly/voice/proc/record_speech(atom/movable/speaker, raw_message, datum/language/message_language)
+/obj/item/device/assembly/voice/proc/record_speech(atom/movable/speaker, raw_message)
 	switch(mode)
 		if(1)
 			recorded = raw_message
 			listening = 0
-			say("Activation message is '[recorded]'.", message_language)
+			say("Activation message is '[recorded]'.")
 		if(2)
 			recorded = raw_message
 			listening = 0
-			say("Activation message is '[recorded]'.", message_language)
+			say("Activation message is '[recorded]'.")
 		if(3)
 			recorded = speaker.GetVoice()
 			listening = 0
-			say("Your voice pattern is saved.", message_language)
+			say("Your voice pattern is saved.")
 		if(4)
 			if(length(raw_message))
-				addtimer(CALLBACK(src, .proc/pulse, 0), 10)
+				spawn(10)
+					pulse(0)
 
 /obj/item/device/assembly/voice/proc/check_activation(atom/movable/speaker, raw_message)
 	. = 0
 	switch(mode)
 		if(1)
-			if(findtext(raw_message, recorded))
+			if(findtextEx(raw_message, recorded))
 				. = 1
 		if(2)
 			if(raw_message == recorded)

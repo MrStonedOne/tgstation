@@ -16,8 +16,8 @@
 	materials = list(MAT_METAL=10, MAT_GLASS=20)
 	container_type = TRANSPARENT
 
-/obj/item/weapon/reagent_containers/syringe/Initialize()
-	. = ..()
+/obj/item/weapon/reagent_containers/syringe/New()
+	..()
 	if(list_reagents) //syringe starts in inject mode if its already got something inside
 		mode = SYRINGE_INJECT
 		update_icon()
@@ -41,8 +41,8 @@
 	..()
 	update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/attack_paw(mob/user)
-	return attack_hand(user)
+/obj/item/weapon/reagent_containers/syringe/attack_paw()
+	return attack_hand()
 
 /obj/item/weapon/reagent_containers/syringe/attackby(obj/item/I, mob/user, params)
 	return
@@ -66,7 +66,7 @@
 		var/mob/living/carbon/monkey/M
 		M = target
 		M.retaliate(user)
-
+		
 	switch(mode)
 		if(SYRINGE_DRAW)
 
@@ -80,7 +80,7 @@
 					target.visible_message("<span class='danger'>[user] is trying to take a blood sample from [target]!</span>", \
 									"<span class='userdanger'>[user] is trying to take a blood sample from [target]!</span>")
 					busy = 1
-					if(!do_mob(user, target, extra_checks=CALLBACK(L, /mob/living/proc/can_inject,user,1)))
+					if(!do_mob(user, target))
 						busy = 0
 						return
 					if(reagents.total_volume >= reagents.maximum_volume)
@@ -123,12 +123,13 @@
 				if(L != user)
 					L.visible_message("<span class='danger'>[user] is trying to inject [L]!</span>", \
 											"<span class='userdanger'>[user] is trying to inject [L]!</span>")
-					if(!do_mob(user, L, extra_checks=CALLBACK(L, /mob/living/proc/can_inject,user,1)))
+					if(!do_mob(user, L))
 						return
 					if(!reagents.total_volume)
 						return
 					if(L.reagents.total_volume >= L.reagents.maximum_volume)
 						return
+
 					L.visible_message("<span class='danger'>[user] injects [L] with the syringe!", \
 									"<span class='userdanger'>[user] injects [L] with the syringe!")
 
@@ -141,7 +142,7 @@
 					add_logs(user, L, "injected", src, addition="which had [contained]")
 				else
 					log_attack("<font color='red'>[user.name] ([user.ckey]) injected [L.name] ([L.ckey]) with [src.name], which had [contained] (INTENT: [uppertext(user.a_intent)])</font>")
-					L.log_message("<font color='orange'>Injected themselves ([contained]) with [src.name].</font>", INDIVIDUAL_ATTACK_LOG)
+					L.attack_log += "\[[time_stamp()]\] <font color='orange'>Injected themselves ([contained]) with [src.name].</font>"
 
 			var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
 			reagents.reaction(L, INJECT, fraction)
@@ -167,9 +168,10 @@
 	item_state = "syringe_[rounded_vol]"
 
 	if(reagents.total_volume)
-		var/image/filling_overlay = mutable_appearance('icons/obj/reagentfillings.dmi', "syringe[rounded_vol]")
-		filling_overlay.color = mix_color_from_reagents(reagents.reagent_list)
-		add_overlay(filling_overlay)
+		var/image/filling = image('icons/obj/reagentfillings.dmi', src, "syringe10")
+		filling.icon_state = "syringe[rounded_vol]"
+		filling.color = mix_color_from_reagents(reagents.reagent_list)
+		add_overlay(filling)
 
 /obj/item/weapon/reagent_containers/syringe/epinephrine
 	name = "syringe (epinephrine)"
@@ -242,7 +244,7 @@
 	volume = 20
 	origin_tech = "materials=3;engineering=3"
 
-/obj/item/weapon/reagent_containers/syringe/noreact/Initialize()
+/obj/item/weapon/reagent_containers/syringe/noreact/New()
 	. = ..()
 	reagents.set_reacting(FALSE)
 

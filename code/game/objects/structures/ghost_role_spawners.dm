@@ -26,7 +26,7 @@
 
 /obj/effect/mob_spawn/human/seed_vault/Destroy()
 	new/obj/structure/fluff/empty_terrarium(get_turf(src))
-	return ..()
+	..()
 
 //Ash walker eggs: Spawns in ash walker dens in lavaland. Ghosts become unbreathing lizards that worship the Necropolis and are advised to retrieve corpses to create more ash walkers.
 /obj/effect/mob_spawn/human/ash_walker
@@ -57,7 +57,7 @@
 	..()
 	var/area/A = get_area(src)
 	if(A)
-		notify_ghosts("An ash walker egg is ready to hatch in \the [A.name].", source = src, action=NOTIFY_ATTACK, flashwindow = FALSE)
+		notify_ghosts("An ash walker egg is ready to hatch in \the [A.name].", source = src, action=NOTIFY_ATTACK)
 
 //Timeless prisons: Spawns in Wish Granter prisons in lavaland. Ghosts become age-old users of the Wish Granter and are advised to seek repentance for their past.
 /obj/effect/mob_spawn/human/exile
@@ -74,7 +74,7 @@
 
 /obj/effect/mob_spawn/human/exile/Destroy()
 	new/obj/structure/fluff/empty_sleeper(get_turf(src))
-	return ..()
+	..()
 
 /obj/effect/mob_spawn/human/exile/special(mob/living/new_spawn)
 	new_spawn.real_name = "Wish Granter's Victim ([rand(0,999)])"
@@ -101,27 +101,45 @@
 	death = FALSE
 	anchored = 0
 	density = 0
-	var/can_transfer = TRUE //if golems can switch bodies to this new shell
 	var/mob/living/owner = null //golem's owner if it has one
 	flavour_text = "<font size=3><b>Y</b></font><b>ou are a Free Golem. Your family worships <span class='danger'>The Liberator</span>. In his infinite and divine wisdom, he set your clan free to \
 	travel the stars with a single declaration: \"Yeah go do whatever.\" Though you are bound to the one who created you, it is customary in your society to repeat those same words to newborn \
 	golems, so that no golem may ever be forced to serve again.</b>"
 
-/obj/effect/mob_spawn/human/golem/Initialize(mapload, datum/species/golem/species = null, has_owner = FALSE, mob/creator = null)
+/obj/effect/mob_spawn/human/golem/New(loc, datum/species/golem/species = null, has_owner = FALSE, mob/creator = null)
 	..()
 	if(species)
-		name += " ([initial(species.prefix)])"
+		name += " ([initial(species.id)])"
 		mob_species = species
 	var/area/A = get_area(src)
-	if(!mapload && A)
-		notify_ghosts("\A [initial(species.prefix)] golem shell has been completed in \the [A.name].", source = src, action=NOTIFY_ATTACK, flashwindow = FALSE)
+	if(A)
+		notify_ghosts("\A [initial(species.id)] golem shell has been completed in \the [A.name].", source = src, action=NOTIFY_ATTACK)
 	if(has_owner && creator)
 		flavour_text = "You are a golem. You move slowly, but are highly resistant to heat and cold as well as blunt trauma. You are unable to wear clothes, but can still use most tools. \
 		Serve [creator], and assist [creator.p_them()] in completing [creator.p_their()] goals at any cost."
 		owner = creator
 
-/obj/effect/mob_spawn/human/golem/special(mob/living/new_spawn, name)
+/obj/effect/mob_spawn/human/golem/special(mob/living/new_spawn)
+	var/golem_surname = pick(golem_names)
+	// 3% chance that our golem has a human surname, because
+	// cultural contamination
+	if(prob(3))
+		golem_surname = pick(last_names)
+
 	var/datum/species/golem/X = mob_species
+	var/golem_forename = initial(X.id)
+
+	// The id of golem species is either their material "diamond","gold",
+	// or just "golem" for the plain ones. So we're using it for naming.
+
+	if(golem_forename == "golem")
+		golem_forename = "iron"
+
+	new_spawn.real_name = "[capitalize(golem_forename)] [golem_surname]"
+	// This means golems have names like Iron Forge, or Diamond Quarry
+	// also a tiny chance of being called "Plasma Meme"
+	// which is clearly a feature
+
 	to_chat(new_spawn, "[initial(X.info_text)]")
 	if(!owner)
 		to_chat(new_spawn, "Build golem shells in the autolathe, and feed refined mineral sheets to the shells to bring them to life! You are generally a peaceful group unless provoked.")
@@ -133,23 +151,6 @@
 	if(ishuman(new_spawn))
 		var/mob/living/carbon/human/H = new_spawn
 		H.set_cloned_appearance()
-		if(!name)
-			H.real_name = H.dna.species.random_name()
-		else
-			H.real_name = name
-
-/obj/effect/mob_spawn/human/golem/attack_hand(mob/user)
-	if(isgolem(user) && can_transfer)
-		var/transfer = alert("Transfer your soul to [src]? (Warning, your old body will die!)",,"Yes","No")
-		if(!transfer)
-			return
-		log_game("[user.ckey] golem-swapped into [src]")
-		user.visible_message("<span class='notice'>A faint light leaves [user], moving to [src] and animating it!</span>","<span class='notice'>You leave your old body behind, and transfer into [src]!</span>")
-		create(ckey = user.ckey, flavour = FALSE, name = user.real_name)
-		user.death()
-		return
-	..()
-
 
 /obj/effect/mob_spawn/human/golem/adamantine
 	name = "dust-caked golem shell"
@@ -157,7 +158,6 @@
 	mob_name = "a free golem"
 	anchored = 1
 	density = 1
-	can_transfer = FALSE
 	mob_species = /datum/species/golem/adamantine
 
 //Malfunctioning cryostasis sleepers: Spawns in makeshift shelters in lavaland. Ghosts become hermits with knowledge of how they got to where they are now.
@@ -210,7 +210,7 @@
 
 /obj/effect/mob_spawn/human/hermit/Destroy()
 	new/obj/structure/fluff/empty_cryostasis_sleeper(get_turf(src))
-	return ..()
+	..()
 
 //Broken rejuvenation pod: Spawns in animal hospitals in lavaland. Ghosts become disoriented interns and are advised to search for help.
 /obj/effect/mob_spawn/human/doctor/alive/lavaland
@@ -250,7 +250,7 @@
 
 /obj/effect/mob_spawn/human/prisoner_transport/Destroy()
 	new/obj/structure/fluff/empty_sleeper/syndicate(get_turf(src))
-	return ..()
+	..()
 
 //Space Hotel Staff
 /obj/effect/mob_spawn/human/hotel_staff //not free antag u little shits
@@ -287,3 +287,14 @@
 /obj/effect/mob_spawn/human/hotel_staff/Destroy()
 	new/obj/structure/fluff/empty_sleeper/syndicate(get_turf(src))
 	..()
+
+/obj/effect/mob_spawn/derelict_drone
+	name = "dust-caked drone shell"
+	desc = "A long-forgotten drone shell."
+	flavour_text = "This station sure is a mess. It's time to get to work."
+	mob_name = "a derelict drone"
+	mob_type = /mob/living/simple_animal/drone
+	icon = 'icons/mob/drone.dmi'
+	icon_state = "drone_maint_hat"
+	death = FALSE
+	roundstart = FALSE

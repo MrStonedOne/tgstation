@@ -30,13 +30,11 @@
 	var/turf/location = C.loc
 	if(istype(location))
 		C.add_splatter_floor(location)
-	var/direction = pick(GLOB.cardinal)
+	var/direction = pick(cardinal)
 	var/t_range = rand(2,max(throw_range/2, 2))
 	var/turf/target_turf = get_turf(src)
 	for(var/i in 1 to t_range-1)
 		var/turf/new_turf = get_step(target_turf, direction)
-		if(!new_turf)
-			break
 		target_turf = new_turf
 		if(new_turf.density)
 			break
@@ -86,9 +84,8 @@
 	var/mob/living/carbon/C = owner
 	update_limb(1)
 	C.bodyparts -= src
-
 	if(held_index)
-		C.dropItemToGround(owner.get_item_for_held_index(held_index), 1)
+		C.unEquip(owner.get_item_for_held_index(held_index), 1)
 		C.hand_bodyparts[held_index] = null
 
 	owner = null
@@ -102,7 +99,7 @@
 
 	for(var/obj/item/I in embedded_objects)
 		embedded_objects -= I
-		I.loc = src
+		I.forceMove(src)
 	if(!C.has_embedded_objects())
 		C.clear_alert("embeddedobject")
 
@@ -126,30 +123,27 @@
 	C.update_body()
 	C.update_hair()
 	C.update_canmove()
-	if(is_pseudopart)
-		drop_organs(C)	//Psuedoparts shouldn't have organs, but just in case
-		qdel(src)
 
 
 //when a limb is dropped, the internal organs are removed from the mob and put into the limb
 /obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/LB, mob/living/carbon/C)
 	Remove(C)
-	loc = LB
+	forceMove(LB)
 
 /obj/item/organ/brain/transfer_to_limb(obj/item/bodypart/head/LB, mob/living/carbon/human/C)
-	Remove(C)	//Changeling brain concerns are now handled in Remove
-	loc = LB
-	LB.brain = src
-	if(brainmob)
+	if(C.mind && C.mind.changeling)
+		LB.brain = new //changeling doesn't lose its real brain organ, we drop a decoy.
+		LB.brain.forceMove(LB)
+	else			//if not a changeling, we put the brain organ inside the dropped head
+		Remove(C)	//and put the player in control of the brainmob
+		forceMove(LB)
+		LB.brain = src
 		LB.brainmob = brainmob
 		brainmob = null
-		LB.brainmob.loc = LB
+		LB.brainmob.forceMove(LB)
 		LB.brainmob.container = LB
 		LB.brainmob.stat = DEAD
 
-/obj/item/organ/eyes/transfer_to_limb(obj/item/bodypart/head/LB, mob/living/carbon/human/C)
-	LB.eyes = src
-	..()
 
 /obj/item/bodypart/chest/drop_limb(special)
 	return
@@ -159,7 +153,7 @@
 	..()
 	if(C && !special)
 		if(C.handcuffed)
-			C.handcuffed.loc = C.loc
+			C.handcuffed.forceMove(C.loc)
 			C.handcuffed.dropped(C)
 			C.handcuffed = null
 			C.update_handcuffed()
@@ -168,7 +162,7 @@
 			if(R)
 				R.update_icon()
 		if(C.gloves)
-			C.dropItemToGround(C.gloves, TRUE)
+			C.unEquip(C.gloves, 1)
 		C.update_inv_gloves() //to remove the bloody hands overlay
 
 
@@ -177,7 +171,7 @@
 	..()
 	if(C && !special)
 		if(C.handcuffed)
-			C.handcuffed.loc = C.loc
+			C.handcuffed.forceMove(C.loc)
 			C.handcuffed.dropped(C)
 			C.handcuffed = null
 			C.update_handcuffed()
@@ -186,30 +180,32 @@
 			if(L)
 				L.update_icon()
 		if(C.gloves)
-			C.dropItemToGround(C.gloves, TRUE)
+			C.unEquip(C.gloves, 1)
 		C.update_inv_gloves() //to remove the bloody hands overlay
 
 
 /obj/item/bodypart/r_leg/drop_limb(special)
 	if(owner && !special)
+		owner.Weaken(2)
 		if(owner.legcuffed)
-			owner.legcuffed.loc = owner.loc
+			owner.legcuffed.forceMove(owner.loc)
 			owner.legcuffed.dropped(owner)
 			owner.legcuffed = null
 			owner.update_inv_legcuffed()
 		if(owner.shoes)
-			owner.dropItemToGround(owner.shoes, TRUE)
+			owner.unEquip(owner.shoes, 1)
 	..()
 
 /obj/item/bodypart/l_leg/drop_limb(special) //copypasta
 	if(owner && !special)
+		owner.Weaken(2)
 		if(owner.legcuffed)
-			owner.legcuffed.loc = owner.loc
+			owner.legcuffed.forceMove(owner.loc)
 			owner.legcuffed.dropped(owner)
 			owner.legcuffed = null
 			owner.update_inv_legcuffed()
 		if(owner.shoes)
-			owner.dropItemToGround(owner.shoes, TRUE)
+			owner.unEquip(owner.shoes, 1)
 	..()
 
 /obj/item/bodypart/head/drop_limb(special)
@@ -217,16 +213,8 @@
 		//Drop all worn head items
 		for(var/X in list(owner.glasses, owner.ears, owner.wear_mask, owner.head))
 			var/obj/item/I = X
-			owner.dropItemToGround(I, TRUE)
-
-	//Handle dental implants
-	for(var/datum/action/item_action/hands_free/activate_pill/AP in owner.actions)
-		AP.Remove(owner)
-		var/obj/pill = AP.target
-		if(pill)
-			pill.forceMove(src)
-
-	name = "[owner.real_name]'s head"
+			owner.unEquip(I, 1)
+	name = "[owner]'s head"
 	..()
 
 
@@ -255,15 +243,13 @@
 	attach_limb(C, special)
 
 /obj/item/bodypart/proc/attach_limb(mob/living/carbon/C, special)
-	loc = null
+	forceMove(null)
 	owner = C
 	C.bodyparts += src
 	if(held_index)
 		if(held_index > C.hand_bodyparts.len)
 			C.hand_bodyparts.len = held_index
 		C.hand_bodyparts[held_index] = src
-		if(C.dna.species.mutanthands && !is_pseudopart)
-			C.put_in_hand(new C.dna.species.mutanthands(), held_index)
 		if(C.hud_used)
 			var/obj/screen/inventory/hand/hand = C.hud_used.hand_slots["[held_index]"]
 			if(hand)
@@ -279,9 +265,6 @@
 				qdel(S)
 				break
 
-	for(var/obj/item/organ/O in contents)
-		O.Insert(C)
-
 	update_bodypart_damage_state()
 
 	C.updatehealth()
@@ -295,7 +278,7 @@
 	//Transfer some head appearance vars over
 	if(brain)
 		brainmob.container = null //Reset brainmob head var.
-		brainmob.loc = brain //Throw mob into brain.
+		brainmob.forceMove(brain )//Throw mob into brain.
 		brain.brainmob = brainmob //Set the brain to use the brainmob
 		brainmob = null //Set head brainmob var to null
 		brain.Insert(C) //Now insert the brain proper
@@ -307,20 +290,13 @@
 		H.hair_style = hair_style
 		H.facial_hair_color = facial_hair_color
 		H.facial_hair_style = facial_hair_style
+		H.eye_color = eye_color
 		H.lip_style = lip_style
 		H.lip_color = lip_color
 	if(real_name)
 		C.real_name = real_name
 	real_name = ""
 	name = initial(name)
-
-	//Handle dental implants
-	for(var/obj/item/weapon/reagent_containers/pill/P in src)
-		for(var/datum/action/item_action/hands_free/activate_pill/AP in P.actions)
-			P.forceMove(C)
-			AP.Grant(C)
-			break
-
 	..()
 
 

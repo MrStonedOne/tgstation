@@ -4,6 +4,7 @@
 	icon_state = "revolver"
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder
 	origin_tech = "combat=3;materials=2"
+	mag_load_sound = 'sound/effects/wep_magazines/bullet_insert.ogg'
 	casing_ejector = 0
 
 /obj/item/weapon/gun/ballistic/revolver/New()
@@ -28,6 +29,7 @@
 	var/num_loaded = magazine.attackby(A, user, params, 1)
 	if(num_loaded)
 		to_chat(user, "<span class='notice'>You load [num_loaded] shell\s into \the [src].</span>")
+		playsound(loc, mag_load_sound, 50)
 		A.update_icon()
 		update_icon()
 		chamber_round(0)
@@ -39,12 +41,13 @@
 		var/obj/item/ammo_casing/CB
 		CB = magazine.get_round(0)
 		if(CB)
-			CB.loc = get_turf(src.loc)
+			CB.forceMove(get_turf(src.loc))
 			CB.SpinAnimation(10, 1)
 			CB.update_icon()
 			num_unloaded++
 	if (num_unloaded)
 		to_chat(user, "<span class='notice'>You unload [num_unloaded] shell\s from [src].</span>")
+		playsound(loc, pick('sound/effects/wep_misc/casing_bounce1.ogg', 'sound/effects/wep_misc/casing_bounce2.ogg', 'sound/effects/wep_misc/casing_bounce3.ogg'), 80)
 	else
 		to_chat(user, "<span class='warning'>[src] is empty!</span>")
 
@@ -108,7 +111,7 @@
 			playsound(user, fire_sound, 50, 1)
 			to_chat(user, "<span class='userdanger'>[src] blows up in your face!</span>")
 			user.take_bodypart_damage(0,20)
-			user.dropItemToGround(src)
+			user.unEquip(src)
 			return 0
 	..()
 
@@ -296,7 +299,7 @@
 		var/obj/item/ammo_casing/CB
 		CB = magazine.get_round(0)
 		chambered = null
-		CB.loc = get_turf(src.loc)
+		CB.forceMove(get_turf(src.loc))
 		CB.update_icon()
 		num_unloaded++
 	if (num_unloaded)
@@ -343,15 +346,3 @@
 		new /obj/item/stack/cable_coil(get_turf(src), 10)
 		slung = 0
 		update_icon()
-
-/obj/item/weapon/gun/ballistic/revolver/reverse //Fires directly at its user... unless the user is a clown, of course.
-	clumsy_check = 0
-
-/obj/item/weapon/gun/ballistic/revolver/reverse/can_trigger_gun(mob/living/user)
-	if((user.disabilities & CLUMSY) || (user.mind && user.mind.assigned_role == "Clown"))
-		return ..()
-	if(process_fire(user, user, 0, zone_override = "head"))
-		user.visible_message("<span class='warning'>[user] somehow manages to shoot [user.p_them()]self in the face!</span>", "<span class='userdanger'>You somehow shoot yourself in the face! How the hell?!</span>")
-		user.emote("scream")
-		user.drop_item()
-		user.Weaken(4)

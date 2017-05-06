@@ -1,3 +1,5 @@
+
+
 /obj/item/device/mmi
 	name = "Man-Machine Interface"
 	desc = "The Warrior's bland acronym, MMI, obscures the true horror of this monstrosity, that nevertheless has become standard-issue on Nanotrasen stations."
@@ -35,8 +37,10 @@
 	..()
 	radio = new(src) //Spawns a radio inside the MMI.
 	radio.broadcasting = 0 //researching radio mmis turned the robofabs into radios because this didnt start as 0.
+	if(config)
+		laws.set_laws_config()
 
-/obj/item/device/mmi/Initialize()
+/obj/item/device/mmi/initialize()
 	..()
 	laws.set_laws_config()
 
@@ -51,7 +55,7 @@
 			to_chat(user, "<span class='warning'>You aren't sure where this brain came from, but you're pretty sure it's a useless brain!</span>")
 			return
 
-		if(!user.transferItemToLoc(O, src))
+		if(!user.unEquip(O))
 			return
 		var/mob/living/brain/B = newbrain.brainmob
 		if(!B.key)
@@ -60,20 +64,21 @@
 
 		brainmob = newbrain.brainmob
 		newbrain.brainmob = null
-		brainmob.loc = src
+		brainmob.forceMove(src)
 		brainmob.container = src
 		if(!newbrain.damaged_brain) // the brain organ hasn't been beaten to death.
 			brainmob.stat = CONSCIOUS //we manually revive the brain mob
-			GLOB.dead_mob_list -= brainmob
-			GLOB.living_mob_list += brainmob
+			dead_mob_list -= brainmob
+			living_mob_list += brainmob
 
 		brainmob.reset_perspective()
+		newbrain.forceMove(src )//P-put your brain in it
 		brain = newbrain
 
 		name = "Man-Machine Interface: [brainmob.real_name]"
 		update_icon()
 
-		SSblackbox.inc("cyborg_mmis_filled",1)
+		feedback_inc("cyborg_mmis_filled",1)
 
 	else if(brainmob)
 		O.attack(brainmob, user) //Oh noooeeeee
@@ -93,12 +98,12 @@
 
 /obj/item/device/mmi/proc/eject_brain(mob/user)
 	brainmob.container = null //Reset brainmob mmi var.
-	brainmob.loc = brain //Throw mob into brain.
+	brainmob.forceMove(brain )//Throw mob into brain.
 	brainmob.stat = DEAD
 	brainmob.emp_damage = 0
 	brainmob.reset_perspective() //so the brainmob follows the brain organ instead of the mmi. And to update our vision
-	GLOB.living_mob_list -= brainmob //Get outta here
-	GLOB.dead_mob_list += brainmob
+	living_mob_list -= brainmob //Get outta here
+	dead_mob_list += brainmob
 	brain.brainmob = brainmob //Set the brain to use the brainmob
 	brainmob = null //Set mmi brainmob var to null
 	if(user)
@@ -123,7 +128,7 @@
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
 		var/obj/item/organ/brain/newbrain = H.getorgan(/obj/item/organ/brain)
-		newbrain.loc = src
+		newbrain.forceMove(src)
 		brain = newbrain
 	else if(!brain)
 		brain = new(src)

@@ -14,8 +14,8 @@
 	var/obj/item/holder = null
 	// You can use this var for item path, it would be converted into an item on New()
 
-/obj/item/organ/cyberimp/arm/Initialize()
-	. = ..()
+/obj/item/organ/cyberimp/arm/New()
+	..()
 	if(ispath(holder))
 		holder = new holder(src)
 
@@ -72,7 +72,8 @@
 		var/obj/item/device/assembly/flash/F = holder
 		F.set_light(0)
 
-	owner.transferItemToLoc(holder, src, TRUE)
+	owner.unEquip(holder, 1)
+	holder.forceMove(src)
 	holder = null
 	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 50, 1)
 
@@ -95,7 +96,7 @@
 	var/obj/item/arm_item = owner.get_active_held_item()
 
 	if(arm_item)
-		if(!owner.dropItemToGround(arm_item))
+		if(!owner.unEquip(arm_item))
 			to_chat(owner, "<span class='warning'>Your [arm_item] interferes with [src]!</span>")
 			return
 		else
@@ -155,7 +156,7 @@
 	desc = "A variant of the arm cannon implant that fires lethal laser beams. The cannon emerges from the subject's arm and remains inside when not in use."
 	icon_state = "arm_laser"
 	origin_tech = "materials=4;combat=4;biotech=4;powerstorage=4;syndicate=3"
-	contents = newlist(/obj/item/weapon/gun/energy/laser/mounted)
+	holder = /obj/item/weapon/gun/energy/laser/mounted
 
 /obj/item/organ/cyberimp/arm/gun/laser/l
 	zone = "l_arm"
@@ -166,7 +167,7 @@
 	desc = "A variant of the arm cannon implant that fires electrodes and disabler shots. The cannon emerges from the subject's arm and remains inside when not in use."
 	icon_state = "arm_taser"
 	origin_tech = "materials=5;combat=5;biotech=4;powerstorage=4"
-	contents = newlist(/obj/item/weapon/gun/energy/e_gun/advtaser/mounted)
+	holder = /obj/item/weapon/gun/energy/e_gun/advtaser/mounted
 
 /obj/item/organ/cyberimp/arm/gun/taser/l
 	zone = "l_arm"
@@ -207,8 +208,8 @@
 	contents = newlist(/obj/item/device/assembly/flash/armimplant)
 	origin_tech = "materials=4;combat=3;biotech=4;magnets=4;powerstorage=3"
 
-/obj/item/organ/cyberimp/arm/flash/Initialize()
-	. = ..()
+/obj/item/organ/cyberimp/arm/flash/New()
+	..()
 	if(locate(/obj/item/device/assembly/flash/armimplant) in items_list)
 		var/obj/item/device/assembly/flash/armimplant/F = locate(/obj/item/device/assembly/flash/armimplant) in items_list
 		F.I = src
@@ -225,8 +226,8 @@
 	contents = newlist(/obj/item/weapon/melee/energy/blade/hardlight, /obj/item/weapon/gun/medbeam, /obj/item/borg/stun, /obj/item/device/assembly/flash/armimplant)
 	origin_tech = "materials=5;combat=7;biotech=5;powerstorage=5;syndicate=6;programming=5"
 
-/obj/item/organ/cyberimp/arm/combat/Initialize()
-	. = ..()
+/obj/item/organ/cyberimp/arm/combat/New()
+	..()
 	if(locate(/obj/item/device/assembly/flash/armimplant) in items_list)
 		var/obj/item/device/assembly/flash/armimplant/F = locate(/obj/item/device/assembly/flash/armimplant) in items_list
 		F.I = src

@@ -109,7 +109,7 @@
 	icon_state = "t_mushroom"
 	name = "numerous mushrooms"
 	desc = "A large number of mushrooms, some of which have long, fleshy stems. They're radiating light!"
-	luminosity = 1
+	light_range = 1
 	harvested_name = "tiny mushrooms"
 	harvested_desc = "A few tiny mushrooms around larger stumps. You can already see them growing back."
 	harvest = /obj/item/weapon/reagent_containers/food/snacks/ash_flora/mushroom_stem
@@ -190,7 +190,7 @@
 	desc = "A long mushroom stem. It's slightly glowing."
 	list_reagents = list("tinlux" = 2, "vitamin" = 1, "space_drugs" = 1)
 	icon_state = "mushroom_stem"
-	luminosity = 1
+	light_range = 1
 
 /obj/item/weapon/reagent_containers/food/snacks/ash_flora/cactus_fruit
 	name = "cactus fruit"
@@ -208,7 +208,7 @@
 	resistance_flags = FLAMMABLE
 	obj_integrity = 200
 	max_integrity = 200
-
+/*
 //what you can craft with these things
 /datum/crafting_recipe/mushroom_bowl
 	name = "Mushroom Bowl"
@@ -216,3 +216,4 @@
 	reqs = list(/obj/item/weapon/reagent_containers/food/snacks/ash_flora/shavings = 5)
 	time = 30
 	category = CAT_PRIMAL
+*/

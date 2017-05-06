@@ -12,7 +12,7 @@
 	Look at radio.dm for the prequel to this code.
 */
 
-GLOBAL_LIST_EMPTY(telecomms_list)
+var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 /obj/machinery/telecomms
 	icon = 'icons/obj/machines/telecomms.dmi'
@@ -86,8 +86,7 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 			"verb_say" = signal.data["verb_say"],
 			"verb_ask" = signal.data["verb_ask"],
 			"verb_exclaim" = signal.data["verb_exclaim"],
-			"verb_yell" = signal.data["verb_yell"],
-			"language" = signal.data["language"]
+			"verb_yell" = signal.data["verb_yell"]
 			)
 
 			// Keep the "original" signal constant
@@ -134,7 +133,7 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 
 
 /obj/machinery/telecomms/New()
-	GLOB.telecomms_list += src
+	telecomms_list += src
 	..()
 
 	//Set the listening_level if there's none.
@@ -148,21 +147,20 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 	if(. && T1) // Update listening Z, just in case you have telecomm relay on a shuttle
 		listening_level = T1.z
 
-/obj/machinery/telecomms/Initialize(mapload)
-	..()
-	if(mapload && autolinkers.len)
+/obj/machinery/telecomms/initialize()
+	if(autolinkers.len)
 		// Links nearby machines
 		if(!long_range_link)
 			for(var/obj/machinery/telecomms/T in urange(20, src, 1))
 				add_link(T)
 		else
-			for(var/obj/machinery/telecomms/T in GLOB.telecomms_list)
+			for(var/obj/machinery/telecomms/T in telecomms_list)
 				add_link(T)
 
 
 /obj/machinery/telecomms/Destroy()
-	GLOB.telecomms_list -= src
-	for(var/obj/machinery/telecomms/comm in GLOB.telecomms_list)
+	telecomms_list -= src
+	for(var/obj/machinery/telecomms/comm in telecomms_list)
 		comm.links -= src
 	links = list()
 	return ..()
@@ -176,6 +174,7 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 			for(var/x in autolinkers)
 				if(x in T.autolinkers)
 					links |= T
+					break
 
 /obj/machinery/telecomms/update_icon()
 	if(on)

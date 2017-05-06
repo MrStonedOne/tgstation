@@ -11,18 +11,17 @@
 	to_chat(victim, "<span class='danger'>*click*</span>")
 
 /obj/effect/mine/Crossed(AM as mob|obj)
-	if(isturf(loc))
-		if(ismob(AM))
-			var/mob/MM = AM
-			if(!(MM.movement_type & FLYING))
-				triggermine(AM)
-		else
+	if(ismob(AM))
+		var/mob/MM = AM
+		if(!(MM.movement_type & FLYING))
 			triggermine(AM)
+	else
+		triggermine(AM)
 
 /obj/effect/mine/proc/triggermine(mob/victim)
 	if(triggered)
 		return
-	visible_message("<span class='danger'>[victim] sets off \icon[src] [src]!</span>")
+	visible_message("<span class='danger'>[victim] sets off [bicon(src)] [src]!</span>")
 	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 	s.set_up(3, 1, src)
 	s.start()
@@ -121,7 +120,7 @@
 	if(!victim.client || !istype(victim))
 		return
 	to_chat(victim, "<span class='reallybig redtext'>RIP AND TEAR</span>")
-	victim << 'sound/misc/e1m1.ogg'
+	to_chat(victim, 'sound/misc/gameover.ogg')
 	var/old_color = victim.client.color
 	var/red_splash = list(1,0,0,0.8,0.2,0, 0.8,0,0.2,0.1,0,0)
 	var/pure_red = list(0,0,0,0,0,0,0,0,0,1,0,0)

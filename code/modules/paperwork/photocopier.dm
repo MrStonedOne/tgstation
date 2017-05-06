@@ -89,10 +89,6 @@
 							c.fields = copy.fields
 							c.update_icon()
 							c.updateinfolinks()
-							c.stamps = copy.stamps
-							if(copy.stamped)
-								c.stamped = copy.stamped.Copy()
-							c.copy_overlays(copy, TRUE)
 							toner--
 					busy = 1
 					sleep(15)
@@ -147,20 +143,21 @@
 			for(var/i = 0, i < copies, i++)
 				var/icon/temp_img
 				if(ishuman(ass) && (ass.get_item_by_slot(slot_w_uniform) || ass.get_item_by_slot(slot_wear_suit)))
-					to_chat(usr, "<span class='notice'>You feel kind of silly, copying [ass == usr ? "your" : ass][ass == usr ? "" : "\'s"] ass with [ass == usr ? "your" : "their"] clothes on.</span>" )
+					to_chat(usr, "<span class='notice'>You feel kind of silly, copying [ass == usr ? "your" : ass][ass == usr ? "" : "\'s"] ass with [ass == usr ? "your" : "their"] clothes on.</span>")//'
+
 					break
 				else if(toner >= 5 && !busy && check_ass()) //You have to be sitting on the copier and either be a xeno or a human without clothes on.
 					if(isalienadult(ass) || istype(ass,/mob/living/simple_animal/hostile/alien)) //Xenos have their own asses, thanks to Pybro.
-						temp_img = icon('icons/ass/assalien.png')
+						temp_img = icon("icons/ass/assalien.png")
 					else if(ishuman(ass)) //Suit checks are in check_ass
 						if(ass.gender == MALE)
-							temp_img = icon('icons/ass/assmale.png')
+							temp_img = icon("icons/ass/assmale.png")
 						else if(ass.gender == FEMALE)
-							temp_img = icon('icons/ass/assfemale.png')
+							temp_img = icon("icons/ass/assfemale.png")
 						else 									//In case anyone ever makes the generic ass. For now I'll be using male asses.
-							temp_img = icon('icons/ass/assmale.png')
+							temp_img = icon("icons/ass/assmale.png")
 					else if(isdrone(ass)) //Drones are hot
-						temp_img = icon('icons/ass/assdrone.png')
+						temp_img = icon("icons/ass/assdrone.png")
 					else
 						break
 					var/obj/item/weapon/photo/p = new /obj/item/weapon/photo (loc)
@@ -241,17 +238,17 @@
 		updateUsrDialog()
 
 /obj/machinery/photocopier/proc/do_insertion(obj/item/O, mob/user)
-	O.loc = src
+	O.forceMove(src)
 	to_chat(user, "<span class ='notice'>You insert [O] into [src].</span>")
 	flick("photocopier1", src)
 	updateUsrDialog()
 
 /obj/machinery/photocopier/proc/remove_photocopy(obj/item/O, mob/user)
 	if(!issilicon(user)) //surprised this check didn't exist before, putting stuff in AI's hand is bad
-		O.loc = user.loc
+		O.forceMove(user.loc)
 		user.put_in_hands(O)
 	else
-		O.loc = src.loc
+		O.forceMove(src.loc)
 	to_chat(user, "<span class='notice'>You take [O] out of [src].</span>")
 
 /obj/machinery/photocopier/attackby(obj/item/O, mob/user, params)
@@ -305,12 +302,10 @@
 		playsound(loc, O.usesound, 50, 1)
 		to_chat(user, "<span class='warning'>You start [anchored ? "unwrenching" : "wrenching"] [src]...</span>")
 		if(do_after(user, 20*O.toolspeed, target = src))
-			if(QDELETED(src))
+			if(qdeleted(src))
 				return
 			to_chat(user, "<span class='notice'>You [anchored ? "unwrench" : "wrench"] [src].</span>")
 			anchored = !anchored
-	else if(istype(O, /obj/item/areaeditor/blueprints))
-		to_chat(user, "<span class='warning'>The Blueprint is too large to put into the copier. You need to find something else to record the document</span>")
 	else
 		return ..()
 
@@ -331,7 +326,7 @@
 		user.visible_message("<span class='warning'>[user] starts putting [target] onto the photocopier!</span>", "<span class='notice'>You start putting [target] onto the photocopier...</span>")
 
 	if(do_after(user, 20, target = src))
-		if(!target || QDELETED(target) || QDELETED(src) || !Adjacent(target)) //check if the photocopier/target still exists.
+		if(!target || qdeleted(target) || qdeleted(src) || !Adjacent(target)) //check if the photocopier/target still exists.
 			return
 
 		if(target == user)
@@ -339,16 +334,16 @@
 		else
 			user.visible_message("<span class='warning'>[user] puts [target] onto the photocopier!</span>", "<span class='notice'>You put [target] onto the photocopier.</span>")
 
-		target.loc = get_turf(src)
+		target.forceMove(get_turf(src))
 		ass = target
 
 		if(photocopy)
-			photocopy.loc = src.loc
+			photocopy.forceMove(src.loc)
 			visible_message("<span class='warning'>[photocopy] is shoved out of the way by [ass]!</span>")
 			photocopy = null
 
 		else if(copy)
-			copy.loc = src.loc
+			copy.forceMove(src.loc)
 			visible_message("<span class='warning'>[copy] is shoved out of the way by [ass]!</span>")
 			copy = null
 	updateUsrDialog()
@@ -369,7 +364,7 @@
 		return 1
 
 /obj/machinery/photocopier/proc/copier_blocked()
-	if(QDELETED(src))
+	if(qdeleted(src))
 		return
 	if(loc.density)
 		return 1

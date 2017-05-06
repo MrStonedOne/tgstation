@@ -2,7 +2,7 @@
 /mob/living/simple_animal/bot/floorbot
 	name = "\improper Floorbot"
 	desc = "A little floor repairing robot, he looks so excited!"
-	icon = 'icons/mob/aibots.dmi'
+	icon = 'icons/obj/aibots.dmi'
 	icon_state = "floorbot0"
 	density = 0
 	anchored = 0
@@ -38,7 +38,7 @@
 	#define REPLACE_TILE		6
 	#define TILE_EMAG		7
 
-/mob/living/simple_animal/bot/floorbot/Initialize()
+/mob/living/simple_animal/bot/floorbot/New()
 	..()
 	update_icon()
 	var/datum/job/engineer/J = new/datum/job/engineer
@@ -381,11 +381,13 @@
 	var/obj/item/stack/tile/plasteel/T = new (Tsec)
 	T.amount = 1
 
-	do_sparks(3, TRUE, src)
+	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+	s.set_up(3, 1, src)
+	s.start()
 	..()
 
 /obj/machinery/bot_core/floorbot
-	req_one_access = list(GLOB.access_construction, GLOB.access_robotics)
+	req_one_access = list(access_construction, access_robotics)
 
 /mob/living/simple_animal/bot/floorbot/UnarmedAttack(atom/A)
 	if(isturf(A))

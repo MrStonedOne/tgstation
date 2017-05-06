@@ -24,11 +24,14 @@
 /obj/item/weapon/implant/chem/New()
 	..()
 	create_reagents(50)
-	GLOB.tracked_chem_implants += src
+	tracked_chem_implants += src
 
 /obj/item/weapon/implant/chem/Destroy()
-	. = ..()
-	GLOB.tracked_chem_implants -= src
+	..()
+	tracked_chem_implants -= src
+
+
+
 
 /obj/item/weapon/implant/chem/trigger(emote, mob/source)
 	if(emote == "deathgasp")
@@ -53,11 +56,14 @@
 /obj/item/weapon/implantcase/chem
 	name = "implant case - 'Remote Chemical'"
 	desc = "A glass case containing a remote chemical implant."
-	imp_type = /obj/item/weapon/implant/chem
+
+/obj/item/weapon/implantcase/chem/New()
+	imp = new /obj/item/weapon/implant/chem(src)
+	..()
 
 /obj/item/weapon/implantcase/chem/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W,/obj/item/weapon/reagent_containers/syringe) && imp)
-		W.afterattack(imp, user, TRUE, params)
+		W.afterattack(imp, user, params)
 		return TRUE
 	else
 		return ..()

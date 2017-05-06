@@ -183,9 +183,8 @@
 	if(!T)
 		return
 
-	if(triggerer_only && ismob(A))
-		var/mob/B = A
-		B.playsound_local(T, sound, volume, freq_vary)
+	if(triggerer_only)
+		A.playsound_local(T, sound, volume, freq_vary)
 	else
 		playsound(T, sound, volume, freq_vary, extra_range)
 

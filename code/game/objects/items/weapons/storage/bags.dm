@@ -94,7 +94,7 @@
 
 /obj/item/weapon/storage/bag/ore/holding //miners, your messiah has arrived
 	name = "mining satchel of holding"
-	desc = "A revolution in convenience, this satchel allows for huge amounts of ore storage. It's been outfitted with anti-malfunction safety measures."
+	desc = "A revolution in convenience, this satchel allows for infinite ore storage. It's been outfitted with anti-malfunction safety measures."
 	storage_slots = INFINITY
 	max_combined_w_class = INFINITY
 	origin_tech = "bluespace=4;materials=3;engineering=3"
@@ -112,7 +112,7 @@
 	max_combined_w_class = 100 //Doesn't matter what this is, so long as it's more or equal to storage_slots * plants.w_class
 	max_w_class = WEIGHT_CLASS_NORMAL
 	w_class = WEIGHT_CLASS_TINY
-	can_hold = list(/obj/item/weapon/reagent_containers/food/snacks/grown,/obj/item/seeds,/obj/item/weapon/grown,/obj/item/weapon/reagent_containers/food/snacks/ash_flora,/obj/item/weapon/reagent_containers/honeycomb)
+	can_hold = list(/obj/item/weapon/reagent_containers/food/snacks/grown,/obj/item/seeds,/obj/item/weapon/grown,/obj/item/weapon/reagent_containers/food/snacks/ash_flora)
 	resistance_flags = FLAMMABLE
 
 ////////
@@ -150,6 +150,11 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 	allow_quick_empty = 1 // this function is superceded
+
+/obj/item/weapon/storage/bag/sheetsnatcher/New()
+	..()
+	//verbs -= /obj/item/weapon/storage/verb/quick_empty
+	//verbs += /obj/item/weapon/storage/bag/sheetsnatcher/quick_empty
 
 /obj/item/weapon/storage/bag/sheetsnatcher/can_be_inserted(obj/item/W, stop_messages = 0)
 	if(!istype(W,/obj/item/stack/sheet) || istype(W,/obj/item/stack/sheet/mineral/sandstone) || istype(W,/obj/item/stack/sheet/mineral/wood))
@@ -189,7 +194,7 @@
 			break
 
 	if(!inserted || !S.amount)
-		usr.dropItemToGround(S)
+		usr.unEquip(S)
 		if (usr.client && usr.s_active != src)
 			usr.client.screen -= S
 		S.dropped(usr)
@@ -198,7 +203,7 @@
 		else
 			if(S.pulledby)
 				S.pulledby.stop_pulling()
-			S.loc = src
+			S.forceMove(src)
 
 	orient2hud(usr)
 	if(usr.s_active)
@@ -334,14 +339,14 @@
 /obj/item/weapon/storage/bag/tray/proc/rebuild_overlays()
 	cut_overlays()
 	for(var/obj/item/I in contents)
-		add_overlay(mutable_appearance(I.icon, I.icon_state))
+		add_overlay(image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = -1))
 
 /obj/item/weapon/storage/bag/tray/remove_from_storage(obj/item/W as obj, atom/new_location)
 	..()
 	rebuild_overlays()
 
 /obj/item/weapon/storage/bag/tray/handle_item_insertion(obj/item/I, prevent_warning = 0)
-	add_overlay(mutable_appearance(I.icon, I.icon_state))
+	add_overlay(image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = -1))
 	. = ..()
 
 

@@ -9,14 +9,14 @@
 	var/mob/living/silicon/pai/pai
 	resistance_flags = FIRE_PROOF | ACID_PROOF | INDESTRUCTIBLE
 
-/obj/item/device/paicard/Initialize()
+/obj/item/device/paicard/New()
 	..()
-	SSpai.pai_card_list += src
+	pai_card_list += src
 	add_overlay("pai-off")
 
 /obj/item/device/paicard/Destroy()
 	//Will stop people throwing friend pAIs into the singularity so they can respawn
-	SSpai.pai_card_list -= src
+	pai_card_list -= src
 	if(!isnull(pai))
 		pai.death(0)
 	return ..()
@@ -65,8 +65,6 @@
 		SSpai.findPAI(src, usr)
 
 	if(pai)
-		if(!(loc == usr))
-			return
 		if(href_list["setdna"])
 			if(pai.master_dna)
 				return
@@ -95,6 +93,10 @@
 			var/newlaws = copytext(sanitize(input("Enter any additional directives you would like your pAI personality to follow. Note that these directives will not override the personality's allegiance to its imprinted master. Conflicting directives will be ignored.", "pAI Directive Configuration", pai.laws.supplied[1]) as message),1,MAX_MESSAGE_LEN)
 			if(newlaws && pai)
 				pai.add_supplied_law(0,newlaws)
+				to_chat(pai, "Your supplemental directives have been updated. Your new directives are:")
+				to_chat(pai, "Prime Directive : <br>[pai.laws.zeroth]")
+				for(var/slaws in pai.laws.supplied)
+					to_chat(pai, "Supplemental Directives: <br>[slaws]")
 		if(href_list["toggle_holo"])
 			if(pai.canholo)
 				to_chat(pai, "<span class='userdanger'>Your owner has disabled your holomatrix projectors!</span>")

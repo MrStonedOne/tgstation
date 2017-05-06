@@ -9,6 +9,7 @@
 	mouse_opacity = 0
 	hitsound = 'sound/weapons/pierce.ogg'
 	var/hitsound_wall = ""
+	self_weight = 0
 
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 	var/def_zone = ""	//Aiming at
@@ -23,7 +24,7 @@
 	var/paused = FALSE //for suspending the projectile midair
 	var/p_x = 16
 	var/p_y = 16			// the pixel location of the tile that the player clicked. Default is the center
-	var/speed = 0.8			//Amount of deciseconds it takes for projectile to travel
+	var/speed = 0.2			//Amount of deciseconds it takes for projectile to travel
 	var/Angle = 0
 	var/spread = 0			//amount (in degrees) of projectile spread
 	var/legacy = 0			//legacy projectile system
@@ -55,6 +56,10 @@
 	permutated = list()
 	return ..()
 
+/obj/item/projectile/Destroy()
+	..()
+	return QDEL_HINT_PUTINPOOL
+
 /obj/item/projectile/proc/Range()
 	range--
 	if(range <= 0 && loc)
@@ -81,7 +86,7 @@
 	var/turf/target_loca = get_turf(target)
 	if(!isliving(target))
 		if(impact_effect_type)
-			new impact_effect_type(target_loca, target, src)
+			PoolOrNew(impact_effect_type, list(target_loca, target, src))
 		return 0
 	var/mob/living/L = target
 	if(blocked != 100) // not completely blocked
@@ -90,13 +95,13 @@
 			if(starting)
 				splatter_dir = get_dir(starting, target_loca)
 			if(isalien(L))
-				new /obj/effect/overlay/temp/dir_setting/bloodsplatter/xenosplatter(target_loca, splatter_dir)
+				PoolOrNew(/obj/effect/overlay/temp/dir_setting/bloodsplatter/xenosplatter, list(target_loca, splatter_dir))
 			else
-				new /obj/effect/overlay/temp/dir_setting/bloodsplatter(target_loca, splatter_dir)
+				PoolOrNew(/obj/effect/overlay/temp/dir_setting/bloodsplatter, list(target_loca, splatter_dir))
 			if(prob(33))
 				L.add_splatter_floor(target_loca)
 		else if(impact_effect_type)
-			new impact_effect_type(target_loca, target, src)
+			PoolOrNew(impact_effect_type, list(target_loca, target, src))
 
 		var/organ_hit_text = ""
 		var/limb_hit = L.check_limb_hit(def_zone)//to get the correct message info.
@@ -134,7 +139,7 @@
 		return
 	if(firer)
 		if(A == firer || (A == firer.loc && istype(A, /obj/mecha))) //cannot shoot yourself or your mech
-			loc = A.loc
+			forceMove(A.loc)
 			return 0
 
 	var/distance = get_dist(get_turf(A), starting) // Get the distance between the turf shot from and the mob we hit and use that for the calculations.
@@ -151,7 +156,7 @@
 	prehit(A)
 	var/permutation = A.bullet_act(src, def_zone) // searches for return value, could be deleted after run so check A isn't null
 	if(permutation == -1 || forcedodge)// the bullet passes through a dense object!
-		loc = target_turf
+		forceMove(target_turf)
 		if(A)
 			permutated.Add(A)
 		return 0
@@ -179,8 +184,6 @@
 		return
 	if(setAngle)
 		Angle = setAngle
-	var/old_pixel_x = pixel_x
-	var/old_pixel_y = pixel_y
 	if(!legacy) //new projectiles
 		set waitfor = 0
 		var/next_run = world.time
@@ -201,32 +204,31 @@
 			M.Turn(Angle)
 			transform = M
 
-			var/Pixel_x=round((sin(Angle)+16*sin(Angle)*2), 1)	//round() is a floor operation when only one argument is supplied, we don't want that here
-			var/Pixel_y=round((cos(Angle)+16*cos(Angle)*2), 1)
-			var/pixel_x_offset = old_pixel_x + Pixel_x
-			var/pixel_y_offset = old_pixel_y + Pixel_y
+			var/Pixel_x=round(sin(Angle)+16*sin(Angle)*2)
+			var/Pixel_y=round(cos(Angle)+16*cos(Angle)*2)
+			var/pixel_x_offset = pixel_x + Pixel_x
+			var/pixel_y_offset = pixel_y + Pixel_y
 			var/new_x = x
 			var/new_y = y
 
 			while(pixel_x_offset > 16)
 				pixel_x_offset -= 32
-				old_pixel_x -= 32
+				pixel_x -= 32
 				new_x++// x++
 			while(pixel_x_offset < -16)
 				pixel_x_offset += 32
-				old_pixel_x += 32
+				pixel_x += 32
 				new_x--
+
 			while(pixel_y_offset > 16)
 				pixel_y_offset -= 32
-				old_pixel_y -= 32
+				pixel_y -= 32
 				new_y++
 			while(pixel_y_offset < -16)
 				pixel_y_offset += 32
-				old_pixel_y += 32
+				pixel_y += 32
 				new_y--
-				
-			pixel_x = old_pixel_x
-			pixel_y = old_pixel_y
+
 			step_towards(src, locate(new_x, new_y, z))
 			next_run += max(world.tick_lag, speed)
 			var/delay = next_run - world.time
@@ -235,9 +237,7 @@
 				pixel_y = pixel_y_offset
 			else
 				animate(src, pixel_x = pixel_x_offset, pixel_y = pixel_y_offset, time = max(1, (delay <= 3 ? delay - 1 : delay)), flags = ANIMATION_END_NOW)
-			old_pixel_x = pixel_x_offset
-			old_pixel_y = pixel_y_offset
-			
+
 			if(original && (original.layer>=2.75) || ismob(original))
 				if(loc == get_turf(original))
 					if(!(original in permutated))
@@ -263,7 +263,7 @@
 
 /obj/item/projectile/proc/preparePixelProjectile(atom/target, var/turf/targloc, mob/living/user, params, spread)
 	var/turf/curloc = get_turf(user)
-	src.loc = get_turf(user)
+	src.forceMove(get_turf(user))
 	src.starting = get_turf(user)
 	src.current = curloc
 	src.yo = targloc.y - curloc.y
@@ -284,7 +284,7 @@
 
 			//Split Y+Pixel_Y up into list(Y, Pixel_Y)
 			var/list/screen_loc_Y = splittext(screen_loc_params[2],":")
-			// to_chat(world, "X: [screen_loc_X[1]] PixelX: [screen_loc_X[2]] / Y: [screen_loc_Y[1]] PixelY: [screen_loc_Y[2]]")
+//			to_chat(world, "X: [screen_loc_X[1]] PixelX: [screen_loc_X[2]] / Y: [screen_loc_Y[1]] PixelY: [screen_loc_Y[2]]")
 			var/x = text2num(screen_loc_X[1]) * 32 + text2num(screen_loc_X[2]) - 32
 			var/y = text2num(screen_loc_Y[1]) * 32 + text2num(screen_loc_Y[2]) - 32
 
@@ -293,9 +293,12 @@
 
 			var/ox = round(screenview/2) //"origin" x
 			var/oy = round(screenview/2) //"origin" y
-			// to_chat(world, "Pixel position: [x] [y]")
+			if(user.client)
+				x += user.client.pixel_x
+				y += user.client.pixel_y
+//			to_chat(world, "Pixel position: [x] [y]")
 			var/angle = Atan2(y - oy, x - ox)
-			// to_chat(world, "Angle: [angle]")
+//			to_chat(world, "Angle: [angle]")
 			src.Angle = angle
 	if(spread)
 		src.Angle += spread

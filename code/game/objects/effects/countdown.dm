@@ -24,7 +24,7 @@
 
 /obj/effect/countdown/proc/attach(atom/A)
 	attached_to = A
-	loc = get_turf(A)
+	forceMove(get_turf(A))
 
 /obj/effect/countdown/proc/start()
 	if(!started)
@@ -42,7 +42,7 @@
 	return
 
 /obj/effect/countdown/process()
-	if(!attached_to || QDELETED(attached_to))
+	if(!attached_to || qdeleted(attached_to))
 		qdel(src)
 	forceMove(get_turf(attached_to))
 	var/new_val = get_value()

@@ -42,7 +42,7 @@
 	doomsday_device = DOOM
 	doomsday_device.start()
 	verbs -= /mob/living/silicon/ai/proc/nuke_station
-	for(var/obj/item/weapon/pinpointer/P in GLOB.pinpointer_list)
+	for(var/obj/item/weapon/pinpointer/P in pinpointer_list)
 		P.switch_mode_to(TRACK_MALF_AI) //Pinpointers start tracking the AI wherever it goes
 
 /obj/machinery/doomsday_device
@@ -70,7 +70,7 @@
 	STOP_PROCESSING(SSfastprocess, src)
 	SSshuttle.clearHostileEnvironment(src)
 	SSmapping.remove_nuke_threat(src)
-	for(var/A in GLOB.ai_list)
+	for(var/A in ai_list)
 		var/mob/living/silicon/ai/Mlf = A
 		if(Mlf.doomsday_device == src)
 			Mlf.doomsday_device = null
@@ -108,10 +108,10 @@
 			minor_announce(message, "ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4", 1)
 
 /obj/machinery/doomsday_device/proc/detonate(z_level = 1)
-	for(var/mob/M in GLOB.player_list)
-		M << 'sound/machines/Alarm.ogg'
+	for(var/mob/M in player_list)
+		to_chat(M, 'sound/machines/Alarm.ogg')
 	sleep(100)
-	for(var/mob/living/L in GLOB.mob_list)
+	for(var/mob/living/L in mob_list)
 		var/turf/T = get_turf(L)
 		if(!T || T.z != z_level)
 			continue
@@ -120,7 +120,7 @@
 		to_chat(L, "<span class='userdanger'>The blast wave from [src] tears you atom from atom!</span>")
 		L.dust()
 	to_chat(world, "<B>The AI cleansed the station of life with the doomsday device!</B>")
-	SSticker.force_ending = 1
+	ticker.force_ending = 1
 
 /datum/AI_Module/large/upgrade_turrets
 	module_name = "AI Turret Upgrade"
@@ -140,7 +140,7 @@
 
 	src.verbs -= /mob/living/silicon/ai/proc/upgrade_turrets
 	//Upgrade AI turrets around the world
-	for(var/obj/machinery/porta_turret/ai/turret in GLOB.machines)
+	for(var/obj/machinery/porta_turret/ai/turret in machines)
 		turret.obj_integrity += 30
 		turret.lethal_projectile = /obj/item/projectile/beam/laser/heavylaser //Once you see it, you will know what it means to FEAR.
 		turret.lethal_projectile_sound = 'sound/weapons/lasercannonfire.ogg'
@@ -162,13 +162,13 @@
 	if(!canUseTopic())
 		return
 
-	for(var/obj/machinery/door/D in GLOB.airlocks)
+	for(var/obj/machinery/door/D in airlocks)
 		if(D.z != ZLEVEL_STATION)
 			continue
-		INVOKE_ASYNC(D, /obj/machinery/door.proc/hostile_lockdown, src)
+		addtimer(CALLBACK(D, /obj/machinery/door.proc/hostile_lockdown, src), 0)
 		addtimer(CALLBACK(D, /obj/machinery/door.proc/disable_lockdown), 900)
 
-	var/obj/machinery/computer/communications/C = locate() in GLOB.machines
+	var/obj/machinery/computer/communications/C = locate() in machines
 	if(C)
 		C.post_status("alert", "lockdown")
 
@@ -192,20 +192,19 @@
 	set category = "Malfunction"
 	set name = "Destroy RCDs"
 	set desc = "Detonate all RCDs on the station, while sparing onboard cyborg RCDs."
-	set waitfor = FALSE
 
 	if(!canUseTopic() || malf_cooldown)
 		return
 
-	for(var/I in GLOB.rcd_list)
-		if(!istype(I, /obj/item/weapon/construction/rcd/borg)) //Ensures that cyborg RCDs are spared.
-			var/obj/item/weapon/construction/rcd/RCD = I
+	for(var/I in rcd_list)
+		if(!istype(I, /obj/item/weapon/rcd/borg)) //Ensures that cyborg RCDs are spared.
+			var/obj/item/weapon/rcd/RCD = I
 			RCD.detonate_pulse()
 
 	to_chat(src, "<span class='warning'>RCD detonation pulse emitted.</span>")
-	malf_cooldown = TRUE
-	sleep(100)
-	malf_cooldown = FALSE
+	malf_cooldown = 1
+	spawn(100)
+		malf_cooldown = 0
 
 /datum/AI_Module/large/mecha_domination
 	module_name = "Viral Mech Domination"
@@ -244,7 +243,7 @@
 	if(!canUseTopic())
 		return
 
-	for(var/obj/machinery/firealarm/F in GLOB.machines)
+	for(var/obj/machinery/firealarm/F in machines)
 		if(F.z != ZLEVEL_STATION)
 			continue
 		F.emagged = 1
@@ -268,7 +267,7 @@
 	if(!canUseTopic())
 		return
 
-	for(var/obj/machinery/airalarm/AA in GLOB.machines)
+	for(var/obj/machinery/airalarm/AA in machines)
 		if(AA.z != ZLEVEL_STATION)
 			continue
 		AA.emagged = 1
@@ -284,7 +283,7 @@
 
 	power_type = /mob/living/silicon/ai/proc/overload_machine
 
-/mob/living/silicon/ai/proc/overload_machine(obj/machinery/M in GLOB.machines)
+/mob/living/silicon/ai/proc/overload_machine(obj/machinery/M in machines)
 	set name = "Overload Machine"
 	set category = "Malfunction"
 
@@ -314,7 +313,7 @@
 	power_type = /mob/living/silicon/ai/proc/override_machine
 
 
-/mob/living/silicon/ai/proc/override_machine(obj/machinery/M in GLOB.machines)
+/mob/living/silicon/ai/proc/override_machine(obj/machinery/M in machines)
 	set name = "Override Machine"
 	set category = "Malfunction"
 
@@ -330,7 +329,7 @@
 				M.audible_message("<span class='userdanger'>You hear a loud electrical buzzing sound!</span>")
 				to_chat(src, "<span class='warning'>Reprogramming machine behaviour...</span>")
 				spawn(50)
-					if(M && !QDELETED(M))
+					if(M && !qdeleted(M))
 						new /mob/living/simple_animal/hostile/mimic/copy/machine(get_turf(M), M, src, 1)
 			else to_chat(src, "<span class='notice'>Out of uses.</span>")
 	else to_chat(src, "<span class='notice'>That's not a machine.</span>")
@@ -359,8 +358,7 @@
 		if(!canPlaceTransformer())
 			return
 		var/turf/T = get_turf(eyeobj)
-		var/obj/machinery/transformer/conveyor = new(T)
-		conveyor.masterAI = src
+		new /obj/machinery/transformer/conveyor(T)
 		playsound(T, 'sound/effects/phasein.ogg', 100, 1)
 		var/datum/AI_Module/large/place_cyborg_transformer/PCT = locate() in current_modules
 		PCT.uses --
@@ -384,7 +382,7 @@
 			var/turf/T = turfs[n]
 			if(!isfloorturf(T))
 				fail = 1
-			var/datum/camerachunk/C = GLOB.cameranet.getCameraChunk(T.x, T.y, T.z)
+			var/datum/camerachunk/C = cameranet.getCameraChunk(T.x, T.y, T.z)
 			if(!C.visibleTurfs[T])
 				alert_msg = "We cannot get camera vision of this location."
 				fail = 1
@@ -425,7 +423,7 @@
 	for(var/datum/AI_Module/small/blackout/blackout in current_modules)
 		if(blackout.uses > 0)
 			blackout.uses --
-			for(var/obj/machinery/power/apc/apc in GLOB.machines)
+			for(var/obj/machinery/power/apc/apc in machines)
 				if(prob(30*apc.overload))
 					apc.overload_lighting()
 				else apc.overload++
@@ -451,7 +449,7 @@
 	var/fixedcams = 0 //Tells the AI how many cams it fixed. Stats are fun.
 
 	for(var/datum/AI_Module/small/reactivate_cameras/camera in current_modules)
-		for(var/obj/machinery/camera/C in GLOB.cameranet.cameras)
+		for(var/obj/machinery/camera/C in cameranet.cameras)
 			var/initial_range = initial(C.view_range) //To prevent calling the proc twice
 			if(camera.uses > 0)
 				if(!C.status)
@@ -494,14 +492,14 @@
 	see_override = SEE_INVISIBLE_MINIMUM //Night-vision, without which X-ray would be very limited in power.
 	update_sight()
 
-	for(var/obj/machinery/camera/C in GLOB.cameranet.cameras)
+	for(var/obj/machinery/camera/C in cameranet.cameras)
 		if(C.assembly)
 			var/upgraded = 0
 
 			if(!C.isXRay())
 				C.upgradeXRay()
 				//Update what it can see.
-				GLOB.cameranet.updateVisibility(C, 0)
+				cameranet.updateVisibility(C, 0)
 				upgraded = 1
 
 			if(!C.isEmpProof())
@@ -556,7 +554,8 @@
 	var/mob/living/silicon/ai/A = usr
 
 	if(A.stat == DEAD)
-		to_chat(A, "You are already dead!") //Omae Wa Mou Shindeiru
+		to_chat(A, "You are already dead!")//Omae Wa Mou Shindeiru
+
 		return
 
 	for(var/datum/AI_Module/AM in possible_modules)

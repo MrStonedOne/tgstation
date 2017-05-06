@@ -13,6 +13,8 @@
 	var/list/friends = list()
 	var/list/emote_taunt = list()
 	var/taunt_chance = 0
+	var/aggro_sound_chance = 0
+	var/aggro_sound = null
 
 //typecache of things this mob will attack in DestroySurroundings() if it has environment_smash
 	var/list/environment_target_typecache = list(
@@ -23,7 +25,9 @@
 	/obj/structure/grille,
 	/obj/structure/girder,
 	/obj/structure/rack,
-	/obj/structure/barricade) //turned into a typecache in New()
+	/obj/structure/barricade,
+	/obj/structure/fence,
+	/obj/structure/simple_door) //turned into a typecache in New()
 
 	var/ranged_message = "fires" //Fluff text for ranged mobs
 	var/ranged_cooldown = 0 //What the current cooldown on ranged attacks is, generally world.time + ranged_cooldown_time
@@ -54,7 +58,7 @@
 	var/lose_patience_timeout = 300 //30 seconds by default, so there's no major changes to AI behaviour, beyond actually bailing if stuck forever
 
 
-/mob/living/simple_animal/hostile/Initialize()
+/mob/living/simple_animal/hostile/New()
 	..()
 
 	if(!targets_from)
@@ -103,16 +107,19 @@
 //////////////HOSTILE MOB TARGETTING AND AGGRESSION////////////
 
 /mob/living/simple_animal/hostile/proc/ListTargets()//Step 1, find out what we can see
+	. = list()
 	if(!search_objects)
-		. = hearers(vision_range, targets_from) - src //Remove self, so we don't suicide
+		var/list/Mobs = hearers(vision_range, targets_from) - src //Remove self, so we don't suicide
+		. += Mobs
 
-		var/static/hostile_machines = typecacheof(list(/obj/machinery/porta_turret, /obj/mecha, /obj/structure/destructible/clockwork/ocular_warden))
+		var/static/hostile_machines = typecacheof(list(/obj/machinery/porta_turret, /obj/mecha))
 
 		for(var/HM in typecache_filter_list(range(vision_range, targets_from), hostile_machines))
 			if(can_see(targets_from, HM, vision_range))
 				. += HM
 	else
-		. = oview(vision_range, targets_from)
+		var/list/Objects = oview(vision_range, targets_from)
+		. += Objects
 
 /mob/living/simple_animal/hostile/proc/FindTarget(var/list/possible_targets, var/HasTargetsList = 0)//Step 2, filter down possible targets to things we actually care about
 	. = list()
@@ -169,7 +176,7 @@
 	if(search_objects < 2)
 		if(isliving(the_target))
 			var/mob/living/L = the_target
-			var/faction_check = faction_check_mob(L)
+			var/faction_check = faction_check(L)
 			if(robust_searching)
 				if(L.stat > stat_attack || L.stat != stat_attack && stat_exclusive == 1)
 					return 0
@@ -199,12 +206,6 @@
 			if(P.stat & BROKEN) //Or turrets that are already broken
 				return 0
 			return 1
-
-		if(istype(the_target, /obj/structure/destructible/clockwork/ocular_warden))
-			var/obj/structure/destructible/clockwork/ocular_warden/OW = the_target
-			if(OW.target != src)
-				return FALSE
-			return TRUE
 
 
 	if(isobj(the_target))
@@ -280,13 +281,16 @@
 
 
 /mob/living/simple_animal/hostile/proc/AttackingTarget()
-	return target.attack_animal(src)
+	face_atom(target)
+	target.attack_animal(src)
 
 /mob/living/simple_animal/hostile/proc/Aggro()
 	vision_range = aggro_vision_range
 	if(target && emote_taunt.len && prob(taunt_chance))
 		emote("me", 1, "[pick(emote_taunt)] at [target].")
 		taunt_chance = max(taunt_chance-7,2)
+	if(aggro_sound_chance && prob(aggro_sound_chance) && aggro_sound)
+		playsound(src, aggro_sound, 50, 0)
 
 
 /mob/living/simple_animal/hostile/proc/LoseAggro()
@@ -309,7 +313,11 @@
 	do_alert_animation(src)
 	playsound(loc, 'sound/machines/chime.ogg', 50, 1, -1)
 	for(var/mob/living/simple_animal/hostile/M in oview(distance, targets_from))
-		if(faction_check_mob(M, TRUE))
+		var/list/L = M.faction&faction
+		var/success = L.len
+		if(exact_faction_match)
+			success = (L.len == faction.len) //since the above op is &, an exact match would be of the same length
+		if(success)
 			if(M.AIStatus == AI_OFF)
 				return
 			else
@@ -321,22 +329,24 @@
 			for(var/mob/living/L in T)
 				if(L == src || L == A)
 					continue
-				if(faction_check_mob(L) && !attack_same)
+				if(faction_check(L) && !attack_same)
 					return
 	visible_message("<span class='danger'><b>[src]</b> [ranged_message] at [A]!</span>")
 
 	if(rapid)
-		var/datum/callback/cb = CALLBACK(src, .proc/Shoot, A)
-		addtimer(cb, 1)
-		addtimer(cb, 4)
-		addtimer(cb, 6)
+		spawn(1)
+			Shoot(A)
+		spawn(4)
+			Shoot(A)
+		spawn(6)
+			Shoot(A)
 	else
 		Shoot(A)
 	ranged_cooldown = world.time + ranged_cooldown_time
 
 
 /mob/living/simple_animal/hostile/proc/Shoot(atom/targeted_atom)
-	if( QDELETED(targeted_atom) || targeted_atom == targets_from.loc || targeted_atom == targets_from )
+	if(targeted_atom == targets_from.loc || targeted_atom == targets_from)
 		return
 	var/turf/startloc = get_turf(targets_from)
 	if(casingtype)
@@ -361,7 +371,7 @@
 /mob/living/simple_animal/hostile/proc/DestroySurroundings()
 	if(environment_smash)
 		EscapeConfinement()
-		for(var/dir in GLOB.cardinal)
+		for(var/dir in cardinal)
 			var/turf/T = get_step(targets_from, dir)
 			if(iswallturf(T) || ismineralturf(T))
 				if(T.Adjacent(targets_from))

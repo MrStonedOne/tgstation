@@ -8,20 +8,13 @@
 	active_icon = "interdiction_lens_active"
 	inactive_icon = "interdiction_lens"
 	unanchored_icon = "interdiction_lens_unwrenched"
-	break_message = "<span class='warning'>The lens flares a blinding violet before the totem beneath it shatters!</span>"
+	break_message = "<span class='warning'>The lens flares a blinding violet before shattering!</span>"
 	break_sound = 'sound/effects/Glassbr3.ogg'
-	debris = list(/obj/item/clockwork/alloy_shards/small = 2, \
-	/obj/item/clockwork/alloy_shards/large = 2, \
-	/obj/item/clockwork/component/belligerent_eye/lens_gem = 1)
 	var/recharging = 0 //world.time when the lens was last used
 	var/recharge_time = 1200 //if it drains no power and affects no objects, it turns off for two minutes
 	var/disabled = FALSE //if it's actually usable
 	var/interdiction_range = 14 //how large an area it drains and disables in
 	var/static/list/rage_messages = list("...", "Disgusting.", "Die.", "Foul.", "Worthless.", "Mortal.", "Unfit.", "Weak.", "Fragile.", "Useless.", "Leave my sight!")
-
-/obj/structure/destructible/clockwork/powered/interdiction_lens/Initialize()
-	. = ..()
-	update_current_glow()
 
 /obj/structure/destructible/clockwork/powered/interdiction_lens/examine(mob/user)
 	..()
@@ -30,35 +23,22 @@
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		to_chat(user, "<span class='neovgre_small'>If it fails to drain any electronics or has nothing to return power to, it will disable itself for <b>[round(recharge_time/600, 1)]</b> minutes.</span>")
 
-/obj/structure/destructible/clockwork/powered/interdiction_lens/update_anchored(mob/user, do_damage)
-	..()
-	update_current_glow()
-
 /obj/structure/destructible/clockwork/powered/interdiction_lens/toggle(fast_process, mob/living/user)
 	. = ..()
-	update_current_glow()
-
-/obj/structure/destructible/clockwork/powered/interdiction_lens/proc/update_current_glow()
 	if(active)
-		if(disabled)
-			set_light(2, 1.6, "#151200")
-		else
-			set_light(2, 1.6, "#EE54EE")
+		set_light(4, 2)
 	else
-		if(anchored)
-			set_light(1.4, 0.8, "#F42B9D")
-		else
-			set_light(0)
+		set_light(0)
 
 /obj/structure/destructible/clockwork/powered/interdiction_lens/attack_hand(mob/living/user)
-	if(user.canUseTopic(src, !issilicon(user), NO_DEXTERY))
+	if(user.canUseTopic(src, !issilicon(user)))
 		if(disabled)
 			to_chat(user, "<span class='warning'>As you place your hand on the gemstone, cold tendrils of black matter crawl up your arm. You quickly pull back.</span>")
 			return 0
 		toggle(0, user)
 
 /obj/structure/destructible/clockwork/powered/interdiction_lens/forced_disable(bad_effects)
-	if(disabled || !anchored)
+	if(disabled)
 		return FALSE
 	if(!active)
 		toggle(0)
@@ -66,8 +46,8 @@
 	recharging = world.time + recharge_time
 	flick("interdiction_lens_discharged", src)
 	icon_state = "interdiction_lens_inactive"
+	set_light(2,1)
 	disabled = TRUE
-	update_current_glow()
 	return TRUE
 
 /obj/structure/destructible/clockwork/powered/interdiction_lens/process()
@@ -97,16 +77,16 @@
 		var/efficiency = get_efficiency_mod()
 		var/rage_modifier = get_efficiency_mod(TRUE)
 
-		for(var/i in GLOB.ai_list)
+		for(var/i in ai_list)
 			var/mob/living/silicon/ai/AI = i
 			if(AI && AI.stat != DEAD && !is_servant_of_ratvar(AI))
 				unconverted_ai = TRUE
 
 		for(var/M in atoms_to_test)
 			var/atom/movable/A = M
-			if(!A || QDELETED(A) || A == target_apc)
+			if(!A || qdeleted(A) || A == target_apc)
 				continue
-			power_drained += Floor(A.power_drain(TRUE) * efficiency, MIN_CLOCKCULT_POWER)
+			power_drained += (A.power_drain(TRUE) * efficiency)
 
 			if(prob(1 * rage_modifier))
 				to_chat(A, "<span class='neovgre'>\"[text2ratvar(pick(rage_messages))]\"</span>")

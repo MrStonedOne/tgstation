@@ -46,11 +46,12 @@
 		else if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/pizzaslice/custom) || istype(I, /obj/item/weapon/reagent_containers/food/snacks/cakeslice/custom))
 			to_chat(user, "<span class='warning'>Adding [I.name] to [src] would make a mess.</span>")
 		else
-			if(!user.transferItemToLoc(I, src))
+			if(!user.unEquip(I))
 				return
 			if(S.trash)
 				S.generate_trash(get_turf(user))
 			ingredients += S
+			S.forceMove(src)
 			mix_filling_color(S)
 			S.reagents.trans_to(src,min(S.reagents.total_volume, 15)) //limit of 15, we don't want our custom food to be completely filled by just one ingredient with large reagent volume.
 			update_overlays(S)
@@ -85,6 +86,7 @@
 		contents += O
 	if(I && user)
 		attackby(I, user)
+	user.unEquip(BASE)
 	qdel(BASE)
 
 /obj/item/weapon/reagent_containers/food/snacks/customizable/proc/mix_filling_color(obj/item/weapon/reagent_containers/food/snacks/S)
@@ -101,36 +103,36 @@
 		filling_color = rgb(rgbcolor[1], rgbcolor[2], rgbcolor[3], rgbcolor[4])
 
 /obj/item/weapon/reagent_containers/food/snacks/customizable/update_overlays(obj/item/weapon/reagent_containers/food/snacks/S)
-	var/mutable_appearance/filling = mutable_appearance(icon, "[initial(icon_state)]_filling")
+	var/image/I = new(icon, "[initial(icon_state)]_filling")
 	if(S.filling_color == "#FFFFFF")
-		filling.color = pick("#FF0000","#0000FF","#008000","#FFFF00")
+		I.color = pick("#FF0000","#0000FF","#008000","#FFFF00")
 	else
-		filling.color = S.filling_color
+		I.color = S.filling_color
 
 	switch(ingredients_placement)
 		if(INGREDIENTS_SCATTER)
-			filling.pixel_x = rand(-1,1)
-			filling.pixel_y = rand(-1,1)
+			I.pixel_x = rand(-1,1)
+			I.pixel_y = rand(-1,1)
 		if(INGREDIENTS_STACK)
-			filling.pixel_x = rand(-1,1)
-			filling.pixel_y = 2 * ingredients.len - 1
+			I.pixel_x = rand(-1,1)
+			I.pixel_y = 2 * ingredients.len - 1
 		if(INGREDIENTS_STACKPLUSTOP)
-			filling.pixel_x = rand(-1,1)
-			filling.pixel_y = 2 * ingredients.len - 1
-			if(our_overlays)
-				our_overlays.Cut(ingredients.len)	//???, add overlay calls later in this proc will queue the compile if necessary
-			var/mutable_appearance/TOP = mutable_appearance(icon, "[icon_state]_top")
+			I.pixel_x = rand(-1,1)
+			I.pixel_y = 2 * ingredients.len - 1
+			overlays.Cut(ingredients.len)
+			var/image/TOP = new(icon, "[icon_state]_top")
 			TOP.pixel_y = 2 * ingredients.len + 3
-			add_overlay(filling)
+			add_overlay(I)
 			add_overlay(TOP)
 			return
 		if(INGREDIENTS_FILL)
 			cut_overlays()
-			filling.color = filling_color
+			I.color = filling_color
 		if(INGREDIENTS_LINE)
-			filling.pixel_x = filling.pixel_y = rand(-8,3)
+			I.pixel_y = rand(-8,3)
+			I.pixel_x = I.pixel_y
 
-	add_overlay(filling)
+	add_overlay(I)
 
 
 /obj/item/weapon/reagent_containers/food/snacks/customizable/initialize_slice(obj/item/weapon/reagent_containers/food/snacks/slice, reagents_per_slice)
@@ -247,14 +249,14 @@
 		name = "[customname] sandwich"
 		BS.reagents.trans_to(src, BS.reagents.total_volume)
 		ingMax = ingredients.len //can't add more ingredients after that
-		var/mutable_appearance/TOP = mutable_appearance(icon, "[BS.icon_state]")
+		var/image/TOP = new(icon, "[BS.icon_state]")
 		TOP.pixel_y = 2 * ingredients.len + 3
 		add_overlay(TOP)
 		if(istype(BS, /obj/item/weapon/reagent_containers/food/snacks/breadslice/custom))
-			var/mutable_appearance/filling = new(icon, "[initial(BS.icon_state)]_filling")
-			filling.color = BS.filling_color
-			filling.pixel_y = 2 * ingredients.len + 3
-			add_overlay(filling)
+			var/image/O = new(icon, "[initial(BS.icon_state)]_filling")
+			O.color = BS.filling_color
+			O.pixel_y = 2 * ingredients.len + 3
+			add_overlay(O)
 		qdel(BS)
 		return
 	else
@@ -312,7 +314,7 @@
 /obj/item/weapon/reagent_containers/glass/bowl/update_icon()
 	cut_overlays()
 	if(reagents && reagents.total_volume)
-		var/mutable_appearance/filling = mutable_appearance('icons/obj/food/soupsalad.dmi', "fullbowl")
+		var/image/filling = image('icons/obj/food/soupsalad.dmi', "fullbowl")
 		filling.color = mix_color_from_reagents(reagents.reagent_list)
 		add_overlay(filling)
 	else

@@ -249,6 +249,8 @@
 			if(hacked) // That's right, we'll only check the "original" "sword".
 				newSaber.hacked = 1
 				newSaber.item_color = "rainbow"
+			user.unEquip(W)
+			user.unEquip(src)
 			qdel(W)
 			qdel(src)
 	else if(istype(W, /obj/item/device/multitool))
@@ -499,7 +501,7 @@
 	return list(pick(messages))
 
 /obj/item/toy/talking/proc/toy_talk(mob/user, message)
-	user.loc.visible_message("<span class='[span]'>\icon[src] [message]</span>")
+	user.loc.visible_message("<span class='[span]'>[bicon(src)] [message]</span>")
 	if(chattering)
 		chatter(message, phomeme, user)
 
@@ -532,10 +534,10 @@
 	var/datum/devilinfo/devil = randomDevilInfo()
 	var/list/messages = list()
 	messages += "Some fun facts about: [devil.truename]"
-	messages += "[GLOB.lawlorify[LORE][devil.bane]]"
-	messages += "[GLOB.lawlorify[LORE][devil.obligation]]"
-	messages += "[GLOB.lawlorify[LORE][devil.ban]]"
-	messages += "[GLOB.lawlorify[LORE][devil.banish]]"
+	messages += "[lawlorify[LORE][devil.bane]]"
+	messages += "[lawlorify[LORE][devil.obligation]]"
+	messages += "[lawlorify[LORE][devil.ban]]"
+	messages += "[lawlorify[LORE][devil.banish]]"
 	return messages
 
 /obj/item/toy/talking/owl
@@ -553,6 +555,81 @@
 	messages = list("You can't stop me, Owl!", "My plan is flawless! The vault is mine!", "Caaaawwww!", "You will never catch me!")
 	chattering = TRUE
 	phomeme = "griffin"
+
+/obj/item/toy/talking/skeleton
+	name = "skeleton action figure"
+	desc = "An action figure modeled after 'Oh-cee', the original content \
+		skeleton.\nNot suitable for infants or assistants under 36 months \
+		of age."
+	icon_state = "skeletonprize"
+	attack_verb = list("boned", "dunked on", "worked down to the bone")
+	chattering = TRUE
+
+	var/list/regular_messages = list(
+		"Why was the skeleton such a bad liar? \
+			Because you can see right through him!",
+		"When does a skeleton laugh? When something tickles his funny bone!",
+		"Why couldn't the skeleton win the beauty contest? \
+			 Because he had no body!",
+		"What do you call a skeleton in the winter? A numbskull!",
+		"What did the skeleton say before eating? Bone appetit!",
+		"What type of art do skeletons like? Skulltures!",
+		"What instrument do skeletons play? The trom-bone!",
+		"Why are skeletons always so calm? \
+			Because nothing gets under their skin!",
+		"How did the skeleton know it was going to rain? \
+			He could feel it in his bones.",
+		"Why did the skeleton go to the hospital? \
+			To get his ghoul stones removed.",
+		"Why can't skeletons play music in churches? \
+			Because they have no organs.",
+		"There's a skeleton inside everyone! Except slime people I guess...",
+		"The birds are too busy to notice me acting in the shadows!",
+		"Giraffes have the same number of bones in their necks as humans. \
+			You should never trust a giraffe.",
+		"When I meet a dog in the street, I always offer it a bone!",
+		"In corsetry, a bone is one of the rigid parts of a corset that \
+			forms its frame and gives it rigidity.",
+		"A person who plays the trombone is called a trombonist or \
+			trombone player.",
+		"Remember, compromise is for those without backbones!",
+		"If you go up to the captain and say the word 'bone' repeatedly, \
+			eventually he'll brig you.",
+		"Yo ho ho, shiver me bones!",
+		"So what you're saying is, you only love me for my legs?",
+		"You will never again find socks that match!",
+		"BONES! BONES! BONES!",
+		"Bones absorb x-rays, which is why radiation gives you superpowers.",
+		"Oh-cee! The ORIGINAL CONTENT SKELETON. Suitable for ages 36 months \
+			and up.",
+		"I just don't have the heart to judge you.",
+		"I don't have the stomach for this.",
+		"I'm a fighter, not a liver.",
+		"How can I see without eyeballs?",
+		"Ask your parents about 'boning', before you get pregnant.",
+		"Remember, a dog is for life, not just for christmas.")
+
+/obj/item/toy/talking/skeleton/suicide_act(mob/user)
+	user.visible_message("<span class='suicide'>[user] is trying to commit suicide with [src].</span>")
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		H.set_species(/datum/species/skeleton)
+
+	toy_talk(user, "RATTLE ME BONES")
+
+	user.Stun(5)
+	sleep(20)
+	return OXYLOSS
+
+/obj/item/toy/talking/skeleton/generate_messages()
+	return list(pick(regular_messages))
+
+/obj/item/toy/talking/skeleton/toy_talk(user, message)
+	phomeme = pick("sans", "papyrus")
+
+	span = "danger [phomeme]"
+	..()
 
 /*
 || A Deck of Cards for playing various games of chance ||
@@ -656,7 +733,7 @@
 	if(istype(I, /obj/item/toy/cards/singlecard))
 		var/obj/item/toy/cards/singlecard/SC = I
 		if(SC.parentdeck == src)
-			if(!user.temporarilyRemoveItemFromInventory(SC))
+			if(!user.unEquip(SC))
 				to_chat(user, "<span class='warning'>The card is stuck to your hand, you can't add it to the deck!</span>")
 				return
 			cards += SC.cardname
@@ -668,7 +745,7 @@
 	else if(istype(I, /obj/item/toy/cards/cardhand))
 		var/obj/item/toy/cards/cardhand/CH = I
 		if(CH.parentdeck == src)
-			if(!user.temporarilyRemoveItemFromInventory(CH))
+			if(!user.unEquip(CH))
 				to_chat(user, "<span class='warning'>The hand of cards is stuck to your hand, you can't add it to the deck!</span>")
 				return
 			cards += CH.currenthand
@@ -691,8 +768,10 @@
 
 		else if(istype(over_object, /obj/screen/inventory/hand))
 			var/obj/screen/inventory/hand/H = over_object
-			if(M.putItemFromInventoryInHandIfPossible(src, H.held_index))
-				to_chat(usr, "<span class='notice'>You pick up the deck.</span>")
+			if(!remove_item_from_storage(M))
+				M.unEquip(src)
+			M.put_in_hand(src, H.held_index)
+			to_chat(usr, "<span class='notice'>You pick up the deck.</span>")
 
 	else
 		to_chat(usr, "<span class='warning'>You can't reach it from here!</span>")
@@ -755,19 +834,20 @@
 				N.parentdeck = src.parentdeck
 				N.cardname = src.currenthand[1]
 				N.apply_card_vars(N,O)
-				qdel(src)
+				cardUser.unEquip(src)
 				N.pickup(cardUser)
 				cardUser.put_in_hands(N)
 				to_chat(cardUser, "<span class='notice'>You also take [currenthand[1]] and hold it.</span>")
 				cardUser << browse(null, "window=cardhand")
+				qdel(src)
 		return
 
 /obj/item/toy/cards/cardhand/attackby(obj/item/toy/cards/singlecard/C, mob/living/user, params)
 	if(istype(C))
 		if(C.parentdeck == src.parentdeck)
 			src.currenthand += C.cardname
+			user.unEquip(C)
 			user.visible_message("[user] adds a card to [user.p_their()] hand.", "<span class='notice'>You add the [C.cardname] to your hand.</span>")
-			qdel(C)
 			interact(user)
 			if(currenthand.len > 4)
 				src.icon_state = "[deckstyle]_hand5"
@@ -775,6 +855,7 @@
 				src.icon_state = "[deckstyle]_hand4"
 			else if(currenthand.len > 2)
 				src.icon_state = "[deckstyle]_hand3"
+			qdel(C)
 		else
 			to_chat(user, "<span class='warning'>You can't mix cards from other decks!</span>")
 	else
@@ -842,11 +923,12 @@
 			H.currenthand += src.cardname
 			H.parentdeck = C.parentdeck
 			H.apply_card_vars(H,C)
+			user.unEquip(C)
+			H.pickup(user)
+			user.put_in_active_hand(H)
 			to_chat(user, "<span class='notice'>You combine the [C.cardname] and the [src.cardname] into a hand.</span>")
 			qdel(C)
 			qdel(src)
-			H.pickup(user)
-			user.put_in_active_hand(H)
 		else
 			to_chat(user, "<span class='warning'>You can't mix cards from other decks!</span>")
 
@@ -854,8 +936,8 @@
 		var/obj/item/toy/cards/cardhand/H = I
 		if(H.parentdeck == parentdeck)
 			H.currenthand += cardname
+			user.unEquip(src)
 			user.visible_message("[user] adds a card to [user.p_their()] hand.", "<span class='notice'>You add the [cardname] to your hand.</span>")
-			qdel(src)
 			H.interact(user)
 			if(H.currenthand.len > 4)
 				H.icon_state = "[deckstyle]_hand5"
@@ -863,6 +945,7 @@
 				H.icon_state = "[deckstyle]_hand4"
 			else if(H.currenthand.len > 2)
 				H.icon_state = "[deckstyle]_hand3"
+			qdel(src)
 		else
 			to_chat(user, "<span class='warning'>You can't mix cards from other decks!</span>")
 	else
@@ -1055,7 +1138,7 @@
 		user.visible_message("<span class='notice'>[user] pulls back the string on [src].</span>")
 		icon_state = "[initial(icon_state)]_used"
 		sleep(5)
-		audible_message("<span class='danger'>\icon[src] Hiss!</span>")
+		audible_message("<span class='danger'>[bicon(src)] Hiss!</span>")
 		var/list/possible_sounds = list('sound/voice/hiss1.ogg', 'sound/voice/hiss2.ogg', 'sound/voice/hiss3.ogg', 'sound/voice/hiss4.ogg')
 		var/chosen_sound = pick(possible_sounds)
 		playsound(get_turf(src), chosen_sound, 50, 1)
@@ -1218,9 +1301,9 @@
 	icon_state = "lawyer"
 	toysay = "My client is a dirty traitor!"
 
-/obj/item/toy/figure/curator
-	name = "Curator action figure"
-	icon_state = "curator"
+/obj/item/toy/figure/librarian
+	name = "Librarian action figure"
+	icon_state = "librarian"
 	toysay = "One day while..."
 
 /obj/item/toy/figure/md
@@ -1276,7 +1359,7 @@
 	name = "Security Officer action figure"
 	icon_state = "secofficer"
 	toysay = "I am the law!"
-	toysound = 'sound/voice/complionator/dredd.ogg'
+	toysound = 'sound/misc/warneverchanges.ogg'
 
 /obj/item/toy/figure/virologist
 	name = "Virologist action figure"
@@ -1306,9 +1389,9 @@
 	to_chat(user, "You name the dummy as \"[doll_name]\"")
 	name = "[initial(name)] - [doll_name]"
 
-/obj/item/toy/dummy/talk_into(atom/movable/M, message, channel, list/spans, datum/language/language)
+/obj/item/toy/dummy/talk_into(atom/movable/M, message, channel, list/spans)
 	log_say("[key_name(M)] : through dummy : [message]")
-	say(message, language)
+	say(message)
 	return NOPASS
 
 /obj/item/toy/dummy/GetVoice()

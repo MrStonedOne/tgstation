@@ -9,6 +9,10 @@
 	var/obj/item/ammo_box/magazine/magazine
 	var/casing_ejector = 1 //whether the gun ejects the chambered casing
 
+	var/mag_load_sound = 'sound/effects/wep_magazines/handgun_generic_load.ogg'
+	var/mag_unload_sound = 'sound/effects/wep_magazines/handgun_generic_unload.ogg'
+	var/chamber_sound = 'sound/effects/wep_magazines/generic_chamber.ogg'
+
 /obj/item/weapon/gun/ballistic/New()
 	..()
 	if(!spawnwithmagazine)
@@ -33,6 +37,7 @@
 		if(casing_ejector)
 			AC.forceMove(get_turf(src)) //Eject casing onto ground.
 			AC.SpinAnimation(10, 1) //next gen special effects
+			playsound(loc, pick('sound/effects/wep_misc/casing_bounce1.ogg', 'sound/effects/wep_misc/casing_bounce2.ogg', 'sound/effects/wep_misc/casing_bounce3.ogg'), 50)
 			chambered = null
 		else if(empty_chamber)
 			chambered = null
@@ -56,23 +61,22 @@
 	if (istype(A, /obj/item/ammo_box/magazine))
 		var/obj/item/ammo_box/magazine/AM = A
 		if (!magazine && istype(AM, mag_type))
-			if(user.transferItemToLoc(AM, src))
-				magazine = AM
-				to_chat(user, "<span class='notice'>You load a new magazine into \the [src].</span>")
-				chamber_round()
-				A.update_icon()
-				update_icon()
-				return 1
-			else
-				to_chat(user, "<span class='warning'>You cannot seem to get \the [src] out of your hands!</span>")
-				return
+			user.remove_from_mob(AM)
+			magazine = AM
+			magazine.forceMove(src)
+			to_chat(user, "<span class='notice'>You load a new magazine into \the [src].</span>")
+			playsound(loc, mag_load_sound, 50)
+			chamber_round()
+			A.update_icon()
+			update_icon()
+			return 1
 		else if (magazine)
 			to_chat(user, "<span class='notice'>There's already a magazine in \the [src].</span>")
 	if(istype(A, /obj/item/weapon/suppressor))
 		var/obj/item/weapon/suppressor/S = A
 		if(can_suppress)
 			if(!suppressed)
-				if(!user.transferItemToLoc(A, src))
+				if(!user.unEquip(A))
 					return
 				to_chat(user, "<span class='notice'>You screw [S] onto [src].</span>")
 				suppressed = A
@@ -80,6 +84,7 @@
 				S.initial_w_class = w_class
 				fire_sound = 'sound/weapons/Gunshot_silenced.ogg'
 				w_class = WEIGHT_CLASS_NORMAL //so pistols do not fit in pockets when suppressed
+				A.forceMove(src)
 				update_icon()
 				return
 			else
@@ -109,16 +114,18 @@
 /obj/item/weapon/gun/ballistic/attack_self(mob/living/user)
 	var/obj/item/ammo_casing/AC = chambered //Find chambered round
 	if(magazine)
-		magazine.loc = get_turf(src.loc)
+		magazine.forceMove(get_turf(src.loc))
 		user.put_in_hands(magazine)
 		magazine.update_icon()
 		magazine = null
 		to_chat(user, "<span class='notice'>You pull the magazine out of \the [src].</span>")
+		playsound(loc, mag_unload_sound, 50)
 	else if(chambered)
-		AC.loc = get_turf(src)
+		AC.forceMove(get_turf(src))
 		AC.SpinAnimation(10, 1)
 		chambered = null
 		to_chat(user, "<span class='notice'>You unload the round from \the [src]'s chamber.</span>")
+		playsound(loc, chamber_sound, 50)
 	else
 		to_chat(user, "<span class='notice'>There's no magazine in \the [src].</span>")
 	update_icon()

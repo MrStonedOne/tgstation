@@ -69,13 +69,13 @@ It is possible to destroy the net by the occupant or someone else.
 					continue//So all they're left with are shoes and uniform.
 				if(W == H.shoes)
 					continue
-			M.dropItemToGround(W)
+			M.unEquip(W)
 
 		playsound(M.loc, 'sound/effects/sparks4.ogg', 50, 1)
-		new /obj/effect/overlay/temp/dir_setting/ninja/phase/out(get_turf(M), M.dir)
+		PoolOrNew(/obj/effect/overlay/temp/dir_setting/ninja/phase/out, list(get_turf(M), M.dir))
 
 		visible_message("[M] suddenly vanishes!")
-		M.forceMove(pick(GLOB.holdingfacility)) //Throw mob in to the holding facility.
+		M.forceMove(pick(holdingfacility)) //Throw mob in to the holding facility.
 		to_chat(M, "<span class='danger'>You appear in a strange place!</span>")
 
 		if(!isnull(master))//As long as they still exist.
@@ -86,7 +86,7 @@ It is possible to destroy the net by the occupant or someone else.
 		spark_system.start()
 		playsound(M.loc, 'sound/effects/phasein.ogg', 25, 1)
 		playsound(M.loc, 'sound/effects/sparks2.ogg', 50, 1)
-		new /obj/effect/overlay/temp/dir_setting/ninja/phase(get_turf(M), M.dir)
+		PoolOrNew(/obj/effect/overlay/temp/dir_setting/ninja/phase, list(get_turf(M), M.dir))
 		qdel(src)
 
 	else//And they are free.

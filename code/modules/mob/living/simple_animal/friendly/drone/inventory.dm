@@ -6,8 +6,8 @@
 //Drone hands
 
 
-/mob/living/simple_animal/drone/doUnEquip(obj/item/I, force)
-	if(..())
+/mob/living/simple_animal/drone/unEquip(obj/item/I, force)
+	if(..(I,force))
 		update_inv_hands()
 		if(I == head)
 			head = null
@@ -40,7 +40,7 @@
 			return head
 		if(slot_generic_dextrous_storage)
 			return internal_storage
-	return ..()
+	..()
 
 
 /mob/living/simple_animal/drone/equip_to_slot(obj/item/I, slot)
@@ -58,7 +58,7 @@
 		I.pulledby.stop_pulling()
 
 	I.screen_loc = null // will get moved if inventory is visible
-	I.loc = src
+	I.forceMove(src)
 	I.layer = ABOVE_HUD_LAYER
 	I.plane = ABOVE_HUD_PLANE
 

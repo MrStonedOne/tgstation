@@ -33,7 +33,7 @@
 			if (!orbiting.orbiters.len)//we are the last orbit, delete the list
 				orbiting.orbiters = null
 		orbiting = null
-	return ..()
+	..()
 
 /datum/orbit/proc/Check(turf/targetloc)
 	if (!orbiter)
@@ -52,7 +52,7 @@
 		orbiter.stop_orbit()
 		return
 	orbiter.loc = targetloc
-	orbiter.update_parallax_contents()
+//	orbiter.update_parallax_contents()
 	lastloc = orbiter.loc
 
 
@@ -99,7 +99,7 @@
 	qdel(orbiting)
 
 /atom/Destroy(force = FALSE)
-	. = ..()
+	..()
 	if (orbiters)
 		for (var/thing in orbiters)
 			var/datum/orbit/O = thing
@@ -107,6 +107,6 @@
 				O.orbiter.stop_orbit()
 
 /atom/movable/Destroy(force = FALSE)
-	. = ..()
+	..()
 	if (orbiting)
 		stop_orbit()

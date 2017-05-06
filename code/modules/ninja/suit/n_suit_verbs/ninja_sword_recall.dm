@@ -26,13 +26,13 @@
 	if(!ninjacost(cost))
 		if(istype(energyKatana.loc, /mob/living/carbon))
 			var/mob/living/carbon/C = energyKatana.loc
-			C.transferItemToLoc(energyKatana, get_turf(energyKatana), TRUE)
+			C.unEquip(energyKatana)
 
 			//Somebody swollowed my sword, probably the clown doing a circus act.
 			if(energyKatana in C.stomach_contents)
 				C.stomach_contents -= energyKatana
-		else
-			energyKatana.forceMove(get_turf(energyKatana))
+
+		energyKatana.forceMove(get_turf(energyKatana))
 
 		if(inview) //If we can see the katana, throw it towards ourselves, damaging people as we go.
 			energyKatana.spark_system.start()

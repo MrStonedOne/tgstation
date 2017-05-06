@@ -69,6 +69,7 @@
 /obj/structure/alien/resin/New(location)
 	..()
 	air_update_turf(1)
+	return
 
 /obj/structure/alien/resin/Move()
 	var/turf/T = loc
@@ -126,20 +127,15 @@
 	var/last_expand = 0 //last world.time this weed expanded
 	var/growth_cooldown_low = 150
 	var/growth_cooldown_high = 200
-	var/static/list/blacklisted_turfs
+	var/static/list/blacklisted_turfs = typecacheof(list(
+	/turf/open/space,
+	/turf/open/chasm,
+	/turf/open/floor/plating/lava))
 
-/obj/structure/alien/weeds/Initialize()
+/obj/structure/alien/weeds/New()
 	pixel_x = -4
 	pixel_y = -4 //so the sprites line up right in the map editor
 	..()
-
-	if(!blacklisted_turfs)
-		blacklisted_turfs = typecacheof(list(
-			/turf/open/space,
-			/turf/open/chasm,
-			/turf/open/floor/plating/lava))
-
-
 	last_expand = world.time + rand(growth_cooldown_low, growth_cooldown_high)
 	if(icon == initial(icon))
 		switch(rand(1,3))
@@ -175,17 +171,14 @@
 	name = "glowing resin"
 	desc = "Blue bioluminescence shines from beneath the surface."
 	icon_state = "weednode"
-	light_color = LIGHT_COLOR_BLUE
-	light_power = 0.5
-	var/lon_range = 4
+	light_range = 1
 	var/node_range = NODERANGE
 
-/obj/structure/alien/weeds/node/Initialize()
+/obj/structure/alien/weeds/node/New()
 	icon = 'icons/obj/smooth_structures/alien/weednode.dmi'
 	..()
-	set_light(lon_range)
-	var/obj/structure/alien/weeds/W = locate(/obj/structure/alien/weeds) in loc
-	if(W && W != src)
+	var/obj/structure/alien/weeds/W = locate(/obj/structure/alien/weeds)
+	if(W)
 		qdel(W)
 	START_PROCESSING(SSobj, src)
 
@@ -207,52 +200,39 @@
  */
 
 //for the status var
-#define BURST "burst"
-#define GROWING "growing"
-#define GROWN "grown"
+#define BURST 0
+#define BURSTING 1
+#define GROWING 2
+#define GROWN 3
 #define MIN_GROWTH_TIME 900	//time it takes to grow a hugger
 #define MAX_GROWTH_TIME 1500
 
 /obj/structure/alien/egg
 	name = "egg"
 	desc = "A large mottled egg."
-	var/base_icon = "egg"
 	icon_state = "egg_growing"
-	density = FALSE
-	anchored = TRUE
+	density = 0
+	anchored = 1
 	obj_integrity = 100
 	max_integrity = 100
-	integrity_failure = 5
 	var/status = GROWING	//can be GROWING, GROWN or BURST; all mutually exclusive
 	layer = MOB_LAYER
-	var/obj/item/clothing/mask/facehugger/child
 
-/obj/structure/alien/egg/Initialize(mapload)
-	..()
-	update_icon()
-	if(status == GROWING || status == GROWN)
-		child = new(src)
-	if(status == GROWING)
-		addtimer(CALLBACK(src, .proc/Grow), rand(MIN_GROWTH_TIME, MAX_GROWTH_TIME))
-	proximity_monitor = new(src, status == GROWN ? 1 : 0)
-	if(status == BURST)
-		obj_integrity = integrity_failure
 
-/obj/structure/alien/egg/update_icon()
+/obj/structure/alien/egg/New()
+	new /obj/item/clothing/mask/facehugger(src)
 	..()
-	switch(status)
-		if(GROWING)
-			icon_state = "[base_icon]_growing"
-		if(GROWN)
-			icon_state = "[base_icon]"
-		if(BURST)
-			icon_state = "[base_icon]_hatched"
+	addtimer(CALLBACK(src, .proc/Grow), rand(MIN_GROWTH_TIME, MAX_GROWTH_TIME))
+
+/obj/structure/alien/egg/Destroy()
+	remove_from_proximity_list(src, 1)
+	return ..()
 
 /obj/structure/alien/egg/attack_paw(mob/living/user)
-	. = attack_hand(user)
+	return attack_hand(user)
 
 /obj/structure/alien/egg/attack_alien(mob/living/carbon/alien/user)
-	. = attack_hand(user)
+	return attack_hand(user)
 
 /obj/structure/alien/egg/attack_hand(mob/living/user)
 	if(user.getorgan(/obj/item/organ/alien/plasmavessel))
@@ -267,44 +247,54 @@
 				return
 			if(GROWN)
 				to_chat(user, "<span class='notice'>You retrieve the child.</span>")
-				Burst(kill=FALSE)
+				Burst(0)
 				return
 	else
 		to_chat(user, "<span class='notice'>It feels slimy.</span>")
 		user.changeNext_move(CLICK_CD_MELEE)
 
 
+/obj/structure/alien/egg/proc/GetFacehugger()
+	return locate(/obj/item/clothing/mask/facehugger) in contents
+
 /obj/structure/alien/egg/proc/Grow()
+	icon_state = "egg"
 	status = GROWN
-	update_icon()
-	proximity_monitor.SetRange(1)
+	add_to_proximity_list(src, 1)
 
-//drops and kills the hugger if any is remaining
-/obj/structure/alien/egg/proc/Burst(kill = TRUE)
+/obj/structure/alien/egg/proc/Burst(kill = 1)	//drops and kills the hugger if any is remaining
 	if(status == GROWN || status == GROWING)
-		proximity_monitor.SetRange(0)
-		status = BURST
-		update_icon()
+		remove_from_proximity_list(src, 1)
+		icon_state = "egg_hatched"
 		flick("egg_opening", src)
-		addtimer(CALLBACK(src, .proc/finish_bursting, kill), 15)
+		status = BURSTING
+		spawn(15)
+			status = BURST
+			var/obj/item/clothing/mask/facehugger/child = GetFacehugger()
+			if(child)
+				child.forceMove(get_turf(src))
+				if(kill && istype(child))
+					child.Die()
+				else
+					for(var/mob/M in range(1,src))
+						if(CanHug(M))
+							child.Attach(M)
+							break
 
-/obj/structure/alien/egg/proc/finish_bursting(kill = TRUE)
-	if(child)
-		child.forceMove(get_turf(src))
-		// TECHNICALLY you could put non-facehuggers in the child var
-		if(istype(child))
-			if(kill)
-				child.Die()
-			else
-				for(var/mob/M in range(1,src))
-					if(CanHug(M))
-						child.Leap(M)
-						break
+/obj/structure/alien/egg/Moved(oldloc)
+	remove_from_proximity_list(oldloc, 1)
+	if(status == GROWN)
+		add_to_proximity_list(src, 1)	
+	return ..()
 
-/obj/structure/alien/egg/obj_break(damage_flag)
+/obj/structure/alien/egg/deconstruct()
 	if(!(flags & NODECONSTRUCT))
-		if(status != BURST)
-			Burst(kill=TRUE)
+		if(status != BURST && status != BURSTING)
+			Burst()
+		else if(status == BURST)
+			qdel(src)	//Remove the egg after it has been hit after bursting.
+	else
+		qdel(src)
 
 /obj/structure/alien/egg/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 500)
@@ -320,17 +310,10 @@
 		if(C.stat == CONSCIOUS && C.getorgan(/obj/item/organ/body_egg/alien_embryo))
 			return
 
-		Burst(kill=FALSE)
-
-/obj/structure/alien/egg/grown
-	status = GROWN
-	icon_state = "egg"
-
-/obj/structure/alien/egg/burst
-	status = BURST
-	icon_state = "egg_hatched"
+		Burst(0)
 
 #undef BURST
+#undef BURSTING
 #undef GROWING
 #undef GROWN
 #undef MIN_GROWTH_TIME

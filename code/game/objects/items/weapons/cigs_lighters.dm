@@ -8,7 +8,6 @@ CIGARS
 SMOKING PIPES
 CHEAP LIGHTERS
 ZIPPO
-
 CIGARETTE PACKETS ARE IN FANCY.DM
 */
 
@@ -17,7 +16,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 ///////////
 /obj/item/weapon/match
 	name = "match"
-	desc = "A simple match stick, used for lighting fine smokables."
+	desc = "A simple match stick, used for starting fires or lighting fine smokables."
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "match_unlit"
 	var/lit = FALSE
@@ -104,29 +103,24 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	item_state = "cigoff"
 	w_class = WEIGHT_CLASS_TINY
 	body_parts_covered = null
-	var/lit = FALSE
-	var/starts_lit = FALSE
+	var/lit = 0
 	var/icon_on = "cigon"  //Note - these are in masks.dmi not in cigarette.dmi
 	var/icon_off = "cigoff"
 	var/type_butt = /obj/item/weapon/cigbutt
 	var/lastHolder = null
 	var/smoketime = 300
 	var/chem_volume = 30
-	var/list/list_reagents = list("nicotine" = 15)
 	heat = 1000
 
 /obj/item/clothing/mask/cigarette/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] is huffing [src] as quickly as [user.p_they()] can! It looks like [user.p_theyre()] trying to give [user.p_them()]self cancer.</span>")
 	return (TOXLOSS|OXYLOSS)
 
-/obj/item/clothing/mask/cigarette/Initialize()
+/obj/item/clothing/mask/cigarette/New()
 	..()
 	create_reagents(chem_volume)
 	reagents.set_reacting(FALSE) // so it doesn't react until you light it
-	if(list_reagents)
-		reagents.add_reagent_list(list_reagents)
-	if(starts_lit)
-		light()
+	reagents.add_reagent("nicotine", 15)
 
 /obj/item/clothing/mask/cigarette/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -144,7 +138,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(!proximity || lit) //can't dip if cigarette is lit (it will heat the reagents in the glass instead)
 		return
 	if(istype(glass))	//you can dip cigarettes into beakers
-		if(glass.reagents.trans_to(src, chem_volume))	//if reagents were transfered, show the message
+		var/transfered = glass.reagents.trans_to(src, chem_volume)
+		if(transfered)	//if reagents were transfered, show the message
 			to_chat(user, "<span class='notice'>You dip \the [src] into \the [glass].</span>")
 		else			//if not, either the beaker was empty, or the cigarette was full
 			if(!glass.reagents.total_volume)
@@ -200,8 +195,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 				if(prob(15)) // so it's not an instarape in case of acid
 					var/fraction = min(REAGENTS_METABOLISM/reagents.total_volume, 1)
 					reagents.reaction(C, INGEST, fraction)
-				if(!reagents.trans_to(C, REAGENTS_METABOLISM))
-					reagents.remove_any(REAGENTS_METABOLISM)
+				reagents.trans_to(C, REAGENTS_METABOLISM)
 				return
 		reagents.remove_any(REAGENTS_METABOLISM)
 
@@ -250,38 +244,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/cigarette/is_hot()
 	return lit * heat
 
-// Cigarette brands.
-
-/obj/item/clothing/mask/cigarette/space_cigarette
-	desc = "A Space Cigarette brand cigarette."
-
-/obj/item/clothing/mask/cigarette/dromedary
-	desc = "A DromedaryCo brand cigarette."
-
-/obj/item/clothing/mask/cigarette/uplift
-	desc = "An Uplift Smooth brand cigarette."
-	list_reagents = list("nicotine" = 7.5, "menthol" = 7.5)
-
-/obj/item/clothing/mask/cigarette/robust
-	desc = "A Robust brand cigarette."
-
-/obj/item/clothing/mask/cigarette/robustgold
-	desc = "A Robust Gold brand cigarette."
-	list_reagents = list("nicotine" = 15, "gold" = 1)
-
-/obj/item/clothing/mask/cigarette/carp
-	desc = "A Carp Classic brand cigarette."
-
-/obj/item/clothing/mask/cigarette/syndicate
-	desc = "An unknown brand cigarette."
-	list_reagents = list("nicotine" = 15, "omnizine" = 15)
-
-/obj/item/clothing/mask/cigarette/shadyjims
-	desc = "A Shady Jim's Super Slims cigarette."
-	list_reagents = list("nicotine" = 15, "lipolicide" = 4, "ammonia" = 2, "plantbgone" = 1, "toxin" = 1.5)
-
-// Rollies.
-
 /obj/item/clothing/mask/cigarette/rollie
 	name = "rollie"
 	desc = "A roll of dried plant matter wrapped in thin paper."
@@ -299,9 +261,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	src.pixel_x = rand(-5, 5)
 	src.pixel_y = rand(-5, 5)
 
-/obj/item/clothing/mask/cigarette/rollie/trippy
-	list_reagents = list("nicotine" = 15, "mushroomhallucinogen" = 35)
-	starts_lit = TRUE
+/obj/item/clothing/mask/cigarette/rollie/trippy/New()
+	..()
+	reagents.add_reagent("mushroomhallucinogen", 50)
+	light()
+
 
 /obj/item/weapon/cigbutt/roach
 	name = "roach"
@@ -319,7 +283,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 ////////////
 /obj/item/clothing/mask/cigarette/cigar
 	name = "premium cigar"
-	desc = "A brown roll of tobacco and... well, you're not quite sure. This thing's huge!"
+	desc = "A brown roll of tobacco and... Well, you're not quite sure. This thing's huge!"
 	icon_state = "cigaroff"
 	icon_on = "cigaron"
 	icon_off = "cigaroff"
@@ -373,10 +337,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_off = "pipeoff"
 	smoketime = 0
 	chem_volume = 100
-	list_reagents = null
 	var/packeditem = 0
 
-/obj/item/clothing/mask/cigarette/pipe/Initialize()
+/obj/item/clothing/mask/cigarette/pipe/New()
 	..()
 	name = "empty [initial(name)]"
 
@@ -475,35 +438,56 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	heat = 1500
 	resistance_flags = FIRE_PROOF
 
-/obj/item/weapon/lighter/update_icon()
-	if(lit)
-		icon_state = "[initial(icon_state)]_on"
-	else
-		icon_state = "[initial(icon_state)]"
+/obj/item/weapon/lighter/engraved
+	name = "engraved lighter"
+	desc = "A fancy lighter for someone classy."
+	icon_state = "engraved"
+	item_state = "zippo"
 
-/obj/item/weapon/lighter/ignition_effect(atom/A, mob/user)
-	. = "<span class='rose'>With a single flick of their wrist, [user] smoothly lights [A] with [src]. Damn [user.p_theyre()] cool.</span>"
+/obj/item/weapon/lighter/gold
+	name = "golden lighter"
+	desc = "Pure gold shaped into a lighter."
+	icon_state = "gold"
+	item_state = "zippo"
+
+/obj/item/weapon/lighter/vault13
+	name = "Vault 13 lighter"
+	desc = "True relic from a legendary Vault."
+	icon_state = "13"
+	item_state = "zippo"
+
+/obj/item/weapon/lighter/black
+	name = "black lighter"
+	desc = "It is pitch black with cross engraved on the side.<br>Holy or cursed, you never know."
+	icon_state = "black"
+	item_state = "zippo"
+
+/obj/item/weapon/lighter/detonator
+	name = "bomb detonator"
+	desc = "A remote detonator linked to an explosive device."
+	icon_state = "detonator"
+	item_state = "zippo"
 
 /obj/item/weapon/lighter/greyscale
 	name = "cheap lighter"
 	desc = "A cheap-as-free lighter."
 	icon_state = "lighter"
 
-/obj/item/weapon/lighter/greyscale/Initialize()
-	. = ..()
-	add_atom_colour(color2hex(randomColor(1)), FIXED_COLOUR_PRIORITY)
-	update_icon()
-
-/obj/item/weapon/lighter/greyscale/update_icon()
-	cut_overlays()
-	var/mutable_appearance/base_overlay = mutable_appearance(icon,"[initial(icon_state)]_base")
-	base_overlay.appearance_flags = RESET_COLOR //the edging doesn't change color
-	if(lit)
-		base_overlay.icon_state = "[initial(icon_state)]_on"
-	add_overlay(base_overlay)
+/obj/item/weapon/lighter/greyscale/New()
+	..()
+	var/image/I = image(icon,"lighter-overlay")
+	var/newcolor = color2hex(randomColor(1))
+	add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
+	add_overlay(I)
 
 /obj/item/weapon/lighter/greyscale/ignition_effect(atom/A, mob/user)
 	. = "<span class='notice'>After some fiddling, [user] manages to light [A] with [src].</span>"
+
+/obj/item/weapon/lighter/ignition_effect(atom/A, mob/user)
+	. = "<span class='rose'>With a single flick of their wrist, [user] smoothly lights [A] with [src]. Damn [user.p_theyre()] cool.</span>"
+
+/obj/item/weapon/lighter/update_icon()
+	icon_state = lit ? "[icon_state]_on" : "[initial(icon_state)]"
 
 /obj/item/weapon/lighter/attack_self(mob/living/user)
 	if(user.is_holding(src))
@@ -609,7 +593,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 ///////////////
 /obj/item/clothing/mask/vape
 	name = "E-Cigarette"
-	desc = "A classy and highly sophisticated electronic cigarette, for classy and dignified gentlemen. A warning label reads \"Warning: Do not fill with flammable materials.\""//<<< i'd vape to that.
+//	to_chat(desc = "A classy and highly sophisticated electronic cigarette, for classy and dignified gentlemen. A warning label reads \"Warning: Do not fill with flammable materials.\"", < i'd vape to that.)
 	icon = 'icons/obj/clothing/masks.dmi'
 	icon_state = null
 	item_state = null
@@ -651,9 +635,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			screw = 1
 			to_chat(user, "<span class='notice'>You open the cap on the [src]</span>")
 			if(super)
-				add_overlay("vapeopen_med")
+				add_overlay(image(icon, "vapeopen_med"))
 			else
-				add_overlay("vapeopen_low")
+				add_overlay(image(icon, "vapeopen_low"))
 		else
 			screw = 0
 			to_chat(user, "<span class='notice'>You close the cap on the [src]</span>")
@@ -665,12 +649,12 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 				cut_overlays()
 				super = 1
 				to_chat(user, "<span class='notice'>You increase the voltage in the [src]</span>")
-				add_overlay("vapeopen_med")
+				add_overlay(image(icon, "vapeopen_med"))
 			else
 				cut_overlays()
 				super = 0
 				to_chat(user, "<span class='notice'>You decrease the voltage in the [src]</span>")
-				add_overlay("vapeopen_low")
+				add_overlay(image(icon, "vapeopen_low"))
 
 		if(screw && emagged)
 			to_chat(user, "<span class='notice'>The [name] can't be modified!</span>")
@@ -683,7 +667,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			emagged = 1
 			super = 0
 			to_chat(user, "<span class='warning'>You maximize the voltage in the [src]</span>")
-			add_overlay("vapeopen_high")
+			add_overlay(image(icon, "vapeopen_high"))
 			var/datum/effect_system/spark_spread/sp = new /datum/effect_system/spark_spread //for effect
 			sp.set_up(5, 1, src)
 			sp.start()
@@ -720,8 +704,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			if (src == C.wear_mask) // if it's in the human/monkey mouth, transfer reagents to the mob
 				var/fraction = min(REAGENTS_METABOLISM/reagents.total_volume, 1) //this will react instantly, making them a little more dangerous than cigarettes
 				reagents.reaction(C, INGEST, fraction)
-				if(!reagents.trans_to(C, REAGENTS_METABOLISM))
-					reagents.remove_any(REAGENTS_METABOLISM)
+				reagents.trans_to(C, REAGENTS_METABOLISM)
 				if(reagents.get_reagent_amount("welding_fuel"))
 					//HOT STUFF
 					C.fire_stacks = 2

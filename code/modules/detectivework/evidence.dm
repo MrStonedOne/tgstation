@@ -38,7 +38,7 @@
 			var/obj/item/weapon/storage/U = I.loc
 			U.remove_from_storage(I, src)
 		if(user.is_holding(I))
-			user.dropItemToGround(I)
+			user.unEquip(I)
 		else
 			return
 
@@ -47,16 +47,19 @@
 
 	icon_state = "evidence"
 
-	var/mutable_appearance/in_evidence = new(I)
-	in_evidence.plane = FLOAT_PLANE
-	in_evidence.layer = FLOAT_LAYER
-	in_evidence.pixel_x = 0
-	in_evidence.pixel_y = 0
-	add_overlay(in_evidence)
+	var/xx = I.pixel_x	//save the offset of the item
+	var/yy = I.pixel_y
+	I.pixel_x = 0		//then remove it so it'll stay within the evidence bag
+	I.pixel_y = 0
+	var/image/img = image("icon"=I, "layer"=FLOAT_LAYER)	//take a snapshot. (necessary to stop the underlays appearing under our inventory-HUD slots ~Carn
+	img.plane = FLOAT_PLANE
+	I.pixel_x = xx		//and then return it
+	I.pixel_y = yy
+	add_overlay(img)
 	add_overlay("evidence")	//should look nicer for transparent stuff. not really that important, but hey.
 
 	desc = "An evidence bag containing [I]. [I.desc]"
-	I.loc = src
+	I.forceMove(src)
 	w_class = I.w_class
 	return 1
 

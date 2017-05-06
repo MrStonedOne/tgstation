@@ -136,14 +136,13 @@ The console is located at computer/gulag_teleporter.dm
 /obj/machinery/gulag_teleporter/proc/strip_occupant()
 	if(linked_reclaimer)
 		linked_reclaimer.stored_items[occupant] = list()
-	var/mob/living/mob_occupant = occupant
-	for(var/obj/item/W in mob_occupant)
-		if(!is_type_in_typecache(W, required_items) && mob_occupant.temporarilyRemoveItemFromInventory(W))
+	for(var/obj/item/W in occupant)
+		if(!is_type_in_typecache(W, required_items) && occupant.unEquip(W))
 			if(istype(W, /obj/item/weapon/restraints/handcuffs))
 				W.forceMove(get_turf(src))
 				continue
 			if(linked_reclaimer)
-				linked_reclaimer.stored_items[mob_occupant] += W
+				linked_reclaimer.stored_items[occupant] += W
 				linked_reclaimer.contents += W
 				W.forceMove(linked_reclaimer)
 			else

@@ -50,7 +50,7 @@
 			on = 0
 			to_chat(user, "<span class='warning'>You need a free hand to hold the mister!</span>")
 			return
-		noz.loc = user
+		noz.forceMove(user)
 	else
 		//Remove from their hands and put back "into" the tank
 		remove_noz()
@@ -67,12 +67,14 @@
 /obj/item/weapon/watertank/proc/remove_noz()
 	if(ismob(noz.loc))
 		var/mob/M = noz.loc
-		M.temporarilyRemoveItemFromInventory(noz, TRUE)
+		M.unEquip(noz, 1)
 	return
 
 /obj/item/weapon/watertank/Destroy()
 	if (on)
+		remove_noz()
 		qdel(noz)
+		noz = null
 	return ..()
 
 /obj/item/weapon/watertank/attack_hand(mob/user)
@@ -85,7 +87,10 @@
 	var/mob/M = src.loc
 	if(istype(M) && istype(over_object, /obj/screen/inventory/hand))
 		var/obj/screen/inventory/hand/H = over_object
-		M.putItemFromInventoryInHandIfPossible(src, H.held_index)
+		if(!M.unEquip(src))
+			return
+		M.put_in_hand(src, H.held_index)
+
 
 /obj/item/weapon/watertank/attackby(obj/item/W, mob/user, params)
 	if(W == noz)
@@ -119,21 +124,22 @@
 	if(check_tank_exists(parent_tank, src))
 		tank = parent_tank
 		reagents = tank.reagents	//This mister is really just a proxy for the tank's reagents
-		loc = tank
+		forceMove(tank)
 	return
 
 /obj/item/weapon/reagent_containers/spray/mister/dropped(mob/user)
 	..()
 	to_chat(user, "<span class='notice'>The mister snaps back onto the watertank.</span>")
 	tank.on = 0
-	loc = tank
+	forceMove(tank)
 
 /obj/item/weapon/reagent_containers/spray/mister/attack_self()
 	return
 
 /proc/check_tank_exists(parent_tank, mob/living/carbon/human/M, obj/O)
 	if (!parent_tank || !istype(parent_tank, /obj/item/weapon/watertank))	//To avoid weird issues from admin spawns
-		qdel(O)
+		M.unEquip(O)
+		qdel(0)
 		return 0
 	else
 		return 1
@@ -141,7 +147,7 @@
 /obj/item/weapon/reagent_containers/spray/mister/Move()
 	..()
 	if(loc != tank.loc)
-		loc = tank.loc
+		forceMove(tank.loc)
 
 /obj/item/weapon/reagent_containers/spray/mister/afterattack(obj/target, mob/user, proximity)
 	if(target.loc == loc) //Safety check so you don't fill your mister with mutagen or something and then blast yourself in the face with it
@@ -226,13 +232,13 @@
 		tank = parent_tank
 		reagents = tank.reagents
 		max_water = tank.volume
-		loc = tank
+		forceMove(tank)
 
 
 /obj/item/weapon/extinguisher/mini/nozzle/Move()
 	..()
 	if(loc != tank.loc)
-		loc = tank
+		forceMove(tank)
 	return
 
 /obj/item/weapon/extinguisher/mini/nozzle/attack_self(mob/user)
@@ -258,7 +264,7 @@
 	..()
 	to_chat(user, "<span class='notice'>The nozzle snaps back onto the tank!</span>")
 	tank.on = 0
-	loc = tank
+	forceMove(tank)
 
 /obj/item/weapon/extinguisher/mini/nozzle/afterattack(atom/target, mob/user)
 	if(nozzle_mode == EXTINGUISHER)
@@ -294,7 +300,7 @@
 		if(!Adj|| !isturf(target))
 			return
 		if(metal_synthesis_cooldown < 5)
-			var/obj/effect/particle_effect/foam/metal/F = new /obj/effect/particle_effect/foam/metal(get_turf(target))
+			var/obj/effect/particle_effect/foam/metal/F = PoolOrNew(/obj/effect/particle_effect/foam/metal, get_turf(target))
 			F.amount = 0
 			metal_synthesis_cooldown++
 			spawn(100)
@@ -370,7 +376,7 @@
 	cut_overlays()
 
 	if(reagents.total_volume)
-		var/mutable_appearance/filling = mutable_appearance('icons/obj/reagentfillings.dmi', "backpack-10")
+		var/image/filling = image('icons/obj/reagentfillings.dmi',icon_state = "backpack-10")
 
 		var/percent = round((reagents.total_volume / volume) * 100)
 		switch(percent)
@@ -388,7 +394,7 @@
 	. = list()
 	//inhands + reagent_filling
 	if(!isinhands && reagents.total_volume)
-		var/mutable_appearance/filling = mutable_appearance('icons/obj/reagentfillings.dmi', "backpackmob-10")
+		var/image/filling = image('icons/obj/reagentfillings.dmi',icon_state = "backpackmob-10")
 
 		var/percent = round((reagents.total_volume / volume) * 100)
 		switch(percent)
@@ -431,6 +437,11 @@
 	reagents.trans_to(user,used_amount,multiplier=usage_ratio)
 	update_filling()
 	user.update_inv_back() //for overlays update
+
+/obj/item/weapon/reagent_containers/chemtank/stim/New()
+	..()
+	reagents.add_reagent("stimulants_longterm", 300)
+	update_filling()
 
 //Operator backpack spray
 /obj/item/weapon/watertank/operator

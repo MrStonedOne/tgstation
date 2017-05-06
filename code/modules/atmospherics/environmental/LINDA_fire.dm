@@ -33,7 +33,7 @@
 		if(oxy < 0.5 || tox < 0.5)
 			return 0
 
-		active_hotspot = new /obj/effect/hotspot(src)
+		active_hotspot = PoolOrNew(/obj/effect/hotspot, src)
 		active_hotspot.temperature = exposed_temperature
 		active_hotspot.volume = exposed_volume
 
@@ -50,7 +50,6 @@
 	icon_state = "1"
 	layer = ABOVE_OPEN_TURF_LAYER
 	light_range = 3
-	light_color = LIGHT_COLOR_FIRE
 
 	var/volume = 125
 	var/temperature = FIRE_MINIMUM_TEMPERATURE_TO_EXIST
@@ -61,11 +60,10 @@
 	..()
 	SSair.hotspots += src
 	perform_exposure()
-	setDir(pick(GLOB.cardinal))
+	setDir(pick(cardinal))
 	air_update_turf()
+	set_light(5, l_color = LIGHT_COLOR_FIRE)
 
-/obj/effect/hotspot/make_frozen_visual()
-	return	//you take my fun i take yours
 
 /obj/effect/hotspot/proc/perform_exposure()
 	var/turf/open/location = loc
@@ -81,14 +79,14 @@
 
 	if(bypassing)
 		if(!just_spawned)
-			volume = location.air.reaction_results["fire"]*FIRE_GROWTH_RATE
+			volume = location.air.fuel_burnt*FIRE_GROWTH_RATE
 			temperature = location.air.temperature
 	else
 		var/datum/gas_mixture/affected = location.air.remove_ratio(volume/location.air.volume)
 		affected.temperature = temperature
 		affected.react()
 		temperature = affected.temperature
-		volume = affected.reaction_results["fire"]*FIRE_GROWTH_RATE
+		volume = affected.fuel_burnt*FIRE_GROWTH_RATE
 		location.assume_air(affected)
 
 	for(var/A in loc)
@@ -152,12 +150,14 @@
 /obj/effect/hotspot/Destroy()
 	set_light(0)
 	SSair.hotspots -= src
-	var/turf/open/T = loc
-	if(istype(T) && T.active_hotspot == src)
-		T.active_hotspot = null
+	if(isturf(loc))
+		var/turf/open/T = loc
+		if(T.active_hotspot == src)
+			T.active_hotspot = null
 	DestroyTurf()
-	loc = null
-	. = ..()
+	forceMove(null)
+	..()
+	return QDEL_HINT_PUTINPOOL
 
 /obj/effect/hotspot/proc/DestroyTurf()
 	if(isturf(loc))

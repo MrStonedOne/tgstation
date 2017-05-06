@@ -12,7 +12,11 @@
 	canSmoothWith = null
 	buildstacktype = null
 	flags = NODECONSTRUCT
-	var/static/mutable_appearance/nest_overlay = mutable_appearance('icons/mob/alien.dmi', "nestoverlay", LYING_MOB_LAYER)
+	var/image/nest_overlay
+
+/obj/structure/bed/nest/New()
+	nest_overlay = image('icons/mob/alien.dmi', "nestoverlay", layer=LYING_MOB_LAYER)
+	return ..()
 
 /obj/structure/bed/nest/user_unbuckle_mob(mob/living/buckled_mob, mob/living/user)
 	if(has_buckled_mobs())
@@ -76,7 +80,7 @@
 		M.pixel_x = M.get_standard_pixel_x_offset(M.lying)
 		M.pixel_y = M.get_standard_pixel_y_offset(M.lying)
 		M.layer = initial(M.layer)
-		cut_overlay(nest_overlay)
+		overlays -= nest_overlay
 
 /obj/structure/bed/nest/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	switch(damage_type)

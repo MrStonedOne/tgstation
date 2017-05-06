@@ -3,10 +3,10 @@
 	caste = "s"
 	maxHealth = 150
 	health = 150
-	icon_state = "aliens"
+	icon_state = "aliens_s"
 
 
-/mob/living/carbon/alien/humanoid/sentinel/Initialize()
+/mob/living/carbon/alien/humanoid/sentinel/New()
 	AddAbility(new /obj/effect/proc_holder/alien/sneak)
 	..()
 

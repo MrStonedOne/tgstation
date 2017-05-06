@@ -3,16 +3,14 @@ sudo: false
 
 env:
     global:
-    - BYOND_MAJOR="511"
-    - BYOND_MINOR="1380"
+    - BYOND_MAJOR="510"
+    - BYOND_MINOR="1346"
     - NODE_VERSION="4"
     - BUILD_TOOLS=false
-    - BUILD_TESTING=false
-    - DM_MAPFILE="loadallmaps"
+    - DM_MAPFILE=""
     matrix:
     - BUILD_TOOLS=true
-    - BUILD_TESTING=true
-    - BUILD_TESTING=false
+    - DM_MAPFILE="tgstation2"
 
 cache:
   directories:

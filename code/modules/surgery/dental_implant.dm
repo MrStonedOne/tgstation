@@ -16,12 +16,12 @@
 		return 0
 
 	user.drop_item()
-	tool.loc = target
+	tool.forceMove(target)
 
-	var/datum/action/item_action/hands_free/activate_pill/P = new(tool)
+	var/datum/action/item_action/hands_free/activate_pill/P = new
 	P.button.name = "Activate [tool.name]"
 	P.target = tool
-	P.Grant(target)	//The pill never actually goes in an inventory slot, so the owner doesn't inherit actions from it
+	P.Grant(target)
 
 	user.visible_message("[user] wedges \the [tool] into [target]'s [parse_zone(target_zone)]!", "<span class='notice'>You wedge [tool] into [target]'s [parse_zone(target_zone)].</span>")
 	return 1
@@ -37,5 +37,6 @@
 	if(target.reagents.total_volume)
 		target.reagents.reaction(owner, INGEST)
 		target.reagents.trans_to(owner, target.reagents.total_volume)
+	Remove(owner)
 	qdel(target)
 	return 1

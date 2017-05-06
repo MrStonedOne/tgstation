@@ -23,7 +23,7 @@
 	icon = 'icons/obj/status_display.dmi'
 	icon_state = "frame"
 	desc = "A remote control for a door."
-	req_access = list(GLOB.access_security)
+	req_access = list(access_security)
 	anchored = 1
 	density = 0
 	var/id = null // id of linked machinery/lockers
@@ -44,20 +44,18 @@
 	Radio = new/obj/item/device/radio(src)
 	Radio.listening = 0
 
-/obj/machinery/door_timer/Initialize()
-	..()
-	if(id != null)
-		for(var/obj/machinery/door/window/brigdoor/M in urange(20, src))
-			if (M.id == id)
-				targets += M
+/obj/machinery/door_timer/initialize()
+	for(var/obj/machinery/door/window/brigdoor/M in urange(20, src))
+		if (M.id == id)
+			targets += M
 
-		for(var/obj/machinery/flasher/F in urange(20, src))
-			if(F.id == id)
-				targets += F
+	for(var/obj/machinery/flasher/F in urange(20, src))
+		if(F.id == id)
+			targets += F
 
-		for(var/obj/structure/closet/secure_closet/brig/C in urange(20, src))
-			if(C.id == id)
-				targets += C
+	for(var/obj/structure/closet/secure_closet/brig/C in urange(20, src))
+		if(C.id == id)
+			targets += C
 
 	if(!targets.len)
 		stat |= BROKEN
@@ -94,7 +92,7 @@
 	for(var/obj/machinery/door/window/brigdoor/door in targets)
 		if(door.density)
 			continue
-		INVOKE_ASYNC(door, /obj/machinery/door/window/brigdoor.proc/close)
+		addtimer(CALLBACK(door, /obj/machinery/door/window/brigdoor.proc/close), 0)
 
 	for(var/obj/structure/closet/secure_closet/brig/C in targets)
 		if(C.broken)
@@ -112,8 +110,8 @@
 		return 0
 
 	if(!forced)
-		Radio.set_frequency(GLOB.SEC_FREQ)
-		Radio.talk_into(src, "Timer has expired. Releasing prisoner.", GLOB.SEC_FREQ, get_default_language())
+		Radio.set_frequency(SEC_FREQ)
+		Radio.talk_into(src, "Timer has expired. Releasing prisoner.", SEC_FREQ)
 
 	timing = FALSE
 	activation_time = null
@@ -123,7 +121,7 @@
 	for(var/obj/machinery/door/window/brigdoor/door in targets)
 		if(!door.density)
 			continue
-		INVOKE_ASYNC(door, /obj/machinery/door/window/brigdoor.proc/open)
+		addtimer(CALLBACK(door, /obj/machinery/door/window/brigdoor.proc/open), 0)
 
 	for(var/obj/structure/closet/secure_closet/brig/C in targets)
 		if(C.broken)
@@ -147,7 +145,7 @@
 	timer_duration = new_time
 
 /obj/machinery/door_timer/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-										datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+										datum/tgui/master_ui = null, datum/ui_state/state = default_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "brig_timer", name, 300, 200, master_ui, state)
@@ -184,7 +182,7 @@
 	if(maptext)
 		maptext = ""
 	cut_overlays()
-	add_overlay(mutable_appearance('icons/obj/status_display.dmi', state))
+	add_overlay(image('icons/obj/status_display.dmi', icon_state=state))
 
 
 //Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
@@ -212,11 +210,6 @@
 	if(..())
 		return
 	. = TRUE
-	
-	if(!allowed(usr))
-		to_chat(usr, "<span class='warning'>Access denied.</span>")
-		return FALSE
-
 	switch(action)
 		if("time")
 			var/value = text2num(params["adjust"])

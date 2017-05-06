@@ -4,7 +4,6 @@
 	var/invocation = "Naise meam!"
 	var/uses = 1
 	var/health_cost = 0 //The amount of health taken from the user when invoking the talisman
-	var/creation_time = 100 //how long it takes an imbue rune to make this type of talisman
 
 /obj/item/weapon/paper/talisman/examine(mob/user)
 	if(iscultist(user) || user.stat == DEAD)
@@ -120,12 +119,11 @@
 	color = "#551A8B" // purple
 	invocation = "Sas'so c'arta forbici!"
 	health_cost = 5
-	creation_time = 80
 
 /obj/item/weapon/paper/talisman/teleport/invoke(mob/living/user, successfuluse = 1)
 	var/list/potential_runes = list()
 	var/list/teleportnames = list()
-	for(var/R in GLOB.teleport_runes)
+	for(var/R in teleport_runes)
 		var/obj/effect/rune/teleport/T = R
 		potential_runes[avoid_assoc_duplicate_keys(T.listkey, teleportnames)] = T
 
@@ -141,7 +139,7 @@
 
 	var/input_rune_key = input(user, "Choose a rune to teleport to.", "Rune to Teleport to") as null|anything in potential_runes //we know what key they picked
 	var/obj/effect/rune/teleport/actual_selected_rune = potential_runes[input_rune_key] //what rune does that key correspond to?
-	if(!src || QDELETED(src) || !user || !user.is_holding(src) || user.incapacitated() || !actual_selected_rune)
+	if(!src || qdeleted(src) || !user || !user.is_holding(src) || user.incapacitated() || !actual_selected_rune)
 		return ..(user, 0)
 	var/turf/target = get_turf(actual_selected_rune)
 	if(is_blocked_turf(target, TRUE))
@@ -159,7 +157,6 @@
 	color = "#512727" // red-black
 	invocation = "N'ath reth sh'yro eth d'raggathnor!"
 	health_cost = 1
-	creation_time = 30
 
 /obj/item/weapon/paper/talisman/summon_tome/invoke(mob/living/user, successfuluse = 1)
 	. = ..()
@@ -175,8 +172,7 @@
 	color = "#9c9c9c" // grey
 	invocation = "Kla'atu barada nikt'o!"
 	health_cost = 1
-	creation_time = 30
-	uses = 6
+	uses = 2
 	var/revealing = FALSE //if it reveals or not
 
 /obj/item/weapon/paper/talisman/true_sight/invoke(mob/living/user, successfuluse = 1)
@@ -186,13 +182,28 @@
 			"<span class='cultitalic'>You speak the words of the talisman, hiding nearby runes.</span>")
 		invocation = "Nikt'o barada kla'atu!"
 		revealing = TRUE
-		for(var/obj/effect/rune/R in range(4,user))
+		for(var/obj/effect/rune/R in range(3,user))
 			R.talismanhide()
 	else
 		user.visible_message("<span class='warning'>A flash of light shines from [user]'s hand!</span>", \
 			 "<span class='cultitalic'>You speak the words of the talisman, revealing nearby runes.</span>")
 		for(var/obj/effect/rune/R in range(3,user))
 			R.talismanreveal()
+
+//Rite of False Truths: Same as rune
+/obj/item/weapon/paper/talisman/make_runes_fake
+	cultist_name = "Talisman of Disguising"
+	cultist_desc = "A talisman that will make nearby runes appear fake."
+	color = "#ff80d5" // honk
+	invocation = "By'o nar'nar!"
+
+/obj/item/weapon/paper/talisman/make_runes_fake/invoke(mob/living/user, successfuluse = 1)
+	. = ..()
+	user.visible_message("<span class='warning'>Dust flows from [user]s hand.</span>", \
+						 "<span class='cultitalic'>You speak the words of the talisman, making nearby runes appear fake.</span>")
+	for(var/obj/effect/rune/R in orange(6,user))
+		R.desc = "A rune vandalizing the station."
+
 
 //Rite of Disruption: Weaker than rune
 /obj/item/weapon/paper/talisman/emp
@@ -262,7 +273,6 @@
 	cultist_desc = "A talisman that will equip the invoker with cultist equipment if there is a slot to equip it to."
 	color = "#33cc33" // green
 	invocation = "N'ath reth sh'yro eth draggathnor!"
-	creation_time = 80
 
 /obj/item/weapon/paper/talisman/armor/invoke(mob/living/user, successfuluse = 1)
 	. = ..()
@@ -291,14 +301,13 @@
 	cultist_desc = "A talisman that will break the mind of the victim with nightmarish hallucinations."
 	color = "#ffb366" // light orange
 	invocation = "Lo'Nab Na'Dm!"
-	creation_time = 80
 
-/obj/item/weapon/paper/talisman/horror/afterattack(mob/living/target, mob/living/user)
-	if(iscultist(user) && (get_dist(user, target) < 7))
-		to_chat(user, "<span class='cultitalic'>You disturb [target] with visions of madness!</span>")
+/obj/item/weapon/paper/talisman/horror/attack(mob/living/target, mob/living/user)
+	if(iscultist(user))
+		to_chat(user, "<span class='cultitalic'>You disturb [target] with visons of the end!</span>")
 		if(iscarbon(target))
 			var/mob/living/carbon/H = target
-			H.reagents.add_reagent("mindbreaker", 12)
+			H.reagents.add_reagent("mindbreaker", 25)
 			if(is_servant_of_ratvar(target))
 				to_chat(target, "<span class='userdanger'>You see a brief but horrible vision of Ratvar, rusted and scrapped, being torn apart.</span>")
 				target.emote("scream")
@@ -314,7 +323,6 @@
 	invocation = "Ethra p'ni dedol!"
 	color = "#000000" // black
 	uses = 25
-	creation_time = 80
 
 /obj/item/weapon/paper/talisman/construction/attack_self(mob/living/user)
 	if(iscultist(user))
@@ -338,7 +346,7 @@
 			if(target.use(25))
 				new /obj/structure/constructshell(T)
 				to_chat(user, "<span class='warning'>The talisman clings to the metal and twists it into a construct shell!</span>")
-				user << sound('sound/effects/magic.ogg',0,1,25)
+				to_chat(user, sound('sound/effects/magic.ogg',0,1,25))
 				invoke(user, 1)
 				qdel(src)
 			else
@@ -349,7 +357,7 @@
 			new /obj/item/stack/sheet/runed_metal(T,quantity)
 			target.use(quantity)
 			to_chat(user, "<span class='warning'>The talisman clings to the plasteel, transforming it into runed metal!</span>")
-			user << sound('sound/effects/magic.ogg',0,1,25)
+			to_chat(user, sound('sound/effects/magic.ogg',0,1,25))
 			invoke(user, 1)
 			if(uses <= 0)
 				qdel(src)
@@ -363,7 +371,7 @@
 	cultist_desc = "Use this talisman on a victim to handcuff them with dark bindings."
 	invocation = "In'totum Lig'abis!"
 	color = "#B27300" // burnt-orange
-	uses = 6
+	uses = 4
 
 /obj/item/weapon/paper/talisman/shackle/invoke(mob/living/user, successfuluse = 0)
 	if(successfuluse) //if we're forced to be successful(we normally aren't) then do the normal stuff
@@ -405,6 +413,7 @@
 	if(uses <= 0)
 		user.drop_item()
 		qdel(src)
+	return
 
 /obj/item/weapon/restraints/handcuffs/energy/cult //For the talisman of shackling
 	name = "cult shackles"

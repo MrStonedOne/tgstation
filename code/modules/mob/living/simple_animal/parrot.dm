@@ -99,7 +99,7 @@
 	var/obj/item/held_item = null
 
 
-/mob/living/simple_animal/parrot/Initialize()
+/mob/living/simple_animal/parrot/New()
 	..()
 	if(!ears)
 		var/headset = pick(/obj/item/device/radio/headset/headset_sec, \
@@ -126,7 +126,7 @@
 
 /mob/living/simple_animal/parrot/death(gibbed)
 	if(held_item)
-		held_item.loc = src.loc
+		held_item.forceMove(src.loc)
 		held_item = null
 	walk(src,0)
 
@@ -144,7 +144,7 @@
 		stat("Held Item", held_item)
 		stat("Mode",a_intent)
 
-/mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, message_mode)
+/mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans)
 	if(speaker != src && prob(50)) //Dont imitate ourselves
 		if(!radio_freq || prob(10))
 			if(speech_buffer.len >= 500)
@@ -154,7 +154,7 @@
 		return message
 	..()
 
-/mob/living/simple_animal/parrot/radio(message, message_mode, list/spans, language) //literally copied from human/radio(), but there's no other way to do this. at least it's better than it used to be.
+/mob/living/simple_animal/parrot/radio(message, message_mode, list/spans) //literally copied from human/radio(), but there's no other way to do this. at least it's better than it used to be.
 	. = ..()
 	if(. != 0)
 		return .
@@ -162,17 +162,17 @@
 	switch(message_mode)
 		if(MODE_HEADSET)
 			if (ears)
-				ears.talk_into(src, message, , spans, language)
+				ears.talk_into(src, message, , spans)
 			return ITALICS | REDUCE_RANGE
 
 		if(MODE_DEPARTMENT)
 			if (ears)
-				ears.talk_into(src, message, message_mode, spans, language)
+				ears.talk_into(src, message, message_mode, spans)
 			return ITALICS | REDUCE_RANGE
 
-	if(message_mode in GLOB.radiochannels)
+	if(message_mode in radiochannels)
 		if(ears)
-			ears.talk_into(src, message, message_mode, spans, language)
+			ears.talk_into(src, message, message_mode, spans)
 			return ITALICS | REDUCE_RANGE
 
 	return 0
@@ -212,10 +212,10 @@
 								src.say("[pick(available_channels)] BAWWWWWK LEAVE THE HEADSET BAWKKKKK!")
 							else
 								src.say("BAWWWWWK LEAVE THE HEADSET BAWKKKKK!")
-						ears.loc = src.loc
+						ears.forceMove(src.loc)
 						ears = null
 						for(var/possible_phrase in speak)
-							if(copytext(possible_phrase,1,3) in GLOB.department_radio_keys)
+							if(copytext(possible_phrase,1,3) in department_radio_keys)
 								possible_phrase = copytext(possible_phrase,3)
 					else
 						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from]!</span>")
@@ -244,7 +244,7 @@
 						var/obj/item/device/radio/headset/headset_to_add = item_to_add
 
 						usr.drop_item()
-						headset_to_add.loc = src
+						headset_to_add.forceMove(src)
 						src.ears = headset_to_add
 						to_chat(usr, "<span class='notice'>You fit the headset onto [src].</span>")
 
@@ -307,7 +307,7 @@
 
 //Simple animals
 /mob/living/simple_animal/parrot/attack_animal(mob/living/simple_animal/M)
-	. = ..() //goodbye immortal parrots
+	..() //goodbye immortal parrots
 
 	if(client)
 		return
@@ -424,7 +424,7 @@
 						if(prob(50))
 							useradio = 1
 
-						if((copytext(possible_phrase,1,2) in GLOB.department_radio_prefixes) && (copytext(possible_phrase,2,3) in GLOB.department_radio_keys))
+						if(copytext(possible_phrase,1,3) in department_radio_keys)
 							possible_phrase = "[useradio?pick(available_channels):""][copytext(possible_phrase,3)]" //crop out the channel prefix
 						else
 							possible_phrase = "[useradio?pick(available_channels):""][possible_phrase]"
@@ -433,8 +433,8 @@
 
 				else //If we have no headset or channels to use, dont try to use any!
 					for(var/possible_phrase in speak)
-						if((copytext(possible_phrase,1,2) in GLOB.department_radio_prefixes) && (copytext(possible_phrase,2,3) in GLOB.department_radio_keys))
-							possible_phrase = copytext(possible_phrase,3) //crop out the channel prefix
+						if(copytext(possible_phrase,1,3) in department_radio_keys)
+							possible_phrase = "[copytext(possible_phrase,3,length(possible_phrase)+1)]" //crop out the channel prefix
 						newspeak.Add(possible_phrase)
 				speak = newspeak
 
@@ -455,7 +455,7 @@
 		//Wander around aimlessly. This will help keep the loops from searches down
 		//and possibly move the mob into a new are in view of something they can use
 		if(prob(90))
-			step(src, pick(GLOB.cardinal))
+			step(src, pick(cardinal))
 			return
 
 		if(!held_item && !parrot_perch) //If we've got nothing to do.. look for something to do.
@@ -504,7 +504,7 @@
 			else //This should ensure that we only grab the item we want, and make sure it's not already collected on our perch
 				if(!parrot_perch || parrot_interest.loc != parrot_perch.loc)
 					held_item = parrot_interest
-					parrot_interest.loc = src
+					parrot_interest.forceMove(src)
 					visible_message("[src] grabs [held_item]!", "<span class='notice'>You grab [held_item]!</span>", "<span class='italics'>You hear the sounds of wings flapping furiously.</span>")
 
 			parrot_interest = null
@@ -525,7 +525,7 @@
 			return
 
 		if(Adjacent(parrot_perch))
-			src.loc = parrot_perch.loc
+			src.forceMove(parrot_perch.loc)
 			drop_held_item()
 			parrot_state = PARROT_PERCH
 			icon_state = "parrot_sit"
@@ -700,7 +700,7 @@
 				continue
 
 			held_item = I
-			I.loc = src
+			I.forceMove(src)
 			visible_message("[src] grabs [held_item]!", "<span class='notice'>You grab [held_item]!</span>", "<span class='italics'>You hear the sounds of wings flapping furiously.</span>")
 			return held_item
 
@@ -728,8 +728,9 @@
 				break
 
 		if(stolen_item)
-			C.transferItemToLoc(stolen_item, src, TRUE)
+			C.unEquip(stolen_item)
 			held_item = stolen_item
+			stolen_item.forceMove(src)
 			visible_message("[src] grabs [held_item] out of [C]'s hand!", "<span class='notice'>You snag [held_item] out of [C]'s hand!</span>", "<span class='italics'>You hear the sounds of wings flapping furiously.</span>")
 			return held_item
 
@@ -775,7 +776,7 @@
 	if(!drop_gently)
 		if(istype(held_item, /obj/item/weapon/grenade))
 			var/obj/item/weapon/grenade/G = held_item
-			G.loc = src.loc
+			G.forceMove(src.loc)
 			G.prime()
 			to_chat(src, "You let go of [held_item]!")
 			held_item = null
@@ -783,7 +784,7 @@
 
 	to_chat(src, "You drop [held_item].")
 
-	held_item.loc = src.loc
+	held_item.forceMove(src.loc)
 	held_item = null
 	return 1
 
@@ -799,7 +800,7 @@
 		for(var/atom/movable/AM in view(src,1))
 			for(var/perch_path in desired_perches)
 				if(istype(AM, perch_path))
-					src.loc = AM.loc
+					src.forceMove(AM.loc)
 					icon_state = "parrot_sit"
 					return
 	to_chat(src, "<span class='warning'>There is no perch nearby to sit on!</span>")
@@ -836,7 +837,7 @@
 /mob/living/simple_animal/parrot/proc/perch_on_human(mob/living/carbon/human/H)
 	if(!H)
 		return
-	loc = get_turf(H)
+	forceMove(get_turf(H))
 	H.buckle_mob(src, force=1)
 	pixel_y = 9
 	pixel_x = pick(-8,8) //pick left or right shoulder
@@ -868,7 +869,7 @@
 /mob/living/simple_animal/parrot/Poly
 	name = "Poly"
 	desc = "Poly the Parrot. An expert on quantum cracker theory."
-	speak = list("Poly wanna cracker!", ":e Check the crystal, you chucklefucks!",":e Wire the solars, you lazy bums!",":e WHO TOOK THE DAMN HARDSUITS?",":e OH GOD ITS ABOUT TO DELAMINATE CALL THE SHUTTLE")
+	speak = list("Poly wanna cracker!", ":e Check the singulo, you chucklefucks!",":e Wire the solars, you lazy bums!",":e WHO TOOK THE DAMN HARDSUITS?",":e OH GOD ITS FREE CALL THE SHUTTLE")
 	gold_core_spawnable = 0
 	speak_chance = 3
 	var/memory_saved = 0
@@ -876,7 +877,7 @@
 	var/longest_survival = 0
 	var/longest_deathstreak = 0
 
-/mob/living/simple_animal/parrot/Poly/Initialize()
+/mob/living/simple_animal/parrot/Poly/New()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
 	available_channels = list(":e")
 	Read_Memory()
@@ -894,11 +895,10 @@
 		desc += " Over [rounds_survived] shifts without a \"terrible\" \"accident\"!"
 	else
 		speak += pick("...alive?", "This isn't parrot heaven!", "I live, I die, I live again!", "The void fades!")
-
 	..()
 
 /mob/living/simple_animal/parrot/Poly/Life()
-	if(!stat && SSticker.current_state == GAME_STATE_FINISHED && !memory_saved)
+	if(!stat && ticker.current_state == GAME_STATE_FINISHED && !memory_saved)
 		rounds_survived = max(++rounds_survived,1)
 		if(rounds_survived > longest_survival)
 			longest_survival = rounds_survived
@@ -935,10 +935,10 @@
 /mob/living/simple_animal/parrot/Poly/proc/Write_Memory()
 	var/savefile/S = new /savefile("data/npc_saves/Poly.sav")
 	if(islist(speech_buffer))
-		S["phrases"] 			<< speech_buffer
-	S["roundssurvived"]		<< rounds_survived
-	S["longestsurvival"]	<< longest_survival
-	S["longestdeathstreak"] << longest_deathstreak
+		to_chat(S["phrases"], speech_buffer)
+	to_chat(S["roundssurvived"], rounds_survived)
+	to_chat(S["longestsurvival"], longest_survival)
+	to_chat(S["longestdeathstreak"], longest_deathstreak)
 	memory_saved = 1
 
 /mob/living/simple_animal/parrot/Poly/ghost
@@ -950,7 +950,7 @@
 	incorporeal_move = 1
 	butcher_results = list(/obj/item/weapon/ectoplasm = 1)
 
-/mob/living/simple_animal/parrot/Poly/ghost/Initialize()
+/mob/living/simple_animal/parrot/Poly/ghost/New()
 	memory_saved = 1 //At this point nothing is saved
 	..()
 
@@ -973,7 +973,7 @@
 		return
 	var/datum/disease/parrot_possession/P = new
 	P.parrot = src
-	loc = H
+	forceMove(H)
 	H.ContractDisease(P)
 	parrot_interest = null
 	H.visible_message("<span class='danger'>[src] dive bombs into [H]'s chest and vanishes!</span>", "<span class='userdanger'>[src] dive bombs into your chest, vanishing! This can't be good!</span>")

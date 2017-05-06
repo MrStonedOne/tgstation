@@ -49,6 +49,7 @@
 	var/lights_power = 6
 	var/last_user_hud = 1 // used to show/hide the mecha hud while preserving previous preference
 
+
 	var/bumpsmash = 0 //Whether or not the mech destroys walls by running into it.
 	//inner atmos
 	var/use_internal_tank = 0
@@ -65,7 +66,7 @@
 	var/internal_damage = 0 //contains bitflags
 
 	var/list/operation_req_access = list()//required access level for mecha operation
-	var/list/internals_req_access = list(GLOB.access_engine,GLOB.access_robotics)//required access level to open cell compartment
+	var/list/internals_req_access = list(access_engine,access_robotics)//required access level to open cell compartment
 
 	var/wreckage
 
@@ -116,11 +117,11 @@
 
 	var/occupant_sight_flags = 0 //sight flags to give to the occupant (e.g. mech mining scanner gives meson-like vision)
 
-	hud_possible = list (DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_TRACK_HUD)
+	hud_possible = list (DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD)
 
 
-/obj/mecha/Initialize()
-	. = ..()
+/obj/mecha/New()
+	..()
 	events = new
 	icon_state += "-open"
 	add_radio()
@@ -132,16 +133,15 @@
 	smoke_system.attach(src)
 	add_cell()
 	START_PROCESSING(SSobj, src)
-	GLOB.poi_list |= src
+	poi_list |= src
 	log_message("[src.name] created.")
-	GLOB.mechas_list += src //global mech list
+	mechas_list += src //global mech list
 	prepare_huds()
-	var/datum/atom_hud/data/diagnostic/diag_hud = GLOB.huds[DATA_HUD_DIAGNOSTIC]
+	var/datum/atom_hud/data/diagnostic/diag_hud = huds[DATA_HUD_DIAGNOSTIC]
 	diag_hud.add_to_hud(src)
 	diag_hud_set_mechhealth()
 	diag_hud_set_mechcell()
 	diag_hud_set_mechstat()
-	diag_hud_set_mechtracking()
 
 
 /obj/mecha/Destroy()
@@ -185,7 +185,7 @@
 		if(AI)
 			AI.gib() //No wreck, no AI to recover
 	STOP_PROCESSING(SSobj, src)
-	GLOB.poi_list.Remove(src)
+	poi_list.Remove(src)
 	equipment.Cut()
 	cell = null
 	internal_tank = null
@@ -200,7 +200,7 @@
 	qdel(smoke_system)
 	smoke_system = null
 
-	GLOB.mechas_list -= src //global mech list
+	mechas_list -= src //global mech list
 	return ..()
 
 ////////////////////////
@@ -263,7 +263,7 @@
 	if(equipment && equipment.len)
 		to_chat(user, "It's equipped with:")
 		for(var/obj/item/mecha_parts/mecha_equipment/ME in equipment)
-			to_chat(user, "\icon[ME] [ME]")
+			to_chat(user, "[bicon(ME)] [ME]")
 
 //processing internal damage, temperature, air regulation, alert updates, lights power use.
 /obj/mecha/process()
@@ -358,11 +358,8 @@
 				occupant.throw_alert("mech damage", /obj/screen/alert/low_mech_integrity, 3)
 			else
 				occupant.clear_alert("mech damage")
-		var/actual_loc = occupant.loc
-		if(istype(actual_loc, /obj/item/device/mmi))
-			var/obj/item/device/mmi/M = actual_loc
-			actual_loc = M.mecha
-		if(actual_loc != src) //something went wrong
+
+		if(occupant.loc != src) //something went wrong
 			occupant.clear_alert("charge")
 			occupant.clear_alert("mech damage")
 			RemoveActions(occupant, human_occupant=1)
@@ -376,22 +373,22 @@
 	diag_hud_set_mechhealth()
 	diag_hud_set_mechcell()
 	diag_hud_set_mechstat()
-	diag_hud_set_mechtracking()
 
 
 /obj/mecha/proc/drop_item()//Derpfix, but may be useful in future for engineering exosuits.
 	return
 
-/obj/mecha/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, message_mode)
+/obj/mecha/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans)
 	if(speaker == occupant)
 		if(radio.broadcasting)
-			radio.talk_into(speaker, text, , spans, message_language)
+			radio.talk_into(speaker, text, , spans)
 		//flick speech bubble
 		var/list/speech_bubble_recipients = list()
 		for(var/mob/M in get_hearers_in_view(7,src))
 			if(M.client)
 				speech_bubble_recipients.Add(M.client)
-		INVOKE_ASYNC(GLOBAL_PROC, /.proc/flick_overlay, image('icons/mob/talk.dmi', src, "machine[say_test(raw_message)]",MOB_LAYER+1), speech_bubble_recipients, 30)
+		spawn(0)
+			flick_overlay(image('icons/mob/talk.dmi', src, "machine[say_test(raw_message)]",MOB_LAYER+1), speech_bubble_recipients, 30)
 
 ////////////////////////////
 ///// Action processing ////
@@ -598,7 +595,7 @@
 /obj/mecha/proc/setInternalDamage(int_dam_flag)
 	internal_damage |= int_dam_flag
 	log_append_to_last("Internal damage of type [int_dam_flag].",1)
-	occupant << sound('sound/machines/warning-buzzer.ogg',wait=0)
+	to_chat(occupant, sound('sound/machines/warning-buzzer.ogg',wait=0))
 	diag_hud_set_mechstat()
 	return
 
@@ -630,20 +627,6 @@
 			break
 		//Nothing like a big, red link to make the player feel powerful!
 		to_chat(user, "<a href='?src=\ref[user];ai_take_control=\ref[src]'><span class='userdanger'>ASSUME DIRECT CONTROL?</span></a><br>")
-	else
-		examine(user)
-		if(occupant)
-			to_chat(user, "<span class='warning'>This exosuit has a pilot and cannot be controlled.</span>")
-			return
-		var/can_control_mech = 0
-		for(var/obj/item/mecha_parts/mecha_tracking/ai_control/A in trackers)
-			can_control_mech = 1
-			to_chat(user, "<span class='notice'>\icon[src] Status of [name]:</span>\n[A.get_mecha_info()]")
-			break
-		if(!can_control_mech)
-			to_chat(user, "<span class='warning'>You cannot control exosuits without AI control beacons installed.</span>")
-			return
-		to_chat(user, "<a href='?src=\ref[user];ai_take_control=\ref[src]'><span class='boldnotice'>Take control of exosuit?</span></a><br>")
 
 /obj/mecha/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/device/aicard/card)
 	if(!..())
@@ -662,24 +645,21 @@
 			AI.ai_restore_power()//So the AI initially has power.
 			AI.control_disabled = 1
 			AI.radio_enabled = 0
-			AI.disconnect_shell()
-			RemoveActions(AI, TRUE)
-			occupant = null
 			AI.forceMove(card)
 			card.AI = AI
+			occupant = null
 			AI.controlled_mech = null
 			AI.remote_control = null
 			icon_state = initial(icon_state)+"-open"
 			to_chat(AI, "You have been downloaded to a mobile storage device. Wireless connection offline.")
 			to_chat(user, "<span class='boldnotice'>Transfer successful</span>: [AI.name] ([rand(1000,9999)].exe) removed from [name] and stored within local memory.")
 
-		if(AI_MECH_HACK) //Called by AIs on the mech
-			AI.linked_core = new /obj/structure/AIcore/deactivated(AI.loc)
-			if(AI.can_dominate_mechs)
-				if(occupant) //Oh, I am sorry, were you using that?
-					to_chat(AI, "<span class='warning'>Pilot detected! Forced ejection initiated!")
-					to_chat(occupant, "<span class='danger'>You have been forcibly ejected!</span>")
-					go_out(1) //IT IS MINE, NOW. SUCK IT, RD!
+		if(AI_MECH_HACK) //Called by Malf AI mob on the mech.
+			new /obj/structure/AIcore/deactivated(AI.loc)
+			if(occupant) //Oh, I am sorry, were you using that?
+				to_chat(AI, "<span class='warning'>Pilot detected! Forced ejection initiated!")
+				to_chat(occupant, "<span class='danger'>You have been forcibly ejected!</span>")
+				go_out(1) //IT IS MINE, NOW. SUCK IT, RD!
 			ai_enter_mech(AI, interaction)
 
 		if(AI_TRANS_FROM_CARD) //Using an AI card to upload to a mech.
@@ -687,12 +667,10 @@
 			if(!AI)
 				to_chat(user, "<span class='warning'>There is no AI currently installed on this device.</span>")
 				return
-			if(AI.deployed_shell) //Recall AI if shelled so it can be checked for a client
-				AI.disconnect_shell()
-			if(AI.stat || !AI.client)
+			else if(AI.stat || !AI.client)
 				to_chat(user, "<span class='warning'>[AI.name] is currently unresponsive, and cannot be uploaded.</span>")
 				return
-			if(occupant || dna_lock) //Normal AIs cannot steal mechs!
+			else if(occupant || dna_lock) //Normal AIs cannot steal mechs!
 				to_chat(user, "<span class='warning'>Access denied. [name] is [occupant ? "currently occupied" : "secured with a DNA lock"].")
 				return
 			AI.control_disabled = 0
@@ -709,19 +687,16 @@
 	icon_state = initial(icon_state)
 	playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
 	if(!internal_damage)
-		occupant << sound('sound/mecha/nominal.ogg',volume=50)
+		to_chat(occupant, sound('sound/mecha/nominal.ogg',volume=50))
 	AI.cancel_camera()
 	AI.controlled_mech = src
 	AI.remote_control = src
 	AI.canmove = 1 //Much easier than adding AI checks! Be sure to set this back to 0 if you decide to allow an AI to leave a mech somehow.
 	AI.can_shunt = 0 //ONE AI ENTERS. NO AI LEAVES.
-	to_chat(AI, "[AI.can_dominate_mechs ? "<span class='announce'>Takeover of [name] complete! You are now loaded onto the onboard computer. Do not attempt to leave the station sector!</span>" \
+	to_chat(AI, "[interaction == AI_MECH_HACK ? "<span class='announce'>Takeover of [name] complete! You are now loaded onto the onboard computer. Do not attempt to leave the station sector!</span>" \
 	: "<span class='notice'>You have been uploaded to a mech's onboard computer."]")
 	to_chat(AI, "<span class='reallybig boldnotice'>Use Middle-Mouse to activate mech functions and equipment. Click normally for AI interactions.</span>")
-	if(interaction == AI_TRANS_FROM_CARD)
-		GrantActions(AI, FALSE) //No eject/return to core action for AI uploaded by card
-	else
-		GrantActions(AI, !AI.can_dominate_mechs)
+	GrantActions(AI)
 
 
 //An actual AI (simple_animal mecha pilot) entering the mech
@@ -732,7 +707,7 @@
 		icon_state = initial(icon_state)
 		occupant = pilot_mob
 		pilot_mob.mecha = src
-		pilot_mob.loc = src
+		pilot_mob.forceMove(src)
 		GrantActions(pilot_mob)//needed for checks, and incase a badmin puts somebody in the mob
 
 /obj/mecha/proc/aimob_exit_mech(mob/living/simple_animal/hostile/syndicate/mecha_pilot/pilot_mob)
@@ -862,63 +837,63 @@
 		setDir(dir_in)
 		playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
 		if(!internal_damage)
-			occupant << sound('sound/mecha/nominal.ogg',volume=50)
+			to_chat(occupant, sound('sound/mecha/nominal.ogg',volume=50))
 		return 1
 	else
 		return 0
 
-/obj/mecha/proc/mmi_move_inside(obj/item/device/mmi/mmi_as_oc, mob/user)
+/obj/mecha/proc/mmi_move_inside(obj/item/device/mmi/mmi_as_oc,mob/user)
 	if(!mmi_as_oc.brainmob || !mmi_as_oc.brainmob.client)
 		to_chat(user, "<span class='warning'>Consciousness matrix not detected!</span>")
-		return FALSE
+		return 0
 	else if(mmi_as_oc.brainmob.stat)
 		to_chat(user, "<span class='warning'>Beta-rhythm below acceptable level!</span>")
-		return FALSE
+		return 0
 	else if(occupant)
 		to_chat(user, "<span class='warning'>Occupant detected!</span>")
-		return FALSE
-	else if(dna_lock && (!mmi_as_oc.brainmob.stored_dna || (dna_lock != mmi_as_oc.brainmob.stored_dna.unique_enzymes)))
+		return 0
+	else if(dna_lock && (!mmi_as_oc.brainmob.stored_dna || dna_lock!=mmi_as_oc.brainmob.stored_dna.unique_enzymes))
 		to_chat(user, "<span class='warning'>Access denied. [name] is secured with a DNA lock.</span>")
-		return FALSE
+		return 0
 
 	visible_message("<span class='notice'>[user] starts to insert an MMI into [name].</span>")
 
 	if(do_after(user, 40, target = src))
 		if(!occupant)
-			return mmi_moved_inside(mmi_as_oc, user)
+			return mmi_moved_inside(mmi_as_oc,user)
 		else
 			to_chat(user, "<span class='warning'>Occupant detected!</span>")
 	else
 		to_chat(user, "<span class='notice'>You stop inserting the MMI.</span>")
-	return FALSE
+	return 0
 
-/obj/mecha/proc/mmi_moved_inside(obj/item/device/mmi/mmi_as_oc, mob/user)
-	if(!(Adjacent(mmi_as_oc) && Adjacent(user)))
-		return FALSE
-	if(!mmi_as_oc.brainmob || !mmi_as_oc.brainmob.client)
-		to_chat(user, "<span class='notice'>Consciousness matrix not detected!</span>")
-		return FALSE
-	else if(mmi_as_oc.brainmob.stat)
-		to_chat(user, "<span class='warning'>Beta-rhythm below acceptable level!</span>")
-		return FALSE
-	if(!user.transferItemToLoc(mmi_as_oc, src))
-		to_chat(user, "<span class='warning'>\the [mmi_as_oc] is stuck to your hand, you cannot put it in \the [src]!</span>")
-		return FALSE
-	var/mob/brainmob = mmi_as_oc.brainmob
-	mmi_as_oc.mecha = src
-	occupant = brainmob
-	brainmob.forceMove(src) //should allow relaymove
-	brainmob.reset_perspective(src)
-	brainmob.remote_control = src
-	brainmob.update_canmove()
-	icon_state = initial(icon_state)
-	update_icon()
-	setDir(dir_in)
-	log_message("[mmi_as_oc] moved in as pilot.")
-	if(!internal_damage)
-		occupant << sound('sound/mecha/nominal.ogg',volume=50)
-	GrantActions(brainmob)
-	return TRUE
+/obj/mecha/proc/mmi_moved_inside(obj/item/device/mmi/mmi_as_oc,mob/user)
+	if(mmi_as_oc && user in range(1))
+		if(!mmi_as_oc.brainmob || !mmi_as_oc.brainmob.client)
+			to_chat(user, "<span class='notice'>Consciousness matrix not detected!</span>")
+			return 0
+		else if(mmi_as_oc.brainmob.stat)
+			to_chat(user, "<span class='warning'>Beta-rhythm below acceptable level!</span>")
+			return 0
+		if(!user.unEquip(mmi_as_oc))
+			to_chat(user, "<span class='warning'>\the [mmi_as_oc] is stuck to your hand, you cannot put it in \the [src]!</span>")
+			return
+		var/mob/brainmob = mmi_as_oc.brainmob
+		occupant = brainmob
+		brainmob.forceMove(src )//should allow relaymove
+		brainmob.reset_perspective(src)
+		brainmob.canmove = 1
+		mmi_as_oc.forceMove(src)
+		mmi_as_oc.mecha = src
+		icon_state = initial(icon_state)
+		setDir(dir_in)
+		log_message("[mmi_as_oc] moved in as pilot.")
+		if(!internal_damage)
+			to_chat(occupant, sound('sound/mecha/nominal.ogg',volume=50))
+		GrantActions(brainmob)
+		return 1
+	else
+		return 0
 
 /obj/mecha/container_resist(mob/living/user)
 	go_out()
@@ -941,25 +916,11 @@
 		var/mob/living/brain/brain = occupant
 		RemoveActions(brain)
 		mob_container = brain.container
-	else if(isAI(occupant))
-		var/mob/living/silicon/ai/AI = occupant
-		if(forced)//This should only happen if there are multiple AIs in a round, and at least one is Malf.
-			RemoveActions(occupant)
-			occupant.gib()  //If one Malf decides to steal a mech from another AI (even other Malfs!), they are destroyed, as they have nowhere to go when replaced.
-			occupant = null
-			return
-		else
-			if(!AI.linked_core)
-				to_chat(AI, "<span class='userdanger'>Inactive core destroyed. Unable to return.</span>")
-				AI.linked_core = null
-				return
-			to_chat(AI, "<span class='notice'>Returning to core...</span>")
-			AI.controlled_mech = null
-			AI.remote_control = null
-			RemoveActions(occupant, 1)
-			mob_container = AI
-			newloc = get_turf(AI.linked_core)
-			qdel(AI.linked_core)
+	else if(isAI(occupant) && forced) //This should only happen if there are multiple AIs in a round, and at least one is Malf.
+		RemoveActions(occupant)
+		occupant.gib()  //If one Malf decides to steal a mech from another AI (even other Malfs!), they are destroyed, as they have nowhere to go when replaced.
+		occupant = null
+		return
 	else
 		return
 	var/mob/living/L = occupant
@@ -971,7 +932,7 @@
 		if(istype(mob_container, /obj/item/device/mmi))
 			var/obj/item/device/mmi/mmi = mob_container
 			if(mmi.brainmob)
-				L.loc = mmi
+				L.forceMove(mmi)
 				L.reset_perspective()
 			mmi.mecha = null
 			mmi.update_icon()
@@ -980,7 +941,7 @@
 		setDir(dir_in)
 
 	if(L && L.client)
-		L.client.change_view(world.view)
+		L.client.view = world.view
 		zoom_mode = 0
 
 /////////////////////////
@@ -1006,12 +967,12 @@
 /obj/mecha/proc/occupant_message(message as text)
 	if(message)
 		if(occupant && occupant.client)
-			to_chat(occupant, "\icon[src] [message]")
+			to_chat(occupant, "[bicon(src)] [message]")
 	return
 
 /obj/mecha/proc/log_message(message as text,red=null)
 	log.len++
-	log[log.len] = list("time"="[worldtime2text()]","date","year"="[GLOB.year_integer+540]","message"="[red?"<font color='red'>":null][message][red?"</font>":null]")
+	log[log.len] = list("time"="[worldtime2text()]","date","year"="[year_integer+540]","message"="[red?"<font color='red'>":null][message][red?"</font>":null]")
 	return log.len
 
 /obj/mecha/proc/log_append_to_last(message as text,red=null)
@@ -1019,8 +980,8 @@
 	last_entry["message"] += "<br>[red?"<font color='red'>":null][message][red?"</font>":null]"
 	return
 
-GLOBAL_VAR_INIT(year, time2text(world.realtime,"YYYY"))
-GLOBAL_VAR_INIT(year_integer, text2num(year)) // = 2013???
+var/year = time2text(world.realtime,"YYYY")
+var/year_integer = text2num(year) // = 2013???
 
 ///////////////////////
 ///// Power stuff /////

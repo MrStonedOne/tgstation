@@ -26,8 +26,6 @@
 				/obj/item/stack/sheet/mineral/bananium = list("banana" = 20),
 				/obj/item/stack/sheet/mineral/silver = list("silver" = 20),
 				/obj/item/stack/sheet/mineral/gold = list("gold" = 20),
-				/obj/item/stack/sheet/bluespace_crystal = list("bluespace" = 20),
-				/obj/item/weapon/ore/bluespace_crystal = list("bluespace" = 20),
 				/obj/item/weapon/grown/nettle/basic = list("sacid" = 0),
 				/obj/item/weapon/grown/nettle/death = list("facid" = 0, "sacid" = 0),
 				/obj/item/weapon/grown/novaflower = list("capsaicin" = 0, "condensedcapsaicin" = 0),
@@ -37,8 +35,6 @@
 				/obj/item/weapon/reagent_containers/food/snacks/grown/tomato = list("ketchup" = 0),
 				/obj/item/weapon/reagent_containers/food/snacks/grown/wheat = list("flour" = -5),
 				/obj/item/weapon/reagent_containers/food/snacks/grown/oat = list("flour" = -5),
-				/obj/item/weapon/reagent_containers/food/snacks/grown/rice = list("rice" = -5),
-				/obj/item/weapon/reagent_containers/food/snacks/donut = list("sprinkles" = -2, "sugar" = 1),
 				/obj/item/weapon/reagent_containers/food/snacks/grown/cherries = list("cherryjelly" = 0),
 				/obj/item/weapon/reagent_containers/food/snacks/grown/bluecherries = list("bluecherryjelly" = 0),
 				/obj/item/weapon/reagent_containers/food/snacks/egg = list("eggyolk" = -5),
@@ -54,9 +50,7 @@
 				/obj/item/slime_extract = list(),
 				/obj/item/weapon/reagent_containers/pill = list(),
 				/obj/item/weapon/reagent_containers/food = list(),
-				/obj/item/weapon/reagent_containers/honeycomb = list(),
-				/obj/item/toy/crayon = list()
-
+				/obj/item/weapon/reagent_containers/honeycomb = list()
 		)
 
 		var/list/juice_items = list (
@@ -91,9 +85,10 @@
 
 		var/list/holdingitems = list()
 
-/obj/machinery/reagentgrinder/Initialize()
-	. = ..()
+/obj/machinery/reagentgrinder/New()
+	..()
 	beaker = new /obj/item/weapon/reagent_containers/glass/beaker/large(src)
+	return
 
 /obj/machinery/reagentgrinder/Destroy()
 	if(beaker)
@@ -131,7 +126,7 @@
 						if(!user.drop_item())
 								return 1
 						beaker =  I
-						beaker.loc = src
+						beaker.forceMove(src)
 						update_icon()
 						src.updateUsrDialog()
 				else
@@ -173,7 +168,7 @@
 						return 1
 
 		if(user.drop_item())
-				I.loc = src
+				I.forceMove(src)
 				holdingitems += I
 				src.updateUsrDialog()
 				return 0
@@ -259,7 +254,7 @@
 				return
 		if (!beaker)
 				return
-		beaker.loc = src.loc
+		beaker.forceMove(src.loc)
 		beaker = null
 		update_icon()
 		updateUsrDialog()
@@ -272,7 +267,7 @@
 				return
 
 		for(var/obj/item/O in holdingitems)
-				O.loc = src.loc
+				O.forceMove(src.loc)
 				holdingitems -= O
 		holdingitems = list()
 		updateUsrDialog()
@@ -456,14 +451,4 @@
 				var/amount = O.reagents.total_volume
 				O.reagents.trans_to(beaker, amount)
 				if(!O.reagents.total_volume)
-						remove_object(O)
-
-		for (var/obj/item/toy/crayon/O in holdingitems)
-				if (beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
-						break
-				for (var/r_id in O.reagent_contents)
-						var/space = beaker.reagents.maximum_volume - beaker.reagents.total_volume
-						if (space == 0)
-								break
-						beaker.reagents.add_reagent(r_id, min(O.reagent_contents[r_id], space))
 						remove_object(O)

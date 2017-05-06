@@ -1,8 +1,8 @@
 //gang.dm
 //Gang War Game Mode
 
-GLOBAL_LIST_INIT(gang_name_pool, list("Clandestine", "Prima", "Zero-G", "Max", "Blasto", "Waffle", "North", "Omni", "Newton", "Cyber", "Donk", "Gene", "Gib", "Tunnel", "Diablo", "Psyke", "Osiron", "Sirius", "Sleeping Carp"))
-GLOBAL_LIST_INIT(gang_colors_pool, list("red","orange","yellow","green","blue","purple"))
+var/list/gang_name_pool = list("Clandestine", "Prima", "Zero-G", "Max", "Blasto", "Waffle", "North", "Omni", "Newton", "Cyber", "Donk", "Gene", "Gib", "Tunnel", "Diablo", "Psyke", "Osiron", "Sirius", "Sleeping Carp")
+var/list/gang_colors_pool = list("red","orange","yellow","green","blue","purple")
 
 /datum/game_mode
 	var/list/datum/gang/gangs = list()
@@ -73,16 +73,15 @@ GLOBAL_LIST_INIT(gang_colors_pool, list("red","orange","yellow","green","blue","
 
 
 /datum/game_mode/gang/post_setup()
-	set waitfor = FALSE
+	spawn(rand(10,100))
+		for(var/datum/gang/G in gangs)
+			for(var/datum/mind/boss_mind in G.bosses)
+				G.add_gang_hud(boss_mind)
+				forge_gang_objectives(boss_mind)
+				greet_gang(boss_mind)
+				equip_gang(boss_mind.current,G)
+				modePlayer += boss_mind
 	..()
-	sleep(rand(10,100))
-	for(var/datum/gang/G in gangs)
-		for(var/datum/mind/boss_mind in G.bosses)
-			G.add_gang_hud(boss_mind)
-			forge_gang_objectives(boss_mind)
-			greet_gang(boss_mind)
-			equip_gang(boss_mind.current,G)
-			modePlayer += boss_mind
 
 
 /datum/game_mode/proc/forge_gang_objectives(datum/mind/boss_mind)
@@ -175,12 +174,12 @@ GLOBAL_LIST_INIT(gang_colors_pool, list("red","orange","yellow","green","blue","
 		to_chat(gangster_mind.current, "<font color='red'>Their ultimate objective is to take over the station with a Dominator machine.</font>")
 		to_chat(gangster_mind.current, "<font color='red'>You can identify your bosses by their <b>large, bright [G.color] \[G\] icon</b>.</font>")
 		gangster_mind.store_memory("You are a member of the [G.name] Gang!")
-	gangster_mind.current.log_message("<font color='red'>Has been converted to the [G.name] Gang!</font>", INDIVIDUAL_ATTACK_LOG)
+	gangster_mind.current.attack_log += "\[[time_stamp()]\] <font color='red'>Has been converted to the [G.name] Gang!</font>"
 	gangster_mind.special_role = "[G.name] Gangster"
 
 	G.add_gang_hud(gangster_mind)
 	if(jobban_isbanned(gangster_mind.current, ROLE_GANG))
-		INVOKE_ASYNC(src, /datum/game_mode.proc/replace_jobbaned_player, gangster_mind.current, ROLE_GANG, ROLE_GANG)
+		addtimer(CALLBACK(src, /datum/game_mode.proc/replace_jobbaned_player, gangster_mind.current, ROLE_GANG, ROLE_GANG), 0)
 	return 2
 ////////////////////////////////////////////////////////////////////
 //Deals with players reverting to neutral (Not a gangster anymore)//
@@ -209,7 +208,7 @@ GLOBAL_LIST_INIT(gang_colors_pool, list("red","orange","yellow","green","blue","
 	gangster_mind.gang_datum = null
 
 	if(silent < 2)
-		gangster_mind.current.log_message("<font color='red'>Has reformed and defected from the [gang.name] Gang!</font>", INDIVIDUAL_ATTACK_LOG)
+		gangster_mind.current.attack_log += "\[[time_stamp()]\] <font color='red'>Has reformed and defected from the [gang.name] Gang!</font>"
 
 		if(beingborged)
 			if(!silent)
@@ -249,7 +248,7 @@ GLOBAL_LIST_INIT(gang_colors_pool, list("red","orange","yellow","green","blue","
 	return gang_bosses
 
 /proc/determine_domination_time(var/datum/gang/G)
-	return max(180,900 - (round((G.territory.len/GLOB.start_state.num_territories)*100, 1) * 12))
+	return max(180,900 - (round((G.territory.len/start_state.num_territories)*100, 1) * 12))
 
 //////////////////////////////////////////////////////////////////////
 //Announces the end of the game with all relavent information stated//
@@ -260,17 +259,17 @@ GLOBAL_LIST_INIT(gang_colors_pool, list("red","orange","yellow","green","blue","
 		return
 	if(!winner)
 		to_chat(world, "<span class='redtext'>The station was [station_was_nuked ? "destroyed!" : "evacuated before a gang could claim it! The station wins!"]</span><br>")
-		SSblackbox.set_details("round_end_result","loss - gangs failed takeover")
+		feedback_set_details("round_end_result","loss - gangs failed takeover")
 
-		SSticker.news_report = GANG_LOSS
+		ticker.news_report = GANG_LOSS
 	else
 		to_chat(world, "<span class='redtext'>The [winner.name] Gang successfully performed a hostile takeover of the station!</span><br>")
-		SSblackbox.set_details("round_end_result","win - gang domination complete")
+		feedback_set_details("round_end_result","win - gang domination complete")
 
-		SSticker.news_report = GANG_TAKEOVER
+		ticker.news_report = GANG_TAKEOVER
 
 	for(var/datum/gang/G in gangs)
-		var/text = "<b>The [G.name] Gang was [winner==G ? "<span class='greenannounce'>victorious</span>" : "<span class='boldannounce'>defeated</span>"] with [round((G.territory.len/GLOB.start_state.num_territories)*100, 1)]% control of the station!</b>"
+		var/text = "<b>The [G.name] Gang was [winner==G ? "<span class='greenannounce'>victorious</span>" : "<span class='boldannounce'>defeated</span>"] with [round((G.territory.len/start_state.num_territories)*100, 1)]% control of the station!</b>"
 		text += "<br>The [G.name] Gang Bosses were:"
 		for(var/datum/mind/boss in G.bosses)
 			text += printplayer(boss, 1)
@@ -295,7 +294,7 @@ GLOBAL_LIST_INIT(gang_colors_pool, list("red","orange","yellow","green","blue","
 /datum/gang_points/process(seconds)
 	var/list/winners = list() //stores the winners if there are any
 
-	for(var/datum/gang/G in SSticker.mode.gangs)
+	for(var/datum/gang/G in ticker.mode.gangs)
 		if(world.time > next_point_time)
 			G.income()
 
@@ -312,7 +311,7 @@ GLOBAL_LIST_INIT(gang_colors_pool, list("red","orange","yellow","green","blue","
 				G.domination(0.5)
 			priority_announce("Multiple station takeover attempts have made simultaneously. Conflicting takeover attempts appears to have restarted.","Network Alert")
 		else
-			SSticker.mode.explosion_in_progress = 1
-			SSticker.station_explosion_cinematic(1)
-			SSticker.mode.explosion_in_progress = 0
-			SSticker.force_ending = pick(winners)
+			ticker.mode.explosion_in_progress = 1
+			ticker.station_explosion_cinematic(1)
+			ticker.mode.explosion_in_progress = 0
+			ticker.force_ending = pick(winners)

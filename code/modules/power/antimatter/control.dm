@@ -181,9 +181,10 @@
 			to_chat(user, "<span class='warning'>There is already a [fueljar] inside!</span>")
 			return
 
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
 		fueljar = W
+		W.forceMove(src)
 		user.visible_message("[user.name] loads an [W.name] into the [src.name].", \
 				"<span class='notice'>You load an [W.name].</span>", \
 				"<span class='italics'>You hear a thunk.</span>")
@@ -342,7 +343,7 @@
 
 	if(href_list["ejectjar"])
 		if(fueljar)
-			fueljar.loc = src.loc
+			fueljar.forceMove(src.loc)
 			fueljar = null
 			//fueljar.control_unit = null currently it does not care where it is
 			//update_icon() when we have the icon for it

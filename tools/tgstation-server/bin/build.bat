@@ -1,3 +1,4 @@
+@echo off
 call config.bat
 call bin/findbyond.bat
 set DME_FOLDER=gamefolder\
@@ -15,10 +16,9 @@ echo #include "_maps\%MAPFILE%.dm" >>%MDME_LOCATION%
 
 :BUILD
 echo #define SERVERTOOLS 1 >>%MDME_LOCATION%
-echo #define PUTONHUB 1 >>%MDME_LOCATION%
 type %DME_LOCATION% >>%MDME_LOCATION%
 
-dm -clean %MDME_LOCATION%
+dm %MDME_LOCATION%
 set DM_EXIT=%ERRORLEVEL%
 @del %DME_FOLDER%%PROJECTNAME%.dmb >nul 2>nul
 @del %DME_FOLDER%%PROJECTNAME%.rsc >nul 2>nul

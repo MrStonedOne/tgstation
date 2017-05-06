@@ -7,8 +7,7 @@
 		param = copytext(act, custom_param + 1, length(act) + 1)
 		act = copytext(act, 1, custom_param)
 
-	var/datum/emote/E
-	E = E.emote_list[act]
+	var/datum/emote/E = emote_list[act]
 	if(!E)
 		to_chat(src, "<span class='notice'>Unusable emote '[act]'. Say *help for a list.</span>")
 		return
@@ -86,15 +85,10 @@
 	message_alien = "lets out a waning guttural screech, green blood bubbling from its maw..."
 	message_larva = "lets out a sickly hiss of air and falls limply to the floor..."
 	message_monkey = "lets out a faint chimper as it collapses and stops moving..."
-	message_simple =  "stops moving..."
 	stat_allowed = UNCONSCIOUS
 
 /datum/emote/living/deathgasp/run_emote(mob/user, params)
-	var/mob/living/simple_animal/S = user
-	if(istype(S) && S.deathmessage)
-		message_simple = S.deathmessage
 	. = ..()
-	message_simple = initial(message_simple)
 	if(. && isalienadult(user))
 		playsound(user.loc, 'sound/voice/hiss6.ogg', 80, 1, 1)
 
@@ -426,12 +420,10 @@
 	var/list/keys = list()
 	var/list/message = list("Available emotes, you can use them with say \"*emote\": ")
 
-	var/datum/emote/E
-	var/list/emote_list = E.emote_list
 	for(var/e in emote_list)
 		if(e in keys)
 			continue
-		E = emote_list[e]
+		var/datum/emote/E = emote_list[e]
 		if(E.can_run_emote(user, TRUE))
 			keys += E.key
 
@@ -455,20 +447,3 @@
 	message = "beeps."
 	message_param = "beeps at %t."
 	sound = 'sound/machines/twobeep.ogg'
-
-/datum/emote/living/spin
-	key = "spin"
-	key_third_person = "spins"
-	message = "spins around dizzily!"
-
-/datum/emote/living/spin/run_emote(mob/user)
-	user.spin(20, 1)
-	if(istype(user, /mob/living/silicon/robot))
-		var/mob/living/silicon/robot/R = user
-		if(R.buckled_mobs)
-			for(var/mob/M in R.buckled_mobs)
-				if(R.riding_datum)
-					R.riding_datum.force_dismount(M)
-				else
-					R.unbuckle_all_mobs()
-	..()

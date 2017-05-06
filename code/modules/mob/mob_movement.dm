@@ -72,6 +72,7 @@
 /client/verb/swap_hand()
 	set category = "IC"
 	set name = "Swap hands"
+	set hidden = 1
 
 	if(mob)
 		mob.swap_hand()
@@ -106,7 +107,7 @@
 				return
 			mob.control_object.setDir(direct)
 		else
-			mob.control_object.loc = get_step(mob.control_object,direct)
+			mob.control_object.forceMove(get_step(mob.control_object,direct))
 	return
 
 
@@ -163,7 +164,7 @@
 
 	if(mob.confused)
 		if(mob.confused > 40)
-			step(mob, pick(GLOB.cardinal))
+			step(mob, pick(cardinal))
 		else if(prob(mob.confused * 1.5))
 			step(mob, angle2dir(dir2angle(direct) + pick(90, -90)))
 		else if(prob(mob.confused * 3))
@@ -175,8 +176,7 @@
 
 	moving = 0
 	if(mob && .)
-		if(mob.throwing)
-			mob.throwing.finalize(FALSE)
+		mob.throwing = 0
 
 	for(var/obj/O in mob)
 		O.on_mob_move(direct, src)
@@ -210,7 +210,7 @@
 	var/mob/living/L = mob
 	switch(L.incorporeal_move)
 		if(1)
-			L.loc = get_step(L, direct)
+			L.forceMove(get_step(L, direct))
 			L.setDir(direct)
 		if(2)
 			if(prob(50))
@@ -239,16 +239,16 @@
 							return
 					else
 						return
-				L.loc = locate(locx,locy,mobloc.z)
+				L.forceMove(locate(locx,locy,mobloc.z))
 				var/limit = 2//For only two trailing shadows.
 				for(var/turf/T in getline(mobloc, L.loc))
-					new /obj/effect/overlay/temp/dir_setting/ninja/shadow(T, L.dir)
+					PoolOrNew(/obj/effect/overlay/temp/dir_setting/ninja/shadow, list(T, L.dir))
 					limit--
 					if(limit<=0)
 						break
 			else
-				new /obj/effect/overlay/temp/dir_setting/ninja/shadow(mobloc, L.dir)
-				L.loc = get_step(L, direct)
+				PoolOrNew(/obj/effect/overlay/temp/dir_setting/ninja/shadow, list(mobloc, L.dir))
+				L.forceMove(get_step(L, direct))
 			L.setDir(direct)
 		if(3) //Incorporeal move, but blocked by holy-watered tiles and salt piles.
 			var/turf/open/floor/stepTurf = get_step(L, direct)
@@ -262,7 +262,7 @@
 			if(stepTurf.flags & NOJAUNT)
 				to_chat(L, "<span class='warning'>Holy energies block your path.</span>")
 			else
-				L.loc = get_step(L, direct)
+				L.forceMove(get_step(L, direct))
 				L.setDir(direct)
 	return 1
 

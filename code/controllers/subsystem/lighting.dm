@@ -1,44 +1,65 @@
-GLOBAL_LIST_EMPTY(lighting_update_lights) // List of lighting sources  queued for update.
-GLOBAL_LIST_EMPTY(lighting_update_corners) // List of lighting corners  queued for update.
-GLOBAL_LIST_EMPTY(lighting_update_objects) // List of lighting objects queued for update.
+#define STAGE_SOURCES  1
+#define STAGE_CORNERS  2
+#define STAGE_OVERLAYS 3
 
-SUBSYSTEM_DEF(lighting)
-	name = "Lighting"
-	wait = 2
-	init_order = INIT_ORDER_LIGHTING
-	flags = SS_TICKER
+var/datum/subsystem/lighting/SSlighting
+
+var/list/lighting_update_lights    = list() // List of lighting sources  queued for update.
+var/list/lighting_update_corners   = list() // List of lighting corners  queued for update.
+var/list/lighting_update_overlays  = list() // List of lighting overlays queued for update.
+
+
+/datum/subsystem/lighting
+	name          = "Lighting"
+	init_order    = 1
+	display_order = 5
+	wait          = LIGHTING_INTERVAL
+	priority      = 25
+	flags         = SS_TICKER
 
 	var/initialized = FALSE
 
-/datum/controller/subsystem/lighting/stat_entry()
-	..("L:[GLOB.lighting_update_lights.len]|C:[GLOB.lighting_update_corners.len]|O:[GLOB.lighting_update_objects.len]")
+	var/list/currentrun_lights
+	var/list/currentrun_corners
+	var/list/currentrun_overlays
+
+	var/resuming_stage = 0
 
 
-/datum/controller/subsystem/lighting/Initialize(timeofday)
+/datum/subsystem/lighting/New()
+	NEW_SS_GLOBAL(SSlighting)
+
+
+/datum/subsystem/lighting/stat_entry()
+	..("L:[lighting_update_lights.len]|C:[lighting_update_corners.len]|O:[lighting_update_overlays.len]")
+
+
+/datum/subsystem/lighting/Initialize(timeofday)
 	if (config.starlight)
-		for(var/I in GLOB.sortedAreas)
-			var/area/A = I
+		for(var/area/A in world)
 			if (A.dynamic_lighting == DYNAMIC_LIGHTING_IFSTARLIGHT)
 				A.luminosity = 0
 
-	create_all_lighting_objects()
+	create_all_lighting_overlays()
 	initialized = TRUE
-	
-	fire(FALSE, TRUE)
 
 	..()
 
-/datum/controller/subsystem/lighting/fire(resumed, init_tick_checks)
-	MC_SPLIT_TICK_INIT(3)
-	if(!init_tick_checks)
-		MC_SPLIT_TICK
-	var/i = 0
-	for (i in 1 to GLOB.lighting_update_lights.len)
-		var/datum/light_source/L = GLOB.lighting_update_lights[i]
 
-		if (L.check() || QDELETED(L) || L.force_update)
+/datum/subsystem/lighting/fire(resumed=FALSE)
+	if (resuming_stage == 0 || !resumed)
+		currentrun_lights   = lighting_update_lights
+		lighting_update_lights   = list()
+
+		resuming_stage = STAGE_SOURCES
+
+	while (currentrun_lights.len)
+		var/datum/light_source/L = currentrun_lights[currentrun_lights.len]
+		currentrun_lights.len--
+
+		if (L.check() || L.destroyed || L.force_update)
 			L.remove_lum()
-			if (!QDELETED(L))
+			if (!L.destroyed)
 				L.apply_lum()
 
 		else if (L.vis_update) //We smartly update only tiles that became (in) visible to use.
@@ -47,51 +68,54 @@ SUBSYSTEM_DEF(lighting)
 		L.vis_update   = FALSE
 		L.force_update = FALSE
 		L.needs_update = FALSE
-		
-		if(init_tick_checks)
-			CHECK_TICK
-		else if (MC_TICK_CHECK)
-			break
-	if (i)
-		GLOB.lighting_update_lights.Cut(1, i+1)
-		i = 0
 
-	if(!init_tick_checks)
-		MC_SPLIT_TICK
+		if (MC_TICK_CHECK)
+			return
 
-	for (i in 1 to GLOB.lighting_update_corners.len)
-		var/datum/lighting_corner/C = GLOB.lighting_update_corners[i]
+	if (resuming_stage == STAGE_SOURCES || !resumed)
+		currentrun_corners  = lighting_update_corners
+		lighting_update_corners  = list()
 
-		C.update_objects()
+		resuming_stage = STAGE_CORNERS
+
+	while (currentrun_corners.len)
+		var/datum/lighting_corner/C = currentrun_corners[currentrun_corners.len]
+		currentrun_corners.len--
+
+		C.update_overlays()
 		C.needs_update = FALSE
-		if(init_tick_checks)
-			CHECK_TICK
-		else if (MC_TICK_CHECK)
-			break
-	if (i)
-		GLOB.lighting_update_corners.Cut(1, i+1)
-		i = 0
+		if (MC_TICK_CHECK)
+			return
 
+	if (resuming_stage == STAGE_CORNERS || !resumed)
+		currentrun_overlays = lighting_update_overlays.Copy()
 
-	if(!init_tick_checks)
-		MC_SPLIT_TICK
+		resuming_stage = STAGE_OVERLAYS
 
-	for (i in 1 to GLOB.lighting_update_objects.len)
-		var/atom/movable/lighting_object/O = GLOB.lighting_update_objects[i]
+	while (currentrun_overlays.len)
+		var/atom/movable/lighting_overlay/O = currentrun_overlays[currentrun_overlays.len]
+		currentrun_overlays.len--
 
-		if (QDELETED(O))
+		if (qdeleted(O))
 			continue
 
-		O.update()
+		O.update_overlay()
 		O.needs_update = FALSE
-		if(init_tick_checks)
-			CHECK_TICK
-		else if (MC_TICK_CHECK)
-			break
-	if (i)
-		GLOB.lighting_update_objects.Cut(1, i+1)
+		if (MC_TICK_CHECK)
+			return
+#if defined(LIGHTING_ANIMATION)
+	for(var/atom/movable/lighting_overlay/O in lighting_update_overlays)
+		O.animate_color()
+#endif
+	lighting_update_overlays.Cut()
+	resuming_stage = 0
 
 
-/datum/controller/subsystem/lighting/Recover()
+/datum/subsystem/lighting/Recover()
 	initialized = SSlighting.initialized
 	..()
+
+
+#undef STAGE_SOURCES
+#undef STAGE_CORNERS
+#undef STAGE_OVERLAYS

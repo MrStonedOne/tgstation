@@ -22,7 +22,7 @@
 /obj/machinery/gibber/autogibber/New()
 	..()
 	spawn(5)
-		for(var/i in GLOB.cardinal)
+		for(var/i in cardinal)
 			var/obj/machinery/mineral/input/input_obj = locate( /obj/machinery/mineral/input, get_step(src.loc, i) )
 			if(input_obj)
 				if(isturf(input_obj.loc))
@@ -31,7 +31,7 @@
 					break
 
 		if(!input_plate)
-			GLOB.world_game_log << "a [src] didn't find an input plate."
+			diary << "a [src] didn't find an input plate."
 			return
 
 /obj/machinery/gibber/autogibber/Bumped(atom/A)
@@ -41,13 +41,13 @@
 		var/mob/M = A
 
 		if(M.loc == input_plate)
-			M.loc = src
+			M.forceMove(src)
 			M.gib()
 
 
 /obj/machinery/gibber/New()
 	..()
-	add_overlay("grjam")
+	src.add_overlay(image('icons/obj/kitchen.dmi', "grjam"))
 	var/obj/item/weapon/circuitboard/machine/B = new /obj/item/weapon/circuitboard/machine/gibber(null)
 	B.apply_default_parts(src)
 
@@ -72,15 +72,15 @@
 /obj/machinery/gibber/update_icon()
 	cut_overlays()
 	if (dirty)
-		add_overlay("grbloody")
+		src.add_overlay(image('icons/obj/kitchen.dmi', "grbloody"))
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if (!occupant)
-		add_overlay("grjam")
+		src.add_overlay(image('icons/obj/kitchen.dmi', "grjam"))
 	else if (operating)
-		add_overlay("gruse")
+		src.add_overlay(image('icons/obj/kitchen.dmi', "gruse"))
 	else
-		add_overlay("gridle")
+		src.add_overlay(image('icons/obj/kitchen.dmi', "gridle"))
 
 /obj/machinery/gibber/attack_paw(mob/user)
 	return src.attack_hand(user)
@@ -168,14 +168,13 @@
 
 	var/offset = prob(50) ? -2 : 2
 	animate(src, pixel_x = pixel_x + offset, time = 0.2, loop = 200) //start shaking
-	var/mob/living/mob_occupant = occupant
-	var/sourcename = mob_occupant.real_name
+	var/sourcename = src.occupant.real_name
 	var/sourcejob
 	if(ishuman(occupant))
 		var/mob/living/carbon/human/gibee = occupant
 		sourcejob = gibee.job
-	var/sourcenutriment = mob_occupant.nutrition / 15
-	var/sourcetotalreagents = mob_occupant.reagents.total_volume
+	var/sourcenutriment = src.occupant.nutrition / 15
+	var/sourcetotalreagents = src.occupant.reagents.total_volume
 	var/gibtype = /obj/effect/decal/cleanable/blood/gibs
 	var/typeofmeat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human
 	var/typeofskin = /obj/item/stack/sheet/animalhide/human
@@ -187,9 +186,10 @@
 		var/mob/living/carbon/human/gibee = occupant
 		if(gibee.dna && gibee.dna.species)
 			typeofmeat = gibee.dna.species.meat
-			if(gibee.dna.species.skinned_type)
-				typeofskin = gibee.dna.species.skinned_type
-
+			typeofskin = gibee.dna.species.skinned_type
+		else
+			typeofmeat = /obj/item/weapon/reagent_containers/food/snacks/meat/slab/human
+			typeofskin = /obj/item/stack/sheet/animalhide/human
 	else if(iscarbon(occupant))
 		var/mob/living/carbon/C = occupant
 		typeofmeat = C.type_of_meat
@@ -213,8 +213,8 @@
 		allskin = newskin
 
 	add_logs(user, occupant, "gibbed")
-	mob_occupant.death(1)
-	mob_occupant.ghostize()
+	src.occupant.death(1)
+	src.occupant.ghostize()
 	qdel(src.occupant)
 	spawn(src.gibtime)
 		playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
@@ -222,11 +222,11 @@
 		var/turf/T = get_turf(src)
 		var/list/turf/nearby_turfs = RANGE_TURFS(3,T) - T
 		var/obj/item/skin = allskin
-		skin.loc = src.loc
+		skin.forceMove(src.loc)
 		skin.throw_at(pick(nearby_turfs),meat_produced,3)
 		for (var/i=1 to meat_produced)
 			var/obj/item/meatslab = allmeat[i]
-			meatslab.loc = src.loc
+			meatslab.forceMove(src.loc)
 			meatslab.throw_at(pick(nearby_turfs),i,3)
 			for (var/turfs=1 to meat_produced)
 				var/turf/gibturf = pick(nearby_turfs)

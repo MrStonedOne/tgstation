@@ -1,4 +1,4 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "a" = (
 /turf/open/space,
 /area/space)
@@ -93,9 +93,9 @@
 	})
 "n" = (
 /obj/structure/shuttle/engine/propulsion{
-	dir = 8;
+	tag = "icon-propulsion (EAST)";
 	icon_state = "propulsion";
-	tag = "icon-propulsion (EAST)"
+	dir = 4
 	},
 /turf/open/space,
 /area/ruin/powered{
@@ -129,9 +129,9 @@
 	})
 "r" = (
 /obj/structure/shuttle/engine/propulsion{
-	dir = 4;
+	tag = "icon-propulsion (WEST)";
 	icon_state = "propulsion";
-	tag = "icon-propulsion (WEST)"
+	dir = 8
 	},
 /turf/open/space,
 /area/ruin/powered{

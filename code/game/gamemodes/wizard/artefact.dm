@@ -182,7 +182,7 @@
 //Funny gimmick, skeletons always seem to wear roman/ancient armour
 /obj/item/device/necromantic_stone/proc/equip_roman_skeleton(mob/living/carbon/human/H)
 	for(var/obj/item/I in H)
-		H.dropItemToGround(I)
+		H.unEquip(I)
 
 	var/hat = pick(/obj/item/clothing/head/helmet/roman, /obj/item/clothing/head/helmet/roman/legionaire)
 	H.equip_to_slot_or_del(new hat(H), slot_head)
@@ -195,6 +195,7 @@
 
 
 /////////////////////Multiverse Blade////////////////////
+var/global/list/multiverse = list()
 
 /obj/item/weapon/multisword
 	name = "multiverse sword"
@@ -213,11 +214,10 @@
 	var/faction = list("unassigned")
 	var/cooldown = 0
 	var/assigned = "unassigned"
-	var/static/list/multiverse = list()
 
 /obj/item/weapon/multisword/New()
 	..()
-	multiverse += src
+	multiverse |= src
 
 
 /obj/item/weapon/multisword/Destroy()
@@ -241,7 +241,7 @@
 			to_chat(user, "You bind the sword to yourself. You can now use it to summon help.")
 			if(!is_gangster(user))
 				var/datum/gang/multiverse/G = new(src, "[user.real_name]")
-				SSticker.mode.gangs += G
+				ticker.mode.gangs += G
 				G.bosses += user.mind
 				G.add_gang_hud(user.mind)
 				user.mind.gang_datum = G
@@ -251,7 +251,7 @@
 				user.mind.objectives += hijack_objective
 				hijack_objective.explanation_text = "Ensure only [user.real_name] and their copies are on the shuttle!"
 				to_chat(user, "<B>Objective #[1]</B>: [hijack_objective.explanation_text]")
-				SSticker.mode.traitors += user.mind
+				ticker.mode.traitors += user.mind
 				user.mind.special_role = "[user.real_name] Prime"
 		else
 			var/list/candidates = get_candidates(ROLE_WIZARD)
@@ -276,15 +276,15 @@
 	M.key = C.key
 	M.mind.name = user.real_name
 	to_chat(M, "<B>You are an alternate version of [user.real_name] from another universe! Help them accomplish their goals at all costs.</B>")
-	SSticker.mode.add_gangster(M.mind, user.mind.gang_datum, FALSE)
+	ticker.mode.add_gangster(M.mind, user.mind.gang_datum, FALSE)
 	M.real_name = user.real_name
 	M.name = user.real_name
 	M.faction = list("[user.real_name]")
 	if(prob(50))
 		var/list/all_species = list()
 		for(var/speciestype in subtypesof(/datum/species))
-			var/datum/species/S = speciestype
-			if(!initial(S.dangerous_existence))
+			var/datum/species/S = new speciestype()
+			if(!S.dangerous_existence)
 				all_species += speciestype
 		M.set_species(pick(all_species), icon_update=0)
 	M.update_body()
@@ -329,7 +329,7 @@
 		if("cyborg")
 			for(var/X in M.bodyparts)
 				var/obj/item/bodypart/affecting = X
-				affecting.change_bodypart_status(BODYPART_ROBOTIC, FALSE, TRUE)
+				affecting.change_bodypart_status(BODYPART_ROBOTIC)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal/eyepatch(M), slot_glasses)
 			M.put_in_hands_or_del(sword)
 
@@ -353,7 +353,7 @@
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/device/radio/headset(M), slot_ears)
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/kitty(M), slot_head)
-			M.equip_to_slot_or_del(new /obj/item/clothing/under/schoolgirl/red(M), slot_w_uniform)
+			M.equip_to_slot_or_del(new /obj/item/clothing/under/female/schoolgirl/red(M), slot_w_uniform)
 			M.put_in_hands_or_del(sword)
 
 		if("cultist")
@@ -436,7 +436,7 @@
 
 	var/obj/item/weapon/card/id/W = new /obj/item/weapon/card/id
 	W.icon_state = "centcom"
-	W.access += GLOB.access_maint_tunnels
+	W.access += access_maint_tunnels
 	W.assignment = "Multiverse Traveller"
 	W.registered_name = M.real_name
 	W.update_label(M.real_name)
@@ -470,7 +470,7 @@
 			GiveHint(target)
 		else if(istype(I,/obj/item/weapon/bikehorn))
 			to_chat(target, "<span class='userdanger'>HONK</span>")
-			target << 'sound/items/AirHorn.ogg'
+			to_chat(target, 'sound/items/AirHorn.ogg')
 			target.adjustEarDamage(0,3)
 			GiveHint(target)
 		cooldown = world.time +cooldown_time
@@ -479,7 +479,7 @@
 	if(!link)
 		if(I.loc == user && istype(I) && I.w_class <= WEIGHT_CLASS_SMALL)
 			user.drop_item()
-			I.loc = src
+			I.forceMove(src)
 			link = I
 			to_chat(user, "You attach [I] to the doll.")
 			update_targets()
@@ -517,11 +517,19 @@
 					user.unset_machine()
 			if("r_leg","l_leg")
 				to_chat(user, "<span class='notice'>You move the doll's legs around.</span>")
-				var/turf/T = get_step(target,pick(GLOB.cardinal))
+				var/turf/T = get_step(target,pick(cardinal))
 				target.Move(T)
 			if("r_arm","l_arm")
-				target.click_random_mob()
-				GiveHint(target)
+				//use active hand on random nearby mob
+				var/list/nearby_mobs = list()
+				for(var/mob/living/L in range(1, target))
+					if(L!=target)
+						nearby_mobs |= L
+				if(nearby_mobs.len)
+					var/mob/living/T = pick(nearby_mobs)
+					log_game("[user][user.key] made [target][target.key] click on [T] with a voodoo doll.")
+					target.ClickOn(T)
+					GiveHint(target)
 			if("head")
 				to_chat(user, "<span class='notice'>You smack the doll's head with your hand.</span>")
 				target.Dizzy(10)
@@ -533,7 +541,7 @@
 	possible = list()
 	if(!link)
 		return
-	for(var/mob/living/carbon/human/H in GLOB.living_mob_list)
+	for(var/mob/living/carbon/human/H in living_mob_list)
 		if(md5(H.dna.uni_identity) in link.fingerprints)
 			possible |= H
 
@@ -571,7 +579,7 @@
 	var/mob/living/carbon/last_user
 
 /obj/item/warpwhistle/proc/interrupted(mob/living/carbon/user)
-	if(!user || QDELETED(src))
+	if(!user || qdeleted(src))
 		on_cooldown = FALSE
 		return TRUE
 	return FALSE
@@ -584,7 +592,7 @@
 	var/turf/T = get_turf(user)
 	playsound(T,'sound/magic/WarpWhistle.ogg', 200, 1)
 	user.canmove = 0
-	new /obj/effect/overlay/temp/tornado(T)
+	PoolOrNew(/obj/effect/overlay/temp/tornado,T)
 	sleep(20)
 	if(interrupted(user))
 		return
@@ -602,7 +610,7 @@
 			T = potential_T
 			break
 		breakout += 1
-	new /obj/effect/overlay/temp/tornado(T)
+	PoolOrNew(/obj/effect/overlay/temp/tornado,T)
 	sleep(20)
 	if(interrupted(user))
 		return
@@ -630,6 +638,6 @@
 	duration = 40
 	pixel_x = 500
 
-/obj/effect/overlay/temp/tornado/Initialize()
-	. = ..()
+/obj/effect/overlay/temp/tornado/New(loc)
+	..()
 	animate(src, pixel_x = -500, time = 40)

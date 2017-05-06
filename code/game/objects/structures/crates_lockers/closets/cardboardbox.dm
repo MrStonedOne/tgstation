@@ -14,7 +14,6 @@
 	cutting_sound = 'sound/items/poster_ripped.ogg'
 	material_drop = /obj/item/stack/sheet/cardboard
 	delivery_icon = "deliverybox"
-	anchorable = FALSE
 	var/move_speed_multiplier = 1
 	var/move_delay = 0
 	var/egged = 0

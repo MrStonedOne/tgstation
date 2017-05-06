@@ -10,7 +10,6 @@
 	origin_tech = "materials=2;biotech=3"
 	materials = list(MAT_METAL=600, MAT_GLASS=200)
 	var/obj/item/weapon/implant/imp = null
-	var/imp_type = null
 
 
 /obj/item/weapon/implanter/update_icon()
@@ -30,8 +29,8 @@
 			M.visible_message("<span class='warning'>[user] is attemping to implant [M].</span>")
 
 		var/turf/T = get_turf(M)
-		if(T && (M == user || do_mob(user, M, 50)))
-			if(src && imp)
+		if(T && (M == user || do_after(user, 50)))
+			if(user && M && (get_turf(M) == T) && src && imp)
 				if(imp.implant(M, user))
 					if (M == user)
 						to_chat(user, "<span class='notice'>You implant yourself.</span>")
@@ -39,8 +38,6 @@
 						M.visible_message("[user] has implanted [M].", "<span class='notice'>[user] implants you.</span>")
 					imp = null
 					update_icon()
-				else
-					to_chat(user, "<span class='warning'>[src] fails to implant [M].</span>")
 
 /obj/item/weapon/implanter/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/pen))
@@ -56,16 +53,24 @@
 	else
 		return ..()
 
-/obj/item/weapon/implanter/Initialize(mapload)
+/obj/item/weapon/implanter/New()
 	..()
-	if(imp_type)
-		imp = new imp_type(src)
 	update_icon()
+
+
+
 
 /obj/item/weapon/implanter/adrenalin
 	name = "implanter (adrenalin)"
-	imp_type = /obj/item/weapon/implant/adrenalin
+
+/obj/item/weapon/implanter/adrenalin/New()
+	imp = new /obj/item/weapon/implant/adrenalin(src)
+	..()
+
 
 /obj/item/weapon/implanter/emp
 	name = "implanter (EMP)"
-	imp_type = /obj/item/weapon/implant/emp
+
+/obj/item/weapon/implanter/emp/New()
+	imp = new /obj/item/weapon/implant/emp(src)
+	..()

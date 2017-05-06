@@ -24,8 +24,8 @@
 
 // Auto conveyour is always on unless unpowered
 
-/obj/machinery/conveyor/auto/Initialize(mapload, newdir)
-	. = ..()
+/obj/machinery/conveyor/auto/New(loc, newdir)
+	..(loc, newdir)
 	operating = 1
 	update_move_direction()
 
@@ -43,8 +43,8 @@
 	icon_state = "conveyor[operating * verted]"
 
 // create a conveyor
-/obj/machinery/conveyor/Initialize(mapload, newdir)
-	. = ..()
+/obj/machinery/conveyor/New(loc, newdir)
+	..(loc)
 	if(newdir)
 		setDir(newdir)
 	update_move_direction()
@@ -108,8 +108,10 @@
 	affecting = loc.contents - src		// moved items will be all in loc
 	sleep(1)
 	for(var/atom/movable/A in affecting)
-		if(A.loc == loc)
-			A.ConveyorMove(movedir)
+		if(!A.anchored)
+			if(A.loc == src.loc) // prevents the object from being affected if it's not currently here.
+				step(A,movedir)
+		CHECK_TICK
 
 // attack with item, place item on conveyor
 /obj/machinery/conveyor/attackby(obj/item/I, mob/user, params)
@@ -117,7 +119,7 @@
 		user.visible_message("<span class='notice'>[user] struggles to pry up \the [src] with \the [I].</span>", \
 		"<span class='notice'>You struggle to pry up \the [src] with \the [I].</span>")
 		if(do_after(user, 40*I.toolspeed, target = src))
-			if(QDELETED(src))
+			if(qdeleted(src))
 				return //prevent multiple decontructs
 			if(!(stat & BROKEN))
 				var/obj/item/conveyor_construct/C = new/obj/item/conveyor_construct(src.loc)
@@ -141,7 +143,7 @@
 
 	else if(user.a_intent != INTENT_HARM)
 		if(user.drop_item())
-			I.loc = src.loc
+			I.forceMove(src.loc)
 	else
 		return ..()
 
@@ -211,19 +213,17 @@
 
 
 
-/obj/machinery/conveyor_switch/Initialize(mapload, newid)
-	..()
+/obj/machinery/conveyor_switch/New(newloc, newid)
+	..(newloc)
 	if(!id)
 		id = newid
 	update()
 
-	return INITIALIZE_HINT_LATELOAD //for machines list
-
-/obj/machinery/conveyor_switch/LateInitialize()
-	conveyors = list()
-	for(var/obj/machinery/conveyor/C in GLOB.machines)
-		if(C.id == id)
-			conveyors += C
+	spawn(5)		// allow map load
+		conveyors = list()
+		for(var/obj/machinery/conveyor/C in machines)
+			if(C.id == id)
+				conveyors += C
 
 // update the icon depending on the position
 
@@ -270,7 +270,7 @@
 	update()
 
 	// find any switches with same id as this one, and set their positions to match us
-	for(var/obj/machinery/conveyor_switch/S in GLOB.machines)
+	for(var/obj/machinery/conveyor_switch/S in machines)
 		if(S.id == src.id)
 			S.position = position
 			S.update()
@@ -327,8 +327,8 @@
 	w_class = WEIGHT_CLASS_BULKY
 	var/id = "" //inherited by the switch
 
-/obj/item/conveyor_switch_construct/Initialize()
-	. = ..()
+/obj/item/conveyor_switch_construct/New()
+	..()
 	id = rand() //this couldn't possibly go wrong
 
 /obj/item/conveyor_switch_construct/afterattack(atom/A, mob/user, proximity)
@@ -340,7 +340,7 @@
 			found = 1
 			break
 	if(!found)
-		to_chat(user, "\icon[src]<span class=notice>The conveyor switch did not detect any linked conveyor belts in range.</span>")
+		to_chat(user, "[bicon(src)]<span class=notice>The conveyor switch did not detect any linked conveyor belts in range.</span>")
 		return
 	var/obj/machinery/conveyor_switch/NC = new/obj/machinery/conveyor_switch(A, id)
 	transfer_fingerprints_to(NC)

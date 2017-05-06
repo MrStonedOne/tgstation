@@ -32,7 +32,7 @@
 
 /obj/item/weapon/dice //depreciated d6, use /obj/item/weapon/dice/d6 if you actually want a d6
 	name = "die"
-	desc = "A die with six sides. Basic and servicable."
+	desc = "A die with six sides. Basic and servicable.<br>Commonly used as a lucky charm, or the most basic way to earn some caps by placing bets."
 	icon = 'icons/obj/dice.dmi'
 	icon_state = "d6"
 	w_class = WEIGHT_CLASS_TINY
@@ -172,7 +172,7 @@
 		user.visible_message("[user] has thrown [src]. It lands on [result]. [comment]", \
 							 "<span class='notice'>You throw [src]. It lands on [result]. [comment]</span>", \
 							 "<span class='italics'>You hear [src] rolling, it sounds like a [fake_result].</span>")
-	else if(!src.throwing) //Dice was thrown and is coming to rest
+	else if(src.throwing == 0) //Dice was thrown and is coming to rest
 		visible_message("<span class='notice'>[src] rolls to a stop, landing on [result]. [comment]</span>")
 
 /obj/item/weapon/dice/d4/Crossed(mob/living/carbon/human/H)

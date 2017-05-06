@@ -25,15 +25,6 @@
 	result_path = /obj/structure/light_construct/small
 	materials = list(MAT_METAL=MINERAL_MATERIAL_AMOUNT)
 
-/obj/item/wallframe/light_fixture/try_build(turf/on_wall, user)
-	if(!..())
-		return
-	var/area/A = get_area(user)
-	if(A.dynamic_lighting != DYNAMIC_LIGHTING_ENABLED)
-		to_chat(user, "<span class='warning'>You cannot place [src] in this area!</span>")
-		return
-	return TRUE
-
 
 /obj/structure/light_construct
 	name = "light fixture frame"
@@ -162,6 +153,7 @@
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = LIGHT //Lights are calc'd via area so they dont need to be in the machine list
+	light_color = LIGHT_COLOR_HALOGEN
 	var/on = 0					// 1 if on, 0 if off
 	var/on_gs = 0
 	var/static_power_used = 0
@@ -184,8 +176,16 @@
 	brightness = 4
 	desc = "A small lighting fixture."
 	light_type = /obj/item/weapon/light/bulb
+	light_color = LIGHT_COLOR_YELLOW
 
-
+/obj/machinery/light/small/red
+	icon_state = "red1"
+	base_state = "red"
+	fitting = "bulb"
+	brightness = 3
+	desc = "A small emergency lighting fixture."
+	light_type = /obj/item/weapon/light/bulb
+	light_color = LIGHT_COLOR_FLARE
 
 /obj/machinery/light/Move()
 	if(status != LIGHT_BROKEN)
@@ -252,7 +252,7 @@
 			if(rigged)
 				if(status == LIGHT_OK && trigger)
 					explode()
-			else if( prob( min(60, switchcount*switchcount*0.01) ) )
+			else if( prob( min(60, switchcount*switchcount*0.01) ) && fitting != "lamp post")
 				if(trigger)
 					burn_out()
 			else
@@ -350,7 +350,9 @@
 		else
 			to_chat(user, "<span class='userdanger'>You stick \the [W] into the light socket!</span>")
 			if(has_power() && (W.flags & CONDUCT))
-				do_sparks(3, TRUE, src)
+				var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+				s.set_up(3, 1, src)
+				s.start()
 				if (prob(75))
 					electrocute_mob(user, get_area(src), src, rand(0.7,1.0), TRUE)
 	else
@@ -391,7 +393,7 @@
 
 /obj/machinery/light/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
 	. = ..()
-	if(. && !QDELETED(src))
+	if(. && !qdeleted(src))
 		if(prob(damage_amount * 5))
 			break_light_tube()
 
@@ -415,8 +417,8 @@
 // returns whether this light has power
 // true if area has power and lightswitch is on
 /obj/machinery/light/proc/has_power()
-	var/area/A = get_area(src)
-	return A.lightswitch && A.power_light
+	var/area/A = src.loc.loc
+	return A.master.lightswitch && A.master.power_light
 
 /obj/machinery/light/proc/flicker(var/amount = rand(10, 20))
 	set waitfor = 0
@@ -498,7 +500,6 @@
 
 	status = LIGHT_EMPTY
 	update()
-	return L
 
 /obj/machinery/light/attack_tk(mob/user)
 	if(status == LIGHT_EMPTY)
@@ -507,8 +508,7 @@
 
 	to_chat(user, "<span class='notice'>You telekinetically remove the light [fitting].</span>")
 	// create a light tube/bulb item and put it in the user's hand
-	var/obj/item/weapon/light/L = drop_light_tube()
-	L.attack_tk(user)
+	drop_light_tube()
 
 
 // break the light and make sparks if was on
@@ -521,7 +521,9 @@
 		if(status == LIGHT_OK || status == LIGHT_BURNED)
 			playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
 		if(on)
-			do_sparks(3, TRUE, src)
+			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+			s.set_up(3, 1, src)
+			s.start()
 	status = LIGHT_BROKEN
 	update()
 
@@ -541,6 +543,7 @@
 // called when area power state changes
 /obj/machinery/light/power_change()
 	var/area/A = get_area(src)
+	A = A.master
 	seton(A.lightswitch && A.power_light)
 
 // called when on fire
@@ -649,14 +652,3 @@
 		force = 5
 		playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
 		update()
-
-
-/obj/machinery/light/floor
-	name = "floor light"
-	icon = 'icons/obj/lighting.dmi'
-	base_state = "floor"		// base description and icon_state
-	icon_state = "floor1"
-	brightness = 4
-	layer = 2.5
-	light_type = /obj/item/weapon/light/bulb
-	fitting = "bulb"

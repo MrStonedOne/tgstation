@@ -20,15 +20,15 @@
 		if(!isturf(ai.loc))
 			return
 		T = get_turf(T)
-		loc = T
-		GLOB.cameranet.visibility(src)
+		forceMove(T)
+		cameranet.visibility(src)
 		if(ai.client)
 			ai.client.eye = src
-		update_parallax_contents()
+//		update_parallax_contents()
 		//Holopad
 		if(istype(ai.current, /obj/machinery/holopad))
 			var/obj/machinery/holopad/H = ai.current
-			H.move_hologram(ai, T)
+			H.move_hologram(ai)
 
 /mob/camera/aiEye/Move()
 	return 0
@@ -87,7 +87,7 @@
 	cameraFollow = null
 	unset_machine()
 
-	if(!eyeobj || !eyeobj.loc || QDELETED(eyeobj))
+	if(!eyeobj || !eyeobj.loc || qdeleted(eyeobj))
 		to_chat(src, "ERROR: Eyeobj not found. Creating new eye...")
 		eyeobj = new(loc)
 		eyeobj.ai = src
@@ -104,6 +104,6 @@
 	acceleration = !acceleration
 	to_chat(usr, "Camera acceleration has been toggled [acceleration ? "on" : "off"].")
 
-/mob/camera/aiEye/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, message_mode)
+/mob/camera/aiEye/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans)
 	if(relay_speech && speaker && ai && !radio_freq && speaker != ai && near_camera(speaker))
-		ai.relay_speech(message, speaker, message_language, raw_message, radio_freq, spans, message_mode)
+		ai.relay_speech(message, speaker, message_langs, raw_message, radio_freq, spans)

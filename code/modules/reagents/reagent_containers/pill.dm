@@ -11,8 +11,8 @@
 	var/roundstart = 0
 	var/self_delay = 0 //pills are instant, this is because patches inheret their aplication from pills
 
-/obj/item/weapon/reagent_containers/pill/Initialize()
-	. = ..()
+/obj/item/weapon/reagent_containers/pill/New()
+	..()
 	if(!icon_state)
 		icon_state = "pill[rand(1,20)]"
 	if(reagents.total_volume && roundstart)
@@ -43,12 +43,19 @@
 							"<span class='userdanger'>[user] forces [M] to [apply_method] [src].</span>")
 
 
+	user.unEquip(src) //icon update
 	add_logs(user, M, "fed", reagentlist(src))
+	forceMove(M )//Put the pill inside the mob. This fixes the issue where the pill appears to drop to the ground after someone eats it.
+
 	if(reagents.total_volume)
 		reagents.reaction(M, apply_type)
 		reagents.trans_to(M, reagents.total_volume)
-	qdel(src)
-	return 1
+		qdel(src)
+		return 1
+	else
+		qdel(src)
+		return 1
+	return 0
 
 
 /obj/item/weapon/reagent_containers/pill/afterattack(obj/target, mob/user , proximity)
@@ -100,10 +107,10 @@
 	list_reagents = list("salbutamol" = 30)
 	roundstart = 1
 /obj/item/weapon/reagent_containers/pill/charcoal
-	name = "charcoal pill"
+	name = "antitoxin pill"
 	desc = "Neutralizes many common toxins."
 	icon_state = "pill17"
-	list_reagents = list("charcoal" = 10)
+	list_reagents = list("charcoal" = 50)
 	roundstart = 1
 /obj/item/weapon/reagent_containers/pill/epinephrine
 	name = "epinephrine pill"

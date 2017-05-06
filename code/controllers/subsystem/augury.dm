@@ -1,4 +1,6 @@
-SUBSYSTEM_DEF(augury)
+var/datum/subsystem/augury/SSaugury
+
+/datum/subsystem/augury
 	name = "Augury"
 	flags = SS_NO_INIT
 
@@ -7,19 +9,21 @@ SUBSYSTEM_DEF(augury)
 
 	var/list/observers_given_action = list()
 
-/datum/controller/subsystem/augury/stat_entry(msg)
+/datum/subsystem/augury/New()
+	NEW_SS_GLOBAL(SSaugury)
+
+/datum/subsystem/augury/stat_entry(msg)
 	..("W:[watchers.len]|D:[doombringers.len]")
 
-/datum/controller/subsystem/augury/proc/register_doom(atom/A, severity)
+/datum/subsystem/augury/proc/register_doom(atom/A, severity)
 	doombringers[A] = severity
 
-/datum/controller/subsystem/augury/fire()
+/datum/subsystem/augury/fire()
 	var/biggest_doom = null
 	var/biggest_threat = null
 
-	for(var/db in doombringers)
-		var/datum/d = db
-		if(!d || QDELETED(d))
+	for(var/d in doombringers)
+		if(!d || qdeleted(d))
 			doombringers -= d
 			continue
 		var/threat = doombringers[d]
@@ -28,7 +32,7 @@ SUBSYSTEM_DEF(augury)
 			biggest_threat = threat
 
 	if(doombringers.len)
-		for(var/i in GLOB.player_list)
+		for(var/i in player_list)
 			if(isobserver(i) && (!(observers_given_action[i])))
 				var/datum/action/innate/augury/A = new
 				A.Grant(i)

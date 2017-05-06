@@ -29,7 +29,7 @@
 	blood_volume = BLOOD_VOLUME_NORMAL
 	var/obj/item/udder/udder = null
 
-/mob/living/simple_animal/hostile/retaliate/goat/Initialize()
+/mob/living/simple_animal/hostile/retaliate/goat/New()
 	udder = new()
 	..()
 /mob/living/simple_animal/hostile/retaliate/goat/Destroy()
@@ -106,7 +106,7 @@
 	gold_core_spawnable = 2
 	blood_volume = BLOOD_VOLUME_NORMAL
 
-/mob/living/simple_animal/cow/Initialize()
+/mob/living/simple_animal/cow/New()
 	udder = new()
 	..()
 
@@ -181,7 +181,7 @@
 	mob_size = MOB_SIZE_TINY
 	gold_core_spawnable = 2
 
-/mob/living/simple_animal/chick/Initialize()
+/mob/living/simple_animal/chick/New()
 	..()
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
@@ -199,6 +199,9 @@
 /mob/living/simple_animal/chick/holo/Life()
 	..()
 	amount_grown = 0
+
+var/const/MAX_CHICKENS = 50
+var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken
 	name = "\improper chicken"
@@ -234,9 +237,8 @@
 	var/list/layMessage = list("lays an egg.","squats down and croons.","begins making a huge racket.","begins clucking raucously.")
 	var/list/validColors = list("brown","black","white")
 	gold_core_spawnable = 2
-	var/static/chicken_count = 0
 
-/mob/living/simple_animal/chicken/Initialize()
+/mob/living/simple_animal/chicken/New()
 	..()
 	if(!body_color)
 		body_color = pick(validColors)
@@ -245,11 +247,11 @@
 	icon_dead = "[icon_prefix]_[body_color]_dead"
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
-	++chicken_count
+	chicken_count += 1
 
-/mob/living/simple_animal/chicken/Destroy()
-	--chicken_count
-	return ..()
+/mob/living/simple_animal/chicken/death(gibbed)
+	..(gibbed)
+	chicken_count -= 1
 
 /mob/living/simple_animal/chicken/attackby(obj/item/O, mob/user, params)
 	if(istype(O, food_type)) //feedin' dem chickens
@@ -259,7 +261,7 @@
 			user.drop_item()
 			qdel(O)
 			eggsleft += rand(1, 4)
-			//to_chat(world, eggsleft)
+//			to_chat(world, eggsleft)
 		else
 			to_chat(user, "<span class='warning'>[name] doesn't seem hungry!</span>")
 	else
@@ -295,7 +297,7 @@
 /obj/item/udder
 	name = "udder"
 
-/obj/item/udder/Initialize()
+/obj/item/udder/New()
 	reagents = new(50)
 	reagents.my_atom = src
 	reagents.add_reagent("milk", 20)

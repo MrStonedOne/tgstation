@@ -10,13 +10,14 @@
 	var/machinedir = SOUTHEAST
 	speed_process = 1
 
-/obj/machinery/mineral/stacking_unit_console/Initialize()
-	. = ..()
-	machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, machinedir))
-	if (machine)
-		machine.CONSOLE = src
-	else
-		qdel(src)
+/obj/machinery/mineral/stacking_unit_console/New()
+	..()
+	spawn(7)
+		src.machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, machinedir))
+		if (machine)
+			machine.CONSOLE = src
+		else
+			qdel(src)
 
 /obj/machinery/mineral/stacking_unit_console/attack_hand(mob/user)
 
@@ -70,14 +71,6 @@
 	input_dir = EAST
 	output_dir = WEST
 
-/obj/machinery/mineral/stacking_machine/Initialize()
-	. = ..()
-	proximity_monitor = new(src, 1)
-
-/obj/machinery/mineral/stacking_machine/HasProximity(atom/movable/AM)
-	if(istype(AM, /obj/item/stack/sheet) && AM.loc == get_step(src, input_dir))
-		process_sheet(AM)
-
 /obj/machinery/mineral/stacking_machine/proc/process_sheet(obj/item/stack/sheet/inp)
 	if(!(inp.type in stack_list)) //It's the first of this sheet added
 		var/obj/item/stack/sheet/s = new inp.type(src,0)
@@ -85,9 +78,15 @@
 		stack_list[inp.type] = s
 	var/obj/item/stack/sheet/storage = stack_list[inp.type]
 	storage.amount += inp.amount //Stack the sheets
-	inp.loc = null //Let the old sheet garbage collect
+	inp.forceMove(null )//Let the old sheet garbage collect
 	while(storage.amount > stack_amt) //Get rid of excessive stackage
 		var/obj/item/stack/sheet/out = new inp.type()
 		out.amount = stack_amt
 		unload_mineral(out)
 		storage.amount -= stack_amt
+
+/obj/machinery/mineral/stacking_machine/process()
+	var/turf/T = get_step(src, input_dir)
+	if(T)
+		for(var/obj/item/stack/sheet/S in T)
+			process_sheet(S)

@@ -31,7 +31,7 @@
 	alt_covers_chest = 1
 
 /obj/item/clothing/under/rank/scientist
-	desc = "It's made of a special fiber that provides minor protection against explosives. It has markings that denote the wearer as a scientist."
+	desc = "It's made of a special fiber that provides minor protection against biohazards. It has markings that denote the wearer as a scientist."
 	name = "scientist's jumpsuit"
 	icon_state = "toxins"
 	item_state = "w_suit"
@@ -78,17 +78,6 @@
 	item_color = "virologywhite"
 	permeability_coefficient = 0.50
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 10, rad = 0, fire = 0, acid = 0)
-
-/obj/item/clothing/under/rank/nursesuit
-	desc = "It's a jumpsuit commonly worn by nursing staff in the medical department."
-	name = "nurse's suit"
-	icon_state = "nursesuit"
-	item_state = "w_suit"
-	item_color = "nursesuit"
-	permeability_coefficient = 0.50
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 10, rad = 0, fire = 0, acid = 0)
-	fitted = NO_FEMALE_UNIFORM
-	can_adjust = 0
 
 /obj/item/clothing/under/rank/medical
 	desc = "It's made of a special fiber that provides minor protection against biohazards. It has a cross on the chest denoting that the wearer is trained medical personnel."

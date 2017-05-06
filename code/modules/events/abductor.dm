@@ -5,6 +5,7 @@
 	max_occurrences = 1
 
 	min_players = 5
+	earliest_start = 18000 // 30 min
 
 	gamemode_blacklist = list("nuclear","wizard","revolution","abduction")
 
@@ -19,11 +20,11 @@
 		return NOT_ENOUGH_PLAYERS
 	//Oh god why we can't have static functions
 	// I feel your pain, bro
-	var/number = SSticker.mode.abductor_teams + 1
+	var/number = ticker.mode.abductor_teams + 1
 
 	var/datum/game_mode/abduction/temp
-	if(SSticker.mode.config_tag == "abduction")
-		temp = SSticker.mode
+	if(ticker.mode.config_tag == "abduction")
+		temp = ticker.mode
 	else
 		temp = new
 
@@ -47,10 +48,10 @@
 	temp.make_abductor_team(number,preset_scientist=scientist_mind,preset_agent=agent_mind)
 	temp.post_setup_team(number)
 
-	SSticker.mode.abductor_teams++
+	ticker.mode.abductor_teams++
 
-	if(SSticker.mode.config_tag != "abduction")
-		SSticker.mode.abductors |= temp.abductors
+	if(ticker.mode.config_tag != "abduction")
+		ticker.mode.abductors |= temp.abductors
 
 	spawned_mobs += list(agent, scientist)
 	return SUCCESSFUL_SPAWN

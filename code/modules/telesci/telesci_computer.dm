@@ -30,14 +30,14 @@
 	var/list/crystals = list()
 	var/obj/item/device/gps/inserted_gps
 
-/obj/machinery/computer/telescience/Initialize()
+/obj/machinery/computer/telescience/New()
+	..()
 	recalibrate()
-	. = ..()
 
 /obj/machinery/computer/telescience/Destroy()
 	eject()
 	if(inserted_gps)
-		inserted_gps.loc = loc
+		inserted_gps.forceMove(loc)
 		inserted_gps = null
 	return ..()
 
@@ -45,11 +45,10 @@
 	..()
 	to_chat(user, "There are [crystals.len ? crystals.len : "no"] bluespace crystal\s in the crystal slots.")
 
-/obj/machinery/computer/telescience/Initialize(mapload)
-	. = ..()
-	if(mapload)
-		for(var/i = 1; i <= starting_crystals; i++)
-			crystals += new /obj/item/weapon/ore/bluespace_crystal/artificial(null) // starting crystals
+/obj/machinery/computer/telescience/initialize()
+	..()
+	for(var/i = 1; i <= starting_crystals; i++)
+		crystals += new /obj/item/weapon/ore/bluespace_crystal/artificial(null) // starting crystals
 
 /obj/machinery/computer/telescience/attack_paw(mob/user)
 	to_chat(user, "<span class='warning'>You are too primitive to use this computer!</span>")
@@ -63,14 +62,14 @@
 		if(!user.drop_item())
 			return
 		crystals += W
-		W.loc = null
+		W.forceMove(null)
 		user.visible_message("[user] inserts [W] into \the [src]'s crystal slot.", "<span class='notice'>You insert [W] into \the [src]'s crystal slot.</span>")
 		updateDialog()
 	else if(istype(W, /obj/item/device/gps))
 		if(!inserted_gps)
-			if(!user.transferItemToLoc(W, src))
-				return
 			inserted_gps = W
+			user.unEquip(W)
+			W.forceMove(src)
 			user.visible_message("[user] inserts [W] into \the [src]'s GPS device slot.", "<span class='notice'>You insert [W] into \the [src]'s GPS device slot.</span>")
 	else if(istype(W, /obj/item/device/multitool))
 		var/obj/item/device/multitool/M = W
@@ -139,14 +138,20 @@
 	var/datum/browser/popup = new(user, "telesci", name, 300, 500)
 	popup.set_content(t)
 	popup.open()
+	return
 
 /obj/machinery/computer/telescience/proc/sparks()
 	if(telepad)
-		do_sparks(5, TRUE, get_turf(telepad))
+		var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+		s.set_up(5, 1, get_turf(telepad))
+		s.start()
+	else
+		return
 
 /obj/machinery/computer/telescience/proc/telefail()
 	sparks()
 	visible_message("<span class='warning'>The telepad weakly fizzles.</span>")
+	return
 
 /obj/machinery/computer/telescience/proc/doteleport(mob/user)
 
@@ -195,7 +200,9 @@
 			// use a lot of power
 			use_power(power * 10)
 
-			do_sparks(5, TRUE, get_turf(telepad))
+			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+			s.set_up(5, 1, get_turf(telepad))
+			s.start()
 
 			temp_msg = "Teleport successful.<BR>"
 			if(teles_left < 10)
@@ -203,7 +210,10 @@
 			else
 				temp_msg += "Data printed below."
 
-			do_sparks(5, TRUE, get_turf(target))
+			var/sparks = get_turf(target)
+			var/datum/effect_system/spark_spread/y = new /datum/effect_system/spark_spread
+			y.set_up(5, 1, sparks)
+			y.start()
 
 			var/turf/source = target
 			var/turf/dest = get_turf(telepad)
@@ -286,7 +296,7 @@
 
 /obj/machinery/computer/telescience/proc/eject()
 	for(var/obj/item/I in crystals)
-		I.loc = src.loc
+		I.forceMove(src.loc)
 		crystals -= I
 	power = 0
 
@@ -327,7 +337,7 @@
 
 	if(href_list["ejectGPS"])
 		if(inserted_gps)
-			inserted_gps.loc = loc
+			inserted_gps.forceMove(loc)
 			inserted_gps = null
 
 	if(href_list["setMemory"])

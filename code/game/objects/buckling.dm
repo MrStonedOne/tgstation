@@ -38,17 +38,10 @@
 		return TRUE
 
 //procs that handle the actual buckling and unbuckling
-/atom/movable/proc/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+/atom/movable/proc/buckle_mob(mob/living/M, force = 0)
 	if(!buckled_mobs)
 		buckled_mobs = list()
-
-	if(!istype(M))
-		return 0
-
-	if(check_loc && M.loc != loc)
-		return 0
-
-	if((!can_buckle && !force) || M.buckled || (buckled_mobs.len >= max_buckled_mobs) || (buckle_requires_restraints && !M.restrained()) || M == src)
+	if((!can_buckle && !force) || !istype(M) || (M.loc != loc) || M.buckled || (buckled_mobs.len >= max_buckled_mobs) || (buckle_requires_restraints && !M.restrained()) || M == src)
 		return 0
 	if(!M.can_buckle() && !force)
 		if(M == usr)
@@ -59,10 +52,6 @@
 
 	if(M.pulledby && buckle_prevents_pull)
 		M.pulledby.stop_pulling()
-
-	if(!check_loc && M.loc != loc)
-		M.forceMove(loc)
-
 	M.buckled = src
 	M.setDir(dir)
 	buckled_mobs |= M
@@ -72,14 +61,14 @@
 
 	return 1
 
-/obj/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+/obj/buckle_mob(mob/living/M, force = 0)
 	. = ..()
 	if(.)
 		if(resistance_flags & ON_FIRE) //Sets the mob on fire if you buckle them to a burning atom/movableect
 			M.adjust_fire_stacks(1)
 			M.IgniteMob()
 
-/atom/movable/proc/unbuckle_mob(mob/living/buckled_mob, force=FALSE)
+/atom/movable/proc/unbuckle_mob(mob/living/buckled_mob, force=0)
 	if(istype(buckled_mob) && buckled_mob.buckled == src && (buckled_mob.can_unbuckle() || force))
 		. = buckled_mob
 		buckled_mob.buckled = null
@@ -90,7 +79,7 @@
 
 		post_buckle_mob(.)
 
-/atom/movable/proc/unbuckle_all_mobs(force=FALSE)
+/atom/movable/proc/unbuckle_all_mobs(force=0)
 	if(!has_buckled_mobs())
 		return
 	for(var/m in buckled_mobs)
@@ -103,13 +92,13 @@
 
 
 //Wrapper procs that handle sanity and user feedback
-/atom/movable/proc/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+/atom/movable/proc/user_buckle_mob(mob/living/M, mob/user)
 	if(!in_range(user, src) || user.stat || user.restrained())
 		return 0
 
 	add_fingerprint(user)
 
-	if(buckle_mob(M, check_loc = check_loc))
+	if(buckle_mob(M))
 		if(M == user)
 			M.visible_message(\
 				"<span class='notice'>[M] buckles [M.p_them()]self to [src].</span>",\

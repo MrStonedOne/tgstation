@@ -1,6 +1,6 @@
 
 
-GLOBAL_VAR_INIT(hsboxspawn, TRUE)
+var/hsboxspawn = 1
 
 /mob
 	var/datum/hSB/sandbox = null
@@ -28,7 +28,7 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 	var/global/list/spawn_forbidden = list(
 		/obj/item/tk_grab, /obj/item/weapon/implant, // not implanter, the actual thing that is inside you
 		/obj/item/assembly,/obj/item/device/onetankbomb, /obj/item/radio, /obj/item/device/pda/ai,
-		/obj/item/device/uplink, /obj/item/smallDelivery, /obj/item/projectile,
+		/obj/item/device/uplink, /obj/item/smallDelivery, /obj/item/missile,/obj/item/projectile,
 		/obj/item/borg/sight,/obj/item/borg/stun,/obj/item/weapon/robot_module)
 
 /datum/hSB/proc/update()
@@ -113,13 +113,13 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 			//
 			if("hsbtobj")
 				if(!admin) return
-				if(GLOB.hsboxspawn)
+				if(hsboxspawn)
 					to_chat(world, "<span class='boldannounce'>Sandbox:</span> <b>\black[usr.key] has disabled object spawning!</b>")
-					GLOB.hsboxspawn = FALSE
+					hsboxspawn = 0
 					return
 				else
 					to_chat(world, "<span class='boldnotice'>Sandbox:</span> <b>\black[usr.key] has enabled object spawning!</b>")
-					GLOB.hsboxspawn = TRUE
+					hsboxspawn = 1
 					return
 			//
 			// Admin: Toggle auto-close
@@ -140,7 +140,7 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 				var/mob/living/carbon/human/P = usr
 				if(!istype(P)) return
 				if(P.wear_suit)
-					P.wear_suit.loc = P.loc
+					P.wear_suit.forceMove(P.loc)
 					P.wear_suit.layer = initial(P.wear_suit.layer)
 					P.wear_suit.plane = initial(P.wear_suit.plane)
 					P.wear_suit = null
@@ -149,7 +149,7 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 				P.wear_suit.plane = ABOVE_HUD_PLANE
 				P.update_inv_wear_suit()
 				if(P.head)
-					P.head.loc = P.loc
+					P.head.forceMove(P.loc)
 					P.head.layer = initial(P.head.layer)
 					P.head.plane = initial(P.head.plane)
 					P.head = null
@@ -158,7 +158,7 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 				P.head.plane = ABOVE_HUD_PLANE
 				P.update_inv_head()
 				if(P.wear_mask)
-					P.wear_mask.loc = P.loc
+					P.wear_mask.forceMove(P.loc)
 					P.wear_mask.layer = initial(P.wear_mask.layer)
 					P.wear_mask.plane = initial(P.wear_mask.plane)
 					P.wear_mask = null
@@ -167,7 +167,7 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 				P.wear_mask.plane = ABOVE_HUD_PLANE
 				P.update_inv_wear_mask()
 				if(P.back)
-					P.back.loc = P.loc
+					P.back.forceMove(P.loc)
 					P.back.layer = initial(P.back.layer)
 					P.back.plane = initial(P.back.plane)
 					P.back = null
@@ -216,9 +216,9 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 			// Spawn check due to grief potential (destroying floors, walls, etc)
 			//
 			if("hsbrcd")
-				if(!GLOB.hsboxspawn) return
+				if(!hsboxspawn) return
 
-				new/obj/item/weapon/construction/rcd/combat(usr.loc)
+				new/obj/item/weapon/rcd/combat(usr.loc)
 
 			//
 			// New sandbox airlock maker
@@ -232,7 +232,7 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 
 			// Clothing
 			if("hsbcloth")
-				if(!GLOB.hsboxspawn) return
+				if(!hsboxspawn) return
 
 				if(!clothinfo)
 					clothinfo = "<b>Clothing</b> <a href='?\ref[src];hsb=hsbreag'>(Reagent Containers)</a> <a href='?\ref[src];hsb=hsbobj'>(Other Items)</a><hr><br>"
@@ -246,7 +246,7 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 
 			// Reagent containers
 			if("hsbreag")
-				if(!GLOB.hsboxspawn) return
+				if(!hsboxspawn) return
 
 				if(!reaginfo)
 					reaginfo = "<b>Reagent Containers</b> <a href='?\ref[src];hsb=hsbcloth'>(Clothing)</a> <a href='?\ref[src];hsb=hsbobj'>(Other Items)</a><hr><br>"
@@ -260,7 +260,7 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 
 			// Other items
 			if("hsbobj")
-				if(!GLOB.hsboxspawn) return
+				if(!hsboxspawn) return
 
 				if(!objinfo)
 					objinfo = "<b>Other Items</b> <a href='?\ref[src];hsb=hsbcloth'>(Clothing)</a> <a href='?\ref[src];hsb=hsbreag'>(Reagent Containers)</a><hr><br>"
@@ -277,7 +277,7 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 			// Safespawn checks to see if spawning is disabled.
 			//
 			if("hsb_safespawn")
-				if(!GLOB.hsboxspawn)
+				if(!hsboxspawn)
 					usr << browse(null,"window=sandbox")
 					return
 

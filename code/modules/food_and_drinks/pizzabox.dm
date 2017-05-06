@@ -39,11 +39,11 @@
 	desc = initial(desc)
 	if(open)
 		if(pizza)
-			desc = "[desc] It appears to have \a [pizza] inside. Use your other hand to take it out."
+			desc = "[desc] It appears to have \a [pizza] inside."
 		if(bomb)
 			desc = "[desc] Wait, what?! It has \a [bomb] inside!"
 			if(bomb_defused)
-				desc = "[desc] The bomb seems inert. Use your other hand to activate it."
+				desc = "[desc] The bomb seems inert."
 			if(bomb_active)
 				desc = "[desc] It looks like it's about to go off!"
 	else
@@ -59,27 +59,28 @@
 		icon_state = "pizzabox_open"
 		if(pizza)
 			icon_state = "pizzabox_messy"
-			var/mutable_appearance/pizza_overlay = mutable_appearance(pizza.icon, pizza.icon_state)
-			pizza_overlay.pixel_y = -3
-			add_overlay(pizza_overlay)
+			var/image/pizzaimg = image(pizza.icon, icon_state = pizza.icon_state)
+			pizzaimg.pixel_y = -3
+			add_overlay(pizzaimg)
 		if(bomb)
 			bomb.icon_state = "pizzabomb_[bomb_active ? "active" : "inactive"]"
-			var/mutable_appearance/bomb_overlay = mutable_appearance(bomb.icon, bomb.icon_state)
-			bomb_overlay.pixel_y = 5
-			add_overlay(bomb_overlay)
+			var/image/bombimg = image(bomb.icon, icon_state = bomb.icon_state)
+			bombimg.pixel_y = 5
+			add_overlay(bombimg)
+	else
 		icon_state = "pizzabox[boxes.len + 1]"
 		var/obj/item/pizzabox/box = boxes.len ? boxes[boxes.len] : src
 		if(box.boxtag != "")
-			var/mutable_appearance/tag_overlay = mutable_appearance(icon, "pizzabox_tag")
-			tag_overlay.pixel_y = boxes.len * 3
-			add_overlay(tag_overlay)
+			var/image/tagimg = image(icon, icon_state = "pizzabox_tag")
+			tagimg.pixel_y = boxes.len * 3
+			add_overlay(tagimg)
 
 /obj/item/pizzabox/attack_self(mob/user)
 	if(boxes.len > 0)
 		return
 	open = !open
 	if(open && !bomb_defused)
-		audible_message("<span class='warning'>\icon[src] *beep*</span>")
+		audible_message("<span class='warning'>[bicon(src)] *beep*</span>")
 		bomb_active = TRUE
 		START_PROCESSING(SSobj, src)
 	update_icon()
@@ -108,7 +109,7 @@
 				bomb_defused = FALSE
 
 				var/message = "[ADMIN_LOOKUPFLW(user)] has trapped a [src] with [bomb] set to [bomb_timer * 2] seconds."
-				GLOB.bombers += message
+				bombers += message
 				message_admins(message)
 				log_game("[key_name(user)] has trapped a [src] with [bomb] set to [bomb_timer * 2] seconds.")
 				bomb.adminlog = "The [bomb.name] in [src.name] that [key_name(user)] activated has detonated!"
@@ -139,7 +140,7 @@
 					return
 				boxes += add
 				newbox.boxes.Cut()
-				newbox.loc = src
+				newbox.forceMove(src)
 				to_chat(user, "<span class='notice'>You put [newbox] on top of [src]!</span>")
 				newbox.update_icon()
 				update_icon()
@@ -153,7 +154,7 @@
 			if(!user.drop_item())
 				return
 			pizza = I
-			I.loc = src
+			I.forceMove(src)
 			to_chat(user, "<span class='notice'>You put [I] in [src].</span>")
 			update_icon()
 			return
@@ -163,7 +164,7 @@
 				return
 			wires = new /datum/wires/explosive/pizza(src)
 			bomb = I
-			I.loc = src
+			I.forceMove(src)
 			to_chat(user, "<span class='notice'>You put [I] in [src]. Sneeki breeki...</span>")
 			update_icon()
 			return

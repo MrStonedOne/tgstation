@@ -8,7 +8,7 @@
 	anchored = 1
 	density = 1
 	layer = MASSIVE_OBJ_LAYER
-	luminosity = 6
+	light_range = 6
 	appearance_flags = 0
 	var/current_size = 1
 	var/allowed_size = 1
@@ -27,18 +27,16 @@
 	var/last_warning
 	var/consumedSupermatter = 0 //If the singularity has eaten a supermatter shard and can go to stage six
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
-	dangerous_possession = TRUE
 
-/obj/singularity/Initialize(mapload, starting_energy = 50)
+/obj/singularity/New(loc, var/starting_energy = 50, var/temp = 0)
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()
 
 	src.energy = starting_energy
-	. = ..()
+	..()
 	START_PROCESSING(SSobj, src)
-	GLOB.poi_list |= src
-	GLOB.singularities |= src
-	for(var/obj/machinery/power/singularity_beacon/singubeacon in GLOB.machines)
+	poi_list |= src
+	for(var/obj/machinery/power/singularity_beacon/singubeacon in machines)
 		if(singubeacon.active)
 			target = singubeacon
 			break
@@ -46,8 +44,7 @@
 
 /obj/singularity/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	GLOB.poi_list.Remove(src)
-	GLOB.singularities.Remove(src)
+	poi_list.Remove(src)
 	return ..()
 
 /obj/singularity/Move(atom/newloc, direct)
@@ -279,7 +276,7 @@
 		desc = "[initial(desc)] It glows fiercely with inner fire."
 		name = "supermatter-charged [initial(name)]"
 		consumedSupermatter = 1
-		luminosity = 10
+		light_range = 10
 	return
 
 
@@ -287,7 +284,7 @@
 	if(!move_self)
 		return 0
 
-	var/movement_dir = pick(GLOB.alldirs - last_failed_movement)
+	var/movement_dir = pick(alldirs - last_failed_movement)
 
 	if(force_move)
 		movement_dir = force_move
@@ -431,7 +428,7 @@
 
 
 /obj/singularity/proc/pulse()
-	for(var/obj/machinery/power/rad_collector/R in GLOB.rad_collectors)
+	for(var/obj/machinery/power/rad_collector/R in rad_collectors)
 		if(R.z == z && get_dist(R, src) <= 15) // Better than using orange() every process
 			R.receive_pulse(energy)
 

@@ -82,9 +82,9 @@
 /datum/teleport/proc/playSpecials(atom/location,datum/effect_system/effect,sound)
 	if(location)
 		if(effect)
-			INVOKE_ASYNC(src, .proc/do_effect, location, effect)
+			addtimer(CALLBACK(src, .proc/do_effect, location, effect), 0)
 		if(sound)
-			INVOKE_ASYNC(src, .proc/do_sound, location, sound)
+			addtimer(CALLBACK(src, .proc/do_sound, location, sound), 0)
 
 /datum/teleport/proc/do_effect(atom/location, datum/effect_system/effect)
 	src = null
@@ -195,7 +195,7 @@
 		var/list/A_gases = A.gases
 		var/trace_gases
 		for(var/id in A_gases)
-			if(id in GLOB.hardcoded_gases)
+			if(id in hardcoded_gases)
 				continue
 			trace_gases = TRUE
 			break

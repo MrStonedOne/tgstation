@@ -40,19 +40,31 @@
 	// Upgrades bitflag
 	var/upgrades = 0
 
-/obj/machinery/camera/Initialize(mapload)
-	. = ..()
+/obj/machinery/camera/New()
+	..()
 	assembly = new(src)
 	assembly.state = 4
-	GLOB.cameranet.cameras += src
-	GLOB.cameranet.addCamera(src)
-	proximity_monitor = new(src, 1)
+	cameranet.cameras += src
+	cameranet.addCamera(src)
+	add_to_proximity_list(src, 1) //1 was default of everything
+	/* // Use this to look for cameras that have the same c_tag.
+	for(var/obj/machinery/camera/C in cameranet.cameras)
+		var/list/tempnetwork = C.network&src.network
+		if(C != src && C.c_tag == src.c_tag && tempnetwork.len)
+			world.log << "[src.c_tag] [src.x] [src.y] [src.z] conflicts with [C.c_tag] [C.x] [C.y] [C.z]"
+	*/
 
-	if(mapload && z == ZLEVEL_STATION && prob(3) && !start_active)
+/obj/machinery/camera/initialize()
+	if(z == 1 && prob(3) && !start_active)
 		toggle_cam()
+
+/obj/machinery/camera/Move()
+	remove_from_proximity_list(src, 1)
+	return ..()
 
 /obj/machinery/camera/Destroy()
 	toggle_cam(null, 0) //kick anyone viewing out
+	remove_from_proximity_list(src, 1)
 	if(assembly)
 		qdel(assembly)
 		assembly = null
@@ -61,9 +73,9 @@
 		if(bug.current == src)
 			bug.current = null
 		bug = null
-	GLOB.cameranet.removeCamera(src) //Will handle removal from the camera network and the chunks, so we don't need to worry about that
-	GLOB.cameranet.cameras -= src
-	GLOB.cameranet.removeCamera(src)
+	cameranet.removeCamera(src) //Will handle removal from the camera network and the chunks, so we don't need to worry about that
+	cameranet.cameras -= src
+	cameranet.removeCamera(src)
 	return ..()
 
 /obj/machinery/camera/emp_act(severity)
@@ -74,7 +86,7 @@
 			update_icon()
 			var/list/previous_network = network
 			network = list()
-			GLOB.cameranet.removeCamera(src)
+			cameranet.removeCamera(src)
 			stat |= EMPED
 			set_light(0)
 			emped = emped+1  //Increase the number of consecutive EMP's
@@ -88,10 +100,10 @@
 						stat &= ~EMPED
 						update_icon()
 						if(can_use())
-							GLOB.cameranet.addCamera(src)
+							cameranet.addCamera(src)
 						emped = 0 //Resets the consecutive EMP count
 						addtimer(CALLBACK(src, .proc/cancelCameraAlarm), 100)
-			for(var/mob/O in GLOB.mob_list)
+			for(var/mob/O in mob_list)
 				if (O.client && O.client.eye == src)
 					O.unset_machine()
 					O.reset_perspective(null)
@@ -111,7 +123,7 @@
 
 /obj/machinery/camera/proc/setViewRange(num = 7)
 	src.view_range = num
-	GLOB.cameranet.updateVisibility(src, 0)
+	cameranet.updateVisibility(src, 0)
 
 /obj/machinery/camera/proc/shock(mob/living/user)
 	if(!istype(user))
@@ -193,7 +205,7 @@
 			info = P.notehtml
 		to_chat(U, "<span class='notice'>You hold \the [itemname] up to the camera...</span>")
 		U.changeNext_move(CLICK_CD_MELEE)
-		for(var/mob/O in GLOB.player_list)
+		for(var/mob/O in player_list)
 			if(isAI(O))
 				var/mob/living/silicon/ai/AI = O
 				if(AI.control_disabled || (AI.stat == DEAD))
@@ -201,7 +213,7 @@
 				if(U.name == "Unknown")
 					to_chat(AI, "<b>[U]</b> holds <a href='?_src_=usr;show_paper=1;'>\a [itemname]</a> up to one of your cameras ...")
 				else
-					to_chat(AI, "<b><a href='?src=\ref[AI];track=[html_encode(U.name)]'>[U]</a></b> holds <a href='?_src_=usr;show_paper=1;'>\a [itemname]</a> up to one of your cameras ...")
+					to_chat(AI, "<b><a href='?src=\ref[AI];track=[html_encode_ru(U.name)]'>[U]</a></b> holds <a href='?_src_=usr;show_paper=1;'>\a [itemname]</a> up to one of your cameras ...")
 				AI.last_paper_seen = "<HTML><HEAD><TITLE>[itemname]</TITLE></HEAD><BODY><TT>[info]</TT></BODY></HTML>"
 			else if (O.client && O.client.eye == src)
 				to_chat(O, "[U] holds \a [itemname] up to one of the cameras ...")
@@ -244,7 +256,7 @@
 		if(disassembled)
 			if(!assembly)
 				assembly = new()
-			assembly.loc = src.loc
+			assembly.forceMove(src.loc)
 			assembly.state = 1
 			assembly.setDir(dir)
 			assembly = null
@@ -265,11 +277,11 @@
 /obj/machinery/camera/proc/toggle_cam(mob/user, displaymessage = 1)
 	status = !status
 	if(can_use())
-		GLOB.cameranet.addCamera(src)
+		cameranet.addCamera(src)
 	else
 		set_light(0)
-		GLOB.cameranet.removeCamera(src)
-	GLOB.cameranet.updateChunk(x, y, z)
+		cameranet.removeCamera(src)
+	cameranet.updateChunk(x, y, z)
 	var/change_msg = "deactivates"
 	if(status)
 		change_msg = "reactivates"
@@ -288,7 +300,7 @@
 	// now disconnect anyone using the camera
 	//Apparently, this will disconnect anyone even if the camera was re-activated.
 	//I guess that doesn't matter since they can't use it anyway?
-	for(var/mob/O in GLOB.player_list)
+	for(var/mob/O in player_list)
 		if (O.client && O.client.eye == src)
 			O.unset_machine()
 			O.reset_perspective(null)
@@ -296,12 +308,12 @@
 
 /obj/machinery/camera/proc/triggerCameraAlarm()
 	alarm_on = 1
-	for(var/mob/living/silicon/S in GLOB.mob_list)
+	for(var/mob/living/silicon/S in mob_list)
 		S.triggerAlarm("Camera", get_area(src), list(src), src)
 
 /obj/machinery/camera/proc/cancelCameraAlarm()
 	alarm_on = 0
-	for(var/mob/living/silicon/S in GLOB.mob_list)
+	for(var/mob/living/silicon/S in mob_list)
 		S.cancelAlarm("Camera", get_area(src), src)
 
 /obj/machinery/camera/proc/can_use()
@@ -373,27 +385,27 @@
 	return 0
 
 /obj/machinery/camera/proc/Togglelight(on=0)
-	for(var/mob/living/silicon/ai/A in GLOB.ai_list)
+	for(var/mob/living/silicon/ai/A in ai_list)
 		for(var/obj/machinery/camera/cam in A.lit_cameras)
 			if(cam == src)
 				return
 	if(on)
-		set_light(AI_CAMERA_LUMINOSITY)
+		src.set_light(AI_CAMERA_LUMINOSITY)
 	else
-		set_light(0)
+		src.set_light(0)
 
 /obj/machinery/camera/portable //Cameras which are placed inside of things, such as helmets.
 	var/turf/prev_turf
 
-/obj/machinery/camera/portable/Initialize()
-	. = ..()
+/obj/machinery/camera/portable/New()
+	..()
 	assembly.state = 0 //These cameras are portable, and so shall be in the portable state if removed.
 	assembly.anchored = 0
 	assembly.update_icon()
 
 /obj/machinery/camera/portable/process() //Updates whenever the camera is moved.
-	if(GLOB.cameranet && get_turf(src) != prev_turf)
-		GLOB.cameranet.updatePortableCamera(src)
+	if(cameranet && get_turf(src) != prev_turf)
+		cameranet.updatePortableCamera(src)
 		prev_turf = get_turf(src)
 
 /obj/machinery/camera/get_remote_view_fullscreens(mob/user)

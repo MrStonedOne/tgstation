@@ -102,10 +102,18 @@
 		return
 	var/turf/T = get_turf(obj)
 	for(var/atom/movable/AM in obj.contents) // these should be derezed if they were generated
-		AM.loc = T
-		if(ismob(AM))
-			silent = FALSE					// otherwise make sure they are dropped
+		AM.forceMove(T							)// otherwise make sure they are dropped
+
+	if(istype(obj))
+		var/mob/M = obj.loc
+		if(ismob(M))
+			M.unEquip(obj, 1) //Holoweapons should always drop.
+
+	for(var/mob/M in obj.contents)
+		M.forceMove(obj.loc)
+		silent = 0
 
 	if(!silent)
-		visible_message("The [obj.name] fades away!")
+		var/obj/oldobj = obj
+		visible_message("The [oldobj.name] fades away!")
 	qdel(obj)

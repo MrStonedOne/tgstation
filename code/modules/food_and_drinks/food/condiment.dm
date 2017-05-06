@@ -124,12 +124,6 @@
 	list_reagents = list("sodiumchloride" = 20)
 	possible_states = list()
 
-/obj/item/weapon/reagent_containers/food/condiment/saltshaker/on_reagent_change()
-	if(reagents.reagent_list.len == 0)
-		icon_state = "emptyshaker"
-	else
-		icon_state = "saltshakersmall"
-
 /obj/item/weapon/reagent_containers/food/condiment/saltshaker/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] begins to swap forms with the salt shaker! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	var/newname = "[name]"
@@ -161,12 +155,6 @@
 	volume = 20
 	list_reagents = list("blackpepper" = 20)
 	possible_states = list()
-
-/obj/item/weapon/reagent_containers/food/condiment/peppermill/on_reagent_change()
-	if(reagents.reagent_list.len == 0)
-		icon_state = "emptyshaker"
-	else
-		icon_state = "peppermillsmall"
 
 /obj/item/weapon/reagent_containers/food/condiment/milk
 	name = "space milk"
@@ -233,7 +221,8 @@
 			qdel(src)
 			return
 		if(target.reagents.total_volume >= target.reagents.maximum_volume)
-			to_chat(user, "<span class='warning'>You tear open [src], but [target] is stacked so high that it just drips off!</span>" )
+			to_chat(user, "<span class='warning'>You tear open [src], but [target] is stacked so high that it just drips off!</span>")//Not sure if food can ever be full, but better safe than sorry.
+
 			qdel(src)
 			return
 		else

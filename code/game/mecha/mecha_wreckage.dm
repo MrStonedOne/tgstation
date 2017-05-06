@@ -23,7 +23,7 @@
 		AI.apply_damage(150, BURN) //Give the AI a bit of damage from the "shock" of being suddenly shut down
 		AI.death() //The damage is not enough to kill the AI, but to be 'corrupted files' in need of repair.
 		AI.forceMove(src) //Put the dead AI inside the wreckage for recovery
-		add_overlay(mutable_appearance('icons/obj/projectiles.dmi', "green_laser")) //Overlay for the recovery beacon
+		add_overlay(image('icons/obj/projectiles.dmi', icon_state = "green_laser")) //Overlay for the recovery beacon
 		AI.controlled_mech = null
 		AI.remote_control = null
 
@@ -68,7 +68,7 @@
 		if(crowbar_salvage && crowbar_salvage.len)
 			var/obj/S = pick(crowbar_salvage)
 			if(S)
-				S.loc = get_turf(user)
+				S.forceMove(get_turf(user))
 				crowbar_salvage -= S
 				user.visible_message("[user] pries [S] from [src].", "<span class='notice'>You pry [S] from [src].</span>")
 			return

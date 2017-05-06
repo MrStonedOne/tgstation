@@ -61,17 +61,9 @@
 	return
 
 /obj/item/weapon/flamethrower/afterattack(atom/target, mob/user, flag)
-	if(flag)
-		return // too close
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(H.dna.check_mutation(HULK))
-			to_chat(user, "<span class='warning'>Your meaty finger is much too large for the trigger guard!</span>")
-			return
-		if(NOGUNS in H.dna.species.species_traits)
-			to_chat(user, "<span class='warning'>Your fingers don't fit in the trigger guard!</span>")
-			return
-	if(user && user.get_active_held_item() == src) // Make sure our user is still holding us
+	if(flag) return // too close
+	// Make sure our user is still holding us
+	if(user && user.get_active_held_item() == src)
 		var/turf/target_turf = get_turf(target)
 		if(target_turf)
 			var/turflist = getline(user, target_turf)
@@ -82,13 +74,13 @@
 	if(istype(W, /obj/item/weapon/wrench) && !status)//Taking this apart
 		var/turf/T = get_turf(src)
 		if(weldtool)
-			weldtool.loc = T
+			weldtool.forceMove(T)
 			weldtool = null
 		if(igniter)
-			igniter.loc = T
+			igniter.forceMove(T)
 			igniter = null
 		if(ptank)
-			ptank.loc = T
+			ptank.forceMove(T)
 			ptank = null
 		new /obj/item/stack/rods(T)
 		qdel(src)
@@ -106,8 +98,9 @@
 			return
 		if(igniter)
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
+		I.forceMove(src)
 		igniter = I
 		update_icon()
 		return
@@ -116,9 +109,10 @@
 		if(ptank)
 			to_chat(user, "<span class='notice'>There is already a plasma tank loaded in [src]!</span>")
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
 		ptank = W
+		W.forceMove(src)
 		update_icon()
 		return
 
@@ -158,7 +152,7 @@
 		if(lit)
 			START_PROCESSING(SSobj, src)
 			if(!warned_admins)
-				message_admins("[ADMIN_LOOKUPFLW(usr)] has lit a flamethrower.")
+				message_admins("[key_name_admin(usr)]<A HREF='?_src_=holder;adminmoreinfo=\ref[usr]'>?</A> (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[usr]'>FLW</A>) has lit a flamethrower.")
 				warned_admins = 1
 	if(href_list["amount"])
 		throw_amount = throw_amount + text2num(href_list["amount"])

@@ -39,11 +39,10 @@
 	var/attempt_open = 0
 
 // Pickup loot
-/mob/living/simple_animal/hostile/mimic/crate/Initialize(mapload)
+/mob/living/simple_animal/hostile/mimic/crate/initialize()
 	..()
-	if(mapload)	//eat shit
-		for(var/obj/item/I in loc)
-			I.loc = src
+	for(var/obj/item/I in loc)
+		I.forceMove(src)
 
 /mob/living/simple_animal/hostile/mimic/crate/DestroySurroundings()
 	..()
@@ -66,11 +65,6 @@
 	. = ..()
 	if(.)
 		icon_state = initial(icon_state)
-		if(prob(15) && iscarbon(target))
-			var/mob/living/carbon/C = target
-			C.Weaken(2)
-			C.visible_message("<span class='danger'>\The [src] knocks down \the [C]!</span>", \
-					"<span class='userdanger'>\The [src] knocks you down!</span>")
 
 /mob/living/simple_animal/hostile/mimic/crate/proc/trigger()
 	if(!attempt_open)
@@ -89,10 +83,22 @@
 	var/obj/structure/closet/crate/C = new(get_turf(src))
 	// Put loot in crate
 	for(var/obj/O in src)
-		O.loc = C
+		O.forceMove(C)
 	..()
 
-GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/cable, /obj/structure/window))
+/mob/living/simple_animal/hostile/mimic/crate/AttackingTarget()
+	. =..()
+	var/mob/living/L = .
+	if(iscarbon(L))
+		var/mob/living/carbon/C = L
+		if(prob(15))
+			C.Weaken(2)
+			C.visible_message("<span class='danger'>\The [src] knocks down \the [C]!</span>", \
+					"<span class='userdanger'>\The [src] knocks you down!</span>")
+
+
+
+var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/cable, /obj/structure/window)
 
 /mob/living/simple_animal/hostile/mimic/copy
 	health = 100
@@ -100,11 +106,11 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 	var/mob/living/creator = null // the creator
 	var/destroy_objects = 0
 	var/knockdown_people = 0
-	var/static/mutable_appearance/googly_eyes = mutable_appearance('icons/mob/mob.dmi', "googly_eyes")
+	var/image/googly_eyes = null
 	gold_core_spawnable = 0
 
-/mob/living/simple_animal/hostile/mimic/copy/Initialize(mapload, obj/copy, mob/living/creator, destroy_original = 0)
-	..()
+/mob/living/simple_animal/hostile/mimic/copy/New(loc, obj/copy, mob/living/creator, destroy_original = 0)
+	..(loc)
 	CopyObject(copy, creator, destroy_original)
 
 /mob/living/simple_animal/hostile/mimic/copy/Life()
@@ -116,7 +122,7 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 
 /mob/living/simple_animal/hostile/mimic/copy/death()
 	for(var/atom/movable/M in src)
-		M.loc = get_turf(src)
+		M.forceMove(get_turf(src))
 	..()
 
 /mob/living/simple_animal/hostile/mimic/copy/ListTargets()
@@ -130,19 +136,20 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 		faction |= "\ref[owner]"
 
 /mob/living/simple_animal/hostile/mimic/copy/proc/CheckObject(obj/O)
-	if((istype(O, /obj/item) || istype(O, /obj/structure)) && !is_type_in_list(O, GLOB.protected_objects))
+	if((istype(O, /obj/item) || istype(O, /obj/structure)) && !is_type_in_list(O, protected_objects))
 		return 1
 	return 0
 
 /mob/living/simple_animal/hostile/mimic/copy/proc/CopyObject(obj/O, mob/living/user, destroy_original = 0)
 	if(destroy_original || CheckObject(O))
-		O.loc = src
+		O.forceMove(src)
 		name = O.name
 		desc = O.desc
 		icon = O.icon
 		icon_state = O.icon_state
 		icon_living = icon_state
-		copy_overlays(O)
+		overlays = O.overlays
+		googly_eyes = image('icons/mob/mob.dmi',"googly_eyes")
 		add_overlay(googly_eyes)
 		if(istype(O, /obj/structure) || istype(O, /obj/machinery))
 			health = (anchored * 50) + 50
@@ -170,12 +177,19 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 		..()
 
 /mob/living/simple_animal/hostile/mimic/copy/AttackingTarget()
-	. = ..()
-	if(knockdown_people && . && prob(15) && iscarbon(target))
-		var/mob/living/carbon/C = target
-		C.Weaken(2)
-		C.visible_message("<span class='danger'>\The [src] knocks down \the [C]!</span>", \
-				"<span class='userdanger'>\The [src] knocks you down!</span>")
+	..()
+	if(knockdown_people)
+		if(iscarbon(target))
+			var/mob/living/carbon/C = target
+			if(prob(15))
+				C.Weaken(2)
+				C.visible_message("<span class='danger'>\The [src] knocks down \the [C]!</span>", \
+						"<span class='userdanger'>\The [src] knocks you down!</span>")
+
+/mob/living/simple_animal/hostile/mimic/copy/Aggro()
+	..()
+	googly_eyes.setDir(get_dir(src,target))
+
 
 /mob/living/simple_animal/hostile/mimic/copy/machine
 	speak = list("HUMANS ARE IMPERFECT!", "YOU SHALL BE ASSIMILATED!", "YOU ARE HARMING YOURSELF", "You have been deemed hazardous. Will you comply?", \
@@ -249,15 +263,15 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 				..()
 			else
 				visible_message("<span class='danger'>The <b>[src]</b> clears a jam!</span>")
-			Pewgun.chambered.loc = loc //rip revolver immersions, blame shotgun snowflake procs
+			Pewgun.chambered.forceMove(loc )//rip revolver immersions, blame shotgun snowflake procs
 			Pewgun.chambered = null
 			if(Pewgun.magazine && Pewgun.magazine.stored_ammo.len)
 				Pewgun.chambered = Pewgun.magazine.get_round(0)
-				Pewgun.chambered.loc = Pewgun
+				Pewgun.chambered.forceMove(Pewgun)
 			Pewgun.update_icon()
 		else if(Pewgun.magazine && Pewgun.magazine.stored_ammo.len) //only true for pumpguns i think
 			Pewgun.chambered = Pewgun.magazine.get_round(0)
-			Pewgun.chambered.loc = Pewgun
+			Pewgun.chambered.forceMove(Pewgun)
 			visible_message("<span class='danger'>The <b>[src]</b> cocks itself!</span>")
 	else
 		ranged = 0 //BANZAIIII

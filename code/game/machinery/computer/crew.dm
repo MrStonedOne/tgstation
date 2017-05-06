@@ -7,22 +7,25 @@
 	idle_power_usage = 250
 	active_power_usage = 500
 	circuit = /obj/item/weapon/circuitboard/computer/crew
+	var/monitor = null	//For VV debugging purposes
 
-	light_color = LIGHT_COLOR_BLUE
+/obj/machinery/computer/crew/New()
+	monitor = crewmonitor
+	return ..()
 
 /obj/machinery/computer/crew/attack_ai(mob/user)
 	if(stat & (BROKEN|NOPOWER))
 		return
-	GLOB.crewmonitor.show(user)
+	crewmonitor.show(user)
 
 /obj/machinery/computer/crew/attack_hand(mob/user)
 	if(..())
 		return
 	if(stat & (BROKEN|NOPOWER))
 		return
-	GLOB.crewmonitor.show(user)
+	crewmonitor.show(user)
 
-GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
+var/global/datum/crewmonitor/crewmonitor = new
 
 /datum/crewmonitor
 	var/list/jobs
@@ -56,7 +59,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	jobs["Bartender"] = 61
 	jobs["Cook"] = 62
 	jobs["Botanist"] = 63
-	jobs["Curator"] = 64
+	jobs["Librarian"] = 64
 	jobs["Chaplain"] = 65
 	jobs["Clown"] = 66
 	jobs["Mime"] = 67
@@ -146,15 +149,15 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 			var/pos_y
 			var/life_status
 
-			for(var/mob/living/carbon/human/H in GLOB.mob_list)
+			for(var/mob/living/carbon/human/H in mob_list)
 				// Check if their z-level is correct and if they are wearing a uniform.
 				// Accept H.z==0 as well in case the mob is inside an object.
 				if ((H.z == 0 || H.z == z) && istype(H.w_uniform, /obj/item/clothing/under))
 					U = H.w_uniform
 
 					// Are the suit sensors on?
-					if ((U.has_sensor > 0) && U.sensor_mode)
-						pos = H.z == 0 || U.sensor_mode == SENSOR_COORDS ? get_turf(H) : null
+					if (U.has_sensor && U.sensor_mode)
+						pos = H.z == 0 || U.sensor_mode == 3 ? get_turf(H) : null
 
 						// Special case: If the mob is inside an object confirm the z-level on turf level.
 						if (H.z == 0 && (!pos || pos.z != z)) continue
@@ -170,10 +173,10 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 							assignment = ""
 							ijob = 80
 
-						if (U.sensor_mode >= SENSOR_LIVING) life_status = (!H.stat ? "true" : "false")
+						if (U.sensor_mode >= 1) life_status = (!H.stat ? "true" : "false")
 						else                    life_status = null
 
-						if (U.sensor_mode >= SENSOR_VITALS)
+						if (U.sensor_mode >= 2)
 							dam1 = round(H.getOxyLoss(),1)
 							dam2 = round(H.getToxLoss(),1)
 							dam3 = round(H.getFireLoss(),1)
@@ -184,7 +187,7 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 							dam3 = null
 							dam4 = null
 
-						if (U.sensor_mode >= SENSOR_COORDS)
+						if (U.sensor_mode >= 3)
 							if (!pos) pos = get_turf(H)
 							var/area/player_area = get_area(H)
 
@@ -239,11 +242,11 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 					if (!C) C = locate(/obj/machinery/camera) in urange(15, tile)
 
 					if (C)
-						addtimer(CALLBACK(src, .proc/update_ai, AI, C, AI.eyeobj.loc), min(30, get_dist(get_turf(C), AI.eyeobj) / 4))
+						var/turf/current_loc = AI.eyeobj.loc
 
-/datum/crewmonitor/proc/update_ai(mob/living/silicon/ai/AI, obj/machinery/camera/C, turf/current_loc)
-	if (AI && AI.eyeobj && current_loc == AI.eyeobj.loc)
-		AI.switchCamera(C)
+						spawn(min(30, get_dist(get_turf(C), AI.eyeobj) / 4))
+							if (AI && AI.eyeobj && current_loc == AI.eyeobj.loc)
+								AI.switchCamera(C)
 
 /mob/living/carbon/human/Move()
 	if (src.w_uniform)
@@ -251,13 +254,13 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 
 		. = ..()
 
-		if (old_z != src.z) GLOB.crewmonitor.queueUpdate(old_z)
-		GLOB.crewmonitor.queueUpdate(src.z)
+		if (old_z != src.z) crewmonitor.queueUpdate(old_z)
+		crewmonitor.queueUpdate(src.z)
 	else
 		return ..()
 
 /datum/crewmonitor/proc/queueUpdate(z)
-	addtimer(CALLBACK(src, .proc/update, z), 5, TIMER_UNIQUE)
+	addtimer(CALLBACK(crewmonitor, .proc/update, z), 5, TIMER_UNIQUE)
 
 /datum/crewmonitor/proc/sendResources(var/client/client)
 	send_asset(client, "crewmonitor.js")

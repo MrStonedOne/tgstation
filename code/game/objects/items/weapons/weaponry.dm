@@ -65,12 +65,12 @@
 	user.visible_message("<span class='suicide'>[user] is falling on [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return(BRUTELOSS)
 
+var/highlander_claymores = 0
 /obj/item/weapon/claymore/highlander //ALL COMMENTS MADE REGARDING THIS SWORD MUST BE MADE IN ALL CAPS
 	desc = "<b><i>THERE CAN BE ONLY ONE, AND IT WILL BE YOU!!!</i></b>\nActivate it in your hand to point to the nearest victim."
-	flags = CONDUCT | NODROP | DROPDEL
+	flags = CONDUCT | NODROP
 	slot_flags = null
 	block_chance = 0 //RNG WON'T HELP YOU NOW, PANSY
-	luminosity = 3
 	attack_verb = list("brutalized", "eviscerated", "disemboweled", "hacked", "carved", "cleaved") //ONLY THE MOST VISCERAL ATTACK VERBS
 	var/notches = 0 //HOW MANY PEOPLE HAVE BEEN SLAIN WITH THIS BLADE
 	var/obj/item/weapon/disk/nuclear/nuke_disk //OUR STORED NUKE DISK
@@ -78,32 +78,22 @@
 /obj/item/weapon/claymore/highlander/New()
 	..()
 	START_PROCESSING(SSobj, src)
+	highlander_claymores++
 
 /obj/item/weapon/claymore/highlander/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	highlander_claymores--
 	if(nuke_disk)
 		nuke_disk.forceMove(get_turf(src))
 		nuke_disk.visible_message("<span class='warning'>The nuke disk is vulnerable!</span>")
 		nuke_disk = null
-	STOP_PROCESSING(SSobj, src)
 	return ..()
-
-/obj/item/weapon/claymore/highlander/process()
-	if(ishuman(loc))
-		var/mob/living/carbon/human/H = loc
-		loc.layer = LARGE_MOB_LAYER //NO HIDING BEHIND PLANTS FOR YOU, DICKWEED (HA GET IT, BECAUSE WEEDS ARE PLANTS)
-		H.bleedsuppress = TRUE //AND WE WON'T BLEED OUT LIKE COWARDS
-	else
-		if(!admin_spawned)
-			qdel(src)
-
 
 /obj/item/weapon/claymore/highlander/pickup(mob/living/user)
 	to_chat(user, "<span class='notice'>The power of Scotland protects you! You are shielded from all stuns and knockdowns.</span>")
 	user.add_stun_absorption("highlander", INFINITY, 1, " is protected by the power of Scotland!", "The power of Scotland absorbs the stun!", " is protected by the power of Scotland!")
-	user.status_flags += IGNORESLOWDOWN
 
 /obj/item/weapon/claymore/highlander/dropped(mob/living/user)
-	user.status_flags -= IGNORESLOWDOWN
 	qdel(src) //If this ever happens, it's because you lost an arm
 
 /obj/item/weapon/claymore/highlander/examine(mob/user)
@@ -123,7 +113,7 @@
 /obj/item/weapon/claymore/highlander/attack_self(mob/living/user)
 	var/closest_victim
 	var/closest_distance = 255
-	for(var/mob/living/carbon/human/H in GLOB.player_list - user)
+	for(var/mob/living/carbon/human/H in player_list - user)
 		if(H.client && H.mind.special_role == "highlander" && (!closest_victim || get_dist(user, closest_victim) < closest_distance))
 			closest_victim = H
 	if(!closest_victim)
@@ -192,6 +182,7 @@
 	desc = "Woefully underpowered in D20"
 	icon_state = "katana"
 	item_state = "katana"
+	icon = 'icons/fallout/objects/melee.dmi'
 	flags = CONDUCT
 	slot_flags = SLOT_BELT | SLOT_BACK
 	force = 40
@@ -229,24 +220,26 @@
 	if(istype(I, /obj/item/weapon/shard))
 		var/obj/item/weapon/twohanded/spear/S = new /obj/item/weapon/twohanded/spear
 
-		remove_item_from_storage(user)
-		qdel(I)
-		qdel(src)
+		if(!remove_item_from_storage(user))
+			user.unEquip(src)
+		user.unEquip(I)
 
 		user.put_in_hands(S)
 		to_chat(user, "<span class='notice'>You fasten the glass shard to the top of the rod with the cable.</span>")
+		qdel(I)
+		qdel(src)
 
 	else if(istype(I, /obj/item/device/assembly/igniter) && !(I.flags & NODROP))
 		var/obj/item/weapon/melee/baton/cattleprod/P = new /obj/item/weapon/melee/baton/cattleprod
 
-		remove_item_from_storage(user)
-
-		to_chat(user, "<span class='notice'>You fasten [I] to the top of the rod with the cable.</span>")
-
-		qdel(I)
-		qdel(src)
+		if(!remove_item_from_storage(user))
+			user.unEquip(src)
+		user.unEquip(I)
 
 		user.put_in_hands(P)
+		to_chat(user, "<span class='notice'>You fasten [I] to the top of the rod with the cable.</span>")
+		qdel(I)
+		qdel(src)
 	else
 		return ..()
 
@@ -256,6 +249,7 @@
 	desc = "An ancient weapon still used to this day due to it's ease of lodging itself into victim's body parts"
 	icon_state = "throwingstar"
 	item_state = "eshield0"
+	icon = 'icons/fallout/objects/melee.dmi'
 	force = 2
 	throwforce = 20 //This is never used on mobs since this has a 100% embed chance.
 	throw_speed = 4
@@ -272,6 +266,7 @@
 	name = "switchblade"
 	icon_state = "switchblade"
 	desc = "A sharp, concealable, spring-loaded knife."
+	icon = 'icons/fallout/objects/melee.dmi'
 	flags = CONDUCT
 	force = 3
 	w_class = WEIGHT_CLASS_SMALL
@@ -390,7 +385,7 @@
 	desc = "A chainsaw that has replaced your arm."
 	icon_state = "chainsaw_on"
 	item_state = "mounted_chainsaw"
-	flags = NODROP | ABSTRACT | DROPDEL
+	flags = NODROP | ABSTRACT
 	w_class = WEIGHT_CLASS_HUGE
 	force = 21
 	throwforce = 0
@@ -398,19 +393,12 @@
 	throw_speed = 0
 	sharpness = IS_SHARP
 	attack_verb = list("sawed", "torn", "cut", "chopped", "diced")
-	hitsound = 'sound/weapons/chainsawhit.ogg'
+	hitsound = "sound/weapons/chainsawhit.ogg"
 
-/obj/item/weapon/mounted_chainsaw/Destroy()
-	var/obj/item/bodypart/part
+/obj/item/weapon/mounted_chainsaw/dropped()
+	..()
 	new /obj/item/weapon/twohanded/required/chainsaw(get_turf(src))
-	if(iscarbon(loc))
-		var/mob/living/carbon/holder = loc
-		var/index = holder.get_held_index_of_item(src)
-		if(index)
-			part = holder.hand_bodyparts[index]
-	. = ..()
-	if(part)
-		part.drop_limb()
+	qdel(src)
 
 /obj/item/weapon/statuebust
 	name = "bust"

@@ -10,7 +10,7 @@
 	device_type = BINARY
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple/SetInitDirections()
-	if(dir in GLOB.diagonals)
+	if(dir in diagonals)
 		initialize_directions_he = dir
 	switch(dir)
 		if(NORTH,SOUTH)

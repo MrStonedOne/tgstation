@@ -38,6 +38,9 @@
 
 	var/obj/machinery/power/terminal/terminal = null
 
+	var/static/list/smesImageCache
+
+
 /obj/machinery/power/smes/examine(user)
 	..()
 	if(!terminal)
@@ -50,7 +53,7 @@
 
 	spawn(5)
 		dir_loop:
-			for(var/d in GLOB.cardinal)
+			for(var/d in cardinal)
 				var/turf/T = get_step(src, d)
 				for(var/obj/machinery/power/terminal/term in T)
 					if(term && term.dir == turn(d, 180))
@@ -149,7 +152,9 @@
 				return
 			var/obj/structure/cable/N = T.get_cable_node() //get the connecting node cable, if there's one
 			if (prob(50) && electrocute_mob(usr, N, N, 1, TRUE)) //animate the electrocution if uncautious and unlucky
-				do_sparks(5, TRUE, src)
+				var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+				s.set_up(5, 1, src)
+				s.start()
 				return
 
 			C.use(10)
@@ -170,7 +175,7 @@
 	//crowbarring it !
 	var/turf/T = get_turf(src)
 	if(default_deconstruction_crowbar(I))
-		message_admins("[src] has been deconstructed by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(T)]",0,1)
+		message_admins("[src] has been deconstructed by [key_name_admin(user)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) in ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)",0,1)
 		log_game("[src] has been deconstructed by [key_name(user)]")
 		investigate_log("SMES deconstructed by [key_name(user)]","singulo")
 		return
@@ -191,12 +196,11 @@
 		cell.charge = (charge / capacity) * cell.maxcharge
 
 /obj/machinery/power/smes/Destroy()
-	if(SSticker && SSticker.IsRoundInProgress())
-		var/area/A = get_area(src)
-		var/turf/T = get_turf(src)
-		message_admins("SMES deleted at [A][ADMIN_JMP(T)]")
-		log_game("SMES deleted at [A][COORD(T)]")
-		investigate_log("<font color='red'>deleted</font> at [A][COORD(T)]","singulo")
+	if(ticker && ticker.current_state == GAME_STATE_PLAYING)
+		var/area/area = get_area(src)
+		message_admins("SMES deleted at (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>[area.name]</a>)")
+		log_game("SMES deleted at ([area.name])")
+		investigate_log("<font color='red'>deleted</font> at ([area.name])","singulo")
 	if(terminal)
 		disconnect_terminal()
 	return ..()
@@ -224,24 +228,40 @@
 	if(panel_open)
 		return
 
+	if(!smesImageCache || !smesImageCache.len)
+		smesImageCache = list()
+		smesImageCache.len = 9
+
+		smesImageCache[SMES_CLEVEL_1] = image('icons/obj/power.dmi',"smes-og1")
+		smesImageCache[SMES_CLEVEL_2] = image('icons/obj/power.dmi',"smes-og2")
+		smesImageCache[SMES_CLEVEL_3] = image('icons/obj/power.dmi',"smes-og3")
+		smesImageCache[SMES_CLEVEL_4] = image('icons/obj/power.dmi',"smes-og4")
+		smesImageCache[SMES_CLEVEL_5] = image('icons/obj/power.dmi',"smes-og5")
+
+		smesImageCache[SMES_OUTPUTTING] = image('icons/obj/power.dmi', "smes-op1")
+		smesImageCache[SMES_NOT_OUTPUTTING] = image('icons/obj/power.dmi',"smes-op0")
+		smesImageCache[SMES_INPUTTING] = image('icons/obj/power.dmi', "smes-oc1")
+		smesImageCache[SMES_INPUT_ATTEMPT] = image('icons/obj/power.dmi', "smes-oc0")
+
 	if(outputting)
-		add_overlay("smes-op1")
+		add_overlay(smesImageCache[SMES_OUTPUTTING])
 	else
-		add_overlay("smes-op0")
+		add_overlay(smesImageCache[SMES_NOT_OUTPUTTING])
 
 	if(inputting)
-		add_overlay("smes-oc1")
+		add_overlay(smesImageCache[SMES_INPUTTING])
 	else
 		if(input_attempt)
-			add_overlay("smes-oc0")
+			add_overlay(smesImageCache[SMES_INPUT_ATTEMPT])
 
 	var/clevel = chargedisplay()
 	if(clevel>0)
-		add_overlay("smes-og[clevel]")
+		add_overlay(smesImageCache[clevel])
+	return
 
 
 /obj/machinery/power/smes/proc/chargedisplay()
-	return Clamp(round(5.5*charge/capacity),0,5)
+	return round(5.5*charge/capacity)
 
 /obj/machinery/power/smes/process()
 	if(stat & BROKEN)
@@ -334,7 +354,7 @@
 		terminal.powernet.load += amount
 
 /obj/machinery/power/smes/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-										datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+										datum/tgui/master_ui = null, datum/ui_state/state = default_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "smes", name, 340, 440, master_ui, state)

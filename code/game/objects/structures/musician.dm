@@ -83,18 +83,18 @@
 			cur_acc[i] = "n"
 
 		for(var/line in lines)
-			//to_chat(world, line)
+//			to_chat(world, line)
 			for(var/beat in splittext(lowertext(line), ","))
-				//to_chat(world, "beat: [beat]")
+//				to_chat(world, "beat: [beat]")
 				var/list/notes = splittext(beat, "/")
 				for(var/note in splittext(notes[1], "-"))
-					//to_chat(world, "note: [note]")
+//					to_chat(world, "note: [note]")
 					if(!playing || shouldStopPlaying(user))//If the instrument is playing, or special case
 						playing = 0
 						return
 					if(lentext(note) == 0)
 						continue
-					//to_chat(world, "Parse: [copytext(note,1,2)]")
+//					to_chat(world, "Parse: [copytext(note,1,2)]")
 					var/cur_note = text2ascii(note) - 96
 					if(cur_note < 1 || cur_note > 7)
 						continue
@@ -107,21 +107,14 @@
 								cur_acc[cur_note] = "#" // so shift is never required
 						else
 							cur_oct[cur_note] = text2num(ni)
-					if(user.dizziness > 0 && prob(user.dizziness / 2))
-						cur_note = Clamp(cur_note + rand(round(-user.dizziness / 10), round(user.dizziness / 10)), 1, 7)
-					if(user.dizziness > 0 && prob(user.dizziness / 5))
-						if(prob(30))
-							cur_acc[cur_note] = "#"
-						else if(prob(42))
-							cur_acc[cur_note] = "b"
-						else if(prob(75))
-							cur_acc[cur_note] = "n"
 					playnote(cur_note, cur_acc[cur_note], cur_oct[cur_note])
 				if(notes.len >= 2 && text2num(notes[2]))
 					sleep(sanitize_tempo(tempo / text2num(notes[2])))
 				else
 					sleep(tempo)
 		repeat--
+		if(repeat >= 0) // don't show the last -1 repeat
+			updateDialog(user)
 	playing = 0
 	repeat = 0
 	updateDialog(user)
@@ -182,27 +175,6 @@
 	popup.set_title_image(user.browse_rsc_icon(instrumentObj.icon, instrumentObj.icon_state))
 	popup.open()
 
-/datum/song/proc/ParseSong(text)
-	set waitfor = FALSE
-	//split into lines
-	lines = splittext(text, "\n")
-	if(lines.len)
-		if(copytext(lines[1],1,6) == "BPM: ")
-			tempo = sanitize_tempo(600 / text2num(copytext(lines[1],6)))
-			lines.Cut(1,2)
-		else
-			tempo = sanitize_tempo(5) // default 120 BPM
-		if(lines.len > 50)
-			to_chat(usr, "Too many lines!")
-			lines.Cut(51)
-		var/linenum = 1
-		for(var/l in lines)
-			if(lentext(l) > 50)
-				to_chat(usr, "Line [linenum] too long!")
-				lines.Remove(l)
-			else
-				linenum++
-		updateDialog(usr)		// make sure updates when complete
 
 /datum/song/Topic(href, href_list)
 	if(!usr.canUseTopic(instrumentObj))
@@ -220,7 +192,7 @@
 	else if(href_list["import"])
 		var/t = ""
 		do
-			t = html_encode(input(usr, "Please paste the entire song, formatted:", text("[]", name), t)  as message)
+			t = html_encode_ru(input(usr, "Please paste the entire song, formatted:", text("[]", name), t)  as message)
 			if(!in_range(instrumentObj, usr))
 				return
 
@@ -229,7 +201,26 @@
 				if(cont == "no")
 					break
 		while(lentext(t) > 3072)
-		ParseSong(t)
+
+		//split into lines
+		spawn()
+			lines = splittext(t, "\n")
+			if(copytext(lines[1],1,6) == "BPM: ")
+				tempo = sanitize_tempo(600 / text2num(copytext(lines[1],6)))
+				lines.Cut(1,2)
+			else
+				tempo = sanitize_tempo(5) // default 120 BPM
+			if(lines.len > 50)
+				to_chat(usr, "Too many lines!")
+				lines.Cut(51)
+			var/linenum = 1
+			for(var/l in lines)
+				if(lentext(l) > 50)
+					to_chat(usr, "Line [linenum] too long!")
+					lines.Remove(l)
+				else
+					linenum++
+			updateDialog(usr)		// make sure updates when complete
 
 	else if(href_list["help"])
 		help = text2num(href_list["help"]) - 1
@@ -255,7 +246,7 @@
 			playsong(usr)
 
 	else if(href_list["newline"])
-		var/newline = html_encode(input("Enter your line: ", instrumentObj.name) as text|null)
+		var/newline = html_encode_ru(input("Enter your line: ", instrumentObj.name) as text|null)
 		if(!newline || !in_range(instrumentObj, usr))
 			return
 		if(lines.len > 50)
@@ -272,7 +263,7 @@
 
 	else if(href_list["modifyline"])
 		var/num = round(text2num(href_list["modifyline"]),1)
-		var/content = html_encode(input("Enter your line: ", instrumentObj.name, lines[num]) as text|null)
+		var/content = html_encode_ru(input("Enter your line: ", instrumentObj.name, lines[num]) as text|null)
 		if(!content || !in_range(instrumentObj, usr))
 			return
 		if(lentext(content) > 50)
@@ -308,9 +299,9 @@
 
 
 /obj/structure/piano
-	name = "space minimoog"
+	name = "grand piano"
 	icon = 'icons/obj/musician.dmi'
-	icon_state = "minimoog"
+	icon_state = "old"
 	anchored = 1
 	density = 1
 	var/datum/song/song
@@ -321,23 +312,22 @@
 	song = new("piano", src)
 
 	if(prob(50))
-		name = "space minimoog"
-		desc = "This is a minimoog, like a space piano, but more spacey!"
-		icon_state = "minimoog"
+		name = "grand piano"
+		desc = "An old grand piano.<br>It's in a pretty good shape after all the decades."
+		icon_state = "old"
 	else
-		name = "space piano"
-		desc = "This is a space piano, like a regular piano, but always in tune! Even if the musician isn't."
-		icon_state = "piano"
+		name = "shattered grand piano"
+		desc = "A very old grand piano.<br>It sure is a bit shattered..."
+		icon_state = "oldshattered"
 
 /obj/structure/piano/Destroy()
 	qdel(song)
 	song = null
 	return ..()
 
-/obj/structure/piano/Initialize(mapload)
+/obj/structure/piano/initialize()
+	song.tempo = song.sanitize_tempo(song.tempo) // tick_lag isn't set when the map is loaded
 	..()
-	if(mapload)
-		song.tempo = song.sanitize_tempo(song.tempo) // tick_lag isn't set when the map is loaded
 
 /obj/structure/piano/attack_hand(mob/user)
 	if(!user.IsAdvancedToolUser())
@@ -377,3 +367,8 @@
 				anchored = 0
 	else
 		return ..()
+
+/obj/structure/piano/pristine
+	name = "grand piano"
+	desc = "Black in color, and pristine by the look.<br>This particular piano seems to be in a better condition than anything else you could see out in the wastes."
+	icon_state = "piano"

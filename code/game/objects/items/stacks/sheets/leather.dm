@@ -2,6 +2,7 @@
 	name = "hide"
 	desc = "Something went wrong."
 	origin_tech = "biotech=3"
+	resistance_flags = FLAMMABLE
 
 /obj/item/stack/sheet/animalhide/human
 	name = "human skin"
@@ -9,19 +10,20 @@
 	singular_name = "human skin piece"
 	icon_state = "sheet-hide"
 
-GLOBAL_LIST_INIT(human_recipes, list( \
-	new/datum/stack_recipe("bloated human costume", /obj/item/clothing/suit/hooded/bloated_human, 5, on_floor = 1), \
-	))
+var/global/list/datum/stack_recipe/human_recipes = list( \
+//	new/datum/stack_recipe("bloated human costume", /obj/item/clothing/suit/hooded/bloated_human, 5, on_floor = 1),
+	)
 
-/obj/item/stack/sheet/animalhide/human/Initialize(mapload, new_amount, merge = TRUE)
-	recipes = GLOB.human_recipes
+/obj/item/stack/sheet/animalhide/human/New(var/loc, var/amount=null)
+	recipes = human_recipes
 	return ..()
 
 /obj/item/stack/sheet/animalhide/generic
 	name = "skin"
 	desc = "A piece of skin."
 	singular_name = "skin piece"
-	icon_state = "sheet-hide"
+	icon_state = "sheet-skin"
+	icon = 'icons/fallout/objects/items.dmi'
 
 /obj/item/stack/sheet/animalhide/corgi
 	name = "corgi hide"
@@ -29,12 +31,12 @@ GLOBAL_LIST_INIT(human_recipes, list( \
 	singular_name = "corgi hide piece"
 	icon_state = "sheet-corgi"
 
-GLOBAL_LIST_INIT(corgi_recipes, list ( \
-	new/datum/stack_recipe("corgi costume", /obj/item/clothing/suit/hooded/ian_costume, 3, on_floor = 1), \
-	))
+var/global/list/datum/stack_recipe/corgi_recipes = list ( \
+//	new/datum/stack_recipe("corgi costume", /obj/item/clothing/suit/hooded/ian_costume, 3, on_floor = 1)
+	)
 
-/obj/item/stack/sheet/animalhide/corgi/Initialize(mapload, new_amount, merge = TRUE)
-	recipes = GLOB.corgi_recipes
+/obj/item/stack/sheet/animalhide/corgi/New(var/loc, var/amount=null)
+	recipes = corgi_recipes
 	return ..()
 
 /obj/item/stack/sheet/animalhide/cat
@@ -49,13 +51,13 @@ GLOBAL_LIST_INIT(corgi_recipes, list ( \
 	singular_name = "monkey hide piece"
 	icon_state = "sheet-monkey"
 
-GLOBAL_LIST_INIT(monkey_recipes, list ( \
-	new/datum/stack_recipe("monkey mask", /obj/item/clothing/mask/gas/monkeymask, 1, on_floor = 1), \
-	new/datum/stack_recipe("monkey suit", /obj/item/clothing/suit/monkeysuit, 2, on_floor = 1), \
-	))
+var/global/list/datum/stack_recipe/monkey_recipes = list ( \
+//	new/datum/stack_recipe("monkey mask", /obj/item/clothing/mask/gas/monkeymask, 1, on_floor = 1), \
+	new/datum/stack_recipe("monkey suit", /obj/item/clothing/suit/monkeysuit, 2, on_floor = 1)
+	)
 
-/obj/item/stack/sheet/animalhide/monkey/Initialize(mapload, new_amount, merge = TRUE)
-	recipes = GLOB.monkey_recipes
+/obj/item/stack/sheet/animalhide/monkey/New(var/loc, var/amount=null)
+	recipes = monkey_recipes
 	return ..()
 
 /obj/item/stack/sheet/animalhide/lizard
@@ -70,13 +72,13 @@ GLOBAL_LIST_INIT(monkey_recipes, list ( \
 	singular_name = "alien hide piece"
 	icon_state = "sheet-xeno"
 
-GLOBAL_LIST_INIT(xeno_recipes, list ( \
-	new/datum/stack_recipe("alien helmet", /obj/item/clothing/head/xenos, 1, on_floor = 1), \
-	new/datum/stack_recipe("alien suit", /obj/item/clothing/suit/xenos, 2, on_floor = 1), \
-	))
+var/global/list/datum/stack_recipe/xeno_recipes = list ( \
+//	new/datum/stack_recipe("alien helmet", /obj/item/clothing/head/xenos, 1, on_floor = 1), \
+//	new/datum/stack_recipe("alien suit", /obj/item/clothing/suit/xenos, 2, on_floor = 1),
+	)
 
-/obj/item/stack/sheet/animalhide/xeno/Initialize(mapload, new_amount, merge = TRUE)
-	recipes = GLOB.xeno_recipes
+/obj/item/stack/sheet/animalhide/xeno/New(var/loc, var/amount=null)
+	recipes = xeno_recipes
 	return ..()
 
 //don't see anywhere else to put these, maybe together they could be used to make the xenos suit?
@@ -134,12 +136,12 @@ GLOBAL_LIST_INIT(xeno_recipes, list ( \
 	origin_tech = "biotech=4"
 
 
-GLOBAL_LIST_INIT(sinew_recipes, list ( \
-	new/datum/stack_recipe("sinew restraints", /obj/item/weapon/restraints/handcuffs/sinew, 1, on_floor = 1), \
-	))
+var/global/list/datum/stack_recipe/sinew_recipes = list ( \
+//	new/datum/stack_recipe("sinew restraints", /obj/item/weapon/restraints/handcuffs/sinew, 1, on_floor = 1),
+	)
 
-/obj/item/stack/sheet/sinew/Initialize(mapload, new_amount, merge = TRUE)
-	recipes = GLOB.sinew_recipes
+/obj/item/stack/sheet/sinew/New(var/loc, var/amount=null)
+	recipes = sinew_recipes
 	return ..()
 		/*
  * Plates

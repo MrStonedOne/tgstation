@@ -41,8 +41,9 @@
 /obj/item/device/laser_pointer/attackby(obj/item/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/stock_parts/micro_laser))
 		if(!diode)
-			if(!user.transferItemToLoc(W, src))
+			if(!user.unEquip(W))
 				return
+			W.forceMove(src)
 			diode = W
 			to_chat(user, "<span class='notice'>You install a [diode.name] in [src].</span>")
 		else
@@ -51,7 +52,7 @@
 	else if(istype(W, /obj/item/weapon/screwdriver))
 		if(diode)
 			to_chat(user, "<span class='notice'>You remove the [diode.name] from \the [src].</span>")
-			diode.loc = get_turf(src.loc)
+			diode.forceMove(get_turf(src.loc))
 			diode = null
 	else
 		return ..()
@@ -99,6 +100,8 @@
 			//20% chance to actually hit the eyes
 			if(prob(effectchance * diode.rating) && C.flash_act(severity))
 				outmsg = "<span class='notice'>You blind [C] by shining [src] in their eyes.</span>"
+				if(C.weakeyes)
+					C.Stun(1)
 			else
 				outmsg = "<span class='warning'>You fail to blind [C] by shining [src] at their eyes!</span>"
 

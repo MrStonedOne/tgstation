@@ -15,7 +15,7 @@
 /obj/structure/table
 	name = "table"
 	desc = "A square piece of metal standing on four metal legs. It can not move."
-	icon = 'icons/obj/smooth_structures/table.dmi'
+	icon = 'icons/fallout/objects/structures/furniture.dmi'
 	icon_state = "table"
 	density = 1
 	anchored = 1
@@ -29,10 +29,12 @@
 	var/buildstackamount = 1
 	var/framestackamount = 2
 	var/deconstruction_ready = 1
-	obj_integrity = 100
-	max_integrity = 100
+	can_crawled = 1
+	obj_integrity = 150
+	max_integrity = 150
 	integrity_failure = 30
-	smooth = SMOOTH_TRUE
+	icontype = "table"
+	smooth = SMOOTH_OLD
 	canSmoothWith = list(/obj/structure/table, /obj/structure/table/reinforced)
 
 /obj/structure/table/New()
@@ -74,7 +76,7 @@
 /obj/structure/table/CanPass(atom/movable/mover, turf/target, height=0)
 	if(height==0)
 		return 1
-	if(istype(mover) && mover.checkpass(PASSTABLE))
+	if(istype(mover) && (mover.checkpass(PASSTABLE) || (mover.checkpass(PASSCRAWL) && can_crawled)))
 		return 1
 	if(mover.throwing)
 		return 1
@@ -121,7 +123,7 @@
 			T.quick_empty()
 
 			for(var/obj/item/C in oldContents)
-				C.loc = src.loc
+				C.forceMove(src.loc)
 
 			user.visible_message("[user] empties [I] on [src].")
 			return
@@ -159,10 +161,10 @@
 /obj/structure/table/glass
 	name = "glass table"
 	desc = "What did I say about leaning on the glass tables? Now you need surgery."
-	icon = 'icons/obj/smooth_structures/glass_table.dmi'
 	icon_state = "glass_table"
+	icontype = "glass_table"
 	buildstack = /obj/item/stack/sheet/glass
-	canSmoothWith = null
+	canSmoothWith = list(/obj/structure/table/glass)
 	obj_integrity = 70
 	max_integrity = 70
 	resistance_flags = ACID_PROOF
@@ -239,36 +241,64 @@
 /obj/structure/table/wood
 	name = "wooden table"
 	desc = "Do not apply fire to this. Rumour says it burns easily."
-	icon = 'icons/obj/smooth_structures/wood_table.dmi'
-	icon_state = "wood_table"
+	icon_state = "woodtable"
+	icontype = "woodtable"
 	frame = /obj/structure/table_frame/wood
 	framestack = /obj/item/stack/sheet/mineral/wood
 	buildstack = /obj/item/stack/sheet/mineral/wood
 	resistance_flags = FLAMMABLE
-	obj_integrity = 70
-	max_integrity = 70
-	canSmoothWith = list(/obj/structure/table/wood,
-		/obj/structure/table/wood/poker,
-		/obj/structure/table/wood/bar)
+	obj_integrity = 80
+	max_integrity = 80
+	canSmoothWith = list(/obj/structure/table/wood)
 
 /obj/structure/table/wood/narsie_act()
 	return
 
+/obj/structure/table/wood/classic
+	desc = "An elegant table made of luxurious dark wood."
+	icon_state = "classictable"
+	icontype = "classictable"
+	obj_integrity = 90
+	max_integrity = 90
+	canSmoothWith = list(/obj/structure/table/wood/classic)
+
+/obj/structure/table/wood/bar
+	name = "\proper bar"
+	desc = "The counter at which drinks are served by a bartender is called 'the bar'. This term is applied, as a synecdoche, to drinking establishments called 'bars'."
+	icon_state = "bartable"
+	icontype = "bartable"
+	obj_integrity = 120
+	max_integrity = 120
+	can_crawled = 0
+	canSmoothWith = list(/obj/structure/table/wood/bar)
+
 /obj/structure/table/wood/poker //No specialties, Just a mapping object.
 	name = "gambling table"
 	desc = "A seedy table for seedy dealings in seedy places."
-	icon = 'icons/obj/smooth_structures/poker_table.dmi'
-	icon_state = "poker_table"
+	icon_state = "pokertable"
+	icontype = "pokertable"
 	buildstack = /obj/item/stack/tile/carpet
 
 /obj/structure/table/wood/poker/narsie_act()
 	new /obj/structure/table/wood(src.loc)
 
+//A table that'd be built by players, since their constructions would be... less impressive than their prewar counterparts.
+
+/obj/structure/table/wood/settler
+	desc = "A wooden table constructed by a carpentering amateur from various planks.<br>It's the work of wasteland settler."
+	icon_state = "settlertable"
+	icontype = "settlertable"
+	obj_integrity = 50
+	max_integrity = 50
+	canSmoothWith = list(/obj/structure/table/wood/settler)
+
 /obj/structure/table/wood/fancy
 	name = "fancy table"
 	desc = "A standard metal table frame covered with an amazingly fancy, patterned cloth."
-	icon = 'icons/obj/structures.dmi'
+	icon = 'icons/obj/smooth_structures/fancy_table.dmi'
 	icon_state = "fancy_table"
+	icontype = "fancy_table"
+	smooth = SMOOTH_TRUE
 	frame = /obj/structure/table_frame
 	framestack = /obj/item/stack/rods
 	buildstack = /obj/item/stack/tile/carpet
@@ -284,14 +314,15 @@
 /obj/structure/table/reinforced
 	name = "reinforced table"
 	desc = "A reinforced version of the four legged table, much harder to simply deconstruct."
-	icon = 'icons/obj/smooth_structures/reinforced_table.dmi'
-	icon_state = "r_table"
+	icon_state = "reinftable"
+	icontype = "reinftable"
 	deconstruction_ready = 0
 	buildstack = /obj/item/stack/sheet/plasteel
 	canSmoothWith = list(/obj/structure/table/reinforced, /obj/structure/table)
 	obj_integrity = 200
 	max_integrity = 200
 	integrity_failure = 50
+	can_crawled = 0
 	armor = list(melee = 10, bullet = 30, laser = 30, energy = 100, bomb = 20, bio = 0, rad = 0, fire = 80, acid = 70)
 
 /obj/structure/table/reinforced/attackby(obj/item/weapon/W, mob/user, params)
@@ -319,6 +350,7 @@
 	desc = "A solid, slightly beveled brass table."
 	icon = 'icons/obj/smooth_structures/brass_table.dmi'
 	icon_state = "brass_table"
+	smooth = SMOOTH_TRUE
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	frame = /obj/structure/table_frame/brass
 	framestack = /obj/item/stack/tile/brass
@@ -361,12 +393,13 @@
 	can_buckle = 1
 	buckle_lying = 1
 	buckle_requires_restraints = 1
+	can_crawled = 0
 	var/mob/living/carbon/human/patient = null
 	var/obj/machinery/computer/operating/computer = null
 
 /obj/structure/table/optable/New()
 	..()
-	for(var/dir in GLOB.cardinal)
+	for(var/dir in cardinal)
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
 		if(computer)
 			computer.table = src
@@ -485,7 +518,6 @@
 	icon_state = "rack_parts"
 	flags = CONDUCT
 	materials = list(MAT_METAL=2000)
-	var/building = FALSE
 
 /obj/item/weapon/rack_parts/attackby(obj/item/weapon/W, mob/user, params)
 	if (istype(W, /obj/item/weapon/wrench))
@@ -495,9 +527,6 @@
 		. = ..()
 
 /obj/item/weapon/rack_parts/attack_self(mob/user)
-	if(building)
-		return
-	building = TRUE
 	to_chat(user, "<span class='notice'>You start constructing a rack...</span>")
 	if(do_after(user, 50, target = src, progress=TRUE))
 		if(!user.drop_item())
@@ -507,4 +536,3 @@
 			</span>", "<span class='notice'>You assemble \a [R].</span>")
 		R.add_fingerprint(user)
 		qdel(src)
-	building = FALSE

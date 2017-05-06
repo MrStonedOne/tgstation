@@ -18,7 +18,6 @@
 	origin_tech = "biotech=1"
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/New(newloc, var/obj/item/seeds/new_seed = null)
-	tastes = list(name = 1) // apples taste of apple, silly.
 	..()
 	if(new_seed)
 		seed = new_seed.Copy()
@@ -65,7 +64,7 @@
 		var/reag_txt = ""
 		if(seed)
 			for(var/reagent_id in seed.reagents_add)
-				var/datum/reagent/R  = GLOB.chemical_reagents_list[reagent_id]
+				var/datum/reagent/R  = chemical_reagents_list[reagent_id]
 				var/amt = reagents.get_reagent_amount(reagent_id)
 				reag_txt += "\n<span class='info'>- [R.name]: [amt]</span>"
 
@@ -111,7 +110,6 @@
 		for(var/datum/plant_gene/trait/trait in seed.genes)
 			trait.on_squash(src, target)
 
-	reagents.reaction(T)
 	for(var/A in T)
 		reagents.reaction(A)
 
@@ -143,6 +141,7 @@
 	var/obj/item/T
 	if(trash)
 		T = generate_trash()
-		qdel(src)
-		user.putItemFromInventoryInHandIfPossible(T, user.active_hand_index, TRUE)
+	qdel(src)
+	if(trash)
+		user.put_in_hands(T)
 		to_chat(user, "<span class='notice'>You open [src]\'s shell, revealing \a [T].</span>")

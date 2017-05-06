@@ -7,9 +7,8 @@
 	var/active = FALSE //Used by toggle based abilities.
 	var/ranged_mousepointer
 	var/mob/living/ranged_ability_user
-	var/ranged_clickcd_override = -1
 
-GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for the badmin verb for now
+var/list/spells = typesof(/obj/effect/proc_holder/spell) //needed for the badmin verb for now
 
 /obj/effect/proc_holder/Destroy()
 	if(ranged_ability_user)
@@ -21,10 +20,7 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 		to_chat(caller, "<span class='warning'><b>[caller.ranged_ability.name]</b> has been disabled.")
 		caller.ranged_ability.remove_ranged_ability()
 		return TRUE //TRUE for failed, FALSE for passed.
-	if(ranged_clickcd_override >= 0)
-		ranged_ability_user.next_click = world.time + ranged_clickcd_override
-	else
-		ranged_ability_user.next_click = world.time + CLICK_CD_CLICK_ABILITY
+	ranged_ability_user.next_click = world.time + CLICK_CD_CLICK_ABILITY
 	ranged_ability_user.face_atom(A)
 	return FALSE
 
@@ -133,7 +129,7 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 			return 0
 
 	var/turf/T = get_turf(user)
-	if(T.z == ZLEVEL_CENTCOM && (!centcom_cancast || SSticker.mode.name == "ragin' mages")) //Certain spells are not allowed on the centcom zlevel
+	if(T.z == ZLEVEL_CENTCOM && (!centcom_cancast || ticker.mode.name == "ragin' mages")) //Certain spells are not allowed on the centcom zlevel
 		to_chat(user, "<span class='notice'>You can't cast this spell here.</span>")
 		return 0
 
@@ -223,8 +219,8 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 /obj/effect/proc_holder/spell/proc/playMagSound()
 	playsound(get_turf(usr), sound,50,1)
 
-/obj/effect/proc_holder/spell/Initialize()
-	. = ..()
+/obj/effect/proc_holder/spell/New()
+	..()
 	action = new(src)
 
 	still_recharging_msg = "<span class='notice'>[name] is still recharging.</span>"
@@ -242,13 +238,10 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 /obj/effect/proc_holder/spell/proc/choose_targets(mob/user = usr) //depends on subtype - /targeted or /aoe_turf
 	return
 
-/obj/effect/proc_holder/spell/proc/can_target(mob/living/target)
-	return TRUE
-
 /obj/effect/proc_holder/spell/proc/start_recharge()
 	if(action)
 		action.UpdateButtonIcon()
-	while(charge_counter < charge_max && !QDELETED(src))
+	while(charge_counter < charge_max && !qdeleted(src))
 		sleep(1)
 		charge_counter++
 	if(action)
@@ -258,7 +251,7 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	before_cast(targets)
 	invocation(user)
 	if(user && user.ckey)
-		user.log_message("<span class='danger'>cast the spell [name].</span>", INDIVIDUAL_ATTACK_LOG)
+		user.attack_log += text("\[[time_stamp()]\] <span class='danger'>[user.real_name] ([user.ckey]) cast the spell [name].</span>")
 	spawn(0)
 		if(charge_type == "recharge" && recharge)
 			start_recharge()
@@ -295,7 +288,9 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 		if(isliving(target) && message)
 			to_chat(target, text("[message]"))
 		if(sparks_spread)
-			do_sparks(sparks_amt, FALSE, location)
+			var/datum/effect_system/spark_spread/sparks = new
+			sparks.set_up(sparks_amt, 0, location) //no idea what the 0 is
+			sparks.start()
 		if(smoke_spread)
 			if(smoke_spread == 1)
 				var/datum/effect_system/smoke_spread/smoke = new
@@ -327,8 +322,6 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 			adjust_var(user, holder_var_type, -holder_var_amount)
 
 /obj/effect/proc_holder/spell/proc/adjust_var(mob/living/target = usr, type, amount) //handles the adjustment of the var when the spell is used. has some hardcoded types
-	if (!istype(target))
-		return
 	switch(type)
 		if("bruteloss")
 			target.adjustBruteLoss(amount)
@@ -364,8 +357,6 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	switch(max_targets)
 		if(0) //unlimited
 			for(var/mob/living/target in view_or_range(range, user, selection_type))
-				if(!can_target(target))
-					continue
 				targets += target
 		if(1) //single target can be picked
 			if(range < 0)
@@ -375,8 +366,6 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 
 				for(var/mob/living/M in view_or_range(range, user, selection_type))
 					if(!include_user && user == M)
-						continue
-					if(!can_target(M))
 						continue
 					possible_targets += M
 
@@ -403,8 +392,6 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 		else
 			var/list/possible_targets = list()
 			for(var/mob/living/target in view_or_range(range, user, selection_type))
-				if(!can_target(target))
-					continue
 				possible_targets += target
 			for(var/i=1,i<=max_targets,i++)
 				if(!possible_targets.len)
@@ -429,8 +416,6 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	var/list/targets = list()
 
 	for(var/turf/target in view_or_range(range,user,selection_type))
-		if(!can_target(target))
-			continue
 		if(!(target in view_or_range(inner_radius,user,selection_type)))
 			targets += target
 

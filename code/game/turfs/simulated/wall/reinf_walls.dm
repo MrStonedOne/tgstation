@@ -38,8 +38,6 @@
 /turf/closed/wall/r_wall/attack_animal(mob/living/simple_animal/M)
 	M.changeNext_move(CLICK_CD_MELEE)
 	M.do_attack_animation(src)
-	if(!M.environment_smash)
-		return
 	if(M.environment_smash == 3)
 		dismantle_wall(1)
 		playsound(src, 'sound/effects/meteorimpact.ogg', 100, 1)
@@ -235,7 +233,7 @@
 					return 1
 	return 0
 
-/turf/closed/wall/r_wall/proc/update_icon()
+/turf/closed/wall/r_wall/update_icon()
 	if(d_state != INTACT)
 		smooth = SMOOTH_FALSE
 		clear_smooth_overlays()
@@ -245,18 +243,9 @@
 		queue_smooth_neighbors(src)
 		queue_smooth(src)
 		icon_state = "r_wall"
+	update_damage_overlay()
 
 /turf/closed/wall/r_wall/singularity_pull(S, current_size)
 	if(current_size >= STAGE_FIVE)
 		if(prob(30))
 			dismantle_wall()
-
-/turf/closed/wall/r_wall/rcd_vals(mob/user, obj/item/weapon/construction/rcd/the_rcd)
-	if(!the_rcd.canRturf)
-		return FALSE
-	return ..()
-
-/turf/closed/wall/r_wall/rcd_act(mob/user, obj/item/weapon/construction/rcd/the_rcd, passed_mode)
-	if(!the_rcd.canRturf)
-		return FALSE
-	return ..()

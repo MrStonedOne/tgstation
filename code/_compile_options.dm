@@ -3,14 +3,6 @@
 //#define TESTING				//By using the testing("message") proc you can create debug-feedback for people with this
 								//uncommented, but not visible in the release version)
 
-#ifdef TESTING
-//#define GC_FAILURE_HARD_LOOKUP	//makes paths that fail to GC call find_references before del'ing.
-									//Also allows for recursive reference searching of datums.
-									//Sets world.loop_checks to false and prevents find references from sleeping
-
-//#define VISUALIZE_ACTIVE_TURFS	//Highlights atmos active turfs in green
-#endif
-
 #define PRELOAD_RSC	1			/*set to:
 								0 to allow using external resources or on-demand behaviour;
 								1 to use the default behaviour;
@@ -19,6 +11,8 @@
 
 #define BACKGROUND_ENABLED 0    // The default value for all uses of set background. Set background can cause gradual lag and is recommended you only turn this on if necessary.
 								// 1 will enable set background. 0 will disable set background.
+
+#define INACTIVITY_KICK	6000	//10 minutes in ticks (approx.)
 
 //ADMIN STUFF
 #define ROUNDSTART_LOGOUT_REPORT_TIME	6000 //Amount of time (in deciseconds) after the rounds starts, that the player disconnect report is issued.
@@ -40,6 +34,7 @@
 #define DOOR_CRUSH_DAMAGE	15	//the amount of damage that airlocks deal when they crush you
 
 #define	HUNGER_FACTOR		0.1	//factor at which mob nutrition decreases
+#define	THIRST_FACTOR		0.025
 #define	REAGENTS_METABOLISM 0.4	//How many units of reagent are consumed per tick, by default.
 #define REAGENTS_EFFECT_MULTIPLIER (REAGENTS_METABOLISM / 0.4)	// By defining the effect multiplier this way, it'll exactly adjust all effects according to how they originally were with the 0.4 metabolism
 
@@ -56,19 +51,17 @@
 #warn compiling in TESTING mode. testing() debug messages will be visible.
 #endif
 
-#ifdef TRAVISTESTING
-#define TESTING
-#endif
-
 //Update this whenever you need to take advantage of more recent byond features
-#define MIN_COMPILER_VERSION 511
+#define MIN_COMPILER_VERSION 510
 #if DM_VERSION < MIN_COMPILER_VERSION
 //Don't forget to update this part
 #error Your version of BYOND is too out-of-date to compile this project. Go to byond.com/download and update.
-#error You need version 511 or higher
+#error You need version 510 or higher
 #endif
 
 
 #ifndef SERVERTOOLS
 #define SERVERTOOLS 0
 #endif
+
+#define ADDRESS_DONATE_DATA "http://fallout13.ru/payment/user-data.php" //Address of taking donates data. Like money count, packs list.

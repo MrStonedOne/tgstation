@@ -2,6 +2,7 @@
 	name = "helmet"
 	desc = "Standard Security gear. Protects the head from impacts."
 	icon_state = "helmet"
+	flags = HEADBANGPROTECT
 	item_state = "helmet"
 	armor = list(melee = 35, bullet = 30, laser = 30,energy = 10, bomb = 25, bio = 0, rad = 0, fire = 50, acid = 50)
 	flags_inv = HIDEEARS
@@ -16,9 +17,8 @@
 	dog_fashion = /datum/dog_fashion/head/helmet
 
 
-/obj/item/clothing/head/helmet/Initialize()
+/obj/item/clothing/head/helmet/New()
 	..()
-	SET_SECONDARY_FLAG(src, BANG_PROTECT)
 
 /obj/item/clothing/head/helmet/sec
 	can_flashlight = 1
@@ -28,7 +28,7 @@
 	desc = "A bulletproof combat helmet that excels in protecting the wearer against traditional projectile weaponry and explosives to a minor extent."
 	icon_state = "helmetalt"
 	item_state = "helmetalt"
-	armor = list(melee = 15, bullet = 60, laser = 10, energy = 10, bomb = 40, bio = 0, rad = 0, fire = 50, acid = 50)
+	armor = list(melee = 15, bullet = 40, laser = 10, energy = 10, bomb = 40, bio = 0, rad = 0, fire = 50, acid = 50)
 	can_flashlight = 1
 	dog_fashion = null
 
@@ -44,6 +44,7 @@
 	toggle_message = "You pull the visor down on"
 	alt_toggle_message = "You push the visor up on"
 	can_toggle = 1
+	flags = HEADBANGPROTECT
 	armor = list(melee = 45, bullet = 15, laser = 5,energy = 5, bomb = 5, bio = 2, rad = 0, fire = 50, acid = 50)
 	flags_inv = HIDEEARS|HIDEFACE
 	strip_delay = 80
@@ -175,40 +176,6 @@
 	// Offer about the same protection as a hardhat.
 	dog_fashion = null
 
-/obj/item/clothing/head/helmet/knight
-	name = "medieval helmet"
-	desc = "A classic metal helmet."
-	icon_state = "knight_green"
-	item_state = "knight_green"
-	armor = list(melee = 41, bullet = 15, laser = 5,energy = 5, bomb = 5, bio = 2, rad = 0, fire = 0, acid = 50)
-	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR
-	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
-	strip_delay = 80
-	dog_fashion = null
-
-/obj/item/clothing/head/helmet/knight/Initialize(mapload)
-	..()
-	// old knight helmets do not offer protection against loud noises
-	CLEAR_SECONDARY_FLAG(src, BANG_PROTECT)
-
-/obj/item/clothing/head/helmet/knight/blue
-	icon_state = "knight_blue"
-	item_state = "knight_blue"
-
-/obj/item/clothing/head/helmet/knight/yellow
-	icon_state = "knight_yellow"
-	item_state = "knight_yellow"
-
-/obj/item/clothing/head/helmet/knight/red
-	icon_state = "knight_red"
-	item_state = "knight_red"
-
-/obj/item/clothing/head/helmet/knight/templar
-	name = "crusader helmet"
-	desc = "Deus Vult."
-	icon_state = "knight_templar"
-	item_state = "knight_templar"
-
 /obj/item/clothing/head/helmet/skull
 	name = "skull helmet"
 	desc = "An intimidating tribal helmet, it doesn't look very comfortable."
@@ -222,6 +189,7 @@
 //LightToggle
 
 /obj/item/clothing/head/helmet/update_icon()
+
 	var/state = "[initial(icon_state)]"
 	if(F)
 		if(F.on)
@@ -235,6 +203,8 @@
 		var/mob/living/carbon/human/H = loc
 		H.update_inv_head()
 
+	return
+
 /obj/item/clothing/head/helmet/ui_action_click(mob/user, action)
 	if(istype(action, /datum/action/item_action/toggle_helmet_flashlight))
 		toggle_helmlight()
@@ -246,7 +216,7 @@
 		var/obj/item/device/flashlight/seclite/S = I
 		if(can_flashlight)
 			if(!F)
-				if(!user.transferItemToLoc(S, src))
+				if(!user.unEquip(S))
 					return
 				to_chat(user, "<span class='notice'>You click [S] into place on [src].</span>")
 				if(S.on)
@@ -265,7 +235,7 @@
 			for(var/obj/item/device/flashlight/seclite/S in src)
 				to_chat(user, "<span class='notice'>You unscrew the seclite from [src].</span>")
 				F = null
-				S.loc = get_turf(user)
+				S.forceMove(get_turf(user))
 				update_helmlight(user)
 				S.update_brightness(user)
 				update_icon()
@@ -293,6 +263,7 @@
 
 	playsound(user, 'sound/weapons/empty.ogg', 100, 1)
 	update_helmlight(user)
+	return
 
 /obj/item/clothing/head/helmet/proc/update_helmlight(mob/user = null)
 	if(F)

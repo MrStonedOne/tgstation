@@ -1,11 +1,7 @@
-GLOBAL_LIST_INIT(VVlocked, list("vars", "var_edited", "client", "virus", "viruses", "cuffed", "last_eaten", "unlock_content", "force_ending"))
-GLOBAL_PROTECT(VVlocked)
-GLOBAL_LIST_INIT(VVicon_edit_lock, list("icon", "icon_state", "overlays", "underlays", "resize"))
-GLOBAL_PROTECT(VVicon_edit_lock)
-GLOBAL_LIST_INIT(VVckey_edit, list("key", "ckey"))
-GLOBAL_PROTECT(VVckey_edit)
-GLOBAL_LIST_INIT(VVpixelmovement, list("step_x", "step_y", "bound_height", "bound_width", "bound_x", "bound_y"))
-GLOBAL_PROTECT(VVpixelmovement)
+var/list/VVlocked = list("vars", "var_edited", "client", "virus", "viruses", "cuffed", "last_eaten", "unlock_content", "force_ending")
+var/list/VVicon_edit_lock = list("icon", "icon_state", "overlays", "underlays", "resize")
+var/list/VVckey_edit = list("key", "ckey")
+var/list/VVpixelmovement = list("step_x", "step_y", "bound_height", "bound_width", "bound_x", "bound_y")
 
 
 /client/proc/vv_get_class(var/var_value)
@@ -180,7 +176,7 @@ GLOBAL_PROTECT(VVpixelmovement)
 
 
 		if (VV_CLIENT)
-			.["value"] = input("Select reference:", "Reference", current_value) as null|anything in GLOB.clients
+			.["value"] = input("Select reference:", "Reference", current_value) as null|anything in clients
 			if (.["value"] == null)
 				.["class"] = null
 				return
@@ -341,7 +337,7 @@ GLOBAL_PROTECT(VVpixelmovement)
 		if (O.vv_edit_var(objectvar, L) == FALSE)
 			to_chat(src, "Your edit was rejected by the object.")
 			return
-	log_world("### ListVarEdit by [src]: [(O ? O.type : "/list")] [objectvar]: ADDED=[var_value]")
+	world.log << "### ListVarEdit by [src]: [(O ? O.type : "/list")] [objectvar]: ADDED=[var_value]"
 	log_admin("[key_name(src)] modified [original_name]'s [objectvar]: ADDED=[var_value]")
 	message_admins("[key_name_admin(src)] modified [original_name]'s [objectvar]: ADDED=[var_value]")
 
@@ -384,7 +380,7 @@ GLOBAL_PROTECT(VVpixelmovement)
 			if (!O.vv_edit_var(objectvar, L))
 				to_chat(src, "Your edit was rejected by the object.")
 				return
-			log_world("### ListVarEdit by [src]: [O.type] [objectvar]: CLEAR NULLS")
+			world.log << "### ListVarEdit by [src]: [O.type] [objectvar]: CLEAR NULLS"
 			log_admin("[key_name(src)] modified [original_name]'s [objectvar]: CLEAR NULLS")
 			message_admins("[key_name_admin(src)] modified [original_name]'s list [objectvar]: CLEAR NULLS")
 			return
@@ -394,7 +390,7 @@ GLOBAL_PROTECT(VVpixelmovement)
 			if (!O.vv_edit_var(objectvar, L))
 				to_chat(src, "Your edit was rejected by the object.")
 				return
-			log_world("### ListVarEdit by [src]: [O.type] [objectvar]: CLEAR DUPES")
+			world.log << "### ListVarEdit by [src]: [O.type] [objectvar]: CLEAR DUPES"
 			log_admin("[key_name(src)] modified [original_name]'s [objectvar]: CLEAR DUPES")
 			message_admins("[key_name_admin(src)] modified [original_name]'s list [objectvar]: CLEAR DUPES")
 			return
@@ -404,7 +400,7 @@ GLOBAL_PROTECT(VVpixelmovement)
 			if (!O.vv_edit_var(objectvar, L))
 				to_chat(src, "Your edit was rejected by the object.")
 				return
-			log_world("### ListVarEdit by [src]: [O.type] [objectvar]: SHUFFLE")
+			world.log << "### ListVarEdit by [src]: [O.type] [objectvar]: SHUFFLE"
 			log_admin("[key_name(src)] modified [original_name]'s [objectvar]: SHUFFLE")
 			message_admins("[key_name_admin(src)] modified [original_name]'s list [objectvar]: SHUFFLE")
 			return
@@ -481,7 +477,7 @@ GLOBAL_PROTECT(VVpixelmovement)
 				if (O.vv_edit_var(objectvar, L))
 					to_chat(src, "Your edit was rejected by the object.")
 					return
-			log_world("### ListVarEdit by [src]: [O.type] [objectvar]: REMOVED=[html_encode("[original_var]")]")
+			world.log << "### ListVarEdit by [src]: [O.type] [objectvar]: REMOVED=[html_encode_ru("[original_var]")]"
 			log_admin("[key_name(src)] modified [original_name]'s [objectvar]: REMOVED=[original_var]")
 			message_admins("[key_name_admin(src)] modified [original_name]'s [objectvar]: REMOVED=[original_var]")
 			return
@@ -500,7 +496,7 @@ GLOBAL_PROTECT(VVpixelmovement)
 		if (O.vv_edit_var(objectvar, L) == FALSE)
 			to_chat(src, "Your edit was rejected by the object.")
 			return
-	log_world("### ListVarEdit by [src]: [(O ? O.type : "/list")] [objectvar]: [original_var]=[new_var]")
+	world.log << "### ListVarEdit by [src]: [(O ? O.type : "/list")] [objectvar]: [original_var]=[new_var]"
 	log_admin("[key_name(src)] modified [original_name]'s [objectvar]: [original_var]=[new_var]")
 	message_admins("[key_name_admin(src)] modified [original_name]'s varlist [objectvar]: [original_var]=[new_var]")
 
@@ -528,22 +524,19 @@ GLOBAL_PROTECT(VVpixelmovement)
 		variable = input("Which var?","Var") as null|anything in names
 		if(!variable)
 			return
-	
-	if(!O.can_vv_get(variable))
-		return
 
 	var_value = O.vars[variable]
 
-	if(variable in GLOB.VVlocked)
+	if(variable in VVlocked)
 		if(!check_rights(R_DEBUG))
 			return
-	if(variable in GLOB.VVckey_edit)
+	if(variable in VVckey_edit)
 		if(!check_rights(R_SPAWN|R_DEBUG))
 			return
-	if(variable in GLOB.VVicon_edit_lock)
+	if(variable in VVicon_edit_lock)
 		if(!check_rights(R_FUN|R_DEBUG))
 			return
-	if(variable in GLOB.VVpixelmovement)
+	if(variable in VVpixelmovement)
 		if(!check_rights(R_DEBUG))
 			return
 		var/prompt = alert(src, "Editing this var may irreparably break tile gliding for the rest of the round. THIS CAN'T BE UNDONE", "DANGER", "ABORT ", "Continue", " ABORT")
@@ -612,8 +605,6 @@ GLOBAL_PROTECT(VVpixelmovement)
 	if (O.vv_edit_var(variable, var_new) == FALSE)
 		to_chat(src, "Your edit was rejected by the object.")
 		return
-	log_world("### VarEdit by [src]: [O.type] [variable]=[html_encode("[O.vars[variable]]")]")
+	world.log << "### VarEdit by [src]: [O.type] [variable]=[html_encode_ru("[O.vars[variable]]")]"
 	log_admin("[key_name(src)] modified [original_name]'s [variable] to [O.vars[variable]]")
-	var/msg = "[key_name_admin(src)] modified [original_name]'s [variable] to [O.vars[variable]]"
-	message_admins(msg)
-	admin_ticket_log(O, msg)
+	message_admins("[key_name_admin(src)] modified [original_name]'s [variable] to [O.vars[variable]]")

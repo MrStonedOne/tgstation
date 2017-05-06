@@ -9,7 +9,7 @@
 	return {"Our military presence is inadequate in your sector.
 	 We need you to construct BSA-[rand(1,99)] Artillery position aboard your station.
 
-	 Base parts are available for shipping via cargo.
+	 Base parts should be availible for shipping by your cargo shuttle.
 	 -Nanotrasen Naval Command"}
 
 /datum/station_goal/bluespace_cannon/on_report()
@@ -127,7 +127,7 @@
 	icon = 'icons/obj/lavaland/cannon.dmi'
 	icon_state = "orbital_cannon1"
 	unsecuring_tool = null
-	var/static/mutable_appearance/top_layer
+	var/static/image/top_layer = null
 	var/ex_power = 3
 	var/power_used_per_shot = 2000000 //enough to kil standard apc - todo : make this use wires instead and scale explosion power with it
 	var/ready
@@ -161,18 +161,19 @@
 			return locate(world.maxx,y,z)
 	return get_turf(src)
 
-/obj/machinery/bsa/full/Initialize(mapload, cannon_direction = WEST)
-	. = ..()
-	top_layer = top_layer || mutable_appearance(icon, layer = ABOVE_MOB_LAYER)
+/obj/machinery/bsa/full/New(loc,cannon_direction = WEST)
+	..()
 	switch(cannon_direction)
 		if(WEST)
 			dir = WEST
 			pixel_x = -192
-			top_layer.icon_state = "top_west"
+			top_layer = image("icons/obj/lavaland/orbital_cannon.dmi", "top_west")
+			top_layer.layer = ABOVE_MOB_LAYER
 			icon_state = "cannon_west"
 		if(EAST)
 			dir = EAST
-			top_layer.icon_state = "top_east"
+			top_layer = image("icons/obj/lavaland/orbital_cannon.dmi", "top_east")
+			top_layer.layer = ABOVE_MOB_LAYER
 			icon_state = "cannon_east"
 	add_overlay(top_layer)
 	reload()
@@ -247,7 +248,7 @@
 	var/area_aim = FALSE //should also show areas for targeting
 
 /obj/machinery/computer/bsa_control/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-										datum/tgui/master_ui = null, datum/ui_state/state = GLOB.physical_state)
+										datum/tgui/master_ui = null, datum/ui_state/state = physical_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "bsa", name, 400, 305, master_ui, state)
@@ -279,12 +280,12 @@
 
 /obj/machinery/computer/bsa_control/proc/calibrate(mob/user)
 	var/list/gps_locators = list()
-	for(var/obj/item/device/gps/G in GLOB.GPS_list) //nulls on the list somehow
+	for(var/obj/item/device/gps/G in GPS_list) //nulls on the list somehow
 		gps_locators[G.gpstag] = G
 
 	var/list/options = gps_locators
 	if(area_aim)
-		options += GLOB.teleportlocs
+		options += teleportlocs
 	var/V = input(user,"Select target", "Select target",null) in options|null
 	target = options[V]
 

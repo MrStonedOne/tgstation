@@ -73,19 +73,19 @@
 				valid_items += rand(1,max(2,35-probWeight))
 				valid_items += I
 
-		if(ispath(I,/obj/item/weapon/construction/rcd) || ispath(I,/obj/item/weapon/grenade) || ispath(I,/obj/item/device/aicard) || ispath(I,/obj/item/weapon/storage/backpack/holding) || ispath(I,/obj/item/slime_extract) || ispath(I,/obj/item/device/onetankbomb) || ispath(I,/obj/item/device/transfer_valve))
+		if(ispath(I,/obj/item/weapon/rcd) || ispath(I,/obj/item/weapon/grenade) || ispath(I,/obj/item/device/aicard) || ispath(I,/obj/item/weapon/storage/backpack/holding) || ispath(I,/obj/item/slime_extract) || ispath(I,/obj/item/device/onetankbomb) || ispath(I,/obj/item/device/transfer_valve))
 			var/obj/item/tempCheck = I
 			if(initial(tempCheck.icon_state) != null)
 				critical_items += I
 
 
-/obj/machinery/r_n_d/experimentor/Initialize()
-	. = ..()
+/obj/machinery/r_n_d/experimentor/New()
+	..()
 	var/obj/item/weapon/circuitboard/machine/B = new /obj/item/weapon/circuitboard/machine/experimentor(null)
 	B.apply_default_parts(src)
 
-	trackedIan = locate(/mob/living/simple_animal/pet/dog/corgi/Ian) in GLOB.mob_list
-	trackedRuntime = locate(/mob/living/simple_animal/pet/cat/Runtime) in GLOB.mob_list
+	trackedIan = locate(/mob/living/simple_animal/pet/dog/corgi/Ian) in mob_list
+	trackedRuntime = locate(/mob/living/simple_animal/pet/cat/Runtime) in mob_list
 	SetTypeReactions()
 
 /obj/item/weapon/circuitboard/machine/experimentor
@@ -132,7 +132,7 @@
 		if(!user.drop_item())
 			return
 		loaded_item = O
-		O.loc = src
+		O.forceMove(src)
 		to_chat(user, "<span class='notice'>You add the [O.name] to the machine.</span>")
 		flick("h_lathe_load", src)
 
@@ -200,7 +200,7 @@
 		var/turf/dropturf = get_turf(pick(view(1,src)))
 		if(!dropturf) //Failsafe to prevent the object being lost in the void forever.
 			dropturf = get_turf(src)
-		loaded_item.loc = dropturf
+		loaded_item.forceMove(dropturf)
 		if(delete)
 			qdel(loaded_item)
 		loaded_item = null
@@ -237,7 +237,7 @@
 		else if(prob(EFFECT_PROB_VERYLOW-badThingCoeff))
 			visible_message("<span class='danger'>[src] malfunctions and destroys [exp_on], lashing its arms out at nearby people!</span>")
 			for(var/mob/living/m in oview(1, src))
-				m.apply_damage(15, BRUTE, pick("head","chest","groin"))
+				m.apply_damage(15,"brute",pick("head","chest","groin"))
 				investigate_log("Experimentor dealt minor brute to [m].", "experimentor")
 			ejectItem(TRUE)
 		else if(prob(EFFECT_PROB_LOW-badThingCoeff))
@@ -344,7 +344,7 @@
 			if(MT)
 				visible_message("<span class='danger'>[src] dangerously overheats, launching a flaming fuel orb!</span>")
 				investigate_log("Experimentor has launched a <font color='red'>fireball</font> at [M]!", "experimentor")
-				var/obj/item/projectile/magic/aoe/fireball/FB = new /obj/item/projectile/magic/aoe/fireball(start)
+				var/obj/item/projectile/magic/fireball/FB = new /obj/item/projectile/magic/fireball(start)
 				FB.original = MT
 				FB.current = start
 				FB.yo = MT.y - start.y
@@ -373,7 +373,7 @@
 			visible_message("<span class='warning'>[src] malfunctions, activating its emergency coolant systems!</span>")
 			throwSmoke(src.loc)
 			for(var/mob/living/m in oview(1, src))
-				m.apply_damage(5, BURN, pick("head","chest","groin"))
+				m.apply_damage(5,"burn",pick("head","chest","groin"))
 				investigate_log("Experimentor has dealt minor burn damage to [m]", "experimentor")
 			ejectItem()
 	////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,7 +475,7 @@
 			throwSmoke(src.loc)
 			if(trackedIan)
 				throwSmoke(trackedIan.loc)
-				trackedIan.loc = src.loc
+				trackedIan.forceMove(src.loc)
 				investigate_log("Experimentor has stolen Ian!", "experimentor") //...if anyone ever fixes it...
 			else
 				new /mob/living/simple_animal/pet/dog/corgi(src.loc)
@@ -485,14 +485,14 @@
 			visible_message("<span class='warning'>Experimentor draws the life essence of those nearby!</span>")
 			for(var/mob/living/m in view(4,src))
 				to_chat(m, "<span class='danger'>You feel your flesh being torn from you, mists of blood drifting to [src]!</span>")
-				m.apply_damage(50, BRUTE, "chest")
+				m.apply_damage(50,"brute","chest")
 				investigate_log("Experimentor has taken 50 brute a blood sacrifice from [m]", "experimentor")
 		if(globalMalf > 51 && globalMalf < 75)
 			visible_message("<span class='warning'>[src] encounters a run-time error!</span>")
 			throwSmoke(src.loc)
 			if(trackedRuntime)
 				throwSmoke(trackedRuntime.loc)
-				trackedRuntime.loc = src.loc
+				trackedRuntime.forceMove(src.loc)
 				investigate_log("Experimentor has stolen Runtime!", "experimentor")
 			else
 				new /mob/living/simple_animal/pet/cat(src.loc)
@@ -556,7 +556,7 @@
 //~~~~~~~~Admin logging proc, aka the Powergamer Alarm~~~~~~~~
 /obj/machinery/r_n_d/experimentor/proc/warn_admins(mob/user, ReactionName)
 	var/turf/T = get_turf(src)
-	message_admins("Experimentor reaction: [ReactionName] generated by [ADMIN_LOOKUPFLW(user)] at [ADMIN_COORDJMP(T)]",0,1)
+	message_admins("Experimentor reaction: [ReactionName] generated by [key_name_admin(user)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) at ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)",0,1)
 	log_game("Experimentor reaction: [ReactionName] generated by [key_name(user)] in ([T.x],[T.y],[T.z])")
 
 #undef SCANTYPE_POKE
@@ -589,8 +589,8 @@
 	var/cooldownMax = 60
 	var/cooldown
 
-/obj/item/weapon/relic/Initialize()
-	. = ..()
+/obj/item/weapon/relic/New()
+	..()
 	icon_state = pick("shock_kit","armor-igniter-analyzer","infra-igniter0","infra-igniter1","radio-multitool","prox-radio1","radio-radio","timer-multitool0","radio-igniter-tank")
 	realName = "[pick("broken","twisted","spun","improved","silly","regular","badly made")] [pick("device","object","toy","illegal tech","weapon")]"
 
@@ -638,7 +638,7 @@
 
 /obj/item/weapon/relic/proc/flash(mob/user)
 	playsound(src.loc, "sparks", rand(25,50), 1)
-	var/obj/item/weapon/grenade/flashbang/CB = new/obj/item/weapon/grenade/flashbang(user.loc)
+	var/obj/item/weapon/grenade/flashbang/CB = new/obj/item/weapon/grenade/flashbang(get_turf(user))
 	CB.prime()
 	warn_admins(user, "Flash")
 
@@ -703,6 +703,6 @@
 	var/turf/T = get_turf(src)
 	var/log_msg = "[RelicType] relic used by [key_name(user)] in ([T.x],[T.y],[T.z])"
 	if(priority) //For truly dangerous relics that may need an admin's attention. BWOINK!
-		message_admins("[RelicType] relic activated by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(T)]",0,1)
+		message_admins("[RelicType] relic activated by [key_name_admin(user)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) in ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)",0,1)
 	log_game(log_msg)
 	investigate_log(log_msg, "experimentor")

@@ -7,7 +7,7 @@
 	var/list/effects
 	var/ready = TRUE
 	centcom_cancast = FALSE
-	sound = 'sound/effects/magic.ogg'
+	sound = "sound/effects/magic.ogg"
 	cooldown_min = 300
 	level_max = 0
 
@@ -29,8 +29,7 @@
 		turf_steps[pick_n_take(turfs)] = pick_n_take(turfs)
 	if(turfs.len > 0)
 		var/turf/loner = pick(turfs)
-		var/area/A = get_area(user)
-		turf_steps[loner] = get_turf(pick(A.contents))
+		turf_steps[loner] = pick(Z_TURFS(user.z))
 
 	perform(turf_steps,user=user)
 
@@ -45,10 +44,7 @@
 		var/obj/effect/cross_action/spacetime_dist/STD0 = new /obj/effect/cross_action/spacetime_dist(T0)
 		var/obj/effect/cross_action/spacetime_dist/STD1 = new /obj/effect/cross_action/spacetime_dist(T1)
 		STD0.linked_dist = STD1
-		STD0.add_overlay(T1.photograph())
 		STD1.linked_dist = STD0
-		STD1.add_overlay(T0.photograph())
-		STD1.set_light(4, 30, "#c9fff5")
 		effects += STD0
 		effects += STD1
 
@@ -67,16 +63,16 @@
 /obj/effect/cross_action/spacetime_dist
 	name = "spacetime distortion"
 	desc = "A distortion in spacetime. You can hear faint music..."
-	icon_state = ""
+	icon_state = "wave1"
+	color = "#8A2BE2"
 	var/obj/effect/cross_action/spacetime_dist/linked_dist
 	var/busy = FALSE
 	var/sound
 	var/walks_left = 50 //prevents the game from hanging in extreme cases (such as minigun fire)
 
-/obj/effect/cross_action/spacetime_dist/Initialize(mapload)
-	. = ..()
-	sound = "sound/guitar/[safepick(GLOB.guitar_notes)]"
-	dir = pick(GLOB.cardinal)
+/obj/effect/cross_action/spacetime_dist/New()
+	..()
+	sound = "sound/guitar/[safepick(guitar_notes)]"
 
 /obj/effect/cross_action/spacetime_dist/proc/walk_link(atom/movable/AM)
 	if(linked_dist && walks_left > 0)
@@ -86,9 +82,10 @@
 
 /obj/effect/cross_action/spacetime_dist/proc/get_walker(atom/movable/AM)
 	busy = TRUE
-	flick("purplesparkles", src)
-	AM.forceMove(get_turf(src))
-	playsound(get_turf(src),sound,70,0)
+	if(linked_dist)
+		flick("purplesparkles", src)
+		AM.forceMove(get_turf(src))
+		playsound(get_turf(src),sound,70,0)
 	busy = FALSE
 
 /obj/effect/cross_action/spacetime_dist/Crossed(atom/movable/AM)
@@ -96,7 +93,7 @@
 		walk_link(AM)
 
 /obj/effect/cross_action/spacetime_dist/attackby(obj/item/W, mob/user, params)
-	if(user.temporarilyRemoveItemFromInventory(W))
+	if(user.unEquip(W))
 		walk_link(W)
 	else
 		walk_link(user)

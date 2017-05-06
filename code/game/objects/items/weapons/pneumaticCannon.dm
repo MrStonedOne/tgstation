@@ -61,11 +61,12 @@
 		if(IW.w_class > src.w_class)
 			to_chat(user, "<span class='warning'>\The [IW] is too large to fit into \the [src]!</span>")
 			return
-		if(!user.transferItemToLoc(W, src))
+		if(!user.unEquip(W))
 			return
 		to_chat(user, "<span class='notice'>You load \the [IW] into \the [src].</span>")
 		loadedItems.Add(IW)
 		loadedWeightClass += IW.w_class
+		IW.forceMove(src)
 
 
 
@@ -77,16 +78,10 @@
 	Fire(user, target)
 
 
-/obj/item/weapon/pneumatic_cannon/proc/Fire(mob/living/carbon/human/user, var/atom/target)
+/obj/item/weapon/pneumatic_cannon/proc/Fire(var/mob/living/carbon/human/user, var/atom/target)
 	if(!istype(user) && !target)
 		return
 	var/discharge = 0
-	if(user.dna.check_mutation(HULK))
-		to_chat(user, "<span class='warning'>Your meaty finger is much too large for the trigger guard!</span>")
-		return
-	if(NOGUNS in user.dna.species.species_traits)
-		to_chat(user, "<span class='warning'>Your fingers don't fit in the trigger guard!</span>")
-		return
 	if(!loadedItems || !loadedWeightClass)
 		to_chat(user, "<span class='warning'>\The [src] has nothing loaded.</span>")
 		return
@@ -114,7 +109,7 @@
 		loadedItems.Remove(ITD)
 		loadedWeightClass -= ITD.w_class
 		ITD.throw_speed = pressureSetting * 2
-		ITD.loc = get_turf(src)
+		ITD.forceMove(get_turf(src))
 		ITD.throw_at(target, pressureSetting * 5, pressureSetting * 2,user)
 	if(pressureSetting >= 3 && user)
 		user.visible_message("<span class='warning'>[user] is thrown down by the force of the cannon!</span>", "<span class='userdanger'>[src] slams into your shoulder, knocking you down!")
@@ -128,7 +123,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	maxWeightClass = 7
 	gasPerThrow = 5
-
+/*
 /datum/crafting_recipe/improvised_pneumatic_cannon //Pretty easy to obtain but
 	name = "Pneumatic Cannon"
 	result = /obj/item/weapon/pneumatic_cannon/ghetto
@@ -139,28 +134,29 @@
 				/obj/item/pipe = 2)
 	time = 300
 	category = CAT_WEAPON
-
+*/
 /obj/item/weapon/pneumatic_cannon/proc/updateTank(obj/item/weapon/tank/internals/thetank, removing = 0, mob/living/carbon/human/user)
 	if(removing)
 		if(!src.tank)
 			return
 		to_chat(user, "<span class='notice'>You detach \the [thetank] from \the [src].</span>")
-		src.tank.loc = get_turf(user)
+		src.tank.forceMove(get_turf(user))
 		user.put_in_hands(tank)
 		src.tank = null
 	if(!removing)
 		if(src.tank)
 			to_chat(user, "<span class='warning'>\The [src] already has a tank.</span>")
 			return
-		if(!user.transferItemToLoc(thetank, src))
+		if(!user.unEquip(thetank))
 			return
 		to_chat(user, "<span class='notice'>You hook \the [thetank] up to \the [src].</span>")
 		src.tank = thetank
+		thetank.forceMove(src)
 	src.update_icons()
 
 /obj/item/weapon/pneumatic_cannon/proc/update_icons()
 	src.cut_overlays()
 	if(!tank)
 		return
-	add_overlay(tank.icon_state)
+	src.add_overlay(image('icons/obj/pneumaticCannon.dmi', "[tank.icon_state]"))
 	src.update_icon()

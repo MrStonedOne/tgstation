@@ -8,9 +8,6 @@
 			adjustBruteLoss(damage * hit_percent)
 		if(BURN)
 			adjustFireLoss(damage * hit_percent)
-		if(OXY)
-			if(damage < 0) //we shouldn't be taking oxygen damage through this proc, but we'll let it heal.
-				adjustOxyLoss(damage * hit_percent)
 	return 1
 
 

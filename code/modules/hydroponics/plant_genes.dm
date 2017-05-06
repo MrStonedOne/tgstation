@@ -107,7 +107,7 @@
 	reagent_id = reag_id
 	name = "UNKNOWN"
 
-	var/datum/reagent/R = GLOB.chemical_reagents_list[reag_id]
+	var/datum/reagent/R = chemical_reagents_list[reag_id]
 	if(R && R.id == reagent_id)
 		name = R.name
 
@@ -263,40 +263,26 @@
 
 /datum/plant_gene/trait/glow
 	// Makes plant glow. Makes plant in tray glow too.
-	// Adds 1 + potency*rate light range and potency*(rate + 0.01) light_power to products.
+	// Adds potency*rate luminosity to products.
 	name = "Bioluminescence"
-	rate = 0.03
+	rate = 0.2
 	examine_line = "<span class='info'>It emits a soft glow.</span>"
 	trait_id = "glow"
-	var/glow_color = "#AAD84B"
+	var/color = LIGHT_COLOR_GLARE
 
-/datum/plant_gene/trait/glow/proc/glow_range(obj/item/seeds/S)
-	return 1.4 + S.potency*rate
-
-/datum/plant_gene/trait/glow/proc/glow_power(obj/item/seeds/S)
-	return max(S.potency*(rate + 0.01), 0.1)
+/datum/plant_gene/trait/glow/proc/get_lum(obj/item/seeds/S)
+	return round(S.potency*rate)
 
 /datum/plant_gene/trait/glow/on_new(obj/item/weapon/reagent_containers/food/snacks/grown/G, newloc)
 	..()
-	G.set_light(glow_range(G.seed), glow_power(G.seed), glow_color)
-
-/datum/plant_gene/trait/glow/shadow
-	//makes plant emit slightly purple shadows
-	//adds -potency*(rate*0.05) light power to products
-	name = "Shadow Emission"
-	rate = 0.04
-
-/datum/plant_gene/trait/glow/shadow/glow_power(obj/item/seeds/S)
-	return -max(S.potency*(rate*0.05), 0.075)
-
-/datum/plant_gene/trait/glow/red
-	name = "Red Electrical Glow"
-	glow_color = LIGHT_COLOR_RED
+	if(ismob(newloc))
+		G.pickup(newloc)//adjusts the lighting on the mob
+	else
+		G.set_light(get_lum(G.seed))
 
 /datum/plant_gene/trait/glow/berry
 	name = "Strong Bioluminescence"
-	rate = 0.05
-	glow_color = null
+	rate = 0.3
 
 
 /datum/plant_gene/trait/teleport
@@ -374,7 +360,7 @@
 			if(CG) // 10x charge for deafult cell charge gene - 20 000 with 100 potency.
 				pocell.maxcharge *= CG.rate*1000
 			pocell.charge = pocell.maxcharge
-			pocell.name = "[G.name] battery"
+			pocell.name = "[G] battery"
 			pocell.desc = "A rechargable plant based power cell. This one has a power rating of [pocell.maxcharge], and you should not swallow it."
 
 			if(G.reagents.has_reagent("plasma", 2))

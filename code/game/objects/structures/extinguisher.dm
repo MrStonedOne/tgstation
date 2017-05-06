@@ -1,7 +1,7 @@
 /obj/structure/extinguisher_cabinet
 	name = "extinguisher cabinet"
 	desc = "A small wall mounted cabinet designed to hold a fire extinguisher."
-	icon = 'icons/obj/wallmounts.dmi'
+	icon = 'icons/fallout/objects/structures/wallmounts.dmi'
 	icon_state = "extinguisher_closed"
 	anchored = 1
 	density = 0
@@ -144,5 +144,6 @@
 /obj/item/wallframe/extinguisher_cabinet
 	name = "extinguisher cabinet frame"
 	desc = "Used for building wall-mounted extinguisher cabinets."
-	icon_state = "extinguisher"
+	icon = 'icons/obj/apc_repair.dmi'
+	icon_state = "extinguisher_frame"
 	result_path = /obj/structure/extinguisher_cabinet

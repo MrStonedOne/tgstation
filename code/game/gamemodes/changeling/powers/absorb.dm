@@ -4,6 +4,7 @@
 	chemical_cost = 0
 	dna_cost = 0
 	req_human = 1
+	max_genetic_damage = 100
 
 /obj/effect/proc_holder/changeling/absorbDNA/can_sting(mob/living/carbon/user)
 	if(!..())
@@ -30,8 +31,8 @@
 	var/datum/changeling/changeling = user.mind.changeling
 	var/mob/living/carbon/human/target = user.pulling
 	changeling.isabsorbing = 1
-	for(var/i in 1 to 3)
-		switch(i)
+	for(var/stage = 1, stage<=3, stage++)
+		switch(stage)
 			if(1)
 				to_chat(user, "<span class='notice'>This creature is compatible. We must hold still...</span>")
 			if(2)
@@ -41,13 +42,12 @@
 				to_chat(target, "<span class='userdanger'>You feel a sharp stabbing pain!</span>")
 				target.take_overall_damage(40)
 
-		SSblackbox.add_details("changeling_powers","Absorb DNA|[i]")
+		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(user, target, 150))
 			to_chat(user, "<span class='warning'>Our absorption of [target] has been interrupted!</span>")
 			changeling.isabsorbing = 0
 			return
 
-	SSblackbox.add_details("changeling_powers","Absorb DNA|4")
 	user.visible_message("<span class='danger'>[user] sucks the fluids from [target]!</span>", "<span class='notice'>We have absorbed [target].</span>")
 	to_chat(target, "<span class='userdanger'>You are absorbed by the changeling!</span>")
 
@@ -65,15 +65,13 @@
 		//Recent as opposed to all because rounds tend to have a LOT of text.
 		var/list/recent_speech = list()
 
-		var/list/say_log = target.logging[INDIVIDUAL_SAY_LOG]
-
-		if(LAZYLEN(say_log) > LING_ABSORB_RECENT_SPEECH)
-			recent_speech = say_log.Copy(say_log.len-LING_ABSORB_RECENT_SPEECH+1,0) //0 so len-LING_ARS+1 to end of list
+		if(target.say_log.len > LING_ABSORB_RECENT_SPEECH)
+			recent_speech = target.say_log.Copy(target.say_log.len-LING_ABSORB_RECENT_SPEECH+1,0) //0 so len-LING_ARS+1 to end of list
 		else
-			for(var/spoken_memory in say_log)
+			for(var/spoken_memory in target.say_log)
 				if(recent_speech.len >= LING_ABSORB_RECENT_SPEECH)
 					break
-				recent_speech[spoken_memory] = say_log[spoken_memory]
+				recent_speech[spoken_memory] = target.say_log[spoken_memory]
 
 		if(recent_speech.len)
 			user.mind.store_memory("<B>Some of [target]'s speech patterns, we should study these to better impersonate them!</B>")
@@ -99,7 +97,7 @@
 
 	target.death(0)
 	target.Drain()
-	return TRUE
+	return 1
 
 
 

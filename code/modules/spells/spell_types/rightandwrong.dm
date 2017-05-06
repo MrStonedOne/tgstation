@@ -9,12 +9,12 @@
 		to_chat(user, "<B>You summoned [summon_type ? "magic" : "guns"]!</B>")
 		message_admins("[key_name_admin(user, 1)] summoned [summon_type ? "magic" : "guns"]!")
 		log_game("[key_name(user)] summoned [summon_type ? "magic" : "guns"]!")
-	for(var/mob/living/carbon/human/H in GLOB.player_list)
+	for(var/mob/living/carbon/human/H in player_list)
 		if(H.stat == 2 || !(H.client)) continue
 		if(H.mind)
 			if(H.mind.special_role == "Wizard" || H.mind.special_role == "apprentice" || H.mind.special_role == "survivalist") continue
-		if(prob(survivor_probability) && !(H.mind in SSticker.mode.traitors))
-			SSticker.mode.traitors += H.mind
+		if(prob(survivor_probability) && !(H.mind in ticker.mode.traitors))
+			ticker.mode.traitors += H.mind
 			if(!summon_type)
 				var/datum/objective/steal_five_of_type/summon_guns/guns = new
 				guns.owner = H.mind
@@ -30,7 +30,7 @@
 			var/datum/objective/survive/survive = new
 			survive.owner = H.mind
 			H.mind.objectives += survive
-			H.log_message("<font color='red'>Was made into a survivalist, and trusts no one!</font>", INDIVIDUAL_ATTACK_LOG)
+			H.attack_log += "\[[time_stamp()]\] <font color='red'>Was made into a survivalist, and trusts no one!</font>"
 			H.mind.announce_objectives()
 		var/randomizeguns 			= pick(gunslist)
 		var/randomizemagic 			= pick(magiclist)
@@ -203,17 +203,17 @@
 
 
 /proc/summonevents()
-	if(!SSevents.wizardmode)
-		SSevents.frequency_lower = 600									//1 minute lower bound
-		SSevents.frequency_upper = 3000									//5 minutes upper bound
-		SSevents.toggleWizardmode()
-		SSevents.reschedule()
+	if(!SSevent.wizardmode)
+		SSevent.frequency_lower = 600									//1 minute lower bound
+		SSevent.frequency_upper = 3000									//5 minutes upper bound
+		SSevent.toggleWizardmode()
+		SSevent.reschedule()
 
 	else 																//Speed it up
-		SSevents.frequency_upper -= 600	//The upper bound falls a minute each time, making the AVERAGE time between events lessen
-		if(SSevents.frequency_upper < SSevents.frequency_lower) //Sanity
-			SSevents.frequency_upper = SSevents.frequency_lower
+		SSevent.frequency_upper -= 600	//The upper bound falls a minute each time, making the AVERAGE time between events lessen
+		if(SSevent.frequency_upper < SSevent.frequency_lower) //Sanity
+			SSevent.frequency_upper = SSevent.frequency_lower
 
-		SSevents.reschedule()
-		message_admins("Summon Events intensifies, events will now occur every [SSevents.frequency_lower / 600] to [SSevents.frequency_upper / 600] minutes.")
+		SSevent.reschedule()
+		message_admins("Summon Events intensifies, events will now occur every [SSevent.frequency_lower / 600] to [SSevent.frequency_upper / 600] minutes.")
 		log_game("Summon Events was increased!")

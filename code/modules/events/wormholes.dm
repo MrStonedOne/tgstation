@@ -36,12 +36,12 @@
 		for(var/obj/effect/portal/wormhole/O in wormholes)
 			var/turf/T = pick(pick_turfs)
 			if(T)
-				O.loc = T
+				O.forceMove(T)
 
 /datum/round_event/wormholes/end()
-	GLOB.portals.Remove(wormholes)
+	portals.Remove(wormholes)
 	for(var/obj/effect/portal/wormhole/O in wormholes)
-		O.loc = null
+		O.forceMove(null)
 	wormholes.Cut()
 
 
@@ -67,8 +67,8 @@
 
 	if(istype(M, /atom/movable))
 		var/turf/target
-		if(GLOB.portals.len)
-			var/obj/effect/portal/P = pick(GLOB.portals)
+		if(portals.len)
+			var/obj/effect/portal/P = pick(portals)
 			if(P && isturf(P.loc))
 				target = P.loc
 		if(!target)

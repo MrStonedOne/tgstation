@@ -6,6 +6,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	flags = HEAR
 	slot_flags = SLOT_BELT
+	languages_spoken = ALL //this is a translator, after all.
+	languages_understood = ALL //this is a translator, after all.
 	materials = list(MAT_METAL=60, MAT_GLASS=30)
 	force = 2
 	throwforce = 0
@@ -13,16 +15,14 @@
 	var/playing = 0
 	var/playsleepseconds = 0
 	var/obj/item/device/tape/mytape
-	var/starting_tape_type = /obj/item/device/tape/random
 	var/open_panel = 0
 	var/canprint = 1
 
 
-/obj/item/device/taperecorder/Initialize(mapload)
-	..()
-	if(starting_tape_type)
-		mytape = new starting_tape_type(src)
+/obj/item/device/taperecorder/New()
+	mytape = new /obj/item/device/tape/random(src)
 	update_icon()
+	..()
 
 
 /obj/item/device/taperecorder/examine(mob/user)
@@ -32,8 +32,9 @@
 
 /obj/item/device/taperecorder/attackby(obj/item/I, mob/user, params)
 	if(!mytape && istype(I, /obj/item/device/tape))
-		if(!user.transferItemToLoc(I,src))
+		if(!user.unEquip(I))
 			return
+		I.forceMove(src)
 		mytape = I
 		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
 		update_icon()
@@ -92,7 +93,7 @@
 		icon_state = "taperecorder_idle"
 
 
-/obj/item/device/taperecorder/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, message_mode)
+/obj/item/device/taperecorder/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans)
 	if(mytape && recording)
 		mytape.timestamp += mytape.used_capacity
 		mytape.storedinfo += "\[[time2text(mytape.used_capacity * 10,"mm:ss")]\] [message]"
@@ -229,8 +230,8 @@
 
 
 //empty tape recorders
-/obj/item/device/taperecorder/empty
-	starting_tape_type = null
+/obj/item/device/taperecorder/empty/New()
+	return
 
 
 /obj/item/device/tape
@@ -267,22 +268,17 @@
 
 
 /obj/item/device/tape/proc/fix()
-	cut_overlay("ribbonoverlay")
+	overlays -= "ribbonoverlay"
 	ruined = 0
 
 
 /obj/item/device/tape/attackby(obj/item/I, mob/user, params)
-	if(ruined)
-		var/delay = -1
-		if (istype(I, /obj/item/weapon/screwdriver))
-			delay = 120*I.toolspeed
-		else if(istype(I, /obj/item/weapon/pen))
-			delay = 120*1.5
-		if (delay != -1)
-			to_chat(user, "<span class='notice'>You start winding the tape back in...</span>")
-			if(do_after(user, delay, target = src))
-				to_chat(user, "<span class='notice'>You wound the tape back in.</span>")
-				fix()
+	if(ruined && istype(I, /obj/item/weapon/screwdriver))
+		to_chat(user, "<span class='notice'>You start winding the tape back in...</span>")
+		if(do_after(user, 120*I.toolspeed, target = src))
+			to_chat(user, "<span class='notice'>You wound the tape back in.</span>")
+			fix()
+
 
 //Random colour tapes
 /obj/item/device/tape/random/New()

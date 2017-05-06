@@ -21,14 +21,13 @@
 	attach(A2,user)
 	name = "[A.name]-[A2.name] assembly"
 	update_icon()
-	SSblackbox.add_details("assembly_made","[initial(A.name)]-[initial(A2.name)]")
+	feedback_add_details("assembly_made","[A.name]-[A2.name]")
 
 /obj/item/device/assembly_holder/proc/attach(obj/item/device/assembly/A, mob/user)
 	if(!A.remove_item_from_storage(src))
 		if(user)
-			user.transferItemToLoc(A, src)
-		else
-			A.forceMove(src)
+			user.remove_from_mob(A)
+		A.forceMove(src)
 	A.holder = src
 	A.toggle_secure()
 	if(!a_left)
@@ -44,11 +43,14 @@
 			add_overlay("[O]_l")
 
 	if(a_right)
-		var/mutable_appearance/right = mutable_appearance(icon, "[a_right.icon_state]_left")
-		right.transform = matrix(-1, 0, 0, 0, 1, 0)
+		var/list/images = list()
+		images += image(icon, icon_state = "[a_right.icon_state]_left")
 		for(var/O in a_right.attached_overlays)
-			right.add_overlay("[O]_l")
-		add_overlay(right)
+			images += image(icon, icon_state = "[O]_l")
+		var/matrix = matrix(-1, 0, 0, 0, 1, 0)
+		for(var/image/I in images)
+			I.transform = matrix
+			add_overlay(I)
 
 	if(master)
 		master.update_icon()
@@ -86,10 +88,10 @@
 			return 0
 		if(a_left)
 			a_left.holder = null
-			a_left.loc = T
+			a_left.forceMove(T)
 		if(a_right)
 			a_right.holder = null
-			a_right.loc = T
+			a_right.forceMove(T)
 		qdel(src)
 	else
 		..()

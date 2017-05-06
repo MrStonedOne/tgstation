@@ -5,7 +5,7 @@
 		to_chat(user, "<span class='notice'>You begin to place [I] on [src]'s head...</span>")
 		to_chat(src, "<span class='notice'>[user] is placing [I] on your head...</span>")
 		if(do_after(user, 30, target = src))
-			user.temporarilyRemoveItemFromInventory(I, TRUE)
+			user.unEquip(I, 1)
 			place_on_head(I)
 			return
 	if(I.force && I.damtype != STAMINA && stat != DEAD) //only sparks if real damage is dealt.
@@ -16,12 +16,11 @@
 	if (M.a_intent == INTENT_DISARM)
 		if(!(lying))
 			M.do_attack_animation(src, ATTACK_EFFECT_DISARM)
-			var/obj/item/I = get_active_held_item()
-			if(I)
+			if(get_active_held_item())
 				uneq_active()
 				visible_message("<span class='danger'>[M] disarmed [src]!</span>", \
 					"<span class='userdanger'>[M] has disabled [src]'s active module!</span>", null, COMBAT_MESSAGE_RANGE)
-				add_logs(M, src, "disarmed", "[I ? " removing \the [I]" : ""]")
+				add_logs(M, src, "disarmed")
 			else
 				Stun(2)
 				step(src,get_dir(M,src))
@@ -93,8 +92,6 @@
 		if(locked)
 			to_chat(user, "<span class='notice'>You emag the cover lock.</span>")
 			locked = 0
-			if(shell) //A warning to Traitors who may not know that emagging AI shells does not slave them.
-				to_chat(user, "<span class='boldwarning'>[src] seems to be controlled remotely! Emagging the interface may not work as expected.</span>")
 		else
 			to_chat(user, "<span class='warning'>The cover is already unlocked!</span>")
 		return
@@ -124,24 +121,23 @@
 			ai_is_antag = (connected_ai.mind.special_role == "traitor")
 	if(ai_is_antag)
 		to_chat(src, "<span class='danger'>ALERT: Foreign software execution prevented.</span>")
-		to_chat(connected_ai, "<span class='danger'>ALERT: Cyborg unit \[[src]] successfully defended against subversion.</span>")
+		to_chat(connected_ai, "<span class='danger'>ALERT: Cyborg unit \[[src]] successfuly defended against subversion.</span>")
 		log_game("[key_name(user)] attempted to emag cyborg [key_name(src)], but they were slaved to traitor AI [connected_ai].")
 		return
 
-	if(shell) //AI shells cannot be emagged, so we try to make it look like a standard reset. Smart players may see through this, however.
-		to_chat(user, "<span class='danger'>[src] is remotely controlled! Your emag attempt has triggered a system reset instead!</span>")
-		log_game("[key_name(user)] attempted to emag an AI shell belonging to [key_name(src) ? key_name(src) : connected_ai]. The shell has been reset as a result.")
-		ResetModule()
-		return
-
 	SetEmagged(1)
-	SetStunned(3) //Borgs were getting into trouble because they would attack the emagger before the new laws were shown
+	SetLockdown(1) //Borgs were getting into trouble because they would attack the emagger before the new laws were shown
 	lawupdate = 0
 	connected_ai = null
 	message_admins("[key_name_admin(user)] emagged cyborg [key_name_admin(src)].  Laws overridden.")
 	log_game("[key_name(user)] emagged cyborg [key_name(src)].  Laws overridden.")
+	clear_supplied_laws()
+	clear_inherent_laws()
+	clear_zeroth_law(0)
+	laws = new /datum/ai_laws/syndicate_override
 	var/time = time2text(world.realtime,"hh:mm:ss")
-	GLOB.lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) emagged [name]([key])")
+	lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) emagged [name]([key])")
+	set_zeroth_law("Only [user.real_name] and people they designate as being such are Syndicate Agents.")
 	to_chat(src, "<span class='danger'>ALERT: Foreign software detected.</span>")
 	sleep(5)
 	to_chat(src, "<span class='danger'>Initiating diagnostics...</span>")
@@ -155,10 +151,10 @@
 	to_chat(src, "<span class='danger'>> N</span>")
 	sleep(20)
 	to_chat(src, "<span class='danger'>ERRORERRORERROR</span>")
+	to_chat(src, "<b>Obey these laws:</b>")
+	laws.show_laws(src)
 	to_chat(src, "<span class='danger'>ALERT: [user.real_name] is your new master. Obey your new laws and their commands.</span>")
-	laws = new /datum/ai_laws/syndicate_override
-	set_zeroth_law("Only [user.real_name] and people they designate as being such are Syndicate Agents.")
-	laws.associate(src)
+	SetLockdown(0)
 	update_icons()
 
 

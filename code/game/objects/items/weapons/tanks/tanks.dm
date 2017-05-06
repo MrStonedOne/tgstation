@@ -116,19 +116,16 @@
 	var/mob/living/carbon/human/H = user
 	user.visible_message("<span class='suicide'>[user] is putting [src]'s valve to [user.p_their()] lips! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(loc, 'sound/effects/spray.ogg', 10, 1, -3)
-	if (!QDELETED(H) && air_contents && air_contents.return_pressure() >= 1000)
+	if (H && !qdeleted(H))
 		for(var/obj/item/W in H)
-			H.dropItemToGround(W)
+			H.unEquip(W)
 			if(prob(50))
-				step(W, pick(GLOB.alldirs))
-		H.status_flags |= DISFIGURED
+				step(W, pick(alldirs))
+		H.hair_style = "Bald"
+		H.update_hair()
 		H.bleed_rate = 5
-		H.gib_animation()
-		sleep(3)
+		new /obj/effect/gibspawner/generic(H.loc, H.viruses, H.dna)
 		H.adjustBruteLoss(1000) //to make the body super-bloody
-		H.spawn_gibs()
-		H.spill_organs()
-		H.spread_bodyparts()
 
 	return (BRUTELOSS)
 
@@ -143,7 +140,7 @@
 		. = ..()
 
 /obj/item/weapon/tank/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-									datum/tgui/master_ui = null, datum/ui_state/state = GLOB.hands_state)
+									datum/tgui/master_ui = null, datum/ui_state/state = hands_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "tanks", name, 420, 200, master_ui, state)
@@ -234,7 +231,7 @@
 		if(!istype(src.loc,/obj/item/device/transfer_valve))
 			message_admins("Explosive tank rupture! Last key to touch the tank was [src.fingerprintslast].")
 			log_game("Explosive tank rupture! Last key to touch the tank was [src.fingerprintslast].")
-		//to_chat(world, "\blue[x],[y] tank is exploding: [pressure] kPa")
+//		to_chat(world, "\blue[x],[y] tank is exploding: [pressure] kPa")
 		//Give the gas a chance to build up more pressure through reacting
 		air_contents.react()
 		air_contents.react()
@@ -243,7 +240,7 @@
 		var/range = (pressure-TANK_FRAGMENT_PRESSURE)/TANK_FRAGMENT_SCALE
 		var/turf/epicenter = get_turf(loc)
 
-		//to_chat(world, "\blue Exploding Pressure: [pressure] kPa, intensity: [range]")
+//		to_chat(world, "\blue Exploding Pressure: [pressure] kPa, intensity: [range]")
 
 		explosion(epicenter, round(range*0.25), round(range*0.5), round(range), round(range*1.5))
 		if(istype(src.loc,/obj/item/device/transfer_valve))
@@ -252,7 +249,7 @@
 			qdel(src)
 
 	else if(pressure > TANK_RUPTURE_PRESSURE)
-		//to_chat(world, "\blue[x],[y] tank is rupturing: [pressure] kPa, integrity [integrity]")
+//		to_chat(world, "\blue[x],[y] tank is rupturing: [pressure] kPa, integrity [integrity]")
 		if(integrity <= 0)
 			var/turf/T = get_turf(src)
 			if(!T)
@@ -264,7 +261,7 @@
 			integrity--
 
 	else if(pressure > TANK_LEAK_PRESSURE)
-		//to_chat(world, "\blue[x],[y] tank is leaking: [pressure] kPa, integrity [integrity]")
+//		to_chat(world, "\blue[x],[y] tank is leaking: [pressure] kPa, integrity [integrity]")
 		if(integrity <= 0)
 			var/turf/T = get_turf(src)
 			if(!T)

@@ -10,6 +10,8 @@
 /*
  * Pens
  */
+
+/*
 /obj/item/weapon/pen
 	desc = "It's a normal black ink pen."
 	name = "pen"
@@ -24,12 +26,15 @@
 	materials = list(MAT_METAL=10)
 	pressure_resistance = 2
 	var/colour = "black"	//what colour the ink is!
-	var/traitor_unlock_degrees = 0
-	var/degrees = 0
 
 /obj/item/weapon/pen/suicide_act(mob/user)
 	user.visible_message("<span class='suicide'>[user] is scribbling numbers all over [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit sudoku...</span>")
 	return(BRUTELOSS)
+
+/obj/item/weapon/pen/marker
+	name = "black marker"
+	desc = "<b>For marking down the most important things.</b>"
+	icon_state = "marker"
 
 /obj/item/weapon/pen/blue
 	desc = "It's a normal blue ink pen."
@@ -64,25 +69,6 @@
 	to_chat(user, "<span class='notice'>\The [src] will now write in [colour].</span>")
 	desc = "It's a fancy four-color ink pen, set to [colour]."
 
-
-/obj/item/weapon/pen/attack_self(mob/living/carbon/user)
-	var/deg = input(user, "What angle would you like to rotate the pen head to? (1-360)", "Rotate Pen Head") as null|num
-	if(deg && (deg > 0 && deg <= 360))
-		degrees = deg
-		to_chat(user, "<span class='notice'>You rotate the top of the pen to [degrees] degrees.</span>")
-		if(hidden_uplink && degrees == traitor_unlock_degrees)
-			to_chat(user, "<span class='warning'>Your pen makes a clicking noise, before quickly rotating back to 0 degrees!</span>")
-			degrees = 0
-			hidden_uplink.interact(user)
-
-
-/obj/item/weapon/pen/attackby(obj/item/I, mob/user, params)
-	if(hidden_uplink)
-		return hidden_uplink.attackby(I, user, params)
-	else
-		return ..()
-
-
 /obj/item/weapon/pen/attack(mob/living/M, mob/user,stealth)
 	if(!istype(M))
 		return
@@ -98,41 +84,6 @@
 
 	else
 		. = ..()
-
-/obj/item/weapon/pen/afterattack(obj/O, mob/living/user, proximity)
-	//Changing Name/Description of items. Only works if they have the 'unique_rename' var set
-	if(isobj(O) && proximity)
-		if(O.unique_rename)
-			var/penchoice = input(user, "What would you like to edit?", "Rename or change description?") as null|anything in list("Rename","Change description")
-			if(!QDELETED(O) && user.canUseTopic(O, be_close = TRUE))
-
-				if(penchoice == "Rename")
-					var/input = stripped_input(user,"What do you want to name \the [O.name]?", ,"", MAX_NAME_LEN)
-					var/oldname = O.name
-					if(!QDELETED(O) && user.canUseTopic(O, be_close = TRUE))
-						if(oldname == input)
-							to_chat(user, "You changed \the [O.name] to... well... \the [O.name].")
-							return
-						else
-							O.name = input
-							to_chat(user, "\The [oldname] has been successfully been renamed to \the [input].")
-							return
-					else
-						to_chat(user, "You are too far away!")
-
-				if(penchoice == "Change description")
-					var/input = stripped_input(user,"Describe \the [O.name] here", ,"", 100)
-					if(!QDELETED(O) && user.canUseTopic(O, be_close = TRUE))
-						O.desc = input
-						to_chat(user, "You have successfully changed \the [O.name]'s description.")
-						return
-					else
-						to_chat(user, "You are too far away!")
-			else
-				to_chat(user, "You are too far away!")
-				return
-	else
-		return
 
 /*
  * Sleepypens
@@ -198,11 +149,4 @@
 		icon_state = initial(icon_state) //looks like a normal pen when off.
 		item_state = initial(item_state)
 
-//Crayons path disambiguity sigh.
-/obj/item/proc/on_write(obj/item/weapon/paper/P, mob/user)
-	return
-
-/obj/item/weapon/pen/poison/on_write(obj/item/weapon/paper/P, mob/user)
-	P.contact_poison = "delayed_toxin"
-	P.contact_poison_volume = 10
-	add_logs(user,P,"used poison pen on")
+*/

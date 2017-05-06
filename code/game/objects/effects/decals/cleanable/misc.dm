@@ -11,7 +11,7 @@
 	icon_state = "ash"
 	mergeable_decal = 0
 
-/obj/effect/decal/cleanable/ash/Initialize()
+/obj/effect/decal/cleanable/ash/New()
 	..()
 	reagents.add_reagent("ash", 30)
 	pixel_x = rand(-5, 5)
@@ -21,7 +21,7 @@
 	name = "large pile of ashes"
 	icon_state = "big_ash"
 
-/obj/effect/decal/cleanable/ash/large/Initialize()
+/obj/effect/decal/cleanable/ash/large/New()
 	..()
 	reagents.add_reagent("ash", 30) //double the amount of ash.
 
@@ -36,19 +36,6 @@
 	name = "flour"
 	desc = "It's still good. Four second rule!"
 	icon_state = "flour"
-
-/obj/effect/decal/cleanable/greenglow
-	name = "glowing goo"
-	desc = "Jeez. I hope that's not for lunch."
-	light_color = LIGHT_COLOR_GREEN
-	icon_state = "greenglow"
-
-/obj/effect/decal/cleanable/greenglow/Initialize(mapload)
-	..()
-	set_light(1)
-
-/obj/effect/decal/cleanable/greenglow/ex_act()
-	return
 
 /obj/effect/decal/cleanable/cobweb
 	name = "cobweb"
@@ -104,14 +91,6 @@
 	viruses = null
 	return ..()
 
-/obj/effect/decal/cleanable/vomit/old
-	name = "crusty dried vomit"
-	desc = "You try not to look at the chunks, and fail."
-
-/obj/effect/decal/cleanable/vomit/old/Initialize()
-	..()
-	icon_state += "-old"
-
 /obj/effect/decal/cleanable/tomato_smudge
 	name = "tomato smudge"
 	desc = "It's red."
@@ -157,7 +136,7 @@
 	if(severity == 1) //so shreds created during an explosion aren't deleted by the explosion.
 		qdel(src)
 
-/obj/effect/decal/cleanable/shreds/Initialize()
+/obj/effect/decal/cleanable/shreds/New()
 	pixel_x = rand(-10, 10)
 	pixel_y = rand(-10, 10)
 	..()
@@ -168,21 +147,3 @@
 	icon = 'icons/effects/tomatodecal.dmi'
 	icon_state = "salt_pile"
 	gender = NEUTER
-
-/obj/effect/decal/cleanable/glitter
-	name = "generic glitter pile"
-	desc = "The herpes of arts and crafts."
-	icon = 'icons/effects/tile_effects.dmi'
-	gender = NEUTER
-
-/obj/effect/decal/cleanable/glitter/pink
-	name = "pink glitter"
-	icon_state = "plasma"
-
-/obj/effect/decal/cleanable/glitter/white
-	name = "white glitter"
-	icon_state = "nitrous_oxide"
-
-/obj/effect/decal/cleanable/glitter/blue
-	name = "blue glitter"
-	icon_state = "freon"

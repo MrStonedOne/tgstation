@@ -117,7 +117,7 @@
 		var/obj/item/bodypart/L = X
 		for(var/obj/item/I in L.embedded_objects)
 			L.embedded_objects -= I
-			I.loc = T
+			I.forceMove(T)
 
 	clear_alert("embeddedobject")
 
@@ -270,4 +270,4 @@
 					U.adjusted = DIGITIGRADE_STYLE
 				H.update_inv_w_uniform()
 		if(H.shoes && !swap_back)
-			H.dropItemToGround(H.shoes)
+			H.unEquip(H.shoes)

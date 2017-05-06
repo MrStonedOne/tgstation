@@ -1,7 +1,7 @@
 
 //The advanced pea-green monochrome lcd of tomorrow.
 
-GLOBAL_LIST_EMPTY(PDAs)
+var/global/list/obj/item/device/pda/PDAs = list()
 
 
 /obj/item/device/pda
@@ -51,7 +51,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 	var/obj/item/device/paicard/pai = null	// A slot for a personal AI device
 
-	var/icon/photo //Scanned photo
+	var/image/photo = null //Scanned photo
 
 	var/list/contained_item = list(/obj/item/weapon/pen, /obj/item/toy/crayon, /obj/item/weapon/lipstick, /obj/item/device/flashlight/pen, /obj/item/clothing/mask/cigarette)
 	var/obj/item/inserted_item //Used for pen, crayon, and lipstick insertion or removal. Same as above.
@@ -61,8 +61,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 	..()
 	if(fon)
 		set_light(f_lum)
-
-	GLOB.PDAs += src
+	PDAs += src
 	if(default_cartridge)
 		cartridge = new default_cartridge(src)
 	inserted_item =	new /obj/item/weapon/pen(src)
@@ -82,24 +81,22 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 /obj/item/device/pda/update_icon()
 	cut_overlays()
-	var/mutable_appearance/overlay = new()
-	overlay.pixel_x = overlays_x_offset
 	if(id)
-		overlay.icon_state = "id_overlay"
-		add_overlay(new /mutable_appearance(overlay))
+		var/image/I = image(icon_state = "id_overlay", pixel_x = overlays_x_offset)
+		add_overlay(I)
 	if(inserted_item)
-		overlay.icon_state = "insert_overlay"
-		add_overlay(new /mutable_appearance(overlay))
+		var/image/I = image(icon_state = "insert_overlay", pixel_x = overlays_x_offset)
+		add_overlay(I)
 	if(fon)
-		overlay.icon_state = "light_overlay"
-		add_overlay(new /mutable_appearance(overlay))
+		var/image/I = image(icon_state = "light_overlay", pixel_x = overlays_x_offset)
+		add_overlay(I)
 	if(pai)
 		if(pai.pai)
-			overlay.icon_state = "pai_overlay"
-			add_overlay(new /mutable_appearance(overlay))
+			var/image/I = image(icon_state = "pai_overlay", pixel_x = overlays_x_offset)
+			add_overlay(I)
 		else
-			overlay.icon_state = "pai_off_overlay"
-			add_overlay(new /mutable_appearance(overlay))
+			var/image/I = image(icon_state = "pai_off_overlay", pixel_x = overlays_x_offset)
+			add_overlay(I)
 
 /obj/item/device/pda/MouseDrop(obj/over_object, src_location, over_location)
 	var/mob/M = usr
@@ -140,7 +137,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 				dat += text("<br><A href='?src=\ref[src];choice=UpdateInfo'>[id ? "Update PDA Info" : ""]</A><br><br>")
 
 				dat += "[worldtime2text()]<br>" //:[world.time / 100 % 6][world.time / 100 % 10]"
-				dat += "[time2text(world.realtime, "MMM DD")] [GLOB.year_integer+540]"
+				dat += "[time2text(world.realtime, "MMM DD")] [year_integer+540]"
 
 				dat += "<br><br>"
 
@@ -362,7 +359,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 					set_light(0)
 				else
 					fon = 1
-					set_light(2.3)
+					set_light(1)
 				update_icon()
 			if("Medical Scan")
 				if(scanmode == 1)
@@ -397,7 +394,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 				var/alert_s = input(U,"Alert severity level","Ping Drones",null) as null|anything in list("Low","Medium","High","Critical")
 				if(A && alert_s)
 					var/msg = "<span class='boldnotice'>NON-DRONE PING: [U.name]: [alert_s] priority alert in [A.name]!</span>"
-					_alert_drones(msg, TRUE)
+					_alert_drones(msg, 1)
 					to_chat(U, msg)
 
 
@@ -476,7 +473,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 			if("Toggle Door")
 				if(cartridge && cartridge.access_remote_door)
-					for(var/obj/machinery/door/poddoor/M in GLOB.machines)
+					for(var/obj/machinery/door/poddoor/M in machines)
 						if(M.id == cartridge.remote_door_id)
 							if(M.density)
 								M.open()
@@ -523,7 +520,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 					if("2")		// Eject pAI device
 						var/turf/T = get_turf(src.loc)
 						if(T)
-							pai.loc = T
+							pai.forceMove(T)
 
 //LINK FUNCTIONS===================================
 
@@ -560,7 +557,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 			M.put_in_hands(id)
 			to_chat(usr, "<span class='notice'>You remove the ID from the [name].</span>")
 		else
-			id.loc = get_turf(src)
+			id.forceMove(get_turf(src))
 		id = null
 		update_icon()
 
@@ -622,7 +619,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 	if (!silent)
 		playsound(loc, 'sound/machines/twobeep.ogg', 50, 1)
-		audible_message("\icon[src] *[ttone]*", null, 3)
+		audible_message("[bicon(src)] *[ttone]*", null, 3)
 	//Search for holder of the PDA.
 	var/mob/living/L = null
 	if(loc && isliving(loc))
@@ -632,24 +629,25 @@ GLOBAL_LIST_EMPTY(PDAs)
 		L = get(src, /mob/living/silicon)
 
 	if(L && L.stat != UNCONSCIOUS)
-		to_chat(L, "\icon[src] <b>Message from [source.owner] ([source.ownjob]), </b>\"[msg.message]\"[msg.get_photo_ref()] (<a href='byond://?src=\ref[src];choice=Message;skiprefresh=1;target=\ref[source]'>Reply</a>)")
+		to_chat(L, "[bicon(src)] <b>Message from [source.owner] ([source.ownjob]), </b>\"[msg.message]\"[msg.get_photo_ref()] (<a href='byond:)//?src=\ref[src];choice=Message;skiprefresh=1;target=\ref[source]'>Reply</a>")
+
 
 	update_icon()
-	add_overlay(icon_alert)
+	add_overlay(image(icon, icon_alert))
 
 /obj/item/device/pda/proc/show_to_ghosts(mob/living/user, datum/data_pda_msg/msg,multiple = 0)
-	for(var/mob/M in GLOB.player_list)
+	for(var/mob/M in player_list)
 		if(isobserver(M) && M.client && (M.client.prefs.chat_toggles & CHAT_GHOSTPDA))
 			var/link = FOLLOW_LINK(M, user)
 			to_chat(M, "[link] <span class='name'>[msg.sender] </span><span class='game say'>PDA Message</span> --> <span class='name'>[multiple ? "Everyone" : msg.recipient]</span>: <span class='message'>[msg.message][msg.get_photo_ref()]</span></span>")
 
 /obj/item/device/pda/proc/can_send(obj/item/device/pda/P)
-	if(!P || QDELETED(P) || P.toff)
+	if(!P || qdeleted(P) || P.toff)
 		return null
 
 	var/obj/machinery/message_server/useMS = null
-	if(GLOB.message_servers)
-		for (var/obj/machinery/message_server/MS in GLOB.message_servers)
+	if(message_servers)
+		for (var/obj/machinery/message_server/MS in message_servers)
 		//PDAs are now dependant on the Message Server.
 			if(MS.active)
 				useMS = MS
@@ -657,7 +655,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 	var/datum/signal/signal = src.telecomms_process()
 
-	if(!P || QDELETED(P) || P.toff) //in case the PDA or mob gets destroyed during telecomms_process()
+	if(!P || qdeleted(P) || P.toff) //in case the PDA or mob gets destroyed during telecomms_process()
 		return null
 
 	var/useTC = 0
@@ -723,7 +721,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 			var/mob/M = loc
 			M.put_in_hands(inserted_item)
 		else
-			inserted_item.forceMove(get_turf(src))
+			inserted_item.forceMove(loc)
 		to_chat(usr, "<span class='notice'>You remove \the [inserted_item] from \the [src].</span>")
 		inserted_item = null
 		update_icon()
@@ -742,9 +740,10 @@ GLOBAL_LIST_EMPTY(PDAs)
 				I = C
 
 	if(I && I.registered_name)
-		if(!user.transferItemToLoc(I, src))
+		if(!user.unEquip(I))
 			return 0
 		var/obj/old_id = id
+		I.forceMove(src)
 		id = I
 		if(old_id)
 			user.put_in_hands(old_id)
@@ -754,9 +753,10 @@ GLOBAL_LIST_EMPTY(PDAs)
 // access to status display signals
 /obj/item/device/pda/attackby(obj/item/C, mob/user, params)
 	if(istype(C, /obj/item/weapon/cartridge) && !cartridge)
-		if(!user.transferItemToLoc(C, src))
+		if(!user.unEquip(C))
 			return
 		cartridge = C
+		cartridge.forceMove(src)
 		to_chat(user, "<span class='notice'>You insert [cartridge] into [src].</span>")
 		if(cartridge.radio)
 			cartridge.radio.hostpda = src
@@ -782,8 +782,9 @@ GLOBAL_LIST_EMPTY(PDAs)
 			return	//Return in case of failed check or when successful.
 		updateSelfDialog()//For the non-input related code.
 	else if(istype(C, /obj/item/device/paicard) && !src.pai)
-		if(!user.transferItemToLoc(C, src))
+		if(!user.unEquip(C))
 			return
+		C.forceMove(src)
 		pai = C
 		to_chat(user, "<span class='notice'>You slot \the [C] into [src].</span>")
 		update_icon()
@@ -792,8 +793,9 @@ GLOBAL_LIST_EMPTY(PDAs)
 		if(inserted_item)
 			to_chat(user, "<span class='warning'>There is already \a [inserted_item] in \the [src]!</span>")
 		else
-			if(!user.transferItemToLoc(C, src))
+			if(!user.unEquip(C))
 				return
+			C.forceMove(src)
 			to_chat(user, "<span class='notice'>You slide \the [C] into \the [src].</span>")
 			inserted_item = C
 			update_icon()
@@ -872,9 +874,10 @@ GLOBAL_LIST_EMPTY(PDAs)
 		note = replacetext(note, "<li>", "\[*\]")
 		note = replacetext(note, "<ul>", "\[list\]")
 		note = replacetext(note, "</ul>", "\[/list\]")
-		note = html_encode(note)
+		note = html_encode_ru(note)
 		notescanned = 1
-		to_chat(user, "<span class='notice'>Paper scanned. Saved to PDA's notekeeper.</span>" )
+		to_chat(user, "<span class='notice'>Paper scanned. Saved to PDA's notekeeper.</span>")//concept of scanning paper copyright brainoblivion 2009
+
 
 
 /obj/item/device/pda/proc/explode() //This needs tuning.
@@ -897,7 +900,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 	return
 
 /obj/item/device/pda/Destroy()
-	GLOB.PDAs -= src
+	PDAs -= src
 	if(id)
 		qdel(id)
 		id = null
@@ -980,6 +983,27 @@ GLOBAL_LIST_EMPTY(PDAs)
 	else
 		to_chat(user, "You do not have a PDA. You should make an issue report about this.")
 
+//Some spare PDAs in a box
+/obj/item/weapon/storage/box/PDAs
+	name = "spare PDAs"
+	desc = "A box of spare PDA microcomputers."
+	icon = 'icons/obj/storage.dmi'
+	icon_state = "pda"
+
+/obj/item/weapon/storage/box/PDAs/New()
+	..()
+	new /obj/item/device/pda(src)
+	new /obj/item/device/pda(src)
+	new /obj/item/device/pda(src)
+	new /obj/item/device/pda(src)
+	new /obj/item/weapon/cartridge/head(src)
+
+	var/newcart = pick(	/obj/item/weapon/cartridge/engineering,
+						/obj/item/weapon/cartridge/security,
+						/obj/item/weapon/cartridge/medical,
+						/obj/item/weapon/cartridge/signal/toxins,
+						/obj/item/weapon/cartridge/quartermaster)
+	new newcart(src)
 
 // Pass along the pulse to atoms in contents, largely added so pAIs are vulnerable to EMP
 /obj/item/device/pda/emp_act(severity)
@@ -992,7 +1016,7 @@ GLOBAL_LIST_EMPTY(PDAs)
 /proc/get_viewable_pdas()
 	. = list()
 	// Returns a list of PDAs which can be viewed from another PDA/message monitor.
-	for(var/obj/item/device/pda/P in GLOB.PDAs)
+	for(var/obj/item/device/pda/P in PDAs)
 		if(!P.owner || P.toff || P.hidden) continue
 		. += P
 	return .

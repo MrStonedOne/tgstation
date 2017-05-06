@@ -73,14 +73,14 @@ Difficulty: Hard
 	del_on_death = TRUE
 	death_sound = 'sound/magic/Repulse.ogg'
 
-/mob/living/simple_animal/hostile/megafauna/hierophant/Initialize()
-	. = ..()
+/mob/living/simple_animal/hostile/megafauna/hierophant/New()
+	..()
 	internal = new/obj/item/device/gps/internal/hierophant(src)
 	spawned_beacon = new(loc)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/Life()
 	. = ..()
-	if(. && spawned_beacon && !QDELETED(spawned_beacon) && !client)
+	if(. && spawned_beacon && !qdeleted(spawned_beacon) && !client)
 		if(target || loc == spawned_beacon.loc)
 			timeout_time = initial(timeout_time)
 		else
@@ -114,10 +114,11 @@ Difficulty: Hard
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/devour(mob/living/L)
 	for(var/obj/item/W in L)
-		if(!L.dropItemToGround(W))
+		if(!L.unEquip(W))
 			qdel(W)
-	visible_message("<span class='hierophant_warning'>\"[pick(kill_phrases)]\"</span>")
-	visible_message("<span class='hierophant_warning'>[src] annihilates [L]!</span>","<span class='userdanger'>You annihilate [L], restoring your health!</span>")
+	visible_message(
+		"<span class='hierophant_warning'>\"[pick(kill_phrases)]\"\n[src] annihilates [L]!</span>",
+		"<span class='userdanger'>You annihilate [L], restoring your health!</span>")
 	adjustHealth(-L.maxHealth*0.5)
 	L.dust()
 
@@ -138,8 +139,8 @@ Difficulty: Hard
 /mob/living/simple_animal/hostile/megafauna/hierophant/AttackingTarget()
 	if(!blinking)
 		if(target && isliving(target))
-			INVOKE_ASYNC(src, .proc/melee_blast, get_turf(target)) //melee attacks on living mobs produce a 3x3 blast
-		return ..()
+			addtimer(CALLBACK(src, .proc/melee_blast, get_turf(target)), 0) //melee attacks on living mobs produce a 3x3 blast
+		..()
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/DestroySurroundings()
 	if(!blinking)
@@ -150,7 +151,7 @@ Difficulty: Hard
 		var/prevloc = loc
 		. = ..()
 		if(!stat && .)
-			var/obj/effect/overlay/temp/hierophant/squares/HS = new /obj/effect/overlay/temp/hierophant/squares(prevloc)
+			var/obj/effect/overlay/temp/hierophant/squares/HS = PoolOrNew(/obj/effect/overlay/temp/hierophant/squares, prevloc)
 			HS.dir = dir
 			playsound(loc, 'sound/mecha/mechmove04.ogg', 150, 1, -4)
 			if(target)
@@ -228,9 +229,9 @@ Difficulty: Hard
 						cross_counter--
 						var/delay = 7
 						if(prob(60))
-							INVOKE_ASYNC(src, .proc/cardinal_blasts, target)
+							addtimer(CALLBACK(src, .proc/cardinal_blasts, target), 0)
 						else
-							INVOKE_ASYNC(src, .proc/diagonal_blasts, target)
+							addtimer(CALLBACK(src, .proc/diagonal_blasts, target), 0)
 							delay = 5 //this one isn't so mean, so do the next one faster(if there is one)
 						sleep(delay)
 					animate(src, color = oldcolor, time = 8)
@@ -243,14 +244,14 @@ Difficulty: Hard
 					var/oldcolor = color
 					animate(src, color = "#660099", time = 10)
 					var/list/targets = ListTargets()
-					var/list/cardinal_copy = GLOB.cardinal.Copy()
+					var/list/cardinal_copy = cardinal.Copy()
 					while(health && targets.len && cardinal_copy.len)
 						var/mob/living/pickedtarget = pick(targets)
 						if(targets.len > 4)
 							pickedtarget = pick_n_take(targets)
 						if(!istype(pickedtarget) || pickedtarget.stat == DEAD)
 							pickedtarget = target
-						var/obj/effect/overlay/temp/hierophant/chaser/C = new /obj/effect/overlay/temp/hierophant/chaser(loc, src, pickedtarget, chaser_speed, FALSE)
+						var/obj/effect/overlay/temp/hierophant/chaser/C = PoolOrNew(/obj/effect/overlay/temp/hierophant/chaser, list(loc, src, pickedtarget, chaser_speed, FALSE))
 						C.moving = 3
 						C.moving_dir = pick_n_take(cardinal_copy)
 						sleep(10)
@@ -267,67 +268,67 @@ Difficulty: Hard
 	else if(prob(70 - anger_modifier)) //a cross blast of some type
 		if(prob(anger_modifier)) //at us?
 			if(prob(anger_modifier * 2) && health < maxHealth * 0.5) //we're super angry do it at all dirs
-				INVOKE_ASYNC(src, .proc/alldir_blasts, src)
+				addtimer(CALLBACK(src, .proc/alldir_blasts, src), 0)
 			else if(prob(60))
-				INVOKE_ASYNC(src, .proc/cardinal_blasts, src)
+				addtimer(CALLBACK(src, .proc/cardinal_blasts, src), 0)
 			else
-				INVOKE_ASYNC(src, .proc/diagonal_blasts, src)
+				addtimer(CALLBACK(src, .proc/diagonal_blasts, src), 0)
 		else //at them?
 			if(prob(anger_modifier * 2) && health < maxHealth * 0.5 && !target_is_slow) //we're super angry do it at all dirs
-				INVOKE_ASYNC(src, .proc/alldir_blasts, target)
+				addtimer(CALLBACK(src, .proc/alldir_blasts, target), 0)
 			else if(prob(60))
-				INVOKE_ASYNC(src, .proc/cardinal_blasts, target)
+				addtimer(CALLBACK(src, .proc/cardinal_blasts, target), 0)
 			else
-				INVOKE_ASYNC(src, .proc/diagonal_blasts, target)
+				addtimer(CALLBACK(src, .proc/diagonal_blasts, target), 0)
 	else if(chaser_cooldown < world.time) //if chasers are off cooldown, fire some!
-		var/obj/effect/overlay/temp/hierophant/chaser/C = new /obj/effect/overlay/temp/hierophant/chaser(loc, src, target, chaser_speed, FALSE)
+		var/obj/effect/overlay/temp/hierophant/chaser/C = PoolOrNew(/obj/effect/overlay/temp/hierophant/chaser, list(loc, src, target, chaser_speed, FALSE))
 		chaser_cooldown = world.time + initial(chaser_cooldown)
 		if((prob(anger_modifier) || target.Adjacent(src)) && target != src)
-			var/obj/effect/overlay/temp/hierophant/chaser/OC = new /obj/effect/overlay/temp/hierophant/chaser(loc, src, target, max(1.5, 5 - anger_modifier * 0.07), FALSE)
+			var/obj/effect/overlay/temp/hierophant/chaser/OC = PoolOrNew(/obj/effect/overlay/temp/hierophant/chaser, list(loc, src, target, max(1.5, 5 - anger_modifier * 0.07), FALSE))
 			OC.moving = 4
-			OC.moving_dir = pick(GLOB.cardinal - C.moving_dir)
+			OC.moving_dir = pick(cardinal - C.moving_dir)
 	else //just release a burst of power
-		INVOKE_ASYNC(src, .proc/burst, get_turf(src))
+		addtimer(CALLBACK(src, .proc/burst, get_turf(src)), 0)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/proc/diagonal_blasts(mob/victim) //fire diagonal cross blasts with a delay
 	var/turf/T = get_turf(victim)
 	if(!T)
 		return
-	new /obj/effect/overlay/temp/hierophant/telegraph/diagonal(T, src)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/telegraph/diagonal, list(T, src))
 	playsound(T,'sound/effects/bin_close.ogg', 200, 1)
 	sleep(2)
-	new /obj/effect/overlay/temp/hierophant/blast(T, src, FALSE)
-	for(var/d in GLOB.diagonals)
-		INVOKE_ASYNC(src, .proc/blast_wall, T, d)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(T, src, FALSE))
+	for(var/d in diagonals)
+		addtimer(CALLBACK(src, .proc/blast_wall, T, d), 0)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/proc/cardinal_blasts(mob/victim) //fire cardinal cross blasts with a delay
 	var/turf/T = get_turf(victim)
 	if(!T)
 		return
-	new /obj/effect/overlay/temp/hierophant/telegraph/cardinal(T, src)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/telegraph/cardinal, list(T, src))
 	playsound(T,'sound/effects/bin_close.ogg', 200, 1)
 	sleep(2)
-	new /obj/effect/overlay/temp/hierophant/blast(T, src, FALSE)
-	for(var/d in GLOB.cardinal)
-		INVOKE_ASYNC(src, .proc/blast_wall, T, d)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(T, src, FALSE))
+	for(var/d in cardinal)
+		addtimer(CALLBACK(src, .proc/blast_wall, T, d), 0)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/proc/alldir_blasts(mob/victim) //fire alldir cross blasts with a delay
 	var/turf/T = get_turf(victim)
 	if(!T)
 		return
-	new /obj/effect/overlay/temp/hierophant/telegraph(T, src)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/telegraph, list(T, src))
 	playsound(T,'sound/effects/bin_close.ogg', 200, 1)
 	sleep(2)
-	new /obj/effect/overlay/temp/hierophant/blast(T, src, FALSE)
-	for(var/d in GLOB.alldirs)
-		INVOKE_ASYNC(src, .proc/blast_wall, T, d)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(T, src, FALSE))
+	for(var/d in alldirs)
+		addtimer(CALLBACK(src, .proc/blast_wall, T, d), 0)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/proc/blast_wall(turf/T, set_dir) //make a wall of blasts beam_range tiles long
 	var/range = beam_range
 	var/turf/previousturf = T
 	var/turf/J = get_step(previousturf, set_dir)
 	for(var/i in 1 to range)
-		new /obj/effect/overlay/temp/hierophant/blast(J, src, FALSE)
+		PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(J, src, FALSE))
 		previousturf = J
 		J = get_step(previousturf, set_dir)
 
@@ -338,20 +339,20 @@ Difficulty: Hard
 	if((istype(get_area(T), /area/ruin/unpowered/hierophant) || istype(get_area(src), /area/ruin/unpowered/hierophant)) && victim != src)
 		return
 	arena_cooldown = world.time + initial(arena_cooldown)
-	for(var/d in GLOB.cardinal)
-		INVOKE_ASYNC(src, .proc/arena_squares, T, d)
+	for(var/d in cardinal)
+		addtimer(CALLBACK(src, .proc/arena_squares, T, d), 0)
 	for(var/t in RANGE_TURFS(11, T))
 		if(t && get_dist(t, T) == 11)
 			new /obj/effect/overlay/temp/hierophant/wall(t)
-			new /obj/effect/overlay/temp/hierophant/blast(t, src, FALSE)
+			PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(t, src, FALSE))
 	if(get_dist(src, T) >= 11) //hey you're out of range I need to get closer to you!
-		INVOKE_ASYNC(src, .proc/blink, T)
+		addtimer(CALLBACK(src, .proc/blink, T), 0)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/proc/arena_squares(turf/T, set_dir) //make a fancy effect extending from the arena target
 	var/turf/previousturf = T
 	var/turf/J = get_step(previousturf, set_dir)
 	for(var/i in 1 to 10)
-		var/obj/effect/overlay/temp/hierophant/squares/HS = new /obj/effect/overlay/temp/hierophant/squares(J)
+		var/obj/effect/overlay/temp/hierophant/squares/HS = PoolOrNew(/obj/effect/overlay/temp/hierophant/squares, J)
 		HS.dir = set_dir
 		previousturf = J
 		J = get_step(previousturf, set_dir)
@@ -362,19 +363,19 @@ Difficulty: Hard
 		return
 	var/turf/T = get_turf(victim)
 	var/turf/source = get_turf(src)
-	new /obj/effect/overlay/temp/hierophant/telegraph(T, src)
-	new /obj/effect/overlay/temp/hierophant/telegraph(source, src)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/telegraph, list(T, src))
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/telegraph, list(source, src))
 	playsound(T,'sound/magic/Wand_Teleport.ogg', 200, 1)
 	playsound(source,'sound/machines/AirlockOpen.ogg', 200, 1)
 	blinking = TRUE
 	sleep(2) //short delay before we start...
-	new /obj/effect/overlay/temp/hierophant/telegraph/teleport(T, src)
-	new /obj/effect/overlay/temp/hierophant/telegraph/teleport(source, src)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/telegraph/teleport, list(T, src))
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/telegraph/teleport, list(source, src))
 	for(var/t in RANGE_TURFS(1, T))
-		var/obj/effect/overlay/temp/hierophant/blast/B = new /obj/effect/overlay/temp/hierophant/blast(t, src, FALSE)
+		var/obj/effect/overlay/temp/hierophant/blast/B = PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(t, src, FALSE))
 		B.damage = 30
 	for(var/t in RANGE_TURFS(1, source))
-		var/obj/effect/overlay/temp/hierophant/blast/B = new /obj/effect/overlay/temp/hierophant/blast(t, src, FALSE)
+		var/obj/effect/overlay/temp/hierophant/blast/B = PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(t, src, FALSE))
 		B.damage = 30
 	animate(src, alpha = 0, time = 2, easing = EASE_OUT) //fade out
 	sleep(1)
@@ -396,11 +397,11 @@ Difficulty: Hard
 	var/turf/T = get_turf(victim)
 	if(!T)
 		return
-	new /obj/effect/overlay/temp/hierophant/telegraph(T, src)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/telegraph, list(T, src))
 	playsound(T,'sound/effects/bin_close.ogg', 200, 1)
 	sleep(2)
 	for(var/t in RANGE_TURFS(1, T))
-		new /obj/effect/overlay/temp/hierophant/blast(t, src, FALSE)
+		PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(t, src, FALSE))
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/proc/burst(turf/original) //release a wave of blasts
 	playsound(original,'sound/machines/AirlockOpen.ogg', 200, 1)
@@ -413,7 +414,7 @@ Difficulty: Hard
 		if(dist > last_dist)
 			last_dist = dist
 			sleep(1 + min(burst_range - last_dist, 12) * 0.5) //gets faster as it gets further out
-		new /obj/effect/overlay/temp/hierophant/blast(T, src, FALSE)
+		PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(T, src, FALSE))
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/AltClickOn(atom/A) //player control handler(don't give this to a player holy fuck)
 	if(!istype(A) || get_dist(A, src) <= 2)
@@ -426,8 +427,8 @@ Difficulty: Hard
 	layer = BELOW_MOB_LAYER
 	var/mob/living/caster //who made this, anyway
 
-/obj/effect/overlay/temp/hierophant/Initialize(mapload, new_caster)
-	. = ..()
+/obj/effect/overlay/temp/hierophant/New(loc, new_caster)
+	..()
 	if(new_caster)
 		caster = new_caster
 
@@ -437,13 +438,13 @@ Difficulty: Hard
 	light_range = 1
 	randomdir = FALSE
 
-/obj/effect/overlay/temp/hierophant/squares/Initialize(mapload, new_caster)
-	. = ..()
+/obj/effect/overlay/temp/hierophant/squares/New(loc, new_caster)
+	..()
 	if(ismineralturf(loc))
 		var/turf/closed/mineral/M = loc
 		M.gets_drilled(caster)
 
-/obj/effect/overlay/temp/hierophant/wall //smoothing and pooling were not friends, but pooling is dead.
+/obj/effect/overlay/temp/hierophant/wall //smoothing and pooling are not friends. TODO: figure this out
 	name = "vortex wall"
 	icon = 'icons/turf/walls/hierophant_wall_temp.dmi'
 	icon_state = "wall"
@@ -451,14 +452,15 @@ Difficulty: Hard
 	duration = 100
 	smooth = SMOOTH_TRUE
 
-/obj/effect/overlay/temp/hierophant/wall/Initialize(mapload, new_caster)
-	. = ..()
+/obj/effect/overlay/temp/hierophant/wall/New(loc, new_caster)
+	..()
 	queue_smooth_neighbors(src)
 	queue_smooth(src)
 
 /obj/effect/overlay/temp/hierophant/wall/Destroy()
 	queue_smooth_neighbors(src)
-	return ..()
+	..()
+	return QDEL_HINT_QUEUE
 
 /obj/effect/overlay/temp/hierophant/wall/CanPass(atom/movable/mover, turf/target, height = 0)
 	if(mover == caster)
@@ -479,8 +481,8 @@ Difficulty: Hard
 	var/currently_seeking = FALSE
 	var/friendly_fire_check = FALSE //if blasts produced apply friendly fire
 
-/obj/effect/overlay/temp/hierophant/chaser/Initialize(mapload, new_caster, new_target, new_speed, is_friendly_fire)
-	. = ..()
+/obj/effect/overlay/temp/hierophant/chaser/New(loc, new_caster, new_target, new_speed, is_friendly_fire)
+	..()
 	target = new_target
 	friendly_fire_check = is_friendly_fire
 	if(new_speed)
@@ -490,7 +492,7 @@ Difficulty: Hard
 /obj/effect/overlay/temp/hierophant/chaser/proc/get_target_dir()
 	. = get_cardinal_dir(src, targetturf)
 	if((. != previous_moving_dir && . == more_previouser_moving_dir) || . == 0) //we're alternating, recalculate
-		var/list/cardinal_copy = GLOB.cardinal.Copy()
+		var/list/cardinal_copy = cardinal.Copy()
 		cardinal_copy -= more_previouser_moving_dir
 		. = pick(cardinal_copy)
 
@@ -498,7 +500,7 @@ Difficulty: Hard
 	if(!currently_seeking)
 		currently_seeking = TRUE
 		targetturf = get_turf(target)
-		while(target && src && !QDELETED(src) && currently_seeking && x && y && targetturf) //can this target actually be sook out
+		while(target && src && !qdeleted(src) && currently_seeking && x && y && targetturf) //can this target actually be sook out
 			if(!moving) //we're out of tiles to move, find more and where the target is!
 				more_previouser_moving_dir = previous_moving_dir
 				previous_moving_dir = moving_dir
@@ -523,7 +525,7 @@ Difficulty: Hard
 			targetturf = get_turf(target)
 
 /obj/effect/overlay/temp/hierophant/chaser/proc/make_blast()
-	new /obj/effect/overlay/temp/hierophant/blast(loc, caster, friendly_fire_check)
+	PoolOrNew(/obj/effect/overlay/temp/hierophant/blast, list(loc, caster, friendly_fire_check))
 
 /obj/effect/overlay/temp/hierophant/telegraph
 	icon = 'icons/effects/96x96.dmi'
@@ -557,15 +559,15 @@ Difficulty: Hard
 	var/friendly_fire_check = FALSE
 	var/bursting = FALSE //if we're bursting and need to hit anyone crossing us
 
-/obj/effect/overlay/temp/hierophant/blast/Initialize(mapload, new_caster, friendly_fire)
-	. = ..()
+/obj/effect/overlay/temp/hierophant/blast/New(loc, new_caster, friendly_fire)
+	..()
 	friendly_fire_check = friendly_fire
 	if(new_caster)
 		hit_things += new_caster
 	if(ismineralturf(loc)) //drill mineral turfs
 		var/turf/closed/mineral/M = loc
 		M.gets_drilled(caster)
-	INVOKE_ASYNC(src, .proc/blast)
+	addtimer(CALLBACK(src, .proc/blast), 0)
 
 /obj/effect/overlay/temp/hierophant/blast/proc/blast()
 	var/turf/T = get_turf(src)
@@ -586,7 +588,7 @@ Difficulty: Hard
 /obj/effect/overlay/temp/hierophant/blast/proc/do_damage(turf/T)
 	for(var/mob/living/L in T.contents - hit_things) //find and damage mobs...
 		hit_things += L
-		if((friendly_fire_check && caster && caster.faction_check_mob(L)) || L.stat == DEAD)
+		if((friendly_fire_check && caster && caster.faction_check(L)) || L.stat == DEAD)
 			continue
 		if(L.client)
 			flash_color(L.client, "#660099", 1)
@@ -601,7 +603,7 @@ Difficulty: Hard
 	for(var/obj/mecha/M in T.contents - hit_things) //and mechs.
 		hit_things += M
 		if(M.occupant)
-			if(friendly_fire_check && caster && caster.faction_check_mob(M.occupant))
+			if(friendly_fire_check && caster && caster.faction_check(M.occupant))
 				continue
 			to_chat(M.occupant, "<span class='userdanger'>Your [M.name] is struck by a [name]!</span>")
 		playsound(M,'sound/weapons/sear.ogg', 50, 1, -4)
@@ -627,17 +629,17 @@ Difficulty: Hard
 		if(H.beacon == src)
 			to_chat(user, "<span class='notice'>You start removing your hierophant beacon...</span>")
 			H.timer = world.time + 51
-			INVOKE_ASYNC(H, /obj/item/weapon/hierophant_club.proc/prepare_icon_update)
+			addtimer(CALLBACK(H, /obj/item/weapon/hierophant_club.proc/prepare_icon_update), 0)
 			if(do_after(user, 50, target = src))
 				playsound(src,'sound/magic/Blind.ogg', 200, 1, -4)
-				new /obj/effect/overlay/temp/hierophant/telegraph/teleport(get_turf(src), user)
+				PoolOrNew(/obj/effect/overlay/temp/hierophant/telegraph/teleport, list(get_turf(src), user))
 				to_chat(user, "<span class='hierophant_warning'>You collect [src], reattaching it to the club!</span>")
 				H.beacon = null
 				user.update_action_buttons_icon()
 				qdel(src)
 			else
 				H.timer = world.time
-				INVOKE_ASYNC(H, /obj/item/weapon/hierophant_club.proc/prepare_icon_update)
+				addtimer(CALLBACK(H, /obj/item/weapon/hierophant_club.proc/prepare_icon_update), 0)
 		else
 			to_chat(user, "<span class='hierophant_warning'>You touch the beacon with the club, but nothing happens.</span>")
 	else

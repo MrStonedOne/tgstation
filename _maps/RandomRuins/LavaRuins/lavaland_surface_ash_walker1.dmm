@@ -1,4 +1,4 @@
-//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE 
 "a" = (
 /turf/closed/mineral/volcanic/lava_land_surface,
 /area/lavaland/surface/outdoors)
@@ -71,7 +71,7 @@
 /obj/item/device/flashlight/lantern,
 /obj/item/device/flashlight/lantern,
 /obj/item/device/flashlight/lantern,
-/obj/item/device/flashlight/flare,
+/obj/item/device/flashlight/torch/flare,
 /turf/open/floor/engine/cult{
 	baseturf = /turf/open/floor/plating/lava/smooth
 	},
@@ -90,7 +90,6 @@
 /obj/item/seeds/glowshroom,
 /obj/item/seeds/glowshroom,
 /obj/item/weapon/reagent_containers/glass/bucket,
-/obj/item/weapon/storage/bag/plants/portaseeder,
 /turf/open/floor/engine/cult{
 	baseturf = /turf/open/floor/plating/lava/smooth
 	},
@@ -113,7 +112,7 @@
 	},
 /area/ruin/unpowered)
 "q" = (
-/obj/item/device/flashlight/flare,
+/obj/item/device/flashlight/torch/flare,
 /obj/item/device/flashlight/seclite,
 /obj/item/device/flashlight/seclite,
 /obj/item/device/flashlight,
@@ -145,7 +144,7 @@
 /area/ruin/unpowered)
 "u" = (
 /obj/structure/closet/crate/engineering,
-/obj/item/weapon/construction/rcd/loaded,
+/obj/item/weapon/rcd/loaded,
 /turf/open/floor/engine/cult{
 	baseturf = /turf/open/floor/plating/lava/smooth
 	},
@@ -282,14 +281,8 @@
 /obj/structure/ore_box,
 /turf/open/floor/plating/asteroid/basalt/lava_land_surface,
 /area/lavaland/surface/outdoors)
-"O" = (
-/obj/item/weapon/reagent_containers/glass/bowl,
-/turf/open/floor/engine/cult{
-	baseturf = /turf/open/floor/plating/lava/smooth
-	},
-/area/ruin/unpowered)
-"P" = (
-/obj/machinery/iv_drip,
+"R" = (
+/mob/living/simple_animal/hostile/asteroid/gutlunch/gubbuck,
 /turf/open/floor/engine/cult{
 	baseturf = /turf/open/floor/plating/lava/smooth
 	},
@@ -300,8 +293,14 @@
 	baseturf = /turf/open/floor/plating/lava/smooth
 	},
 /area/ruin/unpowered)
-"R" = (
-/mob/living/simple_animal/hostile/asteroid/gutlunch/gubbuck,
+"P" = (
+/obj/machinery/iv_drip,
+/turf/open/floor/engine/cult{
+	baseturf = /turf/open/floor/plating/lava/smooth
+	},
+/area/ruin/unpowered)
+"O" = (
+/obj/item/weapon/reagent_containers/glass/bowl,
 /turf/open/floor/engine/cult{
 	baseturf = /turf/open/floor/plating/lava/smooth
 	},

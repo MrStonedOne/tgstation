@@ -58,6 +58,10 @@
 	var/zoomed = FALSE //Zoom toggle
 	var/zoom_amt = 3 //Distance in TURFs to move the user's screen forward (the "zoom" effect)
 	var/datum/action/toggle_scope_zoom/azoom
+	var/scopetype
+
+	//Gun safety.
+	var/safety = 0
 
 
 /obj/item/weapon/gun/New()
@@ -74,7 +78,7 @@
 	..()
 	var/obj/item/weapon/gun/G = locate(/obj/item/weapon/gun) in contents
 	if(G)
-		G.loc = loc
+		G.forceMove(loc)
 		qdel(G.pin)
 		G.pin = null
 		visible_message("[G] can now fit a new pin, but the old one was destroyed in the process.", null, null, 3)
@@ -88,6 +92,10 @@
 		to_chat(user, "It doesn't have a firing pin installed, and won't fire.")
 	if(unique_reskin && !current_skin)
 		to_chat(user, "<span class='notice'>Alt-click it to reskin it.</span>")
+	if(safety)
+		to_chat(user, "<span class='notice'>The safety is on.</span>")
+	else
+		to_chat(user, "<span class='notice'>The safety is off.</span>")
 
 //called after the gun has successfully fired its chambered ammo.
 /obj/item/weapon/gun/proc/process_chamber()
@@ -140,6 +148,11 @@
 		if(!can_trigger_gun(L))
 			return
 
+	if(safety)
+		to_chat(user, "<span class='userdanger'>The safety is on!</span>")
+		shoot_with_empty_chamber(user)
+		return
+
 	if(!can_shoot()) //Just because you can pull the trigger doesn't mean it can shoot.
 		shoot_with_empty_chamber(user)
 		return
@@ -175,7 +188,8 @@
 			else if(G.can_trigger_gun(user))
 				bonus_spread += 24 * G.weapon_weight
 				loop_counter++
-				addtimer(CALLBACK(G, /obj/item/weapon/gun.proc/process_fire, target, user, 1, params, null, bonus_spread), loop_counter)
+				spawn(loop_counter)
+					G.process_fire(target,user,1,params, null, bonus_spread)
 
 	process_fire(target,user,1,params, null, bonus_spread)
 
@@ -222,12 +236,15 @@
 			if(!issilicon(user))
 				if( i>1 && !(user.is_holding(src))) //for burst firing
 					break
+				if(target in user.contents)
+					break
+				if(target == user)
+					break
 			if(chambered && chambered.BB)
 				if(randomspread)
 					sprd = round((rand() - 0.5) * (randomized_gun_spread + randomized_bonus_spread))
 				else //Smart spread
 					sprd = round((i / burst_size - 0.5) * (randomized_gun_spread + randomized_bonus_spread))
-
 				if(!chambered.fire_casing(target, user, params, ,suppressed, zone_override, sprd))
 					shoot_with_empty_chamber(user)
 					break
@@ -241,7 +258,7 @@
 				break
 			process_chamber()
 			update_icon()
-			sleep(fire_delay)
+			sleep(chambered ? chambered.delay : fire_delay)
 		firing_burst = 0
 	else
 		if(chambered)
@@ -265,7 +282,7 @@
 
 	if(user)
 		user.update_inv_hands()
-	SSblackbox.add_details("gun_fired","[src.type]")
+	feedback_add_details("gun_fired","[src.type]")
 	return 1
 
 /obj/item/weapon/gun/attack(mob/M as mob, mob/user)
@@ -279,7 +296,7 @@
 		if(istype(I, /obj/item/device/flashlight/seclite))
 			var/obj/item/device/flashlight/seclite/S = I
 			if(!gun_light)
-				if(!user.transferItemToLoc(I, src))
+				if(!user.unEquip(I))
 					return
 				to_chat(user, "<span class='notice'>You click [S] into place on [src].</span>")
 				if(S.on)
@@ -356,6 +373,11 @@
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
 		return
+	if(src == user.get_active_held_item())
+		safety = !safety
+		playsound(user, 'sound/weapons/selector.ogg', 100, 1)
+		to_chat(user, "<span class='notice'>You toggle the safety [safety ? "on":"off"].</span>")
+
 	if(unique_reskin && !current_skin && loc == user)
 		reskin_gun(user)
 
@@ -427,13 +449,27 @@
 
 /datum/action/toggle_scope_zoom/IsAvailable()
 	. = ..()
-	if(!. && gun)
-		gun.zoom(owner, FALSE)
+	if(!.)
+		return 0
+	if(!owner.is_holding(gun))
+		return 0
+	return 1
 
 /datum/action/toggle_scope_zoom/Remove(mob/living/L)
 	gun.zoom(L, FALSE)
 	..()
 
+/mob/living/var/obj/item/weapon/gun/zoomgun
+
+/mob/living/Move(loc,dir)
+	..()
+	if(zoomgun)
+		zoomgun.zoom(src, FALSE)
+
+/mob/living/setDir(newdir)
+	if(zoomgun && dir != newdir)
+		zoomgun.zoom(src, FALSE)
+	..()
 
 /obj/item/weapon/gun/proc/zoom(mob/living/user, forced_zoom)
 	if(!user || !user.client)
@@ -447,7 +483,22 @@
 		else
 			zoomed = !zoomed
 
+	update_zoom(user)
+
+/obj/item/weapon/gun/equipped(mob/user, slot)
+	..()
+	if(azoom && user && user.client)
+		update_zoom(user)
+		azoom.UpdateButtonIcon()
+
+/obj/item/weapon/gun/proc/update_zoom(mob/living/user)
+	if(!user || !user.client)
+		return
 	if(zoomed)
+		if(!user.is_holding(src))
+			zoom(user, FALSE)
+			return
+		user.zoomgun = src
 		var/_x = 0
 		var/_y = 0
 		switch(user.dir)
@@ -462,10 +513,15 @@
 
 		user.client.pixel_x = world.icon_size*_x
 		user.client.pixel_y = world.icon_size*_y
+		if(scopetype)
+			user.overlay_fullscreen("scope", scopetype)
 	else
+		user.zoomgun = null
 		user.client.pixel_x = 0
 		user.client.pixel_y = 0
-
+		if(scopetype)
+			user.clear_fullscreen("scope", 0)
+	user.update_fov_position()
 
 //Proc, so that gun accessories/scopes/etc. can easily add zooming.
 /obj/item/weapon/gun/proc/build_zooming()

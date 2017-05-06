@@ -15,6 +15,7 @@
 	obj_integrity = 200
 	max_integrity = 200
 	integrity_failure = 50
+	self_weight = 15
 	armor = list(melee = 20, bullet = 10, laser = 10, energy = 0, bomb = 10, bio = 0, rad = 0, fire = 70, acid = 60)
 	var/breakout_time = 2
 	var/lastbang
@@ -33,19 +34,15 @@
 	var/material_drop = /obj/item/stack/sheet/metal
 	var/material_drop_amount = 2
 	var/delivery_icon = "deliverycloset" //which icon to use when packagewrapped. null to be unwrappable.
-	var/anchorable = TRUE
 
-
-/obj/structure/closet/Initialize(mapload)
-	if(mapload && !opened)		// if closed, any item at the crate's loc is put in the contents
-		addtimer(CALLBACK(src, .proc/take_contents), 0)
+/obj/structure/closet/New()
 	..()
 	update_icon()
-	PopulateContents()
 
-//USE THIS TO FILL IT, NOT INITIALIZE OR NEW
-/obj/structure/closet/proc/PopulateContents()
-	return
+/obj/structure/closet/initialize()
+	..()
+	if(!opened)		// if closed, any item at the crate's loc is put in the contents
+		take_contents()
 
 /obj/structure/closet/Destroy()
 	dump_contents()
@@ -79,6 +76,8 @@
 	..()
 	if(anchored)
 		to_chat(user, "It is anchored to the ground.")
+	if(broken)
+		to_chat(user, "<span class='notice'>It appears to be broken.</span>")
 	else if(secure && !opened)
 		to_chat(user, "<span class='notice'>Alt-click to [locked ? "unlock" : "lock"].</span>")
 
@@ -94,7 +93,8 @@
 	for(var/mob/living/L in T)
 		if(L.anchored || horizontal && L.mob_size > MOB_SIZE_TINY && L.density)
 			if(user)
-				to_chat(user, "<span class='danger'>There's something large on top of [src], preventing it from opening.</span>" )
+				to_chat(user, "<span class='danger'>There's something large on top of [src], preventing it from opening.</span>")//you... think? there's something standing on it ffs
+
 			return 0
 	return 1
 
@@ -117,12 +117,12 @@
 		if(throwing) // you keep some momentum when getting out of a thrown closet
 			step(AM, dir)
 	if(throwing)
-		throwing.finalize(FALSE)
+		throwing = 0
 
 /obj/structure/closet/proc/take_contents()
 	var/turf/T = get_turf(src)
 	for(var/atom/movable/AM in T)
-		if(AM != src && insert(AM) == -1) // limit reached
+		if(insert(AM) == -1) // limit reached
 			break
 
 /obj/structure/closet/proc/open(mob/living/user)
@@ -244,7 +244,7 @@
 							"<span class='notice'>You [welded ? "weld" : "unwelded"] \the [src] with \the [WT].</span>",
 							"<span class='italics'>You hear welding.</span>")
 			update_icon()
-	else if(istype(W, /obj/item/weapon/wrench) && anchorable)
+	else if(istype(W, /obj/item/weapon/wrench))
 		if(isinspace() && !anchored)
 			return
 		anchored = !anchored
@@ -318,9 +318,6 @@
 	if(!toggle(user))
 		togglelock(user)
 		return
-
-/obj/structure/closet/attack_paw(mob/user)
-	return attack_hand(user)
 
 /obj/structure/closet/attack_robot(mob/user)
 	if(user.Adjacent(src))
@@ -445,7 +442,3 @@
 	for(var/atom/A in contents)
 		A.ex_act(severity, target)
 		CHECK_TICK
-
-/obj/structure/closet/singularity_act()
-	dump_contents()
-	..()

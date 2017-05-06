@@ -1,23 +1,22 @@
 #define WHITELISTFILE "config/whitelist.txt"
 
-GLOBAL_LIST(whitelist)
-GLOBAL_PROTECT(whitelist)
+var/list/whitelist
 
 /proc/load_whitelist()
-	GLOB.whitelist = list()
-	for(var/line in world.file2list(WHITELISTFILE))
+	whitelist = list()
+	for(var/line in file2list(WHITELISTFILE))
 		if(!line)
 			continue
 		if(findtextEx(line,"#",1,2))
 			continue
-		GLOB.whitelist += line
+		whitelist += line
 
-	if(!GLOB.whitelist.len)
-		GLOB.whitelist = null
+	if(!whitelist.len)
+		whitelist = null
 
 /proc/check_whitelist(var/ckey)
-	if(!GLOB.whitelist)
+	if(!whitelist)
 		return FALSE
-	. = (ckey in GLOB.whitelist)
+	. = (ckey in whitelist)
 
 #undef WHITELISTFILE

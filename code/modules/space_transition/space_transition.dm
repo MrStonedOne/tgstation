@@ -5,7 +5,8 @@
 #define Z_LEVEL_EAST 		"4"
 #define Z_LEVEL_WEST 		"8"
 
-GLOBAL_LIST_EMPTY(z_levels_list)
+
+var/list/z_levels_list = list()
 
 /datum/space_level
 	var/name = "Your config settings failed, you need to fix this for the datum space levels to work"
@@ -77,15 +78,14 @@ GLOBAL_LIST_EMPTY(z_levels_list)
 /proc/setup_map_transitions() //listamania
 	var/list/SLS = list()
 	var/datum/space_level/D
-	var/list/cached_transitions = SSmapping.config.transition_config
-	var/conf_set_len = cached_transitions.len
+	var/conf_set_len = map_transition_config.len
 	var/k = 1
-	for(var/A in cached_transitions)
-		D = new(cached_transitions[A])
+	for(var/A in map_transition_config)
+		D = new(map_transition_config[A])
 		D.name = A
 		D.z_value = k
 		if(D.linked != CROSSLINKED)
-			GLOB.z_levels_list["[D.z_value]"] = D
+			z_levels_list["[D.z_value]"] = D
 		else
 			SLS.Add(D)
 		k++
@@ -115,8 +115,8 @@ GLOBAL_LIST_EMPTY(z_levels_list)
 		P = pick(possible_points)
 		grid["[D.z_value]"] = D
 
-	for(var/A in GLOB.z_levels_list)
-		grid[A] = GLOB.z_levels_list[A]
+	for(var/A in z_levels_list)
+		grid[A] = z_levels_list[A]
 
 	//Lists below are pre-calculated values arranged in the list in such a way to be easily accessable in the loop by the counter
 	//Its either this or madness with lotsa math
@@ -156,7 +156,7 @@ GLOBAL_LIST_EMPTY(z_levels_list)
 				//S.maptext = "[zdestination]" // for debugging
 
 	for(var/A in grid)
-		GLOB.z_levels_list[A] = grid[A]
+		z_levels_list[A] = grid[A]
 
 #undef Z_LEVEL_NORTH
 #undef Z_LEVEL_SOUTH

@@ -28,14 +28,9 @@ MASS SPECTROMETER
 		START_PROCESSING(SSobj, src)
 
 /obj/item/device/t_scanner/proc/flick_sonar(obj/pipe)
-	if(ismob(loc))
-		var/mob/M = loc
-		var/image/I = new(loc = get_turf(pipe))
-		var/mutable_appearance/MA = new(pipe)
-		MA.alpha = 128
-		I.appearance = MA
-		if(M.client)
-			flick_overlay(I, list(M.client), 8)
+	var/image/I = image('icons/effects/effects.dmi', pipe, "blip", pipe.layer+1)
+	I.alpha = 128
+	flick_overlay_view(I, pipe, 8)
 
 /obj/item/device/t_scanner/process()
 	if(!on)
@@ -51,8 +46,21 @@ MASS SPECTROMETER
 			if(O.level != 1)
 				continue
 
+			var/mob/living/L = locate() in O
+
 			if(O.invisibility == INVISIBILITY_MAXIMUM)
-				flick_sonar(O)
+				O.invisibility = 0
+				if(L)
+					flick_sonar(O)
+				spawn(10)
+					if(O && O.loc)
+						var/turf/U = O.loc
+						if(U.intact)
+							O.invisibility = INVISIBILITY_MAXIMUM
+			else
+				if(L)
+					flick_sonar(O)
+
 
 /obj/item/device/healthanalyzer
 	name = "health analyzer"
@@ -117,7 +125,7 @@ MASS SPECTROMETER
 
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if(H.undergoing_cardiac_arrest() && H.stat != DEAD)
+		if(H.heart_attack && H.stat != DEAD)
 			to_chat(user, "<span class='danger'>Subject suffering from heart attack: Apply defibrillator immediately!</span>")
 
 	if(iscarbon(M))
@@ -169,7 +177,8 @@ MASS SPECTROMETER
 		to_chat(user, "<span class='info'>Time of Death:</span> [M.tod]")
 		var/tdelta = round(world.time - M.timeofdeath)
 		if(tdelta < (DEFIB_TIME_LIMIT * 10))
-			to_chat(user, "<span class='danger'>Subject died [tdelta / 10] seconds ago, defibrillation may be possible!</span>")
+			to_chat(user, "<span class='danger'>Subject died [tdelta / 10] seconds \
+				ago, defibrillation may be possible!</span>")
 
 	for(var/datum/disease/D in M.viruses)
 		if(!(D.visibility_flags & HIDDEN_SCANNER))
@@ -187,11 +196,7 @@ MASS SPECTROMETER
 			var/blood_percent =  round((C.blood_volume / BLOOD_VOLUME_NORMAL)*100)
 			var/blood_type = C.dna.blood_type
 			if(blood_id != "blood")//special blood substance
-				var/datum/reagent/R = GLOB.chemical_reagents_list[blood_id]
-				if(R)
-					blood_type = R.name
-				else
-					blood_type = blood_id
+				blood_type = blood_id
 			if(C.blood_volume <= BLOOD_VOLUME_SAFE && C.blood_volume > BLOOD_VOLUME_OKAY)
 				to_chat(user, "<span class='danger'>LOW blood level [blood_percent] %, [C.blood_volume] cl,</span> <span class='info'>type: [blood_type]</span>")
 			else if(C.blood_volume <= BLOOD_VOLUME_OKAY)
@@ -277,7 +282,7 @@ MASS SPECTROMETER
 	if(total_moles)
 		var/list/env_gases = environment.gases
 
-		environment.assert_gases(arglist(GLOB.hardcoded_gases))
+		environment.assert_gases(arglist(hardcoded_gases))
 		var/o2_concentration = env_gases["o2"][MOLES]/total_moles
 		var/n2_concentration = env_gases["n2"][MOLES]/total_moles
 		var/co2_concentration = env_gases["co2"][MOLES]/total_moles
@@ -306,7 +311,7 @@ MASS SPECTROMETER
 
 
 		for(var/id in env_gases)
-			if(id in GLOB.hardcoded_gases)
+			if(id in hardcoded_gases)
 				continue
 			var/gas_concentration = env_gases[id][MOLES]/total_moles
 			to_chat(user, "<span class='alert'>[env_gases[id][GAS_META][META_GAS_NAME]]: [round(gas_concentration*100, 0.01)] %</span>")
@@ -360,7 +365,7 @@ MASS SPECTROMETER
 			dat += "<br>None"
 		else
 			for(var/R in blood_traces)
-				dat += "<br>[GLOB.chemical_reagents_list[R]]"
+				dat += "<br>[chemical_reagents_list[R]]"
 				if(details)
 					dat += " ([blood_traces[R]] units)"
 		dat += "</i>"

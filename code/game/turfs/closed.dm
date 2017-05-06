@@ -1,5 +1,6 @@
 /turf/closed
 	var/thermite = 0
+	smooth = SMOOTH_TRUE
 	layer = CLOSED_TURF_LAYER
 	opacity = 1
 	density = 1
@@ -24,36 +25,20 @@
 /turf/closed/indestructible/oldshuttle/corner
 	icon_state = "corner"
 
-
-
-
-/turf/closed/indestructible/splashscreen
-	name = "Space Station 13"
-	icon = 'config/title_screens/images/blank.png'
-	icon_state = ""
-	layer = FLY_LAYER
-
-/turf/closed/indestructible/splashscreen/New()
-	SStitle.splash_turf = src
-	if(SStitle.icon)
-		icon = SStitle.icon
-	..()
-
-/turf/closed/indestructible/splashscreen/vv_edit_var(var_name, var_value)
-	. = ..()
-	if(.)
-		switch(var_name)
-			if("icon")
-				SStitle.icon = icon
+//Various indestructible walls
 
 /turf/closed/indestructible/riveted
-	icon = 'icons/turf/walls/riveted.dmi'
 	icon_state = "riveted"
-	smooth = SMOOTH_TRUE
+
+/turf/closed/indestructible/New()
+	..()
+	if(smooth)
+		queue_smooth(src)
 
 /turf/closed/indestructible/riveted/uranium
 	icon = 'icons/turf/walls/uranium_wall.dmi'
 	icon_state = "uranium"
+	smooth = SMOOTH_TRUE
 
 /turf/closed/indestructible/abductor
 	icon_state = "alien1"
@@ -68,11 +53,13 @@
 	smooth = SMOOTH_TRUE
 	icon = 'icons/obj/smooth_structures/reinforced_window.dmi'
 
-/turf/closed/indestructible/fakeglass/Initialize()
+/turf/closed/indestructible/fakeglass/New()
 	..()
 	icon_state = null //set the icon state to null, so our base state isn't visible
-	underlays += mutable_appearance('icons/obj/structures.dmi', "grille") //add a grille underlay
-	underlays += mutable_appearance('icons/turf/floors.dmi', "plating") //add the plating underlay, below the grille
+	var/image/I = image('icons/obj/structures.dmi', loc = src, icon_state = "grille")
+	underlays += I //add a grille underlay
+	I = image('icons/turf/floors.dmi', loc = src, icon_state = "plating")
+	underlays += I //add the plating underlay, below the grille
 
 /turf/closed/indestructible/fakedoor
 	name = "Centcom Access"
@@ -116,3 +103,4 @@
 	desc = "A wall made out of a strange metal. The squares on it pulse in a predictable pattern."
 	icon = 'icons/turf/walls/hierophant_wall.dmi'
 	icon_state = "wall"
+	smooth = SMOOTH_TRUE

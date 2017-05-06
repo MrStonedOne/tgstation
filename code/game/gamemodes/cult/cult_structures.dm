@@ -8,21 +8,19 @@
 
 /obj/structure/destructible/cult/examine(mob/user)
 	..()
+	var/can_see_cult = iscultist(user) || isobserver(user)
+	var/t_It = p_they(TRUE)
+	var/t_is = p_are()
+	if(!(resistance_flags & INDESTRUCTIBLE))
+		if(can_see_cult)
+			to_chat(user, "<span class='cult'>[t_It] [t_is] at <b>[round(obj_integrity * 100 / max_integrity)]%</b> stability.</span>")
 	to_chat(user, "<span class='notice'>\The [src] is [anchored ? "":"not "]secured to the floor.</span>")
-	if((iscultist(user) || isobserver(user)) && cooldowntime > world.time)
-		to_chat(user, "<span class='cultitalic'>The magic in [src] is too weak, [p_they()] will be ready to use again in [getETA()].</span>")
-
-/obj/structure/destructible/cult/examine_status(mob/user)
-	if(iscultist(user) || isobserver(user))
-		var/t_It = p_they(TRUE)
-		var/t_is = p_are()
-		return "<span class='cult'>[t_It] [t_is] at <b>[round(obj_integrity * 100 / max_integrity)]%</b> stability.</span>"
-	return ..()
+	if(can_see_cult && cooldowntime > world.time)
+		to_chat(user, "<span class='cultitalic'>The magic in [src] is too weak, [t_It] will be ready to use again in [getETA()].</span>")
 
 /obj/structure/destructible/cult/attack_animal(mob/living/simple_animal/M)
 	if(istype(M, /mob/living/simple_animal/hostile/construct/builder))
 		if(obj_integrity < max_integrity)
-			M.changeNext_move(CLICK_CD_MELEE)
 			obj_integrity = min(max_integrity, obj_integrity + 5)
 			Beam(M, icon_state="sendbeam", time=4)
 			M.visible_message("<span class='danger'>[M] repairs \the <b>[src]</b>.</span>", \
@@ -83,7 +81,7 @@
 			pickedtype = /obj/item/clothing/glasses/night/cultblind
 		if("Flask of Unholy Water")
 			pickedtype = /obj/item/weapon/reagent_containers/food/drinks/bottle/unholywater
-	if(src && !QDELETED(src) && anchored && pickedtype && Adjacent(user) && !user.incapacitated() && iscultist(user) && cooldowntime <= world.time)
+	if(src && !qdeleted(src) && anchored && pickedtype && Adjacent(user) && !user.incapacitated() && iscultist(user) && cooldowntime <= world.time)
 		cooldowntime = world.time + 2400
 		var/obj/item/N = new pickedtype(get_turf(src))
 		to_chat(user, "<span class='cultitalic'>You kneel before the altar and your faith is rewarded with an [N]!</span>")
@@ -94,7 +92,6 @@
 	desc = "A forge used in crafting the unholy weapons used by the armies of Nar-Sie."
 	icon_state = "forge"
 	light_range = 3
-	light_color = LIGHT_COLOR_LAVA
 	break_message = "<span class='warning'>The force breaks apart into shards with a howling scream!</span>"
 
 /obj/structure/destructible/cult/forge/attack_hand(mob/living/user)
@@ -116,19 +113,24 @@
 			pickedtype = /obj/item/clothing/suit/hooded/cultrobes/berserker
 		if("Nar-Sien Hardsuit")
 			pickedtype = /obj/item/clothing/suit/space/hardsuit/cult
-	if(src && !QDELETED(src) && anchored && pickedtype && Adjacent(user) && !user.incapacitated() && iscultist(user) && cooldowntime <= world.time)
+	if(src && !qdeleted(src) && anchored && pickedtype && Adjacent(user) && !user.incapacitated() && iscultist(user) && cooldowntime <= world.time)
 		cooldowntime = world.time + 2400
 		var/obj/item/N = new pickedtype(get_turf(src))
 		to_chat(user, "<span class='cultitalic'>You work the forge as dark knowledge guides your hands, creating [N]!</span>")
 
 
+var/list/blacklisted_pylon_turfs = typecacheof(list(
+	/turf/closed,
+	/turf/open/floor/engine/cult,
+	/turf/open/space,
+	/turf/open/floor/plating/lava,
+	/turf/open/chasm))
 
 /obj/structure/destructible/cult/pylon
 	name = "pylon"
 	desc = "A floating crystal that slowly heals those faithful to Nar'Sie."
 	icon_state = "pylon"
 	light_range = 5
-	light_color = LIGHT_COLOR_RED
 	break_sound = 'sound/effects/Glassbr2.ogg'
 	break_message = "<span class='warning'>The blood-red crystal falls to the floor and shatters!</span>"
 	var/heal_delay = 25
@@ -152,7 +154,7 @@
 		for(var/mob/living/L in range(5, src))
 			if(iscultist(L) || isshade(L) || isconstruct(L))
 				if(L.health != L.maxHealth)
-					new /obj/effect/overlay/temp/heal(get_turf(src), "#960000")
+					PoolOrNew(/obj/effect/overlay/temp/heal, list(get_turf(src), "#960000"))
 					if(ishuman(L))
 						L.adjustBruteLoss(-1, 0)
 						L.adjustFireLoss(-1, 0)
@@ -161,8 +163,6 @@
 						var/mob/living/simple_animal/M = L
 						if(M.health < M.maxHealth)
 							M.adjustHealth(-1)
-				if(ishuman(L) && L.blood_volume < BLOOD_VOLUME_NORMAL)
-					L.blood_volume += 1.0
 			CHECK_TICK
 	if(last_corrupt <= world.time)
 		var/list/validturfs = list()
@@ -171,12 +171,6 @@
 			if(istype(T, /turf/open/floor/engine/cult))
 				cultturfs |= T
 				continue
-			var/static/list/blacklisted_pylon_turfs = typecacheof(list(
-				/turf/closed,
-				/turf/open/floor/engine/cult,
-				/turf/open/space,
-				/turf/open/floor/plating/lava,
-				/turf/open/chasm))
 			if(is_type_in_typecache(T, blacklisted_pylon_turfs))
 				continue
 			else
@@ -190,7 +184,7 @@
 		else
 			var/turf/open/floor/engine/cult/F = safepick(cultturfs)
 			if(F)
-				new /obj/effect/overlay/temp/cult/turf/floor(F)
+				PoolOrNew(/obj/effect/overlay/temp/cult/turf/floor, F)
 			else
 				// Are we in space or something? No cult turfs or
 				// convertable turfs?
@@ -200,8 +194,7 @@
 	name = "archives"
 	desc = "A desk covered in arcane manuscripts and tomes in unknown languages. Looking at the text makes your skin crawl."
 	icon_state = "tomealtar"
-	light_range = 1.4
-	light_color = LIGHT_COLOR_FIRE
+	light_range = 1
 	break_message = "<span class='warning'>The books and tomes of the archives burn into ash as the desk shatters!</span>"
 
 /obj/structure/destructible/cult/tome/attack_hand(mob/living/user)
@@ -223,8 +216,8 @@
 			pickedtype += /obj/item/device/shuttle_curse
 		if("Veil Walker Set")
 			pickedtype += /obj/item/device/cult_shift
-			pickedtype += /obj/item/device/flashlight/flare/culttorch
-	if(src && !QDELETED(src) && anchored && pickedtype.len && Adjacent(user) && !user.incapacitated() && iscultist(user) && cooldowntime <= world.time)
+			pickedtype += /obj/item/device/flashlight/torch/culttorch
+	if(src && !qdeleted(src) && anchored && pickedtype.len && Adjacent(user) && !user.incapacitated() && iscultist(user) && cooldowntime <= world.time)
 		cooldowntime = world.time + 2400
 		for(var/N in pickedtype)
 			var/obj/item/D = new N(get_turf(src))

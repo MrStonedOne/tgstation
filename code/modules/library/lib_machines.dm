@@ -43,7 +43,8 @@
 			dat += "<A href='?src=\ref[src];setauthor=1'>Filter by Author: [author]</A><BR>"
 			dat += "<A href='?src=\ref[src];search=1'>\[Start Search\]</A><BR>"
 		if(1)
-			if (!SSdbcore.Connect())
+			establish_db_connection()
+			if(!dbcon.IsConnected())
 				dat += "<font color=red><b>ERROR</b>: Unable to contact External Archive. Please contact your system administrator for assistance.</font><BR>"
 			else if(!SQLquery)
 				dat += "<font color=red><b>ERROR</b>: Malformed search request. Please contact your system administrator for assistance.</font><BR>"
@@ -51,14 +52,14 @@
 				dat += "<table>"
 				dat += "<tr><td>AUTHOR</td><td>TITLE</td><td>CATEGORY</td><td>SS<sup>13</sup>BN</td></tr>"
 
-				var/datum/DBQuery/query_library_list_books = SSdbcore.NewQuery(SQLquery)
-				if(!query_library_list_books.Execute())
-					dat += "<font color=red><b>ERROR</b>: Unable to retrieve book listings. Please contact your system administrator for assistance.</font><BR>"
-				while(query_library_list_books.NextRow())
-					var/author = query_library_list_books.item[1]
-					var/title = query_library_list_books.item[2]
-					var/category = query_library_list_books.item[3]
-					var/id = query_library_list_books.item[4]
+				var/DBQuery/query = dbcon.NewQuery(SQLquery)
+				query.Execute()
+
+				while(query.NextRow())
+					var/author = query.item[1]
+					var/title = query.item[2]
+					var/category = query.item[3]
+					var/id = query.item[4]
 					dat += "<tr><td>[author]</td><td>[title]</td><td>[category]</td><td>[id]</td></tr>"
 				dat += "</table><BR>"
 			dat += "<A href='?src=\ref[src];back=1'>\[Go Back\]</A><BR>"
@@ -128,29 +129,29 @@
 	var/author
 	var/category
 
-GLOBAL_LIST(cachedbooks) // List of our cached book datums
+var/global/list/datum/cachedbook/cachedbooks // List of our cached book datums
 
 
 /proc/load_library_db_to_cache()
-	if(GLOB.cachedbooks)
+	if(cachedbooks)
 		return
-	if(!SSdbcore.Connect())
+	establish_db_connection()
+	if(!dbcon.IsConnected())
 		return
-	GLOB.cachedbooks = list()
-	var/datum/DBQuery/query_library_cache = SSdbcore.NewQuery("SELECT id, author, title, category FROM [format_table_name("library")] WHERE isnull(deleted)")
-	if(!query_library_cache.Execute())
-		return
-	while(query_library_cache.NextRow())
+	cachedbooks = list()
+	var/DBQuery/query = dbcon.NewQuery("SELECT id, author, title, category FROM [format_table_name("library")] WHERE isnull(deleted)")
+	query.Execute()
+
+	while(query.NextRow())
 		var/datum/cachedbook/newbook = new()
-		newbook.id = query_library_cache.item[1]
-		newbook.author = query_library_cache.item[2]
-		newbook.title = query_library_cache.item[3]
-		newbook.category = query_library_cache.item[4]
-		GLOB.cachedbooks += newbook
+		newbook.id = query.item[1]
+		newbook.author = query.item[2]
+		newbook.title = query.item[3]
+		newbook.category = query.item[4]
+		cachedbooks += newbook
 
 
 
-#define PRINTER_COOLDOWN 60
 
 /*
  * Library Computer
@@ -175,18 +176,18 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 	var/obj/machinery/libraryscanner/scanner // Book scanner that will be used when uploading books to the Archive
 	var/list/libcomp_menu
 	var/page = 1	//current page of the external archives
-	var/cooldown = 0
+	var/bibledelay = 0 // LOL NO SPAM (1 minute delay) -- Doohl
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/build_library_menu()
 	if(libcomp_menu)
 		return
 	load_library_db_to_cache()
-	if(!GLOB.cachedbooks)
+	if(!cachedbooks)
 		return
 	libcomp_menu = list("")
 
-	for(var/i in 1 to GLOB.cachedbooks.len)
-		var/datum/cachedbook/C = GLOB.cachedbooks[i]
+	for(var/i in 1 to cachedbooks.len)
+		var/datum/cachedbook/C = cachedbooks[i]
 		var/page = round(i/250)+1
 		if (libcomp_menu.len < page)
 			libcomp_menu.len = page
@@ -210,10 +211,9 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 			dat += "<A href='?src=\ref[src];switchscreen=3'>3. Check out a Book</A><BR>"
 			dat += "<A href='?src=\ref[src];switchscreen=4'>4. Connect to External Archive</A><BR>"
 			dat += "<A href='?src=\ref[src];switchscreen=5'>5. Upload New Title to Archive</A><BR>"
-			dat += "<A href='?src=\ref[src];switchscreen=6'>6. Upload Scanned Title to Newscaster</A><BR>"
-			dat += "<A href='?src=\ref[src];switchscreen=7'>7. Print Corporate Materials</A><BR>"
+			dat += "<A href='?src=\ref[src];switchscreen=6'>6. Print a Bible</A><BR>"
 			if(src.emagged)
-				dat += "<A href='?src=\ref[src];switchscreen=8'>8. Access the Forbidden Lore Vault</A><BR>"
+				dat += "<A href='?src=\ref[src];switchscreen=7'>7. Access the Forbidden Lore Vault</A><BR>"
 			if(src.arcanecheckout)
 				print_forbidden_lore(user)
 				src.arcanecheckout = 0
@@ -257,7 +257,7 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 			dat += "<h3>External Archive</h3>"
 			build_library_menu()
 
-			if(!GLOB.cachedbooks)
+			if(!cachedbooks)
 				dat += "<font color=red><b>ERROR</b>: Unable to contact External Archive. Please contact your system administrator for assistance.</font>"
 			else
 				dat += "<A href='?src=\ref[src];orderbyid=1'>(Order book by SS<sup>13</sup>BN)</A><BR><BR>"
@@ -270,7 +270,9 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 		if(5)
 			dat += "<H3>Upload a New Title</H3>"
 			if(!scanner)
-				findscanner(9)
+				for(var/obj/machinery/libraryscanner/S in range(9))
+					scanner = S
+					break
 			if(!scanner)
 				dat += "<FONT color=red>No scanner found within wireless network range.</FONT><BR>"
 			else if(!scanner.cache)
@@ -284,25 +286,7 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 				dat += "<TT>Category: </TT><A href='?src=\ref[src];setcategory=1'>[upload_category]</A><BR>"
 				dat += "<A href='?src=\ref[src];upload=1'>\[Upload\]</A><BR>"
 			dat += "<A href='?src=\ref[src];switchscreen=0'>(Return to main menu)</A><BR>"
-		if(6)
-			dat += "<h3>Post Title to Newscaster</h3>"
-			if(!scanner)
-				scanner = findscanner(9)
-			if(!scanner)
-				dat += "<FONT color=red>No scanner found within wireless network range.</FONT><BR>"
-			else if(!scanner.cache)
-				dat += "<FONT color=red>No data found in scanner memory.</FONT><BR>"
-			else
-				dat += "<TT>Post [scanner.cache.name] to station newscasters?</TT>"
-				dat += "<A href='?src=\ref[src];newspost=1'>\[Post\]</A><BR>"
-			dat += "<A href='?src=\ref[src];switchscreen=0'>(Return to main menu)</A><BR>"
 		if(7)
-			dat += "<h3>NTGanda(tm) Universal Printing Module</h3>"
-			dat += "What would you like to print?<BR>"
-			dat += "<A href='?src=\ref[src];printbible=1'>\[Bible\]</A><BR>"
-			dat += "<A href='?src=\ref[src];printposter=1'>\[Poster\]</A><BR>"
-			dat += "<A href='?src=\ref[src];switchscreen=0'>(Return to main menu)</A><BR>"
-		if(8)
 			dat += "<h3>Accessing Forbidden Lore Vault v 1.3</h3>"
 			dat += "Are you absolutely sure you want to proceed? EldritchTomes Inc. takes no responsibilities for loss of sanity resulting from this action.<p>"
 			dat += "<A href='?src=\ref[src];arccheckout=1'>Yes.</A><BR>"
@@ -312,11 +296,6 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 	popup.set_content(dat)
 	popup.set_title_image(user.browse_rsc_icon(src.icon, src.icon_state))
 	popup.open()
-
-/obj/machinery/computer/libraryconsole/bookmanagement/proc/findscanner(viewrange)
-	for(var/obj/machinery/libraryscanner/S in range(viewrange))
-		return S
-	return null
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/print_forbidden_lore(mob/user)
 	var/spook = pick("blood", "brass")
@@ -364,11 +343,24 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 			if("5")
 				screenstate = 5
 			if("6")
-				screenstate = 6
+				if(!bibledelay)
+
+					var/obj/item/weapon/storage/book/bible/B = new /obj/item/weapon/storage/book/bible(src.loc)
+					if(SSreligion.Bible_icon_state && SSreligion.Bible_item_state)
+						B.icon_state = SSreligion.Bible_icon_state
+						B.item_state = SSreligion.Bible_item_state
+						B.name = SSreligion.Bible_name
+						B.deity_name = SSreligion.Bible_deity_name
+
+					bibledelay = 1
+					spawn(60)
+						bibledelay = 0
+
+				else
+					say("Bible printer currently unavailable, please wait a moment.")
+
 			if("7")
 				screenstate = 7
-			if("8")
-				screenstate = 8
 	if(href_list["arccheckout"])
 		if(src.emagged)
 			src.arcanecheckout = 1
@@ -411,7 +403,8 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 			if(scanner.cache)
 				var/choice = input("Are you certain you wish to upload this title to the Archive?") in list("Confirm", "Abort")
 				if(choice == "Confirm")
-					if (!SSdbcore.Connect())
+					establish_db_connection()
+					if(!dbcon.IsConnected())
 						alert("Connection to Archive has been severed. Aborting.")
 					else
 
@@ -419,27 +412,14 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 						var/sqlauthor = sanitizeSQL(scanner.cache.author)
 						var/sqlcontent = sanitizeSQL(scanner.cache.dat)
 						var/sqlcategory = sanitizeSQL(upload_category)
-						var/datum/DBQuery/query_library_upload = SSdbcore.NewQuery("INSERT INTO [format_table_name("library")] (author, title, content, category, ckey, datetime) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]', '[usr.ckey]', Now())")
-						if(!query_library_upload.Execute())
-							alert("Database error encountered uploading to Archive")
-							return
+						var/DBQuery/query = dbcon.NewQuery("INSERT INTO [format_table_name("library")] (author, title, content, category, ckey, datetime) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]', '[usr.ckey]', Now())")
+						if(!query.Execute())
+							to_chat(usr, query.ErrorMsg())
 						else
 							log_game("[usr.name]/[usr.key] has uploaded the book titled [scanner.cache.name], [length(scanner.cache.dat)] signs")
 							alert("Upload Complete. Uploaded title will be unavailable for printing for a short period")
-	if(href_list["newspost"])
-		if(!GLOB.news_network)
-			alert("No news network found on station. Aborting.")
-		var/channelexists = 0
-		for(var/datum/newscaster/feed_channel/FC in GLOB.news_network.network_channels)
-			if(FC.channel_name == "Nanotrasen Book Club")
-				channelexists = 1
-				break
-		if(!channelexists)
-			GLOB.news_network.CreateFeedChannel("Nanotrasen Book Club", "Library", null)
-		GLOB.news_network.SubmitArticle(scanner.cache.dat, "[scanner.cache.name]", "Nanotrasen Book Club", null)
-		alert("Upload complete. Your uploaded title is now available on station newscasters.")
 	if(href_list["orderbyid"])
-		if(cooldown > world.time)
+		if(bibledelay)
 			say("Printer unavailable. Please allow a short time before attempting to print.")
 		else
 			var/orderid = input("Enter your order:") as num|null
@@ -449,20 +429,22 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 
 	if(href_list["targetid"])
 		var/sqlid = sanitizeSQL(href_list["targetid"])
-		if (!SSdbcore.Connect())
+		establish_db_connection()
+		if(!dbcon.IsConnected())
 			alert("Connection to Archive has been severed. Aborting.")
-		if(cooldown > world.time)
+		if(bibledelay)
 			say("Printer unavailable. Please allow a short time before attempting to print.")
 		else
-			cooldown = world.time + PRINTER_COOLDOWN
-			var/datum/DBQuery/query_library_print = SSdbcore.NewQuery("SELECT * FROM [format_table_name("library")] WHERE id=[sqlid] AND isnull(deleted)")
-			if(!query_library_print.Execute())
-				say("PRINTER ERROR! Failed to print document (0x0000000F)")
-				return
-			while(query_library_print.NextRow())
-				var/author = query_library_print.item[2]
-				var/title = query_library_print.item[3]
-				var/content = query_library_print.item[4]
+			bibledelay = 1
+			spawn(60)
+				bibledelay = 0
+			var/DBQuery/query = dbcon.NewQuery("SELECT * FROM [format_table_name("library")] WHERE id=[sqlid] AND isnull(deleted)")
+			query.Execute()
+
+			while(query.NextRow())
+				var/author = query.item[2]
+				var/title = query.item[3]
+				var/content = query.item[4]
 				var/obj/item/weapon/book/B = new(get_turf(src))
 				B.name = "Book: [title]"
 				B.title = title
@@ -471,23 +453,7 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 				B.icon_state = "book[rand(1,8)]"
 				visible_message("[src]'s printer hums as it produces a completely bound book. How did it do that?")
 				break
-	if(href_list["printbible"])
-		if(cooldown < world.time)
-			var/obj/item/weapon/storage/book/bible/B = new /obj/item/weapon/storage/book/bible(src.loc)
-			if(SSreligion.bible_icon_state && SSreligion.bible_item_state)
-				B.icon_state = SSreligion.bible_icon_state
-				B.item_state = SSreligion.bible_item_state
-				B.name = SSreligion.bible_name
-				B.deity_name = SSreligion.deity
-			cooldown = world.time + PRINTER_COOLDOWN
-		else
-			say("Printer currently unavailable, please wait a moment.")
-	if(href_list["printposter"])
-		if(cooldown < world.time)
-			new /obj/item/weapon/poster/random_official(src.loc)
-			cooldown = world.time + PRINTER_COOLDOWN
-		else
-			say("Printer currently unavailable, please wait a moment.")
+
 	add_fingerprint(usr)
 	updateUsrDialog()
 
@@ -506,7 +472,7 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 	if(istype(O, /obj/item/weapon/book))
 		if(!user.drop_item())
 			return
-		O.loc = src
+		O.forceMove(src)
 	else
 		return ..()
 
@@ -541,7 +507,7 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 		cache = null
 	if(href_list["eject"])
 		for(var/obj/item/weapon/book/B in contents)
-			B.loc = src.loc
+			B.forceMove(src.loc)
 	src.add_fingerprint(usr)
 	src.updateUsrDialog()
 	return
@@ -574,7 +540,7 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 		return
 	if(!user.drop_item())
 		return
-	P.loc = src
+	P.forceMove(src)
 	user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")
 	audible_message("[src] begins to hum as it warms up its printing drums.")
 	busy = 1
@@ -589,4 +555,4 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 			B.icon_state = "book[rand(1,7)]"
 			qdel(P)
 		else
-			P.loc = loc
+			P.forceMove(loc)

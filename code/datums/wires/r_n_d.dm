@@ -24,7 +24,6 @@
 	return status
 
 /datum/wires/r_n_d/on_pulse(wire)
-	set waitfor = FALSE
 	var/obj/machinery/r_n_d/R = holder
 	switch(wire)
 		if(WIRE_HACK)
@@ -33,9 +32,9 @@
 			R.disabled = !R.disabled
 		if(WIRE_SHOCK)
 			R.shocked = TRUE
-			sleep(100)
-			if(R)
-				R.shocked = FALSE
+			spawn(100)
+				if(R)
+					R.shocked = FALSE
 
 /datum/wires/r_n_d/on_cut(wire, mend)
 	var/obj/machinery/r_n_d/R = holder

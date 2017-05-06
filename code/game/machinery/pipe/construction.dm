@@ -22,7 +22,7 @@ Buildable meters
 	var/flipped = 0
 	var/is_bent = 0
 
-	var/static/list/pipe_types = list(
+	var/global/list/pipe_types = list(
 		PIPE_SIMPLE, \
 		PIPE_MANIFOLD, \
 		PIPE_4WAYMANIFOLD, \
@@ -34,7 +34,6 @@ Buildable meters
 		PIPE_CONNECTOR, \
 		PIPE_UVENT, \
 		PIPE_SCRUBBER, \
-		PIPE_INJECTOR, \
 		PIPE_HEAT_EXCHANGE, \
 		\
 		PIPE_PUMP, \
@@ -74,7 +73,7 @@ Buildable meters
 		src.pipe_type = pipe_type
 		src.setDir(dir)
 
-	if(src.dir in GLOB.diagonals)
+	if(src.dir in diagonals)
 		is_bent = 1
 
 	update()
@@ -82,7 +81,7 @@ Buildable meters
 	src.pixel_y = rand(-5, 5)
 
 //update the name and icon of the pipe item depending on the type
-GLOBAL_LIST_INIT(pipeID2State, list(
+var/global/list/pipeID2State = list(
 	"[PIPE_SIMPLE]"			 = "simple", \
 	"[PIPE_MANIFOLD]"		 = "manifold", \
 	"[PIPE_4WAYMANIFOLD]"	 = "manifold4w", \
@@ -94,7 +93,6 @@ GLOBAL_LIST_INIT(pipeID2State, list(
 	"[PIPE_CONNECTOR]"		 = "connector", \
 	"[PIPE_UVENT]"			 = "uvent", \
 	"[PIPE_SCRUBBER]"		 = "scrubber", \
-	"[PIPE_INJECTOR]"		 = "injector", \
 	"[PIPE_HEAT_EXCHANGE]"	 = "heunary", \
 	\
 	"[PIPE_PUMP]"			 = "pump", \
@@ -105,7 +103,7 @@ GLOBAL_LIST_INIT(pipeID2State, list(
 	\
 	"[PIPE_GAS_FILTER]"		 = "filter", \
 	"[PIPE_GAS_MIXER]"		 = "mixer", \
-))
+)
 
 /obj/item/pipe/proc/update()
 	var/list/nlist = list(\
@@ -122,7 +120,6 @@ GLOBAL_LIST_INIT(pipeID2State, list(
 		"[PIPE_CONNECTOR]" 		= "connector", \
 		"[PIPE_UVENT]" 			= "vent", \
 		"[PIPE_SCRUBBER]" 		= "scrubber", \
-		"[PIPE_INJECTOR]"		= "injector", \
 		"[PIPE_HEAT_EXCHANGE]" 	= "heat exchanger", \
 		\
 		"[PIPE_PUMP]" 			= "pump", \
@@ -136,7 +133,7 @@ GLOBAL_LIST_INIT(pipeID2State, list(
 		)
 	//fix_pipe_type()
 	name = nlist["[pipe_type][is_bent ? "_b" : ""]"] + " fitting"
-	icon_state = GLOB.pipeID2State["[pipe_type]"]
+	icon_state = pipeID2State["[pipe_type]"]
 
 // rotate the pipe item clockwise
 
@@ -189,7 +186,7 @@ GLOBAL_LIST_INIT(pipeID2State, list(
 	setDir(old_dir )//pipes changing direction when moved is just annoying and buggy
 
 /obj/item/pipe/proc/unflip(direction)
-	if(direction in GLOB.diagonals)
+	if(direction in diagonals)
 		return turn(direction, 45)
 
 	return direction
@@ -251,8 +248,6 @@ GLOBAL_LIST_INIT(pipeID2State, list(
 			var/mob/living/carbon/C = user
 			for(var/i=1 to 20)
 				C.vomit(0,1,0,4,0)
-				if(prob(20))
-					C.spew_organ()
 				sleep(5)
 			C.blood_volume = 0
 		return(OXYLOSS|BRUTELOSS)

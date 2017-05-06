@@ -19,7 +19,8 @@
 
 /obj/structure/fireaxecabinet/Destroy()
 	if(fireaxe)
-		QDEL_NULL(fireaxe)
+		qdel(fireaxe)
+		fireaxe = null
 	return ..()
 
 /obj/structure/fireaxecabinet/attackby(obj/item/I, mob/user, params)
@@ -115,7 +116,7 @@
 			update_icon()
 			return
 	if(locked)
-		to_chat(user, "<span class='warning'>The [name] won't budge!</span>")
+		to_chat(user, "<span class='warning'> The [name] won't budge!</span>")
 		return
 	else
 		open = !open
@@ -128,15 +129,6 @@
 /obj/structure/fireaxecabinet/attack_ai(mob/user)
 	toggle_lock(user)
 	return
-
-/obj/structure/fireaxecabinet/attack_tk(mob/user)
-	if(locked)
-		to_chat(user, "<span class='warning'>The [name] won't budge!</span>")
-		return
-	else
-		open = !open
-		update_icon()
-		return
 
 /obj/structure/fireaxecabinet/update_icon()
 	cut_overlays()
@@ -177,7 +169,7 @@
 	set src in oview(1)
 
 	if(locked)
-		to_chat(usr, "<span class='warning'>The [name] won't budge!</span>")
+		to_chat(usr, "<span class='warning'> The [name] won't budge!</span>")
 		return
 	else
 		open = !open

@@ -42,7 +42,7 @@
 	var/obj/item/weapon/reagent_containers/syringe/S = syringes[syringes.len]
 
 	if(!S) return 0
-	S.loc = user.loc
+	S.forceMove(user.loc)
 
 	syringes.Remove(S)
 	to_chat(user, "<span class='notice'>You unload [S] from \the [src].</span>")
@@ -52,10 +52,11 @@
 /obj/item/weapon/gun/syringe/attackby(obj/item/A, mob/user, params, show_msg = 1)
 	if(istype(A, /obj/item/weapon/reagent_containers/syringe))
 		if(syringes.len < max_syringes)
-			if(!user.transferItemToLoc(A, src))
+			if(!user.unEquip(A))
 				return
 			to_chat(user, "<span class='notice'>You load [A] into \the [src].</span>")
 			syringes.Add(A)
+			A.forceMove(src)
 			recharge_newshot()
 			return 1
 		else

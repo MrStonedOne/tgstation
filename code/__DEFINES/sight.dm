@@ -1,4 +1,7 @@
+
 #define SEE_INVISIBLE_MINIMUM 5
+
+#define SEE_INVISIBLE_NOLIGHTING 15 //to not see the lighting objects. Used for nightvision and observer with darkness toggled.
 
 #define INVISIBILITY_LIGHTING 20
 

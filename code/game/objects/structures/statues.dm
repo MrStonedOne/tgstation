@@ -10,7 +10,7 @@
 	anchored = 0
 	obj_integrity = 100
 	max_integrity = 100
-	var/oreAmount = 5
+	var/oreAmount = 7
 	var/material_drop_type = /obj/item/stack/sheet/metal
 	CanAtmosPass = ATMOS_PASS_DENSITY
 
@@ -98,6 +98,7 @@
 /obj/structure/statue/uranium
 	obj_integrity = 300
 	light_range = 2
+	light_color = LIGHT_COLOR_GREEN
 	material_drop_type = /obj/item/stack/sheet/mineral/uranium
 	var/last_event = 0
 	var/active = null
@@ -163,20 +164,18 @@
 		PlasmaBurn(500)
 		burn = TRUE
 	if(burn)
-		var/turf/T = get_turf(src)
 		if(Proj.firer)
-			message_admins("Plasma statue ignited by [ADMIN_LOOKUPFLW(Proj.firer)] in [ADMIN_COORDJMP(T)]",0,1)
-			log_game("Plasma statue ignited by [key_name(Proj.firer)] in [COORD(T)]")
+			message_admins("Plasma statue ignited by [key_name_admin(Proj.firer)](<A HREF='?_src_=holder;adminmoreinfo=\ref[Proj.firer]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[Proj.firer]'>FLW</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
+			log_game("Plasma statue ignited by [key_name(Proj.firer)] in ([x],[y],[z])")
 		else
-			message_admins("Plasma statue ignited by [Proj]. No known firer, in [ADMIN_COORDJMP(T)]",0,1)
-			log_game("Plasma statue ignited by [Proj] in [COORD(T)]. No known firer.")
+			message_admins("Plasma statue ignited by [Proj]. No known firer.(<A HREF='?_src_=holder;adminmoreinfo=\ref[Proj.firer]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[Proj.firer]'>FLW</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
+			log_game("Plasma statue ignited by [Proj] in ([x],[y],[z]). No known firer.")
 	..()
 
 /obj/structure/statue/plasma/attackby(obj/item/weapon/W, mob/user, params)
 	if(W.is_hot() > 300)//If the temperature of the object is over 300, then ignite
-		var/turf/T = get_turf(src)
-		message_admins("Plasma statue ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(T)]",0,1)
-		log_game("Plasma statue ignited by [key_name(user)] in [COORD(T)]")
+		message_admins("Plasma statue ignited by [key_name_admin(user)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
+		log_game("Plasma statue ignited by [key_name(user)] in ([x],[y],[z])")
 		ignite(W.is_hot())
 	else
 		return ..()
@@ -325,3 +324,15 @@
 	name = "snowman"
 	desc = "Several lumps of snow put together to form a snowman."
 	icon_state = "snowman"
+
+
+///////////////////wood/////////////////////////////////////////////////
+
+/obj/structure/statue/wood
+	obj_integrity = 150
+	material_drop_type = /obj/item/stack/sheet/mineral/wood
+
+/obj/structure/statue/wood/headstonewood
+	name = "Cross"
+	desc = "A headstone"
+	icon_state = "groovewood"

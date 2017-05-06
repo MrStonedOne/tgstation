@@ -5,66 +5,59 @@
 	var/tmp/lighting_corners_initialised = FALSE
 
 	var/tmp/list/datum/light_source/affecting_lights       // List of light sources affecting this turf.
-	var/tmp/atom/movable/lighting_object/lighting_object // Our lighting object.
+	var/tmp/atom/movable/lighting_overlay/lighting_overlay // Our lighting overlay.
 	var/tmp/list/datum/lighting_corner/corners
 	var/tmp/has_opaque_atom = FALSE // Not to be confused with opacity, this will be TRUE if there's any opaque atom on the tile.
 
+/turf/New()
+	. = ..()
+
+	if (opacity)
+		has_opaque_atom = TRUE
+
 // Causes any affecting light sources to be queued for a visibility update, for example a door got opened.
 /turf/proc/reconsider_lights()
-	var/datum/light_source/L
-	var/thing
-	for (thing in affecting_lights)
-		L = thing
+	for (var/datum/light_source/L in affecting_lights)
 		L.vis_update()
 
 /turf/proc/lighting_clear_overlay()
-	if (lighting_object)
-		qdel(lighting_object, TRUE)
+	if (lighting_overlay)
+		qdel(lighting_overlay, TRUE)
 
-	var/datum/lighting_corner/C
-	var/thing
-	for (thing in corners)
-		C = thing
+	for (var/datum/lighting_corner/C in corners)
 		C.update_active()
 
-// Builds a lighting object for us, but only if our area is dynamic.
+// Builds a lighting overlay for us, but only if our area is dynamic.
 /turf/proc/lighting_build_overlay()
-	if (lighting_object)
+	if (lighting_overlay)
 		return
 
 	var/area/A = loc
-	if (!IS_DYNAMIC_LIGHTING(A))
-		return
+	if (IS_DYNAMIC_LIGHTING(A))
+		if (!lighting_corners_initialised)
+			generate_missing_corners()
 
-	if (!lighting_corners_initialised)
-		generate_missing_corners()
+		new/atom/movable/lighting_overlay(src)
 
-	new/atom/movable/lighting_object(src)
+		for (var/datum/lighting_corner/C in corners)
+			if (!C.active) // We would activate the corner, calculate the lighting for it.
+				for (var/datum/light_source/S in C.affecting)
+					S.recalc_corner(C)
 
-	var/thing
-	var/datum/lighting_corner/C
-	var/datum/light_source/S
-	for (thing in corners)
-		C = thing
-		if (!C.active) // We would activate the corner, calculate the lighting for it.
-			for (thing in C.affecting)
-				S = thing
-				S.recalc_corner(C)
-			C.active = TRUE
+				C.active = TRUE
 
 // Used to get a scaled lumcount.
 /turf/proc/get_lumcount(var/minlum = 0, var/maxlum = 1)
-	if (!lighting_object)
+	if (!lighting_overlay && !sun_lighting_overlay)
 		return 1
 
 	var/totallums = 0
-	var/thing
-	var/datum/lighting_corner/L
-	for (thing in corners)
-		L = thing
+	for (var/datum/lighting_corner/L in corners)
+		totallums += L.lum_r + L.lum_b + L.lum_g
+	for (var/datum/lighting_corner/L in suncorners)
 		totallums += L.lum_r + L.lum_b + L.lum_g
 
-	totallums /= 12 // 4 corners, each with 3 channels, get the average.
+	totallums /= 24 // 4 corners, each with 3 channels, get the average.
 
 	totallums = (totallums - minlum) / (maxlum - minlum)
 
@@ -75,19 +68,17 @@
 // itself as too dark to allow sight and see_in_dark becomes useful.
 // So basically if this returns true the tile is unlit black.
 /turf/proc/is_softly_lit()
-	if (!lighting_object)
+	if (!lighting_overlay)
 		return FALSE
 
-	return !lighting_object.luminosity
+	return !lighting_overlay.luminosity
 
 // Can't think of a good name, this proc will recalculate the has_opaque_atom variable.
 /turf/proc/recalc_atom_opacity()
-	has_opaque_atom = opacity
-	if (!has_opaque_atom)
-		for (var/atom/A in src.contents) // Loop through every movable atom on our tile PLUS ourselves (we matter too...)
-			if (A.opacity)
-				has_opaque_atom = TRUE
-				break
+	has_opaque_atom = FALSE
+	for (var/atom/A in src.contents + src) // Loop through every movable atom on our tile PLUS ourselves (we matter too...)
+		if (A.opacity)
+			has_opaque_atom = TRUE
 
 // If an opaque movable atom moves around we need to potentially update visibility.
 /turf/Entered(var/atom/movable/Obj, var/atom/OldLoc)
@@ -127,33 +118,38 @@
 		if (corners[i]) // Already have a corner on this direction.
 			continue
 
-		corners[i] = new/datum/lighting_corner(src, GLOB.LIGHTING_CORNER_DIAGONAL[i])
+		corners[i] = new/datum/lighting_corner(src, LIGHTING_CORNER_DIAGONAL[i])
 
 
 /turf/ChangeTurf(path)
-	if (!path || (!GLOB.use_preloader && path == type) || !SSlighting.initialized)
+	if (!path || (!use_preloader && path == type) || !SSlighting.initialized)
 		return ..()
 
 	var/old_opacity = opacity
 	var/old_dynamic_lighting = dynamic_lighting
 	var/old_affecting_lights = affecting_lights
-	var/old_lighting_object = lighting_object
+	var/old_lighting_overlay = lighting_overlay
 	var/old_corners = corners
+	var/old_sun_affecting_lights = sun_affecting_lights
+	var/old_sun_lighting_overlay = sun_lighting_overlay
+	var/old_sun_corners = suncorners
 
 	. = ..() //At this point the turf has changed
 
 	recalc_atom_opacity()
-	lighting_object = old_lighting_object
+	lighting_overlay = old_lighting_overlay
 	affecting_lights = old_affecting_lights
 	corners = old_corners
+	sun_affecting_lights = old_sun_affecting_lights
+	sun_lighting_overlay = old_sun_lighting_overlay
+	suncorners = old_sun_corners
 	if (old_opacity != opacity || dynamic_lighting != old_dynamic_lighting)
 		reconsider_lights()
 
 	if (dynamic_lighting != old_dynamic_lighting)
 		if (IS_DYNAMIC_LIGHTING(src))
 			lighting_build_overlay()
+			sun_lighting_build_overlay()
 		else
 			lighting_clear_overlay()
-
-	for(var/turf/open/space/S in RANGE_TURFS(1, src)) //RANGE_TURFS is in code\__HELPERS\game.dm
-		S.update_starlight()
+			sun_lighting_clear_overlay()

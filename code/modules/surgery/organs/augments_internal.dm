@@ -11,7 +11,7 @@
 	if(iscarbon(M))
 		src.Insert(M)
 	if(implant_overlay)
-		var/mutable_appearance/overlay = mutable_appearance(icon, implant_overlay)
+		var/image/overlay = new /image(icon, implant_overlay)
 		overlay.color = implant_color
 		add_overlay(overlay)
 	return ..()
@@ -55,15 +55,13 @@
 				stored_items += I
 
 		var/list/L = owner.get_empty_held_indexes()
-		if(LAZYLEN(L) == owner.held_items.len)
+		if(L && L.len == owner.held_items.len)
 			to_chat(owner, "<span class='notice'>You are not holding any items, your hands relax...</span>")
 			active = 0
 			stored_items = list()
 		else
 			for(var/obj/item/I in stored_items)
 				to_chat(owner, "<span class='notice'>Your [owner.get_held_index_name(owner.get_held_index_of_item(I))]'s grip tightens.</span>")
-				I.flags |= NODROP
-
 	else
 		release_items()
 		to_chat(owner, "<span class='notice'>Your hands relax...</span>")
@@ -74,8 +72,7 @@
 		return
 	var/range = severity ? 10 : 5
 	var/atom/A
-	if(active)
-		release_items()
+	release_items()
 	..()
 	for(var/obj/item/I in stored_items)
 		A = pick(oview(range))
@@ -86,7 +83,7 @@
 
 /obj/item/organ/cyberimp/brain/anti_drop/proc/release_items()
 	for(var/obj/item/I in stored_items)
-		I.flags &= ~NODROP
+		I.flags ^= NODROP
 
 
 /obj/item/organ/cyberimp/brain/anti_drop/Remove(var/mob/living/carbon/M, special = 0)
@@ -117,7 +114,6 @@
 		return
 	crit_fail = TRUE
 	addtimer(CALLBACK(src, .proc/reboot), 90 / severity)
-	..()
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/reboot()
 	crit_fail = FALSE
@@ -145,18 +141,25 @@
 //BOX O' IMPLANTS
 
 /obj/item/weapon/storage/box/cyber_implants
-	name = "boxed cybernetic implants"
+	name = "boxed cybernetic implant"
 	desc = "A sleek, sturdy box."
 	icon_state = "cyber_implants"
-	var/list/boxed = list(
-		/obj/item/device/autosurgeon/thermal_eyes,
-		/obj/item/device/autosurgeon/xray_eyes,
-		/obj/item/device/autosurgeon/anti_stun,
-		/obj/item/device/autosurgeon/reviver)
+
+/obj/item/weapon/storage/box/cyber_implants/New(loc, implant)
+	..()
+	new /obj/item/device/autoimplanter(src)
+	if(ispath(implant))
+		new implant(src)
+
+/obj/item/weapon/storage/box/cyber_implants/bundle
+	name = "boxed cybernetic implants"
+	var/list/boxed = list(/obj/item/organ/cyberimp/eyes/xray,/obj/item/organ/cyberimp/eyes/thermals,
+						/obj/item/organ/cyberimp/brain/anti_stun, /obj/item/organ/cyberimp/chest/reviver)
 	var/amount = 5
 
-/obj/item/weapon/storage/box/cyber_implants/PopulateContents()
+/obj/item/weapon/storage/box/cyber_implants/bundle/New()
+	..()
 	var/implant
-	while(contents.len <= amount)
+	while(contents.len <= amount + 1) // +1 for the autoimplanter.
 		implant = pick(boxed)
 		new implant(src)

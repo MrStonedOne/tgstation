@@ -7,7 +7,6 @@
 	icon_state = "candle1"
 	item_state = "candle1"
 	w_class = WEIGHT_CLASS_TINY
-	light_color = LIGHT_COLOR_FIRE
 	var/wax = 200
 	var/lit = FALSE
 	var/infinite = FALSE
@@ -59,6 +58,9 @@
 		wax--
 	if(!wax)
 		new/obj/item/trash/candle(src.loc)
+		if(istype(src.loc, /mob))
+			var/mob/M = src.loc
+			M.unEquip(src, 1) //src is being deleted anyway
 		qdel(src)
 	update_icon()
 	open_flame()

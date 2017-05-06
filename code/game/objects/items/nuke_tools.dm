@@ -56,7 +56,7 @@
 
 /obj/item/nuke_core_container/attackby(obj/item/nuke_core/core, mob/user)
 	if(istype(core))
-		if(!user.temporarilyRemoveItemFromInventory(core))
+		if(!user.unEquip(core))
 			to_chat(user, "<span class='warning'>The [core] is stuck to your hand!</span>")
 			return
 		else

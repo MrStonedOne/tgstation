@@ -37,11 +37,12 @@
 
 //What does the implant do upon injection?
 //return 1 if the implant injects
-//return 0 if there is no room for implant / it fails
+//return -1 if the implant fails to inject
+//return 0 if there is no room for implant
 /obj/item/weapon/implant/proc/implant(mob/living/target, mob/user, silent = 0)
 	LAZYINITLIST(target.implants)
 	if(!target.can_be_implanted() || !can_be_implanted_in(target))
-		return 0
+		return -1
 	for(var/X in target.implants)
 		if(istype(X, type))
 			var/obj/item/weapon/implant/imp_e = X
@@ -56,7 +57,7 @@
 				else
 					return 0
 
-	src.loc = target
+	src.forceMove(target)
 	imp_in = target
 	target.implants += src
 	if(activated)
@@ -73,7 +74,7 @@
 	return 1
 
 /obj/item/weapon/implant/proc/removed(mob/living/source, silent = 0, special = 0)
-	src.loc = null
+	src.forceMove(null)
 	imp_in = null
 	source.implants -= src
 	for(var/X in actions)

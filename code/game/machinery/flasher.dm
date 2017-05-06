@@ -120,6 +120,9 @@
 
 		if(L.flash_act(affect_silicon = 1))
 			L.Weaken(strength)
+			if(L.weakeyes)
+				L.Weaken(strength * 1.5)
+				L.visible_message("<span class='disarm'><b>[L]</b> gasps and shields their eyes!</span>")
 
 	return 1
 
@@ -154,10 +157,6 @@
 			new /obj/item/stack/sheet/metal (loc, 2)
 	qdel(src)
 
-/obj/machinery/flasher/portable/Initialize()
-	. = ..()
-	proximity_monitor = new(src, 0)
-
 /obj/machinery/flasher/portable/HasProximity(atom/movable/AM)
 	if (last_flash && world.time < last_flash + 150)
 		return
@@ -176,16 +175,24 @@
 			add_overlay("[base_state]-s")
 			anchored = 1
 			power_change()
-			proximity_monitor.SetRange(range)
+			add_to_proximity_list(src, range)
 		else
 			to_chat(user, "<span class='notice'>[src] can now be moved.</span>")
 			cut_overlays()
 			anchored = 0
 			power_change()
-			proximity_monitor.SetRange(0)
+			remove_from_proximity_list(src, range)
 
 	else
 		return ..()
+
+/obj/machinery/flasher/portable/Destroy()
+	remove_from_proximity_list(src, range)
+	return ..()
+
+/obj/machinery/flasher/protable/Moved(oldloc)
+	remove_from_proximity_list(oldloc, range)
+	return ..()
 
 /obj/item/wallframe/flasher
 	name = "mounted flash frame"

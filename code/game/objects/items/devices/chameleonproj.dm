@@ -31,8 +31,6 @@
 
 /obj/item/device/chameleon/afterattack(atom/target, mob/user , proximity)
 	if(!proximity) return
-	if(!check_sprite(target))
-		return
 	if(!active_dummy)
 		if(istype(target,/obj/item) && !istype(target, /obj/item/weapon/disk/nuclear))
 			playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, 1, -6)
@@ -43,11 +41,6 @@
 			temp.plane = initial(target.plane)
 			saved_appearance = temp.appearance
 
-/obj/item/device/chameleon/proc/check_sprite(atom/target)
-	if(target.icon_state in icon_states(target.icon))
-		return TRUE
-	return FALSE
-
 /obj/item/device/chameleon/proc/toggle()
 	if(!can_use || !saved_appearance) return
 	if(active_dummy)
@@ -56,13 +49,13 @@
 		qdel(active_dummy)
 		active_dummy = null
 		to_chat(usr, "<span class='notice'>You deactivate \the [src].</span>")
-		new /obj/effect/overlay/temp/emp/pulse(get_turf(src))
+		PoolOrNew(/obj/effect/overlay/temp/emp/pulse, get_turf(src))
 	else
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 100, 1, -6)
 		var/obj/effect/dummy/chameleon/C = new/obj/effect/dummy/chameleon(usr.loc)
 		C.activate(usr, saved_appearance, src)
 		to_chat(usr, "<span class='notice'>You activate \the [src].</span>")
-		new /obj/effect/overlay/temp/emp/pulse(get_turf(src))
+		PoolOrNew(/obj/effect/overlay/temp/emp/pulse, get_turf(src))
 
 /obj/item/device/chameleon/proc/disrupt(delete_dummy = 1)
 	if(active_dummy)
@@ -81,7 +74,7 @@
 
 /obj/item/device/chameleon/proc/eject_all()
 	for(var/atom/movable/A in active_dummy)
-		A.loc = active_dummy.loc
+		A.forceMove(active_dummy.loc)
 		if(ismob(A))
 			var/mob/M = A
 			M.reset_perspective(null)
@@ -95,7 +88,7 @@
 
 /obj/effect/dummy/chameleon/proc/activate(mob/M, saved_appearance, obj/item/device/chameleon/C)
 	appearance = saved_appearance
-	M.loc = src
+	M.forceMove(src)
 	master = C
 	master.active_dummy = src
 

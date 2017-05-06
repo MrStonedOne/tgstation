@@ -233,7 +233,7 @@
 			if(W.remove_fuel(0,user))
 				playsound(loc, 'sound/items/Welder2.ogg', 100, 1)
 				to_chat(user, "<span class='notice'>You start welding the [nicetype] in place...</span>")
-				if(do_after(user, 8*I.toolspeed, target = src))
+				if(do_after(user, 20*I.toolspeed, target = src))
 					if(!loc || !W.isOn())
 						return
 					to_chat(user, "<span class='notice'>The [nicetype] has been welded in place.</span>")
@@ -251,7 +251,7 @@
 
 					else if(ptype == DISP_END_BIN)
 						var/obj/machinery/disposal/bin/B = new /obj/machinery/disposal/bin(loc,src)
-						B.pressure_charging = FALSE // start with pump off
+						B.mode = 0 // start with pump off
 						transfer_fingerprints_to(B)
 
 					else if(ptype == DISP_END_OUTLET)

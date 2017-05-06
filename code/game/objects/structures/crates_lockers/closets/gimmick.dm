@@ -21,7 +21,7 @@
 	name = "russian surplus closet"
 	desc = "It's a storage unit for Russian standard-issue surplus."
 
-/obj/structure/closet/gimmick/russian/PopulateContents()
+/obj/structure/closet/gimmick/russian/New()
 	..()
 	for(var/i in 1 to 5)
 		new /obj/item/clothing/head/ushanka(src)
@@ -32,7 +32,7 @@
 	name = "tacticool gear closet"
 	desc = "It's a storage unit for Tacticool gear."
 
-/obj/structure/closet/gimmick/tacticool/PopulateContents()
+/obj/structure/closet/gimmick/tacticool/New()
 	..()
 	new /obj/item/clothing/glasses/eyepatch(src)
 	new /obj/item/clothing/glasses/sunglasses(src)
@@ -59,7 +59,7 @@
 	name = "red-team Thunderdome closet"
 	icon_door = "red"
 
-/obj/structure/closet/thunderdome/tdred/PopulateContents()
+/obj/structure/closet/thunderdome/tdred/New()
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/suit/armor/tdome/red(src)
@@ -78,7 +78,7 @@
 	name = "green-team Thunderdome closet"
 	icon_door = "green"
 
-/obj/structure/closet/thunderdome/tdgreen/PopulateContents()
+/obj/structure/closet/thunderdome/tdgreen/New()
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/suit/armor/tdome/green(src)
@@ -97,7 +97,7 @@
 	desc = "It's a storage unit for operational gear."
 	icon_state = "syndicate"
 
-/obj/structure/closet/malf/suits/PopulateContents()
+/obj/structure/closet/malf/suits/New()
 	..()
 	new /obj/item/weapon/tank/jetpack/void(src)
 	new /obj/item/clothing/mask/breath(src)

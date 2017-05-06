@@ -56,27 +56,27 @@
 	if(!use_power)
 		return 1
 
-	var/area/A = get_area(src)		// make sure it's in an area
-	if(!A)
+	var/area/A = src.loc.loc		// make sure it's in an area
+	if(!A || !isarea(A) || !A.master)
 		return 0					// if not, then not powered
 	if(chan == -1)
 		chan = power_channel
-	return A.powered(chan)	// return power status of the area
+	return A.master.powered(chan)	// return power status of the area
 
 // increment the power usage stats for an area
 /obj/machinery/proc/use_power(amount, chan = -1) // defaults to power_channel
 	var/area/A = get_area(src)		// make sure it's in an area
-	if(!A)
+	if(!A || !isarea(A) || !A.master)
 		return
 	if(chan == -1)
 		chan = power_channel
-	A.use_power(amount, chan)
+	A.master.use_power(amount, chan)
 
 /obj/machinery/proc/addStaticPower(value, powerchannel)
 	var/area/A = get_area(src)
-	if(!A)
+	if(!A || !A.master)
 		return
-	A.addStaticPower(value, powerchannel)
+	A.master.addStaticPower(value, powerchannel)
 
 /obj/machinery/proc/removeStaticPower(value, powerchannel)
 	addStaticPower(-value, powerchannel)
@@ -85,9 +85,10 @@
 										// by default, check equipment channel & set flag
 										// can override if needed
 	if(powered(power_channel))
+		set_light(brightness_on)
 		stat &= ~NOPOWER
 	else
-
+		set_light(0)
 		stat |= NOPOWER
 	return
 
@@ -139,7 +140,7 @@
 	var/cdir
 	var/turf/T
 
-	for(var/card in GLOB.cardinal)
+	for(var/card in cardinal)
 		T = get_step(loc,card)
 		cdir = get_dir(T,loc)
 
@@ -159,7 +160,7 @@
 	var/cdir
 	var/turf/T
 
-	for(var/card in GLOB.cardinal)
+	for(var/card in cardinal)
 		T = get_step(loc,card)
 		cdir = get_dir(T,loc)
 
@@ -337,9 +338,9 @@
 	var/drained_energy = drained_hp*20
 
 	if (source_area)
-		source_area.use_power(drained_energy/GLOB.CELLRATE)
+		source_area.use_power(drained_energy/CELLRATE)
 	else if (istype(power_source,/datum/powernet))
-		var/drained_power = drained_energy/GLOB.CELLRATE //convert from "joules" to "watts"
+		var/drained_power = drained_energy/CELLRATE //convert from "joules" to "watts"
 		PN.load+=drained_power
 	else if (istype(power_source, /obj/item/weapon/stock_parts/cell))
 		cell.use(drained_energy)
@@ -361,6 +362,6 @@
 	return null
 
 /area/proc/get_apc()
-	for(var/obj/machinery/power/apc/APC in GLOB.apcs_list)
+	for(var/obj/machinery/power/apc/APC in apcs_list)
 		if(APC.area == src)
 			return APC

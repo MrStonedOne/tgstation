@@ -16,17 +16,6 @@
 	name = "record"
 	var/list/fields = list()
 
-/datum/data/record/Destroy()
-	if(src in GLOB.data_core.medical)
-		GLOB.data_core.medical -= src
-	if(src in GLOB.data_core.security)
-		GLOB.data_core.security -= src
-	if(src in GLOB.data_core.general)
-		GLOB.data_core.general -= src
-	if(src in GLOB.data_core.locked)
-		GLOB.data_core.locked -= src
-	. = ..()
-
 /datum/data/crime
 	name = "crime"
 	var/crimeName = ""
@@ -77,13 +66,11 @@
 			return
 
 /datum/datacore/proc/manifest()
-	for(var/mob/dead/new_player/N in GLOB.player_list)
-		if(ishuman(N.new_character))
-			manifest_inject(N.new_character, N.client)
-		CHECK_TICK
+	for(var/mob/living/carbon/human/H in player_list)
+		manifest_inject(H)
 
 /datum/datacore/proc/manifest_modify(name, assignment)
-	var/datum/data/record/foundrecord = find_record("name", name, GLOB.data_core.general)
+	var/datum/data/record/foundrecord = find_record("name", name, data_core.general)
 	if(foundrecord)
 		foundrecord.fields["rank"] = assignment
 
@@ -111,32 +98,32 @@
 	"}
 	var/even = 0
 	// sort mobs
-	for(var/datum/data/record/t in GLOB.data_core.general)
+	for(var/datum/data/record/t in data_core.general)
 		var/name = t.fields["name"]
 		var/rank = t.fields["rank"]
 		var/department = 0
-		if(rank in GLOB.command_positions)
+		if(rank in command_positions)
 			heads[name] = rank
 			department = 1
-		if(rank in GLOB.security_positions)
+		if(rank in security_positions)
 			sec[name] = rank
 			department = 1
-		if(rank in GLOB.engineering_positions)
+		if(rank in engineering_positions)
 			eng[name] = rank
 			department = 1
-		if(rank in GLOB.medical_positions)
+		if(rank in medical_positions)
 			med[name] = rank
 			department = 1
-		if(rank in GLOB.science_positions)
+		if(rank in science_positions)
 			sci[name] = rank
 			department = 1
-		if(rank in GLOB.supply_positions)
+		if(rank in supply_positions)
 			sup[name] = rank
 			department = 1
-		if(rank in GLOB.civilian_positions)
+		if(rank in civilian_positions)
 			civ[name] = rank
 			department = 1
-		if(rank in GLOB.nonhuman_positions)
+		if(rank in nonhuman_positions)
 			bot[name] = rank
 			department = 1
 		if(!department && !(name in heads))
@@ -195,7 +182,8 @@
 	return dat
 
 
-/datum/datacore/proc/manifest_inject(mob/living/carbon/human/H, client/C)
+var/record_id_num = 1001
+/datum/datacore/proc/manifest_inject(mob/living/carbon/human/H)
 	if(H.mind && (H.mind.assigned_role != H.mind.special_role))
 		var/assignment
 		if(H.mind.assigned_role)
@@ -205,11 +193,8 @@
 		else
 			assignment = "Unassigned"
 
-		var/static/record_id_num = 1001
 		var/id = num2hex(record_id_num++,6)
-		if(!C)
-			C = H.client
-		var/image = get_id_photo(H, C)
+		var/image = get_id_photo(H)
 		var/obj/item/weapon/photo/photo_front = new()
 		var/obj/item/weapon/photo/photo_side = new()
 		photo_front.photocreate(null, icon(image, dir = SOUTH))
@@ -277,11 +262,7 @@
 		locked += L
 	return
 
-/datum/datacore/proc/get_id_photo(mob/living/carbon/human/H, client/C)
+/datum/datacore/proc/get_id_photo(mob/living/carbon/human/H)
 	var/datum/job/J = SSjob.GetJob(H.mind.assigned_role)
-	var/datum/preferences/P
-	if(!C)
-		C = H.client
-	if(C)
-		P = C.prefs
-	return get_flat_human_icon(null, J, P)
+	var/datum/preferences/P = H.client.prefs
+	return get_flat_human_icon(null,J.outfit,P)

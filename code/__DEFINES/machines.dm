@@ -23,7 +23,6 @@
 #define MECHFAB		16 //Remember, objects utilising this flag should have construction_time and construction_cost vars.
 #define BIOGENERATOR 32 //Uses biomass
 #define LIMBGROWER 64 //Uses synthetic flesh
-#define SMELTER 128 //uses various minerals
 //Note: More then one of these can be added to a design but imprinter and lathe designs are incompatable.
 
 //Modular computer/NTNet defines
@@ -64,6 +63,3 @@
 #define PROGRAM_STATE_KILLED 0
 #define PROGRAM_STATE_BACKGROUND 1
 #define PROGRAM_STATE_ACTIVE 2
-
-#define FIREDOOR_OPEN 1
-#define FIREDOOR_CLOSED 2

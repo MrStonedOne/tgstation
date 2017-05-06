@@ -5,8 +5,8 @@
 
 	var/randomise_selection = 0 //if it lets the usr choose the teleport loc or picks it from the list
 	var/invocation_area = 1 //if the invocation appends the selected area
-	var/sound1 = 'sound/weapons/ZapBang.ogg'
-	var/sound2 = 'sound/weapons/ZapBang.ogg'
+	var/sound1 = "sound/weapons/ZapBang.ogg"
+	var/sound2 = "sound/weapons/ZapBang.ogg"
 
 /obj/effect/proc_holder/spell/targeted/area_teleport/perform(list/targets, recharge = 1,mob/living/user = usr)
 	var/thearea = before_cast(targets)
@@ -14,8 +14,9 @@
 		revert_cast()
 		return
 	invocation(thearea,user)
-	if(charge_type == "recharge" && recharge)
-		INVOKE_ASYNC(src, .proc/start_recharge)
+	spawn(0)
+		if(charge_type == "recharge" && recharge)
+			start_recharge()
 	cast(targets,thearea,user)
 	after_cast(targets)
 
@@ -23,12 +24,12 @@
 	var/A = null
 
 	if(!randomise_selection)
-		A = input("Area to teleport to", "Teleport", A) as null|anything in GLOB.teleportlocs
+		A = input("Area to teleport to", "Teleport", A) as null|anything in teleportlocs
 	else
-		A = pick(GLOB.teleportlocs)
+		A = pick(teleportlocs)
 	if(!A)
 		return
-	var/area/thearea = GLOB.teleportlocs[A]
+	var/area/thearea = teleportlocs[A]
 
 	return thearea
 
@@ -66,7 +67,7 @@
 				tempL.Remove(attempt)
 
 		if(!success)
-			target.loc = pick(L)
+			target.forceMove(pick(L))
 			playsound(get_turf(user), sound2, 50,1)
 
 	return

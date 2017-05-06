@@ -39,7 +39,7 @@
 				O.anchored = 1
 				if(do_after_cooldown(target))
 					cargo_holder.cargo += O
-					O.loc = chassis
+					O.forceMove(chassis)
 					O.anchored = 0
 					occupant_message("<span class='notice'>[target] successfully loaded.</span>")
 					log_message("Loaded [O]. Cargo compartment capacity: [cargo_holder.cargo_capacity - cargo_holder.cargo.len]")
@@ -90,7 +90,7 @@
 				O.anchored = 1
 				if(do_after_cooldown(target))
 					cargo_holder.cargo += O
-					O.loc = chassis
+					O.forceMove(chassis)
 					O.anchored = 0
 					occupant_message("<span class='notice'>[target] successfully loaded.</span>")
 					log_message("Loaded [O]. Cargo compartment capacity: [cargo_holder.cargo_capacity - cargo_holder.cargo.len]")
@@ -151,7 +151,7 @@
 			var/list/the_targets = list(T,T1,T2)
 			spawn(0)
 				for(var/a=0, a<5, a++)
-					var/obj/effect/particle_effect/water/W = new /obj/effect/particle_effect/water(get_turf(chassis))
+					var/obj/effect/particle_effect/water/W = PoolOrNew(/obj/effect/particle_effect/water, get_turf(chassis))
 					if(!W)
 						return
 					var/turf/my_target = pick(the_targets)
@@ -199,12 +199,12 @@
 	var/mode = 0 //0 - deconstruct, 1 - wall or floor, 2 - airlock.
 
 /obj/item/mecha_parts/mecha_equipment/rcd/New()
-	GLOB.rcd_list += src
+	rcd_list += src
 	..()
 
 /obj/item/mecha_parts/mecha_equipment/rcd/Destroy()
- 	GLOB.rcd_list -= src
- 	return ..()
+ 	rcd_list -= src
+ 	..()
 
 /obj/item/mecha_parts/mecha_equipment/rcd/action(atom/target)
 	if(istype(target, /turf/open/space/transit))//>implying these are ever made -Sieve
@@ -409,18 +409,18 @@
 	NC.cableColor("red")
 	NC.d1 = 0
 	NC.d2 = fdirn
-	NC.update_icon()
+	NC.updateicon()
 
 	var/datum/powernet/PN
 	if(last_piece && last_piece.d2 != chassis.dir)
 		last_piece.d1 = min(last_piece.d2, chassis.dir)
 		last_piece.d2 = max(last_piece.d2, chassis.dir)
-		last_piece.update_icon()
+		last_piece.updateicon()
 		PN = last_piece.powernet
 
 	if(!PN)
 		PN = new()
-		GLOB.powernets += PN
+		powernets += PN
 	NC.powernet = PN
 	PN.cables += NC
 	NC.mergeConnectedNetworks(NC.d2)

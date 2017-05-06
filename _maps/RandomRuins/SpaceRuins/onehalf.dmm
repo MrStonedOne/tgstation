@@ -1,7 +1,7 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "aa" = (
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ab" = (
 /obj/structure/cable{
 	d1 = 2;
@@ -9,8 +9,8 @@
 	icon_state = "2-4"
 	},
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ac" = (
 /obj/structure/cable{
 	d1 = 4;
@@ -18,8 +18,8 @@
 	icon_state = "4-8"
 	},
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ad" = (
 /obj/structure/cable{
 	d1 = 2;
@@ -27,8 +27,8 @@
 	icon_state = "2-8"
 	},
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ae" = (
 /obj/item/stack/cable_coil/cut{
 	amount = 2;
@@ -36,8 +36,8 @@
 	icon_state = "coil_red2"
 	},
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "af" = (
 /obj/structure/cable{
 	d1 = 1;
@@ -45,8 +45,8 @@
 	icon_state = "1-8"
 	},
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ag" = (
 /turf/closed/wall,
 /area/ruin/onehalf/dorms_med)
@@ -62,8 +62,8 @@
 	icon_state = "1-2"
 	},
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "aj" = (
 /turf/open/floor/plating/airless,
 /area/ruin/onehalf/hallway)
@@ -150,11 +150,11 @@
 /area/ruin/onehalf/drone_bay)
 "aw" = (
 /obj/structure/lattice,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ax" = (
 /obj/structure/lattice,
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/onehalf/hallway)
 "ay" = (
 /obj/structure/table_frame,
@@ -217,7 +217,7 @@
 /area/ruin/onehalf/drone_bay)
 "aH" = (
 /obj/item/stack/rods,
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/onehalf/hallway)
 "aI" = (
 /turf/open/floor/plating/airless{
@@ -301,8 +301,8 @@
 "aS" = (
 /obj/structure/lattice,
 /obj/item/weapon/storage/toolbox/syndicate,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "aT" = (
 /obj/structure/cable{
 	d1 = 1;
@@ -342,10 +342,9 @@
 	d2 = 2;
 	icon_state = "1-2"
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/warning{
 	dir = 9
 	},
-/turf/open/floor/plasteel,
 /area/ruin/onehalf/drone_bay)
 "aY" = (
 /obj/structure/cable{
@@ -358,17 +357,15 @@
 	name = "Mining Drone Bay APC";
 	pixel_y = 24
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/warning{
 	dir = 1
 	},
-/turf/open/floor/plasteel,
 /area/ruin/onehalf/drone_bay)
 "aZ" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/warning{
 	dir = 1
 	},
-/turf/open/floor/plasteel,
 /area/ruin/onehalf/drone_bay)
 "ba" = (
 /obj/machinery/button/door{
@@ -395,16 +392,14 @@
 	pixel_x = -8;
 	pixel_y = 37
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/warning{
 	dir = 1
 	},
-/turf/open/floor/plasteel,
 /area/ruin/onehalf/drone_bay)
 "bb" = (
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/warning{
 	dir = 1
 	},
-/turf/open/floor/plasteel,
 /area/ruin/onehalf/drone_bay)
 "bc" = (
 /obj/machinery/button/door{
@@ -431,17 +426,15 @@
 	pixel_x = 8;
 	pixel_y = 27
 	},
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/warning{
 	dir = 1
 	},
-/turf/open/floor/plasteel,
 /area/ruin/onehalf/drone_bay)
 "bd" = (
 /obj/structure/disposalpipe/segment,
-/obj/effect/turf_decal/stripes/line{
+/turf/open/floor/plasteel/warning{
 	dir = 5
 	},
-/turf/open/floor/plasteel,
 /area/ruin/onehalf/drone_bay)
 "be" = (
 /obj/structure/grille,
@@ -797,8 +790,8 @@
 /area/ruin/onehalf/bridge)
 "bV" = (
 /obj/item/stack/sheet/metal,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "bW" = (
 /turf/open/floor/plating/airless{
 	broken = 1;
@@ -902,7 +895,7 @@
 	dir = 8
 	},
 /obj/item/stack/rods,
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/onehalf/hallway)
 "cj" = (
 /obj/structure/lattice,
@@ -912,8 +905,8 @@
 /obj/item/weapon/shard{
 	icon_state = "small"
 	},
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ck" = (
 /obj/structure/grille,
 /obj/structure/window/reinforced/fulltile,
@@ -993,21 +986,21 @@
 /area/ruin/onehalf/bridge)
 "cr" = (
 /obj/item/stack/rods,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "cs" = (
 /obj/item/stack/sheet/plasteel{
 	amount = 10
 	},
 /obj/structure/lattice,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "ct" = (
 /obj/structure/lattice,
 /obj/item/weapon/shard{
 	icon_state = "medium"
 	},
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/onehalf/hallway)
 "cu" = (
 /obj/structure/disposalpipe/segment,
@@ -1052,10 +1045,10 @@
 /area/ruin/onehalf/bridge)
 "cA" = (
 /obj/item/stack/tile/wood,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "cB" = (
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/onehalf/hallway)
 "cC" = (
 /obj/structure/lattice,
@@ -1078,7 +1071,7 @@
 	icon_state = "pipe-b";
 	dir = 1
 	},
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/onehalf/hallway)
 "cE" = (
 /obj/machinery/door/airlock/glass_command{
@@ -1128,7 +1121,7 @@
 	dir = 2;
 	icon_state = "coil_red2"
 	},
-/turf/template_noop,
+/turf/open/space,
 /area/ruin/onehalf/hallway)
 "cL" = (
 /turf/open/floor/plating/airless{
@@ -1145,8 +1138,8 @@
 /area/ruin/onehalf/bridge)
 "cN" = (
 /obj/item/stack/sheet/plasteel,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "cO" = (
 /obj/structure/lattice,
 /obj/structure/cable{
@@ -1214,8 +1207,8 @@
 	icon_state = "2-8"
 	},
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "cX" = (
 /obj/structure/cable{
 	d1 = 1;
@@ -1325,8 +1318,8 @@
 "dh" = (
 /obj/item/stack/sheet/plasteel,
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "di" = (
 /obj/structure/cable{
 	d1 = 4;
@@ -1337,8 +1330,8 @@
 	icon_state = "medium"
 	},
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "dj" = (
 /obj/structure/cable{
 	d1 = 4;
@@ -1352,8 +1345,8 @@
 	},
 /obj/item/stack/rods,
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "dk" = (
 /obj/structure/cable{
 	d1 = 1;
@@ -1366,16 +1359,16 @@
 	icon_state = "4-8"
 	},
 /obj/structure/lattice/catwalk,
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 "dl" = (
 /obj/item/stack/cable_coil/cut{
 	amount = 2;
 	dir = 2;
 	icon_state = "coil_red2"
 	},
-/turf/template_noop,
-/area/template_noop)
+/turf/open/space,
+/area/space)
 
 (1,1,1) = {"
 aa

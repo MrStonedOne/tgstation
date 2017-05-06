@@ -10,7 +10,6 @@
 	cooked_type = /obj/item/weapon/reagent_containers/food/snacks/store/bread/plain
 	list_reagents = list("nutriment" = 6)
 	w_class = WEIGHT_CLASS_NORMAL
-	tastes = list("dough" = 1)
 
 
 // Dough + rolling pin = flat dough
@@ -37,7 +36,6 @@
 	cooked_type = /obj/item/weapon/reagent_containers/food/snacks/pizzabread
 	list_reagents = list("nutriment" = 6)
 	w_class = WEIGHT_CLASS_NORMAL
-	tastes = list("dough" = 1)
 
 /obj/item/weapon/reagent_containers/food/snacks/pizzabread
 	name = "pizza bread"
@@ -47,7 +45,6 @@
 	custom_food_type = /obj/item/weapon/reagent_containers/food/snacks/customizable/pizza
 	list_reagents = list("nutriment" = 7)
 	w_class = WEIGHT_CLASS_NORMAL
-	tastes = list("bread" = 1)
 
 
 /obj/item/weapon/reagent_containers/food/snacks/doughslice
@@ -57,7 +54,6 @@
 	icon_state = "doughslice"
 	cooked_type = /obj/item/weapon/reagent_containers/food/snacks/bun
 	filling_color = "#CD853F"
-	tastes = list("dough" = 1)
 
 
 /obj/item/weapon/reagent_containers/food/snacks/bun
@@ -68,7 +64,6 @@
 	list_reagents = list("nutriment" = 1)
 	custom_food_type = /obj/item/weapon/reagent_containers/food/snacks/customizable/burger
 	filling_color = "#CD853F"
-	tastes = list("bun" = 1) // the bun tastes of bun.
 
 /obj/item/weapon/reagent_containers/food/snacks/cakebatter
 	name = "cake batter"
@@ -78,7 +73,6 @@
 	cooked_type = /obj/item/weapon/reagent_containers/food/snacks/store/cake/plain
 	list_reagents = list("nutriment" = 9)
 	w_class = WEIGHT_CLASS_NORMAL
-	tastes = list("batter" = 1)
 
 // Cake batter + rolling pin = pie dough
 /obj/item/weapon/reagent_containers/food/snacks/cakebatter/attackby(obj/item/I, mob/user, params)
@@ -102,7 +96,6 @@
 	cooked_type = /obj/item/weapon/reagent_containers/food/snacks/pie/plain
 	list_reagents = list("nutriment" = 9)
 	w_class = WEIGHT_CLASS_NORMAL
-	tastes = list("dough" = 1)
 
 /obj/item/weapon/reagent_containers/food/snacks/rawpastrybase
 	name = "raw pastry base"
@@ -112,7 +105,6 @@
 	cooked_type = /obj/item/weapon/reagent_containers/food/snacks/pastrybase
 	filling_color = "#CD853F"
 	list_reagents = list("nutriment" = 1)
-	tastes = list("raw pastry" = 1)
 
 /obj/item/weapon/reagent_containers/food/snacks/pastrybase
 	name = "pastry base"
@@ -121,5 +113,4 @@
 	icon_state = "pastrybase"
 	list_reagents = list("nutriment" = 1)
 	filling_color = "#CD853F"
-	tastes = list("pastry" = 1)
 

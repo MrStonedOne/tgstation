@@ -63,28 +63,28 @@
 /*	the radio controller is a confusing piece of shit and didnt work
 	so i made radios not use the radio controller.
 */
-GLOBAL_LIST_EMPTY(all_radios)
+var/list/all_radios = list()
 /proc/add_radio(obj/item/radio, freq)
 	if(!freq || !radio)
 		return
-	if(!GLOB.all_radios["[freq]"])
-		GLOB.all_radios["[freq]"] = list(radio)
+	if(!all_radios["[freq]"])
+		all_radios["[freq]"] = list(radio)
 		return freq
 
-	GLOB.all_radios["[freq]"] |= radio
+	all_radios["[freq]"] |= radio
 	return freq
 
 /proc/remove_radio(obj/item/radio, freq)
 	if(!freq || !radio)
 		return
-	if(!GLOB.all_radios["[freq]"])
+	if(!all_radios["[freq]"])
 		return
 
-	GLOB.all_radios["[freq]"] -= radio
+	all_radios["[freq]"] -= radio
 
 /proc/remove_radio_all(obj/item/radio)
-	for(var/freq in GLOB.all_radios)
-		GLOB.all_radios["[freq]"] -= radio
+	for(var/freq in all_radios)
+		all_radios["[freq]"] -= radio
 
 /*
 Frequency range: 1200 to 1600
@@ -123,7 +123,7 @@ On the map:
 1455 for AI access
 */
 
-GLOBAL_LIST_INIT(radiochannels, list(
+var/list/radiochannels = list(
 	"Common" = 1459,
 	"Science" = 1351,
 	"Command" = 1353,
@@ -134,12 +134,10 @@ GLOBAL_LIST_INIT(radiochannels, list(
 	"Syndicate" = 1213,
 	"Supply" = 1347,
 	"Service" = 1349,
-	"AI Private" = 1447,
-	"Red Team" = 1215,
-	"Blue Team" = 1217
-))
+	"AI Private" = 1447
+)
 
-GLOBAL_LIST_INIT(reverseradiochannels, list(
+var/list/radiochannelsreverse = list(
 	"1459" = "Common",
 	"1351" = "Science",
 	"1353" = "Command",
@@ -150,36 +148,32 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 	"1213" = "Syndicate",
 	"1347" = "Supply",
 	"1349" = "Service",
-	"1447" = "AI Private",
-	"1215" = "Red Team",
-	"1217" = "Blue Team"
-))
+	"1447" = "AI Private"
+)
 
 //depenging helpers
-GLOBAL_VAR_CONST(SYND_FREQ, 1213) //nuke op frequency, coloured dark brown in chat window
-GLOBAL_VAR_CONST(SUPP_FREQ, 1347) //supply, coloured light brown in chat window
-GLOBAL_VAR_CONST(SERV_FREQ, 1349) //service, coloured green in chat window
-GLOBAL_VAR_CONST(SCI_FREQ, 1351) //science, coloured plum in chat window
-GLOBAL_VAR_CONST(COMM_FREQ, 1353) //command, colored gold in chat window
-GLOBAL_VAR_CONST(MED_FREQ, 1355) //medical, coloured blue in chat window
-GLOBAL_VAR_CONST(ENG_FREQ, 1357) //engineering, coloured orange in chat window
-GLOBAL_VAR_CONST(SEC_FREQ, 1359) //security, coloured red in chat window
-GLOBAL_VAR_CONST(CENTCOM_FREQ, 1337) //centcom frequency, coloured grey in chat window
-GLOBAL_VAR_CONST(AIPRIV_FREQ, 1447) //AI private, colored magenta in chat window
-GLOBAL_VAR_CONST(REDTEAM_FREQ, 1215) // red team (CTF) frequency, coloured red
-GLOBAL_VAR_CONST(BLUETEAM_FREQ, 1217) // blue team (CTF) frequency, coloured blue
+var/const/SYND_FREQ = 1213 //nuke op frequency, coloured dark brown in chat window
+var/const/SUPP_FREQ = 1347 //supply, coloured light brown in chat window
+var/const/SERV_FREQ = 1349 //service, coloured green in chat window
+var/const/SCI_FREQ = 1351 //science, coloured plum in chat window
+var/const/COMM_FREQ = 1353 //command, colored gold in chat window
+var/const/MED_FREQ = 1355 //medical, coloured blue in chat window
+var/const/ENG_FREQ = 1357 //engineering, coloured orange in chat window
+var/const/SEC_FREQ = 1359 //security, coloured red in chat window
+var/const/CENTCOM_FREQ = 1337 //centcom frequency, coloured grey in chat window
+var/const/AIPRIV_FREQ = 1447 //AI private, colored magenta in chat window
 
 #define TRANSMISSION_WIRE	0
 #define TRANSMISSION_RADIO	1
 
 /* filters */
-GLOBAL_VAR_INIT(RADIO_TO_AIRALARM, "1")
-GLOBAL_VAR_INIT(RADIO_FROM_AIRALARM, "2")
-GLOBAL_VAR_INIT(RADIO_CHAT, "3") //deprecated
-GLOBAL_VAR_INIT(RADIO_ATMOSIA, "4")
-GLOBAL_VAR_INIT(RADIO_NAVBEACONS, "5")
-GLOBAL_VAR_INIT(RADIO_AIRLOCK, "6")
-GLOBAL_VAR_INIT(RADIO_MAGNETS, "9")
+var/const/RADIO_TO_AIRALARM = "1"
+var/const/RADIO_FROM_AIRALARM = "2"
+var/const/RADIO_CHAT = "3" //deprecated
+var/const/RADIO_ATMOSIA = "4"
+var/const/RADIO_NAVBEACONS = "5"
+var/const/RADIO_AIRLOCK = "6"
+var/const/RADIO_MAGNETS = "9"
 
 /datum/radio_frequency
 
@@ -242,6 +236,7 @@ GLOBAL_VAR_INIT(RADIO_MAGNETS, "9")
 
 
 
+var/list/pointers = list()
 
 /client/proc/print_pointers()
 	set name = "Debug Signals"
@@ -250,11 +245,10 @@ GLOBAL_VAR_INIT(RADIO_MAGNETS, "9")
 	if(!holder)
 		return
 
-	var/datum/signal/S
-	to_chat(src, "There are [S.pointers.len] pointers:")
-	for(var/p in S.pointers)
+	to_chat(src, "There are [pointers.len] pointers:")
+	for(var/p in pointers)
 		to_chat(src, p)
-		S = locate(p)
+		var/datum/signal/S = locate(p)
 		if(istype(S))
 			to_chat(src, S.debug_print())
 
@@ -273,7 +267,6 @@ GLOBAL_VAR_INIT(RADIO_MAGNETS, "9")
 	var/encryption
 
 	var/frequency = 0
-	var/static/list/pointers = list()
 
 /datum/signal/New()
 	..()
@@ -306,4 +299,4 @@ GLOBAL_VAR_INIT(RADIO_MAGNETS, "9")
 	for(var/d in data)
 		var/val = data[d]
 		if(istext(val))
-			data[d] = html_encode(val)
+			data[d] = html_encode_ru(val)

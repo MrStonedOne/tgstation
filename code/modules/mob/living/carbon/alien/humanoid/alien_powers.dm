@@ -63,7 +63,7 @@ Doesn't work on other aliens/AI.*/
 
 /obj/effect/proc_holder/alien/plant/fire(mob/living/carbon/user)
 	if(locate(/obj/structure/alien/weeds/node) in get_turf(user))
-		to_chat(user, "There's already a weed node here.")
+		to_chat(src, "There's already a weed node here.")
 		return 0
 	user.visible_message("<span class='alertalien'>[user] has planted some alien weeds!</span>")
 	new/obj/structure/alien/weeds/node(user.loc)
@@ -87,12 +87,17 @@ Doesn't work on other aliens/AI.*/
 		log_say("AlienWhisper: [key_name(user)]->[M.key] : [msg]")
 		to_chat(M, "<span class='noticealien'>You hear a strange, alien voice in your head...</span>[msg]")
 		to_chat(user, "<span class='noticealien'>You said: \"[msg]\" to [M]</span>")
-		for(var/ded in GLOB.dead_mob_list)
+		for(var/ded in dead_mob_list)
 			if(!isobserver(ded))
 				continue
 			var/follow_link_user = FOLLOW_LINK(ded, user)
 			var/follow_link_whispee = FOLLOW_LINK(ded, M)
-			to_chat(ded, "[follow_link_user] <span class='name'>[user]</span> <span class='alertalien'>Alien Whisper --> </span> [follow_link_whispee] <span class='name'>[M]</span> <span class='noticealien'>[msg]</span>")
+			to_chat(ded, "[follow_link_user] \
+				<span class='name'>[user]</span> \
+				<span class='alertalien'>Alien Whisper --> </span> \
+				[follow_link_whispee] \
+				<span class='name'>[M]</span> \
+				<span class='noticealien'>[msg]</span>")
 	else
 		return 0
 	return 1
@@ -179,7 +184,7 @@ Doesn't work on other aliens/AI.*/
 	var/message
 	if(active)
 		message = "<span class='notice'>You empty your neurotoxin gland.</span>"
-		remove_ranged_ability(user,message)
+		remove_ranged_ability(message)
 	else
 		message = "<span class='notice'>You prepare your neurotoxin gland. <B>Left-click to fire at a target!</B></span>"
 		add_ranged_ability(user, message, TRUE)
@@ -274,12 +279,32 @@ Doesn't work on other aliens/AI.*/
 	if(user.stomach_contents.len)
 		for(var/atom/movable/A in user.stomach_contents)
 			user.stomach_contents.Remove(A)
-			A.loc = user.loc
+			A.forceMove(user.loc)
 			if(isliving(A))
 				var/mob/M = A
 				M.reset_perspective()
 		user.visible_message("<span class='alertealien'>[user] hurls out the contents of their stomach!</span>")
 	return
+
+/obj/effect/proc_holder/alien/nightvisiontoggle
+	name = "Toggle Night Vision"
+	desc = "Toggles Night Vision"
+	plasma_cost = 0
+	has_action = 0 // Has dedicated GUI button already
+
+/obj/effect/proc_holder/alien/nightvisiontoggle/fire(mob/living/carbon/alien/user)
+	if(!user.nightvision)
+		user.see_in_dark = 8
+		user.see_invisible = SEE_INVISIBLE_MINIMUM
+		user.nightvision = 1
+		user.hud_used.nightvisionicon.icon_state = "nightvision1"
+	else if(user.nightvision == 1)
+		user.see_in_dark = 4
+		user.see_invisible = 45
+		user.nightvision = 0
+		user.hud_used.nightvisionicon.icon_state = "nightvision0"
+
+	return 1
 
 /obj/effect/proc_holder/alien/sneak
 	name = "Sneak"

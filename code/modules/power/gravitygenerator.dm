@@ -3,16 +3,16 @@
 // Gravity Generator
 //
 
-GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding new gravity generators to the list, and keying it with the z level.
+var/list/gravity_generators = list() // We will keep track of this by adding new gravity generators to the list, and keying it with the z level.
 
-#define POWER_IDLE 0
-#define POWER_UP 1
-#define POWER_DOWN 2
+var/const/POWER_IDLE = 0
+var/const/POWER_UP = 1
+var/const/POWER_DOWN = 2
 
-#define GRAV_NEEDS_SCREWDRIVER 0
-#define GRAV_NEEDS_WELDING 1
-#define GRAV_NEEDS_PLASTEEL 2
-#define GRAV_NEEDS_WRENCH 3
+var/const/GRAV_NEEDS_SCREWDRIVER = 0
+var/const/GRAV_NEEDS_WELDING = 1
+var/const/GRAV_NEEDS_PLASTEEL = 2
+var/const/GRAV_NEEDS_WRENCH = 3
 
 //
 // Abstract Generator
@@ -69,6 +69,7 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 /obj/machinery/gravity_generator/part/Destroy()
 	if(main_part)
 		qdel(main_part)
+		return QDEL_HINT_LETMELIVE
 	set_broken()
 	return ..()
 
@@ -97,8 +98,7 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 // Generator which spawns with the station.
 //
 
-/obj/machinery/gravity_generator/main/station/Initialize()
-	. = ..()
+/obj/machinery/gravity_generator/main/station/initialize()
 	setup_parts()
 	middle.add_overlay("activated")
 	update_list()
@@ -108,6 +108,10 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 //
 /obj/machinery/gravity_generator/main/station/admin
 	use_power = 0
+
+/obj/machinery/gravity_generator/main/station/admin/New()
+	..()
+	initialize()
 
 //
 // Main Generator with the main code
@@ -136,8 +140,7 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 	update_list()
 	for(var/obj/machinery/gravity_generator/part/O in parts)
 		O.main_part = null
-		if(!QDESTROYING(O))
-			qdel(O)
+		qdel(O)
 	return ..()
 
 /obj/machinery/gravity_generator/main/proc/setup_parts()
@@ -303,17 +306,17 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 	use_power = on ? 2 : 1
 	// Sound the alert if gravity was just enabled or disabled.
 	var/alert = 0
-	var/area/A = get_area(src)
-	if(on && SSticker.IsRoundInProgress()) // If we turned on and the game is live.
+	var/area/area = get_area(src)
+	if(on && ticker && ticker.current_state == GAME_STATE_PLAYING) // If we turned on and the game is live.
 		if(gravity_in_level() == 0)
 			alert = 1
 			investigate_log("was brought online and is now producing gravity for this level.", "gravity")
-			message_admins("The gravity generator was brought online [A][ADMIN_COORDJMP(src)]")
+			message_admins("The gravity generator was brought online. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>[area.name]</a>)")
 	else
 		if(gravity_in_level() == 1)
 			alert = 1
 			investigate_log("was brought offline and there is now no gravity for this level.", "gravity")
-			message_admins("The gravity generator was brought offline with no backup generator. [A][ADMIN_COORDJMP(src)]")
+			message_admins("The gravity generator was brought offline with no backup generator. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>[area.name]</a>)")
 
 	update_icon()
 	update_list()
@@ -371,7 +374,7 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 // Shake everyone on the z level to let them know that gravity was enagaged/disenagaged.
 /obj/machinery/gravity_generator/main/proc/shake_everyone()
 	var/turf/T = get_turf(src)
-	for(var/mob/M in GLOB.mob_list)
+	for(var/mob/M in mob_list)
 		if(M.z != z)
 			continue
 		M.update_gravity(M.mob_has_gravity())
@@ -383,19 +386,19 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 	var/turf/T = get_turf(src)
 	if(!T)
 		return 0
-	if(GLOB.gravity_generators["[T.z]"])
-		return length(GLOB.gravity_generators["[T.z]"])
+	if(gravity_generators["[T.z]"])
+		return length(gravity_generators["[T.z]"])
 	return 0
 
 /obj/machinery/gravity_generator/main/proc/update_list()
 	var/turf/T = get_turf(src.loc)
 	if(T)
-		if(!GLOB.gravity_generators["[T.z]"])
-			GLOB.gravity_generators["[T.z]"] = list()
+		if(!gravity_generators["[T.z]"])
+			gravity_generators["[T.z]"] = list()
 		if(on)
-			GLOB.gravity_generators["[T.z]"] |= src
+			gravity_generators["[T.z]"] |= src
 		else
-			GLOB.gravity_generators["[T.z]"] -= src
+			gravity_generators["[T.z]"] -= src
 
 // Misc
 

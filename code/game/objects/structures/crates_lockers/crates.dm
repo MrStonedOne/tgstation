@@ -10,6 +10,7 @@
 	allow_dense = TRUE
 	dense_when_open = TRUE
 	climbable = TRUE
+	self_weight = 10
 	climb_time = 10 //real fast, because let's be honest stepping into or onto a crate is easy
 	climb_stun = 0 //climbing onto crates isn't hard, guys
 	delivery_icon = "deliverycrate"
@@ -76,16 +77,11 @@
 	name = "medical crate"
 	icon_state = "medicalcrate"
 
-/obj/structure/closet/crate/freezer
-	desc = "A freezer."
-	name = "freezer"
-	icon_state = "freezer"
-
 /obj/structure/closet/crate/freezer/blood
 	name = "blood freezer"
 	desc = "A freezer containing packs of blood."
 
-/obj/structure/closet/crate/freezer/blood/PopulateContents()
+/obj/structure/closet/crate/freezer/blood/New()
 	. = ..()
 	new /obj/item/weapon/reagent_containers/blood/empty(src)
 	new /obj/item/weapon/reagent_containers/blood/empty(src)
@@ -97,21 +93,6 @@
 	new /obj/item/weapon/reagent_containers/blood/lizard(src)
 	for(var/i in 1 to 3)
 		new /obj/item/weapon/reagent_containers/blood/random(src)
-
-/obj/structure/closet/crate/freezer/surplus_limbs
-	name = "surplus prosthetic limbs"
-	desc = "A crate containing an assortment of cheap prosthetic limbs."
-
-/obj/structure/closet/crate/freezer/surplus_limbs/PopulateContents()
-	. = ..()
-	new /obj/item/bodypart/l_arm/robot/surplus(src)
-	new /obj/item/bodypart/l_arm/robot/surplus(src)
-	new /obj/item/bodypart/r_arm/robot/surplus(src)
-	new /obj/item/bodypart/r_arm/robot/surplus(src)
-	new /obj/item/bodypart/l_leg/robot/surplus(src)
-	new /obj/item/bodypart/l_leg/robot/surplus(src)
-	new /obj/item/bodypart/r_leg/robot/surplus(src)
-	new /obj/item/bodypart/r_leg/robot/surplus(src)
 
 /obj/structure/closet/crate/radiation
 	desc = "A crate with a radiation sign on it."
@@ -135,13 +116,8 @@
 	name = "\improper RCD crate"
 	icon_state = "engi_crate"
 
-/obj/structure/closet/crate/rcd/PopulateContents()
+/obj/structure/closet/crate/rcd/New()
 	..()
 	for(var/i in 1 to 4)
 		new /obj/item/weapon/rcd_ammo(src)
-	new /obj/item/weapon/construction/rcd(src)
-
-/obj/structure/closet/crate/science
-	name = "science crate"
-	desc = "A science crate."
-	icon_state = "scicrate"
+	new /obj/item/weapon/rcd(src)
