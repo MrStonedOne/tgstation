@@ -14,7 +14,7 @@ There are a number of ways to download the source code. Some are described here,
 
 Option 1:
 Follow this: http://www.tgstation13.org/wiki/Setting_up_git
-
+asdf
 Option 2:
 Install GitHub::windows from http://windows.github.com/
 It handles most of the setup and configuraton of Git for you.
