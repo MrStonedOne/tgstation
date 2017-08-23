@@ -6,7 +6,7 @@
 **Code:** https://github.com/tgstation/tgstation <BR>
 **Wiki** http://tgstation13.org/wiki/Main_Page <BR>
 **IRC:** irc://irc.rizon.net/coderbus or if you dont have an IRC client, you can click  [here](https://kiwiirc.com/client/irc.rizon.net:6667/?&theme=cli#coderbus).<BR>
-
+ 
 
 ## DOWNLOADING
 
@@ -14,7 +14,7 @@ There are a number of ways to download the source code. Some are described here,
 
 Option 1:
 Follow this: http://www.tgstation13.org/wiki/Setting_up_git
-
+asdf
 Option 2:
 Install GitHub::windows from http://windows.github.com/
 It handles most of the setup and configuraton of Git for you.
