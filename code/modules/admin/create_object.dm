@@ -4,6 +4,8 @@
 	return final_html
 
 /datum/admins/proc/create_object(mob/user)
+	procstart = null
+	src.procstart = null
 	var/static/create_object_html = null
 	if (!create_object_html)
 		var/objectjs = null
@@ -14,6 +16,8 @@
 	user << browse(create_panel_helper(create_object_html), "window=create_object;size=425x475")
 
 /datum/admins/proc/quick_create_object(mob/user)
+	procstart = null
+	src.procstart = null
 	var/static/list/create_object_forms = list(
 	/obj, /obj/structure, /obj/machinery, /obj/effect,
 	/obj/item, /obj/item/clothing, /obj/item/stack, /obj/item/device,

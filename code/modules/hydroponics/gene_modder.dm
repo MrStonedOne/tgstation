@@ -54,6 +54,8 @@
 			min_wrate = 0
 
 /obj/machinery/plantgenes/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	cut_overlays()
 	if((stat & (BROKEN|NOPOWER)))
@@ -66,6 +68,8 @@
 		add_overlay("dnamod-open")
 
 /obj/machinery/plantgenes/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "dnamod", "dnamod", I))
 		update_icon()
 		return
@@ -100,11 +104,15 @@
 
 
 /obj/machinery/plantgenes/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/plantgenes/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	if(!user)
 		return
@@ -254,6 +262,8 @@
 
 
 /obj/machinery/plantgenes/Topic(var/href, var/list/href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -366,6 +376,8 @@
 	interact(usr)
 
 /obj/machinery/plantgenes/proc/insert_seed(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	if(!istype(S) || seed)
 		return
 	S.forceMove(src)
@@ -374,6 +386,8 @@
 	update_icon()
 
 /obj/machinery/plantgenes/proc/update_genes()
+	procstart = null
+	src.procstart = null
 	core_genes = list()
 	reagent_genes = list()
 	trait_genes = list()
@@ -398,6 +412,8 @@
 			trait_genes += G
 
 /obj/machinery/plantgenes/proc/repaint_seed()
+	procstart = null
+	src.procstart = null
 	if(!seed)
 		return
 	if(copytext(seed.name, 1, 13) == "experimental")
@@ -423,21 +439,29 @@
 	unique_rename = 1
 
 /obj/item/disk/plantgene/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay("datadisk_gene")
 	src.pixel_x = rand(-5, 5)
 	src.pixel_y = rand(-5, 5)
 
 /obj/item/disk/plantgene/proc/update_name()
+	procstart = null
+	src.procstart = null
 	if(gene)
 		name = "[gene.get_name()] (Plant Data Disk)"
 	else
 		name = "plant data disk"
 
 /obj/item/disk/plantgene/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	read_only = !read_only
 	to_chat(user, "<span class='notice'>You flip the write-protect tab to [src.read_only ? "protected" : "unprotected"].</span>")
 
 /obj/item/disk/plantgene/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "The write-protect tab is set to [src.read_only ? "protected" : "unprotected"].")

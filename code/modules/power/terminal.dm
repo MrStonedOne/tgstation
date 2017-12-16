@@ -14,18 +14,24 @@
 
 
 /obj/machinery/power/terminal/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(src)
 	if(level == 1)
 		hide(T.intact)
 
 /obj/machinery/power/terminal/Destroy()
+	procstart = null
+	src.procstart = null
 	if(master)
 		master.disconnect_terminal()
 		master = null
 	return ..()
 
 /obj/machinery/power/terminal/hide(i)
+	procstart = null
+	src.procstart = null
 	if(i)
 		invisibility = INVISIBILITY_MAXIMUM
 		icon_state = "term-f"
@@ -35,20 +41,28 @@
 
 
 /obj/machinery/power/proc/can_terminal_dismantle()
+	procstart = null
+	src.procstart = null
 	. = 0
 
 /obj/machinery/power/apc/can_terminal_dismantle()
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(opened)
 		. = 1
 
 /obj/machinery/power/smes/can_terminal_dismantle()
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(panel_open)
 		. = 1
 
 
 /obj/machinery/power/terminal/proc/dismantle(mob/living/user, obj/item/W)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		var/turf/T = loc
 		if(T.intact)
@@ -71,6 +85,8 @@
 
 
 /obj/machinery/power/terminal/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wirecutters))
 		dismantle(user, W)
 	else

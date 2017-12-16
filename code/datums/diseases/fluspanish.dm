@@ -12,6 +12,8 @@
 	severity = VIRUS_SEVERITY_DANGEROUS
 
 /datum/disease/fluspanish/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(2)

@@ -9,6 +9,8 @@
 
 
 /datum/surgery_step/proc/try_op(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	var/success = 0
 	if(accept_hand)
 		if(!tool)
@@ -49,6 +51,8 @@
 
 
 /datum/surgery_step/proc/initiate(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	surgery.step_in_progress = 1
 
 	var/speed_mod = 1
@@ -84,16 +88,24 @@
 
 
 /datum/surgery_step/proc/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] begins to perform surgery on [target].", "<span class='notice'>You begin to perform surgery on [target]...</span>")
 
 
 /datum/surgery_step/proc/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] succeeds!", "<span class='notice'>You succeed.</span>")
 	return 1
 
 /datum/surgery_step/proc/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='warning'>[user] screws up!</span>", "<span class='warning'>You screw up!</span>")
 	return 0
 
 /datum/surgery_step/proc/tool_check(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return 1

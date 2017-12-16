@@ -13,20 +13,28 @@
 	var/timer_id
 
 /obj/item/organ/zombie_infection/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(loc))
 		Insert(loc)
 	GLOB.zombie_infection_list += src
 
 /obj/item/organ/zombie_infection/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.zombie_infection_list -= src
 	. = ..()
 
 /obj/item/organ/zombie_infection/Insert(var/mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/organ/zombie_infection/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	if(iszombie(M) && old_species)
@@ -35,11 +43,15 @@
 		deltimer(timer_id)
 
 /obj/item/organ/zombie_infection/on_find(mob/living/finder)
+	procstart = null
+	src.procstart = null
 	to_chat(finder, "<span class='warning'>Inside the head is a disgusting black \
 		web of pus and viscera, bound tightly around the brain like some \
 		biological harness.</span>")
 
 /obj/item/organ/zombie_infection/process()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	if(!(src in owner.internal_organs))
@@ -62,6 +74,8 @@
 	timer_id = addtimer(CALLBACK(src, .proc/zombify), revive_time, flags)
 
 /obj/item/organ/zombie_infection/proc/zombify()
+	procstart = null
+	src.procstart = null
 	timer_id = null
 
 	if(!iszombie(owner))

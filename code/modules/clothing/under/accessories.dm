@@ -11,6 +11,8 @@
 	var/minimize_when_attached = TRUE // TRUE if shown as a small icon in corner, FALSE if overlayed
 
 /obj/item/clothing/accessory/proc/attach(obj/item/clothing/under/U, user)
+	procstart = null
+	src.procstart = null
 	if(pockets) // Attach storage to jumpsuit
 		if(U.pockets) // storage items conflict
 			return FALSE
@@ -38,6 +40,8 @@
 
 
 /obj/item/clothing/accessory/proc/detach(obj/item/clothing/under/U, user)
+	procstart = null
+	src.procstart = null
 	if(pockets && pockets == U.pockets)
 		pockets.forceMove(src)
 		U.pockets = null
@@ -59,18 +63,26 @@
 	U.accessory_overlay = null
 
 /obj/item/clothing/accessory/proc/on_uniform_equip(obj/item/clothing/under/U, user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/clothing/accessory/proc/on_uniform_dropped(obj/item/clothing/under/U, user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/clothing/accessory/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.canUseTopic(src, be_close=TRUE))
 		if(initial(above_suit))
 			above_suit = !above_suit
 			to_chat(user, "[src] will be worn [above_suit ? "above" : "below"] your suit.")
 
 /obj/item/clothing/accessory/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>\The [src] can be attached to a uniform. Alt-click to remove it once attached.</span>")
 	if(initial(above_suit))
@@ -108,6 +120,8 @@
 
 //Pinning medals on people
 /obj/item/clothing/accessory/medal/attack(mob/living/carbon/human/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M) && (user.a_intent == INTENT_HELP))
 
 		if(M.wear_suit)
@@ -207,6 +221,8 @@
 	materials = list(MAT_PLASMA=1000)
 
 /obj/item/clothing/accessory/medal/plasma/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		atmos_spawn_air("plasma=20;TEMP=[exposed_temperature]")
 		visible_message("<span class='danger'> \The [src] bursts into flame!</span>","<span class='userdanger'>Your [src] bursts into flame!</span>")
@@ -279,11 +295,15 @@
 	item_color = "lawyerbadge"
 
 /obj/item/clothing/accessory/lawyers_badge/on_uniform_equip(obj/item/clothing/under/U, user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/L = user
 	if(L)
 		L.bubble_icon = "lawyer"
 
 /obj/item/clothing/accessory/lawyers_badge/on_uniform_dropped(obj/item/clothing/under/U, user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/L = user
 	if(L)
 		L.bubble_icon = initial(L.bubble_icon)

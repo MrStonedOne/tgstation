@@ -4,6 +4,8 @@
 ////////////////////////////////////
 
 /obj/mecha/proc/get_stats_html()
+	procstart = null
+	src.procstart = null
 	. = {"<html>
 						<head><title>[src.name] data</title>
 						<style>
@@ -50,6 +52,8 @@
 
 
 /obj/mecha/proc/report_internal_damage()
+	procstart = null
+	src.procstart = null
 	. = ""
 	var/list/dam_reports = list(
 		"[MECHA_INT_FIRE]" = "<span class='userdanger'>INTERNAL FIRE</span>",
@@ -69,6 +73,8 @@
 
 
 /obj/mecha/proc/get_stats_part()
+	procstart = null
+	src.procstart = null
 	var/integrity = obj_integrity/max_integrity*100
 	var/cell_charge = get_charge()
 	var/datum/gas_mixture/int_tank_air = internal_tank.return_air()
@@ -96,6 +102,8 @@
 
 
 /obj/mecha/proc/get_commands()
+	procstart = null
+	src.procstart = null
 	. = {"<div class='wr'>
 						<div class='header'>Electronics</div>
 						<div class='links'>
@@ -149,6 +157,8 @@
 
 
 /obj/mecha/proc/get_log_html()
+	procstart = null
+	src.procstart = null
 	. = "<html><head><title>[src.name] Log</title></head><body style='font: 13px 'Courier', monospace;'>"
 	for(var/list/entry in log)
 		. += {"<div style='font-weight: bold;'>[entry["time"]] [time2text(entry["date"],"MMM DD")] [entry["year"]]</div>
@@ -159,6 +169,8 @@
 
 
 /obj/mecha/proc/output_access_dialog(obj/item/card/id/id_card, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!id_card || !user)
 		return
 	. = {"<html>
@@ -188,6 +200,8 @@
 
 
 /obj/mecha/proc/output_maintenance_dialog(obj/item/card/id/id_card,mob/user)
+	procstart = null
+	src.procstart = null
 	if(!id_card || !user)
 		return
 	. = {"<html>
@@ -214,6 +228,8 @@
 /////////////////
 
 /obj/mecha/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["close"])
 		return

@@ -10,14 +10,20 @@
 	var/maximum_pads = 4
 
 /obj/machinery/computer/launchpad/Initialize()
+	procstart = null
+	src.procstart = null
 	launchpads = list()
 	. = ..()
 
 /obj/machinery/computer/launchpad/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='warning'>You are too primitive to use this computer!</span>")
 	return
 
 /obj/machinery/computer/launchpad/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		var/obj/item/device/multitool/M = W
 		if(M.buffer && istype(M.buffer, /obj/machinery/launchpad))
@@ -31,24 +37,34 @@
 		return ..()
 
 /obj/machinery/computer/launchpad/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/machinery/computer/launchpad/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/computer/launchpad/proc/pad_exists(number)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/launchpad/pad = launchpads[number]
 	if(QDELETED(pad))
 		return FALSE
 	return TRUE
 
 /obj/machinery/computer/launchpad/proc/get_pad(number)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/launchpad/pad = launchpads[number]
 	return pad
 
 /obj/machinery/computer/launchpad/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/t = list()
 	if(!LAZYLEN(launchpads))
 		in_use = FALSE     //Yeah so if you deconstruct teleporter while its in the process of shooting it wont disable the console
@@ -92,6 +108,8 @@
 	popup.open()
 
 /obj/machinery/computer/launchpad/proc/teleport(mob/user, obj/machinery/launchpad/pad)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(pad))
 		to_chat(user, "<span class='warning'>ERROR: Launchpad not responding. Check launchpad integrity.</span>")
 		return
@@ -101,6 +119,8 @@
 	pad.doteleport(user, sending)
 
 /obj/machinery/computer/launchpad/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/launchpad/pad
 	if(href_list["pad"])
 		pad = get_pad(text2num(href_list["pad"]))

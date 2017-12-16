@@ -15,6 +15,8 @@
 	spawnableAtoms = list()
 
 /datum/mapGeneratorModule/randBushes/New()
+	procstart = null
+	src.procstart = null
 	..()
 	spawnableAtoms = typesof(/obj/structure/flora/ausbushes)
 	for(var/i in spawnableAtoms)

@@ -23,13 +23,19 @@ SUBSYSTEM_DEF(dbcore)
 	var/failed_connections = 0
 
 /datum/controller/subsystem/dbcore/PreInit()
+	procstart = null
+	src.procstart = null
 	if(!_db_con)
 		_db_con = _dm_db_new_con()
 
 /datum/controller/subsystem/dbcore/Recover()
+	procstart = null
+	src.procstart = null
 	_db_con = SSdbcore._db_con
 
 /datum/controller/subsystem/dbcore/Shutdown()
+	procstart = null
+	src.procstart = null
 	//This is as close as we can get to the true round end before Disconnect() without changing where it's called, defeating the reason this is a subsystem
 	if(SSdbcore.Connect())
 		var/sql_station_name = sanitizeSQL(station_name())
@@ -40,14 +46,20 @@ SUBSYSTEM_DEF(dbcore)
 
 //nu
 /datum/controller/subsystem/dbcore/can_vv_get(var_name)
+	procstart = null
+	src.procstart = null
 	return var_name != "_db_con" && ..()
 
 /datum/controller/subsystem/dbcore/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(var_name == "_db_con")
 		return FALSE
 	return ..()
 
 /datum/controller/subsystem/dbcore/proc/Connect()
+	procstart = null
+	src.procstart = null
 	if(IsConnected())
 		return TRUE
 
@@ -70,23 +82,33 @@ SUBSYSTEM_DEF(dbcore)
 		++failed_connections
 
 /datum/controller/subsystem/dbcore/proc/Disconnect()
+	procstart = null
+	src.procstart = null
 	failed_connections = 0
 	return _dm_db_close(_db_con)
 
 /datum/controller/subsystem/dbcore/proc/IsConnected()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/sql_enabled))
 		return FALSE
 	return _dm_db_is_connected(_db_con)
 
 /datum/controller/subsystem/dbcore/proc/Quote(str)
+	procstart = null
+	src.procstart = null
 	return _dm_db_quote(_db_con, str)
 
 /datum/controller/subsystem/dbcore/proc/ErrorMsg()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/sql_enabled))
 		return "Database disabled by configuration"
 	return _dm_db_error_msg(_db_con)
 
 /datum/controller/subsystem/dbcore/proc/NewQuery(sql_query, cursor_handler = Default_Cursor)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		log_admin_private("ERROR: Advanced admin proc call led to sql query: [sql_query]. Query has been blocked")
 		message_admins("ERROR: Advanced admin proc call led to sql query. Query has been blocked")
@@ -106,6 +128,8 @@ Delayed insert mode was removed in mysql 7 and only works with MyISAM type table
 	It does not work with duplicate_key and the mysql server ignores it in those cases
 */
 /datum/controller/subsystem/dbcore/proc/MassInsert(table, list/rows, duplicate_key = FALSE, ignore_errors = FALSE, delayed = FALSE, warn = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!table || !rows || !istype(rows))
 		return
 	var/list/columns = list()
@@ -171,6 +195,8 @@ Delayed insert mode was removed in mysql 7 and only works with MyISAM type table
 	var/_db_query
 
 /datum/DBQuery/New(sql_query, datum/controller/subsystem/dbcore/connection_handler, cursor_handler)
+	procstart = null
+	src.procstart = null
 	if(sql_query)
 		sql = sql_query
 	if(connection_handler)
@@ -181,37 +207,55 @@ Delayed insert mode was removed in mysql 7 and only works with MyISAM type table
 	_db_query = _dm_db_new_query()
 
 /datum/DBQuery/proc/Connect(datum/controller/subsystem/dbcore/connection_handler)
+	procstart = null
+	src.procstart = null
 	db_connection = connection_handler
 
 /datum/DBQuery/proc/warn_execute()
+	procstart = null
+	src.procstart = null
 	. = Execute()
 	if(!.)
 		to_chat(usr, "<span class='danger'>A SQL error occurred during this operation, check the server logs.</span>")
 
 /datum/DBQuery/proc/Execute(sql_query = sql, cursor_handler = default_cursor, log_error = TRUE)
+	procstart = null
+	src.procstart = null
 	Close()
 	. = _dm_db_execute(_db_query, sql_query, db_connection._db_con, cursor_handler, null)
 	if(!. && log_error)
 		log_sql("[ErrorMsg()] | Query used: [sql]")
 
 /datum/DBQuery/proc/NextRow()
+	procstart = null
+	src.procstart = null
 	return _dm_db_next_row(_db_query,item,conversions)
 
 /datum/DBQuery/proc/RowsAffected()
+	procstart = null
+	src.procstart = null
 	return _dm_db_rows_affected(_db_query)
 
 /datum/DBQuery/proc/RowCount()
+	procstart = null
+	src.procstart = null
 	return _dm_db_row_count(_db_query)
 
 /datum/DBQuery/proc/ErrorMsg()
+	procstart = null
+	src.procstart = null
 	return _dm_db_error_msg(_db_query)
 
 /datum/DBQuery/proc/Columns()
+	procstart = null
+	src.procstart = null
 	if(!columns)
 		columns = _dm_db_columns(_db_query, /datum/DBColumn)
 	return columns
 
 /datum/DBQuery/proc/GetRowData()
+	procstart = null
+	src.procstart = null
 	var/list/columns = Columns()
 	var/list/results
 	if(columns.len)
@@ -223,15 +267,21 @@ Delayed insert mode was removed in mysql 7 and only works with MyISAM type table
 	return results
 
 /datum/DBQuery/proc/Close()
+	procstart = null
+	src.procstart = null
 	item.Cut()
 	columns = null
 	conversions = null
 	return _dm_db_close(_db_query)
 
 /datum/DBQuery/proc/Quote(str)
+	procstart = null
+	src.procstart = null
 	return db_connection.Quote(str)
 
 /datum/DBQuery/proc/SetConversion(column,conversion)
+	procstart = null
+	src.procstart = null
 	if(istext(column))
 		column = columns.Find(column)
 	if(!conversions)
@@ -266,6 +316,8 @@ Delayed insert mode was removed in mysql 7 and only works with MyISAM type table
 	var/const/BLOB = 14
 
 /datum/DBColumn/New(name_handler, table_handler, position_handler, type_handler, flag_handler, length_handler, max_length_handler)
+	procstart = null
+	src.procstart = null
 	name = name_handler
 	table = table_handler
 	position = position_handler
@@ -275,6 +327,8 @@ Delayed insert mode was removed in mysql 7 and only works with MyISAM type table
 	max_length = max_length_handler
 
 /datum/DBColumn/proc/SqlTypeName(type_handler = sql_type)
+	procstart = null
+	src.procstart = null
 	switch(type_handler)
 		if(TINYINT)
 			return "TINYINT"

@@ -1,6 +1,8 @@
 GLOBAL_LIST_EMPTY(clientmessages)
 
 /proc/addclientmessage(var/ckey, var/message)
+	procstart = null
+	src.procstart = null
 	ckey = ckey(ckey)
 	if (!ckey || !message)
 		return

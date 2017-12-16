@@ -3,6 +3,8 @@
 
 //allows right clicking mobs to send an admin PM to their client, forwards the selected mob's client to cmd_admin_pm
 /client/proc/cmd_admin_pm_context(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = null
 	set name = "Admin PM Mob"
 	if(!holder)
@@ -15,6 +17,8 @@
 
 //shows a list of clients we could send PMs to, then forwards our choice to cmd_admin_pm
 /client/proc/cmd_admin_pm_panel()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Admin PM"
 	if(!holder)
@@ -36,6 +40,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Admin PM") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_ahelp_reply(whom)
+	procstart = null
+	src.procstart = null
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src, "<font color='red'>Error: Admin-PM: You are unable to use admin PM-s (muted).</font>")
 		return
@@ -64,6 +70,8 @@
 //takes input from cmd_admin_pm_context, cmd_admin_pm_panel or /client/Topic and sends them a PM.
 //Fetching a message if needed. src is the sender and C is the target client
 /client/proc/cmd_admin_pm(whom, msg)
+	procstart = null
+	src.procstart = null
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src, "<font color='red'>Error: Admin-PM: You are unable to use admin PM-s (muted).</font>")
 		return
@@ -217,6 +225,8 @@
 
 #define IRC_AHELP_USAGE "Usage: ticket <close|resolve|icissue|reject|reopen \[ticket #\]|list>"
 /proc/IrcPm(target,msg,sender)
+	procstart = null
+	src.procstart = null
 	target = ckey(target)
 	var/client/C = GLOB.directory[target]
 
@@ -308,6 +318,8 @@
 	return "Message Successful"
 
 /proc/GenIrcStealthKey()
+	procstart = null
+	src.procstart = null
 	var/num = (rand(0,1000))
 	var/i = 0
 	while(i == 0)

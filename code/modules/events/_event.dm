@@ -28,6 +28,8 @@
 	var/triggering	//admin cancellation
 
 /datum/round_event_control/New()
+	procstart = null
+	src.procstart = null
 	if(config && !wizardevent) // Magic is unaffected by configs
 		earliest_start = Ceiling(earliest_start * CONFIG_GET(number/events_min_time_mul))
 		min_players = Ceiling(min_players * CONFIG_GET(number/events_min_players_mul))
@@ -38,6 +40,8 @@
 // Checks if the event can be spawned. Used by event controller and "false alarm" event.
 // Admin-created events override this.
 /datum/round_event_control/proc/canSpawnEvent(var/players_amt, var/gamemode)
+	procstart = null
+	src.procstart = null
 	if(occurrences >= max_occurrences)
 		return FALSE
 	if(earliest_start >= world.time-SSticker.round_start_time)
@@ -55,6 +59,8 @@
 	return TRUE
 
 /datum/round_event_control/proc/preRunEvent()
+	procstart = null
+	src.procstart = null
 	if(!ispath(typepath, /datum/round_event))
 		return EVENT_CANT_RUN
 
@@ -74,6 +80,8 @@
 	return EVENT_READY
 
 /datum/round_event_control/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["cancel"])
 		if(!triggering)
@@ -85,6 +93,8 @@
 		SSblackbox.record_feedback("tally", "event_admin_cancelled", 1, typepath)
 
 /datum/round_event_control/proc/runEvent(random)
+	procstart = null
+	src.procstart = null
 	var/datum/round_event/E = new typepath()
 	E.current_players = get_active_player_count(alive_check = 1, afk_check = 1, human_check = 1)
 	E.control = src
@@ -101,6 +111,8 @@
 
 //Special admins setup
 /datum/round_event_control/proc/admin_setup()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/round_event	//NOTE: Times are measured in master controller ticks!
@@ -123,18 +135,24 @@
 //It will only have been overridden by the time we get to announce() start() tick() or end() (anything but setup basically).
 //This is really only for setting defaults which can be overridden later when New() finishes.
 /datum/round_event/proc/setup()
+	procstart = null
+	src.procstart = null
 	return
 
 //Called when the tick is equal to the startWhen variable.
 //Allows you to start before announcing or vice versa.
 //Only called once.
 /datum/round_event/proc/start()
+	procstart = null
+	src.procstart = null
 	return
 
 //Called when the tick is equal to the announceWhen variable.
 //Allows you to announce before starting or vice versa.
 //Only called once.
 /datum/round_event/proc/announce(fake)
+	procstart = null
+	src.procstart = null
 	return
 
 //Called on or after the tick counter is equal to startWhen.
@@ -142,6 +160,8 @@
 //time stamped events.
 //Called more than once.
 /datum/round_event/proc/tick()
+	procstart = null
+	src.procstart = null
 	return
 
 //Called on or after the tick is equal or more than endWhen
@@ -151,6 +171,8 @@
 //For example: if(activeFor == myOwnVariable + 30) doStuff()
 //Only called once.
 /datum/round_event/proc/end()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -158,6 +180,8 @@
 //Do not override this proc, instead use the appropiate procs.
 //This proc will handle the calls to the appropiate procs.
 /datum/round_event/process()
+	procstart = null
+	src.procstart = null
 	if(!processing)
 		return
 
@@ -193,11 +217,15 @@
 //which should be the only place it's referenced.
 //Called when start(), announce() and end() has all been called.
 /datum/round_event/proc/kill()
+	procstart = null
+	src.procstart = null
 	SSevents.running -= src
 
 
 //Sets up the event then adds the event to the the list of running events
 /datum/round_event/New(my_processing = TRUE)
+	procstart = null
+	src.procstart = null
 	setup()
 	processing = my_processing
 	SSevents.running += src

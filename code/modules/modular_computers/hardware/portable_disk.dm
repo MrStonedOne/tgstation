@@ -9,13 +9,19 @@
 	device_type = MC_SDD
 
 /obj/item/computer_hardware/hard_drive/portable/on_install(obj/item/device/modular_computer/M, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	M.add_verb(device_type)
 
 /obj/item/computer_hardware/hard_drive/portable/on_remove(obj/item/device/modular_computer/M, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	..()
 	M.remove_verb(device_type)
 
 /obj/item/computer_hardware/hard_drive/portable/install_default_programs()
+	procstart = null
+	src.procstart = null
 	return // Empty by default
 
 /obj/item/computer_hardware/hard_drive/portable/advanced

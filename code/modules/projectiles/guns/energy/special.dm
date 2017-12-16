@@ -13,6 +13,8 @@
 	flight_y_offset = 9
 
 /obj/item/gun/energy/ionrifle/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/ionrifle/carbine
@@ -35,6 +37,8 @@
 	ammo_x_offset = 1
 
 /obj/item/gun/energy/decloner/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
 	if(cell.charge > shot.e_cost)
@@ -130,11 +134,15 @@
 	toolspeed = 0.7 //plasmacutters can be used as welders for a few things, and are faster than standard welders
 
 /obj/item/gun/energy/plasmacutter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(cell)
 		to_chat(user, "<span class='notice'>[src] is [round(cell.percent())]% charged.</span>")
 
 /obj/item/gun/energy/plasmacutter/attackby(obj/item/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/item/stack/sheet/mineral/plasma))
 		var/obj/item/stack/sheet/S = A
 		S.use(1)
@@ -148,6 +156,8 @@
 		..()
 
 /obj/item/gun/energy/plasmacutter/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/plasmacutter/adv
@@ -166,31 +176,43 @@
 	var/obj/effect/portal/p_orange
 
 /obj/item/gun/energy/wormhole_projector/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][select]"
 	item_state = icon_state
 	return
 
 /obj/item/gun/energy/wormhole_projector/process_chamber()
+	procstart = null
+	src.procstart = null
 	..()
 	select_fire()
 
 /obj/item/gun/energy/wormhole_projector/proc/on_portal_destroy(obj/effect/portal/P)
+	procstart = null
+	src.procstart = null
 	if(P == p_blue)
 		p_blue = null
 	else if(P == p_orange)
 		p_orange = null
 
 /obj/item/gun/energy/wormhole_projector/proc/has_blue_portal()
+	procstart = null
+	src.procstart = null
 	if(istype(p_blue) && !QDELETED(p_blue))
 		return TRUE
 	return FALSE
 
 /obj/item/gun/energy/wormhole_projector/proc/has_orange_portal()
+	procstart = null
+	src.procstart = null
 	if(istype(p_orange) && !QDELETED(p_orange))
 		return TRUE
 	return FALSE
 
 /obj/item/gun/energy/wormhole_projector/proc/crosslink()
+	procstart = null
+	src.procstart = null
 	if(!has_blue_portal() && !has_orange_portal())
 		return
 	if(!has_blue_portal() && has_orange_portal())
@@ -203,6 +225,8 @@
 	p_blue.link_portal(p_orange)
 
 /obj/item/gun/energy/wormhole_projector/proc/create_portal(obj/item/projectile/beam/wormhole/W, turf/target)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/portal/P = new /obj/effect/portal(target, src, 300, null, FALSE, null)
 	if(istype(W, /obj/item/projectile/beam/wormhole/orange))
 		qdel(p_orange)
@@ -226,9 +250,13 @@
 	use_cyborg_cell = 1
 
 /obj/item/gun/energy/printer/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/printer/emp_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/temperature

@@ -28,6 +28,8 @@
 
 
 /obj/item/storage/MouseDrop(atom/over_object)
+	procstart = null
+	src.procstart = null
 	if(ismob(usr)) //all the check for item manipulation are in other places, you can safely open any storages as anything and its not buggy, i checked
 		var/mob/M = usr
 
@@ -62,6 +64,8 @@
 
 
 /obj/item/storage/MouseDrop_T(atom/movable/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isitem(O))
 		var/obj/item/I = O
 		if(iscarbon(user) || isdrone(user))
@@ -72,10 +76,14 @@
 
 
 /obj/item/storage/get_dumping_location(obj/item/storage/source,mob/user)
+	procstart = null
+	src.procstart = null
 	return src
 
 //Tries to dump content
 /obj/item/storage/proc/dump_content_at(atom/dest_object, mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/dump_destination = dest_object.get_dumping_location()
 	if(Adjacent(user) && dump_destination && user.Adjacent(dump_destination))
 		if(dump_destination.storage_contents_dump_act(src, user))
@@ -85,6 +93,8 @@
 
 //Object behaviour on storage dump
 /obj/item/storage/storage_contents_dump_act(obj/item/storage/src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/things = src_object.contents.Copy()
 	var/datum/progressbar/progress = new(user, things.len, src)
 	while (do_after(user, 10, TRUE, src, FALSE, CALLBACK(src, .proc/handle_mass_item_insertion, things, src_object, user, progress)))
@@ -98,6 +108,8 @@
 	return 1
 
 /obj/item/storage/proc/handle_mass_item_insertion(list/things, obj/item/storage/src_object, mob/user, datum/progressbar/progress)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in things)
 		things -= I
 		if(I.loc != src_object)
@@ -115,6 +127,8 @@
 	return FALSE
 
 /obj/item/storage/proc/return_inv()
+	procstart = null
+	src.procstart = null
 	var/list/L = list()
 	L += contents
 
@@ -124,6 +138,8 @@
 
 
 /obj/item/storage/proc/show_to(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.client)
 		return
 	if(user.s_active != src && (user.stat == CONSCIOUS))
@@ -140,10 +156,14 @@
 
 
 /obj/item/storage/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	close_all()
 	return ..()
 
 /obj/item/storage/proc/hide_from(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.client)
 		return
 	user.client.screen -= boxes
@@ -155,6 +175,8 @@
 
 
 /obj/item/storage/proc/can_see_contents()
+	procstart = null
+	src.procstart = null
 	var/list/cansee = list()
 	for(var/mob/M in is_seeing)
 		if(M.s_active == src && M.client)
@@ -165,11 +187,15 @@
 
 
 /obj/item/storage/proc/close(mob/user)
+	procstart = null
+	src.procstart = null
 	hide_from(user)
 	user.s_active = null
 
 
 /obj/item/storage/proc/close_all()
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in can_see_contents())
 		close(M)
 		. = 1 //returns 1 if any mobs actually got a close(M) call
@@ -178,6 +204,8 @@
 //This proc draws out the inventory and places the items on it. tx and ty are the upper left tile and mx, my are the bottm right.
 //The numbers are calculated from the bottom-left The bottom-left slot being 1,1.
 /obj/item/storage/proc/orient_objs(tx, ty, mx, my)
+	procstart = null
+	src.procstart = null
 	var/cx = tx
 	var/cy = ty
 	boxes.screen_loc = "[tx]:,[ty] to [mx],[my]"
@@ -196,6 +224,8 @@
 
 //This proc draws out the inventory and places the items on it. It uses the standard position.
 /obj/item/storage/proc/standard_orient_objs(rows, cols, list/obj/item/display_contents)
+	procstart = null
+	src.procstart = null
 	var/cx = 4
 	var/cy = 2+rows
 	boxes.screen_loc = "4:16,2:16 to [4+cols]:16,[2+rows]:16"
@@ -232,6 +262,8 @@
 	var/number
 
 /datum/numbered_display/New(obj/item/sample)
+	procstart = null
+	src.procstart = null
 	if(!istype(sample))
 		qdel(src)
 	sample_object = sample
@@ -240,6 +272,8 @@
 
 //This proc determines the size of the inventory to be displayed. Please touch it only if you know what you're doing.
 /obj/item/storage/proc/orient2hud(mob/user)
+	procstart = null
+	src.procstart = null
 	var/adjusted_contents = contents.len
 
 	//Numbered contents display
@@ -270,6 +304,8 @@
 //This proc return 1 if the item can be picked up and 0 if it can't.
 //Set the stop_messages to stop it from printing messages
 /obj/item/storage/proc/can_be_inserted(obj/item/W, stop_messages = 0, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(W) || (W.flags_1 & ABSTRACT_1))
 		return //Not an item
 
@@ -322,6 +358,8 @@
 //The stop_warning parameter will stop the insertion message from being displayed. It is intended for cases where you are inserting multiple items at once,
 //such as when picking up all the items on a tile with one click.
 /obj/item/storage/proc/handle_item_insertion(obj/item/W, prevent_warning = 0, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(W))
 		return 0
 	if(usr)
@@ -366,6 +404,8 @@
 
 //Call this proc to handle the removal of an item from the storage item. The item will be moved to the new_location target, if that is null it's being deleted
 /obj/item/storage/proc/remove_from_storage(obj/item/W, atom/new_location)
+	procstart = null
+	src.procstart = null
 	if(!istype(W))
 		return 0
 
@@ -404,6 +444,8 @@
 	return 1
 
 /obj/item/storage/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/drop_loc = loc
 	if(ismob(loc))
 		drop_loc = get_turf(src)
@@ -413,6 +455,8 @@
 
 //This proc is called when you want to place an item into the storage item.
 /obj/item/storage/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/hand_labeler))
 		var/obj/item/hand_labeler/labeler = W
@@ -430,9 +474,13 @@
 	handle_item_insertion(W, 0 , user)
 
 /obj/item/storage/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/storage/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.s_active == src && loc == user) //if you're already looking inside the storage item
 		user.s_active.close(user)
 		close(user)
@@ -465,9 +513,13 @@
 	add_fingerprint(user)
 
 /obj/item/storage/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/item/storage/verb/toggle_gathering_mode()
+	procstart = null
+	src.procstart = null
 	set name = "Switch Gathering Method"
 	set category = "Object"
 
@@ -485,6 +537,8 @@
 
 // Empty all the contents onto the current turf
 /obj/item/storage/verb/quick_empty()
+	procstart = null
+	src.procstart = null
 	set name = "Empty Contents"
 	set category = "Object"
 
@@ -498,6 +552,8 @@
 	qdel(progress)
 
 /obj/item/storage/proc/mass_remove_from_storage(atom/target, list/things, datum/progressbar/progress)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in things)
 		things -= I
 		if (I.loc != src)
@@ -512,6 +568,8 @@
 
 // Empty all the contents onto the current turf, without checking the user's status.
 /obj/item/storage/proc/do_quick_empty()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(usr)
 		hide_from(usr)
@@ -520,6 +578,8 @@
 
 
 /obj/item/storage/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	can_hold = typecacheof(can_hold)
@@ -553,6 +613,8 @@
 
 
 /obj/item/storage/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in contents)
 		O.mouse_opacity = initial(O.mouse_opacity)
 
@@ -563,6 +625,8 @@
 
 
 /obj/item/storage/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!isliving(loc))
 		for(var/obj/O in contents)
 			O.emp_act(severity)
@@ -570,17 +634,23 @@
 
 
 /obj/item/storage/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	//Clicking on itself will empty it, if it has the verb to do that.
 	if(user.get_active_held_item() == src)
 		if(verbs.Find(/obj/item/storage/verb/quick_empty))
 			quick_empty()
 
 /obj/item/storage/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A in contents)
 		usr = null
 		remove_from_storage(A, null)
 
 /obj/item/storage/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	for(var/atom/A in contents)
 		A.ex_act(severity, target)
 		CHECK_TICK

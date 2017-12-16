@@ -4,6 +4,8 @@
 	allowAtomsOnSpace = TRUE
 
 /datum/mapGeneratorModule/bottomLayer/repairFloorPlasteel/place(turf/T)
+	procstart = null
+	src.procstart = null
 	if(isclosedturf(T) && !ignore_wall)
 		return FALSE
 	return ..()
@@ -17,6 +19,8 @@
 	allowAtomsOnSpace = TRUE
 
 /datum/mapGeneratorModule/reload_station_map/generate()
+	procstart = null
+	src.procstart = null
 	if(!istype(mother, /datum/mapGenerator/repair/reload_station_map))
 		return
 	var/datum/mapGenerator/repair/reload_station_map/mother1 = mother
@@ -86,6 +90,8 @@
 	buildmode_name = "Repair: Reload Block - Mass Delete - In Place"
 
 /datum/mapGenerator/repair/reload_station_map/defineRegion(turf/start, turf/end)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(start.z in GLOB.station_z_levels) || !(end.z in GLOB.station_z_levels))
 		return
@@ -98,6 +104,8 @@
 GLOBAL_VAR_INIT(reloading_map, FALSE)
 
 /datum/mapGenerator/repair/reload_station_map/generate(clean = cleanload)
+	procstart = null
+	src.procstart = null
 	if(!loader)
 		loader = new
 	if(cleanload)

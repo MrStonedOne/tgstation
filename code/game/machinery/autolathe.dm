@@ -46,6 +46,8 @@
 							)
 
 /obj/machinery/autolathe/Initialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/material_container, list(MAT_METAL, MAT_GLASS), 0, FALSE, null, null, CALLBACK(src, .proc/AfterMaterialInsert))
 	. = ..()
 
@@ -54,10 +56,14 @@
 	matching_designs = list()
 
 /obj/machinery/autolathe/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(wires)
 	return ..()
 
 /obj/machinery/autolathe/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		return
 
@@ -79,10 +85,14 @@
 	popup.open()
 
 /obj/machinery/autolathe/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(materials, /datum/component/material_container)
 	materials.retrieve_all()
 
 /obj/machinery/autolathe/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (busy)
 		to_chat(user, "<span class=\"alert\">The autolathe is busy. Please wait for completion of previous operation.</span>")
 		return TRUE
@@ -124,6 +134,8 @@
 	return ..()
 
 /obj/machinery/autolathe/proc/AfterMaterialInsert(type_inserted, id_inserted, amount_inserted)
+	procstart = null
+	src.procstart = null
 	if(ispath(type_inserted, /obj/item/ore/bluespace_crystal))
 		use_power(max(500, amount_inserted / 10))
 	else
@@ -136,6 +148,8 @@
 	updateUsrDialog()
 
 /obj/machinery/autolathe/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if (!busy)
@@ -219,6 +233,8 @@
 	return
 
 /obj/machinery/autolathe/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/T = 0
 	for(var/obj/item/stock_parts/matter_bin/MB in component_parts)
 		T += MB.rating*75000
@@ -230,6 +246,8 @@
 	prod_coeff = min(1,max(0,T)) // Coeff going 1 -> 0,8 -> 0,6 -> 0,4
 
 /obj/machinery/autolathe/proc/main_win(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = "<div class='statusDisplay'><h3>Autolathe Menu:</h3><br>"
 	dat += materials_printout()
 
@@ -256,6 +274,8 @@
 	return dat
 
 /obj/machinery/autolathe/proc/category_win(mob/user,selected_category)
+	procstart = null
+	src.procstart = null
 	var/dat = "<A href='?src=[REF(src)];menu=[AUTOLATHE_MAIN_MENU]'>Return to main menu</A>"
 	dat += "<div class='statusDisplay'><h3>Browsing [selected_category]:</h3><br>"
 	dat += materials_printout()
@@ -291,6 +311,8 @@
 	return dat
 
 /obj/machinery/autolathe/proc/search_win(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = "<A href='?src=[REF(src)];menu=[AUTOLATHE_MAIN_MENU]'>Return to main menu</A>"
 	dat += "<div class='statusDisplay'><h3>Search results:</h3><br>"
 	dat += materials_printout()
@@ -318,6 +340,8 @@
 	return dat
 
 /obj/machinery/autolathe/proc/materials_printout()
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(materials, /datum/component/material_container)
 	var/dat = "<b>Total amount:</b> [materials.total_amount] / [materials.max_amount] cm<sup>3</sup><br>"
 	for(var/mat_id in materials.materials)
@@ -326,6 +350,8 @@
 	return dat
 
 /obj/machinery/autolathe/proc/can_build(datum/design/D, amount = 1)
+	procstart = null
+	src.procstart = null
 	if(D.make_reagents.len)
 		return FALSE
 
@@ -339,6 +365,8 @@
 	return TRUE
 
 /obj/machinery/autolathe/proc/get_design_cost(datum/design/D)
+	procstart = null
+	src.procstart = null
 	var/coeff = (ispath(D.build_path, /obj/item/stack) ? 1 : prod_coeff)
 	var/dat
 	if(D.materials[MAT_METAL])
@@ -348,6 +376,8 @@
 	return dat
 
 /obj/machinery/autolathe/proc/reset(wire)
+	procstart = null
+	src.procstart = null
 	switch(wire)
 		if(WIRE_HACK)
 			if(!wires.is_cut(wire))
@@ -360,6 +390,8 @@
 				disabled = FALSE
 
 /obj/machinery/autolathe/proc/shock(mob/user, prb)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))		// unpowered, no shock
 		return FALSE
 	if(!prob(prb))
@@ -373,6 +405,8 @@
 		return FALSE
 
 /obj/machinery/autolathe/proc/adjust_hacked(state)
+	procstart = null
+	src.procstart = null
 	hacked = state
 	for(var/id in SSresearch.techweb_designs)
 		var/datum/design/D = SSresearch.techweb_designs[id]
@@ -383,10 +417,14 @@
 				stored_research.remove_design(D)
 
 /obj/machinery/autolathe/hacked/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjust_hacked(TRUE)
 
 //Called when the object is constructed by an autolathe
 //Has a reference to the autolathe so you can do !!FUN!! things with hacked lathes
 /obj/item/proc/autolathe_crafted(obj/machinery/autolathe/A)
+	procstart = null
+	src.procstart = null
 	return

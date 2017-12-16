@@ -30,10 +30,14 @@
 	CanAtmosPass = ATMOS_PASS_PROC
 
 /obj/structure/windoor_assembly/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to rotate it clockwise.</span>")
 
 /obj/structure/windoor_assembly/New(loc, set_dir)
+	procstart = null
+	src.procstart = null
 	..()
 	if(set_dir)
 		dir = set_dir
@@ -41,20 +45,28 @@
 	air_update_turf(1)
 
 /obj/structure/windoor_assembly/Destroy()
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	air_update_turf(1)
 	return ..()
 
 /obj/structure/windoor_assembly/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	setDir(ini_dir)
 	move_update_air(T)
 
 /obj/structure/windoor_assembly/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[facing]_[secure ? "secure_" : ""]windoor_assembly[state]"
 
 /obj/structure/windoor_assembly/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
 	if(get_dir(loc, target) == dir) //Make sure looking at appropriate border
@@ -72,12 +84,16 @@
 	return 1
 
 /obj/structure/windoor_assembly/CanAtmosPass(turf/T)
+	procstart = null
+	src.procstart = null
 	if(get_dir(loc, T) == dir)
 		return !density
 	else
 		return 1
 
 /obj/structure/windoor_assembly/CheckExit(atom/movable/mover as mob|obj, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
 	if(get_dir(loc, target) == dir)
@@ -87,6 +103,8 @@
 
 
 /obj/structure/windoor_assembly/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	//I really should have spread this out across more states but thin little windoors are hard to sprite.
 	add_fingerprint(user)
 	switch(state)
@@ -321,6 +339,8 @@
 
 //Rotates the windoor assembly clockwise
 /obj/structure/windoor_assembly/verb/revrotate()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate Windoor Assembly"
 	set category = "Object"
 	set src in oview(1)
@@ -343,6 +363,8 @@
 	return TRUE
 
 /obj/structure/windoor_assembly/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -354,6 +376,8 @@
 
 //Flips the windoor assembly, determines whather the door opens to the left or the right
 /obj/structure/windoor_assembly/verb/flip()
+	procstart = null
+	src.procstart = null
 	set name = "Flip Windoor Assembly"
 	set category = "Object"
 	set src in oview(1)

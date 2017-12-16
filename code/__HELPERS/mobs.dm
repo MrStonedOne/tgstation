@@ -2,6 +2,8 @@
 	return pick(4;"O-", 36;"O+", 3;"A-", 28;"A+", 1;"B-", 20;"B+", 1;"AB-", 5;"AB+")
 
 /proc/random_eye_color()
+	procstart = null
+	src.procstart = null
 	switch(pick(20;"brown",20;"hazel",20;"grey",15;"blue",15;"green",1;"amber",1;"albino"))
 		if("brown")
 			return "630"
@@ -21,6 +23,8 @@
 			return "000"
 
 /proc/random_underwear(gender)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.underwear_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/underwear, GLOB.underwear_list, GLOB.underwear_m, GLOB.underwear_f)
 	switch(gender)
@@ -32,6 +36,8 @@
 			return pick(GLOB.underwear_list)
 
 /proc/random_undershirt(gender)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.undershirt_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/undershirt, GLOB.undershirt_list, GLOB.undershirt_m, GLOB.undershirt_f)
 	switch(gender)
@@ -43,11 +49,15 @@
 			return pick(GLOB.undershirt_list)
 
 /proc/random_socks()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.socks_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, GLOB.socks_list)
 	return pick(GLOB.socks_list)
 
 /proc/random_features()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.tails_list_human.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/tails/human, GLOB.tails_list_human)
 	if(!GLOB.tails_list_lizard.len)
@@ -73,6 +83,8 @@
 	return(list("mcolor" = pick("FFFFFF","7F7F7F", "7FFF7F", "7F7FFF", "FF7F7F", "7FFFFF", "FF7FFF", "FFFF7F"), "tail_lizard" = pick(GLOB.tails_list_lizard), "tail_human" = "None", "wings" = "None", "snout" = pick(GLOB.snouts_list), "horns" = pick(GLOB.horns_list), "ears" = "None", "frills" = pick(GLOB.frills_list), "spines" = pick(GLOB.spines_list), "body_markings" = pick(GLOB.body_markings_list), "legs" = "Normal Legs"))
 
 /proc/random_hair_style(gender)
+	procstart = null
+	src.procstart = null
 	switch(gender)
 		if(MALE)
 			return pick(GLOB.hair_styles_male_list)
@@ -82,6 +94,8 @@
 			return pick(GLOB.hair_styles_list)
 
 /proc/random_facial_hair_style(gender)
+	procstart = null
+	src.procstart = null
 	switch(gender)
 		if(MALE)
 			return pick(GLOB.facial_hair_styles_male_list)
@@ -91,6 +105,8 @@
 			return pick(GLOB.facial_hair_styles_list)
 
 /proc/random_unique_name(gender, attempts_to_find_unique_name=10)
+	procstart = null
+	src.procstart = null
 	for(var/i=1, i<=attempts_to_find_unique_name, i++)
 		if(gender==FEMALE)
 			. = capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
@@ -101,6 +117,8 @@
 			break
 
 /proc/random_unique_lizard_name(gender, attempts_to_find_unique_name=10)
+	procstart = null
+	src.procstart = null
 	for(var/i=1, i<=attempts_to_find_unique_name, i++)
 		. = capitalize(lizard_name(gender))
 
@@ -108,6 +126,8 @@
 			break
 
 /proc/random_unique_plasmaman_name(attempts_to_find_unique_name=10)
+	procstart = null
+	src.procstart = null
 	for(var/i=1, i<=attempts_to_find_unique_name, i++)
 		. = capitalize(plasmaman_name())
 
@@ -115,6 +135,8 @@
 			break
 
 /proc/random_skin_tone()
+	procstart = null
+	src.procstart = null
 	return pick(GLOB.skin_tones)
 
 GLOBAL_LIST_INIT(skin_tones, list(
@@ -135,6 +157,8 @@ GLOBAL_LIST_INIT(skin_tones, list(
 GLOBAL_LIST_EMPTY(species_list)
 
 /proc/age2agedescription(age)
+	procstart = null
+	src.procstart = null
 	switch(age)
 		if(0 to 1)
 			return "infant"
@@ -167,6 +191,8 @@ Proc for attack log creation, because really why not
 */
 
 /proc/add_logs(mob/user, mob/target, what_done, object=null, addition=null)
+	procstart = null
+	src.procstart = null
 	var/turf/attack_location = get_turf(target)
 
 	var/is_mob_user = user && GLOB.typecache_mob[user.type]
@@ -215,6 +241,8 @@ Proc for attack log creation, because really why not
 
 
 /proc/do_mob(mob/user , mob/target, time = 30, uninterruptible = 0, progress = 1, datum/callback/extra_checks = null)
+	procstart = null
+	src.procstart = null
 	if(!user || !target)
 		return 0
 	var/user_loc = user.loc
@@ -256,12 +284,16 @@ Proc for attack log creation, because really why not
 
 //some additional checks as a callback for for do_afters that want to break on losing health or on the mob taking action
 /mob/proc/break_do_after_checks(list/checked_health, check_clicks)
+	procstart = null
+	src.procstart = null
 	if(check_clicks && next_move > world.time)
 		return FALSE
 	return TRUE
 
 //pass a list in the format list("health" = mob's health var) to check health during this
 /mob/living/break_do_after_checks(list/checked_health, check_clicks)
+	procstart = null
+	src.procstart = null
 	if(islist(checked_health))
 		if(health < checked_health["health"])
 			return FALSE
@@ -269,6 +301,8 @@ Proc for attack log creation, because really why not
 	return ..()
 
 /proc/do_after(mob/user, delay, needhand = 1, atom/target = null, progress = 1, datum/callback/extra_checks = null)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return 0
 	var/atom/Tloc = null
@@ -326,6 +360,8 @@ Proc for attack log creation, because really why not
 		qdel(progbar)
 
 /proc/do_after_mob(mob/user, var/list/targets, time = 30, uninterruptible = 0, progress = 1, datum/callback/extra_checks)
+	procstart = null
+	src.procstart = null
 	if(!user || !targets)
 		return 0
 	if(!islist(targets))
@@ -371,6 +407,8 @@ Proc for attack log creation, because really why not
 		qdel(progbar)
 
 /proc/is_species(A, species_datum)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(ishuman(A))
 		var/mob/living/carbon/human/H = A
@@ -378,6 +416,8 @@ Proc for attack log creation, because really why not
 			. = TRUE
 
 /proc/spawn_atom_to_turf(spawn_type, target, amount, admin_spawn=FALSE, list/extra_args)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	if(!T)
 		CRASH("attempt to spawn atom type: [spawn_type] in nullspace")
@@ -391,6 +431,8 @@ Proc for attack log creation, because really why not
 		X.admin_spawned = admin_spawn
 
 /proc/spawn_and_random_walk(spawn_type, target, amount, walk_chance=100, max_walk=3, always_max_walk=FALSE, admin_spawn=FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	var/step_count = 0
 	if(!T)
@@ -410,6 +452,8 @@ Proc for attack log creation, because really why not
 				step(X, pick(NORTH, SOUTH, EAST, WEST))
 
 /proc/deadchat_broadcast(message, mob/follow_target=null, turf/turf_target=null, speaker_key=null, message_type=DEADCHAT_REGULAR)
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in GLOB.player_list)
 		var/datum/preferences/prefs
 		if(M.client && M.client.prefs)
@@ -455,6 +499,8 @@ Proc for attack log creation, because really why not
 
 
 /proc/log_talk(mob/user,message,logtype)
+	procstart = null
+	src.procstart = null
 	var/turf/say_turf = get_turf(user)
 
 	var/sayloc = ""

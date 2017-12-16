@@ -10,6 +10,8 @@
 
 
 /obj/item/clothing/suit/worn_overlays(isinhands = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands)
 		if(damaged_clothes)
@@ -25,6 +27,8 @@
 					. += U.accessory_overlay
 
 /obj/item/clothing/suit/update_clothes_damaged_state(damaging = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc

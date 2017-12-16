@@ -3,6 +3,8 @@
 //Smoke bomb
 /obj/item/clothing/suit/space/space_ninja/proc/ninjasmoke()
 
+	procstart = null
+	src.procstart = null
 	if(!ninjacost(0,N_SMOKE_BOMB))
 		var/mob/living/carbon/human/H = affecting
 		var/datum/effect_system/smoke_spread/bad/smoke = new

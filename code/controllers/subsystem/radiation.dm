@@ -5,6 +5,8 @@ PROCESSING_SUBSYSTEM_DEF(radiation)
 	var/list/warned_atoms = list()
 
 /datum/controller/subsystem/processing/radiation/proc/warn(datum/component/radioactive/contamination)
+	procstart = null
+	src.procstart = null
 	if(!contamination || QDELETED(contamination))
 		return
 	var/ref = REF(contamination.parent)

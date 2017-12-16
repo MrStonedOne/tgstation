@@ -1,5 +1,7 @@
 /atom/var/CanAtmosPass = ATMOS_PASS_YES
 /atom/proc/CanAtmosPass(turf/T)
+	procstart = null
+	src.procstart = null
 	switch (CanAtmosPass)
 		if (ATMOS_PASS_PROC)
 			return ATMOS_PASS_YES
@@ -12,6 +14,8 @@
 
 /turf/open/CanAtmosPass = ATMOS_PASS_PROC
 /turf/open/CanAtmosPass(turf/T)
+	procstart = null
+	src.procstart = null
 	var/R
 	if(blocks_air || T.blocks_air)
 		R = 1
@@ -38,6 +42,8 @@
 	return 0
 
 /turf/proc/CalculateAdjacentTurfs()
+	procstart = null
+	src.procstart = null
 	var/list/atmos_adjacent_turfs = src.atmos_adjacent_turfs
 	for(var/direction in GLOB.cardinals)
 		var/turf/T = get_step(src, direction)
@@ -61,6 +67,8 @@
 //alldir includes adjacent diagonal tiles that can share
 //	air with both of the related adjacent cardinal tiles
 /turf/proc/GetAtmosAdjacentTurfs(alldir = 0)
+	procstart = null
+	src.procstart = null
 	var/adjacent_turfs
 	if (atmos_adjacent_turfs)
 		adjacent_turfs = atmos_adjacent_turfs.Copy()
@@ -91,12 +99,16 @@
 	return adjacent_turfs
 
 /atom/proc/air_update_turf(command = 0)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc) && command)
 		return
 	var/turf/T = get_turf(loc)
 	T.air_update_turf(command)
 
 /turf/air_update_turf(command = 0)
+	procstart = null
+	src.procstart = null
 	if(command)
 		CalculateAdjacentTurfs()
 	SSair.add_to_active(src,command)
@@ -113,6 +125,8 @@
 	T.atmos_spawn_air(text)
 
 /turf/open/atmos_spawn_air(text)
+	procstart = null
+	src.procstart = null
 	if(!text || !air)
 		return
 

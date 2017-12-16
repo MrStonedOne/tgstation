@@ -27,6 +27,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/trig/sine/do_work()
+	procstart = null
+	src.procstart = null
 	pull_data()
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
@@ -47,6 +49,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/trig/cosine/do_work()
+	procstart = null
+	src.procstart = null
 	pull_data()
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
@@ -67,6 +71,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/trig/tangent/do_work()
+	procstart = null
+	src.procstart = null
 	pull_data()
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
@@ -87,6 +93,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/trig/cosecant/do_work()
+	procstart = null
+	src.procstart = null
 	pull_data()
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
@@ -107,6 +115,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/trig/secant/do_work()
+	procstart = null
+	src.procstart = null
 	pull_data()
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
@@ -127,6 +137,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/trig/cotangent/do_work()
+	procstart = null
+	src.procstart = null
 	pull_data()
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)

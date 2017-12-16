@@ -45,9 +45,13 @@ Credit where due:
 ///////////
 
 /proc/is_servant_of_ratvar(mob/M)
+	procstart = null
+	src.procstart = null
 	return istype(M) && M.mind && M.mind.has_antag_datum(ANTAG_DATUM_CLOCKCULT)
 
 /proc/is_eligible_servant(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	if(M.mind)
@@ -66,6 +70,8 @@ Credit where due:
 	return FALSE
 
 /proc/add_servant_of_ratvar(mob/L, silent = FALSE, create_team = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!L || !L.mind)
 		return
 	var/update_type = ANTAG_DATUM_CLOCKCULT
@@ -77,6 +83,8 @@ Credit where due:
 	. = L.mind.add_antag_datum(C)
 
 /proc/remove_servant_of_ratvar(mob/L, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!L || !L.mind)
 		return
 	var/datum/antagonist/clockcult/clock_datum = L.mind.has_antag_datum(ANTAG_DATUM_CLOCKCULT)
@@ -116,6 +124,8 @@ Credit where due:
 	var/datum/objective_team/clockcult/main_clockcult
 
 /datum/game_mode/clockwork_cult/pre_setup()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		restricted_jobs += protected_jobs
 	if(CONFIG_GET(flag/protect_assistant_from_antagonist))
@@ -139,6 +149,8 @@ Credit where due:
 	return 1
 
 /datum/game_mode/clockwork_cult/post_setup()
+	procstart = null
+	src.procstart = null
 	for(var/S in servants_to_serve)
 		var/datum/mind/servant = S
 		log_game("[servant.key] was made an initial servant of Ratvar")
@@ -189,14 +201,20 @@ Credit where due:
 	return FALSE
 
 /datum/game_mode/clockwork_cult/check_finished()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ark_of_the_clockwork_justiciar && !GLOB.ratvar_awakens) // Doesn't end until the Ark is destroyed or completed
 		return FALSE
 	return ..()
 
 /datum/game_mode/clockwork_cult/proc/check_clockwork_victory()
+	procstart = null
+	src.procstart = null
 	return main_clockcult.check_clockwork_victory()
 
 /datum/game_mode/clockwork_cult/set_round_result()
+	procstart = null
+	src.procstart = null
 	..()
 	if(GLOB.clockwork_gateway_activated)
 		SSticker.news_report = CLOCK_SUMMON
@@ -206,6 +224,8 @@ Credit where due:
 		SSticker.mode_result = "loss - servants failed their objective (summon ratvar)"
 
 /datum/game_mode/clockwork_cult/generate_report()
+	procstart = null
+	src.procstart = null
 	return "Bluespace monitors near your sector have detected a continuous stream of patterned fluctuations since the station was completed. It is most probable that a powerful entity \
 	from a very far distance away is using to the station as a vector to cross that distance through bluespace. The theoretical power required for this would be monumental, and if \
 	the entity is hostile, it would need to rely on a single central power source - disrupting or destroying that power source would be the best way to prevent said entity from causing \
@@ -214,11 +234,15 @@ Credit where due:
 	your crew to dispatch it in a timely manner."
 
 /datum/game_mode/proc/update_servant_icons_added(datum/mind/M)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/A = GLOB.huds[ANTAG_HUD_CLOCKWORK]
 	A.join_hud(M.current)
 	set_antag_hud(M.current, "clockwork")
 
 /datum/game_mode/proc/update_servant_icons_removed(datum/mind/M)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/A = GLOB.huds[ANTAG_HUD_CLOCKWORK]
 	A.leave_hud(M.current)
 	set_antag_hud(M.current, null)
@@ -240,6 +264,8 @@ Credit where due:
 	var/plasmaman //We use this to determine if we should activate internals in post_equip()
 
 /datum/outfit/servant_of_ratvar/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(H.dna.species.id == "plasmaman") //Plasmamen get additional equipment because of how they work
 		head = /obj/item/clothing/head/helmet/space/plasmaman
 		uniform = /obj/item/clothing/under/plasmaman //Plasmamen generally shouldn't need chameleon suits anyways, since everyone expects them to wear their fire suit
@@ -248,6 +274,8 @@ Credit where due:
 		plasmaman = TRUE
 
 /datum/outfit/servant_of_ratvar/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/W = new(H)
 	var/obj/item/device/pda/PDA = H.wear_id
 	W.assignment = "Assistant"
@@ -301,6 +329,8 @@ Credit where due:
 	<b>Good luck!</b>"
 
 /obj/item/paper/servant_primer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/changelog = world.file2list("strings/clockwork_cult_changelog.txt")
 	var/changelog_contents = ""
@@ -309,6 +339,8 @@ Credit where due:
 	info = replacetext(info, "CLOCKCULTCHANGELOG", changelog_contents)
 
 /obj/item/paper/servant_primer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user) && !isobserver(user))
 		to_chat(user, "<span class='danger'>You can't understand any of the words on [src].</span>")
 	..()

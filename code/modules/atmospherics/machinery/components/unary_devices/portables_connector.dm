@@ -12,6 +12,8 @@
 	pipe_state = "connector"
 
 /obj/machinery/atmospherics/components/unary/portables_connector/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/gas_mixture/air_contents = AIR1
 
@@ -21,22 +23,30 @@
 	level = 2
 
 /obj/machinery/atmospherics/components/unary/portables_connector/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!connected_device)
 		return
 	update_parents()
 
 /obj/machinery/atmospherics/components/unary/portables_connector/Destroy()
+	procstart = null
+	src.procstart = null
 	if(connected_device)
 		connected_device.disconnect()
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/portables_connector/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && connected_device)
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], detach [connected_device] first!</span>")
 		return FALSE
 
 /obj/machinery/atmospherics/components/unary/portables_connector/portableConnectorReturnAir()
+	procstart = null
+	src.procstart = null
 	return connected_device.portableConnectorReturnAir()
 
 /obj/proc/portableConnectorReturnAir()

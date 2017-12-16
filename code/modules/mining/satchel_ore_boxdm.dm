@@ -10,6 +10,8 @@
 	pressure_resistance = 5*ONE_ATMOSPHERE
 
 /obj/structure/ore_box/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(W, /obj/item/ore))
 		user.transferItemToLoc(W, src)
 	else if (istype(W, /obj/item/storage))
@@ -27,19 +29,27 @@
 		return ..()
 
 /obj/structure/ore_box/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(Adjacent(user) && istype(user))
 		show_contents(user)
 	. = ..()
 
 /obj/structure/ore_box/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(Adjacent(user))
 		show_contents(user)
 
 /obj/structure/ore_box/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(Adjacent(user))
 		show_contents(user)
 
 /obj/structure/ore_box/proc/show_contents(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = text("<b>The contents of the ore box reveal...</b><br>")
 	var/list/oretypes = list()
 	for(var/obj/item/ore/O in contents)
@@ -51,6 +61,8 @@
 	user << browse(dat, "window=orebox")
 
 /obj/structure/ore_box/proc/dump_box_contents()
+	procstart = null
+	src.procstart = null
 	var/drop = drop_location()
 	for(var/obj/item/ore/O in src)
 		if(QDELETED(O))
@@ -63,6 +75,8 @@
 			drop = drop_location()
 
 /obj/structure/ore_box/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!Adjacent(usr))
@@ -76,6 +90,8 @@
 	updateUsrDialog()
 
 /obj/structure/ore_box/deconstruct(disassembled = TRUE, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/sheet/mineral/wood/WD = new (loc, 4)
 	if(user)
 		WD.add_fingerprint(user)
@@ -83,4 +99,6 @@
 	qdel(src)
 
 /obj/structure/ore_box/onTransitZ()
+	procstart = null
+	src.procstart = null
 	return

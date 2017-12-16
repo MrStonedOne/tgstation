@@ -76,20 +76,30 @@
 	var/slowdown = 0
 
 /mob/living/silicon/pai/movement_delay()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += slowdown
 
 /mob/living/silicon/pai/can_unbuckle()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/can_buckle()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.pai_list -= src
 	return ..()
 
 /mob/living/silicon/pai/Initialize()
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/paicard/P = loc
 	START_PROCESSING(SSfastprocess, src)
 	GLOB.pai_list += src
@@ -131,12 +141,16 @@
 	addtimer(CALLBACK(src, .proc/emittercool), 600)
 
 /mob/living/silicon/pai/Life()
+	procstart = null
+	src.procstart = null
 	if(hacking)
 		process_hack()
 	return ..()
 
 /mob/living/silicon/pai/proc/process_hack()
 
+	procstart = null
+	src.procstart = null
 	if(cable && cable.machine && istype(cable.machine, /obj/machinery/door) && cable.machine == hackdoor && get_dist(src, hackdoor) <= 1)
 		hackprogress = Clamp(hackprogress + 4, 0, 100)
 	else
@@ -154,10 +168,14 @@
 		hacking = FALSE
 
 /mob/living/silicon/pai/make_laws()
+	procstart = null
+	src.procstart = null
 	laws = new /datum/ai_laws/pai()
 	return TRUE
 
 /mob/living/silicon/pai/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	usr << browse_rsc('html/paigrid.png')			// Go ahead and cache the interface resources as early as possible
 	if(client)
@@ -168,6 +186,8 @@
 			client.eye = card
 
 /mob/living/silicon/pai/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		if(!stat)
@@ -176,14 +196,20 @@
 			stat(null, text("Systems nonfunctional"))
 
 /mob/living/silicon/pai/restrained(ignore_grab)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 
 // See software.dm for Topic()
 
 /mob/living/silicon/pai/canUseTopic(atom/movable/M)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/proc/makePAI(delold)
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/paicard/card = new /obj/item/device/paicard(get_turf(src))
 	var/mob/living/silicon/pai/pai = new /mob/living/silicon/pai(card)
 	pai.key = key
@@ -198,6 +224,8 @@
 	var/mob/living/silicon/pai/P
 
 /datum/action/innate/pai/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!ispAI(owner))
 		return 0
 	P = owner
@@ -208,6 +236,8 @@
 	background_icon_state = "bg_tech"
 
 /datum/action/innate/pai/software/Trigger()
+	procstart = null
+	src.procstart = null
 	..()
 	P.paiInterface()
 
@@ -217,6 +247,8 @@
 	background_icon_state = "bg_tech"
 
 /datum/action/innate/pai/shell/Trigger()
+	procstart = null
+	src.procstart = null
 	..()
 	if(P.holoform)
 		P.fold_in(0)
@@ -229,6 +261,8 @@
 	background_icon_state = "bg_tech"
 
 /datum/action/innate/pai/chassis/Trigger()
+	procstart = null
+	src.procstart = null
 	..()
 	P.choose_chassis()
 
@@ -238,6 +272,8 @@
 	background_icon_state = "bg_tech"
 
 /datum/action/innate/pai/rest/Trigger()
+	procstart = null
+	src.procstart = null
 	..()
 	P.lay_down()
 
@@ -248,10 +284,14 @@
 	background_icon_state = "bg_tech"
 
 /datum/action/innate/pai/light/Trigger()
+	procstart = null
+	src.procstart = null
 	..()
 	P.toggle_integrated_light()
 
 /mob/living/silicon/pai/Process_Spacemove(movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		slowdown = 2
@@ -260,10 +300,14 @@
 	return TRUE
 
 /mob/living/silicon/pai/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "A personal AI in holochassis mode. Its master ID string seems to be [master].")
 
 /mob/living/silicon/pai/Life()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	if(cable)
@@ -276,6 +320,8 @@
 	. = ..()
 
 /mob/living/silicon/pai/updatehealth()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	health = maxHealth - getBruteLoss() - getFireLoss()
@@ -283,8 +329,12 @@
 
 
 /mob/living/silicon/pai/process()
+	procstart = null
+	src.procstart = null
 	emitterhealth = Clamp((emitterhealth + emitterregen), -50, emittermaxhealth)
 	hit_slowdown = Clamp((hit_slowdown - 1), 0, 100)
 
 /mob/living/silicon/pai/generateStaticOverlay()
+	procstart = null
+	src.procstart = null
 	return

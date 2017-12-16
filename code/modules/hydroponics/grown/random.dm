@@ -13,6 +13,8 @@
 	growthstages = 4
 
 /obj/item/seeds/random/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	randomize_stats()
 	if(prob(60))

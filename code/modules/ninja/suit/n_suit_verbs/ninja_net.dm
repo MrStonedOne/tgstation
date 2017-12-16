@@ -1,6 +1,8 @@
 
 //Allows the ninja to kidnap people
 /obj/item/clothing/suit/space/space_ninja/proc/ninjanet()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = affecting
 	var/mob/living/carbon/C = input("Select who to capture:","Capture who?",null) as null|mob in oview(H)
 

@@ -15,6 +15,8 @@ GLOBAL_LIST_INIT(human_recipes, list( \
 	))
 
 /obj/item/stack/sheet/animalhide/human/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.human_recipes
 	return ..()
 
@@ -43,6 +45,8 @@ GLOBAL_LIST_INIT(corgi_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/animalhide/corgi/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.corgi_recipes
 	return ..()
 
@@ -64,6 +68,8 @@ GLOBAL_LIST_INIT(monkey_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/animalhide/monkey/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.monkey_recipes
 	return ..()
 
@@ -85,6 +91,8 @@ GLOBAL_LIST_INIT(xeno_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/animalhide/xeno/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.xeno_recipes
 	return ..()
 
@@ -144,6 +152,8 @@ GLOBAL_LIST_INIT(leather_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/leather/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.leather_recipes
 	return ..()
 
@@ -164,6 +174,8 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 ))
 
 /obj/item/stack/sheet/sinew/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.sinew_recipes
 	return ..()
 
@@ -199,6 +211,8 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 //Step one - dehairing.
 
 /obj/item/stack/sheet/animalhide/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.is_sharp())
 		playsound(loc, 'sound/weapons/slice.ogg', 50, 1, -1)
 		user.visible_message("[user] starts cutting hair off \the [src].", "<span class='notice'>You start cutting the hair off \the [src]...</span>", "<span class='italics'>You hear the sound of a knife rubbing against flesh.</span>")
@@ -215,6 +229,8 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 
 //Step three - drying
 /obj/item/stack/sheet/wetleather/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	..()
 	if(exposed_temperature >= drying_threshold_temperature)
 		wetness--
@@ -233,6 +249,8 @@ GLOBAL_LIST_INIT(sinew_recipes, list ( \
 			src.use(1)
 
 /obj/item/stack/sheet/wetleather/microwave_act(obj/machinery/microwave/MW)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/stack/sheet/leather/L = new(loc)
 	L.amount = amount

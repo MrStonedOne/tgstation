@@ -20,20 +20,28 @@
 	var/list/timesFiveCategories = list("Food", "Botany Chemicals")
 
 /obj/machinery/biogenerator/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stored_research = new /datum/techweb/specialized/autounlocking/biogenerator
 	create_reagents(1000)
 
 /obj/machinery/biogenerator/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/biogenerator/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(beaker)
 		beaker.ex_act(severity, target)
 
 /obj/machinery/biogenerator/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	..()
 	if(A == beaker)
 		beaker = null
@@ -41,6 +49,8 @@
 		updateUsrDialog()
 
 /obj/machinery/biogenerator/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/E = 0
 	var/P = 0
 	var/max_storage = 40
@@ -57,6 +67,8 @@
 	update_icon()
 
 /obj/machinery/biogenerator/update_icon()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "biogen-empty-o"
 	else if(!src.beaker)
@@ -68,6 +80,8 @@
 	return
 
 /obj/machinery/biogenerator/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 
@@ -152,6 +166,8 @@
 		to_chat(user, "<span class='warning'>You cannot put this in [src.name]!</span>")
 
 /obj/machinery/biogenerator/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN || panel_open)
 		return
 	user.set_machine(src)
@@ -205,9 +221,13 @@
 	return
 
 /obj/machinery/biogenerator/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/machinery/biogenerator/proc/activate()
+	procstart = null
+	src.procstart = null
 	if (usr.stat != 0)
 		return
 	if (src.stat != 0) //NOPOWER etc
@@ -236,6 +256,8 @@
 	return
 
 /obj/machinery/biogenerator/proc/check_cost(list/materials, multiplier = 1, remove_points = 1)
+	procstart = null
+	src.procstart = null
 	if(materials.len != 1 || materials[1] != MAT_BIOMASS)
 		return FALSE
 	if (materials[MAT_BIOMASS]*multiplier/efficiency > points)
@@ -249,6 +271,8 @@
 		return TRUE
 
 /obj/machinery/biogenerator/proc/check_container_volume(list/reagents, multiplier = 1)
+	procstart = null
+	src.procstart = null
 	var/sum_reagents = 0
 	for(var/R in reagents)
 		sum_reagents += reagents[R]
@@ -261,6 +285,8 @@
 	return TRUE
 
 /obj/machinery/biogenerator/proc/create_product(datum/design/D, amount)
+	procstart = null
+	src.procstart = null
 	if(!beaker || !loc)
 		return FALSE
 
@@ -293,12 +319,16 @@
 	return .
 
 /obj/machinery/biogenerator/proc/detach()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		beaker.forceMove(drop_location())
 		beaker = null
 		update_icon()
 
 /obj/machinery/biogenerator/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..() || panel_open)
 		return
 

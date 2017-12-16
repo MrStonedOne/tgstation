@@ -6,6 +6,8 @@
 		. = ..()
 
 /mob/living/carbon/human/treat_message(message)
+	procstart = null
+	src.procstart = null
 	message = dna.species.handle_speech(message,src)
 	if(viruses.len)
 		for(var/datum/disease/pierrot_throat/D in viruses)
@@ -26,9 +28,13 @@
 	return message
 
 /mob/living/carbon/human/get_spans()
+	procstart = null
+	src.procstart = null
 	return ..() | dna.mutations_get_spans() | dna.species_get_spans()
 
 /mob/living/carbon/human/GetVoice()
+	procstart = null
+	src.procstart = null
 	if(istype(wear_mask, /obj/item/clothing/mask/chameleon))
 		var/obj/item/clothing/mask/chameleon/V = wear_mask
 		if(V.vchange && wear_id)
@@ -48,6 +54,8 @@
 	return real_name
 
 /mob/living/carbon/human/IsVocal()
+	procstart = null
+	src.procstart = null
 	CHECK_DNA_AND_SPECIES(src)
 
 	// how do species that don't breathe talk? magic, that's what.
@@ -58,18 +66,26 @@
 	return 1
 
 /mob/living/carbon/human/proc/SetSpecialVoice(new_voice)
+	procstart = null
+	src.procstart = null
 	if(new_voice)
 		special_voice = new_voice
 	return
 
 /mob/living/carbon/human/proc/UnsetSpecialVoice()
+	procstart = null
+	src.procstart = null
 	special_voice = ""
 	return
 
 /mob/living/carbon/human/proc/GetSpecialVoice()
+	procstart = null
+	src.procstart = null
 	return special_voice
 
 /mob/living/carbon/human/binarycheck()
+	procstart = null
+	src.procstart = null
 	if(ears)
 		var/obj/item/device/radio/headset/dongle = ears
 		if(!istype(dongle))
@@ -78,6 +94,8 @@
 			return 1
 
 /mob/living/carbon/human/radio(message, message_mode, list/spans, language)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != 0)
 		return .
@@ -101,6 +119,8 @@
 	return 0
 
 /mob/living/carbon/human/get_alt_name()
+	procstart = null
+	src.procstart = null
 	if(name != GetVoice())
 		return " (as [get_id_name("Unknown")])"
 

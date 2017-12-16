@@ -45,11 +45,15 @@
 	// register for radio system
 
 /obj/machinery/status_display/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.ai_status_displays.Add(src)
 	SSradio.add_object(src, frequency)
 
 /obj/machinery/status_display/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 	GLOB.ai_status_displays.Remove(src)
 	return ..()
@@ -57,12 +61,16 @@
 // timed process
 
 /obj/machinery/status_display/process()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		remove_display()
 		return
 	update()
 
 /obj/machinery/status_display/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		..(severity)
 		return
@@ -72,6 +80,8 @@
 // set what is displayed
 
 /obj/machinery/status_display/proc/update()
+	procstart = null
+	src.procstart = null
 	if(friendc && mode!=4) //Makes all status displays except supply shuttle timer display the eye -- Urist
 		set_picture("ai_friend")
 		return
@@ -121,6 +131,8 @@
 			display_shuttle_status()
 
 /obj/machinery/status_display/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(mode)
 		if(1,5)  // Emergency or generic shuttle
@@ -157,6 +169,8 @@
 
 
 /obj/machinery/status_display/proc/set_message(m1, m2)
+	procstart = null
+	src.procstart = null
 	if(m1)
 		index1 = (length(m1) > CHARS_PER_LINE)
 		message1 = m1
@@ -172,21 +186,29 @@
 		index2 = 0
 
 /obj/machinery/status_display/proc/set_picture(state)
+	procstart = null
+	src.procstart = null
 	picture_state = state
 	remove_display()
 	add_overlay(picture_state)
 
 /obj/machinery/status_display/proc/update_display(line1, line2)
+	procstart = null
+	src.procstart = null
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
 	if(maptext != new_text)
 		maptext = new_text
 
 /obj/machinery/status_display/proc/remove_display()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(maptext)
 		maptext = ""
 
 /obj/machinery/status_display/proc/display_shuttle_status()
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/shuttle
 
 	if(mode == 1)
@@ -208,6 +230,8 @@
 
 
 /obj/machinery/status_display/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(supply_display)
 		mode = 4
 		return
@@ -240,18 +264,26 @@
 	var/emotion = "Neutral"
 
 /obj/machinery/ai_status_display/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.ai_status_displays.Add(src)
 
 /obj/machinery/ai_status_display/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.ai_status_displays.Remove(src)
 	. = ..()
 
 /obj/machinery/ai_status_display/attack_ai(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if(isAI(user))
 		user.ai_statuschange()
 
 /obj/machinery/ai_status_display/process()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		cut_overlays()
 		return
@@ -259,6 +291,8 @@
 	update()
 
 /obj/machinery/ai_status_display/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		..(severity)
 		return
@@ -267,6 +301,8 @@
 
 /obj/machinery/ai_status_display/proc/update()
 
+	procstart = null
+	src.procstart = null
 	if(mode==0) //Blank
 		cut_overlays()
 		return
@@ -312,6 +348,8 @@
 
 
 /obj/machinery/ai_status_display/proc/set_picture(state)
+	procstart = null
+	src.procstart = null
 	picture_state = state
 	cut_overlays()
 	add_overlay(picture_state)

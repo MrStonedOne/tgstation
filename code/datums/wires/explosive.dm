@@ -3,12 +3,18 @@
 	..()
 
 /datum/wires/explosive/on_pulse(index)
+	procstart = null
+	src.procstart = null
 	explode()
 
 /datum/wires/explosive/on_cut(index, mend)
+	procstart = null
+	src.procstart = null
 	explode()
 
 /datum/wires/explosive/proc/explode()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -17,11 +23,15 @@
 	randomize = TRUE	//Same behaviour since no wire actually disarms it
 
 /datum/wires/explosive/c4/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/plastic/c4/P = holder
 	if(P.open_panel)
 		return TRUE
 
 /datum/wires/explosive/c4/explode()
+	procstart = null
+	src.procstart = null
 	var/obj/item/grenade/plastic/c4/P = holder
 	P.explode()
 
@@ -31,6 +41,8 @@
 	randomize = TRUE
 
 /datum/wires/explosive/pizza/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_DISARM
 	)
@@ -38,11 +50,15 @@
 	..()
 
 /datum/wires/explosive/pizza/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/pizzabox/P = holder
 	if(P.open && P.bomb)
 		return TRUE
 
 /datum/wires/explosive/pizza/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/item/pizzabox/P = holder
 	var/list/status = list()
 	status += "The red light is [P.bomb_active ? "on" : "off"]."
@@ -50,6 +66,8 @@
 	return status
 
 /datum/wires/explosive/pizza/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/item/pizzabox/P = holder
 	switch(wire)
 		if(WIRE_DISARM) // Pulse to toggle
@@ -58,6 +76,8 @@
 			explode()
 
 /datum/wires/explosive/pizza/on_cut(wire, mend)
+	procstart = null
+	src.procstart = null
 	var/obj/item/pizzabox/P = holder
 	switch(wire)
 		if(WIRE_DISARM) // Disarm and untrap the box.
@@ -68,6 +88,8 @@
 				explode()
 
 /datum/wires/explosive/pizza/explode()
+	procstart = null
+	src.procstart = null
 	var/obj/item/pizzabox/P = holder
 	P.bomb.detonate()
 
@@ -76,5 +98,7 @@
 	holder_type = /obj/item/twohanded/required/gibtonite
 
 /datum/wires/explosive/gibtonite/explode()
+	procstart = null
+	src.procstart = null
 	var/obj/item/twohanded/required/gibtonite/P = holder
 	P.GibtoniteReaction(null, 2)

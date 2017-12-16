@@ -15,6 +15,8 @@
 
 
 /obj/item/storage/bag/money/vault/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/coin/silver(src)
 	new /obj/item/coin/silver(src)

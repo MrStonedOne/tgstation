@@ -23,6 +23,8 @@
 	return QDEL_HINT_HARDDEL
 
 /mob/Initialize()
+	procstart = null
+	src.procstart = null
 	tag = "mob_[next_mob_id++]"
 	GLOB.mob_list += src
 	GLOB.mob_directory[tag] = src
@@ -40,6 +42,8 @@
 	. = ..()
 
 /atom/proc/prepare_huds()
+	procstart = null
+	src.procstart = null
 	hud_list = list()
 	for(var/hud in hud_possible)
 		var/hint = hud_possible[hud]
@@ -52,6 +56,8 @@
 				hud_list[hud] = I
 
 /mob/proc/Cell()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set hidden = 1
 
@@ -71,6 +77,8 @@
 
 /mob/proc/show_message(msg, type, alt_msg, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 
@@ -109,6 +117,8 @@
 // ignored_mob (optional) doesn't show any message to a given mob if TRUE.
 
 /atom/proc/visible_message(message, self_message, blind_message, vision_distance, ignored_mob)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T)
 		return
@@ -148,6 +158,8 @@
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
 
 /mob/audible_message(message, deaf_message, hearing_distance, self_message)
+	procstart = null
+	src.procstart = null
 	var/range = 7
 	if(hearing_distance)
 		range = hearing_distance
@@ -164,6 +176,8 @@
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
 
 /atom/proc/audible_message(message, deaf_message, hearing_distance)
+	procstart = null
+	src.procstart = null
 	var/range = 7
 	if(hearing_distance)
 		range = hearing_distance
@@ -174,20 +188,30 @@
 	return 0
 
 /mob/proc/Life()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	return
 
 /mob/proc/get_item_by_slot(slot_id)
+	procstart = null
+	src.procstart = null
 	return null
 
 /mob/proc/restrained(ignore_grab)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/incapacitated(ignore_restraints, ignore_grab)
+	procstart = null
+	src.procstart = null
 	return
 
 //This proc is called whenever someone clicks an inventory ui slot.
 /mob/proc/attack_ui(slot)
+	procstart = null
+	src.procstart = null
 	var/obj/item/W = get_active_held_item()
 
 	if(istype(W))
@@ -207,6 +231,8 @@
 //set disable_warning to disable the 'you are unable to equip that' warning.
 //unset redraw_mob to prevent the mob from being redrawn at the end.
 /mob/proc/equip_to_slot_if_possible(obj/item/W, slot, qdel_on_fail = FALSE, disable_warning = FALSE, redraw_mob = TRUE, bypass_equip_delay_self = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(W))
 		return 0
 	if(!W.mob_can_equip(src, null, slot, disable_warning, bypass_equip_delay_self))
@@ -222,16 +248,22 @@
 //This is an UNSAFE proc. It merely handles the actual job of equipping. All the checks on whether you can or can't eqip need to be done before! Use mob_can_equip() for that task.
 //In most cases you will want to use equip_to_slot_if_possible()
 /mob/proc/equip_to_slot(obj/item/W, slot)
+	procstart = null
+	src.procstart = null
 	return
 
 //This is just a commonly used configuration for the equip_to_slot_if_possible() proc, used to equip people when the rounds tarts and when events happen and such.
 //Also bypasses equip delay checks, since the mob isn't actually putting it on.
 /mob/proc/equip_to_slot_or_del(obj/item/W, slot)
+	procstart = null
+	src.procstart = null
 	return equip_to_slot_if_possible(W, slot, 1, 1, 0, 1)
 
 //puts the item "W" into an appropriate slot in a human's inventory
 //returns 0 if it cannot, 1 if successful
 /mob/proc/equip_to_appropriate_slot(obj/item/W)
+	procstart = null
+	src.procstart = null
 	if(!istype(W))
 		return 0
 	var/slot_priority = W.slot_equipment_priority
@@ -255,6 +287,8 @@
 	return 0
 
 /mob/proc/reset_perspective(atom/A)
+	procstart = null
+	src.procstart = null
 	if(client)
 		if(ismovableatom(A))
 			client.perspective = EYE_PERSPECTIVE
@@ -269,6 +303,8 @@
 		return 1
 
 /mob/living/reset_perspective(atom/A)
+	procstart = null
+	src.procstart = null
 	if(..())
 		update_sight()
 		if(client.eye != src)
@@ -279,6 +315,8 @@
 		update_pipe_vision()
 
 /mob/proc/show_inv(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 //mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
@@ -298,6 +336,8 @@
 //visible_message will handle invisibility properly
 //overriden here and in /mob/dead/observer for different point span classes and sanity checks
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
+	procstart = null
+	src.procstart = null
 	set name = "Point To"
 	set category = "Object"
 
@@ -316,6 +356,8 @@
 
 //this and stop_pulling really ought to be /mob/living procs
 /mob/proc/start_pulling(atom/movable/AM, supress_message = 0)
+	procstart = null
+	src.procstart = null
 	if(!AM || !src)
 		return FALSE
 	if(!(AM.can_be_pulled(src)))
@@ -369,9 +411,13 @@
 			M.LAssailant = usr
 
 /mob/proc/can_resist()
+	procstart = null
+	src.procstart = null
 	return FALSE		//overridden in living.dm
 
 /mob/proc/spin(spintime, speed)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	var/D = dir
 	if((spintime < 1)||(speed < 1)||!spintime||!speed)
@@ -391,6 +437,8 @@
 		spintime -= speed
 
 /mob/verb/stop_pulling()
+	procstart = null
+	src.procstart = null
 	set name = "Stop Pulling"
 	set category = "IC"
 
@@ -406,11 +454,15 @@
 			L.update_canmove()// mob gets up if it was lyng down in a chokehold
 
 /mob/proc/update_pull_hud_icon()
+	procstart = null
+	src.procstart = null
 	if(hud_used)
 		if(hud_used.pull_icon)
 			hud_used.pull_icon.update_icon(src)
 
 /mob/verb/mode()
+	procstart = null
+	src.procstart = null
 	set name = "Activate Held Object"
 	set category = "Object"
 	set src = usr
@@ -427,6 +479,8 @@
 		update_inv_hands()
 
 /mob/verb/memory()
+	procstart = null
+	src.procstart = null
 	set name = "Notes"
 	set category = "IC"
 	set desc = "View your character's notes memory."
@@ -436,6 +490,8 @@
 		to_chat(src, "You don't have a mind datum for some reason, so you can't look at your notes, if you had any.")
 
 /mob/verb/add_memory(msg as message)
+	procstart = null
+	src.procstart = null
 	set name = "Add Note"
 	set category = "IC"
 
@@ -448,6 +504,8 @@
 		to_chat(src, "You don't have a mind datum for some reason, so you can't add a note to it.")
 
 /mob/verb/abandon_mob()
+	procstart = null
+	src.procstart = null
 	set name = "Respawn"
 	set category = "OOC"
 
@@ -483,6 +541,8 @@
 
 
 /mob/verb/cancel_camera()
+	procstart = null
+	src.procstart = null
 	set name = "Cancel Camera View"
 	set category = "OOC"
 	reset_perspective(null)
@@ -490,18 +550,24 @@
 
 //suppress the .click/dblclick macros so people can't use them to identify the location of items or aimbot
 /mob/verb/DisClick(argu = null as anything, sec = "" as text, number1 = 0 as num  , number2 = 0 as num)
+	procstart = null
+	src.procstart = null
 	set name = ".click"
 	set hidden = TRUE
 	set category = null
 	return
 
 /mob/verb/DisDblClick(argu = null as anything, sec = "" as text, number1 = 0 as num  , number2 = 0 as num)
+	procstart = null
+	src.procstart = null
 	set name = ".dblclick"
 	set hidden = TRUE
 	set category = null
 	return
 
 /mob/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["mach_close"])
 		var/t1 = text("window=[href_list["mach_close"]]")
 		unset_machine()
@@ -536,14 +602,20 @@
 // The src mob is trying to strip an item from someone
 // Defined in living.dm
 /mob/proc/stripPanelUnequip(obj/item/what, mob/who)
+	procstart = null
+	src.procstart = null
 	return
 
 // The src mob is trying to place an item on someone
 // Defined in living.dm
 /mob/proc/stripPanelEquip(obj/item/what, mob/who)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/MouseDrop(mob/M)
+	procstart = null
+	src.procstart = null
 	..()
 	if(M != usr)
 		return
@@ -556,22 +628,32 @@
 	show_inv(usr)
 
 /mob/proc/is_active()
+	procstart = null
+	src.procstart = null
 	return (0 >= usr.stat)
 
 /mob/proc/is_muzzled()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/proc/see(message)
+	procstart = null
+	src.procstart = null
 	if(!is_active())
 		return 0
 	to_chat(src, message)
 	return 1
 
 /mob/proc/show_viewers(message)
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in viewers())
 		M.see(message)
 
 /mob/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(statpanel("Status"))
@@ -644,6 +726,8 @@
 	add_spells_to_statpanel(mob_spell_list)
 
 /mob/proc/add_spells_to_statpanel(list/spells)
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/proc_holder/spell/S in spells)
 		if(S.can_be_cast_by(src))
 			switch(S.charge_type)
@@ -655,12 +739,16 @@
 					statpanel("[S.panel]","[S.holder_var_type] [S.holder_var_amount]",S)
 
 /mob/proc/add_stings_to_statpanel(list/stings)
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/proc_holder/changeling/S in stings)
 		if(S.chemical_cost >=0 && S.can_be_used_by(src))
 			statpanel("[S.panel]",((S.chemical_cost > 0) ? "[S.chemical_cost]" : ""),S)
 
 // facing verbs
 /mob/proc/canface()
+	procstart = null
+	src.procstart = null
 	if(!canmove)
 		return 0
 	if(world.time < client.move_delay)
@@ -676,9 +764,13 @@
 	return 1
 
 /mob/proc/fall(forced)
+	procstart = null
+	src.procstart = null
 	drop_all_held_items()
 
 /mob/verb/eastface()
+	procstart = null
+	src.procstart = null
 	set hidden = 1
 	if(!canface())
 		return 0
@@ -688,6 +780,8 @@
 
 
 /mob/verb/westface()
+	procstart = null
+	src.procstart = null
 	set hidden = 1
 	if(!canface())
 		return 0
@@ -697,6 +791,8 @@
 
 
 /mob/verb/northface()
+	procstart = null
+	src.procstart = null
 	set hidden = 1
 	if(!canface())
 		return 0
@@ -706,6 +802,8 @@
 
 
 /mob/verb/southface()
+	procstart = null
+	src.procstart = null
 	set hidden = 1
 	if(!canface())
 		return 0
@@ -717,33 +815,47 @@
 	return 0
 
 /mob/proc/swap_hand()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/activate_hand(selhand)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null) //For sec bot threat assessment
 	return 0
 
 /mob/proc/get_ghost(even_if_they_cant_reenter = 0)
+	procstart = null
+	src.procstart = null
 	if(mind)
 		return mind.get_ghost(even_if_they_cant_reenter)
 
 /mob/proc/grab_ghost(force)
+	procstart = null
+	src.procstart = null
 	if(mind)
 		return mind.grab_ghost(force = force)
 
 /mob/proc/notify_ghost_cloning(var/message = "Someone is trying to revive you. Re-enter your corpse if you want to be revived!", var/sound = 'sound/effects/genetics.ogg', var/atom/source = null, flashwindow)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/ghost = get_ghost()
 	if(ghost)
 		ghost.notify_cloning(message, sound, source, flashwindow)
 		return ghost
 
 /mob/proc/AddSpell(obj/effect/proc_holder/spell/S)
+	procstart = null
+	src.procstart = null
 	mob_spell_list += S
 	S.action.Grant(src)
 
 /mob/proc/RemoveSpell(obj/effect/proc_holder/spell/spell)
+	procstart = null
+	src.procstart = null
 	if(!spell)
 		return
 	for(var/X in mob_spell_list)
@@ -754,6 +866,8 @@
 
 //You can buckle on mobs if you're next to them since most are dense
 /mob/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(M.buckled)
 		return 0
 	var/turf/T = get_turf(src)
@@ -768,17 +882,23 @@
 
 //Default buckling shift visual for mobs
 /mob/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/height = M.get_mob_buckling_height(src)
 	M.pixel_y = initial(M.pixel_y) + height
 	if(M.layer < layer)
 		M.layer = layer + 0.1
 
 /mob/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.layer = initial(M.layer)
 	M.pixel_y = initial(M.pixel_y)
 
 //returns the height in pixel the mob should have when buckled to another mob.
 /mob/proc/get_mob_buckling_height(mob/seat)
+	procstart = null
+	src.procstart = null
 	if(isliving(seat))
 		var/mob/living/L = seat
 		if(L.mob_size <= MOB_SIZE_SMALL) //being on top of a small mob doesn't put you very high.
@@ -787,14 +907,20 @@
 
 //can the mob be buckled to something by default?
 /mob/proc/can_buckle()
+	procstart = null
+	src.procstart = null
 	return 1
 
 //can the mob be unbuckled from something by default?
 /mob/proc/can_unbuckle()
+	procstart = null
+	src.procstart = null
 	return 1
 
 //Can the mob see reagents inside of containers?
 /mob/proc/can_see_reagents()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD) //Ghosts and such can always see reagents
 		return 1
 	if(has_unlimited_silicon_privilege) //Silicons can automatically view reagents
@@ -815,9 +941,13 @@
 
 //Can the mob use Topic to interact with machines
 /mob/proc/canUseTopic()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/faction_check_mob(mob/target, exact_match)
+	procstart = null
+	src.procstart = null
 	if(exact_match) //if we need an exact match, we need to do some bullfuckery.
 		var/list/faction_src = faction.Copy()
 		var/list/faction_target = target.faction.Copy()
@@ -829,6 +959,8 @@
 	return faction_check(faction, target.faction, FALSE)
 
 /proc/faction_check(list/faction_A, list/faction_B, exact_match)
+	procstart = null
+	src.procstart = null
 	var/list/match_list
 	if(exact_match)
 		match_list = faction_A&faction_B //only items in both lists
@@ -844,6 +976,8 @@
 //This will update a mob's name, real_name, mind.name, GLOB.data_core records, pda, id and traitor text
 //Calling this proc without an oldname will only update the mob and skip updating the pda, id and records ~Carn
 /mob/proc/fully_replace_character_name(oldname,newname)
+	procstart = null
+	src.procstart = null
 	if(!newname)
 		return 0
 	real_name = newname
@@ -867,9 +1001,13 @@
 
 //Updates GLOB.data_core records with new name , see mob/living/carbon/human
 /mob/proc/replace_records_name(oldname,newname)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/replace_identification_name(oldname,newname)
+	procstart = null
+	src.procstart = null
 	var/list/searching = GetAllContents()
 	var/search_id = 1
 	var/search_pda = 1
@@ -894,21 +1032,31 @@
 				search_pda = 0
 
 /mob/proc/update_stat()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/update_health_hud()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/update_sight()
+	procstart = null
+	src.procstart = null
 	sync_lighting_plane_alpha()
 
 /mob/proc/sync_lighting_plane_alpha()
+	procstart = null
+	src.procstart = null
 	if(hud_used)
 		var/obj/screen/plane_master/lighting/L = hud_used.plane_masters["[LIGHTING_PLANE]"]
 		if (L)
 			L.alpha = lighting_alpha
 
 /mob/living/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if("stat")
 			if((stat == DEAD) && (var_value < DEAD))//Bringing the dead back to life
@@ -942,12 +1090,18 @@
 
 
 /mob/proc/is_literate()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/proc/can_hold_items()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/proc/get_idcard()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/get_static_viruses() //used when creating blood and other infective objects
@@ -961,6 +1115,8 @@
 
 
 /mob/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "---"
 	.["Gib"] = "?_src_=vars;[HrefToken()];gib=[REF(src)]"
@@ -977,12 +1133,16 @@
 	.["Offer Control to Ghosts"] = "?_src_=vars;[HrefToken()];offer_control=[REF(src)]"
 
 /mob/vv_get_var(var_name)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if("logging")
 			return debug_variable(var_name, logging, 0, src, FALSE)
 	. = ..()
 
 /mob/verb/open_language_menu()
+	procstart = null
+	src.procstart = null
 	set name = "Open Language Menu"
 	set category = "IC"
 

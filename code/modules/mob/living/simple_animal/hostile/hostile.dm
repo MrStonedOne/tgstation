@@ -54,6 +54,8 @@
 
 
 /mob/living/simple_animal/hostile/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!targets_from)
@@ -63,16 +65,22 @@
 
 
 /mob/living/simple_animal/hostile/Destroy()
+	procstart = null
+	src.procstart = null
 	targets_from = null
 	return ..()
 
 /mob/living/simple_animal/hostile/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //dead
 		walk(src, 0) //stops walking
 		return 0
 
 /mob/living/simple_animal/hostile/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(AIStatus == AI_OFF)
 		return 0
 	var/list/possible_targets = ListTargets() //we look around for potential targets and make it a list for later use.
@@ -89,11 +97,15 @@
 	return 1
 
 /mob/living/simple_animal/hostile/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(stat == CONSCIOUS && !target && AIStatus != AI_OFF && !client && user)
 		FindTarget(list(user), 1)
 	return ..()
 
 /mob/living/simple_animal/hostile/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(stat == CONSCIOUS && !target && AIStatus != AI_OFF && !client)
 		if(P.firer && get_dist(src, P.firer) <= aggro_vision_range)
 			FindTarget(list(P.firer), 1)
@@ -137,6 +149,8 @@
 
 
 /mob/living/simple_animal/hostile/proc/PossibleThreats()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/pos_targ in ListTargets())
 		var/atom/A = pos_targ
@@ -267,9 +281,13 @@
 	return 0
 
 /mob/living/simple_animal/hostile/proc/Goto(target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	walk_to(src, target, minimum_distance, delay)
 
 /mob/living/simple_animal/hostile/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ckey && !stat && search_objects < 3 && . > 0)//Not unconscious, and we don't ignore mobs
 		if(search_objects)//Turn off item searching and ignore whatever item we were looking at, we're more concerned with fight or flight
@@ -283,9 +301,13 @@
 
 
 /mob/living/simple_animal/hostile/proc/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	return target.attack_animal(src)
 
 /mob/living/simple_animal/hostile/proc/Aggro()
+	procstart = null
+	src.procstart = null
 	vision_range = aggro_vision_range
 	if(target && emote_taunt.len && prob(taunt_chance))
 		emote("me", 1, "[pick(emote_taunt)] at [target].")
@@ -293,11 +315,15 @@
 
 
 /mob/living/simple_animal/hostile/proc/LoseAggro()
+	procstart = null
+	src.procstart = null
 	stop_automated_movement = 0
 	vision_range = idle_vision_range
 	taunt_chance = initial(taunt_chance)
 
 /mob/living/simple_animal/hostile/proc/LoseTarget()
+	procstart = null
+	src.procstart = null
 	target = null
 	walk(src, 0)
 	LoseAggro()
@@ -305,10 +331,14 @@
 //////////////END HOSTILE MOB TARGETTING AND AGGRESSION////////////
 
 /mob/living/simple_animal/hostile/death(gibbed)
+	procstart = null
+	src.procstart = null
 	LoseTarget()
 	..(gibbed)
 
 /mob/living/simple_animal/hostile/proc/summon_backup(distance, exact_faction_match)
+	procstart = null
+	src.procstart = null
 	do_alert_animation(src)
 	playsound(loc, 'sound/machines/chime.ogg', 50, 1, -1)
 	for(var/mob/living/simple_animal/hostile/M in oview(distance, targets_from))
@@ -319,6 +349,8 @@
 				M.Goto(src,M.move_to_delay,M.minimum_distance)
 
 /mob/living/simple_animal/hostile/proc/OpenFire(atom/A)
+	procstart = null
+	src.procstart = null
 	if(check_friendly_fire)
 		for(var/turf/T in getline(src,A)) // Not 100% reliable but this is faster than simulating actual trajectory
 			for(var/mob/living/L in T)
@@ -339,6 +371,8 @@
 
 
 /mob/living/simple_animal/hostile/proc/Shoot(atom/targeted_atom)
+	procstart = null
+	src.procstart = null
 	if( QDELETED(targeted_atom) || targeted_atom == targets_from.loc || targeted_atom == targets_from )
 		return
 	var/turf/startloc = get_turf(targets_from)
@@ -362,10 +396,14 @@
 
 
 /mob/living/simple_animal/hostile/proc/CanSmashTurfs(turf/T)
+	procstart = null
+	src.procstart = null
 	return iswallturf(T) || ismineralturf(T)
 
 
 /mob/living/simple_animal/hostile/proc/DestroyObjectsInDirection(direction)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_step(targets_from, direction)
 	if(T.Adjacent(targets_from))
 		if(CanSmashTurfs(T))
@@ -378,6 +416,8 @@
 
 
 /mob/living/simple_animal/hostile/proc/DestroyPathToTarget()
+	procstart = null
+	src.procstart = null
 	if(environment_smash)
 		EscapeConfinement()
 		var/dir_to_target = get_dir(targets_from, target)
@@ -400,6 +440,8 @@ mob/living/simple_animal/hostile/proc/DestroySurroundings() // for use with mega
 
 
 /mob/living/simple_animal/hostile/proc/EscapeConfinement()
+	procstart = null
+	src.procstart = null
 	if(buckled)
 		buckled.attack_animal(src)
 	if(!isturf(targets_from.loc) && targets_from.loc != null)//Did someone put us in something?
@@ -408,6 +450,8 @@ mob/living/simple_animal/hostile/proc/DestroySurroundings() // for use with mega
 
 
 /mob/living/simple_animal/hostile/proc/FindHidden()
+	procstart = null
+	src.procstart = null
 	if(istype(target.loc, /obj/structure/closet) || istype(target.loc, /obj/machinery/disposal) || istype(target.loc, /obj/machinery/sleeper))
 		var/atom/A = target.loc
 		Goto(A,move_to_delay,minimum_distance)
@@ -425,6 +469,8 @@ mob/living/simple_animal/hostile/proc/DestroySurroundings() // for use with mega
 
 ////// AI Status ///////
 /mob/living/simple_animal/hostile/proc/AICanContinue(var/list/possible_targets)
+	procstart = null
+	src.procstart = null
 	switch(AIStatus)
 		if(AI_ON)
 			. = 1
@@ -436,34 +482,46 @@ mob/living/simple_animal/hostile/proc/DestroySurroundings() // for use with mega
 				. = 0
 
 /mob/living/simple_animal/hostile/proc/AIShouldSleep(var/list/possible_targets)
+	procstart = null
+	src.procstart = null
 	return !FindTarget(possible_targets, 1)
 
 
 //These two procs handle losing our target if we've failed to attack them for
 //more than lose_patience_timeout deciseconds, which probably means we're stuck
 /mob/living/simple_animal/hostile/proc/GainPatience()
+	procstart = null
+	src.procstart = null
 	if(lose_patience_timeout)
 		LosePatience()
 		lose_patience_timer_id = addtimer(CALLBACK(src, .proc/LoseTarget), lose_patience_timeout, TIMER_STOPPABLE)
 
 
 /mob/living/simple_animal/hostile/proc/LosePatience()
+	procstart = null
+	src.procstart = null
 	deltimer(lose_patience_timer_id)
 
 
 //These two procs handle losing and regaining search_objects when attacked by a mob
 /mob/living/simple_animal/hostile/proc/LoseSearchObjects()
+	procstart = null
+	src.procstart = null
 	search_objects = 0
 	deltimer(search_objects_timer_id)
 	search_objects_timer_id = addtimer(CALLBACK(src, .proc/RegainSearchObjects), search_objects_regain_time, TIMER_STOPPABLE)
 
 
 /mob/living/simple_animal/hostile/proc/RegainSearchObjects(value)
+	procstart = null
+	src.procstart = null
 	if(!value)
 		value = initial(search_objects)
 	search_objects = value
 
 /mob/living/simple_animal/hostile/consider_wakeup()
+	procstart = null
+	src.procstart = null
 	..()
 	if(AIStatus == AI_IDLE && FindTarget(ListTargets(), 1))
 		toggle_ai(AI_ON)

@@ -17,15 +17,21 @@
 
 
 /obj/item/device/assembly/prox_sensor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, 0)
 
 /obj/item/device/assembly/prox_sensor/describe()
+	procstart = null
+	src.procstart = null
 	if(timing)
 		return "<span class='notice'>The proximity sensor is arming.</span>"
 	return "The proximity sensor is [scanning?"armed":"disarmed"]."
 
 /obj/item/device/assembly/prox_sensor/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0//Cooldown check
 	timing = !timing
@@ -33,6 +39,8 @@
 	return 1
 
 /obj/item/device/assembly/prox_sensor/toggle_secure()
+	procstart = null
+	src.procstart = null
 	secured = !secured
 	if(!secured)
 		if(scanning)
@@ -46,12 +54,16 @@
 
 
 /obj/item/device/assembly/prox_sensor/HasProximity(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if (istype(AM, /obj/effect/beam))
 		return
 	sense()
 
 
 /obj/item/device/assembly/prox_sensor/sense()
+	procstart = null
+	src.procstart = null
 	if(!scanning || !secured || next_activate > world.time)
 		return 0
 	pulse(0)
@@ -60,6 +72,8 @@
 
 
 /obj/item/device/assembly/prox_sensor/process()
+	procstart = null
+	src.procstart = null
 	if(timing)
 		time--
 		if(time <= 0)
@@ -68,6 +82,8 @@
 			time = initial(time)
 
 /obj/item/device/assembly/prox_sensor/toggle_scan(scan)
+	procstart = null
+	src.procstart = null
 	if(!secured)
 		return 0
 	scanning = scan
@@ -75,12 +91,16 @@
 	update_icon()
 
 /obj/item/device/assembly/prox_sensor/proc/sensitivity_change(value)
+	procstart = null
+	src.procstart = null
 	var/sense = min(max(sensitivity + value, 0), 5)
 	sensitivity = sense
 	if(scanning && proximity_monitor.SetRange(sense))
 		sense()
 
 /obj/item/device/assembly/prox_sensor/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	attached_overlays = list()
 	if(timing)
@@ -108,6 +128,8 @@
 
 
 /obj/item/device/assembly/prox_sensor/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usr.incapacitated() || !in_range(loc, usr))
 		usr << browse(null, "window=prox")

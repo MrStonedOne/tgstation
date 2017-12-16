@@ -12,6 +12,8 @@
 	var/number_of_pins = 1
 
 /obj/item/integrated_circuit/memory/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/i = 1 to number_of_pins)
 		inputs["input [i]"] = IC_PINTYPE_ANY // This is just a string since pins don't get built until ..() is called.
 		outputs["output [i]"] = IC_PINTYPE_ANY
@@ -19,6 +21,8 @@
 	. = ..()
 
 /obj/item/integrated_circuit/memory/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/i
 	for(i = 1, i <= outputs.len, i++)
@@ -33,6 +37,8 @@
 		to_chat(user, "\The [src] has [data] saved to address [i].")
 
 /obj/item/integrated_circuit/memory/do_work()
+	procstart = null
+	src.procstart = null
 	for(var/i = 1 to inputs.len)
 		var/datum/integrated_io/I = inputs[i]
 		var/datum/integrated_io/O = outputs[i]
@@ -81,10 +87,14 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/memory/constant/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/O = outputs[1]
 	O.push_data()
 
 /obj/item/integrated_circuit/memory/constant/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/O = outputs[1]
 	if(!user.IsAdvancedToolUser())
 		return
@@ -113,6 +123,8 @@
 			to_chat(user, "<span class='notice'>You set \the [src]'s memory to absolutely nothing.</span>")
 
 /obj/item/integrated_circuit/memory/constant/afterattack(atom/target, mob/living/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(accepting_refs && proximity)
 		var/datum/integrated_io/O = outputs[1]
 		O.data = WEAKREF(target)

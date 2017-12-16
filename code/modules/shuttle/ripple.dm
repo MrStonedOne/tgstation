@@ -14,9 +14,13 @@
 	duration = 3 * SHUTTLE_RIPPLE_TIME
 
 /obj/effect/temp_visual/ripple/Initialize(mapload, time_left)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha=255, time=time_left)
 	addtimer(CALLBACK(src, .proc/stop_animation), 8, TIMER_CLIENT_TIME)
 
 /obj/effect/temp_visual/ripple/proc/stop_animation()
+	procstart = null
+	src.procstart = null
 	icon_state = "medi_holo_no_anim"

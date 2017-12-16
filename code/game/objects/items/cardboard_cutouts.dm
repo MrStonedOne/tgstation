@@ -19,6 +19,8 @@
 	var/lastattacker = null
 
 /obj/item/cardboard_cutout/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HELP || pushed_over)
 		return ..()
 	user.visible_message("<span class='warning'>[user] pushes over [src]!</span>", "<span class='danger'>You push over [src]!</span>")
@@ -26,6 +28,8 @@
 	push_over()
 
 /obj/item/cardboard_cutout/proc/push_over()
+	procstart = null
+	src.procstart = null
 	name = initial(name)
 	desc = "[initial(desc)] It's been pushed over."
 	icon = initial(icon)
@@ -35,6 +39,8 @@
 	pushed_over = TRUE
 
 /obj/item/cardboard_cutout/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!pushed_over)
 		return
 	to_chat(user, "<span class='notice'>You right [src].</span>")
@@ -44,6 +50,8 @@
 	pushed_over = FALSE
 
 /obj/item/cardboard_cutout/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/toy/crayon))
 		change_appearance(I, user)
 		return
@@ -67,6 +75,8 @@
 			push_over()
 
 /obj/item/cardboard_cutout/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/projectile/bullet/reusable))
 		P.on_hit(src, 0)
 	visible_message("<span class='danger'>[src] has been hit by [P]!</span>")
@@ -75,6 +85,8 @@
 		push_over()
 
 /obj/item/cardboard_cutout/proc/change_appearance(obj/item/toy/crayon/crayon, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!crayon || !user)
 		return
 	if(pushed_over)
@@ -181,6 +193,8 @@
 	return 1
 
 /obj/item/cardboard_cutout/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	dir = SOUTH
 
 /obj/item/cardboard_cutout/adaptive //Purchased by Syndicate agents, these cutouts are indistinguishable from normal cutouts but aren't discolored when their appearance is changed

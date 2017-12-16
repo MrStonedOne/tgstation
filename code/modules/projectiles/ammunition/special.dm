@@ -35,6 +35,8 @@
 	projectile_type = /obj/item/projectile/magic/arcane_barrage
 
 /obj/item/ammo_casing/magic/chaos/newshot()
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/item/ammo_casing/magic/honk
@@ -47,6 +49,8 @@
 	firing_effect_type = null
 
 /obj/item/ammo_casing/syringegun/ready_proj(atom/target, mob/living/user, quiet, zone_override = "")
+	procstart = null
+	src.procstart = null
 	if(!BB)
 		return
 	if(istype(loc, /obj/item/gun/syringe))
@@ -71,6 +75,8 @@
 	firing_effect_type = null
 
 /obj/item/ammo_casing/dnainjector/ready_proj(atom/target, mob/living/user, quiet, zone_override = "")
+	procstart = null
+	src.procstart = null
 	if(!BB)
 		return
 	if(istype(loc, /obj/item/gun/syringe/dna))

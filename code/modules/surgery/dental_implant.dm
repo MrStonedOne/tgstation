@@ -9,9 +9,13 @@
 	time = 16
 
 /datum/surgery_step/insert_pill/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] begins to wedge \the [tool] in [target]'s [parse_zone(target_zone)].", "<span class='notice'>You begin to wedge [tool] in [target]'s [parse_zone(target_zone)]...</span>")
 
 /datum/surgery_step/insert_pill/success(mob/user, mob/living/carbon/target, target_zone, var/obj/item/reagent_containers/pill/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	if(!istype(tool))
 		return 0
 
@@ -29,6 +33,8 @@
 	name = "Activate Pill"
 
 /datum/action/item_action/hands_free/activate_pill/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	to_chat(owner, "<span class='caution'>You grit your teeth and burst the implanted [target.name]!</span>")

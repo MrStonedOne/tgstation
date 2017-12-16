@@ -1,6 +1,8 @@
 #define PING_BUFFER_TIME 25
 
 SUBSYSTEM_DEF(server_maint)
+	procstart = null
+	src.procstart = null
 	name = "Server Tasks"
 	wait = 6
 	flags = SS_POST_FIRE_TIMING
@@ -10,11 +12,15 @@ SUBSYSTEM_DEF(server_maint)
 	var/list/currentrun
 
 /datum/controller/subsystem/server_maint/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	if (CONFIG_GET(flag/hub))
 		world.update_hub_visibility(TRUE)
 	..()
 
 /datum/controller/subsystem/server_maint/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		if(listclearnulls(GLOB.clients))
 			log_world("Found a null in clients list!")
@@ -44,6 +50,8 @@ SUBSYSTEM_DEF(server_maint)
 			return
 
 /datum/controller/subsystem/server_maint/Shutdown()
+	procstart = null
+	src.procstart = null
 	kick_clients_in_lobby("<span class='boldannounce'>The round came to an end with you in the lobby.</span>", TRUE) //second parameter ensures only afk clients are kicked
 	var/server = CONFIG_GET(string/server)
 	for(var/thing in GLOB.clients)

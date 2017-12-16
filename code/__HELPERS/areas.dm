@@ -5,6 +5,8 @@
 // The dirs are connected turfs in the same space
 // break_if_found is a typecache of turf types to return false if found
 /proc/detect_room(turf/origin, list/break_if_found)
+	procstart = null
+	src.procstart = null
 	if(origin.blocks_air)
 		return list(origin)
 
@@ -33,6 +35,8 @@
 			found_turfs += checkT // Since checkT is connected, add it to the list to be processed
 
 /proc/create_area(mob/creator)
+	procstart = null
+	src.procstart = null
 	var/static/blacklisted_turfs = typecacheof(/turf/open/space)
 	var/static/blacklisted_areas = typecacheof(/area/space)
 	var/list/turfs = detect_room(get_turf(creator), blacklisted_turfs)

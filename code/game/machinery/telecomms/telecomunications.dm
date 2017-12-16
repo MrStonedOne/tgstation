@@ -35,6 +35,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 
 
 /obj/machinery/telecomms/proc/relay_information(datum/signal/signal, filter, copysig, amount = 20)
+	procstart = null
+	src.procstart = null
 	// relay signal to all linked machinery that are of type [filter]. If signal has been sent [amount] times, stop sending
 
 	if(!on)
@@ -116,14 +118,20 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 	return send_count
 
 /obj/machinery/telecomms/proc/relay_direct_information(datum/signal/signal, obj/machinery/telecomms/machine)
+	procstart = null
+	src.procstart = null
 	// send signal directly to a machine
 	machine.receive_information(signal, src)
 
 /obj/machinery/telecomms/proc/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	// receive information from linked machinery
 	..()
 
 /obj/machinery/telecomms/proc/is_freq_listening(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	// return TRUE if found, FALSE if not found
 	if(!signal)
 		return FALSE
@@ -134,6 +142,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 
 
 /obj/machinery/telecomms/New()
+	procstart = null
+	src.procstart = null
 	GLOB.telecomms_list += src
 	..()
 
@@ -144,6 +154,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 		listening_level = position.z
 
 /obj/machinery/telecomms/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && autolinkers.len)
 		// Links nearby machines
@@ -156,6 +168,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 
 
 /obj/machinery/telecomms/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.telecomms_list -= src
 	for(var/obj/machinery/telecomms/comm in GLOB.telecomms_list)
 		comm.links -= src
@@ -164,6 +178,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 
 // Used in auto linking
 /obj/machinery/telecomms/proc/add_link(obj/machinery/telecomms/T)
+	procstart = null
+	src.procstart = null
 	var/turf/position = get_turf(src)
 	var/turf/T_position = get_turf(T)
 	if((position.z == T_position.z) || (long_range_link && T.long_range_link))
@@ -173,6 +189,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 					links |= T
 
 /obj/machinery/telecomms/update_icon()
+	procstart = null
+	src.procstart = null
 	if(on)
 		if(panel_open)
 			icon_state = "[initial(icon_state)]_o"
@@ -186,6 +204,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 
 /obj/machinery/telecomms/proc/update_power()
 
+	procstart = null
+	src.procstart = null
 	if(toggled)
 		if(stat & (BROKEN|NOPOWER|EMPED)) // if powered, on. if not powered, off. if too damaged, off
 			on = FALSE
@@ -195,6 +215,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 		on = FALSE
 
 /obj/machinery/telecomms/process()
+	procstart = null
+	src.procstart = null
 	update_power()
 
 	// Update the icon
@@ -204,6 +226,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 		traffic -= netspeed
 
 /obj/machinery/telecomms/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(prob(100/severity))
 		if(!(stat & EMPED))
 			stat |= EMPED

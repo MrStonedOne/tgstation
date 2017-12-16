@@ -7,5 +7,7 @@
 
 /datum/round_event/wizard/blobies/start()
 
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/H in GLOB.dead_mob_list)
 		new /mob/living/simple_animal/hostile/blob/blobspore(H.loc)

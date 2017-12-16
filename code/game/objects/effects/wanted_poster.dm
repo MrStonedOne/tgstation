@@ -2,6 +2,8 @@
 	icon_state = "rolled_poster"
 
 /obj/item/poster/wanted/Initialize(mapload, icon/person_icon, wanted_name, description)
+	procstart = null
+	src.procstart = null
 	. = ..(mapload, new /obj/structure/sign/poster/wanted(src, person_icon, wanted_name, description))
 	name = "wanted poster ([wanted_name])"
 	desc = "A wanted poster for [wanted_name]."
@@ -10,6 +12,8 @@
 	var/wanted_name
 
 /obj/structure/sign/poster/wanted/Initialize(mapload, icon/person_icon, person_name, description)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!person_icon)
 		return INITIALIZE_HINT_QDEL
@@ -32,6 +36,8 @@
 	icon = the_icon
 
 /obj/structure/sign/poster/wanted/roll_and_drop(turf/location)
+	procstart = null
+	src.procstart = null
 	var/obj/item/poster/P = ..(location)
 	P.name = "wanted poster ([wanted_name])"
 	P.desc = "A wanted poster for [wanted_name]."

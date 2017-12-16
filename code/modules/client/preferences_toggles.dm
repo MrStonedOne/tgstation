@@ -5,6 +5,8 @@
 
 //override because we don't want to save preferences twice.
 /datum/verbs/menu/Settings/Set_checked(client/C, verbpath)
+	procstart = null
+	src.procstart = null
 	if (checkbox == CHECKBOX_GROUP)
 		C.prefs.menuoptions[type] = verbpath
 	else if (checkbox == CHECKBOX_TOGGLE)
@@ -13,6 +15,8 @@
 		winset(C, "[verbpath]", "is-checked = [!checked]")
 
 /datum/verbs/menu/Settings/verb/setup_character()
+	procstart = null
+	src.procstart = null
 	set name = "Game Preferences"
 	set category = "Preferences"
 	set desc = "Open Game Preferences Window"
@@ -24,6 +28,8 @@
 	name = "Chat Box Spam"
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_ears)()
+	procstart = null
+	src.procstart = null
 	set name = "Show/Hide GhostEars"
 	set category = "Preferences"
 	set desc = "See All Speech"
@@ -32,9 +38,13 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_ears)(
 	usr.client.prefs.save_preferences()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Ghost Ears", "[usr.client.prefs.chat_toggles & CHAT_GHOSTEARS ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Ghost/chatterbox/toggle_ghost_ears/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.chat_toggles & CHAT_GHOSTEARS
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_sight)()
+	procstart = null
+	src.procstart = null
 	set name = "Show/Hide GhostSight"
 	set category = "Preferences"
 	set desc = "See All Emotes"
@@ -43,9 +53,13 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_sight)
 	usr.client.prefs.save_preferences()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Ghost Sight", "[usr.client.prefs.chat_toggles & CHAT_GHOSTSIGHT ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Ghost/chatterbox/toggle_ghost_sight/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.chat_toggles & CHAT_GHOSTSIGHT
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_whispers)()
+	procstart = null
+	src.procstart = null
 	set name = "Show/Hide GhostWhispers"
 	set category = "Preferences"
 	set desc = "See All Whispers"
@@ -54,9 +68,13 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_whispe
 	usr.client.prefs.save_preferences()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Ghost Whispers", "[usr.client.prefs.chat_toggles & CHAT_GHOSTWHISPER ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Ghost/chatterbox/toggle_ghost_whispers/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.chat_toggles & CHAT_GHOSTWHISPER
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_radio)()
+	procstart = null
+	src.procstart = null
 	set name = "Show/Hide GhostRadio"
 	set category = "Preferences"
 	set desc = "See All Radio Chatter"
@@ -65,9 +83,13 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_radio)
 	usr.client.prefs.save_preferences()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Ghost Radio", "[usr.client.prefs.chat_toggles & CHAT_GHOSTRADIO ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc! //social experiment, increase the generation whenever you copypaste this shamelessly GENERATION 1
 /datum/verbs/menu/Settings/Ghost/chatterbox/toggle_ghost_radio/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.chat_toggles & CHAT_GHOSTRADIO
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_pda)()
+	procstart = null
+	src.procstart = null
 	set name = "Show/Hide GhostPDA"
 	set category = "Preferences"
 	set desc = "See All PDA Messages"
@@ -76,6 +98,8 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_pda)()
 	usr.client.prefs.save_preferences()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Ghost PDA", "[usr.client.prefs.chat_toggles & CHAT_GHOSTPDA ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Ghost/chatterbox/toggle_ghost_pda/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.chat_toggles & CHAT_GHOSTPDA
 
 /datum/verbs/menu/Settings/Ghost/chatterbox/Events
@@ -83,6 +107,8 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox, toggle_ghost_pda)()
 
 //please be aware that the following two verbs have inverted stat output, so that "Toggle Deathrattle|1" still means you activated it
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox/Events, toggle_deathrattle)()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Deathrattle"
 	set category = "Preferences"
 	set desc = "Death"
@@ -91,9 +117,13 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox/Events, toggle_death
 	to_chat(usr, "You will [(usr.client.prefs.toggles & DISABLE_DEATHRATTLE) ? "no longer" : "now"] get messages when a sentient mob dies.")
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Deathrattle", "[!(usr.client.prefs.toggles & DISABLE_DEATHRATTLE) ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, maybe you should spend some time reading the comments.
 /datum/verbs/menu/Settings/Ghost/chatterbox/Events/toggle_deathrattle/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return !(C.prefs.toggles & DISABLE_DEATHRATTLE)
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox/Events, toggle_arrivalrattle)()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Arrivalrattle"
 	set category = "Preferences"
 	set desc = "New Player Arrival"
@@ -102,9 +132,13 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost/chatterbox/Events, toggle_arriv
 	usr.client.prefs.save_preferences()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Arrivalrattle", "[!(usr.client.prefs.toggles & DISABLE_ARRIVALRATTLE) ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, maybe you should rethink where your life went so wrong.
 /datum/verbs/menu/Settings/Ghost/chatterbox/Events/toggle_arrivalrattle/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return !(C.prefs.toggles & DISABLE_ARRIVALRATTLE)
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost, togglemidroundantag)()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Midround Antagonist"
 	set category = "Preferences"
 	set desc = "Midround Antagonist"
@@ -113,9 +147,13 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Ghost, togglemidroundantag)()
 	to_chat(usr, "You will [(usr.client.prefs.toggles & MIDROUND_ANTAG) ? "now" : "no longer"] be considered for midround antagonist positions.")
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Midround Antag", "[usr.client.prefs.toggles & MIDROUND_ANTAG ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Ghost/togglemidroundantag/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.toggles & MIDROUND_ANTAG
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggletitlemusic)()
+	procstart = null
+	src.procstart = null
 	set name = "Hear/Silence LobbyMusic"
 	set category = "Preferences"
 	set desc = "Hear Music In Lobby"
@@ -130,10 +168,14 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggletitlemusic)()
 		usr.stop_sound_channel(CHANNEL_LOBBYMUSIC)
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Lobby Music", "[usr.client.prefs.toggles & SOUND_LOBBY ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Sound/toggletitlemusic/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.toggles & SOUND_LOBBY
 
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, togglemidis)()
+	procstart = null
+	src.procstart = null
 	set name = "Hear/Silence Midis"
 	set category = "Preferences"
 	set desc = "Hear Admin Triggered Sounds (Midis)"
@@ -149,10 +191,14 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, togglemidis)()
 			C.chatOutput.sendMusic(" ")
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Hearing Midis", "[usr.client.prefs.toggles & SOUND_MIDI ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Sound/togglemidis/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.toggles & SOUND_MIDI
 
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggle_instruments)()
+	procstart = null
+	src.procstart = null
 	set name = "Hear/Silence Instruments"
 	set category = "Preferences"
 	set desc = "Hear In-game Instruments"
@@ -164,10 +210,14 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggle_instruments)()
 		to_chat(usr, "You will no longer hear musical instruments.")
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Instruments", "[usr.client.prefs.toggles & SOUND_INSTRUMENTS ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Sound/toggle_instruments/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.toggles & SOUND_INSTRUMENTS
 
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, Toggle_Soundscape)()
+	procstart = null
+	src.procstart = null
 	set name = "Hear/Silence Ambience"
 	set category = "Preferences"
 	set desc = "Hear Ambient Sound Effects"
@@ -181,10 +231,14 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, Toggle_Soundscape)()
 		usr.stop_sound_channel(CHANNEL_BUZZ)
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Ambience", "[usr.client.prefs.toggles & SOUND_AMBIENCE ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Sound/Toggle_Soundscape/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.toggles & SOUND_AMBIENCE
 
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggle_ship_ambience)()
+	procstart = null
+	src.procstart = null
 	set name = "Hear/Silence Ship Ambience"
 	set category = "Preferences"
 	set desc = "Hear Ship Ambience Roar"
@@ -198,10 +252,14 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggle_ship_ambience)()
 		usr.client.ambience_playing = 0
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Ship Ambience", "[usr.client.prefs.toggles & SOUND_SHIP_AMBIENCE ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, I bet you read this comment expecting to see the same thing :^)
 /datum/verbs/menu/Settings/Sound/toggle_ship_ambience/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.toggles & SOUND_SHIP_AMBIENCE
 
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggle_announcement_sound)()
+	procstart = null
+	src.procstart = null
 	set name = "Hear/Silence Announcements"
 	set category = "Preferences"
 	set desc = "Hear Announcement Sound"
@@ -210,10 +268,14 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggle_announcement_sound)()
 	usr.client.prefs.save_preferences()
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Announcement Sound", "[usr.client.prefs.toggles & SOUND_ANNOUNCEMENTS ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/Sound/toggle_announcement_sound/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.toggles & SOUND_ANNOUNCEMENTS
 
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggleprayersounds)()
+	procstart = null
+	src.procstart = null
 	set name = "Hear/Silence Prayer Sounds"
 	set category = "Preferences"
 	set desc = "Hear Prayer Sounds"
@@ -225,10 +287,14 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggleprayersounds)()
 		to_chat(usr, "You will no longer prayer sounds.")
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Prayer Sounds", "[usr.client.prefs.toggles & SOUND_PRAYERS ? "Enabled" : "Disabled"]"))
 /datum/verbs/menu/Settings/Sound/toggleprayersounds/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.toggles & SOUND_PRAYERS
 
 
 /datum/verbs/menu/Settings/Sound/verb/stop_client_sounds()
+	procstart = null
+	src.procstart = null
 	set name = "Stop Sounds"
 	set category = "Preferences"
 	set desc = "Stop Current Sounds"
@@ -240,6 +306,8 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings/Sound, toggleprayersounds)()
 
 
 TOGGLE_CHECKBOX(/datum/verbs/menu/Settings, listen_ooc)()
+	procstart = null
+	src.procstart = null
 	set name = "Show/Hide OOC"
 	set category = "Preferences"
 	set desc = "Show OOC Chat"
@@ -248,6 +316,8 @@ TOGGLE_CHECKBOX(/datum/verbs/menu/Settings, listen_ooc)()
 	to_chat(usr, "You will [(usr.client.prefs.chat_toggles & CHAT_OOC) ? "now" : "no longer"] see messages on the OOC channel.")
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Seeing OOC", "[usr.client.prefs.chat_toggles & CHAT_OOC ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /datum/verbs/menu/Settings/listen_ooc/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.chat_toggles & CHAT_OOC
 
 
@@ -257,6 +327,8 @@ GLOBAL_LIST_INIT(ghost_forms, list("ghost","ghostking","ghostian2","skeleghost",
 							"ghost_dcyan","ghost_grey","ghost_dyellow","ghost_dpink", "ghost_purpleswirl","ghost_funkypurp","ghost_pinksherbert","ghost_blazeit",\
 							"ghost_mellow","ghost_rainbow","ghost_camo","ghost_fire", "catghost"))
 /client/proc/pick_form()
+	procstart = null
+	src.procstart = null
 	if(!is_content_unlocked())
 		alert("This setting is for accounts with BYOND premium only.")
 		return
@@ -271,6 +343,8 @@ GLOBAL_LIST_INIT(ghost_forms, list("ghost","ghostking","ghostian2","skeleghost",
 GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOST_ORBIT_SQUARE,GHOST_ORBIT_HEXAGON,GHOST_ORBIT_PENTAGON))
 
 /client/proc/pick_ghost_orbit()
+	procstart = null
+	src.procstart = null
 	if(!is_content_unlocked())
 		alert("This setting is for accounts with BYOND premium only.")
 		return
@@ -283,6 +357,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 			O.ghost_orbit = new_orbit
 
 /client/proc/pick_ghost_accs()
+	procstart = null
+	src.procstart = null
 	var/new_ghost_accs = alert("Do you want your ghost to show full accessories where possible, hide accessories but still use the directional sprites where possible, or also ignore the directions and stick to the default sprites?",,"full accessories", "only directional sprites", "default sprites")
 	if(new_ghost_accs)
 		switch(new_ghost_accs)
@@ -298,6 +374,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 			O.update_icon()
 
 /client/verb/pick_ghost_customization()
+	procstart = null
+	src.procstart = null
 	set name = "Ghost Customization"
 	set category = "Preferences"
 	set desc = "Customize your ghastly appearance."
@@ -313,6 +391,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 		pick_ghost_accs()
 
 /client/verb/pick_ghost_others()
+	procstart = null
+	src.procstart = null
 	set name = "Ghosts of Others"
 	set category = "Preferences"
 	set desc = "Change display settings for the ghosts of other players."
@@ -331,6 +411,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 			O.update_sight()
 
 /client/verb/toggle_intent_style()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Intent Selection Style"
 	set category = "Preferences"
 	set desc = "Toggle between directly clicking the desired intent or clicking to rotate through."
@@ -340,6 +422,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 	SSblackbox.record_feedback("nested tally", "preferences_verb", 1, list("Toggle Intent Selection", "[prefs.toggles & INTENT_STYLE ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/verb/toggle_ghost_hud_pref()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Ghost HUD"
 	set category = "Preferences"
 	set desc = "Hide/Show Ghost HUD"
@@ -366,6 +450,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 
 //Admin Preferences
 /client/proc/toggleadminhelpsound()
+	procstart = null
+	src.procstart = null
 	set name = "Hear/Silence Adminhelps"
 	set category = "Preferences"
 	set desc = "Toggle hearing a notification when admin PMs are received"
@@ -377,6 +463,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Adminhelp Sound", "[prefs.toggles & SOUND_ADMINHELP ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/toggleannouncelogin()
+	procstart = null
+	src.procstart = null
 	set name = "Do/Don't Announce Login"
 	set category = "Preferences"
 	set desc = "Toggle if you want an announcement to admins when you login during a round"
@@ -388,6 +476,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Login Announcement", "[prefs.toggles & ANNOUNCE_LOGIN ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/toggle_hear_radio()
+	procstart = null
+	src.procstart = null
 	set name = "Show/Hide Radio Chatter"
 	set category = "Preferences"
 	set desc = "Toggle seeing radiochatter from nearby radios and speakers"
@@ -399,6 +489,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Radio Chatter", "[prefs.chat_toggles & CHAT_RADIO ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/deadchat()
+	procstart = null
+	src.procstart = null
 	set name = "Show/Hide Deadchat"
 	set category = "Preferences"
 	set desc ="Toggles seeing deadchat"
@@ -408,6 +500,8 @@ GLOBAL_LIST_INIT(ghost_orbits, list(GHOST_ORBIT_CIRCLE,GHOST_ORBIT_TRIANGLE,GHOS
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Deadchat Visibility", "[prefs.chat_toggles & CHAT_DEAD ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/toggleprayers()
+	procstart = null
+	src.procstart = null
 	set name = "Show/Hide Prayers"
 	set category = "Preferences"
 	set desc = "Toggles seeing prayers"

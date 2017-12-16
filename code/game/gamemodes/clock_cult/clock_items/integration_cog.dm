@@ -13,14 +13,20 @@
 	var/obj/machinery/power/apc/apc
 
 /obj/item/clockwork/integration_cog/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform *= 0.5 //little cog!
 
 /obj/item/clockwork/integration_cog/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	. = ..()
 
 /obj/item/clockwork/integration_cog/process()
+	procstart = null
+	src.procstart = null
 	if(!apc)
 		if(istype(loc, /obj/machinery/power/apc))
 			apc = loc

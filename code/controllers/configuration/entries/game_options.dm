@@ -3,26 +3,36 @@
 /datum/config_entry/keyed_number_list/probability
 
 /datum/config_entry/keyed_number_list/probability/ValidateListEntry(key_name)
+	procstart = null
+	src.procstart = null
 	return key_name in config.modes
 
 /datum/config_entry/keyed_number_list/max_pop
 
 /datum/config_entry/keyed_number_list/max_pop/ValidateListEntry(key_name)
+	procstart = null
+	src.procstart = null
 	return key_name in config.modes
 
 /datum/config_entry/keyed_number_list/min_pop
 
 /datum/config_entry/keyed_number_list/min_pop/ValidateListEntry(key_name, key_value)
+	procstart = null
+	src.procstart = null
 	return key_name in config.modes
 
 /datum/config_entry/keyed_flag_list/continuous	// which roundtypes continue if all antagonists die
 
 /datum/config_entry/keyed_flag_list/continuous/ValidateListEntry(key_name, key_value)
+	procstart = null
+	src.procstart = null
 	return key_name in config.modes
 
 /datum/config_entry/keyed_flag_list/midround_antag	// which roundtypes use the midround antagonist system
 
 /datum/config_entry/keyed_flag_list/midround_antag/ValidateListEntry(key_name, key_value)
+	procstart = null
+	src.procstart = null
 	return key_name in config.modes
 
 /datum/config_entry/keyed_string_list/policy
@@ -164,6 +174,8 @@
 	var/static/value_cache = 0
 
 /datum/config_entry/number/run_delay/ValidateAndSet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		value_cache = value
@@ -172,6 +184,8 @@
 	var/static/value_cache = 0
 
 /datum/config_entry/number/walk_delay/ValidateAndSet()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		value_cache = value
@@ -244,6 +258,8 @@
 	min_val = 4
 
 /datum/config_entry/number/bombcap/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		GLOB.MAX_EX_DEVESTATION_RANGE = round(value / 4)

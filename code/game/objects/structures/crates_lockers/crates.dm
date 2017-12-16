@@ -16,10 +16,14 @@
 	var/obj/item/paper/fluff/jobs/cargo/manifest/manifest
 
 /obj/structure/closet/crate/New()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/structure/closet/crate/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(mover, /obj/structure/closet))
 		var/obj/structure/closet/crate/locatedcrate = locate(/obj/structure/closet/crate) in get_turf(mover)
 		if(locatedcrate) //you can walk on it like tables, if you're not in an open crate trying to move to a closed crate
@@ -30,6 +34,8 @@
 	return !density
 
 /obj/structure/closet/crate/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][opened ? "open" : ""]"
 
 	cut_overlays()
@@ -37,12 +43,16 @@
 		add_overlay("manifest")
 
 /obj/structure/closet/crate/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(manifest)
 		tear_manifest(user)
 		return
 	..()
 
 /obj/structure/closet/crate/open(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && manifest)
 		to_chat(user, "<span class='notice'>The manifest is torn off [src].</span>")
@@ -52,6 +62,8 @@
 		update_icon()
 
 /obj/structure/closet/crate/proc/tear_manifest(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>You tear the manifest off of [src].</span>")
 	playsound(src, 'sound/items/poster_ripped.ogg', 75, 1)
 
@@ -86,6 +98,8 @@
 	desc = "A freezer containing packs of blood."
 
 /obj/structure/closet/crate/freezer/blood/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/reagent_containers/blood/empty(src)
 	new /obj/item/reagent_containers/blood/empty(src)
@@ -103,6 +117,8 @@
 	desc = "A crate containing an assortment of cheap prosthetic limbs."
 
 /obj/structure/closet/crate/freezer/surplus_limbs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/bodypart/l_arm/robot/surplus(src)
 	new /obj/item/bodypart/l_arm/robot/surplus(src)
@@ -136,6 +152,8 @@
 	icon_state = "engi_crate"
 
 /obj/structure/closet/crate/rcd/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 4)
 		new /obj/item/rcd_ammo(src)

@@ -873,11 +873,15 @@
 	window_size = "970x710"
 
 /obj/item/book/manual/wiki/attack_self()
+	procstart = null
+	src.procstart = null
 	if(!dat)
 		initialize_wikibook()
 	..()
 
 /obj/item/book/manual/wiki/proc/initialize_wikibook()
+	procstart = null
+	src.procstart = null
 	var/wikiurl = CONFIG_GET(string/wikiurl)
 	if(wikiurl)
 		dat = {"

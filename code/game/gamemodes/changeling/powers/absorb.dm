@@ -6,6 +6,8 @@
 	req_human = 1
 
 /obj/effect/proc_holder/changeling/absorbDNA/can_sting(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -27,6 +29,8 @@
 
 
 /obj/effect/proc_holder/changeling/absorbDNA/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	var/mob/living/carbon/human/target = user.pulling
 	changeling.isabsorbing = 1

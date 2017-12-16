@@ -14,6 +14,8 @@
 	var/datum/buildmode/bd
 
 /obj/screen/buildmode/New(bd)
+	procstart = null
+	src.procstart = null
 	..()
 	src.bd = bd
 
@@ -23,6 +25,8 @@
 	screen_loc = "NORTH,WEST"
 
 /obj/screen/buildmode/mode/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	var/list/pa = params2list(params)
 
 	if(pa.Find("left"))
@@ -33,6 +37,8 @@
 	return 1
 
 /obj/screen/buildmode/mode/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "buildmode[bd.mode]"
 	return
 
@@ -42,6 +48,8 @@
 	name = "Buildmode Help"
 
 /obj/screen/buildmode/help/Click()
+	procstart = null
+	src.procstart = null
 	bd.show_help(usr)
 	return 1
 
@@ -52,6 +60,8 @@
 
 
 /obj/screen/buildmode/bdir/update_icon()
+	procstart = null
+	src.procstart = null
 	setDir(bd.build_dir)
 	return
 
@@ -61,10 +71,14 @@
 	name = "Quit Buildmode"
 
 /obj/screen/buildmode/quit/Click()
+	procstart = null
+	src.procstart = null
 	bd.quit()
 	return 1
 
 /obj/screen/buildmode/bdir/Click()
+	procstart = null
+	src.procstart = null
 	bd.change_dir()
 	update_icon()
 	return 1
@@ -85,6 +99,8 @@
 	var/list/preview = list()
 
 /datum/buildmode/New(client/c)
+	procstart = null
+	src.procstart = null
 	create_buttons()
 	holder = c
 	holder.click_intercept = src
@@ -92,6 +108,8 @@
 	holder.screen += buttons
 
 /datum/buildmode/proc/quit()
+	procstart = null
+	src.procstart = null
 	holder.screen -= buttons
 	holder.click_intercept = null
 	holder.show_popup_menus = 1
@@ -101,23 +119,31 @@
 	return
 
 /datum/buildmode/Destroy()
+	procstart = null
+	src.procstart = null
 	stored = null
 	for(var/button in buttons)
 		qdel(button)
 	return ..()
 
 /datum/buildmode/proc/create_buttons()
+	procstart = null
+	src.procstart = null
 	buttons += new /obj/screen/buildmode/mode(src)
 	buttons += new /obj/screen/buildmode/help(src)
 	buttons += new /obj/screen/buildmode/bdir(src)
 	buttons += new /obj/screen/buildmode/quit(src)
 
 /datum/buildmode/proc/toggle_modes()
+	procstart = null
+	src.procstart = null
 	mode = (mode % NUM_BUILDMODES) +1
 	Reset()
 	return
 
 /datum/buildmode/proc/show_help(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/dat = list()
 	switch(mode)
 		if(BASIC_BUILDMODE)
@@ -164,6 +190,8 @@
 	to_chat(user, "<font color='blue'>[dat.Join("\n")]</font>")
 
 /datum/buildmode/proc/change_settings(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(BASIC_BUILDMODE)
 			return 1
@@ -213,6 +241,8 @@
 			cornerB = null
 
 /datum/buildmode/proc/change_dir()
+	procstart = null
+	src.procstart = null
 	switch(build_dir)
 		if(NORTH)
 			build_dir = EAST
@@ -231,6 +261,8 @@
 	cornerB = null
 
 /proc/togglebuildmode(mob/M in GLOB.player_list)
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Build Mode"
 	set category = "Special Verbs"
 	if(M.client)

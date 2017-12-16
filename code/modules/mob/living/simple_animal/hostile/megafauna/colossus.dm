@@ -53,10 +53,14 @@ Difficulty: Very Hard
 	death_sound = 'sound/magic/demon_dies.ogg'
 
 /mob/living/simple_animal/hostile/megafauna/colossus/devour(mob/living/L)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='colossus'>[src] disintegrates [L]!</span>")
 	L.dust()
 
 /mob/living/simple_animal/hostile/megafauna/colossus/OpenFire()
+	procstart = null
+	src.procstart = null
 	anger_modifier = Clamp(((maxHealth - health)/50),0,20)
 	ranged_cooldown = world.time + 120
 
@@ -93,6 +97,8 @@ Difficulty: Very Hard
 
 
 /mob/living/simple_animal/hostile/megafauna/colossus/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal = new/obj/item/device/gps/internal/colossus(src)
 
@@ -107,11 +113,15 @@ Difficulty: Very Hard
 	var/target
 
 /obj/effect/temp_visual/at_shield/Initialize(mapload, new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target = new_target
 	INVOKE_ASYNC(src, /atom/movable/proc/orbit, target, 0, FALSE, 0, 0, FALSE, TRUE)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(!stat)
 		var/obj/effect/temp_visual/at_shield/AT = new /obj/effect/temp_visual/at_shield(src.loc, src)
 		var/random_x = rand(-32, 32)
@@ -122,6 +132,8 @@ Difficulty: Very Hard
 	..()
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/enrage(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
 		if(H.mind)
@@ -129,6 +141,8 @@ Difficulty: Very Hard
 				. = TRUE
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/alternating_dir_shots()
+	procstart = null
+	src.procstart = null
 	dir_shots(GLOB.diagonals)
 	sleep(10)
 	dir_shots(GLOB.cardinals)
@@ -138,6 +152,8 @@ Difficulty: Very Hard
 	dir_shots(GLOB.cardinals)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/double_spiral()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='colossus'>\"<b>Die.</b>\"</span>")
 
 	sleep(10)
@@ -145,6 +161,8 @@ Difficulty: Very Hard
 	INVOKE_ASYNC(src, .proc/spiral_shoot, TRUE)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/spiral_shoot(negative = FALSE, counter_start = 8)
+	procstart = null
+	src.procstart = null
 	var/counter = counter_start
 	for(var/i in 1 to 80)
 		if(negative)
@@ -160,6 +178,8 @@ Difficulty: Very Hard
 		sleep(1)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/shoot_projectile(turf/marker, set_angle)
+	procstart = null
+	src.procstart = null
 	if(!isnum(set_angle) && (!marker || marker == loc))
 		return
 	var/turf/startloc = get_turf(src)
@@ -171,6 +191,8 @@ Difficulty: Very Hard
 	P.fire(set_angle)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/random_shots()
+	procstart = null
+	src.procstart = null
 	var/turf/U = get_turf(src)
 	playsound(U, 'sound/magic/clockwork/invoke_general.ogg', 300, 1, 5)
 	for(var/T in RANGE_TURFS(12, U) - U)
@@ -178,6 +200,8 @@ Difficulty: Very Hard
 			shoot_projectile(T)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/blast(set_angle)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_turf(target)
 	playsound(src, 'sound/magic/clockwork/invoke_general.ogg', 200, 1, 2)
 	newtonian_move(get_dir(target_turf, src))
@@ -189,6 +213,8 @@ Difficulty: Very Hard
 		shoot_projectile(null, angle_to_target + i)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/dir_shots(list/dirs)
+	procstart = null
+	src.procstart = null
 	if(!islist(dirs))
 		dirs = GLOB.alldirs.Copy()
 	playsound(src, 'sound/magic/clockwork/invoke_general.ogg', 200, 1, 2)
@@ -197,6 +223,8 @@ Difficulty: Very Hard
 		shoot_projectile(E)
 
 /mob/living/simple_animal/hostile/megafauna/colossus/proc/telegraph()
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in range(10,src))
 		if(M.client)
 			flash_color(M.client, "#C80000", 1)
@@ -216,6 +244,8 @@ Difficulty: Very Hard
 	pass_flags = PASSTABLE
 
 /obj/item/projectile/colossus/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(target) || isobj(target))
 		target.ex_act(EXPLODE_HEAVY)
@@ -248,9 +278,13 @@ Difficulty: Very Hard
 	var/list/blacklist = list()
 
 /obj/machinery/smartfridge/black_box/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/smartfridge/black_box/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(!istype(O))
 		return FALSE
 	if(blacklist[O])
@@ -259,6 +293,8 @@ Difficulty: Very Hard
 	return TRUE
 
 /obj/machinery/smartfridge/black_box/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/obj/machinery/smartfridge/black_box/current
 	if(current && current != src)
@@ -268,12 +304,16 @@ Difficulty: Very Hard
 	ReadMemory()
 
 /obj/machinery/smartfridge/black_box/process()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!memory_saved && SSticker.current_state == GAME_STATE_FINISHED)
 		WriteMemory()
 		memory_saved = TRUE
 
 /obj/machinery/smartfridge/black_box/proc/WriteMemory()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/npc_saves/Blackbox.json")
 	stored_items = list()
 
@@ -285,6 +325,8 @@ Difficulty: Very Hard
 	WRITE_FILE(json_file, json_encode(file_data))
 
 /obj/machinery/smartfridge/black_box/proc/ReadMemory()
+	procstart = null
+	src.procstart = null
 	if(fexists("data/npc_saves/Blackbox.sav")) //legacy compatability to convert old format to new
 		var/savefile/S = new /savefile("data/npc_saves/Blackbox.sav")
 		S["stored_items"] >> stored_items
@@ -304,10 +346,14 @@ Difficulty: Very Hard
 //in it's own proc to avoid issues with items that nolonger exist in the code base.
 //try catch doesn't always prevent byond runtimes from halting a proc,
 /obj/machinery/smartfridge/black_box/proc/create_item(item_type)
+	procstart = null
+	src.procstart = null
 	var/obj/O = new item_type(src)
 	blacklist[O] = TRUE
 
 /obj/machinery/smartfridge/black_box/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(force)
 		for(var/thing in src)
 			qdel(thing)
@@ -319,20 +365,30 @@ Difficulty: Very Hard
 //No taking it apart
 
 /obj/machinery/smartfridge/black_box/default_deconstruction_screwdriver()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/smartfridge/black_box/exchange_parts()
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/machinery/smartfridge/black_box/default_pry_open()
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/machinery/smartfridge/black_box/default_unfasten_wrench()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/smartfridge/black_box/default_deconstruction_crowbar()
+	procstart = null
+	src.procstart = null
 	return
 
 ///Anomolous Crystal///
@@ -368,26 +424,36 @@ Difficulty: Very Hard
 	var/activation_sound = 'sound/effects/break_stone.ogg'
 
 /obj/machinery/anomalous_crystal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!activation_method)
 		activation_method = pick(possible_methods)
 
 /obj/machinery/anomalous_crystal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isobserver(user))
 		to_chat(user, observer_desc)
 		to_chat(user, "It is activated by [activation_method].")
 
 /obj/machinery/anomalous_crystal/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, message_mode)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isliving(speaker))
 		ActivationReaction(speaker, ACTIVATE_SPEECH)
 
 /obj/machinery/anomalous_crystal/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	ActivationReaction(user, ACTIVATE_TOUCH)
 
 /obj/machinery/anomalous_crystal/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(I.is_hot())
 		ActivationReaction(user, ACTIVATE_HEAT)
 	else
@@ -395,6 +461,8 @@ Difficulty: Very Hard
 	..()
 
 /obj/machinery/anomalous_crystal/bullet_act(obj/item/projectile/P, def_zone)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(P, /obj/item/projectile/magic))
 		ActivationReaction(P.firer, ACTIVATE_MAGIC, P.damage_type)
@@ -402,6 +470,8 @@ Difficulty: Very Hard
 	ActivationReaction(P.firer, P.flag, P.damage_type)
 
 /obj/machinery/anomalous_crystal/proc/ActivationReaction(mob/user, method, damtype)
+	procstart = null
+	src.procstart = null
 	if(world.time < last_use_timer)
 		return FALSE
 	if(activation_damage_type && activation_damage_type != damtype)
@@ -413,11 +483,15 @@ Difficulty: Very Hard
 	return TRUE
 
 /obj/machinery/anomalous_crystal/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(AM))
 		ActivationReaction(AM, ACTIVATE_MOB_BUMP)
 
 /obj/machinery/anomalous_crystal/ex_act()
+	procstart = null
+	src.procstart = null
 	ActivationReaction(null, ACTIVATE_BOMB)
 
 /obj/machinery/anomalous_crystal/honk //Strips and equips you as a clown. I apologize for nothing
@@ -426,6 +500,8 @@ Difficulty: Very Hard
 	activation_sound = 'sound/items/bikehorn.ogg'
 
 /obj/machinery/anomalous_crystal/honk/ActivationReaction(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..() && ishuman(user) && !(user in affected_targets))
 		var/mob/living/carbon/human/H = user
 		for(var/obj/item/W in H)
@@ -448,6 +524,8 @@ Difficulty: Very Hard
 	var/florachance = 8
 
 /obj/machinery/anomalous_crystal/theme_warp/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	terrain_theme = pick("lavaland","winter","jungle","ayy lmao")
 	observer_desc = "This crystal changes the area around it to match the theme of \"[terrain_theme]\"."
@@ -479,6 +557,8 @@ Difficulty: Very Hard
 			NewTerrainTables = /obj/structure/table/abductor
 
 /obj/machinery/anomalous_crystal/theme_warp/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/area/A = get_area(src)
 		if(!A.outdoors && !(A in affected_targets))
@@ -515,6 +595,8 @@ Difficulty: Very Hard
 	var/obj/item/projectile/generated_projectile = /obj/item/projectile/beam/emitter
 
 /obj/machinery/anomalous_crystal/emitter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generated_projectile = pick(/obj/item/projectile/colossus)
 
@@ -522,6 +604,8 @@ Difficulty: Very Hard
 	observer_desc = "This crystal generates \a [proj_name] when activated."
 
 /obj/machinery/anomalous_crystal/emitter/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/obj/item/projectile/P = new generated_projectile(get_turf(src))
 		P.setDir(dir)
@@ -546,6 +630,8 @@ Difficulty: Very Hard
 	activation_sound = 'sound/hallucinations/growl1.ogg'
 
 /obj/machinery/anomalous_crystal/dark_reprise/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	if(..())
 		for(var/i in range(1, src))
 			if(isturf(i))
@@ -568,16 +654,22 @@ Difficulty: Very Hard
 	var/ready_to_deploy = FALSE
 
 /obj/machinery/anomalous_crystal/helpers/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list -= src
 	. = ..()
 
 /obj/machinery/anomalous_crystal/helpers/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	if(..() && !ready_to_deploy)
 		GLOB.poi_list |= src
 		ready_to_deploy = TRUE
 		notify_ghosts("An anomalous crystal has been activated in [get_area(src)]! This crystal can always be used by ghosts hereafter.", enter_link = "<a href=?src=[REF(src)];ghostjoin=1>(Click to enter)</a>", ghost_sound = 'sound/effects/ghost2.ogg', source = src, action = NOTIFY_ATTACK)
 
 /obj/machinery/anomalous_crystal/helpers/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ready_to_deploy)
 		var/be_helper = alert("Become a Lightgeist? (Warning, You can no longer be cloned!)",,"Yes","No")
@@ -587,6 +679,8 @@ Difficulty: Very Hard
 
 
 /obj/machinery/anomalous_crystal/helpers/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["ghostjoin"])
 		var/mob/dead/observer/ghost = usr
 		if(istype(ghost))
@@ -633,6 +727,8 @@ Difficulty: Very Hard
 	var/heal_power = 5
 
 /mob/living/simple_animal/hostile/lightgeist/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	verbs -= /mob/living/verb/pulled
 	verbs -= /mob/verb/me_verb
@@ -640,6 +736,8 @@ Difficulty: Very Hard
 	medsensor.add_hud_to(src)
 
 /mob/living/simple_animal/hostile/lightgeist/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target) && target != src)
 		var/mob/living/L = target
@@ -648,6 +746,8 @@ Difficulty: Very Hard
 			new /obj/effect/temp_visual/heal(get_turf(target), "#80F5FF")
 
 /mob/living/simple_animal/hostile/lightgeist/ghostize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		death()
@@ -661,6 +761,8 @@ Difficulty: Very Hard
 	var/static/list/banned_items_typecache = typecacheof(list(/obj/item/storage, /obj/item/implant, /obj/item/implanter, /obj/item/disk/nuclear, /obj/item/projectile, /obj/item/spellbook))
 
 /obj/machinery/anomalous_crystal/refresher/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/list/L = list()
 		var/turf/T = get_step(src, dir)
@@ -680,6 +782,8 @@ Difficulty: Very Hard
 	activation_method = ACTIVATE_TOUCH
 
 /obj/machinery/anomalous_crystal/possessor/ActivationReaction(mob/user, method)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(ishuman(user))
 			var/mobcheck = 0
@@ -703,6 +807,8 @@ Difficulty: Very Hard
 	var/mob/living/simple_animal/holder_animal
 
 /obj/structure/closet/stasis/process()
+	procstart = null
+	src.procstart = null
 	if(holder_animal)
 		if(holder_animal.stat == DEAD)
 			dump_contents()
@@ -710,12 +816,16 @@ Difficulty: Very Hard
 			return
 
 /obj/structure/closet/stasis/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isanimal(loc))
 		holder_animal = loc
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/closet/stasis/Entered(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isliving(A) && holder_animal)
 		var/mob/living/L = A
 		L.notransform = 1
@@ -727,6 +837,8 @@ Difficulty: Very Hard
 		holder_animal.verbs -= /mob/living/verb/pulled
 
 /obj/structure/closet/stasis/dump_contents(var/kill = 1)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	for(var/mob/living/L in src)
 		L.disabilities &= ~MUTE
@@ -740,9 +852,13 @@ Difficulty: Very Hard
 	..()
 
 /obj/structure/closet/stasis/emp_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/stasis/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/spell/targeted/exit_possession
@@ -760,6 +876,8 @@ Difficulty: Very Hard
 	sound = null
 
 /obj/effect/proc_holder/spell/targeted/exit_possession/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!isfloorturf(user.loc))
 		return
 	var/datum/mind/target_mind = user.mind

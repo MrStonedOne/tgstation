@@ -10,11 +10,15 @@
 
 
 /obj/structure/spider/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	if(damage_type == BURN)//the stickiness of the web mutes all attack sounds except fire damage type
 		playsound(loc, 'sound/items/welder.ogg', 100, 1)
 
 
 /obj/structure/spider/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee")
 		switch(damage_type)
 			if(BURN)
@@ -24,6 +28,8 @@
 	. = ..()
 
 /obj/structure/spider/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		take_damage(5, BURN, 0, 0)
 
@@ -31,11 +37,15 @@
 	icon_state = "stickyweb1"
 
 /obj/structure/spider/stickyweb/Initialize()
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		icon_state = "stickyweb2"
 	. = ..()
 
 /obj/structure/spider/stickyweb/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover, /mob/living/simple_animal/hostile/poison/giant_spider))
 		return 1
 	else if(isliving(mover))
@@ -58,12 +68,16 @@
 	var/list/faction = list("spiders")
 
 /obj/structure/spider/eggcluster/Initialize()
+	procstart = null
+	src.procstart = null
 	pixel_x = rand(3,-3)
 	pixel_y = rand(3,-3)
 	START_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/structure/spider/eggcluster/process()
+	procstart = null
+	src.procstart = null
 	amount_grown += rand(0,2)
 	if(amount_grown >= 100)
 		var/num = rand(3,12)
@@ -95,10 +109,14 @@
 	var/list/faction = list("spiders")
 
 /obj/structure/spider/spiderling/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/item/reagent_containers/food/snacks/spiderling(get_turf(src))
 	. = ..()
 
 /obj/structure/spider/spiderling/Initialize()
+	procstart = null
+	src.procstart = null
 	pixel_x = rand(6,-6)
 	pixel_y = rand(6,-6)
 	START_PROCESSING(SSobj, src)
@@ -120,12 +138,16 @@
 	grow_as = /mob/living/simple_animal/hostile/poison/giant_spider/tarantula
 
 /obj/structure/spider/spiderling/Collide(atom/user)
+	procstart = null
+	src.procstart = null
 	if(istype(user, /obj/structure/table))
 		forceMove(user.loc)
 	else
 		..()
 
 /obj/structure/spider/spiderling/process()
+	procstart = null
+	src.procstart = null
 	if(travelling_in_vent)
 		if(isturf(loc))
 			travelling_in_vent = 0
@@ -210,10 +232,14 @@
 	max_integrity = 60
 
 /obj/structure/spider/cocoon/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = pick("cocoon1","cocoon2","cocoon3")
 	. = ..()
 
 /obj/structure/spider/cocoon/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/breakout_time = 600
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
@@ -227,6 +253,8 @@
 
 
 /obj/structure/spider/cocoon/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	src.visible_message("<span class='warning'>\The [src] splits open.</span>")
 	for(var/atom/movable/A in contents)

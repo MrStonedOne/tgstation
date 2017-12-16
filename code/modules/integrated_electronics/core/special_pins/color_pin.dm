@@ -3,12 +3,16 @@
 	name = "color pin"
 
 /datum/integrated_io/color/ask_for_pin_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_data = input("Please select a color.","[src] color writing") as null|color
 	if(holder.check_interactivity(user) )
 		to_chat(user, "<span class='notice'>You input a <font color='[new_data]'>new color</font> into the pin.</span>")
 		write_data_to_pin(new_data)
 
 /datum/integrated_io/color/write_data_to_pin(var/new_data)
+	procstart = null
+	src.procstart = null
 	// Since this is storing the color as a string hex color code, we need to make sure it's actually one.
 	if(isnull(new_data) || istext(new_data))
 		if(istext(new_data))
@@ -29,6 +33,8 @@
 
 // This randomizes the color.
 /datum/integrated_io/color/scramble()
+	procstart = null
+	src.procstart = null
 	if(!is_valid())
 		return
 	var/new_data
@@ -41,9 +47,13 @@
 	push_data()
 
 /datum/integrated_io/color/display_pin_type()
+	procstart = null
+	src.procstart = null
 	return IC_FORMAT_COLOR
 
 /datum/integrated_io/color/display_data(var/input)
+	procstart = null
+	src.procstart = null
 	if(!isnull(data))
 		return "(<font color='[data]'>[data]</font>)"
 	return ..()

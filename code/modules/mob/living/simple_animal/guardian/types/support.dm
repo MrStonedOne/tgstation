@@ -16,17 +16,23 @@
 	var/toggle = FALSE
 
 /mob/living/simple_animal/hostile/guardian/healer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/atom_hud/medsensor = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medsensor.add_hud_to(src)
 
 /mob/living/simple_animal/hostile/guardian/healer/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		if(beacon_cooldown >= world.time)
 			stat(null, "Beacon Cooldown Remaining: [DisplayTimeText(beacon_cooldown - world.time)]")
 
 /mob/living/simple_animal/hostile/guardian/healer/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_deployed() && toggle && iscarbon(target))
 		var/mob/living/carbon/C = target
@@ -43,6 +49,8 @@
 			med_hud_set_status()
 
 /mob/living/simple_animal/hostile/guardian/healer/ToggleMode()
+	procstart = null
+	src.procstart = null
 	if(src.loc == summoner)
 		if(toggle)
 			a_intent = INTENT_HARM
@@ -65,6 +73,8 @@
 
 
 /mob/living/simple_animal/hostile/guardian/healer/verb/Beacon()
+	procstart = null
+	src.procstart = null
 	set name = "Place Bluespace Beacon"
 	set category = "Guardian"
 	set desc = "Mark a floor as your beacon point, allowing you to warp targets to it. Your beacon will not work at extreme distances."
@@ -98,15 +108,21 @@
 	layer = ABOVE_OPEN_TURF_LAYER
 
 /obj/structure/recieving_pad/New(loc, mob/living/simple_animal/hostile/guardian/healer/G)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(G.namedatum)
 		add_atom_colour(G.namedatum.colour, FIXED_COLOUR_PRIORITY)
 
 /obj/structure/recieving_pad/proc/disappear()
+	procstart = null
+	src.procstart = null
 	visible_message("[src] vanishes!")
 	qdel(src)
 
 /mob/living/simple_animal/hostile/guardian/healer/AltClickOn(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(!istype(A))
 		return
 	if(src.loc == summoner)

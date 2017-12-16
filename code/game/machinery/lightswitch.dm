@@ -12,6 +12,8 @@
 	var/otherarea = null
 
 /obj/machinery/light_switch/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	area = get_area(src)
 
@@ -25,6 +27,8 @@
 	updateicon()
 
 /obj/machinery/light_switch/proc/updateicon()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		icon_state = "light-p"
 	else
@@ -34,15 +38,21 @@
 			icon_state = "light0"
 
 /obj/machinery/light_switch/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "It is [on? "on" : "off"].")
 
 
 /obj/machinery/light_switch/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	src.attack_hand(user)
 
 /obj/machinery/light_switch/attack_hand(mob/user)
 
+	procstart = null
+	src.procstart = null
 	on = !on
 
 	for(var/area/A in area.related)
@@ -57,6 +67,8 @@
 
 /obj/machinery/light_switch/power_change()
 
+	procstart = null
+	src.procstart = null
 	if(!otherarea)
 		if(powered(LIGHT))
 			stat &= ~NOPOWER
@@ -66,6 +78,8 @@
 		updateicon()
 
 /obj/machinery/light_switch/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!(stat & (BROKEN|NOPOWER)))
 		power_change()
 	..()

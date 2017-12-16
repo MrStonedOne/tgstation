@@ -10,6 +10,8 @@
 	var/list/rare_pet_monkey_names = list("Professor Bobo", "Deempisi's Revenge", "Furious George", "King Louie", "Dr. Zaius", "Jimmy Rustles", "Dinner", "Lanky")
 
 /mob/living/carbon/monkey/punpun/Initialize()
+	procstart = null
+	src.procstart = null
 	Read_Memory()
 	if(ancestor_name)
 		name = ancestor_name
@@ -32,17 +34,23 @@
 		equip_to_slot_or_del(new relic_mask, slot_wear_mask)
 
 /mob/living/carbon/monkey/punpun/Life()
+	procstart = null
+	src.procstart = null
 	if(!stat && SSticker.current_state == GAME_STATE_FINISHED && !memory_saved)
 		Write_Memory(FALSE, FALSE)
 		memory_saved = TRUE
 	..()
 
 /mob/living/carbon/monkey/punpun/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(!memory_saved)
 		Write_Memory(TRUE, gibbed)
 	..()
 
 /mob/living/carbon/monkey/punpun/proc/Read_Memory()
+	procstart = null
+	src.procstart = null
 	if(fexists("data/npc_saves/Punpun.sav")) //legacy compatability to convert old format to new
 		var/savefile/S = new /savefile("data/npc_saves/Punpun.sav")
 		S["ancestor_name"]	>> ancestor_name
@@ -61,6 +69,8 @@
 		relic_mask = json["relic_hat"]
 
 /mob/living/carbon/monkey/punpun/proc/Write_Memory(dead, gibbed)
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/npc_saves/Punpun.json")
 	var/list/file_data = list()
 	if(gibbed)

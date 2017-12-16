@@ -25,14 +25,20 @@
 	var/settableTemperatureRange = 30
 
 /obj/machinery/space_heater/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/machinery/space_heater/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new(src)
 	update_icon()
 
 /obj/machinery/space_heater/on_construction()
+	procstart = null
+	src.procstart = null
 	qdel(cell)
 	cell = null
 	panel_open = TRUE
@@ -40,12 +46,16 @@
 	return ..()
 
 /obj/machinery/space_heater/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		component_parts += cell
 		cell = null
 	return ..()
 
 /obj/machinery/space_heater/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "\The [src] is [on ? "on" : "off"], and the hatch is [panel_open ? "open" : "closed"].")
 	if(cell)
@@ -54,6 +64,8 @@
 		to_chat(user, "There is no power cell installed.")
 
 /obj/machinery/space_heater/update_icon()
+	procstart = null
+	src.procstart = null
 	if(on)
 		icon_state = "sheater-[mode]"
 	else
@@ -64,6 +76,8 @@
 		add_overlay("sheater-open")
 
 /obj/machinery/space_heater/process()
+	procstart = null
+	src.procstart = null
 	if(!on || !is_operational())
 		return
 
@@ -109,6 +123,8 @@
 		update_icon()
 
 /obj/machinery/space_heater/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/laser = 0
 	var/cap = 0
 	for(var/obj/item/stock_parts/micro_laser/M in component_parts)
@@ -126,6 +142,8 @@
 		settableTemperatureMedian + settableTemperatureRange)
 
 /obj/machinery/space_heater/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		..(severity)
 		return
@@ -134,6 +152,8 @@
 	..(severity)
 
 /obj/machinery/space_heater/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(I, /obj/item/stock_parts/cell))
 		if(panel_open)
@@ -169,6 +189,8 @@
 		ui.open()
 
 /obj/machinery/space_heater/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["open"] = panel_open
 	data["on"] = on
@@ -194,6 +216,8 @@
 	return data
 
 /obj/machinery/space_heater/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)

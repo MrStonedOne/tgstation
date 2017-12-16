@@ -8,6 +8,8 @@ GLOBAL_PROTECT(admin_ranks)
 	var/list/subs
 
 /datum/admin_rank/New(init_name, init_rights, list/init_adds, list/init_subs)
+	procstart = null
+	src.procstart = null
 	name = init_name
 	switch(name)
 		if("Removed",null,"")
@@ -25,12 +27,16 @@ GLOBAL_PROTECT(admin_ranks)
 	subs = init_subs
 
 /datum/admin_rank/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 #if DM_VERSION > 512
 #error remove the rejuv keyword from this proc
 #endif
 /proc/admin_keyword_to_flag(word, previous_rights=0)
+	procstart = null
+	src.procstart = null
 	var/flag = 0
 	switch(ckey(word))
 		if("buildmode","build")
@@ -75,6 +81,8 @@ GLOBAL_PROTECT(admin_ranks)
 
 // Adds/removes rights to this admin_rank
 /datum/admin_rank/proc/process_keyword(word, previous_rights=0)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		var/msg = " has tried to elevate permissions!"
 		message_admins("[key_name_admin(usr)][msg]")
@@ -102,6 +110,8 @@ GLOBAL_PROTECT(admin_ranks)
 
 // Checks for (keyword-formatted) rights on this admin
 /datum/admins/proc/check_keyword(word)
+	procstart = null
+	src.procstart = null
 	var/flag = admin_keyword_to_flag(word)
 	if(flag)
 		return ((rank.rights & flag) == flag) //true only if right has everything in flag
@@ -114,6 +124,8 @@ GLOBAL_PROTECT(admin_ranks)
 
 //load our rank - > rights associations
 /proc/load_admin_ranks()
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		to_chat(usr, "<span class='admin prefix'>Admin Reload blocked: Advanced ProcCall detected.</span>")
 		return
@@ -174,6 +186,8 @@ GLOBAL_PROTECT(admin_ranks)
 
 
 /proc/load_admins()
+	procstart = null
+	src.procstart = null
 	//clear the datums references
 
 	GLOB.admin_datums.Cut()
@@ -245,6 +259,8 @@ GLOBAL_PROTECT(admin_ranks)
 
 #ifdef TESTING
 /client/verb/changerank(newrank in GLOB.admin_ranks)
+	procstart = null
+	src.procstart = null
 	if(holder)
 		holder.rank = newrank
 	else
@@ -253,6 +269,8 @@ GLOBAL_PROTECT(admin_ranks)
 	holder.associate(src)
 
 /client/verb/changerights(newrights as num)
+	procstart = null
+	src.procstart = null
 	if(holder)
 		holder.rank.rights = newrights
 	else
@@ -262,6 +280,8 @@ GLOBAL_PROTECT(admin_ranks)
 #endif
 
 /datum/admins/proc/edit_rights_topic(list/href_list)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_PERMISSIONS))
 		message_admins("[key_name_admin(usr)] attempted to edit the admin permissions without sufficient rights.")
 		log_admin("[key_name(usr)] attempted to edit the admin permissions without sufficient rights.")
@@ -399,6 +419,8 @@ GLOBAL_PROTECT(admin_ranks)
 	edit_admin_permissions()
 
 /datum/admins/proc/updateranktodb(ckey,newrank)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return
 	var/sql_ckey = sanitizeSQL(ckey)

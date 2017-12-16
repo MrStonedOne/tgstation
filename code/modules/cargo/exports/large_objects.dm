@@ -37,6 +37,8 @@
 	var/contents_cost = 400
 
 /datum/export/large/reagent_dispenser/get_cost(obj/O)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/reagent_dispensers/D = O
 	var/ratio = D.reagents.total_volume / D.reagents.maximum_volume
 
@@ -111,6 +113,8 @@
 	var/sellable
 
 /datum/export/large/mech/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 

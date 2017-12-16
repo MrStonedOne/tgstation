@@ -15,10 +15,14 @@
 	throw_speed = 0
 
 /obj/item/melee/touch_attack/Initialize()
+	procstart = null
+	src.procstart = null
 	attached_spell = loc
 	. = ..()
 
 /obj/item/melee/touch_attack/attack(mob/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user)) //Look ma, no hands
 		return
 	if(user.lying || user.handcuffed)
@@ -27,6 +31,8 @@
 	..()
 
 /obj/item/melee/touch_attack/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	user.say(catchphrase)
 	playsound(get_turf(user), on_use_sound,50,1)
 	if(attached_spell)
@@ -34,6 +40,8 @@
 	qdel(src)
 
 /obj/item/melee/touch_attack/Destroy()
+	procstart = null
+	src.procstart = null
 	if(attached_spell)
 		attached_spell.attached_hand = null
 	return ..()
@@ -47,6 +55,8 @@
 	item_state = "disintegrate"
 
 /obj/item/melee/touch_attack/disintegrate/afterattack(atom/target, mob/living/carbon/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || target == user || !ismob(target) || !iscarbon(user) || user.lying || user.handcuffed) //exploding after touching yourself would be bad
 		return
 	if(!user.can_speak_vocal())
@@ -69,6 +79,8 @@
 	item_state = "fleshtostone"
 
 /obj/item/melee/touch_attack/fleshtostone/afterattack(atom/target, mob/living/carbon/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || target == user || !isliving(target) || !iscarbon(user) || user.lying || user.handcuffed) //getting hard after touching yourself would also be bad
 		return
 	if(user.lying || user.handcuffed)

@@ -16,6 +16,8 @@
 	slot = ORGAN_SLOT_STOMACH
 
 /obj/item/organ/cyberimp/chest/nutriment/on_life()
+	procstart = null
+	src.procstart = null
 	if(synthesizing)
 		return
 
@@ -26,9 +28,13 @@
 		addtimer(CALLBACK(src, .proc/synth_cool), 50)
 
 /obj/item/organ/cyberimp/chest/nutriment/proc/synth_cool()
+	procstart = null
+	src.procstart = null
 	synthesizing = FALSE
 
 /obj/item/organ/cyberimp/chest/nutriment/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	owner.reagents.add_reagent("bad_food", poison_amount / severity)
@@ -54,6 +60,8 @@
 	var/cooldown = 0
 
 /obj/item/organ/cyberimp/chest/reviver/on_life()
+	procstart = null
+	src.procstart = null
 	if(reviving)
 		if(owner.stat == UNCONSCIOUS)
 			addtimer(CALLBACK(src, .proc/heal), 30)
@@ -75,6 +83,8 @@
 	to_chat(owner, "<span class='notice'>You feel a faint buzzing as your reviver implant starts patching your wounds...</span>")
 
 /obj/item/organ/cyberimp/chest/reviver/proc/heal()
+	procstart = null
+	src.procstart = null
 	if(owner.getOxyLoss())
 		owner.adjustOxyLoss(-5)
 		revive_cost += 5
@@ -89,6 +99,8 @@
 		revive_cost += 40
 
 /obj/item/organ/cyberimp/chest/reviver/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 
@@ -105,6 +117,8 @@
 			addtimer(CALLBACK(src, .proc/undo_heart_attack), 600 / severity)
 
 /obj/item/organ/cyberimp/chest/reviver/proc/undo_heart_attack()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	if(!istype(H))
 		return
@@ -127,20 +141,28 @@
 	var/datum/effect_system/trail_follow/ion/ion_trail
 
 /obj/item/organ/cyberimp/chest/thrusters/Insert(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ion_trail)
 		ion_trail = new
 	ion_trail.set_up(M)
 
 /obj/item/organ/cyberimp/chest/thrusters/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	if(on)
 		toggle(silent=1)
 	..()
 
 /obj/item/organ/cyberimp/chest/thrusters/ui_action_click()
+	procstart = null
+	src.procstart = null
 	toggle()
 
 /obj/item/organ/cyberimp/chest/thrusters/proc/toggle(silent=0)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		if(crit_fail)
 			if(!silent)
@@ -159,6 +181,8 @@
 	update_icon()
 
 /obj/item/organ/cyberimp/chest/thrusters/update_icon()
+	procstart = null
+	src.procstart = null
 	if(on)
 		icon_state = "imp_jetpack-on"
 	else
@@ -168,6 +192,8 @@
 		A.UpdateButtonIcon()
 
 /obj/item/organ/cyberimp/chest/thrusters/proc/allow_thrust(num)
+	procstart = null
+	src.procstart = null
 	if(!on || !owner)
 		return 0
 

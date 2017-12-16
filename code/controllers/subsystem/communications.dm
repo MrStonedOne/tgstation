@@ -2,6 +2,8 @@
 #define COMMUNICATION_COOLDOWN_AI 300
 
 SUBSYSTEM_DEF(communications)
+	procstart = null
+	src.procstart = null
 	name = "Communications"
 	flags = SS_NO_INIT | SS_NO_FIRE
 
@@ -9,6 +11,8 @@ SUBSYSTEM_DEF(communications)
 	var/nonsilicon_message_cooldown
 
 /datum/controller/subsystem/communications/proc/can_announce(mob/living/user, is_silicon)
+	procstart = null
+	src.procstart = null
 	if(is_silicon && silicon_message_cooldown > world.time)
 		. = FALSE
 	else if(!is_silicon && nonsilicon_message_cooldown > world.time)
@@ -17,6 +21,8 @@ SUBSYSTEM_DEF(communications)
 		. = TRUE
 
 /datum/controller/subsystem/communications/proc/make_announcement(mob/living/user, is_silicon, input)
+	procstart = null
+	src.procstart = null
 	if(!can_announce(user, is_silicon))
 		return FALSE
 	if(is_silicon)
@@ -29,6 +35,8 @@ SUBSYSTEM_DEF(communications)
 	message_admins("[key_name_admin(user)] has made a priority announcement.")
 
 /datum/controller/subsystem/communications/proc/send_message(datum/comm_message/sending,print = TRUE,unique = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/computer/communications/C in GLOB.machines)
 		if(!(C.stat & (BROKEN|NOPOWER)) && (C.z in GLOB.station_z_levels))
 			if(unique)

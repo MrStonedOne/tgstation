@@ -20,6 +20,8 @@
 	circuit = /obj/item/circuitboard/computer/comm_monitor
 
 /obj/machinery/computer/telecomms/monitor/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	user.set_machine(src)
@@ -66,6 +68,8 @@
 
 
 /obj/machinery/computer/telecomms/monitor/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -124,5 +128,7 @@
 	return
 
 /obj/machinery/computer/telecomms/monitor/attackby()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	updateUsrDialog()

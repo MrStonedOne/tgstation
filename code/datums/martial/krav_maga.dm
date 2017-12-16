@@ -10,6 +10,8 @@
 	button_icon_state = "neckchop"
 
 /datum/action/neck_chop/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated())
 		to_chat(owner, "<span class='warning'>You can't use [name] while you're incapacitated.</span>")
 		return
@@ -27,6 +29,8 @@
 	button_icon_state = "legsweep"
 
 /datum/action/leg_sweep/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated())
 		to_chat(owner, "<span class='warning'>You can't use [name] while you're incapacitated.</span>")
 		return
@@ -44,6 +48,8 @@
 	button_icon_state = "lungpunch"
 
 /datum/action/lung_punch/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated())
 		to_chat(owner, "<span class='warning'>You can't use [name] while you're incapacitated.</span>")
 		return
@@ -56,6 +62,8 @@
 		H.mind.martial_art.streak = "quick_choke"//internal name for lung punch
 
 /datum/martial_art/krav_maga/teach(mob/living/carbon/human/H,make_temporary=0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		to_chat(H, "<span class = 'userdanger'>You know the arts of [name]!</span>")
 		to_chat(H, "<span class = 'danger'>Place your cursor over a move at the top of the screen to see what it does.</span>")
@@ -64,12 +72,16 @@
 		lungpunch.Grant(H)
 
 /datum/martial_art/krav_maga/on_remove(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	to_chat(H, "<span class = 'userdanger'>You suddenly forget the arts of [name]...</span>")
 	neckchop.Remove(H)
 	legsweep.Remove(H)
 	lungpunch.Remove(H)
 
 /datum/martial_art/krav_maga/proc/check_streak(var/mob/living/carbon/human/A, var/mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	switch(streak)
 		if("neck_chop")
 			streak = ""
@@ -86,6 +98,8 @@
 	return 0
 
 /datum/martial_art/krav_maga/proc/leg_sweep(var/mob/living/carbon/human/A, var/mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(D.stat || D.IsKnockdown())
 		return 0
 	D.visible_message("<span class='warning'>[A] leg sweeps [D]!</span>", \
@@ -107,6 +121,8 @@
 	return 1
 
 /datum/martial_art/krav_maga/proc/neck_chop(var/mob/living/carbon/human/A, var/mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	D.visible_message("<span class='warning'>[A] karate chops [D]'s neck!</span>", \
 				  	"<span class='userdanger'>[A] karate chops your neck, rendering you unable to speak!</span>")
 	playsound(get_turf(A), 'sound/effects/hit_punch.ogg', 50, 1, -1)
@@ -117,12 +133,16 @@
 	return 1
 
 /datum/martial_art/krav_maga/grab_act(var/mob/living/carbon/human/A, var/mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(check_streak(A,D))
 		return 1
 	add_logs(A, D, "grabbed with krav maga")
 	..()
 
 /datum/martial_art/krav_maga/harm_act(var/mob/living/carbon/human/A, var/mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(check_streak(A,D))
 		return 1
 	add_logs(A, D, "punched")
@@ -144,6 +164,8 @@
 	return 1
 
 /datum/martial_art/krav_maga/disarm_act(var/mob/living/carbon/human/A, var/mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(check_streak(A,D))
 		return 1
 	var/obj/item/I = null
@@ -168,6 +190,8 @@
 	var/datum/martial_art/krav_maga/style = new
 
 /obj/item/clothing/gloves/krav_maga/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	if(slot == slot_gloves)
@@ -175,6 +199,8 @@
 		style.teach(H,1)
 
 /obj/item/clothing/gloves/krav_maga/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/H = user

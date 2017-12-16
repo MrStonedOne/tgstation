@@ -3,6 +3,8 @@
 	var/airpump_tag
 
 /datum/computer/file/embedded_program/simple_vent_controller/receive_user_command(command)
+	procstart = null
+	src.procstart = null
 	switch(command)
 		if("vent_inactive")
 			post_signal(new /datum/signal(list(
@@ -28,6 +30,8 @@
 			)))
 
 /datum/computer/file/embedded_program/simple_vent_controller/process()
+	procstart = null
+	src.procstart = null
 	return 0
 
 
@@ -45,6 +49,8 @@
 	var/airpump_tag
 
 /obj/machinery/embedded_controller/radio/simple_vent_controller/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		return
@@ -55,6 +61,8 @@
 	program = new_prog
 
 /obj/machinery/embedded_controller/radio/simple_vent_controller/update_icon()
+	procstart = null
+	src.procstart = null
 	if(on && program)
 		icon_state = "airlock_control_standby"
 	else
@@ -62,6 +70,8 @@
 
 
 /obj/machinery/embedded_controller/radio/simple_vent_controller/return_text()
+	procstart = null
+	src.procstart = null
 	var/state_options = null
 	state_options = {"<A href='?src=[REF(src)];command=vent_inactive'>Deactivate Vent</A><BR>
 <A href='?src=[REF(src)];command=vent_pump'>Activate Vent / Pump</A><BR>

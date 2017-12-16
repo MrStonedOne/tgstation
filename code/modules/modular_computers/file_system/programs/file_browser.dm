@@ -13,6 +13,8 @@
 	var/error
 
 /datum/computer_file/program/filemanager/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -135,6 +137,8 @@
 			HDD.store_file(C)
 
 /datum/computer_file/program/filemanager/proc/parse_tags(t)
+	procstart = null
+	src.procstart = null
 	t = replacetext(t, "\[center\]", "<center>")
 	t = replacetext(t, "\[/center\]", "</center>")
 	t = replacetext(t, "\[br\]", "<BR>")
@@ -186,6 +190,8 @@
 	return t
 
 /datum/computer_file/program/filemanager/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 
 	var/obj/item/computer_hardware/hard_drive/HDD = computer.all_components[MC_HDD]

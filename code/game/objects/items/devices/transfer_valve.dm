@@ -14,9 +14,13 @@
 	var/toggle = 1
 
 /obj/item/device/transfer_valve/IsAssemblyHolder()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/device/transfer_valve/attackby(obj/item/item, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(item, /obj/item/tank))
 		if(tank_one && tank_two)
 			to_chat(user, "<span class='warning'>There are already two tanks attached, remove one first!</span>")
@@ -61,6 +65,8 @@
 	return
 
 /obj/item/device/transfer_valve/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = {"<B> Valve properties: </B>
 	<BR> <B> Attachment one:</B> [tank_one] [tank_one ? "<A href='?src=[REF(src)];tankone=1'>Remove</A>" : ""]
@@ -74,6 +80,8 @@
 	return
 
 /obj/item/device/transfer_valve/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!usr.canUseTopic(src))
 		return
@@ -108,15 +116,21 @@
 	add_fingerprint(usr)
 
 /obj/item/device/transfer_valve/proc/process_activation(obj/item/device/D)
+	procstart = null
+	src.procstart = null
 	if(toggle)
 		toggle = FALSE
 		toggle_valve()
 		addtimer(CALLBACK(src, .proc/toggle_off), 5)	//To stop a signal being spammed from a proxy sensor constantly going off or whatever
 
 /obj/item/device/transfer_valve/proc/toggle_off()
+	procstart = null
+	src.procstart = null
 	toggle = TRUE
 
 /obj/item/device/transfer_valve/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	underlays = null
 
@@ -135,12 +149,16 @@
 		add_overlay("device")
 
 /obj/item/device/transfer_valve/proc/merge_gases()
+	procstart = null
+	src.procstart = null
 	tank_two.air_contents.volume += tank_one.air_contents.volume
 	var/datum/gas_mixture/temp
 	temp = tank_one.air_contents.remove_ratio(1)
 	tank_two.air_contents.merge(temp)
 
 /obj/item/device/transfer_valve/proc/split_gases()
+	procstart = null
+	src.procstart = null
 	if (!valve_open || !tank_one || !tank_two)
 		return
 	var/ratio1 = tank_one.air_contents.volume/tank_two.air_contents.volume
@@ -155,6 +173,8 @@
 	*/
 
 /obj/item/device/transfer_valve/proc/toggle_valve()
+	procstart = null
+	src.procstart = null
 	if(!valve_open && tank_one && tank_two)
 		valve_open = TRUE
 		var/turf/bombturf = get_turf(src)
@@ -205,4 +225,6 @@
 // this doesn't do anything but the timer etc. expects it to be here
 // eventually maybe have it update icon to show state (timer, prox etc.) like old bombs
 /obj/item/device/transfer_valve/proc/c_state()
+	procstart = null
+	src.procstart = null
 	return

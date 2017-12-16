@@ -1,5 +1,7 @@
 //Speech verbs.
 /mob/verb/say_verb(message as text)
+	procstart = null
+	src.procstart = null
 	set name = "Say"
 	set category = "IC"
 	if(GLOB.say_disabled)	//This is here to try to identify lag problems
@@ -10,6 +12,8 @@
 
 
 /mob/verb/whisper_verb(message as text)
+	procstart = null
+	src.procstart = null
 	set name = "Whisper"
 	set category = "IC"
 	if(GLOB.say_disabled)	//This is here to try to identify lag problems
@@ -18,9 +22,13 @@
 	whisper(message)
 
 /mob/proc/whisper(message, datum/language/language=null)
+	procstart = null
+	src.procstart = null
 	say(message, language) //only living mobs actually whisper, everything else just talks
 
 /mob/verb/me_verb(message as text)
+	procstart = null
+	src.procstart = null
 	set name = "Me"
 	set category = "IC"
 
@@ -33,6 +41,8 @@
 	usr.emote("me",1,message)
 
 /mob/proc/say_dead(var/message)
+	procstart = null
+	src.procstart = null
 	var/name = real_name
 	var/alt_name = ""
 
@@ -74,10 +84,16 @@
 	deadchat_broadcast(rendered, follow_target = src, speaker_key = K)
 
 /mob/proc/emote(var/act)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/hivecheck()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/proc/lingcheck()
+	procstart = null
+	src.procstart = null
 	return LINGHIVE_NONE

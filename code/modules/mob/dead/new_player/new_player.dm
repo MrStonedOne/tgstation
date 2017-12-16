@@ -16,6 +16,8 @@
 	var/mob/living/new_character	//for instant transfer once the round is set up
 
 /mob/dead/new_player/Initialize()
+	procstart = null
+	src.procstart = null
 	if(client && SSticker.state == GAME_STATE_STARTUP)
 		var/obj/screen/splash/S = new(client, TRUE, TRUE)
 		S.Fade(TRUE)
@@ -30,9 +32,13 @@
 	. = ..()
 
 /mob/dead/new_player/prepare_huds()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/dead/new_player/proc/new_player_panel()
+	procstart = null
+	src.procstart = null
 	var/output = "<center><p><a href='byond://?src=[REF(src)];show_preferences=1'>Setup Character</a></p>"
 
 	if(SSticker.current_state <= GAME_STATE_PREGAME)
@@ -75,6 +81,8 @@
 
 
 /mob/dead/new_player/Topic(href, href_list[])
+	procstart = null
+	src.procstart = null
 	if(src != usr)
 		return 0
 
@@ -242,6 +250,8 @@
 
 //When you cop out of the round (NB: this HAS A SLEEP FOR PLAYER INPUT IN IT)
 /mob/dead/new_player/proc/make_me_an_observer()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || !src.client)
 		ready = PLAYER_NOT_READY
 		return FALSE
@@ -279,6 +289,8 @@
 	return TRUE
 
 /mob/dead/new_player/proc/IsJobAvailable(rank)
+	procstart = null
+	src.procstart = null
 	var/datum/job/job = SSjob.GetJob(rank)
 	if(!job)
 		return 0
@@ -301,6 +313,8 @@
 
 
 /mob/dead/new_player/proc/AttemptLateSpawn(rank)
+	procstart = null
+	src.procstart = null
 	if(!IsJobAvailable(rank))
 		alert(src, "[rank] is not available. Please try another.")
 		return FALSE
@@ -371,6 +385,8 @@
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
 
 /mob/dead/new_player/proc/AddEmploymentContract(mob/living/carbon/human/employee)
+	procstart = null
+	src.procstart = null
 	//TODO:  figure out a way to exclude wizards/nukeops/demons from this.
 	for(var/C in GLOB.employmentCabinets)
 		var/obj/structure/filingcabinet/employment/employmentCabinet = C
@@ -379,6 +395,8 @@
 
 
 /mob/dead/new_player/proc/LateChoices()
+	procstart = null
+	src.procstart = null
 	var/dat = "<div class='notice'>Round Duration: [DisplayTimeText(world.time - SSticker.round_start_time)]</div>"
 
 	if(SSshuttle.emergency)
@@ -441,6 +459,8 @@
 
 
 /mob/dead/new_player/proc/create_character(transfer_after)
+	procstart = null
+	src.procstart = null
 	spawning = 1
 	close_spawn_windows()
 
@@ -465,6 +485,8 @@
 		transfer_character()
 
 /mob/dead/new_player/proc/transfer_character()
+	procstart = null
+	src.procstart = null
 	. = new_character
 	if(.)
 		new_character.key = key		//Manually transfer the key to log them in
@@ -473,6 +495,8 @@
 		qdel(src)
 
 /mob/dead/new_player/proc/ViewManifest()
+	procstart = null
+	src.procstart = null
 	var/dat = "<html><body>"
 	dat += "<h4>Crew Manifest</h4>"
 	dat += GLOB.data_core.get_manifest(OOC = 1)
@@ -480,11 +504,15 @@
 	src << browse(dat, "window=manifest;size=387x420;can_close=1")
 
 /mob/dead/new_player/Move()
+	procstart = null
+	src.procstart = null
 	return 0
 
 
 /mob/dead/new_player/proc/close_spawn_windows()
 
+	procstart = null
+	src.procstart = null
 	src << browse(null, "window=latechoices") //closes late choices window
 	src << browse(null, "window=playersetup") //closes the player setup window
 	src << browse(null, "window=preferences") //closes job selection

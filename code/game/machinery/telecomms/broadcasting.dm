@@ -152,6 +152,8 @@
 
 /atom/proc/telecomms_process()
 
+	procstart = null
+	src.procstart = null
 	// First, we want to generate a new radio signal
 	var/datum/signal/signal = new
 	signal.transmission_method = TRANSMISSION_SUBSPACE

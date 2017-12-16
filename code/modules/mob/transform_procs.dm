@@ -151,6 +151,8 @@
 //Could probably be merged with monkeyize but other transformations got their own procs, too
 
 /mob/living/carbon/proc/humanize(tr_flags = (TR_KEEPITEMS | TR_KEEPVIRUS | TR_DEFAULTMSG))
+	procstart = null
+	src.procstart = null
 	if (notransform)
 		return
 	//Handle items on mob
@@ -309,6 +311,8 @@
 	qdel(src)
 
 /mob/living/carbon/human/AIize()
+	procstart = null
+	src.procstart = null
 	if (notransform)
 		return
 	for(var/t in bodyparts)
@@ -317,6 +321,8 @@
 	return ..()
 
 /mob/living/carbon/AIize()
+	procstart = null
+	src.procstart = null
 	if (notransform)
 		return
 	for(var/obj/item/W in src)
@@ -329,6 +335,8 @@
 	return ..()
 
 /mob/proc/AIize(transfer_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(client)
 		stop_sound_channel(CHANNEL_LOBBYMUSIC)
 
@@ -357,6 +365,8 @@
 	qdel(src)
 
 /mob/living/carbon/human/proc/Robotize(delete_items = 0, transfer_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if (notransform)
 		return
 	for(var/obj/item/W in src)
@@ -406,6 +416,8 @@
 
 //human -> alien
 /mob/living/carbon/human/proc/Alienize()
+	procstart = null
+	src.procstart = null
 	if (notransform)
 		return
 	for(var/obj/item/W in src)
@@ -436,6 +448,8 @@
 	qdel(src)
 
 /mob/living/carbon/human/proc/slimeize(reproduce as num)
+	procstart = null
+	src.procstart = null
 	if (notransform)
 		return
 	for(var/obj/item/W in src)
@@ -468,6 +482,8 @@
 	qdel(src)
 
 /mob/proc/become_overmind(starting_points = 60)
+	procstart = null
+	src.procstart = null
 	var/mob/camera/blob/B = new /mob/camera/blob(get_turf(src), starting_points)
 	B.key = key
 	. = B
@@ -475,6 +491,8 @@
 
 
 /mob/living/carbon/human/proc/corgize()
+	procstart = null
+	src.procstart = null
 	if (notransform)
 		return
 	for(var/obj/item/W in src)
@@ -496,6 +514,8 @@
 	qdel(src)
 
 /mob/living/carbon/proc/gorillize()
+	procstart = null
+	src.procstart = null
 	if(notransform)
 		return
 
@@ -521,6 +541,8 @@
 
 /mob/living/carbon/human/Animalize()
 
+	procstart = null
+	src.procstart = null
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
 	var/mobpath = input("Which type of mob should [src] turn into?", "Choose a type") in mobtypes
 
@@ -554,6 +576,8 @@
 
 /mob/proc/Animalize()
 
+	procstart = null
+	src.procstart = null
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
 	var/mobpath = input("Which type of mob should [src] turn into?", "Choose a type") in mobtypes
 

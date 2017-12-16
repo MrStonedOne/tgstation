@@ -25,6 +25,8 @@
 	var/defer_change = 0
 
 /turf/closed/mineral/Initialize()
+	procstart = null
+	src.procstart = null
 	if (!canSmoothWith)
 		canSmoothWith = list(/turf/closed/mineral, /turf/closed/indestructible)
 	pixel_y = -4
@@ -39,6 +41,8 @@
 					Spread(T)
 
 /turf/closed/mineral/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	if(turf_type)
 		underlay_appearance.icon = initial(turf_type.icon)
 		underlay_appearance.icon_state = initial(turf_type.icon_state)
@@ -47,6 +51,8 @@
 
 
 /turf/closed/mineral/attackby(obj/item/pickaxe/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (!user.IsAdvancedToolUser())
 		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
@@ -71,6 +77,8 @@
 		return attack_hand(user)
 
 /turf/closed/mineral/proc/gets_drilled()
+	procstart = null
+	src.procstart = null
 	if (mineralType && (src.mineralAmt > 0) && (src.mineralAmt < 11))
 		var/i
 		for(i in 1 to mineralAmt)
@@ -83,11 +91,15 @@
 	playsound(src, 'sound/effects/break_stone.ogg', 50, 1) //beautiful destruction
 
 /turf/closed/mineral/attack_animal(mob/living/simple_animal/user)
+	procstart = null
+	src.procstart = null
 	if((user.environment_smash & ENVIRONMENT_SMASH_WALLS) || (user.environment_smash & ENVIRONMENT_SMASH_RWALLS))
 		gets_drilled()
 	..()
 
 /turf/closed/mineral/attack_alien(mob/living/carbon/alien/M)
+	procstart = null
+	src.procstart = null
 	to_chat(M, "<span class='notice'>You start digging into the rock...</span>")
 	playsound(src, 'sound/effects/break_stone.ogg', 50, 1)
 	if(do_after(M,40, target = src))
@@ -95,6 +107,8 @@
 		gets_drilled(M)
 
 /turf/closed/mineral/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
@@ -111,9 +125,13 @@
 		return
 
 /turf/closed/mineral/acid_melt()
+	procstart = null
+	src.procstart = null
 	ChangeTurf(baseturf)
 
 /turf/closed/mineral/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(severity)
 		if(3)
@@ -127,6 +145,8 @@
 	return
 
 /turf/closed/mineral/Spread(turf/T)
+	procstart = null
+	src.procstart = null
 	T.ChangeTurf(type)
 
 /turf/closed/mineral/random
@@ -136,6 +156,8 @@
 	var/display_icon_state = "rock"
 
 /turf/closed/mineral/random/Initialize()
+	procstart = null
+	src.procstart = null
 	if (!mineralSpawnChanceList)
 		mineralSpawnChanceList = list(
 			/turf/closed/mineral/uranium = 5, /turf/closed/mineral/diamond = 1, /turf/closed/mineral/gold = 10,
@@ -382,16 +404,22 @@
 	var/mutable_appearance/activated_overlay
 
 /turf/closed/mineral/gibtonite/Initialize()
+	procstart = null
+	src.procstart = null
 	det_time = rand(8,10) //So you don't know exactly when the hot potato will explode
 	. = ..()
 
 /turf/closed/mineral/gibtonite/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/mining_scanner) || istype(I, /obj/item/device/t_scanner/adv_mining_scanner) && stage == 1)
 		user.visible_message("<span class='notice'>[user] holds [I] to [src]...</span>", "<span class='notice'>You use [I] to locate where to cut off the chain reaction and attempt to stop it...</span>")
 		defuse()
 	..()
 
 /turf/closed/mineral/gibtonite/proc/explosive_reaction(mob/user = null, triggered_by_explosion = 0)
+	procstart = null
+	src.procstart = null
 	if(stage == GIBTONITE_UNSTRUCK)
 		activated_overlay = mutable_appearance('icons/turf/smoothrocks.dmi', "rock_Gibtonite_active", ON_EDGED_TURF_LAYER)
 		add_overlay(activated_overlay)
@@ -418,6 +446,8 @@
 		countdown(notify_admins)
 
 /turf/closed/mineral/gibtonite/proc/countdown(notify_admins = 0)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	while(istype(src, /turf/closed/mineral/gibtonite) && stage == GIBTONITE_ACTIVE && det_time > 0 && mineralAmt >= 1)
 		det_time--
@@ -430,6 +460,8 @@
 			explosion(bombturf,1,3,5, adminlog = notify_admins)
 
 /turf/closed/mineral/gibtonite/proc/defuse()
+	procstart = null
+	src.procstart = null
 	if(stage == GIBTONITE_ACTIVE)
 		cut_overlay(activated_overlay)
 		activated_overlay.icon_state = "rock_Gibtonite_inactive"
@@ -441,6 +473,8 @@
 		visible_message("<span class='notice'>The chain reaction was stopped! The gibtonite had [src.det_time] reactions left till the explosion!</span>")
 
 /turf/closed/mineral/gibtonite/gets_drilled(mob/user, triggered_by_explosion = 0)
+	procstart = null
+	src.procstart = null
 	if(stage == GIBTONITE_UNSTRUCK && mineralAmt >= 1) //Gibtonite deposit is activated
 		playsound(src,'sound/effects/hit_on_shattered_glass.ogg',50,1)
 		explosive_reaction(user, triggered_by_explosion)

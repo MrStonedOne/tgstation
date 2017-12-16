@@ -17,12 +17,16 @@
 	var/next_record = 0
 
 /obj/machinery/computer/monitor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	search()
 	history["supply"] = list()
 	history["demand"] = list()
 
 /obj/machinery/computer/monitor/process()
+	procstart = null
+	src.procstart = null
 	if(!attached)
 		use_power = IDLE_POWER_USE
 		search()
@@ -31,10 +35,14 @@
 		record()
 
 /obj/machinery/computer/monitor/proc/search()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	attached = locate() in T
 
 /obj/machinery/computer/monitor/proc/record()
+	procstart = null
+	src.procstart = null
 	if(world.time >= next_record)
 		next_record = world.time + record_interval
 
@@ -58,6 +66,8 @@
 		ui.open()
 
 /obj/machinery/computer/monitor/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["stored"] = record_size
 	data["interval"] = record_interval / 10

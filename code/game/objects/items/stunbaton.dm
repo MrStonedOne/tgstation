@@ -19,17 +19,25 @@
 	var/throw_hit_chance = 35
 
 /obj/item/melee/baton/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/melee/baton/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is putting the live [name] in [user.p_their()] mouth! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (FIRELOSS)
 
 /obj/item/melee/baton/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/melee/baton/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	..()
 	//Only mob/living types have stun handling
 	if(status && prob(throw_hit_chance) && iscarbon(hit_atom))
@@ -41,6 +49,8 @@
 	. = ..()
 
 /obj/item/melee/baton/proc/deductcharge(chrgdeductamt)
+	procstart = null
+	src.procstart = null
 	if(cell)
 		//Note this value returned is significant, as it will determine
 		//if a stun is applied or not
@@ -53,6 +63,8 @@
 
 
 /obj/item/melee/baton/update_icon()
+	procstart = null
+	src.procstart = null
 	if(status)
 		icon_state = "[initial(name)]_active"
 	else if(!cell)
@@ -61,6 +73,8 @@
 		icon_state = "[initial(name)]"
 
 /obj/item/melee/baton/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(cell)
 		to_chat(user, "<span class='notice'>The baton is [round(cell.percent())]% charged.</span>")
@@ -68,6 +82,8 @@
 		to_chat(user, "<span class='warning'>The baton does not have a power source installed.</span>")
 
 /obj/item/melee/baton/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stock_parts/cell))
 		var/obj/item/stock_parts/cell/C = W
 		if(cell)
@@ -94,6 +110,8 @@
 		return ..()
 
 /obj/item/melee/baton/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cell && cell.charge > hitcost)
 		status = !status
 		to_chat(user, "<span class='notice'>[src] is now [status ? "on" : "off"].</span>")
@@ -108,6 +126,8 @@
 	add_fingerprint(user)
 
 /obj/item/melee/baton/attack(mob/M, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(status && user.disabilities & CLUMSY && prob(50))
 		user.visible_message("<span class='danger'>[user] accidentally hits themself with [src]!</span>", \
 							"<span class='userdanger'>You accidentally hit yourself with [src]!</span>")
@@ -140,6 +160,8 @@
 
 
 /obj/item/melee/baton/proc/baton_stun(mob/living/L, mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
 		if(H.check_shields(src, 0, "[user]'s [name]", MELEE_ATTACK)) //No message; check_shields() handles that
@@ -172,6 +194,8 @@
 	return 1
 
 /obj/item/melee/baton/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	deductcharge(1000 / severity)
 	..()
 
@@ -193,9 +217,13 @@
 	var/obj/item/device/assembly/igniter/sparkler = 0
 
 /obj/item/melee/baton/cattleprod/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sparkler = new (src)
 
 /obj/item/melee/baton/cattleprod/baton_stun()
+	procstart = null
+	src.procstart = null
 	if(sparkler.activate())
 		..()

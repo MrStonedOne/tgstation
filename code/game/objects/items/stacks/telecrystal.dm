@@ -9,6 +9,8 @@
 	flags_1 = NOBLUDGEON_1
 
 /obj/item/stack/telecrystal/attack(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(target == user) //You can't go around smacking people with crystals to find out if they have an uplink or not.
 		for(var/obj/item/implant/uplink/I in target)
 			if(I && I.imp_in)
@@ -21,6 +23,8 @@
 		return ..()
 
 /obj/item/stack/telecrystal/afterattack(obj/item/I, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/cartridge/virus/frame))
 		var/obj/item/cartridge/virus/frame/cart = I
 		if(!cart.charges)

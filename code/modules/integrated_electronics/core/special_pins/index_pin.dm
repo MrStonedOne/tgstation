@@ -4,12 +4,16 @@
 	data = 1
 
 /datum/integrated_io/index/ask_for_pin_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_data = input("Please type in an index.","[src] index writing") as num
 	if(isnum(new_data) && holder.check_interactivity(user))
 		to_chat(user, "<span class='notice'>You input [new_data] into the pin.</span>")
 		write_data_to_pin(new_data)
 
 /datum/integrated_io/index/write_data_to_pin(new_data)
+	procstart = null
+	src.procstart = null
 	if(isnull(new_data))
 		new_data = 1
 
@@ -18,4 +22,6 @@
 		holder.on_data_written()
 
 /datum/integrated_io/index/display_pin_type()
+	procstart = null
+	src.procstart = null
 	return IC_FORMAT_INDEX

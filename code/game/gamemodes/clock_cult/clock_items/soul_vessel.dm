@@ -26,6 +26,8 @@
 	overrides_aicore_laws = TRUE
 
 /obj/item/device/mmi/posibrain/soul_vessel/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio.on = FALSE
 	laws = new /datum/ai_laws/ratvar()
@@ -33,27 +35,37 @@
 	GLOB.all_clockwork_objects += src
 
 /obj/item/device/mmi/posibrain/soul_vessel/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.all_clockwork_objects -= src
 	return ..()
 
 /obj/item/device/mmi/posibrain/soul_vessel/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if((is_servant_of_ratvar(user) || isobserver(user)) && clockwork_desc)
 		desc = clockwork_desc
 	..()
 	desc = initial(desc)
 
 /obj/item/device/mmi/posibrain/soul_vessel/transfer_personality(mob/candidate)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		add_servant_of_ratvar(brainmob, TRUE)
 
 /obj/item/device/mmi/posibrain/soul_vessel/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		to_chat(user, "<span class='warning'>You fiddle around with [src], to no avail.</span>")
 		return FALSE
 	..()
 
 /obj/item/device/mmi/posibrain/soul_vessel/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user) || !ishuman(target))
 		..()
 		return

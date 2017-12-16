@@ -2,6 +2,8 @@ SERVER_TOOLS_DEFINE_AND_SET_GLOBAL(reboot_mode, REBOOT_MODE_NORMAL)
 SERVER_TOOLS_DEFINE_AND_SET_GLOBAL(server_tools_api_compatible, FALSE)
 
 /proc/GetTestMerges()
+	procstart = null
+	src.procstart = null
 	if(RunningService(TRUE) && fexists(SERVICE_PR_TEST_JSON))
 		. = json_decode(file2text(SERVICE_PR_TEST_JSON))
 		if(.)
@@ -9,22 +11,32 @@ SERVER_TOOLS_DEFINE_AND_SET_GLOBAL(server_tools_api_compatible, FALSE)
 	return list()
 
 /world/proc/ServiceInit()
+	procstart = null
+	src.procstart = null
 	if(!RunningService(TRUE))
 		return
 	ListServiceCustomCommands(TRUE)
 	ExportService("[SERVICE_REQUEST_API_VERSION] [SERVER_TOOLS_API_VERSION]", TRUE)
 
 /proc/RunningService(skip_compat_check = FALSE)
+	procstart = null
+	src.procstart = null
 	return (skip_compat_check || SERVER_TOOLS_READ_GLOBAL(server_tools_api_compatible)) && world.params[SERVICE_WORLD_PARAM] != null
 
 /proc/ServiceVersion()
+	procstart = null
+	src.procstart = null
 	if(RunningService(TRUE))
 		return world.params[SERVICE_VERSION_PARAM]
 
 /proc/ServiceAPIVersion()
+	procstart = null
+	src.procstart = null
 	return SERVICE_API_VERSION_STRING
 
 /world/proc/ExportService(command, skip_compat_check = FALSE)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!RunningService(skip_compat_check))
 		return
@@ -37,18 +49,26 @@ SERVER_TOOLS_DEFINE_AND_SET_GLOBAL(server_tools_api_compatible, FALSE)
 	return TRUE
 
 /world/proc/ChatBroadcast(message)
+	procstart = null
+	src.procstart = null
 	ExportService("[SERVICE_REQUEST_IRC_BROADCAST] [message]")
 
 /world/proc/AdminBroadcast(message)
+	procstart = null
+	src.procstart = null
 	ExportService("[SERVICE_REQUEST_IRC_ADMIN_CHANNEL_MESSAGE] [message]")
 
 /world/proc/ServiceEndProcess()
+	procstart = null
+	src.procstart = null
 	SERVER_TOOLS_LOG("Sending shutdown request!");
 	sleep(world.tick_lag)	//flush the buffers
 	ExportService(SERVICE_REQUEST_KILL_PROCESS)
 
 //called at the exact moment the world is supposed to reboot
 /world/proc/ServiceReboot()
+	procstart = null
+	src.procstart = null
 	switch(SERVER_TOOLS_READ_GLOBAL(reboot_mode))
 		if(REBOOT_MODE_HARD)
 			SERVER_TOOLS_WORLD_ANNOUNCE("Hard reboot triggered, you will automatically reconnect...")
@@ -60,6 +80,8 @@ SERVER_TOOLS_DEFINE_AND_SET_GLOBAL(server_tools_api_compatible, FALSE)
 			ExportService(SERVICE_REQUEST_WORLD_REBOOT)	//just let em know
 
 /world/proc/ServiceCommand(list/params)
+	procstart = null
+	src.procstart = null
 	var/their_sCK = params[SERVICE_CMD_PARAM_KEY]
 	if(!their_sCK || !RunningService(TRUE))
 		return FALSE	//continue world/Topic

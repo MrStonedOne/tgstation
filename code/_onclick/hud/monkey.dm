@@ -116,6 +116,8 @@
 			inv.update_icon()
 
 /datum/hud/monkey/persistent_inventory_update()
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	var/mob/living/carbon/monkey/M = mymob
@@ -151,5 +153,7 @@
 			M.client.screen -= I
 
 /mob/living/carbon/monkey/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/monkey(src, ui_style2icon(client.prefs.UI_style))

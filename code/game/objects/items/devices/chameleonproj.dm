@@ -15,22 +15,32 @@
 	var/saved_appearance = null
 
 /obj/item/device/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/cigbutt/butt = /obj/item/cigbutt
 	saved_appearance = initial(butt.appearance)
 
 /obj/item/device/chameleon/dropped()
+	procstart = null
+	src.procstart = null
 	..()
 	disrupt()
 
 /obj/item/device/chameleon/equipped()
+	procstart = null
+	src.procstart = null
 	..()
 	disrupt()
 
 /obj/item/device/chameleon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle(user)
 
 /obj/item/device/chameleon/afterattack(atom/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(!check_sprite(target))
@@ -46,11 +56,15 @@
 			saved_appearance = temp.appearance
 
 /obj/item/device/chameleon/proc/check_sprite(atom/target)
+	procstart = null
+	src.procstart = null
 	if(target.icon_state in icon_states(target.icon))
 		return TRUE
 	return FALSE
 
 /obj/item/device/chameleon/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_use || !saved_appearance)
 		return
 	if(active_dummy)
@@ -69,6 +83,8 @@
 	user.cancel_camera()
 
 /obj/item/device/chameleon/proc/disrupt(delete_dummy = 1)
+	procstart = null
+	src.procstart = null
 	if(active_dummy)
 		for(var/mob/M in active_dummy)
 			to_chat(M, "<span class='danger'>Your chameleon-projector deactivates.</span>")
@@ -84,6 +100,8 @@
 		spawn(50) can_use = 1
 
 /obj/item/device/chameleon/proc/eject_all()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/A in active_dummy)
 		A.forceMove(active_dummy.loc)
 		if(ismob(A))
@@ -98,6 +116,8 @@
 	var/obj/item/device/chameleon/master = null
 
 /obj/effect/dummy/chameleon/proc/activate(mob/M, saved_appearance, obj/item/device/chameleon/C)
+	procstart = null
+	src.procstart = null
 	appearance = saved_appearance
 	if(istype(M.buckled, /obj/vehicle))
 		var/obj/vehicle/V = M.buckled
@@ -111,29 +131,45 @@
 	master.active_dummy = src
 
 /obj/effect/dummy/chameleon/attackby()
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/attack_hand()
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/attack_animal()
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/attack_slime()
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/attack_alien()
+	procstart = null
+	src.procstart = null
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/ex_act(S, T)
+	procstart = null
+	src.procstart = null
 	contents_explosion(S, T)
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/bullet_act()
+	procstart = null
+	src.procstart = null
 	..()
 	master.disrupt()
 
 /obj/effect/dummy/chameleon/relaymove(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(loc) || !direction)
 		return //No magical space movement!
 
@@ -156,5 +192,7 @@
 	return
 
 /obj/effect/dummy/chameleon/Destroy()
+	procstart = null
+	src.procstart = null
 	master.disrupt(0)
 	return ..()

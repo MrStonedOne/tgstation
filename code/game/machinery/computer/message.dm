@@ -33,6 +33,8 @@
 	light_color = LIGHT_COLOR_GREEN
 
 /obj/machinery/computer/message_monitor/attackby(obj/item/O, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/screwdriver) && emagged)
 		//Stops people from just unscrewing the monitor and putting it back to get the console working again.
 		to_chat(user, "<span class='warning'>It is too hot to mess with!</span>")
@@ -40,6 +42,8 @@
 		return ..()
 
 /obj/machinery/computer/message_monitor/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	if(!isnull(src.linkedServer))
@@ -57,6 +61,8 @@
 		to_chat(user, "<span class='notice'>A no server error appears on the screen.</span>")
 
 /obj/machinery/computer/message_monitor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//Is the server isn't linked to a server, and there's a server available, default it to the first one in the list.
 	if(!linkedServer)
@@ -64,6 +70,8 @@
 			linkedServer = GLOB.message_servers[1]
 
 /obj/machinery/computer/message_monitor/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	//If the computer is being hacked or is emagged, display the reboot message.
@@ -224,6 +232,8 @@
 	return
 
 /obj/machinery/computer/message_monitor/proc/BruteForce(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(linkedServer))
 		to_chat(user, "<span class='warning'>Could not complete brute-force: Linked Server Disconnected!</span>")
 	else
@@ -233,15 +243,21 @@
 	src.screen = 0 // Return the screen back to normal
 
 /obj/machinery/computer/message_monitor/proc/UnmagConsole()
+	procstart = null
+	src.procstart = null
 	emagged = FALSE
 
 /obj/machinery/computer/message_monitor/proc/ResetMessage()
+	procstart = null
+	src.procstart = null
 	customsender 	= "System Administrator"
 	customrecepient = null
 	custommessage 	= "This is a test, please ignore."
 	customjob 		= "Admin"
 
 /obj/machinery/computer/message_monitor/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -455,10 +471,14 @@
 	var/obj/machinery/message_server/server = null
 
 /obj/item/paper/monitorkey/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/item/paper/monitorkey/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(GLOB.message_servers)
 		for(var/obj/machinery/message_server/server in GLOB.message_servers)
 			if(!isnull(server))

@@ -2,6 +2,8 @@
 GLOBAL_LIST_INIT(potentialRandomZlevels, generateMapList(filename = "config/awaymissionconfig.txt"))
 
 /proc/createRandomZlevel()
+	procstart = null
+	src.procstart = null
 	if(GLOB.awaydestinations.len)	//crude, but it saves another var!
 		return
 
@@ -12,6 +14,8 @@ GLOBAL_LIST_INIT(potentialRandomZlevels, generateMapList(filename = "config/away
 		to_chat(world, "<span class='boldannounce'>Away mission loaded.</span>")
 
 /proc/reset_gateway_spawns(reset = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/gateway/G in world)
 		if(reset)
 			G.randomspawns = GLOB.awaydestinations
@@ -23,14 +27,20 @@ GLOBAL_LIST_INIT(potentialRandomZlevels, generateMapList(filename = "config/away
 	desc = "Randomly picked away mission spawn points."
 
 /obj/effect/landmark/awaystart/New()
+	procstart = null
+	src.procstart = null
 	GLOB.awaydestinations += src
 	..()
 
 /obj/effect/landmark/awaystart/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.awaydestinations -= src
 	return ..()
 
 /proc/generateMapList(filename)
+	procstart = null
+	src.procstart = null
 	var/list/potentialMaps = list()
 	var/list/Lines = world.file2list(filename)
 

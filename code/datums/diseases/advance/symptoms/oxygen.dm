@@ -31,12 +31,16 @@ Bonus
 	threshold_desc = "<b>Resistance 8:</b>Additionally regenerates lost blood.<br>"
 
 /datum/symptom/oxygen/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["resistance"] >= 8) //blood regeneration
 		regenerate_blood = TRUE
 
 /datum/symptom/oxygen/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob

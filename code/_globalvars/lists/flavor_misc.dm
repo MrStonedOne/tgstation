@@ -27,6 +27,8 @@ GLOBAL_LIST_EMPTY(spines_list)
 GLOBAL_LIST_EMPTY(legs_list)
 GLOBAL_LIST_EMPTY(animated_spines_list)
 
+	procstart = null
+	src.procstart = null
 	//Mutant Human bits
 GLOBAL_LIST_EMPTY(tails_list_human)
 GLOBAL_LIST_EMPTY(animated_tails_list_human)
@@ -40,6 +42,8 @@ GLOBAL_LIST_INIT(ghost_forms_with_accessories_list, list("ghost")) //stores the 
 
 GLOBAL_LIST_INIT(security_depts_prefs, list(SEC_DEPT_RANDOM, SEC_DEPT_NONE, SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, SEC_DEPT_SCIENCE, SEC_DEPT_SUPPLY))
 
+	procstart = null
+	src.procstart = null
 	//Backpacks
 #define GBACKPACK "Grey Backpack"
 #define GSATCHEL "Grey Satchel"
@@ -56,9 +60,13 @@ GLOBAL_LIST_INIT(backbaglist, list(DBACKPACK, DSATCHEL, DDUFFELBAG, GBACKPACK, G
 #define UPLINK_PEN		"Pen" //like a real spy!
 GLOBAL_LIST_INIT(uplink_spawn_loc_list, list(UPLINK_PDA, UPLINK_RADIO, UPLINK_PEN))
 
+	procstart = null
+	src.procstart = null
 	//Female Uniforms
 GLOBAL_LIST_EMPTY(female_clothing_icons)
 
+	procstart = null
+	src.procstart = null
 	//radical shit
 GLOBAL_LIST_INIT(hit_appends, list("-OOF", "-ACK", "-UGH", "-HRNK", "-HURGH", "-GLORF"))
 
@@ -118,6 +126,8 @@ GLOBAL_LIST_INIT(phonetic_alphabet, world.file2list("strings/phonetic_alphabet.t
 GLOBAL_LIST_INIT(numbers_as_words, world.file2list("strings/numbers_as_words.txt"))
 
 /proc/generate_number_strings()
+	procstart = null
+	src.procstart = null
 	var/list/L[198]
 	for(var/i in 1 to 99)
 		L += "[i]"

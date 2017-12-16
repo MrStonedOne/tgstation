@@ -13,15 +13,21 @@
 	integrity_failure = 50
 
 /obj/structure/fireaxecabinet/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/structure/fireaxecabinet/Destroy()
+	procstart = null
+	src.procstart = null
 	if(fireaxe)
 		QDEL_NULL(fireaxe)
 	return ..()
 
 /obj/structure/fireaxecabinet/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) || istype(I, /obj/item/device/multitool))
 		toggle_lock(user)
 	else if(istype(I, /obj/item/weldingtool) && user.a_intent == INTENT_HELP && !broken)
@@ -65,6 +71,8 @@
 		return ..()
 
 /obj/structure/fireaxecabinet/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(broken)
@@ -75,6 +83,8 @@
 			playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/structure/fireaxecabinet/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(open)
 		return
 	. = ..()
@@ -82,6 +92,8 @@
 		update_icon()
 
 /obj/structure/fireaxecabinet/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!broken && !(flags_1 & NODECONSTRUCT_1))
 		update_icon()
 		broken = TRUE
@@ -90,6 +102,8 @@
 		new /obj/item/shard(loc)
 
 /obj/structure/fireaxecabinet/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(fireaxe && loc)
 			fireaxe.forceMove(loc)
@@ -98,12 +112,16 @@
 	qdel(src)
 
 /obj/structure/fireaxecabinet/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(fireaxe)
 		fireaxe.forceMove(loc)
 		fireaxe = null
 	qdel(src)
 
 /obj/structure/fireaxecabinet/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(open || broken)
 		if(fireaxe)
 			user.put_in_hands(fireaxe)
@@ -121,13 +139,19 @@
 		return
 
 /obj/structure/fireaxecabinet/attack_paw(mob/living/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/structure/fireaxecabinet/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_lock(user)
 	return
 
 /obj/structure/fireaxecabinet/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		to_chat(user, "<span class='warning'>The [name] won't budge!</span>")
 		return
@@ -137,6 +161,8 @@
 		return
 
 /obj/structure/fireaxecabinet/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(fireaxe)
 		add_overlay("axe")
@@ -162,6 +188,8 @@
 		add_overlay("glass_raised")
 
 /obj/structure/fireaxecabinet/proc/toggle_lock(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class = 'caution'> Resetting circuitry...</span>")
 	playsound(src, 'sound/machines/locktoggle.ogg', 50, 1)
 	if(do_after(user, 20, target = src))
@@ -170,6 +198,8 @@
 		update_icon()
 
 /obj/structure/fireaxecabinet/verb/toggle_open()
+	procstart = null
+	src.procstart = null
 	set name = "Open/Close"
 	set category = "Object"
 	set src in oview(1)

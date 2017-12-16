@@ -29,11 +29,15 @@
 	var/enter_message = "<span class='notice'><b>You feel cool air surround you. You go numb as your senses turn inward.</b></span>"
 
 /obj/machinery/sleeper/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 	reset_chem_buttons()
 
 /obj/machinery/sleeper/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/E
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		E += B.rating
@@ -49,23 +53,33 @@
 	reset_chem_buttons()
 
 /obj/machinery/sleeper/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 	if(state_open)
 		icon_state += "-open"
 
 /obj/machinery/sleeper/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='notice'>[occupant] emerges from [src]!</span>",
 		"<span class='notice'>You climb out of [src]!</span>")
 	open_machine()
 
 /obj/machinery/sleeper/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	container_resist(user)
 
 /obj/machinery/sleeper/open_machine()
+	procstart = null
+	src.procstart = null
 	if(!state_open && !panel_open)
 		..()
 
 /obj/machinery/sleeper/close_machine(mob/user)
+	procstart = null
+	src.procstart = null
 	if((isnull(user) || istype(user)) && state_open && !panel_open)
 		..(user)
 		var/mob/living/mob_occupant = occupant
@@ -73,16 +87,22 @@
 			to_chat(occupant, "[enter_message]")
 
 /obj/machinery/sleeper/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(is_operational() && occupant)
 		open_machine()
 	..(severity)
 
 /obj/machinery/sleeper/MouseDrop_T(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || user.lying || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !user.IsAdvancedToolUser())
 		return
 	close_machine(target)
 
 /obj/machinery/sleeper/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!state_open && !occupant)
 		if(default_deconstruction_screwdriver(user, "[initial(icon_state)]-o", initial(icon_state), I))
 			return
@@ -108,6 +128,8 @@
 		ui.open()
 
 /obj/machinery/sleeper/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["occupied"] = occupant ? 1 : 0
 	data["open"] = state_open
@@ -150,6 +172,8 @@
 	return data
 
 /obj/machinery/sleeper/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/mob_occupant = occupant
@@ -173,15 +197,21 @@
 					to_chat(usr, "<span class='warning'>Chem System Re-route detected, results may not be as expected!</span>")
 
 /obj/machinery/sleeper/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	scramble_chem_buttons()
 	to_chat(user, "<span class='warning'>You scramble the sleeper's user interface!</span>")
 
 /obj/machinery/sleeper/proc/inject_chem(chem)
+	procstart = null
+	src.procstart = null
 	if((chem in available_chems) && chem_allowed(chem))
 		occupant.reagents.add_reagent(chem_buttons[chem], 10) //emag effect kicks in here so that the "intended" chem is used for all checks, for extra FUUU
 		return TRUE
 
 /obj/machinery/sleeper/proc/chem_allowed(chem)
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_occupant = occupant
 	if(!mob_occupant)
 		return
@@ -190,12 +220,16 @@
 	return amount && occ_health
 
 /obj/machinery/sleeper/proc/reset_chem_buttons()
+	procstart = null
+	src.procstart = null
 	scrambled_chems = FALSE
 	LAZYINITLIST(chem_buttons)
 	for(var/chem in available_chems)
 		chem_buttons[chem] = chem
 
 /obj/machinery/sleeper/proc/scramble_chem_buttons()
+	procstart = null
+	src.procstart = null
 	scrambled_chems = TRUE
 	var/list/av_chem = available_chems.Copy()
 	for(var/chem in av_chem)
@@ -214,6 +248,8 @@
 	possible_chems = list(list("epinephrine", "salbutamol", "bicaridine", "kelotane", "oculine", "inacusiate", "mannitol"))
 
 /obj/machinery/sleeper/clockwork/process()
+	procstart = null
+	src.procstart = null
 	if(occupant && isliving(occupant))
 		var/mob/living/L = occupant
 		if(GLOB.clockwork_vitality) //If there's Vitality, the sleeper has passive healing

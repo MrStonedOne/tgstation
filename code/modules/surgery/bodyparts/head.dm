@@ -32,6 +32,8 @@
 	var/lip_color = "white"
 
 /obj/item/bodypart/head/drop_organs(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(status != BODYPART_ROBOTIC)
 		playsound(T, 'sound/misc/splort.ogg', 50, 1, -1)
@@ -54,6 +56,8 @@
 			I.forceMove(T)
 
 /obj/item/bodypart/head/update_limb(dropping_limb, mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C
 	if(source)
 		C = source
@@ -111,6 +115,8 @@
 	..()
 
 /obj/item/bodypart/head/update_icon_dropped()
+	procstart = null
+	src.procstart = null
 	var/list/standing = get_limb_icon(1)
 	if(!standing.len)
 		icon_state = initial(icon_state)//no overlays found, we default back to initial icon.
@@ -121,6 +127,8 @@
 	add_overlay(standing)
 
 /obj/item/bodypart/head/get_limb_icon(dropped)
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	. = ..()
 	if(dropped) //certain overlays only appear when the limb is being detached from its owner.

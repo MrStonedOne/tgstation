@@ -10,6 +10,8 @@
 	var/started = FALSE
 
 /datum/round_event/wizard/lava/start()
+	procstart = null
+	src.procstart = null
 	if(!started)
 		started = TRUE
 		SSweather.run_weather("the floor is lava", ZLEVEL_STATION_PRIMARY)

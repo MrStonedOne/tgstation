@@ -17,12 +17,16 @@
 	var/start_showpiece_type = null //add type for items on display
 
 /obj/structure/displaycase/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(start_showpiece_type)
 		showpiece = new start_showpiece_type (src)
 	update_icon()
 
 /obj/structure/displaycase/Destroy()
+	procstart = null
+	src.procstart = null
 	if(electronics)
 		QDEL_NULL(electronics)
 	if(showpiece)
@@ -30,6 +34,8 @@
 	return ..()
 
 /obj/structure/displaycase/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(alert)
 		to_chat(user, "<span class='notice'>Hooked up with an anti-theft system.</span>")
@@ -38,11 +44,15 @@
 
 
 /obj/structure/displaycase/proc/dump()
+	procstart = null
+	src.procstart = null
 	if (showpiece)
 		showpiece.forceMove(loc)
 		showpiece = null
 
 /obj/structure/displaycase/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src.loc, 'sound/effects/glasshit.ogg', 75, 1)
@@ -50,6 +60,8 @@
 			playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/structure/displaycase/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		dump()
 		if(!disassembled)
@@ -58,6 +70,8 @@
 	qdel(src)
 
 /obj/structure/displaycase/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!broken && !(flags_1 & NODECONSTRUCT_1))
 		density = FALSE
 		broken = 1
@@ -67,6 +81,8 @@
 		trigger_alarm()
 
 /obj/structure/displaycase/proc/trigger_alarm()
+	procstart = null
+	src.procstart = null
 	//Activate Anti-theft
 	if(alert)
 		var/area/alarmed = get_area(src)
@@ -78,6 +94,8 @@
 */
 
 /obj/structure/displaycase/proc/is_directional(atom/A)
+	procstart = null
+	src.procstart = null
 	try
 		getFlatIcon(A,defdir=4)
 	catch
@@ -85,6 +103,8 @@
 	return 1
 
 /obj/structure/displaycase/proc/get_flat_icon_directional(atom/A)
+	procstart = null
+	src.procstart = null
 	//Get flatIcon even if dir is mismatched for directionless icons
 	//SLOW
 	var/icon/I
@@ -98,6 +118,8 @@
 	return I
 
 /obj/structure/displaycase/update_icon()
+	procstart = null
+	src.procstart = null
 	var/icon/I
 	if(open)
 		I = icon('icons/obj/stationobjs.dmi',"glassbox_open")
@@ -113,6 +135,8 @@
 	return
 
 /obj/structure/displaycase/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.GetID() && !broken && openable)
 		if(allowed(user))
 			to_chat(user,  "<span class='notice'>You [open ? "close":"open"] [src].</span>")
@@ -164,13 +188,19 @@
 		return ..()
 
 /obj/structure/displaycase/proc/toggle_lock(mob/user)
+	procstart = null
+	src.procstart = null
 	open = !open
 	update_icon()
 
 /obj/structure/displaycase/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/structure/displaycase/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	if (showpiece && (broken || open))
 		to_chat(user, "<span class='notice'>You deactivate the hover field built into the case.</span>")
@@ -199,6 +229,8 @@
 
 
 /obj/structure/displaycase_chassis/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench)) //The player can only deconstruct the wooden frame
 		to_chat(user, "<span class='notice'>You start disassembling [src]...</span>")
 		playsound(src.loc, I.usesound, 50, 1)
@@ -262,14 +294,20 @@
 	openable = FALSE
 
 /obj/structure/displaycase/trophy/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.trophy_cases += src
 
 /obj/structure/displaycase/trophy/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.trophy_cases -= src
 	return ..()
 
 /obj/structure/displaycase/trophy/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(trophy_message)
 		to_chat(user, "The plaque reads:")
@@ -277,6 +315,8 @@
 
 /obj/structure/displaycase/trophy/attackby(obj/item/W, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(!user.Adjacent(src)) //no TK museology
 		return
 	if(user.a_intent == INTENT_HARM)
@@ -339,6 +379,8 @@
 	return
 
 /obj/structure/displaycase/trophy/dump()
+	procstart = null
+	src.procstart = null
 	if (showpiece)
 		if(added_roundstart)
 			visible_message("<span class='danger'>The [showpiece] crumbles to dust!</span>")
@@ -355,6 +397,8 @@
 	name = "Cheap replica"
 
 /obj/item/showpiece_dummy/Initialize(mapload, path)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/I = path
 	name = initial(I.name)

@@ -6,10 +6,14 @@
 	icon_state = "nomod"
 
 /obj/screen/robot/Click()
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr))
 		return 1
 
 /obj/screen/robot/module/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -23,6 +27,8 @@
 	icon_state = "inv1"
 
 /obj/screen/robot/module1/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -33,6 +39,8 @@
 	icon_state = "inv2"
 
 /obj/screen/robot/module2/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -43,6 +51,8 @@
 	icon_state = "inv3"
 
 /obj/screen/robot/module3/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -53,6 +63,8 @@
 	icon_state = "radio"
 
 /obj/screen/robot/radio/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -63,6 +75,8 @@
 	icon_state = "store"
 
 /obj/screen/robot/store/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -73,6 +87,8 @@
 	icon_state = "lamp0"
 
 /obj/screen/robot/lamp/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -83,6 +99,8 @@
 	icon_state = "ionpulse0"
 
 /obj/screen/robot/thrusters/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/robot/R = usr
@@ -92,6 +110,8 @@
 	ui_style_icon = 'icons/mob/screen_cyborg.dmi'
 
 /datum/hud/robot/New(mob/owner, ui_style = 'icons/mob/screen_cyborg.dmi')
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/silicon/robot/mymobR = mymob
 	var/obj/screen/using
@@ -180,6 +200,8 @@
 
 
 /datum/hud/proc/toggle_show_robot_modules()
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(mymob))
 		return
 
@@ -189,6 +211,8 @@
 	update_robot_modules_display()
 
 /datum/hud/proc/update_robot_modules_display(mob/viewer)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(mymob))
 		return
 
@@ -246,11 +270,15 @@
 		screenmob.client.screen -= R.robot_modules_background
 
 /mob/living/silicon/robot/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/robot(src)
 
 
 /datum/hud/robot/persistent_inventory_update(mob/viewer)
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	var/mob/living/silicon/robot/R = mymob

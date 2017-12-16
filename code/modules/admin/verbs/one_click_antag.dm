@@ -10,6 +10,8 @@
 
 /datum/admins/proc/one_click_antag()
 
+	procstart = null
+	src.procstart = null
 	var/dat = {"
 		<a href='?src=[REF(src)];[HrefToken()];makeAntag=traitors'>Make Traitors</a><br>
 		<a href='?src=[REF(src)];[HrefToken()];makeAntag=changelings'>Make Changelings</a><br>
@@ -29,6 +31,8 @@
 	popup.open()
 
 /datum/admins/proc/isReadytoRumble(mob/living/carbon/human/applicant, targetrole, onstation = TRUE, conscious = TRUE)
+	procstart = null
+	src.procstart = null
 	if(applicant.mind.special_role)
 		return FALSE
 	if(!(targetrole in applicant.client.prefs.be_special))
@@ -45,6 +49,8 @@
 
 
 /datum/admins/proc/makeTraitors()
+	procstart = null
+	src.procstart = null
 	var/datum/game_mode/traitor/temp = new
 
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
@@ -78,6 +84,8 @@
 
 /datum/admins/proc/makeChanglings()
 
+	procstart = null
+	src.procstart = null
 	var/datum/game_mode/changeling/temp = new
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		temp.restricted_jobs += temp.protected_jobs
@@ -108,6 +116,8 @@
 
 /datum/admins/proc/makeRevs()
 
+	procstart = null
+	src.procstart = null
 	var/datum/game_mode/revolution/temp = new
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		temp.restricted_jobs += temp.protected_jobs
@@ -137,6 +147,8 @@
 
 /datum/admins/proc/makeWizard()
 
+	procstart = null
+	src.procstart = null
 	var/list/mob/dead/observer/candidates = pollGhostCandidates("Do you wish to be considered for the position of a Wizard Foundation 'diplomat'?", "wizard", null)
 
 	var/mob/dead/observer/selected = pick_n_take(candidates)
@@ -147,6 +159,8 @@
 
 
 /datum/admins/proc/makeCult()
+	procstart = null
+	src.procstart = null
 	var/datum/game_mode/cult/temp = new
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		temp.restricted_jobs += temp.protected_jobs
@@ -177,6 +191,8 @@
 
 
 /datum/admins/proc/makeClockCult()
+	procstart = null
+	src.procstart = null
 	var/datum/game_mode/clockwork_cult/temp = new
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		temp.restricted_jobs += temp.protected_jobs
@@ -213,6 +229,8 @@
 
 
 /datum/admins/proc/makeNukeTeam()
+	procstart = null
+	src.procstart = null
 	var/datum/game_mode/nuclear/temp = new
 	var/list/mob/dead/observer/candidates = pollGhostCandidates("Do you wish to be considered for a nuke team being sent in?", "operative", temp)
 	var/list/mob/dead/observer/chosen = list()
@@ -258,6 +276,8 @@
 
 
 /datum/admins/proc/makeAliens()
+	procstart = null
+	src.procstart = null
 	var/datum/round_event/ghost_role/alien_infestation/E = new(FALSE)
 	E.spawncount = 3
 	// TODO The fact we have to do this rather than just have events start
@@ -266,11 +286,15 @@
 	return TRUE
 
 /datum/admins/proc/makeSpaceNinja()
+	procstart = null
+	src.procstart = null
 	new /datum/round_event/ghost_role/ninja()
 	return 1
 
 // DEATH SQUADS
 /datum/admins/proc/makeDeathsquad()
+	procstart = null
+	src.procstart = null
 	var/mission = input("Assign a mission to the deathsquad", "Assign Mission", "Leave no witnesses.")
 	var/list/mob/dead/observer/candidates = pollGhostCandidates("Do you wish to be considered for an elite Nanotrasen Strike Team?", "deathsquad", null)
 	var/squadSpawned = 0
@@ -345,6 +369,8 @@
 	return
 
 /datum/admins/proc/makeOfficial()
+	procstart = null
+	src.procstart = null
 	var/mission = input("Assign a task for the official", "Assign Task", "Conduct a routine preformance review of [station_name()] and its Captain.")
 	var/list/mob/dead/observer/candidates = pollGhostCandidates("Do you wish to be considered to be a CentCom Official?", "deathsquad")
 
@@ -389,6 +415,8 @@
 
 // CENTCOM RESPONSE TEAM
 /datum/admins/proc/makeEmergencyresponseteam()
+	procstart = null
+	src.procstart = null
 	var/alert = input("Which team should we send?", "Select Response Level") as null|anything in list("Green: CentCom Official", "Blue: Light ERT (No Armoury Access)", "Amber: Full ERT (Armoury Access)", "Red: Elite ERT (Armoury Access + Pulse Weapons)", "Delta: Deathsquad")
 	if(!alert)
 		return
@@ -509,9 +537,13 @@
 
 //Abductors
 /datum/admins/proc/makeAbductorTeam()
+	procstart = null
+	src.procstart = null
 	new /datum/round_event/ghost_role/abductor
 	return 1
 
 /datum/admins/proc/makeRevenant()
+	procstart = null
+	src.procstart = null
 	new /datum/round_event/ghost_role/revenant(TRUE, TRUE)
 	return 1

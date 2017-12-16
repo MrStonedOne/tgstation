@@ -39,16 +39,22 @@
 	var/can_repair_self = FALSE
 
 /mob/living/simple_animal/hostile/construct/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_health_hud()
 	for(var/spell in construct_spells)
 		AddSpell(new spell(null))
 
 /mob/living/simple_animal/hostile/construct/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(src, playstyle_string)
 
 /mob/living/simple_animal/hostile/construct/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/t_He = p_they(TRUE)
 	var/t_s = p_s()
 	var/msg = "<span class='cult'>*---------*\nThis is [icon2html(src, user)] \a <b>[src]</b>!\n"
@@ -65,6 +71,8 @@
 	to_chat(user, msg)
 
 /mob/living/simple_animal/hostile/construct/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	if(isconstruct(M)) //is it a construct?
 		var/mob/living/simple_animal/hostile/construct/C = M
 		if(!C.can_repair_constructs || (C == src && !C.can_repair_self))
@@ -87,12 +95,18 @@
 		return ..()
 
 /mob/living/simple_animal/hostile/construct/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/construct/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/simple_animal/hostile/construct/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(updating_health)
 		update_health_hud()
@@ -127,6 +141,8 @@
 	environment_smash = ENVIRONMENT_SMASH_STRUCTURES //only token destruction, don't smash the cult wall NO STOP
 
 /mob/living/simple_animal/hostile/construct/armored/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/projectile/energy) || istype(P, /obj/item/projectile/beam))
 		var/reflectchance = 80 - round(P.damage/3)
 		if(prob(reflectchance))
@@ -240,12 +256,16 @@
 		return 0
 
 /mob/living/simple_animal/hostile/construct/builder/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	if(see_invisible < the_target.invisibility)//Target's invisible to us, forget it
 		return 0
 	if(Found(the_target) || ..()) //If we Found it or Can_Attack it normally, we Can_Attack it as long as it wasn't invisible
 		return 1 //as a note this shouldn't be added to base hostile mobs because it'll mess up retaliate hostile mobs
 
 /mob/living/simple_animal/hostile/construct/builder/MoveToTarget(var/list/possible_targets)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isliving(target))
 		var/mob/living/L = target
@@ -257,12 +277,16 @@
 			minimum_distance = 1
 
 /mob/living/simple_animal/hostile/construct/builder/Aggro()
+	procstart = null
+	src.procstart = null
 	..()
 	if(isconstruct(target)) //oh the target is a construct no need to flee
 		retreat_distance = null
 		minimum_distance = 1
 
 /mob/living/simple_animal/hostile/construct/builder/LoseAggro()
+	procstart = null
+	src.procstart = null
 	..()
 	retreat_distance = initial(retreat_distance)
 	minimum_distance = initial(minimum_distance)
@@ -302,6 +326,8 @@
 
 
 /mob/living/simple_animal/hostile/construct/harvester/Collide(atom/AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(AM, /turf/closed/wall/mineral/cult) && AM != loc) //we can go through cult walls
 		var/atom/movable/stored_pulling = pulling
@@ -313,6 +339,8 @@
 			start_pulling(stored_pulling, TRUE) //drag anything we're pulling through the wall with us by magic
 
 /mob/living/simple_animal/hostile/construct/harvester/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target
 		var/list/parts = list()
@@ -338,6 +366,8 @@
 	. = ..()
 
 /mob/living/simple_animal/hostile/construct/harvester/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/innate/seek_prey/seek = new()
 	seek.Grant(src)
@@ -356,10 +386,14 @@
 
 
 /datum/action/innate/seek_master/Grant(var/mob/living/C)
+	procstart = null
+	src.procstart = null
 	the_construct = C
 	..()
 
 /datum/action/innate/seek_master/Activate()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/cult/C = owner.mind.has_antag_datum(/datum/antagonist/cult)
 	if(!C)
 		return
@@ -393,10 +427,14 @@
 	var/mob/living/simple_animal/hostile/construct/harvester/the_construct
 
 /datum/action/innate/seek_prey/Grant(var/mob/living/C)
+	procstart = null
+	src.procstart = null
 	the_construct = C
 	..()
 
 /datum/action/innate/seek_prey/Activate()
+	procstart = null
+	src.procstart = null
 	if(GLOB.cult_narsie == null)
 		return
 	if(the_construct.seeking)
@@ -420,6 +458,8 @@
 /////////////////////////////ui stuff/////////////////////////////
 
 /mob/living/simple_animal/hostile/construct/update_health_hud()
+	procstart = null
+	src.procstart = null
 	if(hud_used)
 		if(health >= maxHealth)
 			hud_used.healths.icon_state = "[icon_state]_health0"

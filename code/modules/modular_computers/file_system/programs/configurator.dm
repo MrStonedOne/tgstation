@@ -18,6 +18,8 @@
 
 
 /datum/computer_file/program/computerconfig/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	movable = computer
 	var/obj/item/computer_hardware/hard_drive/hard_drive = movable.all_components[MC_HDD]
 	var/obj/item/computer_hardware/battery/battery_module = movable.all_components[MC_CELL]
@@ -57,6 +59,8 @@
 
 
 /datum/computer_file/program/computerconfig/ui_act(action,params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)

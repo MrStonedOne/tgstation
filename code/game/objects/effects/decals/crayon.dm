@@ -9,6 +9,8 @@
 	var/paint_colour = "#FFFFFF"
 
 /obj/effect/decal/cleanable/crayon/Initialize(mapload, main, type, e_name, graf_rot, alt_icon = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(e_name)

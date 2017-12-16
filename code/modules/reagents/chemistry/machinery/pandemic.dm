@@ -18,20 +18,28 @@
 	var/obj/item/reagent_containers/beaker
 
 /obj/machinery/computer/pandemic/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/machinery/computer/pandemic/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/computer/pandemic/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(A == beaker)
 		beaker = null
 		update_icon()
 
 /obj/machinery/computer/pandemic/proc/get_by_index(thing, index)
+	procstart = null
+	src.procstart = null
 	if(!beaker || !beaker.reagents)
 		return
 	var/datum/reagent/blood/B = locate() in beaker.reagents.reagent_list
@@ -39,11 +47,15 @@
 		return B.data[thing][index]
 
 /obj/machinery/computer/pandemic/proc/get_virus_id_by_index(index)
+	procstart = null
+	src.procstart = null
 	var/datum/disease/D = get_by_index("viruses", index)
 	if(D)
 		return D.GetDiseaseID()
 
 /obj/machinery/computer/pandemic/proc/get_viruses_data(datum/reagent/blood/B)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/V = B.get_diseases()
 	var/index = 1
@@ -83,6 +95,8 @@
 		. += list(this)
 
 /obj/machinery/computer/pandemic/proc/get_symptom_data(datum/symptom/S)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/this = list()
 	this["name"] = S.name
@@ -97,6 +111,8 @@
 	. += this
 
 /obj/machinery/computer/pandemic/proc/get_resistance_data(datum/reagent/blood/B)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!islist(B.data["resistances"]))
 		return
@@ -111,11 +127,15 @@
 		. += list(this)
 
 /obj/machinery/computer/pandemic/proc/reset_replicator_cooldown()
+	procstart = null
+	src.procstart = null
 	wait = FALSE
 	update_icon()
 	playsound(loc, 'sound/machines/ping.ogg', 30, 1)
 
 /obj/machinery/computer/pandemic/update_icon()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		icon_state = (beaker ? "mixer1_b" : "mixer0_b")
 		return
@@ -127,18 +147,24 @@
 		add_overlay("waitlight")
 
 /obj/machinery/computer/pandemic/proc/eject_beaker()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		beaker.forceMove(drop_location())
 		beaker = null
 		update_icon()
 
 /obj/machinery/computer/pandemic/ui_interact(mob/user, ui_key = "main", datum/tgui/ui, force_open = FALSE, datum/tgui/master_ui, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "pandemic", name, 700, 500, master_ui, state)
 		ui.open()
 
 /obj/machinery/computer/pandemic/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["is_ready"] = !wait
 	data["mode"] = mode
@@ -162,6 +188,8 @@
 	return data
 
 /obj/machinery/computer/pandemic/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -225,6 +253,8 @@
 
 
 /obj/machinery/computer/pandemic/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/reagent_containers) && (I.container_type & OPENCONTAINER_1))
 		. = TRUE //no afterattack
 		if(stat & (NOPOWER|BROKEN))
@@ -242,5 +272,7 @@
 		return ..()
 
 /obj/machinery/computer/pandemic/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	eject_beaker()
 	. = ..()

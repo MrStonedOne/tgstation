@@ -11,9 +11,13 @@
 	self_delay = 30		// three seconds
 
 /obj/item/reagent_containers/pill/patch/afterattack(obj/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	return // thanks inheritance again
 
 /obj/item/reagent_containers/pill/patch/attack(mob/living/L, mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(L))
 		var/obj/item/bodypart/affecting = L.get_bodypart(check_zone(user.zone_selected))
 		if(affecting.status != BODYPART_ORGANIC)
@@ -22,6 +26,8 @@
 	..()
 
 /obj/item/reagent_containers/pill/patch/canconsume(mob/eater, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(eater))
 		return 0
 	return 1 // Masks were stopping people from "eating" patches. Thanks, inheritance.

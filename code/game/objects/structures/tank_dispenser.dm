@@ -18,6 +18,8 @@
 	oxygentanks = 0
 
 /obj/structure/tank_dispenser/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to oxygentanks)
 		new /obj/item/tank/internals/oxygen(src)
@@ -26,6 +28,8 @@
 	update_icon()
 
 /obj/structure/tank_dispenser/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	switch(oxygentanks)
 		if(1 to 3)
@@ -39,6 +43,8 @@
 			add_overlay("plasma-5")
 
 /obj/structure/tank_dispenser/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/full
 	if(istype(I, /obj/item/tank/internals/plasma))
 		if(plasmatanks < TANK_DISPENSER_CAPACITY)
@@ -75,6 +81,8 @@
 		ui.open()
 
 /obj/structure/tank_dispenser/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["oxygen"] = oxygentanks
 	data["plasma"] = plasmatanks
@@ -82,6 +90,8 @@
 	return data
 
 /obj/structure/tank_dispenser/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -101,6 +111,8 @@
 
 
 /obj/structure/tank_dispenser/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		for(var/X in src)
 			var/obj/item/I = X

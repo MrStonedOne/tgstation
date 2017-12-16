@@ -43,6 +43,8 @@
 	var/static/bomb_set
 
 /obj/machinery/nuclearbomb/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	countdown = new(src)
 	GLOB.nuke_list += src
@@ -53,6 +55,8 @@
 	previous_level = get_security_level()
 
 /obj/machinery/nuclearbomb/Destroy()
+	procstart = null
+	src.procstart = null
 	safety = FALSE
 	if(!exploding)
 		// If we're not exploding, set the alert level back to normal
@@ -65,6 +69,8 @@
 	. = ..()
 
 /obj/machinery/nuclearbomb/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(exploding)
 		to_chat(user, "It is in the process of exploding. Perhaps reviewing your affairs is in order.")
@@ -83,6 +89,8 @@
 	//ui_style = "syndicate" // actually the nuke op bomb is a stole nt bomb
 
 /obj/machinery/nuclearbomb/syndicate/get_cinematic_type(off_station)
+	procstart = null
+	src.procstart = null
 	var/datum/game_mode/nuclear/NM = SSticker.mode
 	switch(off_station)
 		if(0)
@@ -97,6 +105,8 @@
 	return CINEMATIC_NUKE_FAR
 
 /obj/machinery/nuclearbomb/syndicate/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/nuclearbomb/existing = locate("syndienuke") in GLOB.nuke_list
 	if(existing)
@@ -105,6 +115,8 @@
 	tag = "syndienuke"
 
 /obj/machinery/nuclearbomb/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(I, /obj/item/disk/nuclear))
 		if(!user.transferItemToLoc(I, src))
 			return
@@ -165,6 +177,8 @@
 	. = ..()
 
 /obj/machinery/nuclearbomb/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	switch(deconstruction_state)
 		if(NUKESTATE_UNSCREWED)
@@ -186,6 +200,8 @@
 			return TRUE
 
 /obj/machinery/nuclearbomb/proc/get_nuke_state()
+	procstart = null
+	src.procstart = null
 	if(exploding)
 		return NUKE_ON_EXPLODING
 	if(timing)
@@ -196,6 +212,8 @@
 		return NUKE_OFF_UNLOCKED
 
 /obj/machinery/nuclearbomb/update_icon()
+	procstart = null
+	src.procstart = null
 	if(deconstruction_state == NUKESTATE_INTACT)
 		switch(get_nuke_state())
 			if(NUKE_OFF_LOCKED, NUKE_OFF_UNLOCKED)
@@ -214,6 +232,8 @@
 		update_icon_lights()
 
 /obj/machinery/nuclearbomb/proc/update_icon_interior()
+	procstart = null
+	src.procstart = null
 	cut_overlay(interior)
 	switch(deconstruction_state)
 		if(NUKESTATE_UNSCREWED)
@@ -231,6 +251,8 @@
 	add_overlay(interior)
 
 /obj/machinery/nuclearbomb/proc/update_icon_lights()
+	procstart = null
+	src.procstart = null
 	if(lights)
 		cut_overlay(lights)
 	switch(get_nuke_state())
@@ -246,6 +268,8 @@
 	add_overlay(lights)
 
 /obj/machinery/nuclearbomb/process()
+	procstart = null
+	src.procstart = null
 	if(timing && !exploding)
 		bomb_set = TRUE
 		if(detonation_timer < world.time)
@@ -255,9 +279,13 @@
 			playsound(loc, 'sound/items/timer.ogg', volume, 0)
 
 /obj/machinery/nuclearbomb/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/nuclearbomb/ui_interact(mob/user, ui_key="main", datum/tgui/ui=null, force_open=0, datum/tgui/master_ui=null, datum/ui_state/state=GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "nuclear_bomb", name, 500, 600, master_ui, state)
@@ -265,6 +293,8 @@
 		ui.open()
 
 /obj/machinery/nuclearbomb/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["disk_present"] = auth
 	data["code_approved"] = yes_code
@@ -302,6 +332,8 @@
 	return data
 
 /obj/machinery/nuclearbomb/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -367,12 +399,16 @@
 
 
 /obj/machinery/nuclearbomb/proc/set_anchor()
+	procstart = null
+	src.procstart = null
 	if(!isinspace())
 		anchored = !anchored
 	else
 		to_chat(usr, "<span class='warning'>There is nothing to anchor to!</span>")
 
 /obj/machinery/nuclearbomb/proc/set_safety()
+	procstart = null
+	src.procstart = null
 	safety = !safety
 	if(safety)
 		if(timing)
@@ -387,6 +423,8 @@
 	update_icon()
 
 /obj/machinery/nuclearbomb/proc/set_active()
+	procstart = null
+	src.procstart = null
 	if(safety && !bomb_set)
 		to_chat(usr, "<span class='danger'>The safety is still on.</span>")
 		return
@@ -410,23 +448,31 @@
 	update_icon()
 
 /obj/machinery/nuclearbomb/proc/get_time_left()
+	procstart = null
+	src.procstart = null
 	if(timing)
 		. = round(max(0, detonation_timer - world.time) / 10, 1)
 	else
 		. = timer_set
 
 /obj/machinery/nuclearbomb/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(exploding)
 		return
 	qdel(src)
 
 /obj/machinery/nuclearbomb/tesla_act(power, explosive)
+	procstart = null
+	src.procstart = null
 	..()
 	if(explosive)
 		qdel(src)//like the singulo, tesla deletes it. stops it from exploding over and over
 
 #define NUKERANGE 127
 /obj/machinery/nuclearbomb/proc/explode()
+	procstart = null
+	src.procstart = null
 	if(safety)
 		timing = FALSE
 		return
@@ -441,6 +487,8 @@
 	addtimer(CALLBACK(src, .proc/actually_explode), 100)
 
 /obj/machinery/nuclearbomb/proc/actually_explode()
+	procstart = null
+	src.procstart = null
 	if(!core)
 		Cinematic(CINEMATIC_NUKE_NO_CORE,world)
 		SSticker.roundend_check_paused = FALSE
@@ -473,12 +521,16 @@
 	SSticker.roundend_check_paused = FALSE
 
 /obj/machinery/nuclearbomb/proc/get_cinematic_type(off_station)
+	procstart = null
+	src.procstart = null
 	if(off_station < 2)
 		return CINEMATIC_SELFDESTRUCT
 	else
 		return CINEMATIC_SELFDESTRUCT_MISS
 
 /proc/KillEveryoneOnZLevel(z)
+	procstart = null
+	src.procstart = null
 	if(!z)
 		return
 	for(var/mob/M in GLOB.mob_list)
@@ -490,9 +542,13 @@ This is here to make the tiles around the station mininuke change when it's arme
 */
 
 /obj/machinery/nuclearbomb/selfdestruct/set_anchor()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/nuclearbomb/selfdestruct/set_active()
+	procstart = null
+	src.procstart = null
 	..()
 	if(timing)
 		SSmapping.add_nuke_threat(src)
@@ -500,6 +556,8 @@ This is here to make the tiles around the station mininuke change when it's arme
 		SSmapping.remove_nuke_threat(src)
 
 /obj/machinery/nuclearbomb/selfdestruct/set_safety()
+	procstart = null
+	src.procstart = null
 	..()
 	if(timing)
 		SSmapping.add_nuke_threat(src)
@@ -525,11 +583,15 @@ This is here to make the tiles around the station mininuke change when it's arme
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 /obj/item/disk/nuclear/New()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.poi_list |= src
 	set_stationloving(TRUE, inform_admins=TRUE)
 
 /obj/item/disk/nuclear/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/claymore/highlander))
 		var/obj/item/claymore/highlander/H = I
 		if(H.nuke_disk)
@@ -544,12 +606,16 @@ This is here to make the tiles around the station mininuke change when it's arme
 	return ..()
 
 /obj/item/disk/nuclear/Destroy(force=FALSE)
+	procstart = null
+	src.procstart = null
 	// respawning is handled in /obj/Destroy()
 	if(force)
 		GLOB.poi_list -= src
 	. = ..()
 
 /obj/item/disk/nuclear/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is going delta! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(src, 'sound/machines/alarm.ogg', 50, -1, 1)
 	for(var/i in 1 to 100)
@@ -558,6 +624,8 @@ This is here to make the tiles around the station mininuke change when it's arme
 	return MANUAL_SUICIDE
 	
 /obj/item/disk/proc/manual_suicide(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.remove_atom_colour(ADMIN_COLOUR_PRIORITY)
 	user.visible_message("<span class='suicide'>[user] was destroyed by the nuclear blast!</span>")
 	user.adjustOxyLoss(200)
@@ -569,6 +637,8 @@ This is here to make the tiles around the station mininuke change when it's arme
 	icon_state = "nucleardisk"
 
 /obj/item/disk/fakenucleardisk/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is pretending to go delta! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(src, 'sound/machines/alarm.ogg', 30, -1, 1)
 	addtimer(CALLBACK(src, .proc/manual_suicide, user), 101)

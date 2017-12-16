@@ -20,6 +20,8 @@
 	var/obj/item/device/modular_computer/my_computer = null
 
 /datum/computer_file/program/ntnetdownload/proc/begin_file_download(filename)
+	procstart = null
+	src.procstart = null
 	if(downloaded_file)
 		return 0
 
@@ -52,6 +54,8 @@
 	downloaded_file = PRG.clone()
 
 /datum/computer_file/program/ntnetdownload/proc/abort_file_download()
+	procstart = null
+	src.procstart = null
 	if(!downloaded_file)
 		return
 	generate_network_log("Aborted download of file [hacked_download ? "**ENCRYPTED**" : "[downloaded_file.filename].[downloaded_file.filetype]"].")
@@ -60,6 +64,8 @@
 	ui_header = "downloader_finished.gif"
 
 /datum/computer_file/program/ntnetdownload/proc/complete_file_download()
+	procstart = null
+	src.procstart = null
 	if(!downloaded_file)
 		return
 	generate_network_log("Completed download of file [hacked_download ? "**ENCRYPTED**" : "[downloaded_file.filename].[downloaded_file.filetype]"].")
@@ -72,6 +78,8 @@
 	ui_header = "downloader_finished.gif"
 
 /datum/computer_file/program/ntnetdownload/process_tick()
+	procstart = null
+	src.procstart = null
 	if(!downloaded_file)
 		return
 	if(download_completion >= downloaded_file.size)
@@ -89,6 +97,8 @@
 	download_completion += download_netspeed
 
 /datum/computer_file/program/ntnetdownload/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	switch(action)
@@ -106,6 +116,8 @@
 	return 0
 
 /datum/computer_file/program/ntnetdownload/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	my_computer = computer
 
 	if(!istype(my_computer))
@@ -160,6 +172,8 @@
 	return data
 
 /datum/computer_file/program/ntnetdownload/proc/check_compatibility(datum/computer_file/program/P)
+	procstart = null
+	src.procstart = null
 	var/hardflag = computer.hardware_flag
 
 	if(P && P.is_supported_by_hardware(hardflag,0))
@@ -167,5 +181,7 @@
 	return "Incompatible!"
 
 /datum/computer_file/program/ntnetdownload/kill_program(forced)
+	procstart = null
+	src.procstart = null
 	abort_file_download()
 	return ..(forced)

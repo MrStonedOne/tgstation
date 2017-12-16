@@ -22,6 +22,8 @@
 	var/list/tiers = list()										//Assoc list, datum = number, 1 is available, 2 is all reqs are 1, so on
 
 /datum/techweb/New()
+	procstart = null
+	src.procstart = null
 	for(var/i in SSresearch.techweb_nodes_starting)
 		var/datum/techweb_node/DN = SSresearch.techweb_nodes_starting[i]
 		research_node(DN, TRUE, FALSE)
@@ -45,6 +47,8 @@
 	organization = "Nanotrasen"
 
 /datum/techweb/Destroy()
+	procstart = null
+	src.procstart = null
 	researched_nodes = null
 	researched_designs = null
 	available_nodes = null
@@ -52,6 +56,8 @@
 	return ..()
 
 /datum/techweb/proc/recalculate_nodes(recalculate_designs = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/datum/techweb_node/processing = list()
 	for(var/i in researched_nodes)
 		processing[i] = researched_nodes[i]
@@ -87,6 +93,8 @@
 	reciever.recalculate_nodes()
 
 /datum/techweb/proc/copy()
+	procstart = null
+	src.procstart = null
 	var/datum/techweb/returned = new()
 	returned.researched_nodes = researched_nodes.Copy()
 	returned.visible_nodes = visible_nodes.Copy()
@@ -99,33 +107,49 @@
 	return visible_nodes - hidden_nodes
 
 /datum/techweb/proc/get_available_nodes()
+	procstart = null
+	src.procstart = null
 	return available_nodes - hidden_nodes
 
 /datum/techweb/proc/get_researched_nodes()
+	procstart = null
+	src.procstart = null
 	return researched_nodes - hidden_nodes
 
 /datum/techweb/proc/add_design_by_id(id)
+	procstart = null
+	src.procstart = null
 	return add_design(get_techweb_design_by_id(id))
 
 /datum/techweb/proc/add_design(datum/design/design)
+	procstart = null
+	src.procstart = null
 	if(!istype(design))
 		return FALSE
 	researched_designs[design.id] = design
 	return TRUE
 
 /datum/techweb/proc/remove_design_by_id(id)
+	procstart = null
+	src.procstart = null
 	return remove_design(get_techweb_design_by_id(id))
 
 /datum/techweb/proc/remove_design(datum/design/design)
+	procstart = null
+	src.procstart = null
 	if(!istype(design))
 		return FALSE
 	researched_designs -= design.id
 	return TRUE
 
 /datum/techweb/proc/research_node_id(id, force, auto_update_points)
+	procstart = null
+	src.procstart = null
 	return research_node(get_techweb_node_by_id(id), force, auto_update_points)
 
 /datum/techweb/proc/research_node(datum/techweb_node/node, force = FALSE, auto_adjust_cost = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(node))
 		return FALSE
 	update_node_status(node)
@@ -144,15 +168,21 @@
 	return TRUE
 
 /datum/techweb/proc/unresearch_node_id(id)
+	procstart = null
+	src.procstart = null
 	return unresearch_node(get_techweb_node_by_id(id))
 
 /datum/techweb/proc/unresearch_node(datum/techweb_node/node)
+	procstart = null
+	src.procstart = null
 	if(!istype(node))
 		return FALSE
 	researched_nodes -= node.id
 	recalculate_nodes(TRUE)				//Fully rebuild the tree.
 
 /datum/techweb/proc/boost_with_path(datum/techweb_node/N, itempath)
+	procstart = null
+	src.procstart = null
 	if(!istype(N) || !ispath(itempath))
 		return FALSE
 	boosted_nodes[N] = max(boosted_nodes[N], N.boost_item_paths[itempath])
@@ -161,6 +191,8 @@
 	return TRUE
 
 /datum/techweb/proc/update_tiers(datum/techweb_node/base)
+	procstart = null
+	src.procstart = null
 	var/list/current = list(base)
 	while (current.len)
 		var/list/next = list()
@@ -179,6 +211,8 @@
 		current = next
 
 /datum/techweb/proc/update_node_status(datum/techweb_node/node, autoupdate_consoles = TRUE)
+	procstart = null
+	src.procstart = null
 	var/researched = FALSE
 	var/available = FALSE
 	var/visible = FALSE
@@ -215,6 +249,8 @@
 
 //Laggy procs to do specific checks, just in case. Don't use them if you can just use the vars that already store all this!
 /datum/techweb/proc/designHasReqs(datum/design/D)
+	procstart = null
+	src.procstart = null
 	for(var/i in researched_nodes)
 		var/datum/techweb_node/N = researched_nodes[i]
 		for(var/I in N.designs)
@@ -223,33 +259,51 @@
 	return FALSE
 
 /datum/techweb/proc/isDesignResearched(datum/design/D)
+	procstart = null
+	src.procstart = null
 	return isDesignResearchedID(D.id)
 
 /datum/techweb/proc/isDesignResearchedID(id)
+	procstart = null
+	src.procstart = null
 	return researched_designs[id]
 
 /datum/techweb/proc/isNodeResearched(datum/techweb_node/N)
+	procstart = null
+	src.procstart = null
 	return isNodeResearchedID(N.id)
 
 /datum/techweb/proc/isNodeResearchedID(id)
+	procstart = null
+	src.procstart = null
 	return researched_nodes[id]
 
 /datum/techweb/proc/isNodeVisible(datum/techweb_node/N)
+	procstart = null
+	src.procstart = null
 	return isNodeResearchedID(N.id)
 
 /datum/techweb/proc/isNodeVisibleID(id)
+	procstart = null
+	src.procstart = null
 	return visible_nodes[id]
 
 /datum/techweb/proc/isNodeAvailable(datum/techweb_node/N)
+	procstart = null
+	src.procstart = null
 	return isNodeAvailableID(N.id)
 
 /datum/techweb/proc/isNodeAvailableID(id)
+	procstart = null
+	src.procstart = null
 	return available_nodes[id]
 
 /datum/techweb/specialized
 	var/allowed_buildtypes = ALL
 
 /datum/techweb/specialized/add_design(datum/design/D)
+	procstart = null
+	src.procstart = null
 	if(!(D.build_type & allowed_buildtypes))
 		return FALSE
 	return ..()
@@ -260,10 +314,14 @@
 	var/node_autounlock_ids = list()				//autounlock nodes of this type.
 
 /datum/techweb/specialized/autounlocking/New()
+	procstart = null
+	src.procstart = null
 	..()
 	autounlock()
 
 /datum/techweb/specialized/autounlocking/proc/autounlock()
+	procstart = null
+	src.procstart = null
 	for(var/id in node_autounlock_ids)
 		research_node_id(id, TRUE, FALSE)
 	for(var/id in SSresearch.techweb_designs)

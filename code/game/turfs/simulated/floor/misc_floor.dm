@@ -18,15 +18,21 @@
 	var/on = TRUE
 
 /turf/open/floor/circuit/Initialize()
+	procstart = null
+	src.procstart = null
 	SSmapping.nuke_tiles += src
 	update_icon()
 	. = ..()
 
 /turf/open/floor/circuit/Destroy()
+	procstart = null
+	src.procstart = null
 	SSmapping.nuke_tiles -= src
 	return ..()
 
 /turf/open/floor/circuit/update_icon()
+	procstart = null
+	src.procstart = null
 	if(on)
 		if(LAZYLEN(SSmapping.nuke_threats))
 			icon_state = "rcircuitanim"
@@ -130,6 +136,8 @@
 	slowdown = -0.3
 
 /turf/open/floor/noslip/MakeSlippery()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/oldshuttle
@@ -147,6 +155,8 @@
 	var/obj/effect/clockwork/overlay/floor/realappearence
 
 /turf/open/floor/clockwork/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(uses_overlay)
 		new /obj/effect/temp_visual/ratvar/floor(src)
@@ -155,12 +165,16 @@
 		realappearence.linked = src
 
 /turf/open/floor/clockwork/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	if(uses_overlay && realappearence)
 		QDEL_NULL(realappearence)
 	return ..()
 
 /turf/open/floor/clockwork/ReplaceWithLattice()
+	procstart = null
+	src.procstart = null
 	if(baseturf == type)
 		return
 	..()
@@ -168,14 +182,20 @@
 		L.ratvar_act()
 
 /turf/open/floor/clockwork/Entered(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /turf/open/floor/clockwork/process()
+	procstart = null
+	src.procstart = null
 	if(!healservants())
 		STOP_PROCESSING(SSobj, src)
 
 /turf/open/floor/clockwork/proc/healservants()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/L in src)
 		if(L.stat == DEAD)
 			continue
@@ -196,6 +216,8 @@
 		L.adjustToxLoss(-3, TRUE, TRUE)
 
 /turf/open/floor/clockwork/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(baseturf == type)
 		return
 	if(istype(I, /obj/item/crowbar))
@@ -210,10 +232,14 @@
 	return ..()
 
 /turf/open/floor/clockwork/make_plating()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/tile/brass(src)
 	return ..()
 
 /turf/open/floor/clockwork/narsie_act()
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(src, /turf/open/floor/clockwork)) //if we haven't changed type
 		var/previouscolor = color

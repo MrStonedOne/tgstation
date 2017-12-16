@@ -21,6 +21,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Drop Everything") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_subtle_message(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Subtle Message"
 
@@ -48,6 +50,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Subtle Message") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_world_narrate()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Global Narrate"
 
@@ -65,6 +69,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Global Narrate") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_direct_narrate(mob/M)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Direct Narrate"
 
@@ -91,6 +97,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Direct Narrate") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_local_narrate(atom/A)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Local Narrate"
 
@@ -113,6 +121,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Local Narrate") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_godmode(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Godmode"
 	if(!holder)
@@ -129,6 +139,8 @@
 
 
 /proc/cmd_admin_mute(whom, mute_type, automute = 0)
+	procstart = null
+	src.procstart = null
 	if(!whom)
 		return
 
@@ -206,6 +218,8 @@
 
 //I use this proc for respawn character too. /N
 /proc/create_xeno(ckey)
+	procstart = null
+	src.procstart = null
 	if(!ckey)
 		var/list/candidates = list()
 		for(var/mob/M in GLOB.player_list)
@@ -258,6 +272,8 @@ Works kind of like entering the game with a new character. Character receives a 
 Traitors and the like can also be revived with the previous role mostly intact.
 /N */
 /client/proc/respawn_character()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Respawn Character"
 	set desc = "Respawn a person that has been gibbed/dusted/killed. They must be a ghost for this to work and preferably should not have a body to go back into."
@@ -426,6 +442,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	return new_character
 
 /client/proc/cmd_admin_add_freeform_ai_law()
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Add Custom AI law"
 	if(!holder)
@@ -448,6 +466,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Add Custom AI Law") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_rejuvenate(mob/living/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Rejuvenate"
 	if(!holder)
@@ -467,6 +487,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Rejuvinate") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_create_centcom_report()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Create Command Report"
 	if(!holder)
@@ -492,6 +514,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Create Command Report") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_change_command_name()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Change Command Name"
 	if(!holder)
@@ -505,6 +529,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	log_admin("[key_name(src)] has changed the Central Command name to: [input]")
 
 /client/proc/cmd_admin_delete(atom/A as obj|mob|turf in world)
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Delete"
 
@@ -515,6 +541,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	admin_delete(A)
 
 /client/proc/admin_delete(datum/D)
+	procstart = null
+	src.procstart = null
 	var/atom/A = D
 	var/coords = istype(A) ? " at ([A.x], [A.y], [A.z])" : ""
 	if (alert(src, "Are you sure you want to delete:\n[D]\nat[coords]?", "Confirmation", "Yes", "No") == "Yes")
@@ -528,6 +556,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			qdel(D)
 
 /client/proc/cmd_admin_list_open_jobs()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Manage Job Slots"
 
@@ -538,6 +568,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Manage Job Slots") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_explosion(atom/O as obj|mob|turf in world)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Explosion"
 
@@ -575,6 +607,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		return
 
 /client/proc/cmd_admin_emp(atom/O as obj|mob|turf in world)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "EM Pulse"
 
@@ -601,6 +635,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		return
 
 /client/proc/cmd_admin_gib(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Gib"
 
@@ -628,6 +664,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Gib") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_gib_self()
+	procstart = null
+	src.procstart = null
 	set name = "Gibself"
 	set category = "Fun"
 
@@ -639,6 +677,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		mob.gib(1, 1, 1)
 
 /client/proc/cmd_admin_check_contents(mob/living/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Check Contents"
 
@@ -648,6 +688,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Check Contents") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/toggle_view_range()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Change View Range"
 	set desc = "switches between 1x and custom views"
@@ -664,6 +706,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 /client/proc/admin_call_shuttle()
 
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Call Shuttle"
 
@@ -685,6 +729,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	return
 
 /client/proc/admin_cancel_shuttle()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Cancel Shuttle"
 	if(!check_rights(0))
@@ -703,6 +749,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	return
 
 /client/proc/everyone_random()
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Make Everyone Random"
 	set desc = "Make everyone have a random appearance. You can only use this before rounds!"
@@ -736,6 +784,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 
 /client/proc/toggle_random_events()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set name = "Toggle random events on/off"
 	set desc = "Toggles random events such as meteors, black holes, blob (but not space dust) on/off"
@@ -751,6 +801,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 
 /client/proc/admin_change_sec_level()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Set Security Level"
 	set desc = "Changes the security level. Announcement only, i.e. setting to Delta won't activate nuke"
@@ -768,6 +820,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		SSblackbox.record_feedback("tally", "admin_verb", 1, "Set Security Level [capitalize(level)]") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/toggle_nuke(obj/machinery/nuclearbomb/N in GLOB.nuke_list)
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Nuke"
 	set category = "Fun"
 	set popup_menu = 0
@@ -789,6 +843,8 @@ Traitors and the like can also be revived with the previous role mostly intact.
 GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 
 /client/proc/create_outfits()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Create Custom Outfit"
 
@@ -798,6 +854,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	holder.create_outfit()
 
 /datum/admins/proc/create_outfit()
+	procstart = null
+	src.procstart = null
 	var/list/uniforms = typesof(/obj/item/clothing/under)
 	var/list/suits = typesof(/obj/item/clothing/suit)
 	var/list/gloves = typesof(/obj/item/clothing/gloves)
@@ -964,6 +1022,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	usr << browse(dat, "window=dressup;size=550x600")
 
 /client/proc/toggle_antag_hud()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Toggle AntagHUD"
 	set desc = "Toggles the Admin AntagHUD"
@@ -983,10 +1043,14 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Antag HUD", "[adding_hud ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/has_antag_hud()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/A = GLOB.huds[ANTAG_HUD_TRAITOR]
 	return A.hudusers[mob]
 
 /client/proc/open_shuttle_manipulator()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Shuttle Manipulator"
 	set desc = "Opens the shuttle manipulator UI."
@@ -995,6 +1059,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 		M.ui_interact(usr)
 
 /client/proc/mass_zombie_infection()
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Mass Zombie Infection"
 	set desc = "Infects all humans with a latent organ that will zombify \
@@ -1015,6 +1081,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Mass Zombie Infection")
 
 /client/proc/mass_zombie_cure()
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Mass Zombie Cure"
 	set desc = "Removes the zombie infection from all humans, returning them to normal."
@@ -1033,6 +1101,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Mass Zombie Cure")
 
 /client/proc/polymorph_all()
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Polymorph All"
 	set desc = "Applies the effects of the bolt of change to every single mob."
@@ -1066,6 +1136,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 
 
 /client/proc/show_tip()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Show Tip"
 	set desc = "Sends a tip (that you specify) to all players. After all \
@@ -1093,18 +1165,24 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Tip")
 
 /proc/mass_purrbation()
+	procstart = null
+	src.procstart = null
 	for(var/M in GLOB.mob_list)
 		if(ishumanbasic(M))
 			purrbation_apply(M)
 		CHECK_TICK
 
 /proc/mass_remove_purrbation()
+	procstart = null
+	src.procstart = null
 	for(var/M in GLOB.mob_list)
 		if(ishumanbasic(M))
 			purrbation_remove(M)
 		CHECK_TICK
 
 /proc/purrbation_toggle(mob/living/carbon/human/H, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ishumanbasic(H))
 		return
 	if(!iscatperson(H))
@@ -1115,6 +1193,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 		. = FALSE
 
 /proc/purrbation_apply(mob/living/carbon/human/H, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(H))
 		return
 	if(iscatperson(H))
@@ -1130,6 +1210,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 		playsound(get_turf(H), 'sound/effects/meow1.ogg', 50, 1, -1)
 
 /proc/purrbation_remove(mob/living/carbon/human/H, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(H))
 		return
 	if(!iscatperson(H))
@@ -1172,6 +1254,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 		to_chat(H, "You are no longer a cat.")
 
 /client/proc/modify_goals()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Modify goals"
 
@@ -1181,6 +1265,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	holder.modify_goals()
 
 /datum/admins/proc/modify_goals()
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	for(var/datum/station_goal/S in SSticker.mode.station_goals)
 		dat += "[S.name] - <a href='?src=[REF(S)];[HrefToken()];announce=1'>Announce</a> | <a href='?src=[REF(S)];[HrefToken()];remove=1'>Remove</a><br>"
@@ -1189,6 +1275,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 
 
 /client/proc/toggle_hub()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set name = "Toggle Hub"
 
@@ -1202,6 +1290,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggled Hub Visibility", "[GLOB.hub_visibility ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/smite(mob/living/carbon/human/target as mob)
+	procstart = null
+	src.procstart = null
 	set name = "Smite"
 	set category = "Fun"
 	if(!holder)
@@ -1237,6 +1327,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 
 
 /client/proc/trigger_centcom_recall()
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return
 	var/message = pick(GLOB.admiral_messages)
@@ -1263,6 +1355,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	src << browse(msg.Join(), "window=Player_playtime_check")
 
 /datum/admins/proc/cmd_show_exp_panel(client/C)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 	if(!C)
@@ -1277,6 +1371,8 @@ GLOBAL_LIST_EMPTY(custom_outfits) //Admin created outfits
 	usr << browse(body.Join(), "window=playerplaytime[C.ckey];size=550x615")
 
 /datum/admins/proc/toggle_exempt_status(client/C)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 	if(!C)

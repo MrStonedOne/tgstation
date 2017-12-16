@@ -11,6 +11,8 @@
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 90, acid = 90)
 
 /obj/structure/blob/shield/scannerreport()
+	procstart = null
+	src.procstart = null
 	if(atmosblock)
 		return "Will prevent the spread of atmospheric changes."
 	return "N/A"
@@ -19,6 +21,8 @@
 	point_return = 0
 
 /obj/structure/blob/shield/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(obj_integrity <= 75)
 		icon_state = "blob_shield_damaged"

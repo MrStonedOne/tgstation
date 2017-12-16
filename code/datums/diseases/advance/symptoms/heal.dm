@@ -14,12 +14,16 @@
 					  <b>Stealth 4:</b> Healing will no longer be visible to onlookers."
 
 /datum/symptom/heal/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 6) //stronger healing
 		power = 2
 
 /datum/symptom/heal/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	 //100% chance to activate for slow but consistent healing
@@ -36,12 +40,18 @@
 	return
 
 /datum/symptom/heal/proc/CanHeal(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	return power
 
 /datum/symptom/heal/proc/Heal(mob/living/M, datum/disease/advance/A, actual_power)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/symptom/heal/proc/passive_message_condition(mob/living/M)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
@@ -59,6 +69,8 @@
 					  <b>Transmission 6:</b> Removes penalty for only being close to space."
 
 /datum/symptom/heal/toxin/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["transmission"] >= 6)
@@ -67,6 +79,8 @@
 		power = 2
 
 /datum/symptom/heal/toxin/CanHeal(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = A.affected_mob
 	if(istype(get_turf(M), /turf/open/space))
 		return power
@@ -76,6 +90,8 @@
 				return power * nearspace_penalty
 
 /datum/symptom/heal/toxin/Heal(mob/living/M, datum/disease/advance/A, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = actual_power
 	if(M.getToxLoss() && prob(5))
 		to_chat(M, "<span class='notice'>Your skin tingles as the starlight purges toxins from your bloodstream.</span>")
@@ -83,6 +99,8 @@
 	return 1
 
 /datum/symptom/heal/toxin/passive_message_condition(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.getToxLoss())
 		return TRUE
 	return FALSE
@@ -100,6 +118,8 @@
 					  <b>Stage Speed 6:</b> Consumed chemicals nourish the host."
 
 /datum/symptom/heal/chem/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 6)
@@ -108,6 +128,8 @@
 		power = 2
 
 /datum/symptom/heal/chem/Heal(mob/living/M, datum/disease/advance/A, actual_power)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/R in M.reagents.reagent_list) //Not just toxins!
 		M.reagents.remove_reagent(R.id, actual_power)
 		if(food_conversion)
@@ -133,6 +155,8 @@
 					  <b>Stage Speed 10:</b> Chemical metabolization is tripled instead of doubled."
 
 /datum/symptom/heal/metabolism/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 10)
@@ -141,6 +165,8 @@
 		reduced_hunger = TRUE
 
 /datum/symptom/heal/metabolism/Heal(mob/living/carbon/C, datum/disease/advance/A, actual_power)
+	procstart = null
+	src.procstart = null
 	if(!istype(C))
 		return
 	C.reagents.metabolize(C, can_overdose=TRUE) //this works even without a liver; it's intentional since the virus is metabolizing by itself
@@ -165,12 +191,16 @@
 	threshold_desc = "<b>Stage Speed 8:</b> Doubles healing speed."
 
 /datum/symptom/heal/brute/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 8)
 		power = 2
 
 /datum/symptom/heal/brute/CanHeal(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = A.affected_mob
 	switch(M.bodytemperature)
 		if(0 to 340)
@@ -188,6 +218,8 @@
 		. *= 2
 
 /datum/symptom/heal/brute/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = 2 * actual_power
 
 	var/list/parts = M.get_damaged_bodyparts(1,0) //brute only
@@ -204,6 +236,8 @@
 	return 1
 
 /datum/symptom/heal/brute/passive_message_condition(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.getBruteLoss())
 		return TRUE
 	return FALSE
@@ -223,6 +257,8 @@
 					  <b>Stage Speed 7:</b> Increases healing speed."
 
 /datum/symptom/heal/coma/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 7)
@@ -231,6 +267,8 @@
 		deathgasp = TRUE
 
 /datum/symptom/heal/coma/CanHeal(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = A.affected_mob
 	if(M.status_flags & FAKEDEATH)
 		return power
@@ -246,6 +284,8 @@
 		addtimer(CALLBACK(src, .proc/coma, M), 60)
 
 /datum/symptom/heal/coma/proc/coma(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(deathgasp)
 		M.emote("deathgasp")
 	M.status_flags |= FAKEDEATH
@@ -254,6 +294,8 @@
 	addtimer(CALLBACK(src, .proc/uncoma, M), 300)
 
 /datum/symptom/heal/coma/proc/uncoma(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!active_coma)
 		return
 	active_coma = FALSE
@@ -262,6 +304,8 @@
 	M.update_canmove()
 
 /datum/symptom/heal/coma/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = 4 * actual_power
 
 	var/list/parts = M.get_damaged_bodyparts(1,1)
@@ -279,6 +323,8 @@
 	return 1
 
 /datum/symptom/heal/coma/passive_message_condition(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if((M.getBruteLoss() + M.getFireLoss()) > 30)
 		return TRUE
 	return FALSE
@@ -297,6 +343,8 @@
 					  <b>Stage Speed 7:</b> Increases healing speed."
 
 /datum/symptom/heal/burn/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 7)
@@ -305,6 +353,8 @@
 		absorption_coeff = 0.25
 
 /datum/symptom/heal/burn/CanHeal(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/mob/living/M = A.affected_mob
 	if(M.fire_stacks < 0)
@@ -318,6 +368,8 @@
 		. += power * 0.5
 
 /datum/symptom/heal/burn/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = 2 * actual_power
 
 	var/list/parts = M.get_damaged_bodyparts(0,1) //burn only
@@ -335,6 +387,8 @@
 	return 1
 
 /datum/symptom/heal/burn/passive_message_condition(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.getFireLoss())
 		return TRUE
 	return FALSE
@@ -353,6 +407,8 @@
 					  <b>Stage Speed 7:</b> Increases healing speed."
 
 /datum/symptom/heal/plasma/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 7)
@@ -361,6 +417,8 @@
 		temp_rate = 4
 
 /datum/symptom/heal/plasma/CanHeal(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = A.affected_mob
 	var/datum/gas_mixture/environment
 	var/list/gases
@@ -377,6 +435,8 @@
 		. +=  power * 0.75
 
 /datum/symptom/heal/plasma/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = 4 * actual_power
 
 	var/list/parts = M.get_damaged_bodyparts(0,1) //burn only
@@ -421,6 +481,8 @@
 					  <b>Resistance 7:</b> Increases healing speed."
 
 /datum/symptom/heal/radiation/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["resistance"] >= 7)
@@ -429,6 +491,8 @@
 		cellular_damage = TRUE
 
 /datum/symptom/heal/radiation/CanHeal(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = A.affected_mob
 	switch(M.radiation)
 		if(0)
@@ -445,6 +509,8 @@
 			return 1.5
 
 /datum/symptom/heal/radiation/Heal(mob/living/carbon/M, datum/disease/advance/A, actual_power)
+	procstart = null
+	src.procstart = null
 	var/heal_amt = actual_power
 
 	if(cellular_damage)

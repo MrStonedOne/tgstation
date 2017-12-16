@@ -8,31 +8,43 @@
 	var/static/ntnrc_uid = 0
 
 /datum/ntnet_conversation/New()
+	procstart = null
+	src.procstart = null
 	id = ntnrc_uid++
 	if(SSnetworks.station_network)
 		SSnetworks.station_network.chat_channels.Add(src)
 	..()
 
 /datum/ntnet_conversation/Destroy()
+	procstart = null
+	src.procstart = null
 	if(SSnetworks.station_network)
 		SSnetworks.station_network.chat_channels.Remove(src)
 	return ..()
 
 /datum/ntnet_conversation/proc/add_message(message, username)
+	procstart = null
+	src.procstart = null
 	message = "[worldtime2text()] [username]: [message]"
 	messages.Add(message)
 	trim_message_list()
 
 /datum/ntnet_conversation/proc/add_status_message(message)
+	procstart = null
+	src.procstart = null
 	messages.Add("[worldtime2text()] -!- [message]")
 	trim_message_list()
 
 /datum/ntnet_conversation/proc/trim_message_list()
+	procstart = null
+	src.procstart = null
 	if(messages.len <= 50)
 		return
 	messages = messages.Copy(messages.len-50 ,0)
 
 /datum/ntnet_conversation/proc/add_client(datum/computer_file/program/chatclient/C)
+	procstart = null
+	src.procstart = null
 	if(!istype(C))
 		return
 	clients.Add(C)
@@ -42,6 +54,8 @@
 		changeop(C)
 
 /datum/ntnet_conversation/proc/remove_client(datum/computer_file/program/chatclient/C)
+	procstart = null
+	src.procstart = null
 	if(!istype(C) || !(C in clients))
 		return
 	clients.Remove(C)
@@ -56,11 +70,15 @@
 
 
 /datum/ntnet_conversation/proc/changeop(datum/computer_file/program/chatclient/newop)
+	procstart = null
+	src.procstart = null
 	if(istype(newop))
 		operator = newop
 		add_status_message("Channel operator status transferred to [newop.username].")
 
 /datum/ntnet_conversation/proc/change_title(newtitle, datum/computer_file/program/chatclient/client)
+	procstart = null
+	src.procstart = null
 	if(operator != client)
 		return FALSE // Not Authorised
 

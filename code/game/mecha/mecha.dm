@@ -121,6 +121,8 @@
 /obj/item/device/radio/mech //this has to go somewhere
 
 /obj/mecha/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	events = new
 	icon_state += "-open"
@@ -145,9 +147,13 @@
 	diag_hud_set_mechtracking()
 
 /obj/mecha/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/mecha/Destroy()
+	procstart = null
+	src.procstart = null
 	go_out()
 	var/mob/living/silicon/ai/AI
 	for(var/mob/M in src) //Let's just be ultra sure
@@ -205,6 +211,8 @@
 	return ..()
 
 /obj/mecha/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/C = locate(/obj/item/stock_parts/cell) in contents
 	cell = C
@@ -223,10 +231,14 @@
 ////////////////////////
 
 /obj/mecha/proc/add_airtank()
+	procstart = null
+	src.procstart = null
 	internal_tank = new /obj/machinery/portable_atmospherics/canister/air(src)
 	return internal_tank
 
 /obj/mecha/proc/add_cell(var/obj/item/stock_parts/cell/C=null)
+	procstart = null
+	src.procstart = null
 	if(C)
 		C.forceMove(src)
 		cell = C
@@ -234,6 +246,8 @@
 	cell = new /obj/item/stock_parts/cell/high/plus(src)
 
 /obj/mecha/proc/add_cabin()
+	procstart = null
+	src.procstart = null
 	cabin_air = new
 	cabin_air.temperature = T20C
 	cabin_air.volume = 200
@@ -243,6 +257,8 @@
 	return cabin_air
 
 /obj/mecha/proc/add_radio()
+	procstart = null
+	src.procstart = null
 	radio = new(src)
 	radio.name = "[src] radio"
 	radio.icon = icon
@@ -250,6 +266,8 @@
 	radio.subspace_transmission = TRUE
 
 /obj/mecha/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user != occupant)
 		return 0
 	if(user && ismob(user))
@@ -260,6 +278,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 /obj/mecha/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/integrity = obj_integrity*100/max_integrity
 	switch(integrity)
@@ -280,6 +300,8 @@
 
 //processing internal damage, temperature, air regulation, alert updates, lights power use.
 /obj/mecha/process()
+	procstart = null
+	src.procstart = null
 	var/internal_temp_regulation = 1
 
 	if(internal_damage)
@@ -396,6 +418,8 @@
 	return
 
 /obj/mecha/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(speaker == occupant)
 		if(radio.broadcasting)
 			radio.talk_into(speaker, text, , spans, message_language)
@@ -412,6 +436,8 @@
 
 
 /obj/mecha/proc/click_action(atom/target,mob/user,params)
+	procstart = null
+	src.procstart = null
 	if(!occupant || occupant != user )
 		return
 	if(!locate(/turf) in list(target,target.loc)) // Prevents inventory from being drilled
@@ -454,6 +480,8 @@
 
 
 /obj/mecha/proc/range_action(atom/target)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -462,6 +490,8 @@
 //////////////////////////////////
 
 /obj/mecha/Move(atom/newloc, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		events.fireEvent("onMove",get_turf(src))
@@ -470,6 +500,8 @@
 		log_message("Lost connection to gas port.")
 
 /obj/mecha/Process_Spacemove(var/movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return 1
@@ -485,6 +517,8 @@
 		return 1
 
 /obj/mecha/relaymove(mob/user,direction)
+	procstart = null
+	src.procstart = null
 	if(!direction)
 		return
 	if(user != occupant) //While not "realistic", this piece is player friendly.
@@ -502,6 +536,8 @@
 	return domove(direction)
 
 /obj/mecha/proc/domove(direction)
+	procstart = null
+	src.procstart = null
 	if(!can_move)
 		return 0
 	if(!Process_Spacemove(direction))
@@ -536,12 +572,16 @@
 
 
 /obj/mecha/proc/mechturn(direction)
+	procstart = null
+	src.procstart = null
 	setDir(direction)
 	if(turnsound)
 		playsound(src,turnsound,40,1)
 	return 1
 
 /obj/mecha/proc/mechstep(direction)
+	procstart = null
+	src.procstart = null
 	var/current_dir = dir
 	var/result = step(src,direction)
 	if(strafe)
@@ -551,12 +591,16 @@
 	return result
 
 /obj/mecha/proc/mechsteprand()
+	procstart = null
+	src.procstart = null
 	var/result = step_rand(src)
 	if(result && stepsound)
 		playsound(src,stepsound,40,1)
 	return result
 
 /obj/mecha/Collide(var/atom/obstacle)
+	procstart = null
+	src.procstart = null
 	if(phasing && get_charge() >= phasing_energy_drain && !throwing)
 		spawn()
 			if(can_move)
@@ -594,6 +638,8 @@
 ///////////////////////////////////
 
 /obj/mecha/proc/check_for_internal_damage(list/possible_int_damage,ignore_threshold=null)
+	procstart = null
+	src.procstart = null
 	if(!islist(possible_int_damage) || isemptylist(possible_int_damage))
 		return
 	if(prob(20))
@@ -612,6 +658,8 @@
 	return
 
 /obj/mecha/proc/setInternalDamage(int_dam_flag)
+	procstart = null
+	src.procstart = null
 	internal_damage |= int_dam_flag
 	log_append_to_last("Internal damage of type [int_dam_flag].",1)
 	SEND_SOUND(occupant, sound('sound/machines/warning-buzzer.ogg',wait=0))
@@ -619,6 +667,8 @@
 	return
 
 /obj/mecha/proc/clearInternalDamage(int_dam_flag)
+	procstart = null
+	src.procstart = null
 	if(internal_damage & int_dam_flag)
 		switch(int_dam_flag)
 			if(MECHA_INT_TEMP_CONTROL)
@@ -635,6 +685,8 @@
 /////////////////////////////////////
 
 /obj/mecha/attack_ai(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if(!isAI(user))
 		return
 	//Allows the Malf to scan a mech's status and loadout, helping it to decide if it is a worthy chariot.
@@ -662,6 +714,8 @@
 		to_chat(user, "<a href='?src=[REF(user)];ai_take_control=[REF(src)]'><span class='boldnotice'>Take control of exosuit?</span></a><br>")
 
 /obj/mecha/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/device/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -719,6 +773,8 @@
 
 //Hack and From Card interactions share some code, so leave that here for both to use.
 /obj/mecha/proc/ai_enter_mech(mob/living/silicon/ai/AI, interaction)
+	procstart = null
+	src.procstart = null
 	AI.ai_restore_power()
 	AI.forceMove(src)
 	occupant = AI
@@ -742,6 +798,8 @@
 
 //An actual AI (simple_animal mecha pilot) entering the mech
 /obj/mecha/proc/aimob_enter_mech(mob/living/simple_animal/hostile/syndicate/mecha_pilot/pilot_mob)
+	procstart = null
+	src.procstart = null
 	if(pilot_mob && pilot_mob.Adjacent(src))
 		if(occupant)
 			return
@@ -752,6 +810,8 @@
 		GrantActions(pilot_mob)//needed for checks, and incase a badmin puts somebody in the mob
 
 /obj/mecha/proc/aimob_exit_mech(mob/living/simple_animal/hostile/syndicate/mecha_pilot/pilot_mob)
+	procstart = null
+	src.procstart = null
 	if(occupant == pilot_mob)
 		occupant = null
 	if(pilot_mob.mecha == src)
@@ -766,32 +826,44 @@
 /////////////////////////////////////
 
 /obj/mecha/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	if(use_internal_tank)
 		return cabin_air.remove(amount)
 	return ..()
 
 /obj/mecha/return_air()
+	procstart = null
+	src.procstart = null
 	if(use_internal_tank)
 		return cabin_air
 	return ..()
 
 /obj/mecha/proc/return_pressure()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/t_air = return_air()
 	if(t_air)
 		. = t_air.return_pressure()
 	return
 
 /obj/mecha/return_temperature()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/t_air = return_air()
 	if(t_air)
 		. = t_air.return_temperature()
 	return
 
 /obj/mecha/portableConnectorReturnAir()
+	procstart = null
+	src.procstart = null
 	return internal_tank.return_air()
 
 
 /obj/mecha/MouseDrop_T(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if (!user.canUseTopic(src) || (user != M))
 		return
 	if(!ishuman(user)) // no silicons or drones in mechas.
@@ -839,6 +911,8 @@
 	return
 
 /obj/mecha/proc/moved_inside(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H && H.client && H in range(1))
 		occupant = H
 		H.forceMove(src)
@@ -856,6 +930,8 @@
 		return 0
 
 /obj/mecha/proc/mmi_move_inside(obj/item/device/mmi/mmi_as_oc, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!mmi_as_oc.brainmob || !mmi_as_oc.brainmob.client)
 		to_chat(user, "<span class='warning'>Consciousness matrix not detected!</span>")
 		return FALSE
@@ -881,6 +957,8 @@
 	return FALSE
 
 /obj/mecha/proc/mmi_moved_inside(obj/item/device/mmi/mmi_as_oc, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(Adjacent(mmi_as_oc) && Adjacent(user)))
 		return FALSE
 	if(!mmi_as_oc.brainmob || !mmi_as_oc.brainmob.client)
@@ -909,14 +987,20 @@
 	return TRUE
 
 /obj/mecha/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	go_out()
 
 
 /obj/mecha/Exited(atom/movable/M, atom/newloc)
+	procstart = null
+	src.procstart = null
 	if(occupant && occupant == M) // The occupant exited the mech without calling go_out()
 		go_out(1, newloc)
 
 /obj/mecha/proc/go_out(var/forced, var/atom/newloc = loc)
+	procstart = null
+	src.procstart = null
 	if(!occupant)
 		return
 	var/atom/movable/mob_container
@@ -976,11 +1060,15 @@
 /////////////////////////
 
 /obj/mecha/proc/operation_allowed(mob/M)
+	procstart = null
+	src.procstart = null
 	req_access = operation_req_access
 	req_one_access = list()
 	return allowed(M)
 
 /obj/mecha/proc/internals_access_allowed(mob/M)
+	procstart = null
+	src.procstart = null
 	req_one_access = internals_req_access
 	req_access = list()
 	return allowed(M)
@@ -992,17 +1080,23 @@
 ////////////////////////////////
 
 /obj/mecha/proc/occupant_message(message as text)
+	procstart = null
+	src.procstart = null
 	if(message)
 		if(occupant && occupant.client)
 			to_chat(occupant, "[icon2html(src, occupant)] [message]")
 	return
 
 /obj/mecha/proc/log_message(message as text,red=null)
+	procstart = null
+	src.procstart = null
 	log.len++
 	log[log.len] = list("time"="[worldtime2text()]","date","year"="[GLOB.year_integer+540]","message"="[red?"<font color='red'>":null][message][red?"</font>":null]")
 	return log.len
 
 /obj/mecha/proc/log_append_to_last(message as text,red=null)
+	procstart = null
+	src.procstart = null
 	var/list/last_entry = log[log.len]
 	last_entry["message"] += "<br>[red?"<font color='red'>":null][message][red?"</font>":null]"
 	return
@@ -1015,9 +1109,13 @@ GLOBAL_VAR_INIT(year_integer, text2num(year)) // = 2013???
 ///////////////////////
 
 /obj/mecha/proc/has_charge(amount)
+	procstart = null
+	src.procstart = null
 	return (get_charge()>=amount)
 
 /obj/mecha/proc/get_charge()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/R in equipment)
 		var/relay_charge = R.get_charge()
 		if(relay_charge)
@@ -1026,18 +1124,24 @@ GLOBAL_VAR_INIT(year_integer, text2num(year)) // = 2013???
 		return max(0, cell.charge)
 
 /obj/mecha/proc/use_power(amount)
+	procstart = null
+	src.procstart = null
 	if(get_charge())
 		cell.use(amount)
 		return 1
 	return 0
 
 /obj/mecha/proc/give_power(amount)
+	procstart = null
+	src.procstart = null
 	if(!isnull(get_charge()))
 		cell.give(amount)
 		return 1
 	return 0
 
 /obj/mecha/update_remote_sight(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(occupant_sight_flags)
 		if(user == occupant)
 			user.sight |= occupant_sight_flags

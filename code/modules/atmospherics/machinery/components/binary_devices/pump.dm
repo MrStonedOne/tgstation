@@ -33,12 +33,16 @@ Thus, the two variables affect pump operation are set in New():
 	on = TRUE
 
 /obj/machinery/atmospherics/components/binary/pump/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 	if(radio_connection)
 		radio_connection = null
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		icon_state = "pump_off"
 		return
@@ -72,12 +76,16 @@ Thus, the two variables affect pump operation are set in New():
 
 //Radio remote control
 /obj/machinery/atmospherics/components/binary/pump/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
 		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/binary/pump/proc/broadcast_status()
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return
 
@@ -98,6 +106,8 @@ Thus, the two variables affect pump operation are set in New():
 		ui.open()
 
 /obj/machinery/atmospherics/components/binary/pump/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
@@ -105,6 +115,8 @@ Thus, the two variables affect pump operation are set in New():
 	return data
 
 /obj/machinery/atmospherics/components/binary/pump/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -130,11 +142,15 @@ Thus, the two variables affect pump operation are set in New():
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/pump/atmosinit()
+	procstart = null
+	src.procstart = null
 	..()
 	if(frequency)
 		set_frequency(frequency)
 
 /obj/machinery/atmospherics/components/binary/pump/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
@@ -160,10 +176,14 @@ Thus, the two variables affect pump operation are set in New():
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/pump/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/pump/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")

@@ -4,6 +4,8 @@
 	icon_state = "recharge_floor"                           //        Some people just want to watch the world burn i guess
 
 /turf/open/floor/mech_bay_recharge_floor/break_tile()
+	procstart = null
+	src.procstart = null
 	src.ChangeTurf(/turf/open/floor/plating)
 
 /turf/open/floor/mech_bay_recharge_floor/airless
@@ -26,16 +28,22 @@
 	var/turf/recharging_turf = null
 
 /obj/machinery/mech_bay_recharge_port/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recharging_turf = get_step(loc, dir)
 
 /obj/machinery/mech_bay_recharge_port/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/MC
 	for(var/obj/item/stock_parts/capacitor/C in component_parts)
 		MC += C.rating
 	max_charge = MC * 25
 
 /obj/machinery/mech_bay_recharge_port/process()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER || !recharge_console)
 		return
 	if(!recharging_mech)
@@ -55,6 +63,8 @@
 
 
 /obj/machinery/mech_bay_recharge_port/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "recharge_port-o", "recharge_port", I))
 		return
 
@@ -79,20 +89,28 @@
 	light_color = LIGHT_COLOR_PINK
 
 /obj/machinery/computer/mech_bay_power_console/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return interact(user)
 
 /obj/machinery/computer/mech_bay_power_console/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/computer/mech_bay_power_console/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "mech_bay_power_console", "Mech Bay Power Control Console", 400, 170, master_ui, state)
 		ui.open()
 
 /obj/machinery/computer/mech_bay_power_console/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -102,6 +120,8 @@
 			update_icon()
 
 /obj/machinery/computer/mech_bay_power_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(recharge_port && !QDELETED(recharge_port))
 		data["recharge_port"] = list("mech" = null)
@@ -117,6 +137,8 @@
 
 
 /obj/machinery/computer/mech_bay_power_console/proc/reconnect()
+	procstart = null
+	src.procstart = null
 	if(recharge_port)
 		return
 	recharge_port = locate(/obj/machinery/mech_bay_recharge_port) in range(1)
@@ -134,11 +156,15 @@
 			recharge_port = null
 
 /obj/machinery/computer/mech_bay_power_console/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!recharge_port || !recharge_port.recharging_mech || !recharge_port.recharging_mech.cell || !(recharge_port.recharging_mech.cell.charge < recharge_port.recharging_mech.cell.maxcharge) || stat & (NOPOWER|BROKEN))
 		return
 	add_overlay("recharge_comp_on")
 
 /obj/machinery/computer/mech_bay_power_console/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reconnect()

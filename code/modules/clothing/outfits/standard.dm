@@ -49,6 +49,8 @@
 	backpack_contents = list(/obj/item/stack/tile/plasteel=6)
 
 /datum/outfit/tournament/janitor/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 
@@ -98,6 +100,8 @@
 	head = /obj/item/clothing/head/helmet/space/pirate
 
 /datum/outfit/pirate/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.faction |= "pirate"
 
 	var/obj/item/device/radio/R = H.ears
@@ -126,6 +130,8 @@
 	r_hand = /obj/item/twohanded/fireaxe
 
 /datum/outfit/tunnel_clown/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 
@@ -151,6 +157,8 @@
 	r_hand = /obj/item/twohanded/fireaxe
 
 /datum/outfit/psycho/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/carried_item in H.get_equipped_items())
 		carried_item.add_mob_blood(H)//Oh yes, there will be blood...
 	for(var/obj/item/I in H.held_items)
@@ -171,6 +179,8 @@
 	belt = /obj/item/device/pda/heads
 
 /datum/outfit/assassin/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/under/U = H.w_uniform
 	U.attach_accessory(new /obj/item/clothing/accessory/waistcoat(H))
 
@@ -217,6 +227,8 @@
 	id = /obj/item/card/id
 
 /datum/outfit/centcom_commander/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 
@@ -245,6 +257,8 @@
 	id = /obj/item/card/id
 
 /datum/outfit/spec_ops/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 
@@ -284,6 +298,8 @@
 	backpack_contents = list(/obj/item/storage/box=1)
 
 /datum/outfit/wizard/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 
@@ -326,6 +342,8 @@
 	id = /obj/item/card/id
 
 /datum/outfit/soviet/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 
@@ -350,6 +368,8 @@
 	id = /obj/item/card/id
 
 /datum/outfit/mobster/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 
@@ -392,6 +412,8 @@
 		/obj/item/grenade/plastic/x4=1)
 
 /datum/outfit/death_commando/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 

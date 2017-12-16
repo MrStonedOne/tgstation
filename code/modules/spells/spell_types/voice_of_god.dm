@@ -14,14 +14,20 @@
 	var/speech_sound = 'sound/magic/clockwork/invoke_general.ogg'
 
 /obj/effect/proc_holder/spell/voice_of_god/can_cast(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!user.can_speak())
 		to_chat(user, "<span class='warning'>You are unable to speak!</span>")
 		return FALSE
 	return TRUE
 
 /obj/effect/proc_holder/spell/voice_of_god/choose_targets(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	perform(user=user)
 /obj/effect/proc_holder/spell/voice_of_god/perform(list/targets, recharge = 1, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	command = input(user, "Speak with the Voice of God", "Command")
 	if(QDELETED(src) || QDELETED(user))
 		return
@@ -31,6 +37,8 @@
 	..()
 
 /obj/effect/proc_holder/spell/voice_of_god/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(user), speech_sound, 300, 1, 5)
 	var/cooldown = voice_of_god(uppertext(command), user, spans, base_multiplier = power_mod)
 	charge_max = (cooldown * cooldown_mod)

@@ -38,6 +38,8 @@
 	throw_range = 7
 
 /obj/item/grown/corncob/attackby(obj/item/grown/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.is_sharp())
 		to_chat(user, "<span class='notice'>You use [W] to fashion a pipe out of the corn cob!</span>")
 		new /obj/item/clothing/mask/cigarette/pipe/cobpipe (user.loc)
@@ -69,10 +71,14 @@
 	var/snap_pops = 1
 
 /obj/item/grown/snapcorn/add_juice()
+	procstart = null
+	src.procstart = null
 	..()
 	snap_pops = max(round(seed.potency/8), 1)
 
 /obj/item/grown/snapcorn/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>You pick a snap pop from the cob.</span>")
 	var/obj/item/toy/snappop/S = new /obj/item/toy/snappop(user.loc)

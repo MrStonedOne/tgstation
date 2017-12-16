@@ -56,6 +56,8 @@
 	var/obj/item/stock_parts/cell/cell = null
 
 /obj/item/bodypart/chest/robot/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stock_parts/cell))
 		if(src.cell)
 			to_chat(user, "<span class='warning'>You have already inserted a cell!</span>")
@@ -79,6 +81,8 @@
 		return ..()
 
 /obj/item/bodypart/chest/robot/Destroy()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		qdel(cell)
 		cell = null
@@ -86,6 +90,8 @@
 
 
 /obj/item/bodypart/chest/robot/drop_organs(mob/user)
+	procstart = null
+	src.procstart = null
 	if(wired)
 		new /obj/item/stack/cable_coil(user.loc, 1)
 	if(cell)
@@ -108,6 +114,8 @@
 
 
 /obj/item/bodypart/head/robot/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/assembly/flash/handheld))
 		var/obj/item/device/assembly/flash/handheld/F = W
 		if(src.flash1 && src.flash2)
@@ -141,6 +149,8 @@
 		return ..()
 
 /obj/item/bodypart/head/robot/Destroy()
+	procstart = null
+	src.procstart = null
 	if(flash1)
 		qdel(flash1)
 		flash1 = null
@@ -151,6 +161,8 @@
 
 
 /obj/item/bodypart/head/robot/drop_organs(mob/user)
+	procstart = null
+	src.procstart = null
 	if(flash1)
 		flash1.forceMove(user.loc)
 		flash1 = null

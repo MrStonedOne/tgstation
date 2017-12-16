@@ -37,6 +37,8 @@
 	var/next_cast = 0
 
 /mob/living/simple_animal/hostile/wizard/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fireball = new /obj/effect/proc_holder/spell/aimed/fireball
 	fireball.clothes_req = 0
@@ -59,6 +61,8 @@
 	AddSpell(blink)
 
 /mob/living/simple_animal/hostile/wizard/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target && next_cast < world.time)
 		if((get_dir(src,target) in list(SOUTH,EAST,WEST,NORTH)) && fireball.cast_check(0,src)) //Lined up for fireball

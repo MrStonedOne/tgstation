@@ -2,6 +2,8 @@
 
 //Not sure why this is necessary...
 /proc/AutoUpdateAI(obj/subject)
+	procstart = null
+	src.procstart = null
 	var/is_in_use = 0
 	if (subject!=null)
 		for(var/A in GLOB.ai_list)
@@ -86,6 +88,8 @@
 	var/chnotify = 0
 
 /mob/living/silicon/ai/Initialize(mapload, datum/ai_laws/L, mob/target_ai)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!target_ai) //If there is no player/brain inside.
 		new/obj/structure/AIcore/deactivated(loc) //New empty terminal.
@@ -153,6 +157,8 @@
 
 
 /mob/living/silicon/ai/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.ai_list -= src
 	GLOB.shuttle_caller_list -= src
 	SSshuttle.autoEvac()
@@ -162,10 +168,14 @@
 	. = ..()
 
 /mob/living/silicon/ai/IgniteMob()
+	procstart = null
+	src.procstart = null
 	fire_stacks = 0
 	. = ..()
 
 /mob/living/silicon/ai/verb/pick_icon()
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "Set AI Core Display"
 	if(incapacitated())
@@ -238,6 +248,8 @@
 		icon_state = "ai-angel"
 
 /mob/living/silicon/ai/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		if(!stat)
@@ -261,6 +273,8 @@
 			stat(null, text("Systems nonfunctional"))
 
 /mob/living/silicon/ai/proc/ai_alerts()
+	procstart = null
+	src.procstart = null
 	var/dat = "<HEAD><TITLE>Current Station Alerts</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
 	dat += "<A HREF='?src=[REF(src)];mach_close=aialerts'>Close</A><BR><BR>"
 	for (var/cat in alarms)
@@ -294,6 +308,8 @@
 	src << browse(dat, "window=aialerts&can_close=0")
 
 /mob/living/silicon/ai/proc/ai_roster()
+	procstart = null
+	src.procstart = null
 	var/dat = "<html><head><title>Crew Roster</title></head><body><b>Crew Roster:</b><br><br>"
 
 	dat += GLOB.data_core.get_manifest()
@@ -303,6 +319,8 @@
 	onclose(src, "airoster")
 
 /mob/living/silicon/ai/proc/ai_call_shuttle()
+	procstart = null
+	src.procstart = null
 	if(control_disabled)
 		to_chat(usr, "<span class='warning'>Wireless control is disabled!</span>")
 		return
@@ -322,9 +340,13 @@
 			C.post_status("shuttle")
 
 /mob/living/silicon/ai/cancel_camera()
+	procstart = null
+	src.procstart = null
 	view_core()
 
 /mob/living/silicon/ai/verb/toggle_anchor()
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "Toggle Floor Bolts"
 	if(!isturf(loc)) // if their location isn't a turf
@@ -340,6 +362,8 @@
 	return 0
 
 /mob/living/silicon/ai/proc/ai_cancel_call()
+	procstart = null
+	src.procstart = null
 	set category = "Malfunction"
 	if(control_disabled)
 		to_chat(src, "<span class='warning'>Wireless control is disabled!</span>")
@@ -347,9 +371,13 @@
 	SSshuttle.cancelEvac(src)
 
 /mob/living/silicon/ai/restrained(ignore_grab)
+	procstart = null
+	src.procstart = null
 	. = 0
 
 /mob/living/silicon/ai/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(usr != src || incapacitated())
 		return
 	..()
@@ -431,6 +459,8 @@
 
 /mob/living/silicon/ai/proc/switchCamera(obj/machinery/camera/C)
 
+	procstart = null
+	src.procstart = null
 	if(!tracking)
 		cameraFollow = null
 
@@ -447,6 +477,8 @@
 	return TRUE
 
 /mob/living/silicon/ai/proc/botcall()
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "Access Robot Control"
 	set desc = "Wirelessly control various automatic robots."
@@ -481,6 +513,8 @@
 	popup.open()
 
 /mob/living/silicon/ai/proc/set_waypoint(atom/A)
+	procstart = null
+	src.procstart = null
 	var/turf/turf_check = get_turf(A)
 		//The target must be in view of a camera or near the core.
 	if(turf_check in range(get_turf(src)))
@@ -492,6 +526,8 @@
 
 /mob/living/silicon/ai/proc/call_bot(turf/waypoint)
 
+	procstart = null
+	src.procstart = null
 	if(!Bot)
 		return
 
@@ -505,6 +541,8 @@
 
 
 /mob/living/silicon/ai/triggerAlarm(class, area/A, O, obj/alarmsource)
+	procstart = null
+	src.procstart = null
 	if(alarmsource.z != z)
 		return
 	var/list/L = alarms[class]
@@ -542,6 +580,8 @@
 	return 1
 
 /mob/living/silicon/ai/cancelAlarm(class, area/A, obj/origin)
+	procstart = null
+	src.procstart = null
 	var/list/L = alarms[class]
 	var/cleared = 0
 	for (var/I in L)
@@ -562,6 +602,8 @@
 //Adds in /mob/living/silicon/ai/proc/ai_network_change() instead
 //Addition by Mord_Sith to define AI's network change ability
 /mob/living/silicon/ai/proc/ai_network_change()
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "Jump To Network"
 	unset_machine()
@@ -603,12 +645,16 @@
 
 
 /mob/living/silicon/ai/proc/choose_modules()
+	procstart = null
+	src.procstart = null
 	set category = "Malfunction"
 	set name = "Choose Module"
 
 	malf_picker.use(src)
 
 /mob/living/silicon/ai/proc/ai_statuschange()
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "AI Status"
 
@@ -631,6 +677,8 @@
 
 //I am the icon meister. Bow fefore me.	//>fefore
 /mob/living/silicon/ai/proc/ai_hologram_change()
+	procstart = null
+	src.procstart = null
 	set name = "Change Hologram"
 	set desc = "Change the default hologram available to AI to something else."
 	set category = "AI Commands"
@@ -702,6 +750,8 @@
 	return
 
 /mob/living/silicon/ai/proc/corereturn()
+	procstart = null
+	src.procstart = null
 	set category = "Malfunction"
 	set name = "Return to Main Core"
 
@@ -712,6 +762,8 @@
 	apc.malfvacate()
 
 /mob/living/silicon/ai/proc/toggle_camera_light()
+	procstart = null
+	src.procstart = null
 	camera_light_on = !camera_light_on
 
 	if (!camera_light_on)
@@ -730,6 +782,8 @@
 //AI_CAMERA_LUMINOSITY
 
 /mob/living/silicon/ai/proc/light_cameras()
+	procstart = null
+	src.procstart = null
 	var/list/obj/machinery/camera/add = list()
 	var/list/obj/machinery/camera/remove = list()
 	var/list/obj/machinery/camera/visible = list()
@@ -750,6 +804,8 @@
 		lit_cameras |= C
 
 /mob/living/silicon/ai/proc/control_integrated_radio()
+	procstart = null
+	src.procstart = null
 	set name = "Transceiver Settings"
 	set desc = "Allows you to change settings of your radio."
 	set category = "AI Commands"
@@ -762,10 +818,14 @@
 		radio.interact(src)
 
 /mob/living/silicon/ai/proc/set_syndie_radio()
+	procstart = null
+	src.procstart = null
 	if(radio)
 		radio.make_syndie()
 
 /mob/living/silicon/ai/proc/set_automatic_say_channel()
+	procstart = null
+	src.procstart = null
 	set name = "Set Auto Announce Mode"
 	set desc = "Modify the default radio setting for your automatic announcements."
 	set category = "AI Commands"
@@ -775,6 +835,8 @@
 	set_autosay()
 
 /mob/living/silicon/ai/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/device/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(interaction == AI_TRANS_TO_CARD)//The only possible interaction. Upload AI mob to a card.
@@ -796,14 +858,20 @@
 		to_chat(user, "<span class='boldnotice'>Transfer successful</span>: [name] ([rand(1000,9999)].exe) removed from host terminal and stored within local memory.")
 
 /mob/living/silicon/ai/can_buckle()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/silicon/ai/incapacitated()
+	procstart = null
+	src.procstart = null
 	if(aiRestorePowerRoutine)
 		return TRUE
 	return ..()
 
 /mob/living/silicon/ai/canUseTopic(atom/movable/M, be_close = FALSE)
+	procstart = null
+	src.procstart = null
 	if(control_disabled || incapacitated())
 		return FALSE
 	if(be_close && !in_range(M, src))
@@ -811,6 +879,8 @@
 	return can_see(M) //stop AIs from leaving windows open and using then after they lose vision
 
 /mob/living/silicon/ai/proc/can_see(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc)) //AI in core, check if on cameras
 		//get_turf_pixel() is because APCs in maint aren't actually in view of the inner camera
 		//apc_override is needed here because AIs use their own APC when depowered
@@ -821,6 +891,8 @@
 	return get_dist(src, A) <= max(viewscale[1]*0.5,viewscale[2]*0.5)
 
 /mob/living/silicon/ai/proc/relay_speech(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	raw_message = lang_treat(speaker, message_language, raw_message, spans, message_mode)
 	var/start = "Relayed Speech: "
 	var/namepart = "[speaker.GetVoice()][speaker.get_alt_name()]"
@@ -839,6 +911,8 @@
 	show_message(rendered, 2)
 
 /mob/living/silicon/ai/fully_replace_character_name(oldname,newname)
+	procstart = null
+	src.procstart = null
 	..()
 	if(oldname != real_name)
 		if(eyeobj)
@@ -849,12 +923,16 @@
 			Slave.show_laws()
 
 /mob/living/silicon/ai/replace_identification_name(oldname,newname)
+	procstart = null
+	src.procstart = null
 	if(aiPDA)
 		aiPDA.owner = newname
 		aiPDA.name = newname + " (" + aiPDA.ownjob + ")"
 
 
 /mob/living/silicon/ai/proc/add_malf_picker()
+	procstart = null
+	src.procstart = null
 	to_chat(src, "In the top right corner of the screen you will find the Malfunctions tab, where you can purchase various abilities, from upgraded surveillance to station ending doomsday devices.")
 	to_chat(src, "You are also capable of hacking APCs, which grants you more points to spend on your Malfunction powers. The drawback is that a hacked APC will give you away if spotted by the crew. Hacking an APC takes 60 seconds.")
 	view_core() //A BYOND bug requires you to be viewing your core before your verbs update
@@ -863,6 +941,8 @@
 
 
 /mob/living/silicon/ai/reset_perspective(atom/A)
+	procstart = null
+	src.procstart = null
 	if(camera_light_on)
 		light_cameras()
 	if(istype(A, /obj/machinery/camera))
@@ -890,11 +970,15 @@
 			clear_fullscreen("remote_view", 0)
 
 /mob/living/silicon/ai/revive(full_heal = 0, admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	if(..()) //successfully ressuscitated from death
 		icon_state = "ai"
 		. = 1
 
 /mob/living/silicon/ai/proc/malfhacked(obj/machinery/power/apc/apc)
+	procstart = null
+	src.procstart = null
 	malfhack = null
 	malfhacking = 0
 	clear_alert("hackingapc")
@@ -918,6 +1002,8 @@
 		apc.update_icon()
 
 /mob/living/silicon/ai/verb/deploy_to_shell(var/mob/living/silicon/robot/target)
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "Deploy to Shell"
 
@@ -957,6 +1043,8 @@
 	button_icon_state = "ai_shell"
 
 /datum/action/innate/deploy_shell/Trigger()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/AI = owner
 	if(!AI)
 		return
@@ -970,6 +1058,8 @@
 	var/mob/living/silicon/robot/last_used_shell
 
 /datum/action/innate/deploy_last_shell/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	if(last_used_shell)
@@ -979,15 +1069,21 @@
 		Remove(owner) //If the last shell is blown, destroy it.
 
 /mob/living/silicon/ai/proc/disconnect_shell()
+	procstart = null
+	src.procstart = null
 	if(deployed_shell) //Forcibly call back AI in event of things such as damage, EMP or power loss.
 		to_chat(src, "<span class='danger'>Your remote connection has been reset!</span>")
 		deployed_shell.undeploy()
 	diag_hud_set_deployed()
 
 /mob/living/silicon/ai/resist()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/ai/spawned/Initialize(mapload, datum/ai_laws/L, mob/target_ai)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!target_ai)
 		target_ai = src //cheat! just give... ourselves as the spawned AI, because that's technically correct

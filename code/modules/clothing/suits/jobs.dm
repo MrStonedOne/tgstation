@@ -99,6 +99,8 @@
 	heat_protection = CHEST|GROIN|LEGS|ARMS
 
 /obj/item/clothing/suit/det_suit/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.detective_vest_allowed
 

@@ -11,6 +11,8 @@
 	var/list/voicespan = list(SPAN_COMMAND)
 
 /obj/item/device/megaphone/get_held_item_speechspans(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(spamcheck > world.time)
 		to_chat(user, "<span class='warning'>\The [src] needs to recharge!</span>")
 	else
@@ -19,6 +21,8 @@
 		return voicespan
 
 /obj/item/device/megaphone/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	to_chat(user, "<span class='warning'>You overload \the [src]'s voice synthesizer.</span>")

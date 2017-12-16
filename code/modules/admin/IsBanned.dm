@@ -7,6 +7,8 @@
 #define STICKYBAN_MAX_ADMIN_MATCHES 2
 
 /world/IsBanned(key,address,computer_id,type,real_bans_only=FALSE)
+	procstart = null
+	src.procstart = null
 	if (!key || !address || !computer_id)
 		if(real_bans_only)
 			return FALSE

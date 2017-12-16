@@ -11,20 +11,28 @@
 
 // This proc gets run before the game starts when the holiday is activated. Do festive shit here.
 /datum/holiday/proc/celebrate()
+	procstart = null
+	src.procstart = null
 	return
 
 // When the round starts, this proc is ran to get a text message to display to everyone to wish them a happy holiday
 /datum/holiday/proc/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a happy [name]!"
 
 // Returns special prefixes for the station name on certain days. You wind up with names like "Christmas Object Epsilon". See new_station_name()
 /datum/holiday/proc/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	//get the first word of the Holiday and use that
 	var/i = findtext(name," ",1,0)
 	return copytext(name,1,i)
 
 // Return 1 if this holidy should be celebrated today
 /datum/holiday/proc/shouldCelebrate(dd, mm, yy, ww, ddd)
+	procstart = null
+	src.procstart = null
 	if(always_celebrate)
 		return TRUE
 
@@ -69,6 +77,8 @@
 	end_month = JANUARY
 
 /datum/holiday/new_year/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Party","New","Hangover","Resolution")
 
 /datum/holiday/groundhog
@@ -83,6 +93,8 @@
 	begin_month = FEBRUARY
 
 /datum/holiday/valentines/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Love","Amore","Single","Smootch","Hug")
 
 /datum/holiday/birthday
@@ -91,6 +103,8 @@
 	begin_month = FEBRUARY
 
 /datum/holiday/birthday/greet()
+	procstart = null
+	src.procstart = null
 	var/game_age = text2num(time2text(world.timeofday, "YY")) - 3
 	var/Fact
 	switch(game_age)
@@ -123,6 +137,8 @@
 	begin_month = FEBRUARY
 
 /datum/holiday/random_kindness/greet()
+	procstart = null
+	src.procstart = null
 	return "Go do some random acts of kindness for a stranger!" //haha yeah right
 
 /datum/holiday/leap
@@ -141,6 +157,8 @@
 	begin_month = MARCH
 
 /datum/holiday/no_this_is_patrick/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Blarney","Green","Leprechaun","Booze")
 
 /datum/holiday/april_fools
@@ -150,6 +168,8 @@
 	begin_month = APRIL
 
 /datum/holiday/april_fools/celebrate()
+	procstart = null
+	src.procstart = null
 	SSticker.login_music = 'sound/ambience/clown.ogg'
 	for(var/mob/dead/new_player/P in GLOB.mob_list)
 		if(P.client)
@@ -161,6 +181,8 @@
 	begin_month = APRIL
 
 /datum/holiday/fourtwenty/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Snoop","Blunt","Toke","Dank")
 
 /datum/holiday/earth
@@ -179,6 +201,8 @@
 	begin_month = MAY
 
 /datum/holiday/firefighter/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Burning","Blazing","Plasma","Fire")
 
 /datum/holiday/summersolstice
@@ -210,6 +234,8 @@
 	begin_month = JULY
 
 /datum/holiday/friendship/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a magical [name]!"
 
 /datum/holiday/beer
@@ -223,9 +249,13 @@
 	begin_month = SEPTEMBER
 
 /datum/holiday/pirate/greet()
+	procstart = null
+	src.procstart = null
 	return "Ye be talkin' like a pirate today or else ye'r walkin' tha plank, matey!"
 
 /datum/holiday/pirate/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Yarr","Scurvy","Yo-ho-ho")
 
 /datum/holiday/programmers
@@ -242,6 +272,8 @@
 	return 0
 
 /datum/holiday/programmers/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("span>","DEBUG: ","null","/list","EVENT PREFIX NOT FOUND") //Portability
 
 /datum/holiday/questions
@@ -250,6 +282,8 @@
 	begin_month = SEPTEMBER
 
 /datum/holiday/questions/greet()
+	procstart = null
+	src.procstart = null
 	return "Are you having a happy [name]?"
 
 /datum/holiday/animal
@@ -258,6 +292,8 @@
 	begin_month = OCTOBER
 
 /datum/holiday/animal/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Parrot","Corgi","Cat","Pug","Goat","Fox")
 
 /datum/holiday/smile
@@ -278,9 +314,13 @@
 	end_month = NOVEMBER
 
 /datum/holiday/halloween/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a spooky Halloween!"
 
 /datum/holiday/halloween/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Bone-Rattling","Mr. Bones' Own","2SPOOKY","Spooky","Scary","Skeletons")
 
 /datum/holiday/vegan
@@ -304,6 +344,8 @@
 	begin_month = NOVEMBER
 
 /datum/holiday/hello/greet()
+	procstart = null
+	src.procstart = null
 	return "[pick(list("Aloha", "Bonjour", "Hello", "Hi", "Greetings", "Salutations", "Bienvenidos", "Hola", "Howdy"))]! " + ..()
 
 /datum/holiday/human_rights
@@ -341,6 +383,8 @@
 	begin_weekday = SUNDAY
 
 /datum/holiday/mother/greet()
+	procstart = null
+	src.procstart = null
 	return "Happy Mother's Day in most of the Americas, Asia, and Oceania!"
 
 /datum/holiday/father
@@ -365,17 +409,23 @@ Since Ramadan is an entire month that lasts 29.5 days on average, the start and 
 */
 
 /datum/holiday/ramadan/shouldCelebrate(dd, mm, yy, ww, ddd)
+	procstart = null
+	src.procstart = null
 	if (round(((world.realtime - 285984000) / 864000) % 354.373435326843) == 0)
 		return TRUE
 	return FALSE
 
 /datum/holiday/ramadan/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Harm","Halaal","Jihad","Muslim")
 
 /datum/holiday/ramadan/end
 	name = "End of Ramadan"
 
 /datum/holiday/ramadan/end/shouldCelebrate(dd, mm, yy, ww, ddd)
+	procstart = null
+	src.procstart = null
 	if (round(((world.realtime - 312768000) / 864000) % 354.373435326843) == 0)
 		return TRUE
 	return FALSE
@@ -392,6 +442,8 @@ Since Ramadan is an entire month that lasts 29.5 days on average, the start and 
 	end_day = 25
 
 /datum/holiday/xmas/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a merry Christmas!"
 
 /datum/holiday/festive_season
@@ -401,6 +453,8 @@ Since Ramadan is an entire month that lasts 29.5 days on average, the start and 
 	end_day = 31
 
 /datum/holiday/festive_season/greet()
+	procstart = null
+	src.procstart = null
 	return "Have a nice festive season!"
 
 /datum/holiday/boxing
@@ -412,11 +466,15 @@ Since Ramadan is an entire month that lasts 29.5 days on average, the start and 
 	name = "Friday the 13th"
 
 /datum/holiday/friday_thirteenth/shouldCelebrate(dd, mm, yy, ww, ddd)
+	procstart = null
+	src.procstart = null
 	if(dd == 13 && ddd == FRIDAY)
 		return TRUE
 	return FALSE
 
 /datum/holiday/friday_thirteenth/getStationPrefix()
+	procstart = null
+	src.procstart = null
 	return pick("Mike","Friday","Evil","Myers","Murder","Deathly","Stabby")
 
 /datum/holiday/easter
@@ -488,6 +546,8 @@ Since Ramadan is an entire month that lasts 29.5 days on average, the start and 
 	return ..()
 
 /datum/holiday/easter/celebrate()
+	procstart = null
+	src.procstart = null
 	GLOB.maintenance_loot += list(
 		/obj/item/reagent_containers/food/snacks/egg/loaded = 15,
 		/obj/item/storage/bag/easterbasket = 15)

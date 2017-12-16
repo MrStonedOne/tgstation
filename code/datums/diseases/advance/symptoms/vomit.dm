@@ -39,6 +39,8 @@ Bonus
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
 /datum/symptom/vomit/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4)
@@ -49,6 +51,8 @@ Bonus
 		proj_vomit = 5
 
 /datum/symptom/vomit/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -60,4 +64,6 @@ Bonus
 			vomit(M)
 
 /datum/symptom/vomit/proc/vomit(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	M.vomit(20, vomit_blood, distance = proj_vomit)

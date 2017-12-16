@@ -9,6 +9,8 @@
 	return 1 //always return non-0
 
 /obj/mecha/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && obj_integrity > 0)
 		spark_system.start()
@@ -24,6 +26,8 @@
 		log_append_to_last("Took [damage_amount] points of damage. Damage type: \"[damage_type]\".",1)
 
 /obj/mecha/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!damage_amount)
 		return 0
@@ -55,6 +59,8 @@
 
 
 /obj/mecha/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE) // Ugh. Ideally we shouldn't be setting cooldowns outside of click code.
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 	playsound(loc, 'sound/weapons/tap.ogg', 40, 1, -1)
@@ -63,15 +69,21 @@
 	log_append_to_last("Armor saved.")
 
 /obj/mecha/attack_paw(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 
 /obj/mecha/attack_alien(mob/living/user)
+	procstart = null
+	src.procstart = null
 	log_message("Attack by alien. Attacker - [user].",1)
 	playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
 	attack_generic(user, 15, BRUTE, "melee", 0)
 
 /obj/mecha/attack_animal(mob/living/simple_animal/user)
+	procstart = null
+	src.procstart = null
 	log_message("Attack by simple animal. Attacker - [user].",1)
 	if(!user.melee_damage_upper && !user.obj_damage)
 		user.emote("custom", message = "[user.friendly] [src].")
@@ -91,18 +103,26 @@
 
 
 /obj/mecha/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 15
 
 /obj/mecha/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		log_message("Attack by hulk. Attacker - [user].",1)
 		add_logs(user, src, "punched", "hulk powers")
 
 /obj/mecha/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	take_damage(30, BRUTE, "melee", 0, get_dir(src, B))
 
 /obj/mecha/attack_tk()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/mecha/hitby(atom/movable/A as mob|obj) //wrapper
@@ -115,6 +135,8 @@
 	. = ..()
 
 /obj/mecha/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	log_message("Affected by explosion of severity: [severity].",1)
 	if(prob(deflect_chance))
 		severity++
@@ -122,6 +144,8 @@
 	. = ..()
 
 /obj/mecha/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	severity++
 	for(var/X in equipment)
 		var/obj/item/mecha_parts/mecha_equipment/ME = X
@@ -133,12 +157,16 @@
 		occupant.ex_act(severity,target)
 
 /obj/mecha/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == occupant)
 		occupant = null
 		icon_state = initial(icon_state)+"-open"
 		setDir(dir_in)
 
 /obj/mecha/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(get_charge())
 		use_power((cell.charge/3)/(severity*2))
 		take_damage(30 / severity, BURN, "energy", 1)
@@ -146,12 +174,16 @@
 	check_for_internal_damage(list(MECHA_INT_FIRE,MECHA_INT_TEMP_CONTROL,MECHA_INT_CONTROL_LOST,MECHA_INT_SHORT_CIRCUIT),1)
 
 /obj/mecha/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature>max_temperature)
 		log_message("Exposed to dangerous temperature.",1)
 		take_damage(5, BURN, 0, 1)
 
 /obj/mecha/attackby(obj/item/W as obj, mob/user as mob, params)
 
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/mmi))
 		if(mmi_move_inside(W,user))
 			to_chat(user, "[src]-[W] interface initialized successfully.")
@@ -270,10 +302,14 @@
 		return ..()
 
 /obj/mecha/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	log_message("Attacked by [I]. Attacker - [user]")
 	..()
 
 /obj/mecha/proc/mech_toxin_damage(mob/living/target)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/spray2.ogg', 50, 1)
 	if(target.reagents)
 		if(target.reagents.get_reagent_amount("cryptobiolin") + force < force*2)
@@ -283,6 +319,8 @@
 
 
 /obj/mecha/mech_melee_attack(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	if(!has_charge(melee_energy_drain))
 		return 0
 	use_power(melee_energy_drain)
@@ -291,6 +329,8 @@
 		. = ..()
 
 /obj/mecha/proc/full_repair(charge_cell)
+	procstart = null
+	src.procstart = null
 	obj_integrity = max_integrity
 	if(cell && charge_cell)
 		cell.charge = cell.maxcharge
@@ -306,6 +346,8 @@
 		clearInternalDamage(MECHA_INT_CONTROL_LOST)
 
 /obj/mecha/narsie_act()
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		var/mob/living/L = occupant
 		go_out(TRUE)
@@ -313,6 +355,8 @@
 			L.narsie_act()
 
 /obj/mecha/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if((GLOB.ratvar_awakens || GLOB.clockwork_gateway_activated) && occupant)
 		if(is_servant_of_ratvar(occupant)) //reward the minion that got a mech by repairing it
 			full_repair(TRUE)
@@ -323,6 +367,8 @@
 				L.ratvar_act()
 
 /obj/mecha/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect, end_pixel_y)
+	procstart = null
+	src.procstart = null
 	if(!no_effect)
 		if(selected)
 			used_item = selected

@@ -3,6 +3,8 @@
 //Disables nearby tech equipment.
 /obj/item/clothing/suit/space/space_ninja/proc/ninjapulse()
 
+	procstart = null
+	src.procstart = null
 	if(!ninjacost(250,N_STEALTH_CANCEL))
 		var/mob/living/carbon/human/H = affecting
 		playsound(H.loc, 'sound/effects/empulse.ogg', 60, 2)

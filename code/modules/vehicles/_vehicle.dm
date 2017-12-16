@@ -26,6 +26,8 @@
 	var/list/mob/occupant_actions			//assoc list mob = list(type = action datum assigned to mob)
 
 /obj/vehicle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	occupants = list()
 	autogrant_actions_passenger = list()
@@ -34,39 +36,59 @@
 	generate_actions()
 
 /obj/vehicle/proc/is_key(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return I? (key_type_exact? (I.type == key_type) : istype(I, key_type)) : FALSE
 
 /obj/vehicle/proc/return_occupants()
+	procstart = null
+	src.procstart = null
 	return occupants
 
 /obj/vehicle/proc/occupant_amount()
+	procstart = null
+	src.procstart = null
 	return length(occupants)
 
 /obj/vehicle/proc/return_amount_of_controllers_with_flag(flag)
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/i in occupants)
 		if(occupants[i] & flag)
 			.++
 
 /obj/vehicle/proc/return_controllers_with_flag(flag)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/i in occupants)
 		if(occupants[i] & flag)
 			. += i
 
 /obj/vehicle/proc/return_drivers()
+	procstart = null
+	src.procstart = null
 	return return_controllers_with_flag(VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/proc/driver_amount()
+	procstart = null
+	src.procstart = null
 	return return_amount_of_controllers_with_flag(VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/proc/is_driver(mob/M)
+	procstart = null
+	src.procstart = null
 	return is_occupant(M) && occupants[M] & VEHICLE_CONTROL_DRIVE
 
 /obj/vehicle/proc/is_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 	return !isnull(occupants[M])
 
 /obj/vehicle/proc/add_occupant(mob/M, control_flags)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || occupants[M])
 		return FALSE
 	occupants[M] = NONE
@@ -76,6 +98,8 @@
 	return TRUE
 
 /obj/vehicle/proc/after_add_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 	auto_assign_occupant_flags(M)
 
 /obj/vehicle/proc/auto_assign_occupant_flags(mob/M)	//override for each type that needs it. Default is assign driver if drivers is not at max.
@@ -83,6 +107,8 @@
 		add_control_flags(M, VEHICLE_CONTROL_DRIVE|VEHICLE_CONTROL_PERMISSION)
 
 /obj/vehicle/proc/remove_occupant(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	remove_control_flags(M, ALL)
@@ -95,11 +121,15 @@
 /obj/vehicle/proc/after_remove_occupant(mob/M)
 
 /obj/vehicle/relaymove(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if(is_driver(user))
 		return driver_move(user, direction)
 	return FALSE
 
 /obj/vehicle/proc/driver_move(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if(key_type && !is_key(inserted_key))
 		to_chat(user, "<span class='warning'>[src] has no key inserted!</span>")
 		return FALSE
@@ -108,12 +138,16 @@
 	vehicle_move(direction)
 
 /obj/vehicle/proc/vehicle_move(direction)
+	procstart = null
+	src.procstart = null
 	if(lastmove + movedelay > world.time)
 		return FALSE
 	lastmove = world.time
 	return step(src, direction)
 
 /obj/vehicle/proc/add_control_flags(mob/controller, flags)
+	procstart = null
+	src.procstart = null
 	if(!istype(controller) || !flags)
 		return FALSE
 	occupants[controller] |= flags
@@ -123,6 +157,8 @@
 	return TRUE
 
 /obj/vehicle/proc/remove_control_flags(mob/controller, flags)
+	procstart = null
+	src.procstart = null
 	if(!istype(controller) || !flags)
 		return FALSE
 	occupants[controller] &= ~flags
@@ -132,6 +168,8 @@
 	return TRUE
 
 /obj/vehicle/Collide(atom/movable/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(emulate_door_bumps)
 		if(istype(M, /obj/machinery/door) && has_buckled_mobs())

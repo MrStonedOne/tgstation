@@ -17,6 +17,8 @@
 	foodtype = MEAT | RAW
 
 /obj/item/reagent_containers/food/snacks/meat/slab/initialize_slice(obj/item/reagent_containers/food/snacks/meat/rawcutlet/slice, reagents_per_slice)
+	procstart = null
+	src.procstart = null
 	..()
 	var/mutable_appearance/filling = mutable_appearance(icon, "rawcutlet_coloration")
 	filling.color = filling_color
@@ -26,6 +28,8 @@
 	slice.meat_type = name
 
 /obj/item/reagent_containers/food/snacks/meat/slab/initialize_cooked_food(obj/item/reagent_containers/food/snacks/S, cooking_efficiency)
+	procstart = null
+	src.procstart = null
 	..()
 	S.name = "[name] steak"
 
@@ -40,6 +44,8 @@
 	foodtype = MEAT | RAW | GROSS
 
 /obj/item/reagent_containers/food/snacks/meat/slab/human/initialize_slice(obj/item/reagent_containers/food/snacks/meat/rawcutlet/plain/human/slice, reagents_per_slice)
+	procstart = null
+	src.procstart = null
 	..()
 	slice.subjectname = subjectname
 	slice.subjectjob = subjectjob
@@ -49,6 +55,8 @@
 		slice.name = "raw [subjectjob] cutlet"
 
 /obj/item/reagent_containers/food/snacks/meat/slab/human/initialize_cooked_food(obj/item/reagent_containers/food/snacks/meat/S, cooking_efficiency)
+	procstart = null
+	src.procstart = null
 	..()
 	S.subjectname = subjectname
 	S.subjectjob = subjectjob
@@ -211,6 +219,8 @@
 	foodtype = RAW | MEAT | TOXIC
 
 /obj/item/reagent_containers/food/snacks/meat/slab/goliath/burn()
+	procstart = null
+	src.procstart = null
 	visible_message("[src] finishes cooking!")
 	new /obj/item/reagent_containers/food/snacks/meat/steak/goliath(loc)
 	qdel(src)
@@ -315,6 +325,8 @@
 	foodtype = MEAT | RAW
 
 /obj/item/reagent_containers/food/snacks/meat/rawcutlet/initialize_cooked_food(obj/item/reagent_containers/food/snacks/S, cooking_efficiency)
+	procstart = null
+	src.procstart = null
 	..()
 	S.name = "[meat_type] cutlet"
 
@@ -328,6 +340,8 @@
 	foodtype = MEAT | RAW | GROSS
 
 /obj/item/reagent_containers/food/snacks/meat/rawcutlet/plain/human/initialize_cooked_food(obj/item/reagent_containers/food/snacks/S, cooking_efficiency)
+	procstart = null
+	src.procstart = null
 	..()
 	if(subjectname)
 		S.name = "[subjectname] [initial(S.name)]"

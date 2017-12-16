@@ -5,6 +5,8 @@
 	req_access = list(ACCESS_MEDICAL)
 
 /obj/structure/closet/secure_closet/medical1/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/reagent_containers/glass/beaker(src)
 	new /obj/item/reagent_containers/glass/beaker(src)
@@ -27,6 +29,8 @@
 	req_access = list(ACCESS_SURGERY)
 
 /obj/structure/closet/secure_closet/medical2/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/tank/internals/anesthetic(src)
@@ -39,6 +43,8 @@
 	icon_state = "med_secure"
 
 /obj/structure/closet/secure_closet/medical3/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/device/radio/headset/headset_med(src)
 	new /obj/item/defibrillator/loaded(src)
@@ -53,6 +59,8 @@
 	icon_state = "cmo"
 
 /obj/structure/closet/secure_closet/CMO/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/neck/cloak/cmo(src)
 	new /obj/item/storage/backpack/duffelbag/med(src)
@@ -81,6 +89,8 @@
 	req_access = list(ACCESS_SURGERY)
 
 /obj/structure/closet/secure_closet/animal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/device/assembly/signaler(src)
 	for(var/i in 1 to 3)
@@ -92,6 +102,8 @@
 	icon_door = "chemical"
 
 /obj/structure/closet/secure_closet/chemical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/pillbottles(src)
 	new /obj/item/storage/box/pillbottles(src)

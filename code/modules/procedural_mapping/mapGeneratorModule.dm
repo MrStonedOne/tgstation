@@ -11,6 +11,8 @@
 
 //Syncs the module up with its mother
 /datum/mapGeneratorModule/proc/sync(datum/mapGenerator/mum)
+	procstart = null
+	src.procstart = null
 	mother = null
 	if(mum)
 		mother = mum
@@ -18,6 +20,8 @@
 
 //Generates its spawnable atoms and turfs
 /datum/mapGeneratorModule/proc/generate()
+	procstart = null
+	src.procstart = null
 	if(!mother)
 		return
 	var/list/map = mother.map
@@ -27,6 +31,8 @@
 
 //Place a spawnable atom or turf on this turf
 /datum/mapGeneratorModule/proc/place(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		return 0
 
@@ -105,6 +111,8 @@
 
 //Checks and Rejects dense turfs
 /datum/mapGeneratorModule/proc/checkPlaceAtom(turf/T)
+	procstart = null
+	src.procstart = null
 	. = 1
 	if(!T)
 		return 0

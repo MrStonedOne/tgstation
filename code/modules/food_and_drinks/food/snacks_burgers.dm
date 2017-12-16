@@ -22,6 +22,8 @@
 	foodtype = MEAT | GRAIN | GROSS
 
 /obj/item/reagent_containers/food/snacks/burger/human/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/reagent_containers/food/snacks/meat/M = locate(/obj/item/reagent_containers/food/snacks/meat/steak/plain/human) in contents
 	if(M)

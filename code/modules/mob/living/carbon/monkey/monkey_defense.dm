@@ -6,6 +6,8 @@
 		..()
 
 /mob/living/carbon/monkey/attack_paw(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful monkey bite.
 		var/dam_zone = pick("chest", "l_hand", "r_hand", "l_leg", "r_leg")
 		var/obj/item/bodypart/affecting = get_bodypart(ran_zone(dam_zone))
@@ -18,6 +20,8 @@
 			apply_damage(dmg, BRUTE, affecting)
 
 /mob/living/carbon/monkey/attack_larva(mob/living/carbon/alien/larva/L)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful larva bite.
 		var/damage = rand(1, 3)
 		if(stat != DEAD)
@@ -28,6 +32,8 @@
 			apply_damage(damage, BRUTE, affecting)
 
 /mob/living/carbon/monkey/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if(..())	//To allow surgery to return properly.
 		return
 
@@ -74,6 +80,8 @@
 					visible_message("<span class='danger'>[M] has disarmed [src]!</span>", "<span class='userdanger'>[M] has disarmed [src]!</span>", null, COMBAT_MESSAGE_RANGE)
 
 /mob/living/carbon/monkey/attack_alien(mob/living/carbon/alien/humanoid/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //if harm or disarm intent.
 		if (M.a_intent == INTENT_HARM)
 			if ((prob(95) && health > 0))
@@ -120,6 +128,8 @@
 
 
 /mob/living/carbon/monkey/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
@@ -132,6 +142,8 @@
 		apply_damage(damage, M.melee_damage_type, affecting)
 
 /mob/living/carbon/monkey/attack_slime(mob/living/simple_animal/slime/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful slime attack
 		var/damage = rand(5, 35)
 		if(M.is_adult)
@@ -145,6 +157,8 @@
 		apply_damage(damage, BRUTE, affecting)
 
 /mob/living/carbon/monkey/acid_act(acidpwr, acid_volume, bodyzone_hit)
+	procstart = null
+	src.procstart = null
 	. = 1
 	if(!bodyzone_hit || bodyzone_hit == "head")
 		if(wear_mask)
@@ -163,6 +177,8 @@
 
 
 /mob/living/carbon/monkey/ex_act(severity, target, origin)
+	procstart = null
+	src.procstart = null
 	if(origin && istype(origin, /datum/spacevine_mutation) && isvineimmune(src))
 		return
 	..()

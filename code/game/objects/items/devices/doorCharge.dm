@@ -14,6 +14,8 @@
 	materials = list(MAT_METAL=50, MAT_GLASS=30)
 
 /obj/item/device/doorCharge/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			visible_message("<span class='warning'>[src] detonates!</span>")
@@ -27,6 +29,8 @@
 				ex_act(EXPLODE_DEVASTATE)
 
 /obj/item/device/doorCharge/Destroy()
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/A = loc
 		if(A.charge == src)
@@ -34,6 +38,8 @@
 	return ..()
 
 /obj/item/device/doorCharge/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.mind in SSticker.mode.traitors) //No nuke ops because the device is excluded from nuclear
 		to_chat(user, "A small explosive device that can be used to sabotage airlocks to cause an explosion upon opening. To apply, remove the airlock's maintenance panel and place it within.")

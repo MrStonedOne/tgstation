@@ -6,6 +6,8 @@
 	earliest_start = 0
 
 /datum/round_event/wizard/fake_explosion/start()
+	procstart = null
+	src.procstart = null
 	sound_to_playing_players('sound/machines/alarm.ogg')
 	sleep(100)
 	Cinematic(CINEMATIC_NUKE_FAKE,world)

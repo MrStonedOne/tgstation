@@ -33,15 +33,21 @@
 	initial_language_holder = /datum/language_holder/construct
 
 /mob/living/simple_animal/shade/death()
+	procstart = null
+	src.procstart = null
 	deathmessage = "lets out a contented sigh as [p_their()] form unwinds."
 	..()
 
 /mob/living/simple_animal/shade/canSuicide()
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/item/device/soulstone)) //do not suicide inside the soulstone
 		return 0
 	return ..()
 
 /mob/living/simple_animal/shade/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	if(isconstruct(M))
 		var/mob/living/simple_animal/hostile/construct/C = M
 		if(!C.can_repair_constructs)

@@ -28,16 +28,22 @@
 	pointer_icon_state = "purple_laser"
 
 /obj/item/device/laser_pointer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	diode = new(src)
 	if(!pointer_icon_state)
 		pointer_icon_state = pick("red_laser","green_laser","blue_laser","purple_laser")
 
 /obj/item/device/laser_pointer/upgraded/New()
+	procstart = null
+	src.procstart = null
 	..()
 	diode = new /obj/item/stock_parts/micro_laser/ultra
 
 /obj/item/device/laser_pointer/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stock_parts/micro_laser))
 		if(!diode)
 			if(!user.transferItemToLoc(W, src))
@@ -56,9 +62,13 @@
 		return ..()
 
 /obj/item/device/laser_pointer/afterattack(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	laser_act(target, user, params)
 
 /obj/item/device/laser_pointer/proc/laser_act(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if( !(user in (viewers(7,target))) )
 		return
 	if (!diode)
@@ -180,6 +190,8 @@
 	icon_state = "pointer"
 
 /obj/item/device/laser_pointer/process()
+	procstart = null
+	src.procstart = null
 	if(prob(20 - recharge_locked*5))
 		energy += 1
 		if(energy >= max_energy)

@@ -151,6 +151,8 @@
 
 
 /datum/admins/proc/stickyban_gethtml(ckey, ban)
+	procstart = null
+	src.procstart = null
 	. = {"
 		<a href='?_src_=holder;[HrefToken()];stickyban=remove&ckey=[ckey]'>\[-\]</a>
 		<a href='?_src_=holder;[HrefToken()];stickyban=revert&ckey=[ckey]'>\[revert\]</a>
@@ -170,6 +172,8 @@
 	. += "</ol>\n"
 
 /datum/admins/proc/stickyban_show()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 	var/list/bans = sortList(world.GetConfig("ban"))
@@ -192,6 +196,8 @@
 	usr << browse(html,"window=stickybans;size=700x400")
 
 /proc/get_stickyban_from_ckey(var/ckey)
+	procstart = null
+	src.procstart = null
 	if (!ckey)
 		return null
 	ckey = ckey(ckey)
@@ -202,6 +208,8 @@
 			break
 
 /proc/stickyban2list(var/ban)
+	procstart = null
+	src.procstart = null
 	if (!ban)
 		return null
 	. = params2list(ban)
@@ -218,6 +226,8 @@
 
 
 /proc/list2stickyban(var/list/ban)
+	procstart = null
+	src.procstart = null
 	if (!ban || !islist(ban))
 		return null
 	. = ban.Copy()
@@ -241,6 +251,8 @@
 
 
 /client/proc/stickybanpanel()
+	procstart = null
+	src.procstart = null
 	set name = "Sticky Ban Panel"
 	set category = "Admin"
 	if (!holder)

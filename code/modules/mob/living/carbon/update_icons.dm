@@ -1,5 +1,7 @@
 //IMPORTANT: Multiple animate() calls do not stack well, so try to do them all at once if you can.
 /mob/living/carbon/update_transform()
+	procstart = null
+	src.procstart = null
 	var/matrix/ntransform = matrix(transform) //aka transform.Copy()
 	var/final_pixel_y = pixel_y
 	var/final_dir = dir
@@ -30,16 +32,22 @@
 	var/list/overlays_standing[TOTAL_LAYERS]
 
 /mob/living/carbon/proc/apply_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	if((. = overlays_standing[cache_index]))
 		add_overlay(.)
 
 /mob/living/carbon/proc/remove_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	var/I = overlays_standing[cache_index]
 	if(I)
 		cut_overlay(I)
 		overlays_standing[cache_index] = null
 
 /mob/living/carbon/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	if(notransform)
 		return 1
 	update_inv_hands()
@@ -49,6 +57,8 @@
 
 
 /mob/living/carbon/update_inv_hands()
+	procstart = null
+	src.procstart = null
 	remove_overlay(HANDS_LAYER)
 	if (handcuffed)
 		drop_all_held_items()
@@ -85,6 +95,8 @@
 
 
 /mob/living/carbon/update_fire(var/fire_icon = "Generic_mob_burning")
+	procstart = null
+	src.procstart = null
 	remove_overlay(FIRE_LAYER)
 	if(on_fire)
 		var/mutable_appearance/new_fire_overlay = mutable_appearance('icons/mob/OnFire.dmi', fire_icon, -FIRE_LAYER)
@@ -96,6 +108,8 @@
 
 
 /mob/living/carbon/update_damage_overlays()
+	procstart = null
+	src.procstart = null
 	remove_overlay(DAMAGE_LAYER)
 
 	var/mutable_appearance/damage_overlay = mutable_appearance('icons/mob/dam_mob.dmi', "blank", -DAMAGE_LAYER)
@@ -113,6 +127,8 @@
 
 
 /mob/living/carbon/update_inv_wear_mask()
+	procstart = null
+	src.procstart = null
 	remove_overlay(FACEMASK_LAYER)
 
 	if(!get_bodypart("head")) //Decapitated
@@ -130,6 +146,8 @@
 	apply_overlay(FACEMASK_LAYER)
 
 /mob/living/carbon/update_inv_neck()
+	procstart = null
+	src.procstart = null
 	remove_overlay(NECK_LAYER)
 
 	if(client && hud_used && hud_used.inv_slots[slot_neck])
@@ -144,6 +162,8 @@
 	apply_overlay(NECK_LAYER)
 
 /mob/living/carbon/update_inv_back()
+	procstart = null
+	src.procstart = null
 	remove_overlay(BACK_LAYER)
 
 	if(client && hud_used && hud_used.inv_slots[slot_back])
@@ -157,6 +177,8 @@
 	apply_overlay(BACK_LAYER)
 
 /mob/living/carbon/update_inv_head()
+	procstart = null
+	src.procstart = null
 	remove_overlay(HEAD_LAYER)
 
 	if(!get_bodypart("head")) //Decapitated
@@ -174,6 +196,8 @@
 
 
 /mob/living/carbon/update_inv_handcuffed()
+	procstart = null
+	src.procstart = null
 	remove_overlay(HANDCUFF_LAYER)
 	if(handcuffed)
 		overlays_standing[HANDCUFF_LAYER] = mutable_appearance('icons/mob/mob.dmi', "handcuff1", -HANDCUFF_LAYER)
@@ -184,6 +208,8 @@
 
 //update whether handcuffs appears on our hud.
 /mob/living/carbon/proc/update_hud_handcuffed()
+	procstart = null
+	src.procstart = null
 	if(hud_used)
 		for(var/hand in hud_used.hand_slots)
 			var/obj/screen/inventory/hand/H = hud_used.hand_slots[hand]
@@ -192,18 +218,26 @@
 
 //update whether our head item appears on our hud.
 /mob/living/carbon/proc/update_hud_head(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 //update whether our mask item appears on our hud.
 /mob/living/carbon/proc/update_hud_wear_mask(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 //update whether our neck item appears on our hud.
 /mob/living/carbon/proc/update_hud_neck(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 //update whether our back item appears on our hud.
 /mob/living/carbon/proc/update_hud_back(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -212,13 +246,19 @@
 //eg: ammo counters, primed grenade flashing, etc.
 //"icon_file" is used automatically for inhands etc. to make sure it gets the right inhand file
 /obj/item/proc/worn_overlays(isinhands = FALSE, icon_file)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 
 /mob/living/carbon/update_body()
+	procstart = null
+	src.procstart = null
 	update_body_parts()
 
 /mob/living/carbon/proc/update_body_parts()
+	procstart = null
+	src.procstart = null
 	//CHECK FOR UPDATE
 	var/oldkey = icon_render_key
 	icon_render_key = generate_icon_render_key()
@@ -267,6 +307,8 @@
 //produces a key based on the mob's limbs
 
 /mob/living/carbon/proc/generate_icon_render_key()
+	procstart = null
+	src.procstart = null
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
 		. += "-[BP.body_zone]"
@@ -285,6 +327,8 @@
 
 //change the mob's icon to the one matching its key
 /mob/living/carbon/proc/load_limb_from_cache()
+	procstart = null
+	src.procstart = null
 	if(limb_icon_cache[icon_render_key])
 		remove_overlay(BODYPARTS_LAYER)
 		overlays_standing[BODYPARTS_LAYER] = limb_icon_cache[icon_render_key]

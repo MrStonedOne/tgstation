@@ -40,13 +40,19 @@
 	var/list/opened_positions = list();
 
 /datum/computer_file/program/card_mod/New()
+	procstart = null
+	src.procstart = null
 	..()
 	addtimer(CALLBACK(src, .proc/SetConfigCooldown), 0)
 
 /datum/computer_file/program/card_mod/proc/SetConfigCooldown()
+	procstart = null
+	src.procstart = null
 	change_position_cooldown = CONFIG_GET(number/id_console_jobslot_delay)
 
 /datum/computer_file/program/card_mod/event_idremoved(background, slot)
+	procstart = null
+	src.procstart = null
 	if(!slot || slot == 2)// slot being false means both are removed
 		minor = 0
 		authenticated = 0
@@ -55,11 +61,15 @@
 
 
 /datum/computer_file/program/card_mod/proc/job_blacklisted(jobtitle)
+	procstart = null
+	src.procstart = null
 	return (jobtitle in blacklisted)
 
 
 //Logic check for if you can open the job
 /datum/computer_file/program/card_mod/proc/can_open_job(datum/job/job)
+	procstart = null
+	src.procstart = null
 	if(job)
 		if(!job_blacklisted(job.title))
 			if((job.total_positions <= GLOB.player_list.len * (max_relative_positions / 100)))
@@ -72,6 +82,8 @@
 
 //Logic check for if you can close the job
 /datum/computer_file/program/card_mod/proc/can_close_job(datum/job/job)
+	procstart = null
+	src.procstart = null
 	if(job)
 		if(!job_blacklisted(job.title))
 			if(job.total_positions > job.current_positions)
@@ -83,6 +95,8 @@
 	return 0
 
 /datum/computer_file/program/card_mod/proc/format_jobs(list/jobs)
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/card_slot/card_slot = computer.all_components[MC_CARD]
 	var/obj/item/card/id/id_card = card_slot.stored_card
 	var/list/formatted = list()
@@ -95,6 +109,8 @@
 	return formatted
 
 /datum/computer_file/program/card_mod/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -284,14 +300,20 @@
 	return 1
 
 /datum/computer_file/program/card_mod/proc/remove_nt_access(obj/item/card/id/id_card)
+	procstart = null
+	src.procstart = null
 	id_card.access -= get_all_accesses()
 	id_card.access -= get_all_centcom_access()
 
 /datum/computer_file/program/card_mod/proc/apply_access(obj/item/card/id/id_card, list/accesses)
+	procstart = null
+	src.procstart = null
 	id_card.access |= accesses
 
 /datum/computer_file/program/card_mod/ui_data(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 
 	var/obj/item/computer_hardware/card_slot/card_slot
@@ -418,6 +440,8 @@
 
 
 /datum/computer_file/program/card_mod/proc/build_manage(datum/job,open = FALSE)
+	procstart = null
+	src.procstart = null
 	var/out = "Denied"
 	var/can_change= 0
 	if(open)
@@ -440,6 +464,8 @@
 
 
 /datum/computer_file/program/card_mod/proc/authorized()
+	procstart = null
+	src.procstart = null
 	if(!authenticated && computer)
 		var/obj/item/computer_hardware/card_slot/card_slot = computer.all_components[MC_CARD]
 		if(card_slot)
@@ -475,6 +501,8 @@
 		return authenticated
 
 /datum/computer_file/program/card_mod/proc/get_subordinates(rank)
+	procstart = null
+	src.procstart = null
 	head_subordinates = list()
 	for(var/datum/job/job in SSjob.occupations)
 		if(rank in job.department_head)

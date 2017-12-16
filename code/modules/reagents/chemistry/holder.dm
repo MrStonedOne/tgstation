@@ -13,6 +13,8 @@
 	var/flags
 
 /datum/reagents/New(maximum=100)
+	procstart = null
+	src.procstart = null
 	maximum_volume = maximum
 
 
@@ -50,6 +52,8 @@
 				break // Don't bother adding ourselves to other reagent ids, it is redundant.
 
 /datum/reagents/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/cached_reagents = reagent_list
 	for(var/reagent in cached_reagents)
@@ -61,6 +65,8 @@
 		my_atom.reagents = null
 
 /datum/reagents/proc/remove_any(amount = 1)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	var/total_transfered = 0
 	var/current_list_element = 1
@@ -87,6 +93,8 @@
 	return total_transfered
 
 /datum/reagents/proc/remove_all(amount = 1)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	if(total_volume > 0)
 		var/part = amount / total_volume
@@ -99,6 +107,8 @@
 		return amount
 
 /datum/reagents/proc/get_master_reagent_name()
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	var/name
 	var/max_volume = 0
@@ -111,6 +121,8 @@
 	return name
 
 /datum/reagents/proc/get_master_reagent_id()
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	var/id
 	var/max_volume = 0
@@ -123,6 +135,8 @@
 	return id
 
 /datum/reagents/proc/get_master_reagent()
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	var/datum/reagent/master
 	var/max_volume = 0
@@ -167,6 +181,8 @@
 	return amount
 
 /datum/reagents/proc/copy_to(obj/target, amount=1, multiplier=1, preserve_data=1)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	if(!target)
 		return
@@ -226,6 +242,8 @@
 	return amount
 
 /datum/reagents/proc/metabolize(mob/living/carbon/C, can_overdose = 0)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	var/list/cached_addictions = addiction_list
 	if(C)
@@ -285,12 +303,16 @@
 
 
 /datum/reagents/proc/set_reacting(react = TRUE)
+	procstart = null
+	src.procstart = null
 	if(react)
 		flags &= ~(REAGENT_NOREACT)
 	else
 		flags |= REAGENT_NOREACT
 
 /datum/reagents/proc/conditional_update_move(atom/A, Running = 0)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/reagent in cached_reagents)
 		var/datum/reagent/R = reagent
@@ -298,6 +320,8 @@
 	update_total()
 
 /datum/reagents/proc/conditional_update(atom/A)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/reagent in cached_reagents)
 		var/datum/reagent/R = reagent
@@ -305,6 +329,8 @@
 	update_total()
 
 /datum/reagents/proc/handle_reactions()
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	var/list/cached_reactions = GLOB.chemical_reactions_list
 	var/datum/cached_my_atom = my_atom
@@ -409,6 +435,8 @@
 	return 0
 
 /datum/reagents/proc/isolate_reagent(reagent)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/_reagent in cached_reagents)
 		var/datum/reagent/R = _reagent
@@ -417,6 +445,8 @@
 			update_total()
 
 /datum/reagents/proc/del_reagent(reagent)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/_reagent in cached_reagents)
 		var/datum/reagent/R = _reagent
@@ -435,6 +465,8 @@
 	return 1
 
 /datum/reagents/proc/check_ignoreslow(mob/M)
+	procstart = null
+	src.procstart = null
 	if(ismob(M))
 		if(M.reagents.has_reagent("morphine"))
 			return 1
@@ -442,6 +474,8 @@
 			M.status_flags &= ~IGNORESLOWDOWN
 
 /datum/reagents/proc/check_gofast(mob/M)
+	procstart = null
+	src.procstart = null
 	if(ismob(M))
 		if(M.reagents.has_reagent("unholywater")||M.reagents.has_reagent("nuka_cola")||M.reagents.has_reagent("stimulants")||M.reagents.has_reagent("ephedrine"))
 			return 1
@@ -449,6 +483,8 @@
 			M.status_flags &= ~GOTTAGOFAST
 
 /datum/reagents/proc/check_goreallyfast(mob/M)
+	procstart = null
+	src.procstart = null
 	if(ismob(M))
 		if(M.reagents.has_reagent("methamphetamine"))
 			return 1
@@ -456,6 +492,8 @@
 			M.status_flags &= ~GOTTAGOREALLYFAST
 
 /datum/reagents/proc/update_total()
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	total_volume = 0
 	for(var/reagent in cached_reagents)
@@ -468,6 +506,8 @@
 	return 0
 
 /datum/reagents/proc/clear_reagents()
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/reagent in cached_reagents)
 		var/datum/reagent/R = reagent
@@ -475,6 +515,8 @@
 	return 0
 
 /datum/reagents/proc/reaction(atom/A, method = TOUCH, volume_modifier = 1, show_message = 1)
+	procstart = null
+	src.procstart = null
 	var/react_type
 	if(isliving(A))
 		react_type = "LIVING"
@@ -503,11 +545,15 @@
 				R.reaction_obj(A, R.volume * volume_modifier, show_message)
 
 /datum/reagents/proc/holder_full()
+	procstart = null
+	src.procstart = null
 	if(total_volume >= maximum_volume)
 		return TRUE
 	return FALSE
 
 /datum/reagents/proc/add_reagent(reagent, amount, list/data=null, reagtemp = 300, no_react = 0)
+	procstart = null
+	src.procstart = null
 	if(!isnum(amount) || !amount)
 		return FALSE
 
@@ -557,6 +603,8 @@
 	return FALSE
 
 /datum/reagents/proc/add_reagent_list(list/list_reagents, list/data=null) // Like add_reagent but you can enter a list. Format it like this: list("toxin" = 10, "beer" = 15)
+	procstart = null
+	src.procstart = null
 	for(var/r_id in list_reagents)
 		var/amt = list_reagents[r_id]
 		add_reagent(r_id, amt, data)
@@ -593,6 +641,8 @@
 	return FALSE
 
 /datum/reagents/proc/has_reagent(reagent, amount = -1)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/_reagent in cached_reagents)
 		var/datum/reagent/R = _reagent
@@ -608,6 +658,8 @@
 	return 0
 
 /datum/reagents/proc/get_reagent_amount(reagent)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/_reagent in cached_reagents)
 		var/datum/reagent/R = _reagent
@@ -617,6 +669,8 @@
 	return 0
 
 /datum/reagents/proc/get_reagents()
+	procstart = null
+	src.procstart = null
 	var/list/names = list()
 	var/list/cached_reagents = reagent_list
 	for(var/reagent in cached_reagents)
@@ -650,6 +704,8 @@
 
 //two helper functions to preserve data across reactions (needed for xenoarch)
 /datum/reagents/proc/get_data(reagent_id)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/reagent in cached_reagents)
 		var/datum/reagent/R = reagent
@@ -657,6 +713,8 @@
 			return R.data
 
 /datum/reagents/proc/set_data(reagent_id, new_data)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	for(var/reagent in cached_reagents)
 		var/datum/reagent/R = reagent
@@ -664,6 +722,8 @@
 			R.data = new_data
 
 /datum/reagents/proc/copy_data(datum/reagent/current_reagent)
+	procstart = null
+	src.procstart = null
 	if(!current_reagent || !current_reagent.data)
 		return null
 	if(!istype(current_reagent.data, /list))
@@ -685,10 +745,14 @@
 	return trans_data
 
 /datum/reagents/proc/get_reagent(type)
+	procstart = null
+	src.procstart = null
 	var/list/cached_reagents = reagent_list
 	. = locate(type) in cached_reagents
 
 /datum/reagents/proc/generate_taste_message(minimum_percent=15)
+	procstart = null
+	src.procstart = null
 	// the lower the minimum percent, the more sensitive the message is.
 	var/list/out = list()
 	var/list/tastes = list() //descriptor = strength
@@ -734,6 +798,8 @@
 	return english_list(out, "something indescribable")
 
 /datum/reagents/proc/expose_temperature(var/temperature, var/coeff=0.02)
+	procstart = null
+	src.procstart = null
 	var/temp_delta = (temperature - chem_temp) * coeff
 	if(temp_delta > 0)
 		chem_temp = min(chem_temp + max(temp_delta, 1), temperature)
@@ -748,6 +814,8 @@
 // Convenience proc to create a reagents holder for an atom
 // Max vol is maximum volume of holder
 /atom/proc/create_reagents(max_vol)
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		qdel(reagents)
 	reagents = new/datum/reagents(max_vol)

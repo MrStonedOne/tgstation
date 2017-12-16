@@ -14,6 +14,8 @@
 	var/static/mutable_appearance/nest_overlay = mutable_appearance('icons/mob/alien.dmi', "nestoverlay", LYING_MOB_LAYER)
 
 /obj/structure/bed/nest/user_unbuckle_mob(mob/living/buckled_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs())
 		for(var/buck in buckled_mobs) //breaking a nest releases all the buckled mobs, because the nest isn't holding them down anymore
 			var/mob/living/M = buck
@@ -48,6 +50,8 @@
 			add_fingerprint(user)
 
 /obj/structure/bed/nest/user_buckle_mob(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.incapacitated() || M.buckled )
 		return
 
@@ -66,18 +70,24 @@
 			"<span class='italics'>You hear squelching...</span>")
 
 /obj/structure/bed/nest/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.pixel_y = 0
 	M.pixel_x = initial(M.pixel_x) + 2
 	M.layer = BELOW_MOB_LAYER
 	add_overlay(nest_overlay)
 
 /obj/structure/bed/nest/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.pixel_x = M.get_standard_pixel_x_offset(M.lying)
 	M.pixel_y = M.get_standard_pixel_y_offset(M.lying)
 	M.layer = initial(M.layer)
 	cut_overlay(nest_overlay)
 
 /obj/structure/bed/nest/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
@@ -85,6 +95,8 @@
 			playsound(loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/structure/bed/nest/attack_alien(mob/living/carbon/alien/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent != INTENT_HARM)
 		return attack_hand(user)
 	else

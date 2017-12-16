@@ -22,6 +22,8 @@
 	var/framestackamount = 2
 
 /obj/structure/table_frame/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench))
 		to_chat(user, "<span class='notice'>You start disassembling [src]...</span>")
 		playsound(src.loc, I.usesound, 50, 1)
@@ -87,14 +89,20 @@
 	qdel(src)
 
 /obj/structure/table_frame/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new framestack(get_turf(src), framestackamount)
 	qdel(src)
 
 /obj/structure/table_frame/narsie_act()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/table_frame/wood(src.loc)
 	qdel(src)
 
 /obj/structure/table_frame/ratvar_act()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/table_frame/brass(src.loc)
 	qdel(src)
 
@@ -111,6 +119,8 @@
 	resistance_flags = FLAMMABLE
 
 /obj/structure/table_frame/wood/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/stack/sheet/mineral/wood))
 		var/obj/item/stack/sheet/mineral/wood/W = I
 		if(W.get_amount() < 1)
@@ -140,14 +150,20 @@
 	framestackamount = 1
 
 /obj/structure/table_frame/brass/New()
+	procstart = null
+	src.procstart = null
 	change_construction_value(1)
 	..()
 
 /obj/structure/table_frame/brass/Destroy()
+	procstart = null
+	src.procstart = null
 	change_construction_value(-1)
 	return ..()
 
 /obj/structure/table_frame/brass/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/stack/tile/brass))
 		var/obj/item/stack/tile/brass/W = I
 		if(W.get_amount() < 1)
@@ -160,6 +176,8 @@
 		return ..()
 
 /obj/structure/table_frame/brass/narsie_act()
+	procstart = null
+	src.procstart = null
 	..()
 	if(src) //do we still exist?
 		var/previouscolor = color

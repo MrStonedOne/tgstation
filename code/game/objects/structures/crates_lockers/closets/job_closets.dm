@@ -6,6 +6,8 @@
 	icon_door = "black"
 
 /obj/structure/closet/gmcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/head/that(src)
 	new /obj/item/device/radio/headset/headset_srv(src)
@@ -35,6 +37,8 @@
 	icon_door = "black"
 
 /obj/structure/closet/chefcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/under/waiter(src)
 	new /obj/item/clothing/under/waiter(src)
@@ -59,6 +63,8 @@
 	icon_door = "mixed"
 
 /obj/structure/closet/jcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/under/rank/janitor(src)
 	new /obj/item/cartridge/janitor(src)
@@ -84,6 +90,8 @@
 	icon_door = "blue"
 
 /obj/structure/closet/lawcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/under/lawyer/female(src)
 	new /obj/item/clothing/under/lawyer/black(src)
@@ -105,6 +113,8 @@
 	icon_door = "black"
 
 /obj/structure/closet/wardrobe/chaplain_black/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/chaplain(src)
 	new /obj/item/clothing/shoes/sneakers/black(src)
 	new /obj/item/clothing/suit/nun(src)
@@ -138,6 +148,8 @@
 	icon_door = "red"
 
 /obj/structure/closet/wardrobe/red/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/hooded/wintercoat/security(src)
 	new /obj/item/storage/backpack/security(src)
 	new /obj/item/storage/backpack/satchel/sec(src)
@@ -161,6 +173,8 @@
 	icon_door = "orange"
 
 /obj/structure/closet/wardrobe/cargotech/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/hooded/wintercoat/cargo(src)
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/under/rank/cargotech(src)
@@ -177,6 +191,8 @@
 	icon_door = "atmos_wardrobe"
 
 /obj/structure/closet/wardrobe/atmospherics_yellow/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/backpack/duffelbag/engineering(src)
 	new /obj/item/storage/backpack/satchel/eng(src)
 	new /obj/item/storage/backpack/industrial(src)
@@ -193,6 +209,8 @@
 	icon_door = "yellow"
 
 /obj/structure/closet/wardrobe/engineering_yellow/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/backpack/duffelbag/engineering(src)
 	new /obj/item/storage/backpack/industrial(src)
 	new /obj/item/storage/backpack/satchel/eng(src)
@@ -211,6 +229,8 @@
 	name = "medical doctor's wardrobe"
 
 /obj/structure/closet/wardrobe/white/medical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/backpack/duffelbag/med(src)
 	new /obj/item/storage/backpack/medic(src)
 	new /obj/item/storage/backpack/satchel/med(src)
@@ -237,6 +257,8 @@
 	icon_door = "black"
 
 /obj/structure/closet/wardrobe/robotics_black/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/glasses/hud/diagnostic(src)
 	new /obj/item/clothing/glasses/hud/diagnostic(src)
 	new /obj/item/clothing/under/rank/roboticist(src)
@@ -261,6 +283,8 @@
 	icon_door = "white"
 
 /obj/structure/closet/wardrobe/chemistry_white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/chemist(src)
 	new /obj/item/clothing/under/rank/chemist(src)
 	new /obj/item/clothing/shoes/sneakers/white(src)
@@ -281,6 +305,8 @@
 	icon_door = "white"
 
 /obj/structure/closet/wardrobe/genetics_white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/geneticist(src)
 	new /obj/item/clothing/under/rank/geneticist(src)
 	new /obj/item/clothing/shoes/sneakers/white(src)
@@ -299,6 +325,8 @@
 	icon_door = "white"
 
 /obj/structure/closet/wardrobe/virology_white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/rank/virologist(src)
 	new /obj/item/clothing/under/rank/virologist(src)
 	new /obj/item/clothing/shoes/sneakers/white(src)
@@ -318,6 +346,8 @@
 	icon_door = "white"
 
 /obj/structure/closet/wardrobe/science_white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/backpack/science(src)
 	new /obj/item/storage/backpack/science(src)
 	new /obj/item/storage/backpack/satchel/tox(src)
@@ -340,6 +370,8 @@
 	icon_door = "green"
 
 /obj/structure/closet/wardrobe/botanist/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/backpack/botany(src)
 	new /obj/item/storage/backpack/botany(src)
 	new /obj/item/storage/backpack/satchel/hyd(src)
@@ -360,6 +392,8 @@
 	icon_door = "black"
 
 /obj/structure/closet/wardrobe/curator/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/fedora/curator(src)
 	new /obj/item/clothing/suit/curator(src)
 	new /obj/item/clothing/under/rank/curator/treasure_hunter(src)

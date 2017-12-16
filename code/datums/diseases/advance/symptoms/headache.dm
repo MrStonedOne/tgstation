@@ -34,6 +34,8 @@ BONUS
 					  <b>Stealth 4:</b> Reduces headache frequency until later stages."
 
 /datum/symptom/headache/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4)
@@ -46,6 +48,8 @@ BONUS
 		power = 3
 
 /datum/symptom/headache/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

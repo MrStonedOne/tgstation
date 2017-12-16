@@ -27,5 +27,7 @@
 	static_inventory += zone_select
 
 /mob/living/carbon/alien/larva/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/larva(src)

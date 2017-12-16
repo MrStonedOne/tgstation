@@ -9,6 +9,8 @@
 	buildmode_name = "Pattern: Lava Rivers"
 
 /datum/mapGenerator/lavaland/defineRegion(turf/Start, turf/End, replace = 0)
+	procstart = null
+	src.procstart = null
 	start_z = Start.z
 	min_x = min(Start.x,End.x)
 	min_y = min(Start.y,End.y)
@@ -22,6 +24,8 @@
 	var/start_z = 5
 
 /datum/mapGeneratorModule/river/generate()
+	procstart = null
+	src.procstart = null
 	var/datum/mapGenerator/lavaland/L = mother
 	if(!istype(L))
 		return

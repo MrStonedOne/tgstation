@@ -14,11 +14,15 @@
 	var/recharging = FALSE
 
 /obj/item/inducer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!cell && cell_type)
 		cell = new cell_type
 
 /obj/item/inducer/proc/induce(obj/item/stock_parts/cell/target, coefficient)
+	procstart = null
+	src.procstart = null
 	var/totransfer = min(cell.charge,(powertransfer * coefficient))
 	var/transferred = target.give(totransfer)
 	cell.use(transferred)
@@ -26,14 +30,20 @@
 	target.update_icon()
 
 /obj/item/inducer/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/inducer/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	..()
 	if(cell)
 		cell.emp_act(severity)
 
 /obj/item/inducer/attack_obj(obj/O, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 
@@ -46,6 +56,8 @@
 	return ..()
 
 /obj/item/inducer/proc/cantbeused(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You don't have the dexterity to use [src]!</span>")
 		return TRUE
@@ -61,6 +73,8 @@
 
 
 /obj/item/inducer/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver))
 		playsound(src, W.usesound, 50, 1)
 		if(!opened)
@@ -95,6 +109,8 @@
 	return ..()
 
 /obj/item/inducer/proc/recharge(atom/movable/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isturf(A) && user.loc == A)
 		return FALSE
 	if(recharging)
@@ -138,6 +154,8 @@
 
 
 /obj/item/inducer/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 
@@ -150,6 +168,8 @@
 
 
 /obj/item/inducer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(opened && cell)
 		user.visible_message("[user] removes [cell] from [src]!","<span class='notice'>You remove [cell].</span>")
 		cell.update_icon()
@@ -159,6 +179,8 @@
 
 
 /obj/item/inducer/examine(mob/living/M)
+	procstart = null
+	src.procstart = null
 	..()
 	if(cell)
 		to_chat(M, "<span class='notice'>Its display shows: [DisplayEnergy(cell.charge)].</span>")
@@ -168,6 +190,8 @@
 		to_chat(M,"<span class='notice'>Its battery compartment is open.</span>")
 
 /obj/item/inducer/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(opened)
 		if(!cell)
@@ -184,6 +208,8 @@
 	opened = TRUE
 
 /obj/item/inducer/sci/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 

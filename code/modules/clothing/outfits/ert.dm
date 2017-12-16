@@ -7,6 +7,8 @@
 	ears = /obj/item/device/radio/headset/headset_cent/alt
 
 /datum/outfit/ert/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 
@@ -36,6 +38,8 @@
 	l_pocket = /obj/item/switchblade
 
 /datum/outfit/ert/commander/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(visualsOnly)
@@ -69,6 +73,8 @@
 		/obj/item/melee/baton/loaded=1)
 
 /datum/outfit/ert/security/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(visualsOnly)
@@ -105,6 +111,8 @@
 		/obj/item/gun/medbeam=1)
 
 /datum/outfit/ert/medic/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(visualsOnly)
@@ -141,6 +149,8 @@
 		/obj/item/construction/rcd/loaded=1)
 
 /datum/outfit/ert/engineer/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(visualsOnly)
@@ -176,6 +186,8 @@
 	id = /obj/item/card/id
 
 /datum/outfit/centcom_official/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 

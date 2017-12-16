@@ -118,6 +118,8 @@ Shaft Miner
 		/obj/item/stack/marker_beacon/ten=1)
 
 /datum/outfit/job/miner/equipped/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(visualsOnly)
 		return
@@ -198,6 +200,8 @@ Cook
 	backpack_contents = list(/obj/item/sharpener = 1)
 
 /datum/outfit/job/cook/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/job/cook/J = SSjob.GetJobType(jobtype)
 	if(J) // Fix for runtime caused by invalid job being passed

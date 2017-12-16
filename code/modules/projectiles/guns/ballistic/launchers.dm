@@ -15,6 +15,8 @@
 	pin = /obj/item/device/firing_pin
 
 /obj/item/gun/ballistic/revolver/grenadelauncher/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(A, /obj/item/ammo_box) || istype(A, /obj/item/ammo_casing))
 		chamber_round()
@@ -28,6 +30,8 @@
 	pin = /obj/item/device/firing_pin
 
 /obj/item/gun/ballistic/revolver/grenadelauncher/cyborg/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/automatic/gyropistol
@@ -42,6 +46,8 @@
 	casing_ejector = FALSE
 
 /obj/item/gun/ballistic/automatic/gyropistol/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "[initial(icon_state)][magazine ? "loaded" : ""]"
 
@@ -62,12 +68,18 @@
 	casing_ejector = FALSE
 
 /obj/item/gun/ballistic/automatic/speargun/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/automatic/speargun/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/automatic/speargun/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/num_loaded = magazine.attackby(A, user, params, 1)
 	if(num_loaded)
 		to_chat(user, "<span class='notice'>You load [num_loaded] spear\s into \the [src].</span>")
@@ -91,8 +103,12 @@
 	weapon_weight = WEAPON_HEAVY
 
 /obj/item/gun/ballistic/automatic/atlauncher/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/automatic/atlauncher/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "rocketlauncher[magazine ? "-[get_ammo(1)]" : ""]"

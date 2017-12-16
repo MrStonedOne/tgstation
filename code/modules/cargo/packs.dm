@@ -14,6 +14,8 @@
 	var/special_enabled = FALSE
 
 /datum/supply_pack/proc/generate(turf/T)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/crate/C = new crate_type(T)
 	C.name = crate_name
 	if(access)
@@ -26,6 +28,8 @@
 	return C
 
 /datum/supply_pack/proc/fill(obj/structure/closet/crate/C)
+	procstart = null
+	src.procstart = null
 	for(var/item in contains)
 		new item(C)
 
@@ -189,6 +193,8 @@
 	dangerous = TRUE
 
 /datum/supply_pack/emergency/syndicate/fill(obj/structure/closet/crate/C)
+	procstart = null
+	src.procstart = null
 	var/crate_value = 30
 	var/list/uplink_items = get_uplink_items(SSticker.mode)
 	while(crate_value)
@@ -1048,6 +1054,8 @@
 	crate_name = "corgi crate"
 
 /datum/supply_pack/organic/critter/corgi/generate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		var/mob/living/simple_animal/pet/dog/corgi/D = locate() in .
@@ -1063,6 +1071,8 @@
 	crate_name = "cat crate"
 
 /datum/supply_pack/organic/critter/cat/generate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		var/mob/living/simple_animal/pet/cat/C = locate() in .
@@ -1091,6 +1101,8 @@
 	crate_name = "entomology samples crate"
 
 /datum/supply_pack/organic/critter/butterfly/generate()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in 1 to 49)
 		new /mob/living/simple_animal/butterfly(.)
@@ -1581,6 +1593,8 @@
 	crate_name = "collectable hats crate"
 
 /datum/supply_pack/misc/randomised/fill(obj/structure/closet/crate/C)
+	procstart = null
+	src.procstart = null
 	var/list/L = contains.Copy()
 	for(var/i in 1 to num_contained)
 		var/item = pick_n_take(L)

@@ -7,6 +7,8 @@
 	req_human = 1
 
 /obj/effect/proc_holder/changeling/chameleon_skin/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = user //SHOULD always be human, because req_human = 1
 	if(!istype(H)) // req_human could be done in can_sting stuff.
 		return
@@ -18,6 +20,8 @@
 	return TRUE
 
 /obj/effect/proc_holder/changeling/chameleon_skin/on_refund(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.has_dna())
 		var/mob/living/carbon/C = user
 		var/datum/mutation/human/HM = GLOB.mutations_list[CHAMELEON]

@@ -56,6 +56,8 @@ Difficulty: Medium
 	guidance = TRUE
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/hunter/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && prob(12))
 		INVOKE_ASYNC(src, .proc/dash)
@@ -65,6 +67,8 @@ Difficulty: Medium
 	force_on = 10
 
 /obj/item/melee/transforming/cleaving_saw/miner/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	target.add_stun_absorption("miner", 10, INFINITY)
 	..()
 	target.stun_absorption -= "miner"
@@ -76,33 +80,45 @@ Difficulty: Medium
 	range = MINER_DASH_RANGE
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal = new/obj/item/device/gps/internal/miner(src)
 	miner_saw = new(src)
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	var/adjustment_amount = amount * 0.1
 	if(world.time + adjustment_amount > next_move)
 		changeNext_move(adjustment_amount) //attacking it interrupts it attacking, but only briefly
 	. = ..()
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/death()
+	procstart = null
+	src.procstart = null
 	if(health > 0)
 		return
 	new /obj/effect/temp_visual/dir_setting/miner_death(loc, dir)
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/Move(atom/newloc)
+	procstart = null
+	src.procstart = null
 	if(dashing || (newloc && newloc.z == z && (islava(newloc) || ischasm(newloc)))) //we're not stupid!
 		return FALSE
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(dash())
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target))
 		return
 	if(next_move > world.time || !Adjacent(target)) //some cheating
@@ -130,11 +146,15 @@ Difficulty: Medium
 	return TRUE
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect, end_pixel_y)
+	procstart = null
+	src.procstart = null
 	if(!used_item && !isturf(A))
 		used_item = miner_saw
 	..()
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/GiveTarget(new_target)
+	procstart = null
+	src.procstart = null
 	var/targets_the_same = (new_target == target)
 	. = ..()
 	if(. && target && !targets_the_same)
@@ -143,6 +163,8 @@ Difficulty: Medium
 		INVOKE_ASYNC(src, .proc/quick_attack_loop)
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/OpenFire()
+	procstart = null
+	src.procstart = null
 	Goto(target, move_to_delay, minimum_distance)
 	if(get_dist(src, target) > MINER_DASH_RANGE && dash_cooldown <= world.time)
 		INVOKE_ASYNC(src, .proc/dash, target)
@@ -151,6 +173,8 @@ Difficulty: Medium
 	transform_weapon()
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/proc/shoot_ka()
+	procstart = null
+	src.procstart = null
 	if(ranged_cooldown <= world.time && get_dist(src, target) <= MINER_DASH_RANGE && !Adjacent(target))
 		ranged_cooldown = world.time + ranged_cooldown_time
 		visible_message("<span class='danger'>[src] fires the proto-kinetic accelerator!</span>")
@@ -162,6 +186,8 @@ Difficulty: Medium
 //I'm still of the belief that this entire proc needs to be wiped from existence.
 //  do not take my touching of it to be endorsement of it. ~mso
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/proc/quick_attack_loop()
+	procstart = null
+	src.procstart = null
 	while(!QDELETED(target) && next_move <= world.time) //this is done this way because next_move can change to be sooner while we sleep.
 		stoplag(1) 
 	sleep((next_move - world.time) * 1.5) //but don't ask me what the fuck this is about
@@ -175,6 +201,8 @@ Difficulty: Medium
 	AttackingTarget()
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/proc/dash(atom/dash_target)
+	procstart = null
+	src.procstart = null
 	if(world.time < dash_cooldown)
 		return
 	var/list/accessable_turfs = list()
@@ -227,6 +255,8 @@ Difficulty: Medium
 	return TRUE
 
 /mob/living/simple_animal/hostile/megafauna/blood_drunk_miner/proc/transform_weapon()
+	procstart = null
+	src.procstart = null
 	if(time_until_next_transform <= world.time)
 		miner_saw.transform_cooldown = 0
 		miner_saw.transform_weapon(src, TRUE)
@@ -239,10 +269,14 @@ Difficulty: Medium
 	duration = 15
 
 /obj/effect/temp_visual/dir_setting/miner_death/Initialize(mapload, set_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, .proc/fade_out)
 
 /obj/effect/temp_visual/dir_setting/miner_death/proc/fade_out()
+	procstart = null
+	src.procstart = null
 	var/matrix/M = new
 	M.Turn(pick(90, 270))
 	var/final_dir = dir

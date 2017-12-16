@@ -33,10 +33,14 @@
 	var/last_signal = 0 	// Last time it sent a signal
 
 /obj/machinery/telecomms/server/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	server_radio = new
 
 /obj/machinery/telecomms/server/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	if(signal.data["message"])
 
 		if(is_freq_listening(signal))
@@ -88,6 +92,8 @@
 				relay_information(signal, "/obj/machinery/telecomms/broadcaster")
 
 /obj/machinery/telecomms/server/proc/update_logs()
+	procstart = null
+	src.procstart = null
 	// start deleting the very first log entry
 	if(logs >= 400)
 		for(var/i = 1, i <= logs, i++) // locate the first garbage collectable log entry and remove it
@@ -98,6 +104,8 @@
 				break
 
 /obj/machinery/telecomms/server/proc/add_entry(content, input)
+	procstart = null
+	src.procstart = null
 	var/datum/comm_log_entry/log = new
 	var/identifier = num2text( rand(-1000,1000) + world.time )
 	log.name = "[input] ([md5(identifier)])"
@@ -125,6 +133,8 @@
 	network = "tcommsat"
 
 /obj/machinery/telecomms/server/presets/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = id
 
@@ -156,6 +166,8 @@
 
 //Common and other radio frequencies for people to freely use
 /obj/machinery/telecomms/server/presets/common/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i = MIN_FREQ, i <= MAX_FREQ, i += 2)
 		freq_listening |= i
@@ -176,5 +188,7 @@
 	autolinkers = list("security")
 
 /obj/machinery/telecomms/server/presets/common/birdstation/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	freq_listening = list()

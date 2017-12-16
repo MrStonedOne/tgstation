@@ -17,6 +17,8 @@
 	active_power_usage = 0
 
 /obj/machinery/power/Destroy()
+	procstart = null
+	src.procstart = null
 	disconnect_from_network()
 	return ..()
 
@@ -26,20 +28,28 @@
 
 // common helper procs for all power machines
 /obj/machinery/power/proc/add_avail(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.newavail += amount
 
 /obj/machinery/power/proc/add_load(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.load += amount
 
 /obj/machinery/power/proc/surplus()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return powernet.avail - powernet.load
 	else
 		return 0
 
 /obj/machinery/power/proc/avail()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return powernet.avail
 	else
@@ -73,12 +83,16 @@
 	A.use_power(amount, chan)
 
 /obj/machinery/proc/addStaticPower(value, powerchannel)
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	if(!A)
 		return
 	A.addStaticPower(value, powerchannel)
 
 /obj/machinery/proc/removeStaticPower(value, powerchannel)
+	procstart = null
+	src.procstart = null
 	addStaticPower(-value, powerchannel)
 
 /obj/machinery/proc/power_change()		// called whenever the power settings of the containing area change
@@ -93,6 +107,8 @@
 
 // connect the machine to a powernet if a node cable is present on the turf
 /obj/machinery/power/proc/connect_to_network()
+	procstart = null
+	src.procstart = null
 	var/turf/T = src.loc
 	if(!T || !istype(T))
 		return 0
@@ -106,6 +122,8 @@
 
 // remove and disconnect the machine from its current powernet
 /obj/machinery/power/proc/disconnect_from_network()
+	procstart = null
+	src.procstart = null
 	if(!powernet)
 		return 0
 	powernet.remove_machine(src)
@@ -114,6 +132,8 @@
 // attach a wire to a power machine - leads from the turf you are standing on
 //almost never called, overwritten by all power machines but terminal and generator
 /obj/machinery/power/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/coil = W
 		var/turf/T = user.loc
@@ -134,6 +154,8 @@
 //pointing towards the turf the machine is located at
 /obj/machinery/power/proc/get_connections()
 
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/cdir
@@ -154,6 +176,8 @@
 //pointing towards the turf the machine is located at
 /obj/machinery/power/proc/get_marked_connections()
 
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/cdir
@@ -170,6 +194,8 @@
 
 //returns all the NODES (O-X) cables WITHOUT a powernet in the turf the machine is located at
 /obj/machinery/power/proc/get_indirect_connections()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/structure/cable/C in loc)
 		if(C.powernet)
@@ -187,6 +213,8 @@
 // excluding source, that match the direction d
 // if unmarked==1, only return those with no powernet
 /proc/power_list(turf/T, source, d, unmarked=0, cable_only = 0)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	for(var/AM in T)
@@ -215,6 +243,8 @@
 
 //remove the old powernet and replace it with a new one throughout the network.
 /proc/propagate_network(obj/O, datum/powernet/PN)
+	procstart = null
+	src.procstart = null
 	var/list/worklist = list()
 	var/list/found_machines = list()
 	var/index = 1
@@ -247,6 +277,8 @@
 
 //Merge two powernets, the bigger (in cable length term) absorbing the other
 /proc/merge_powernets(datum/powernet/net1, datum/powernet/net2)
+	procstart = null
+	src.procstart = null
 	if(!net1 || !net2) //if one of the powernet doesn't exist, return
 		return
 
@@ -277,6 +309,8 @@
 //dist_check - set to only shock mobs within 1 of source (vendors, airlocks, etc.)
 //No animations will be performed by this proc.
 /proc/electrocute_mob(mob/living/carbon/M, power_source, obj/source, siemens_coeff = 1, dist_check = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!M || ismecha(M.loc))
 		return 0	//feckin mechs are dumb
 	if(dist_check)
@@ -351,6 +385,8 @@
 // return a knot cable (O-X) if one is present in the turf
 // null if there's none
 /turf/proc/get_cable_node()
+	procstart = null
+	src.procstart = null
 	if(!can_have_cabling())
 		return null
 	for(var/obj/structure/cable/C in src)
@@ -359,6 +395,8 @@
 	return null
 
 /area/proc/get_apc()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/power/apc/APC in GLOB.apcs_list)
 		if(APC.area == src)
 			return APC

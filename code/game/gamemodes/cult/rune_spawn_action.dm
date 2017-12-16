@@ -13,11 +13,15 @@
 	var/rune_color
 
 /datum/action/innate/cult/create_rune/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!rune_type || cooldown > world.time)
 		return FALSE
 	return ..()
 
 /datum/action/innate/cult/create_rune/Activate()
+	procstart = null
+	src.procstart = null
 	var/chosen_keyword
 	if(!isturf(owner.loc))
 		to_chat(owner, "<span class='warning>You need more space to scribe a rune!</span>")

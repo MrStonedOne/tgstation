@@ -1,6 +1,8 @@
 // SETUP
 
 /proc/TopicHandlers()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/all_handlers = subtypesof(/datum/world_topic)
 	for(var/I in all_handlers)
@@ -26,6 +28,8 @@
 	var/require_comms_key = FALSE
 
 /datum/world_topic/proc/TryRun(list/input)
+	procstart = null
+	src.procstart = null
 	key_valid = config && (CONFIG_GET(string/comms_key) == input["key"])
 	if(require_comms_key && !key_valid)
 		return "Bad Key"
@@ -35,6 +39,8 @@
 		. = list2params(.)
 
 /datum/world_topic/proc/Run(list/input)
+	procstart = null
+	src.procstart = null
 	CRASH("Run() not implemented for [type]!")
 
 // TOPICS
@@ -44,6 +50,8 @@
 	log = FALSE
 
 /datum/world_topic/ping/Run(list/input)
+	procstart = null
+	src.procstart = null
 	. = 0
 	for (var/client/C in GLOB.clients)
 		++.
@@ -53,6 +61,8 @@
 	log = FALSE
 
 /datum/world_topic/playing/Run(list/input)
+	procstart = null
+	src.procstart = null
 	return GLOB.player_list.len
 
 /datum/world_topic/pr_announce
@@ -61,6 +71,8 @@
 	var/static/list/PRcounts = list()	//PR id -> number of times announced this round
 
 /datum/world_topic/pr_announce/Run(list/input)
+	procstart = null
+	src.procstart = null
 	var/list/payload = json_decode(input["payload"])
 	var/id = "[payload["pull_request"]["id"]]"
 	if(!PRcounts[id])
@@ -79,6 +91,8 @@
 	require_comms_key = TRUE
 
 /datum/world_topic/ahelp_relay/Run(list/input)
+	procstart = null
+	src.procstart = null
 	relay_msg_admins("<span class='adminnotice'><b><font color=red>HELP: </font> [input["source"]] [input["message_sender"]]: [input["message"]]</b></span>")
 
 /datum/world_topic/comms_console
@@ -86,6 +100,8 @@
 	require_comms_key = TRUE
 
 /datum/world_topic/comms_console/Run(list/input)
+	procstart = null
+	src.procstart = null
 	minor_announce(input["message"], "Incoming message from [input["message_sender"]]")
 	for(var/obj/machinery/computer/communications/CM in GLOB.machines)
 		CM.overrideCooldown()
@@ -95,12 +111,16 @@
 	require_comms_key = TRUE
 
 /datum/world_topic/news_report/Run(list/input)
+	procstart = null
+	src.procstart = null
 	minor_announce(input["message"], "Breaking Update From [input["message_sender"]]")
 
 /datum/world_topic/server_hop
 	keyword = "server_hop"
 
 /datum/world_topic/server_hop/Run(list/input)
+	procstart = null
+	src.procstart = null
 	var/expected_key = input[keyword]
 	for(var/mob/dead/observer/O in GLOB.player_list)
 		if(O.key == expected_key)
@@ -113,6 +133,8 @@
 	require_comms_key = TRUE
 
 /datum/world_topic/adminmsg/Run(list/input)
+	procstart = null
+	src.procstart = null
 	return IrcPm(input[keyword], input["msg"], input["sender"])
 
 /datum/world_topic/namecheck
@@ -120,6 +142,8 @@
 	require_comms_key = TRUE
 
 /datum/world_topic/namecheck/Run(list/input)
+	procstart = null
+	src.procstart = null
 	var/datum/server_tools_command/namecheck/NC = new
 	return NC.Run(input["sender"], input["namecheck"])
 
@@ -128,12 +152,16 @@
 	require_comms_key = TRUE
 
 /datum/world_topic/adminwho/Run(list/input)
+	procstart = null
+	src.procstart = null
 	return ircadminwho()
 
 /datum/world_topic/status
 	keyword = "status"
 
 /datum/world_topic/status/Run(list/input)
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["version"] = GLOB.game_version
 	.["mode"] = GLOB.master_mode

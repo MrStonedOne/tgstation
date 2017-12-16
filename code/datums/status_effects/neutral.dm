@@ -7,6 +7,8 @@
 	var/stat_allowed = DEAD //if owner's stat is below this, will remove itself
 
 /datum/status_effect/sigil_mark/tick()
+	procstart = null
+	src.procstart = null
 	if(owner.stat < stat_allowed)
 		qdel(src)
 
@@ -26,24 +28,34 @@
 	var/obj/item/borg/upgrade/modkit/bounty/reward_target
 
 /datum/status_effect/syphon_mark/on_creation(mob/living/new_owner, obj/item/borg/upgrade/modkit/bounty/new_reward_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		reward_target = new_reward_target
 
 /datum/status_effect/syphon_mark/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return FALSE
 	return ..()
 
 /datum/status_effect/syphon_mark/proc/get_kill()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(reward_target))
 		reward_target.get_kill(owner)
 
 /datum/status_effect/syphon_mark/tick()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		get_kill()
 		qdel(src)
 
 /datum/status_effect/syphon_mark/on_remove()
+	procstart = null
+	src.procstart = null
 	get_kill()
 	. = ..()

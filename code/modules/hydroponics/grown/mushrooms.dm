@@ -164,6 +164,8 @@
 	filling_color = "#9370DB"
 
 /obj/item/reagent_containers/food/snacks/grown/mushroom/walkingmushroom/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(user.loc))
 		return
 	var/mob/living/simple_animal/hostile/mushroom/M = new /mob/living/simple_animal/hostile/mushroom(user.loc)
@@ -233,6 +235,8 @@
 	var/effect_path = /obj/structure/glowshroom
 
 /obj/item/reagent_containers/food/snacks/grown/mushroom/glowshroom/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(user.loc))
 		return FALSE
 	if(!isturf(user.loc))
@@ -302,6 +306,8 @@
 	effect_path = /obj/structure/glowshroom/shadowshroom
 
 /obj/item/reagent_containers/food/snacks/grown/mushroom/glowshroom/shadowshroom/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		investigate_log("was planted by [key_name(user)] at [COORD(user)]", INVESTIGATE_BOTANY)

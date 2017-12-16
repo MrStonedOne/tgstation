@@ -23,10 +23,14 @@
 	disguise_fail_health = 50
 
 /datum/species/synth/on_species_gain(mob/living/carbon/human/H, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	..()
 	assume_disguise(old_species, H)
 
 /datum/species/synth/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(chem.id == "synthflesh")
 		chem.reaction_mob(H, TOUCH, 2 ,0) //heal a little
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
@@ -36,6 +40,8 @@
 
 
 /datum/species/synth/proc/assume_disguise(datum/species/S, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(S && !istype(S, type))
 		name = S.name
 		say_mod = S.say_mod
@@ -86,6 +92,8 @@
 //Passing procs onto the fake_species, to ensure we look as much like them as possible
 
 /datum/species/synth/handle_hair(mob/living/carbon/human/H, forced_colour)
+	procstart = null
+	src.procstart = null
 	if(fake_species)
 		fake_species.handle_hair(H, forced_colour)
 	else
@@ -93,6 +101,8 @@
 
 
 /datum/species/synth/handle_body(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(fake_species)
 		fake_species.handle_body(H)
 	else
@@ -100,6 +110,8 @@
 
 
 /datum/species/synth/handle_mutant_bodyparts(mob/living/carbon/human/H, forced_colour)
+	procstart = null
+	src.procstart = null
 	if(fake_species)
 		fake_species.handle_body(H,forced_colour)
 	else
@@ -107,12 +119,16 @@
 
 
 /datum/species/synth/get_spans()
+	procstart = null
+	src.procstart = null
 	if(fake_species)
 		return fake_species.get_spans()
 	return list()
 
 
 /datum/species/synth/handle_speech(message, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.health > disguise_fail_health)
 		if(fake_species)
 			return fake_species.handle_speech(message,H)

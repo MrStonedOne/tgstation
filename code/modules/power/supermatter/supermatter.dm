@@ -138,6 +138,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	var/datum/looping_sound/supermatter/soundloop
 
 /obj/machinery/power/supermatter_shard/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	uid = gl_uid++
 	SSair.atmos_machinery += src
@@ -155,6 +157,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	soundloop = new(list(src), TRUE)
 
 /obj/machinery/power/supermatter_shard/Destroy()
+	procstart = null
+	src.procstart = null
 	investigate_log("has been destroyed.", INVESTIGATE_SUPERMATTER)
 	SSair.atmos_machinery -= src
 	QDEL_NULL(radio)
@@ -166,6 +170,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	return ..()
 
 /obj/machinery/power/supermatter_shard/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ishuman(user))
 		return
@@ -179,11 +185,15 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 		return
 
 /obj/machinery/power/supermatter_shard/get_spans()
+	procstart = null
+	src.procstart = null
 	return list(SPAN_ROBOT)
 
 #define CRITICAL_TEMPERATURE 10000
 
 /obj/machinery/power/supermatter_shard/proc/get_status()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T)
 		return SUPERMATTER_ERROR
@@ -211,6 +221,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	return SUPERMATTER_INACTIVE
 
 /obj/machinery/power/supermatter_shard/proc/alarm()
+	procstart = null
+	src.procstart = null
 	switch(get_status())
 		if(SUPERMATTER_DELAMINATING)
 			playsound(src, 'sound/misc/bloblarm.ogg', 100)
@@ -222,12 +234,16 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 			playsound(src, 'sound/machines/terminal_alert.ogg', 75)
 
 /obj/machinery/power/supermatter_shard/proc/get_integrity()
+	procstart = null
+	src.procstart = null
 	var/integrity = damage / explosion_point
 	integrity = round(100 - integrity * 100, 0.01)
 	integrity = integrity < 0 ? 0 : integrity
 	return integrity
 
 /obj/machinery/power/supermatter_shard/proc/explode()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	for(var/mob/M in GLOB.player_list)
 		if(M.z == z)
@@ -249,6 +265,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 		qdel(src)
 
 /obj/machinery/power/supermatter_shard/process_atmos()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 
 	if(isnull(T))		// We have a null turf...something is wrong, stop processing this entity.
@@ -445,6 +463,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	return 1
 
 /obj/machinery/power/supermatter_shard/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	var/turf/L = loc
 	if(!istype(L) || isspaceturf(L))		// We don't run process() when we are in space
 		return FALSE	// This stops people from being able to really power up the supermatter
@@ -462,6 +482,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	return FALSE
 
 /obj/machinery/power/supermatter_shard/singularity_act()
+	procstart = null
+	src.procstart = null
 	var/gain = 100
 	investigate_log("Supermatter shard consumed by singularity.", INVESTIGATE_SINGULO)
 	message_admins("Singularity has consumed a supermatter shard and can now become stage six.")
@@ -474,6 +496,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	return gain
 
 /obj/machinery/power/supermatter_shard/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(B && !isspaceturf(loc)) //does nothing in space
 		playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, 1)
 		damage += B.obj_integrity * 0.5 //take damage equal to 50% of remaining blob health before it tried to eat us
@@ -487,6 +511,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 			Consume(B)
 
 /obj/machinery/power/supermatter_shard/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
 		to_chat(C, "<span class='userdanger'>That was a really dumb idea.</span>")
@@ -494,12 +520,18 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 		rip_u.dismember(BURN) //nice try jedi
 
 /obj/machinery/power/supermatter_shard/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	dust_mob(user, cause = "monkey attack")
 
 /obj/machinery/power/supermatter_shard/attack_alien(mob/user)
+	procstart = null
+	src.procstart = null
 	dust_mob(user, cause = "alien attack")
 
 /obj/machinery/power/supermatter_shard/attack_animal(mob/living/simple_animal/S)
+	procstart = null
+	src.procstart = null
 	var/murder
 	if(!S.melee_damage_upper && !S.melee_damage_lower)
 		murder = S.friendly
@@ -511,16 +543,24 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	"simple animal attack")
 
 /obj/machinery/power/supermatter_shard/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(Adjacent(user))
 		dust_mob(user, cause = "cyborg attack")
 
 /obj/machinery/power/supermatter_shard/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/supermatter_shard/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	dust_mob(user, cause = "hand")
 
 /obj/machinery/power/supermatter_shard/proc/dust_mob(mob/living/nom, vis_msg, mob_msg, cause)
+	procstart = null
+	src.procstart = null
 	if(!vis_msg)
 		vis_msg = "<span class='danger'>[nom] reaches out and touches [src], inducing a resonance... [nom.p_their()] body starts to glow and bursts into flames before flashing into ash"
 	if(!mob_msg)
@@ -533,6 +573,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	Consume(nom)
 
 /obj/machinery/power/supermatter_shard/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!istype(W) || (W.flags_1 & ABSTRACT_1) || !istype(user))
 		return
 	if(istype(W, /obj/item/scalpel/supermatter))
@@ -554,6 +596,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 
 
 /obj/machinery/power/supermatter_shard/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		AM.visible_message("<span class='danger'>\The [AM] slams into \the [src] inducing a resonance... [AM.p_their()] body starts to glow and catch flame before flashing into ash.</span>",\
 		"<span class='userdanger'>You slam into \the [src] as your ears are filled with unearthly ringing. Your last thought is \"Oh, fuck.\"</span>",\
@@ -569,6 +613,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	Consume(AM)
 
 /obj/machinery/power/supermatter_shard/proc/Consume(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		var/mob/living/user = AM
 		message_admins("[src] has consumed [key_name_admin(user)] [ADMIN_JMP(src)].")
@@ -615,6 +661,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 	is_main_engine = TRUE
 
 /obj/machinery/power/supermatter_shard/proc/supermatter_pull(turf/center, pull_range = 10)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/weapons/marauder.ogg', 100, 1, extrarange = 7)
 	for(var/atom/P in orange(pull_range,center))
 		if(ismovableatom(P))
@@ -629,6 +677,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 				step_towards(pulled_object,center)
 
 /obj/machinery/power/supermatter_shard/proc/supermatter_anomaly_gen(turf/anomalycenter, type = FLUX_ANOMALY, anomalyrange = 5)
+	procstart = null
+	src.procstart = null
 	var/turf/L = pick(orange(anomalyrange, anomalycenter))
 	if(L)
 		switch(type)
@@ -641,6 +691,8 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter_shard)
 				new /obj/effect/anomaly/pyro(L, 200)
 
 /obj/machinery/power/supermatter_shard/proc/supermatter_zap(atom/zapstart, range = 3, power)
+	procstart = null
+	src.procstart = null
 	. = zapstart.dir
 	if(power < 1000)
 		return

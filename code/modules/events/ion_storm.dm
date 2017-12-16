@@ -26,11 +26,15 @@
 	botEmagChance = 0
 
 /datum/round_event/ion_storm/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(announceEvent == ION_ANNOUNCE || (announceEvent == ION_RANDOM && prob(ionAnnounceChance)) || fake)
 		priority_announce("Ion storm detected near the station. Please check all AI-controlled equipment for errors.", "Anomaly Alert", 'sound/ai/ionstorm.ogg')
 
 
 /datum/round_event/ion_storm/start()
+	procstart = null
+	src.procstart = null
 	//AI laws
 	for(var/mob/living/silicon/ai/M in GLOB.alive_mob_list)
 		M.laws_sanity_check()
@@ -60,6 +64,8 @@
 				bot.emag_act()
 
 /proc/generate_ion_law(ionMessage)
+	procstart = null
+	src.procstart = null
 	if(ionMessage)
 		return ionMessage
 

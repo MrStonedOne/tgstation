@@ -8,6 +8,8 @@
 	announceWhen	= 1
 
 /datum/round_event/processor_overload/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/alert = pick(	"Exospheric bubble inbound. Processor overload is likely. Please contact you*%xp25)`6cq-BZZT", \
 						"Exospheric bubble inbound. Processor overload is likel*1eta;c5;'1v¬-BZZZT", \
 						"Exospheric bubble inbound. Processor ov#MCi46:5.;@63-BZZZZT", \
@@ -27,6 +29,8 @@
 
 
 /datum/round_event/processor_overload/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/telecomms/T in GLOB.telecomms_list)
 		if(istype(T, /obj/machinery/telecomms/processor))
 			var/obj/machinery/telecomms/processor/P = T

@@ -33,16 +33,22 @@
 	var/illustration = "writing"
 
 /obj/item/storage/box/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/storage/box/update_icon()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(illustration)
 		cut_overlays()
 		add_overlay(illustration)
 
 /obj/item/storage/box/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!foldable)
@@ -62,6 +68,8 @@
 	user.put_in_hands(I)
 
 /obj/item/storage/box/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stack/packageWrap))
 		return 0
 	return ..()
@@ -73,6 +81,8 @@
 	illustration = "disk_kit"
 
 /obj/item/storage/box/disks/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/disk/data(src)
 
@@ -82,20 +92,28 @@
 	illustration = "disk_kit"
 
 /obj/item/storage/box/disks_plantgene/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/disk/plantgene(src)
 
 // Ordinary survival box
 /obj/item/storage/box/survival/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/mask/breath(src)
 	new /obj/item/tank/internals/emergency_oxygen(src)
 	new /obj/item/reagent_containers/hypospray/medipen(src)
 
 /obj/item/storage/box/survival/radio/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // we want the survival stuff too.
 	new /obj/item/device/radio/off(src)
 
 /obj/item/storage/box/survival_mining/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/mask/gas/explorer(src)
 	new /obj/item/tank/internals/emergency_oxygen/engi(src)
 	new /obj/item/crowbar/red(src)
@@ -104,26 +122,36 @@
 
 // Engineer survival box
 /obj/item/storage/box/engineer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/mask/breath(src)
 	new /obj/item/tank/internals/emergency_oxygen/engi(src)
 	new /obj/item/reagent_containers/hypospray/medipen(src)
 
 /obj/item/storage/box/engineer/radio/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // we want the regular items too.
 	new /obj/item/device/radio/off(src)
 
 // Syndie survival box
 /obj/item/storage/box/syndie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/mask/gas/syndicate(src)
 	new /obj/item/tank/internals/emergency_oxygen/engi(src)
 
 // Security survival box
 /obj/item/storage/box/security/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/mask/gas/sechailer(src)
 	new /obj/item/tank/internals/emergency_oxygen(src)
 	new /obj/item/reagent_containers/hypospray/medipen(src)
 
 /obj/item/storage/box/security/radio/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // we want the regular stuff too
 	new /obj/item/device/radio/off(src)
 
@@ -133,6 +161,8 @@
 	illustration = "latex"
 
 /obj/item/storage/box/gloves/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/clothing/gloves/color/latex(src)
 
@@ -142,6 +172,8 @@
 	illustration = "sterile"
 
 /obj/item/storage/box/masks/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/clothing/mask/surgical(src)
 
@@ -151,6 +183,8 @@
 	illustration = "syringe"
 
 /obj/item/storage/box/syringes/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/syringe(src)
 
@@ -160,6 +194,8 @@
 	illustration = "syringe"
 
 /obj/item/storage/box/medipens/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/hypospray/medipen(src)
 
@@ -169,6 +205,8 @@
 	illustration = "syringe"
 
 /obj/item/storage/box/medipens/utility/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // includes regular medipens.
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/hypospray/medipen/stimpack(src)
@@ -178,6 +216,8 @@
 	illustration = "beaker"
 
 /obj/item/storage/box/beakers/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/glass/beaker( src )
 
@@ -186,6 +226,8 @@
 	desc = "This box contains injectors, it seems."
 
 /obj/item/storage/box/injectors/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/dnainjector/h2m(src)
 	for(var/i in 1 to 3)
@@ -198,6 +240,8 @@
 	illustration = "flashbang"
 
 /obj/item/storage/box/flashbangs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/grenade/flashbang(src)
 
@@ -208,6 +252,8 @@
 	illustration = "flashbang"
 
 /obj/item/storage/box/flashes/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/device/assembly/flash/handheld(src)
 
@@ -217,6 +263,8 @@
 	illustration = "flashbang"
 
 /obj/item/storage/box/wall_flash/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/id = rand(1000, 9999)
 	// FIXME what if this conflicts with an existing one?
 
@@ -236,6 +284,8 @@
 	illustration = "flashbang"
 
 /obj/item/storage/box/teargas/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/grenade/chem_grenade/teargas(src)
 
@@ -245,6 +295,8 @@
 	illustration = "flashbang"
 
 /obj/item/storage/box/emps/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/grenade/empgrenade(src)
 
@@ -254,6 +306,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/trackimp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 4)
 		new /obj/item/implantcase/tracking(src)
 	new /obj/item/implanter(src)
@@ -266,6 +320,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/minertracker/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/implantcase/tracking(src)
 	new /obj/item/implanter(src)
@@ -278,6 +334,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/chemimp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/implantcase/chem(src)
 	new /obj/item/implanter(src)
@@ -289,6 +347,8 @@
 	illustration = "implant"
 
 /obj/item/storage/box/exileimp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/implantcase/exile(src)
 	new /obj/item/implanter(src)
@@ -299,6 +359,8 @@
 	illustration = "bodybags"
 
 /obj/item/storage/box/bodybags/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 7)
 		new /obj/item/bodybag(src)
@@ -309,6 +371,8 @@
 	illustration = "glasses"
 
 /obj/item/storage/box/rxglasses/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/clothing/glasses/regular(src)
 
@@ -317,6 +381,8 @@
 	desc = "It has a picture of drinking glasses on it."
 
 /obj/item/storage/box/drinkingglasses/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/reagent_containers/food/drinks/drinkingglass(src)
 
@@ -325,6 +391,8 @@
 	desc = "It has a large ketchup smear on it."
 
 /obj/item/storage/box/condimentbottles/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/reagent_containers/food/condiment(src)
 
@@ -333,6 +401,8 @@
 	desc = "It has pictures of paper cups on the front."
 
 /obj/item/storage/box/cups/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/food/drinks/sillycup( src )
 
@@ -342,6 +412,8 @@
 	illustration = "donk_kit"
 
 /obj/item/storage/box/donkpockets/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/reagent_containers/food/snacks/donkpocket(src)
 
@@ -354,6 +426,8 @@
 	illustration = null
 
 /obj/item/storage/box/monkeycubes/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/food/snacks/monkeycube(src)
 
@@ -363,6 +437,8 @@
 	illustration = "id"
 
 /obj/item/storage/box/ids/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/card/id(src)
 
@@ -373,6 +449,8 @@
 	illustration = "pda"
 
 /obj/item/storage/box/PDAs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/device/pda(src)
 	new /obj/item/device/pda(src)
 	new /obj/item/device/pda(src)
@@ -392,6 +470,8 @@
 	illustration = "id"
 
 /obj/item/storage/box/silver_ids/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/card/id/silver(src)
 
@@ -401,6 +481,8 @@
 	illustration = "id"
 
 /obj/item/storage/box/prisoner/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/card/id/prisoner/one(src)
 	new /obj/item/card/id/prisoner/two(src)
@@ -416,6 +498,8 @@
 	illustration = "pda"
 
 /obj/item/storage/box/seccarts/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/cartridge/detective(src)
 	for(var/i in 1 to 6)
 		new /obj/item/cartridge/security(src)
@@ -426,6 +510,8 @@
 	illustration = "id"
 
 /obj/item/storage/box/firingpins/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/device/firing_pin(src)
 
@@ -435,6 +521,8 @@
 	illustration = "id"
 
 /obj/item/storage/box/lasertagpins/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/device/firing_pin/tag/red(src)
 		new /obj/item/device/firing_pin/tag/blue(src)
@@ -446,6 +534,8 @@
 	illustration = "handcuff"
 
 /obj/item/storage/box/handcuffs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/restraints/handcuffs(src)
 
@@ -456,6 +546,8 @@
 	illustration = "handcuff"
 
 /obj/item/storage/box/zipties/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/restraints/handcuffs/cable/zipties(src)
 
@@ -466,6 +558,8 @@
 	illustration = "handcuff"
 
 /obj/item/storage/box/alienhandcuffs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new	/obj/item/restraints/handcuffs/alien(src)
 
@@ -475,6 +569,8 @@
 	icon_state = "syndiebox"
 
 /obj/item/storage/box/fakesyndiesuit/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/syndicatefake(src)
 	new /obj/item/clothing/suit/syndicatefake(src)
 
@@ -484,6 +580,8 @@
 	illustration = "mousetraps"
 
 /obj/item/storage/box/mousetraps/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/device/assembly/mousetrap(src)
 
@@ -493,6 +591,8 @@
 	illustration = "pillbox"
 
 /obj/item/storage/box/pillbottles/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/storage/pill_bottle(src)
 
@@ -505,6 +605,8 @@
 	can_hold = list(/obj/item/toy/snappop)
 
 /obj/item/storage/box/snappops/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to storage_slots)
 		new /obj/item/toy/snappop(src)
 
@@ -520,10 +622,14 @@
 	can_hold = list(/obj/item/match)
 
 /obj/item/storage/box/matches/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to storage_slots)
 		new /obj/item/match(src)
 
 /obj/item/storage/box/matches/attackby(obj/item/match/W as obj, mob/user as mob, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/match))
 		W.matchignite()
 
@@ -542,6 +648,8 @@
 	use_to_pickup = 1 // for picking up broken bulbs, not that most people will try
 
 /obj/item/storage/box/lights/bulbs/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 21)
 		new /obj/item/light/bulb(src)
 
@@ -550,6 +658,8 @@
 	illustration = "lighttube"
 
 /obj/item/storage/box/lights/tubes/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 21)
 		new /obj/item/light/tube(src)
 
@@ -558,6 +668,8 @@
 	illustration = "lightmixed"
 
 /obj/item/storage/box/lights/mixed/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 14)
 		new /obj/item/light/tube(src)
 	for(var/i in 1 to 7)
@@ -569,6 +681,8 @@
 	desc = "To be issued to those authorized to act as deputy of security."
 
 /obj/item/storage/box/deputy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/clothing/accessory/armband/deputy(src)
 
@@ -578,6 +692,8 @@
 	illustration = "flashbang"
 
 /obj/item/storage/box/metalfoam/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/grenade/chem_grenade/metalfoam(src)
 
@@ -587,6 +703,8 @@
 	illustration = "flashbang"
 
 /obj/item/storage/box/smart_metal_foam/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new/obj/item/grenade/chem_grenade/smart_metal_foam(src)
 
@@ -598,10 +716,14 @@
 	foldable = null
 
 /obj/item/storage/box/hug/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] clamps the box of hugs on [user.p_their()] jugular! Guess it wasn't such a hugbox after all..</span>")
 	return (BRUTELOSS)
 
 /obj/item/storage/box/hug/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.changeNext_move(CLICK_CD_MELEE)
 	playsound(loc, "rustle", 50, 1, -5)
@@ -614,6 +736,8 @@ obj/item/storage/box/clown
 	illustration = "clown"
 
 /obj/item/storage/box/clown/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if((istype(I, /obj/item/bodypart/l_arm/robot)) || (istype(I, /obj/item/bodypart/r_arm/robot)))
 		if(contents.len) //prevent accidently deleting contents
 			to_chat(user, "<span class='warning'>You need to empty [src] out first!</span>")
@@ -630,11 +754,15 @@ obj/item/storage/box/clown
 
 //////
 /obj/item/storage/box/hug/medical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/medical/bruise_pack(src)
 	new /obj/item/stack/medical/ointment(src)
 	new /obj/item/reagent_containers/hypospray/medipen(src)
 
 /obj/item/storage/box/hug/survival/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/mask/breath(src)
 	new /obj/item/tank/internals/emergency_oxygen(src)
 	new /obj/item/reagent_containers/hypospray/medipen(src)
@@ -646,6 +774,8 @@ obj/item/storage/box/clown
 	illustration = null
 
 /obj/item/storage/box/rubbershot/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_casing/shotgun/rubbershot(src)
 
@@ -656,6 +786,8 @@ obj/item/storage/box/clown
 	illustration = null
 
 /obj/item/storage/box/lethalshot/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_casing/shotgun/buckshot(src)
 
@@ -666,6 +798,8 @@ obj/item/storage/box/clown
 	illustration = null
 
 /obj/item/storage/box/beanbag/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/ammo_casing/shotgun/beanbag(src)
 
@@ -675,6 +809,8 @@ obj/item/storage/box/clown
 	icon_state = "box"
 
 /obj/item/storage/box/actionfigure/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 4)
 		var/randomFigure = pick(subtypesof(/obj/item/toy/figure))
 		new randomFigure(src)
@@ -695,11 +831,15 @@ obj/item/storage/box/clown
 	var/design = NODESIGN
 
 /obj/item/storage/box/papersack/update_icon()
+	procstart = null
+	src.procstart = null
 	if(contents.len == 0)
 		icon_state = "[item_state]"
 	else icon_state = "[item_state]_closed"
 
 /obj/item/storage/box/papersack/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pen))
 		//if a pen is used on the sack, dialogue to change its design appears
 		if(contents.len)
@@ -755,6 +895,8 @@ obj/item/storage/box/clown
 	var/theme_name
 
 /obj/item/storage/box/ingredients/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(theme_name)
 		name = "[name] ([theme_name])"
@@ -765,6 +907,8 @@ obj/item/storage/box/clown
 	theme_name = "wildcard"
 
 /obj/item/storage/box/ingredients/wildcard/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		var/randomFood = pick(/obj/item/reagent_containers/food/snacks/grown/chili,
 							  /obj/item/reagent_containers/food/snacks/grown/tomato,
@@ -786,6 +930,8 @@ obj/item/storage/box/clown
 	theme_name = "fiesta"
 
 /obj/item/storage/box/ingredients/fiesta/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/food/snacks/tortilla(src)
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/food/snacks/grown/corn(src)
@@ -796,6 +942,8 @@ obj/item/storage/box/clown
 	theme_name = "italian"
 
 /obj/item/storage/box/ingredients/italian/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/food/snacks/grown/tomato(src)
 		new /obj/item/reagent_containers/food/snacks/faggot(src)
@@ -805,6 +953,8 @@ obj/item/storage/box/clown
 	theme_name = "vegetarian"
 
 /obj/item/storage/box/ingredients/vegetarian/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/food/snacks/grown/carrot(src)
 	new /obj/item/reagent_containers/food/snacks/grown/eggplant(src)
@@ -817,6 +967,8 @@ obj/item/storage/box/clown
 	theme_name = "american"
 
 /obj/item/storage/box/ingredients/american/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/food/snacks/grown/potato(src)
 		new /obj/item/reagent_containers/food/snacks/grown/tomato(src)
@@ -827,6 +979,8 @@ obj/item/storage/box/clown
 	theme_name = "fruity"
 
 /obj/item/storage/box/ingredients/fruity/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/food/snacks/grown/apple(src)
 		new /obj/item/reagent_containers/food/snacks/grown/citrus/orange(src)
@@ -838,6 +992,8 @@ obj/item/storage/box/clown
 	theme_name = "sweets"
 
 /obj/item/storage/box/ingredients/sweets/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/food/snacks/grown/cherries(src)
 		new /obj/item/reagent_containers/food/snacks/grown/banana(src)
@@ -849,6 +1005,8 @@ obj/item/storage/box/clown
 	theme_name = "delights"
 
 /obj/item/storage/box/ingredients/delights/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/food/snacks/grown/potato/sweet(src)
 		new /obj/item/reagent_containers/food/snacks/grown/bluecherries(src)
@@ -860,6 +1018,8 @@ obj/item/storage/box/clown
 	theme_name = "grains"
 
 /obj/item/storage/box/ingredients/grains/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/food/snacks/grown/oat(src)
 	new /obj/item/reagent_containers/food/snacks/grown/wheat(src)
@@ -871,6 +1031,8 @@ obj/item/storage/box/clown
 	theme_name = "carnivore"
 
 /obj/item/storage/box/ingredients/carnivore/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/food/snacks/meat/slab/bear(src)
 	new /obj/item/reagent_containers/food/snacks/meat/slab/spider(src)
 	new /obj/item/reagent_containers/food/snacks/spidereggs(src)
@@ -883,6 +1045,8 @@ obj/item/storage/box/clown
 	theme_name = "exotic"
 
 /obj/item/storage/box/ingredients/exotic/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new /obj/item/reagent_containers/food/snacks/carpmeat(src)
 		new /obj/item/reagent_containers/food/snacks/grown/soybeans(src)
@@ -893,6 +1057,8 @@ obj/item/storage/box/clown
 	name = "box of empty sandbags"
 
 /obj/item/storage/box/emptysandbags/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/emptysandbag(src)
 
@@ -901,6 +1067,8 @@ obj/item/storage/box/clown
 	desc = "A box containing a gift for worthy golems."
 
 /obj/item/storage/box/rndboards/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/circuitboard/machine/protolathe(src)
 	new /obj/item/circuitboard/machine/destructive_analyzer(src)
 	new /obj/item/circuitboard/machine/circuit_imprinter(src)
@@ -911,6 +1079,8 @@ obj/item/storage/box/clown
 	desc = "Contains patches used to treat burns."
 
 /obj/item/storage/box/silver_sulf/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/patch/silver_sulf(src)
 
@@ -919,5 +1089,7 @@ obj/item/storage/box/clown
 	name = "box of fountain pens"
 
 /obj/item/storage/box/fountainpens/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/pen/fountain(src)

@@ -25,6 +25,8 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 	var/name = ""
 
 /datum/error_viewer/proc/browse_to(client/user, html)
+	procstart = null
+	src.procstart = null
 	var/datum/browser/browser = new(user.mob, "error_viewer", null, 600, 400)
 	browser.set_content(html)
 	browser.add_head_content({"
@@ -47,6 +49,8 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 	browser.open()
 
 /datum/error_viewer/proc/build_header(datum/error_viewer/back_to, linear)
+	procstart = null
+	src.procstart = null
 	// Common starter HTML for show_to
 
 	. = ""
@@ -57,10 +61,14 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 	. += "[make_link("Refresh")]<br><br>"
 
 /datum/error_viewer/proc/show_to(user, datum/error_viewer/back_to, linear)
+	procstart = null
+	src.procstart = null
 	// Specific to each child type
 	return
 
 /datum/error_viewer/proc/make_link(linktext, datum/error_viewer/back_to, linear)
+	procstart = null
+	src.procstart = null
 	var/back_to_param = ""
 	if (!linktext)
 		linktext = name
@@ -79,6 +87,8 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 	var/list/errors_silenced = list()
 
 /datum/error_viewer/error_cache/show_to(user, datum/error_viewer/back_to, linear)
+	procstart = null
+	src.procstart = null
 	var/html = build_header()
 	html += "<b>[GLOB.total_runtimes]</b> runtimes, <b>[GLOB.total_runtimes_skipped]</b> skipped<br><br>"
 	if (!linear)
@@ -96,6 +106,8 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 	browse_to(user, html)
 
 /datum/error_viewer/error_cache/proc/log_error(exception/e, list/desclines, skip_count)
+	procstart = null
+	src.procstart = null
 	if (!istype(e))
 		return // Abnormal exception, don't even bother
 
@@ -130,6 +142,8 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 	var/next_message_at = 0
 
 /datum/error_viewer/error_source/New(exception/e)
+	procstart = null
+	src.procstart = null
 	if (!istype(e))
 		name = "\[[time_stamp()]] Uncaught exceptions"
 		return
@@ -137,6 +151,8 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 	name = "<b>\[[time_stamp()]]</b> Runtime in <b>[e.file]</b>, line <b>[e.line]</b>: <b>[html_encode(e.name)]</b>"
 
 /datum/error_viewer/error_source/show_to(user, datum/error_viewer/back_to, linear)
+	procstart = null
+	src.procstart = null
 	if (!istype(back_to))
 		back_to = GLOB.error_cache
 
@@ -155,6 +171,8 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 	var/is_skip_count
 
 /datum/error_viewer/error_entry/New(exception/e, list/desclines, skip_count)
+	procstart = null
+	src.procstart = null
 	if (!istype(e))
 		name = "<b>\[[time_stamp()]]</b> Uncaught exception: <b>[html_encode(e.name)]</b>"
 		return
@@ -176,6 +194,8 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 		usr_loc = get_turf(usr)
 
 /datum/error_viewer/error_entry/show_to(user, datum/error_viewer/back_to, linear)
+	procstart = null
+	src.procstart = null
 	if (!istype(back_to))
 		back_to = error_source
 
@@ -192,4 +212,6 @@ GLOBAL_DATUM(error_cache, /datum/error_viewer/error_cache)
 	browse_to(user, html)
 
 /datum/error_viewer/error_entry/make_link(linktext, datum/error_viewer/back_to, linear)
+	procstart = null
+	src.procstart = null
 	return is_skip_count ? name : ..()

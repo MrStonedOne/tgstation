@@ -1,36 +1,54 @@
 //pronoun procs, for getting pronouns without using the text macros that only work in certain positions
 //datums don't have gender, but most of their subtypes do!
 /datum/proc/p_they(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	. = "it"
 	if(capitalized)
 		. = capitalize(.)
 
 /datum/proc/p_their(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	. = "its"
 	if(capitalized)
 		. = capitalize(.)
 
 /datum/proc/p_them(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	. = "it"
 	if(capitalized)
 		. = capitalize(.)
 
 /datum/proc/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	. = "has"
 
 /datum/proc/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	. = "is"
 
 /datum/proc/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	. = "was"
 
 /datum/proc/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	. = "does"
 
 /datum/proc/p_theyve(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	. = p_they(capitalized, temp_gender) + "'" + copytext(p_have(temp_gender), 3)
 
 /datum/proc/p_theyre(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	. = p_they(capitalized, temp_gender) + "'" + copytext(p_are(temp_gender), 2)
 
 /datum/proc/p_s(temp_gender) //is this a descriptive proc name, or what?
@@ -38,6 +56,8 @@
 
 //like clients, which do have gender.
 /client/p_they(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "they"
@@ -50,6 +70,8 @@
 		. = capitalize(.)
 
 /client/p_their(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "their"
@@ -62,6 +84,8 @@
 		. = capitalize(.)
 
 /client/p_them(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "them"
@@ -74,6 +98,8 @@
 		. = capitalize(.)
 
 /client/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "has"
@@ -81,6 +107,8 @@
 		. = "have"
 
 /client/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "is"
@@ -88,6 +116,8 @@
 		. = "are"
 
 /client/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "was"
@@ -95,6 +125,8 @@
 		. = "were"
 
 /client/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "does"
@@ -102,6 +134,8 @@
 		. = "do"
 
 /client/p_s(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL && temp_gender != NEUTER)
@@ -109,6 +143,8 @@
 
 //mobs(and atoms but atoms don't really matter write your own proc overrides) also have gender!
 /mob/p_they(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "it"
@@ -123,6 +159,8 @@
 		. = capitalize(.)
 
 /mob/p_their(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "its"
@@ -137,6 +175,8 @@
 		. = capitalize(.)
 
 /mob/p_them(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "it"
@@ -151,6 +191,8 @@
 		. = capitalize(.)
 
 /mob/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "has"
@@ -158,6 +200,8 @@
 		. = "have"
 
 /mob/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "is"
@@ -165,6 +209,8 @@
 		. = "are"
 
 /mob/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "was"
@@ -172,6 +218,8 @@
 		. = "were"
 
 /mob/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	. = "does"
@@ -179,6 +227,8 @@
 		. = "do"
 
 /mob/p_s(temp_gender)
+	procstart = null
+	src.procstart = null
 	if(!temp_gender)
 		temp_gender = gender
 	if(temp_gender != PLURAL)
@@ -186,6 +236,8 @@
 
 //humans need special handling, because they can have their gender hidden
 /mob/living/carbon/human/p_they(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	var/list/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	if((slot_w_uniform in obscured) && skipface)
@@ -193,6 +245,8 @@
 	return ..()
 
 /mob/living/carbon/human/p_their(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	var/list/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	if((slot_w_uniform in obscured) && skipface)
@@ -200,6 +254,8 @@
 	return ..()
 
 /mob/living/carbon/human/p_them(capitalized, temp_gender)
+	procstart = null
+	src.procstart = null
 	var/list/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	if((slot_w_uniform in obscured) && skipface)
@@ -207,6 +263,8 @@
 	return ..()
 
 /mob/living/carbon/human/p_have(temp_gender)
+	procstart = null
+	src.procstart = null
 	var/list/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	if((slot_w_uniform in obscured) && skipface)
@@ -214,6 +272,8 @@
 	return ..()
 
 /mob/living/carbon/human/p_are(temp_gender)
+	procstart = null
+	src.procstart = null
 	var/list/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	if((slot_w_uniform in obscured) && skipface)
@@ -221,6 +281,8 @@
 	return ..()
 
 /mob/living/carbon/human/p_were(temp_gender)
+	procstart = null
+	src.procstart = null
 	var/list/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	if((slot_w_uniform in obscured) && skipface)
@@ -228,6 +290,8 @@
 	return ..()
 
 /mob/living/carbon/human/p_do(temp_gender)
+	procstart = null
+	src.procstart = null
 	var/list/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	if((slot_w_uniform in obscured) && skipface)
@@ -235,6 +299,8 @@
 	return ..()
 
 /mob/living/carbon/human/p_s(temp_gender)
+	procstart = null
+	src.procstart = null
 	var/list/obscured = check_obscured_slots()
 	var/skipface = (wear_mask && (wear_mask.flags_inv & HIDEFACE)) || (head && (head.flags_inv & HIDEFACE))
 	if((slot_w_uniform in obscured) && skipface)

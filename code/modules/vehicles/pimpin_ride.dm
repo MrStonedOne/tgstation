@@ -8,12 +8,16 @@
 	var/floorbuffer = FALSE
 
 /obj/vehicle/ridden/janicart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
 	D.set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(0, 4), TEXT_SOUTH = list(0, 7), TEXT_EAST = list(-12, 7), TEXT_WEST = list( 12, 7)))
 
 /obj/vehicle/ridden/janicart/Destroy()
+	procstart = null
+	src.procstart = null
 	if(mybag)
 		qdel(mybag)
 		mybag = null
@@ -26,11 +30,15 @@
 	icon_state = "upgrade"
 
 /obj/vehicle/ridden/janicart/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(floorbuffer)
 		to_chat(user, "It has been upgraded with a floor buffer.")
 
 /obj/vehicle/ridden/janicart/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/storage/bag/trash))
 		if(mybag)
 			to_chat(user, "<span class='warning'>[src] already has a trashbag hooked!</span>")
@@ -53,6 +61,8 @@
 		return ..()
 
 /obj/vehicle/ridden/janicart/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(mybag)
 		add_overlay("cart_garbage")
@@ -60,6 +70,8 @@
 		add_overlay("cart_buffer")
 
 /obj/vehicle/ridden/janicart/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	else if(mybag)

@@ -56,6 +56,8 @@
 
 //I hate that this has to exist
 /proc/slotdefine2slotbit(slotdefine) //Keep this up to date with the value of SLOT BITMASKS and SLOTS (the two define sections above)
+	procstart = null
+	src.procstart = null
 	. = 0
 	switch(slotdefine)
 		if(slot_back)

@@ -43,10 +43,14 @@
 	//FREQ_BROADCASTING = 2
 
 /obj/item/device/radio/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	remove_radio(src, frequency)
 	frequency = add_radio(src, new_frequency)
 
 /obj/item/device/radio/proc/recalculateChannels()
+	procstart = null
+	src.procstart = null
 	channels = list()
 	translate_binary = FALSE
 	syndie = FALSE
@@ -74,12 +78,16 @@
 	recalculateChannels()
 
 /obj/item/device/radio/Destroy()
+	procstart = null
+	src.procstart = null
 	remove_radio_all(src) //Just to be sure
 	QDEL_NULL(wires)
 	QDEL_NULL(keyslot)
 	return ..()
 
 /obj/item/device/radio/Initialize()
+	procstart = null
+	src.procstart = null
 	wires = new /datum/wires/radio(src)
 	if(prison_radio)
 		wires.cut(WIRE_TX) // OH GOD WHY
@@ -92,6 +100,8 @@
 		secure_radio_connections[ch_name] = add_radio(src, GLOB.radiochannels[ch_name])
 
 /obj/item/device/radio/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if (..())
 		return
 	if(unscrewed && !isAI(user))
@@ -107,6 +117,8 @@
 		ui.open()
 
 /obj/item/device/radio/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["broadcasting"] = broadcasting
@@ -127,6 +139,8 @@
 	return data
 
 /obj/item/device/radio/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -183,6 +197,8 @@
 				. = TRUE
 
 /obj/item/device/radio/talk_into(atom/movable/M, message, channel, list/spans, datum/language/language)
+	procstart = null
+	src.procstart = null
 	if(!spans)
 		spans = M.get_spans()
 	if(!language)
@@ -191,6 +207,8 @@
 	return ITALICS | REDUCE_RANGE
 
 /obj/item/device/radio/proc/talk_into_impl(atom/movable/M, message, channel, list/spans, datum/language/language)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return // the device has to be on
 	//  Fix for permacell radios, but kinda eh about actually fixing them.
@@ -443,6 +461,8 @@
 						  verb_say, verb_ask, verb_exclaim, verb_yell, language)
 
 /obj/item/device/radio/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(radio_freq)
 		return
 	if(broadcasting)
@@ -452,6 +472,8 @@
 			talk_into(speaker, raw_message, , spans, language=message_language)
 
 /obj/item/device/radio/proc/can_receive(freq, level)
+	procstart = null
+	src.procstart = null
 	// check if this radio can receive on the given frequency, and if so,
 	// what the range is in which mobs will hear the radio
 	// returns: -1 if can't receive, range otherwise
@@ -489,6 +511,8 @@
 
 
 /obj/item/device/radio/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (unscrewed)
 		to_chat(user, "<span class='notice'>It can be attached and modified.</span>")
@@ -496,6 +520,8 @@
 		to_chat(user, "<span class='notice'>It cannot be modified or attached.</span>")
 
 /obj/item/device/radio/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(W, /obj/item/screwdriver))
 		unscrewed = !unscrewed
@@ -507,6 +533,8 @@
 		return ..()
 
 /obj/item/device/radio/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	emped++ //There's been an EMP; better count it
 	var/curremp = emped //Remember which EMP this was
 	if (listening && ismob(loc))	// if the radio is turned on and on someone's person they notice
@@ -535,6 +563,8 @@
 	flags_2 = NO_EMP_WIRES_2
 
 /obj/item/device/radio/borg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /obj/item/device/radio/borg/syndicate
@@ -542,11 +572,15 @@
 	keyslot = new /obj/item/device/encryptionkey/syndicate
 
 /obj/item/device/radio/borg/syndicate/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(FREQ_SYNDICATE)
 
 /obj/item/device/radio/borg/attackby(obj/item/W, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver))
 		if(keyslot)
 			for(var/ch_name in channels)

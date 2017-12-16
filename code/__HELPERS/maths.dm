@@ -10,18 +10,26 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
                           8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10))
 
 /proc/sign(x)
+	procstart = null
+	src.procstart = null
 	return x!=0?x/abs(x):0
 
 /proc/Atan2(x, y)
+	procstart = null
+	src.procstart = null
 	if(!x && !y)
 		return 0
 	var/a = arccos(x / sqrt(x*x + y*y))
 	return y >= 0 ? a : -a
 
 /proc/Ceiling(x, y=1)
+	procstart = null
+	src.procstart = null
 	return -round(-x / y) * y
 
 /proc/Floor(x, y=1)
+	procstart = null
+	src.procstart = null
 	return round(x / y) * y
 
 #define Clamp(CLVALUE,CLMIN,CLMAX) ( max( (CLMIN), min((CLVALUE), (CLMAX)) ) )
@@ -31,75 +39,111 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 
 // cotangent
 /proc/Cot(x)
+	procstart = null
+	src.procstart = null
 	return 1 / Tan(x)
 
 // cosecant
 /proc/Csc(x)
+	procstart = null
+	src.procstart = null
 	return 1 / sin(x)
 
 /proc/Default(a, b)
+	procstart = null
+	src.procstart = null
 	return a ? a : b
 
 // Greatest Common Divisor - Euclid's algorithm
 /proc/Gcd(a, b)
+	procstart = null
+	src.procstart = null
 	return b ? Gcd(b, a % b) : a
 
 /proc/Inverse(x)
+	procstart = null
+	src.procstart = null
 	return 1 / x
 
 #define InverseSquareLaw(initial_strength,cur_distance,initial_distance) (initial_strength*(initial_distance**2/cur_distance**2))
 
 /proc/IsAboutEqual(a, b, deviation = 0.1)
+	procstart = null
+	src.procstart = null
 	return abs(a - b) <= deviation
 
 /proc/IsEven(x)
+	procstart = null
+	src.procstart = null
 	return x % 2 == 0
 
 // Returns true if val is from min to max, inclusive.
 /proc/IsInRange(val, min, max)
+	procstart = null
+	src.procstart = null
 	return min <= val && val <= max
 
 /proc/IsInteger(x)
+	procstart = null
+	src.procstart = null
 	return round(x) == x
 
 /proc/IsOdd(x)
+	procstart = null
+	src.procstart = null
 	return !IsEven(x)
 
 /proc/IsMultiple(x, y)
+	procstart = null
+	src.procstart = null
 	return x % y == 0
 
 // Least Common Multiple
 /proc/Lcm(a, b)
+	procstart = null
+	src.procstart = null
 	return abs(a) / Gcd(a, b) * abs(b)
 
 // Performs a linear interpolation between a and b.
 // Note that amount=0 returns a, amount=1 returns b, and
 // amount=0.5 returns the mean of a and b.
 /proc/Lerp(a, b, amount = 0.5)
+	procstart = null
+	src.procstart = null
 	return a + (b - a) * amount
 
 //Calculates the sum of a list of numbers.
 /proc/Sum(var/list/data)
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/val in data)
 		.+= val
 
 //Calculates the mean of a list of numbers.
 /proc/Mean(var/list/data)
+	procstart = null
+	src.procstart = null
 	. = Sum(data) / (data.len)
 
 
 // Returns the nth root of x.
 /proc/Root(n, x)
+	procstart = null
+	src.procstart = null
 	return x ** (1 / n)
 
 // secant
 /proc/Sec(x)
+	procstart = null
+	src.procstart = null
 	return 1 / cos(x)
 
 // The quadratic formula. Returns a list with the solutions, or an empty list
 // if they are imaginary.
 /proc/SolveQuadratic(a, b, c)
+	procstart = null
+	src.procstart = null
 	ASSERT(a)
 	. = list()
 	var/d		= b*b - 4 * a * c
@@ -114,19 +158,27 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 
 // tangent
 /proc/Tan(x)
+	procstart = null
+	src.procstart = null
 	return sin(x) / cos(x)
 
 /proc/ToDegrees(radians)
+	procstart = null
+	src.procstart = null
 				  // 180 / Pi
 	return radians * 57.2957795
 
 /proc/ToRadians(degrees)
+	procstart = null
+	src.procstart = null
 				  // Pi / 180
 	return degrees * 0.0174532925
 
 // Will filter out extra rotations and negative rotations
 // E.g: 540 becomes 180. -180 becomes 180.
 /proc/SimplifyDegrees(degrees)
+	procstart = null
+	src.procstart = null
 	degrees = degrees % 360
 	if(degrees < 0)
 		degrees += 360
@@ -134,6 +186,8 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 
 // min is inclusive, max is exclusive
 /proc/Wrap(val, min, max)
+	procstart = null
+	src.procstart = null
 	var/d = max - min
 	var/t = round((val - min) / d)
 	return val - (t * d)
@@ -142,6 +196,8 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 
 /proc/get_angle_of_incidence(face_angle, angle_in, auto_normalize = TRUE)
 
+	procstart = null
+	src.procstart = null
 	var/angle_in_s = NORM_ROT(angle_in)
 	var/face_angle_s = NORM_ROT(face_angle)
 	var/incidence = face_angle_s - angle_in_s
@@ -159,6 +215,8 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 //Currently, this is used for hydroponics-produce sprite transforming, but could be useful for other transform functions.
 /proc/TransformUsingVariable(input, inputmaximum, scaling_modifier = 0)
 
+		procstart = null
+		src.procstart = null
 		var/inputToDegrees = (input/inputmaximum)*180 //Converting from a 0 -> 100 scale to a 0 -> 180 scale. The 0 -> 180 scale corresponds to degrees
 		var/size_factor = ((-cos(inputToDegrees) +1) /2) //returns a value from 0 to 1
 
@@ -173,6 +231,8 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 //98% chance that the number is within 3stddev...etc
 #define ACCURACY 10000
 /proc/gaussian(mean, stddev)
+	procstart = null
+	src.procstart = null
 	var/static/gaussian_next
 	var/R1;var/R2;var/working
 	if(gaussian_next != null)
@@ -191,6 +251,8 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 #undef ACCURACY
 
 /proc/mouse_angle_from_client(client/client)
+	procstart = null
+	src.procstart = null
 	var/list/mouse_control = params2list(client.mouseParams)
 	if(mouse_control["screen-loc"] && client)
 		var/list/screen_loc_params = splittext(mouse_control["screen-loc"], ",")
@@ -207,6 +269,8 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 		return angle
 
 /proc/get_turf_in_angle(angle, turf/starting, increments)
+	procstart = null
+	src.procstart = null
 	var/pixel_x = 0
 	var/pixel_y = 0
 	for(var/i in 1 to increments)
@@ -231,6 +295,8 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 	return locate(new_x, new_y, starting.z)
 
 /proc/round_down(num)
+	procstart = null
+	src.procstart = null
 	if(round(num) != num)
 		return round(num--)
 	else return num
@@ -238,6 +304,8 @@ GLOBAL_LIST_INIT(sqrtTable, list(1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4,
 //proc/get_overlap()
 // Returns a list where [1] is all x values and [2] is all y values that overlap between the given pair of rectangles
 /proc/get_overlap(x1, y1, x2, y2, x3, y3, x4, y4)
+	procstart = null
+	src.procstart = null
 	var/list/region_x1 = list()
 	var/list/region_y1 = list()
 	var/list/region_x2 = list()

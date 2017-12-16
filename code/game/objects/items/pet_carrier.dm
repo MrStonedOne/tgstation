@@ -24,18 +24,24 @@
 	var/max_occupant_weight = MOB_SIZE_SMALL //This is calculated from the mob sizes of occupants
 
 /obj/item/pet_carrier/Destroy()
+	procstart = null
+	src.procstart = null
 	if(occupants.len)
 		for(var/V in occupants)
 			remove_occupant(V)
 	return ..()
 
 /obj/item/pet_carrier/Exited(atom/movable/occupant)
+	procstart = null
+	src.procstart = null
 	if(occupant in occupants && isliving(occupant))
 		var/mob/living/L = occupant
 		occupants -= occupant
 		occupant_weight -= L.mob_size
 
 /obj/item/pet_carrier/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A in occupants && isliving(A))
 		var/mob/living/L = A
 		occupants -= L
@@ -43,6 +49,8 @@
 	..()
 
 /obj/item/pet_carrier/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(occupants.len)
 		for(var/V in occupants)
@@ -56,6 +64,8 @@
 			to_chat(user, "<span class='notice'>Alt-click to [locked ? "unlock" : "lock"] its door.</span>")
 
 /obj/item/pet_carrier/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(open)
 		to_chat(user, "<span class='notice'>You close [src]'s door.</span>")
 		playsound(user, 'sound/effects/bin_close.ogg', 50, TRUE)
@@ -70,6 +80,8 @@
 	update_icon()
 
 /obj/item/pet_carrier/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(open || !user.canUseTopic(src, be_close=TRUE))
 		return
 	locked = !locked
@@ -81,6 +93,8 @@
 	update_icon()
 
 /obj/item/pet_carrier/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	if(!open)
@@ -102,6 +116,8 @@
 	load_occupant(user, target)
 
 /obj/item/pet_carrier/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(open)
 		loc.visible_message("<span class='notice'>[user] climbs out of [src]!</span>", \
 		"<span class='warning'>[user] jumps out of [src]!</span>")
@@ -117,6 +133,8 @@
 		container_resist(user)
 
 /obj/item/pet_carrier/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	if(user.mob_size <= MOB_SIZE_SMALL)
@@ -142,6 +160,8 @@
 		remove_occupant(user)
 
 /obj/item/pet_carrier/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlay("unlocked")
 	cut_overlay("locked")
 	if(open)
@@ -151,6 +171,8 @@
 		add_overlay("[locked ? "" : "un"]locked")
 
 /obj/item/pet_carrier/MouseDrop(atom/over_atom)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(over_atom) && usr.Adjacent(over_atom) && open && occupants.len)
 		usr.visible_message("<span class='notice'>[usr] unloads [src].</span>", \
 		"<span class='notice'>You unload [src] onto [over_atom].</span>")
@@ -158,6 +180,8 @@
 			remove_occupant(V, over_atom)
 
 /obj/item/pet_carrier/proc/load_occupant(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(pet_carrier_full(src))
 		to_chat(user, "<span class='warning'>[src] is already carrying too much!</span>")
 		return
@@ -177,6 +201,8 @@
 	add_occupant(target)
 
 /obj/item/pet_carrier/proc/add_occupant(mob/living/occupant)
+	procstart = null
+	src.procstart = null
 	if(occupant in occupants || !istype(occupant))
 		return
 	occupant.forceMove(src)
@@ -184,6 +210,8 @@
 	occupant_weight += occupant.mob_size
 
 /obj/item/pet_carrier/proc/remove_occupant(mob/living/occupant, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(!occupant in occupants || !istype(occupant))
 		return
 	occupant.forceMove(new_turf ? new_turf : drop_location())

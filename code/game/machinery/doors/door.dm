@@ -34,10 +34,14 @@
 	var/real_explosion_block	//ignore this, just use explosion_block
 
 /obj/machinery/door/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Its maintenance panel is <b>screwed</b> in place.</span>")
 
 /obj/machinery/door/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(density)
 		layer = CLOSED_DOOR_LAYER //Above most items if closed
@@ -54,6 +58,8 @@
 	explosion_block = EXPLOSION_BLOCK_PROC
 
 /obj/machinery/door/Destroy()
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	air_update_turf(1)
 	update_freelook_sight()
@@ -64,6 +70,8 @@
 	return ..()
 
 /obj/machinery/door/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(operating || emagged)
 		return
 	if(ismob(AM))
@@ -95,16 +103,22 @@
 	return
 
 /obj/machinery/door/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
 
 /obj/machinery/door/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return !opacity
 	return !density
 
 /obj/machinery/door/proc/bumpopen(mob/user)
+	procstart = null
+	src.procstart = null
 	if(operating)
 		return
 	src.add_fingerprint(user)
@@ -120,18 +134,26 @@
 
 
 /obj/machinery/door/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/door/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	return try_to_activate_door(user)
 
 
 /obj/machinery/door/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(requiresID() && !allowed(null))
 		return
 	..()
 
 /obj/machinery/door/proc/try_to_activate_door(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(operating || emagged)
 		return
@@ -147,17 +169,25 @@
 		do_animate("deny")
 
 /obj/machinery/door/allowed(mob/M)
+	procstart = null
+	src.procstart = null
 	if(emergency)
 		return TRUE
 	return ..()
 
 /obj/machinery/door/proc/try_to_weld(obj/item/weldingtool/W, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/proc/try_to_crowbar(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent != INTENT_HARM && (istype(I, /obj/item/crowbar) || istype(I, /obj/item/twohanded/fireaxe)))
 		try_to_crowbar(I, user)
 		return 1
@@ -170,17 +200,23 @@
 	return ..()
 
 /obj/machinery/door/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" && damage_amount < damage_deflection)
 		return 0
 	. = ..()
 
 /obj/machinery/door/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && obj_integrity > 0)
 		if(damage_amount >= 10 && prob(30))
 			spark_system.start()
 
 /obj/machinery/door/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(glass)
@@ -193,6 +229,8 @@
 			playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/machinery/door/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(prob(20/severity) && (istype(src, /obj/machinery/door/airlock) || istype(src, /obj/machinery/door/window)) )
 		INVOKE_ASYNC(src, .proc/open)
 	if(prob(40/severity))
@@ -203,15 +241,21 @@
 	..()
 
 /obj/machinery/door/proc/unelectrify()
+	procstart = null
+	src.procstart = null
 	secondsElectrified = 0
 
 /obj/machinery/door/update_icon()
+	procstart = null
+	src.procstart = null
 	if(density)
 		icon_state = "door1"
 	else
 		icon_state = "door0"
 
 /obj/machinery/door/proc/do_animate(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if("opening")
 			if(panel_open)
@@ -229,6 +273,8 @@
 
 
 /obj/machinery/door/proc/open()
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return 1
 	if(operating)
@@ -251,6 +297,8 @@
 	return 1
 
 /obj/machinery/door/proc/close()
+	procstart = null
+	src.procstart = null
 	if(density)
 		return 1
 	if(operating)
@@ -284,11 +332,15 @@
 	return 1
 
 /obj/machinery/door/proc/CheckForMobs()
+	procstart = null
+	src.procstart = null
 	if(locate(/mob/living) in get_turf(src))
 		sleep(1)
 		open()
 
 /obj/machinery/door/proc/crush()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/L in get_turf(src))
 		L.visible_message("<span class='warning'>[src] closes on [L], crushing them!</span>", "<span class='userdanger'>[src] closes on you and crushes you!</span>")
 		if(isalien(L))  //For xenos
@@ -310,16 +362,24 @@
 		M.take_damage(DOOR_CRUSH_DAMAGE)
 
 /obj/machinery/door/proc/autoclose()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src) && !density && !operating && !locked && !welded && autoclose)
 		close()
 
 /obj/machinery/door/proc/requiresID()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/machinery/door/proc/hasPower()
+	procstart = null
+	src.procstart = null
 	return !(stat & NOPOWER)
 
 /obj/machinery/door/proc/update_freelook_sight()
+	procstart = null
+	src.procstart = null
 	if(!glass && GLOB.cameranet)
 		GLOB.cameranet.updateVisibility(src, 0)
 
@@ -332,25 +392,39 @@
 	icon = 'icons/obj/doors/doormorgue.dmi'
 
 /obj/machinery/door/get_dumping_location(obj/item/storage/source,mob/user)
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/machinery/door/proc/lock()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/proc/unlock()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/proc/hostile_lockdown(mob/origin)
+	procstart = null
+	src.procstart = null
 	if(!stat) //So that only powered doors are closed.
 		close() //Close ALL the doors!
 
 /obj/machinery/door/proc/disable_lockdown()
+	procstart = null
+	src.procstart = null
 	if(!stat) //Opens only powered doors.
 		open() //Open everything!
 
 /obj/machinery/door/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	//if it blows up a wall it should blow up a door
 	..(severity ? max(1, severity - 1) : 0, target)
 
 /obj/machinery/door/GetExplosionBlock()
+	procstart = null
+	src.procstart = null
 	return density ? real_explosion_block : 0

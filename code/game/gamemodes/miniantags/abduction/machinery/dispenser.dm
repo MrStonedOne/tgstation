@@ -10,10 +10,14 @@
 	var/list/amounts
 
 /obj/machinery/abductor/gland_dispenser/proc/random_color()
+	procstart = null
+	src.procstart = null
 	//TODO : replace with presets or spectrum
 	return rgb(rand(0,255),rand(0,255),rand(0,255))
 
 /obj/machinery/abductor/gland_dispenser/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gland_types = subtypesof(/obj/item/organ/heart/gland)
 	gland_types = shuffle(gland_types)
@@ -24,6 +28,8 @@
 		amounts[i] = rand(1,5)
 
 /obj/machinery/abductor/gland_dispenser/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!isabductor(user))
@@ -59,6 +65,8 @@
 	return
 
 /obj/machinery/abductor/gland_dispenser/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/organ/heart/gland))
 		if(!user.transferItemToLoc(W, src))
 			return
@@ -69,6 +77,8 @@
 		return ..()
 
 /obj/machinery/abductor/gland_dispenser/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -78,6 +88,8 @@
 	updateUsrDialog()
 
 /obj/machinery/abductor/gland_dispenser/proc/Dispense(count)
+	procstart = null
+	src.procstart = null
 	if(amounts[count]>0)
 		amounts[count]--
 		var/T = gland_types[count]

@@ -3,6 +3,8 @@
 // The protecting object itself will get returned still.
 // The ignore list makes those objects never return at all
 /proc/get_rad_contents(atom/location)
+	procstart = null
+	src.procstart = null
 	var/list/processing_list = list(location)
 	. = list()
 	while(processing_list.len)
@@ -25,6 +27,8 @@
 		processing_list += thing.contents
 
 /proc/radiation_pulse(atom/source, intensity, range_modifier, log=FALSE, can_contaminate=TRUE)
+	procstart = null
+	src.procstart = null
 	if(!SSradiation.can_fire)
 		return
 	for(var/dir in GLOB.cardinals)

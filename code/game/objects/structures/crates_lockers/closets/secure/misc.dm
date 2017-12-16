@@ -5,6 +5,8 @@
 	icon_state = "cap"
 
 /obj/structure/closet/secure_closet/ertCom/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/firstaid/regular(src)
 	new /obj/item/storage/box/handcuffs(src)
@@ -26,6 +28,8 @@
 	icon_state = "hos"
 
 /obj/structure/closet/secure_closet/ertSec/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/flashbangs(src)
 	new /obj/item/storage/box/teargas(src)
@@ -40,6 +44,8 @@
 	icon_state = "cmo"
 
 /obj/structure/closet/secure_closet/ertMed/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/firstaid/o2(src)
 	new /obj/item/storage/firstaid/toxin(src)
@@ -56,6 +62,8 @@
 	icon_state = "ce"
 
 /obj/structure/closet/secure_closet/ertEngi/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/stack/sheet/plasteel(src, 50)
 	new /obj/item/stack/sheet/metal(src, 50)

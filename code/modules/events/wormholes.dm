@@ -16,10 +16,14 @@
 	var/number_of_wormholes = 400
 
 /datum/round_event/wormholes/setup()
+	procstart = null
+	src.procstart = null
 	announceWhen = rand(0, 20)
 	endWhen = rand(40, 80)
 
 /datum/round_event/wormholes/start()
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/floor/T in world)
 		if(T.z in GLOB.station_z_levels)
 			pick_turfs += T
@@ -29,9 +33,13 @@
 		wormholes += new /obj/effect/portal/wormhole(T, null, 0, null, FALSE)
 
 /datum/round_event/wormholes/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Space-time anomalies detected on the station. There is no additional data.", "Anomaly Alert", 'sound/ai/spanomalies.ogg')
 
 /datum/round_event/wormholes/tick()
+	procstart = null
+	src.procstart = null
 	if(activeFor % shift_frequency == 0)
 		for(var/obj/effect/portal/wormhole/O in wormholes)
 			var/turf/T = pick(pick_turfs)
@@ -39,6 +47,8 @@
 				O.forceMove(T)
 
 /datum/round_event/wormholes/end()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(wormholes)
 	wormholes = null
 
@@ -50,6 +60,8 @@
 	mech_sized = TRUE
 
 /obj/effect/portal/wormhole/teleport(atom/movable/M)
+	procstart = null
+	src.procstart = null
 	if(istype(M, /obj/effect))	//sparks don't teleport
 		return
 	if(M.anchored)

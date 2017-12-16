@@ -46,6 +46,8 @@
 
 
 /obj/item/storage/backpack/holding/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is jumping into [src]! It looks like [user.p_theyre()] trying to commit suicide.</span>")
 	user.dropItemToGround(src, TRUE)
 	user.Stun(100, ignore_canstun = TRUE)
@@ -55,6 +57,8 @@
 	return
 
 /obj/item/storage/backpack/holding/dump_content_at(atom/dest_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(Adjacent(user))
 		var/atom/dumping_location = dest_object.get_dumping_location()
 		if(get_dist(user, dumping_location) < 8)
@@ -70,6 +74,8 @@
 	return 0
 
 /obj/item/storage/backpack/holding/handle_item_insertion(obj/item/W, prevent_warning = 0, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if((istype(W, /obj/item/storage/backpack/holding) || count_by_type(W.GetAllContents(), /obj/item/storage/backpack/holding)))
 		var/turf/loccheck = get_turf(src)
 		if(loccheck.z == ZLEVEL_CITYOFCOGS)
@@ -92,6 +98,8 @@
 	. = ..()
 
 /obj/item/storage/backpack/holding/singularity_act(current_size)
+	procstart = null
+	src.procstart = null
 	var/dist = max((current_size - 2),1)
 	explosion(src.loc,(dist),(dist*2),(dist*4))
 	return
@@ -107,6 +115,8 @@
 	max_combined_w_class = 60
 
 /obj/item/storage/backpack/santabag/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] places [src] over their head and pulls it tight! It looks like they aren't in the Christmas spirit...</span>")
 	return (OXYLOSS)
 
@@ -209,6 +219,8 @@
 	resistance_flags = NONE
 
 /obj/item/storage/backpack/satchel/leather/withwallet/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/wallet/random(src)
 
 /obj/item/storage/backpack/satchel/eng
@@ -284,6 +296,8 @@
 	cant_hold = list(/obj/item/storage/backpack/satchel/flat) //muh recursive backpacks
 
 /obj/item/storage/backpack/satchel/flat/hide(var/intact)
+	procstart = null
+	src.procstart = null
 	if(intact)
 		invisibility = INVISIBILITY_MAXIMUM
 		anchored = TRUE //otherwise you can start pulling, cover it, and drag around an invisible backpack.
@@ -294,14 +308,20 @@
 		icon_state = initial(icon_state)
 
 /obj/item/storage/backpack/satchel/flat/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSpersistence.new_secret_satchels += src
 
 /obj/item/storage/backpack/satchel/flat/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/tile/plasteel(src)
 	new /obj/item/crowbar(src)
 
 /obj/item/storage/backpack/satchel/flat/Destroy()
+	procstart = null
+	src.procstart = null
 	SSpersistence.new_secret_satchels -= src
 	return ..()
 
@@ -311,12 +331,16 @@
 	var/revealed = 0
 
 /obj/item/storage/backpack/satchel/flat/secret/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(isfloorturf(loc) && !isplatingturf(loc))
 		hide(1)
 
 /obj/item/storage/backpack/satchel/flat/secret/hide(intact)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!intact && !revealed)
 		if(reward_one_of_these.len > 0)
@@ -352,6 +376,8 @@
 	desc = "A large duffel bag for holding extra medical supplies - this one seems to be designed for holding surgical tools."
 
 /obj/item/storage/backpack/duffelbag/med/surgery/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/scalpel(src)
 	new /obj/item/hemostat(src)
 	new /obj/item/retractor(src)
@@ -373,6 +399,8 @@
 	desc = "A large duffel bag for holding extra supplies - this one has a material inlay with space for various sharp-looking tools."
 
 /obj/item/storage/backpack/duffelbag/sec/surgery/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/scalpel(src)
 	new /obj/item/hemostat(src)
 	new /obj/item/retractor(src)
@@ -397,6 +425,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/storage/backpack/duffelbag/drone/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool(src)
@@ -412,6 +442,8 @@
 	item_state = "duffel-clown"
 
 /obj/item/storage/backpack/duffelbag/clown/cream_pie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/reagent_containers/food/snacks/pie/cream(src)
 
@@ -429,6 +461,8 @@
 	item_state = "duffel-syndieammo"
 
 /obj/item/storage/backpack/duffelbag/syndie/hitman/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/lawyer/blacksuit(src)
 	new /obj/item/clothing/accessory/waistcoat(src)
 	new /obj/item/clothing/suit/toggle/lawyer/black(src)
@@ -450,6 +484,8 @@
 	item_state = "duffel-syndiemed"
 
 /obj/item/storage/backpack/duffelbag/syndie/surgery/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/scalpel(src)
 	new /obj/item/hemostat(src)
 	new /obj/item/retractor(src)
@@ -471,6 +507,8 @@
 	desc = "A large duffel bag, packed to the brim with Bulldog shotgun ammo."
 
 /obj/item/storage/backpack/duffelbag/syndie/ammo/shotgun/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/ammo_box/magazine/m12g(src)
 	new /obj/item/ammo_box/magazine/m12g/buckshot(src)
@@ -481,6 +519,8 @@
 	desc = "A large duffel bag, packed to the brim with C20r magazines."
 
 /obj/item/storage/backpack/duffelbag/syndie/ammo/smg/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 9)
 		new /obj/item/ammo_box/magazine/smgm45(src)
 
@@ -488,6 +528,8 @@
 	desc = "A large duffel bag containing a C20r, some magazines, and a cheap looking suppressor."
 
 /obj/item/storage/backpack/duffelbag/syndie/c20rbundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/ammo_box/magazine/smgm45(src)
 	new /obj/item/ammo_box/magazine/smgm45(src)
 	new /obj/item/gun/ballistic/automatic/c20r(src)
@@ -497,6 +539,8 @@
 	desc = "A large duffel bag containing a Bulldog, several drums, and a collapsed hardsuit."
 
 /obj/item/storage/backpack/duffelbag/syndie/bulldogbundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/ammo_box/magazine/m12g(src)
 	new /obj/item/gun/ballistic/automatic/shotgun/bulldog(src)
 	new /obj/item/ammo_box/magazine/m12g/buckshot(src)
@@ -506,6 +550,8 @@
 	desc = "A large duffel bag containing a medical equipment, a Donksoft machine gun, a big jumbo box of darts, and a knock-off pair of magboots."
 
 /obj/item/storage/backpack/duffelbag/syndie/med/medicalbundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/shoes/magboots/syndie(src)
 	new /obj/item/storage/firstaid/tactical(src)
 	new /obj/item/gun/ballistic/automatic/l6_saw/toy(src)
@@ -515,6 +561,8 @@
 	desc = "A large duffel bag containing a medical equipment, a Donksoft machine gun, a big jumbo box of darts, and a knock-off pair of magboots."
 
 /obj/item/storage/backpack/duffelbag/syndie/med/medicalbundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/shoes/magboots/syndie(src)
 	new /obj/item/storage/firstaid/tactical(src)
 	new /obj/item/gun/ballistic/automatic/l6_saw/toy(src)
@@ -524,6 +572,8 @@
 	desc = "A large duffel bag containing a deadly chemicals, a chemical spray, chemical grenade, a Donksoft assault rifle, riot grade darts, a minature syringe gun, and a box of syringes."
 
 /obj/item/storage/backpack/duffelbag/syndie/med/bioterrorbundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/spray/chemsprayer/bioterror(src)
 	new /obj/item/storage/box/syndie_kit/chemical(src)
 	new /obj/item/gun/syringe/syndicate(src)
@@ -533,10 +583,14 @@
 	new /obj/item/grenade/chem_grenade/bioterrorfoam(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/c4/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		new /obj/item/grenade/plastic/c4(src)
 
 /obj/item/storage/backpack/duffelbag/syndie/x4/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/grenade/plastic/x4(src)
 
@@ -544,6 +598,8 @@
 	desc = "A large duffel bag containing New Russian pyro backpack sprayer, a pistol, a pipebomb, fireproof hardsuit, ammo, and other equipment."
 
 /obj/item/storage/backpack/duffelbag/syndie/firestarter/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/syndicate/soviet(src)
 	new /obj/item/watertank/op(src)
 	new /obj/item/clothing/suit/space/hardsuit/syndi/elite(src)

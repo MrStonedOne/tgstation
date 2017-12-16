@@ -6,6 +6,8 @@
 	var/mutable_appearance/pic
 
 /datum/component/decal/Initialize(_icon, _icon_state, _dir, _cleanable=CLEAN_GOD, _color, _layer=TURF_LAYER, _description)
+	procstart = null
+	src.procstart = null
 	if(!isatom(parent) || !_icon || !_icon_state)
 		. = COMPONENT_INCOMPATIBLE
 		CRASH("A turf decal was applied incorrectly to [parent.type]: icon:[_icon ? _icon : "none"] icon_state:[_icon_state ? _icon_state : "none"]")
@@ -28,23 +30,33 @@
 		RegisterSignal(COMSIG_PARENT_EXAMINE, .proc/examine)
 
 /datum/component/decal/Destroy()
+	procstart = null
+	src.procstart = null
 	remove()
 	return ..()
 
 /datum/component/decal/OnTransfer(atom/thing)
+	procstart = null
+	src.procstart = null
 	remove()
 	remove(thing)
 	apply(thing)
 
 /datum/component/decal/proc/apply(atom/thing)
+	procstart = null
+	src.procstart = null
 	var/atom/master = thing || parent
 	master.add_overlay(pic, TRUE)
 
 /datum/component/decal/proc/remove(atom/thing)
+	procstart = null
+	src.procstart = null
 	var/atom/master = thing || parent
 	master.cut_overlay(pic, TRUE)
 
 /datum/component/decal/proc/rotate_react(old_dir, new_dir)
+	procstart = null
+	src.procstart = null
 	if(old_dir == new_dir)
 		return
 	remove()
@@ -53,8 +65,12 @@
 	apply()
 
 /datum/component/decal/proc/clean_react(strength)
+	procstart = null
+	src.procstart = null
 	if(strength >= cleanable)
 		qdel(src)
 
 /datum/component/decal/proc/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, description)

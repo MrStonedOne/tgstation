@@ -43,6 +43,8 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 
 /mob/living/simple_animal/pet/dog/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/dog_area = get_area(src)
 	for(var/obj/structure/bed/dogbed/D in dog_area)
@@ -51,15 +53,21 @@
 			break
 
 /mob/living/simple_animal/pet/dog/corgi/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	regenerate_icons()
 
 
 /mob/living/simple_animal/pet/dog/corgi/death(gibbed)
+	procstart = null
+	src.procstart = null
 	..(gibbed)
 	regenerate_icons()
 
 /mob/living/simple_animal/pet/dog/corgi/show_inv(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	if(user.stat)
 		return
@@ -79,6 +87,8 @@
 	return
 
 /mob/living/simple_animal/pet/dog/corgi/getarmor(def_zone, type)
+	procstart = null
+	src.procstart = null
 	var/armorval = 0
 
 	if(def_zone)
@@ -97,6 +107,8 @@
 	return armorval*0.5
 
 /mob/living/simple_animal/pet/dog/corgi/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(O, /obj/item/razor))
 		if (shaved)
 			to_chat(user, "<span class='warning'>You can't shave this corgi, it's already been shaved!</span>")
@@ -122,6 +134,8 @@
 
 
 /mob/living/simple_animal/pet/dog/corgi/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(usr.stat)
 		return
 
@@ -213,6 +227,8 @@
 
 /mob/living/simple_animal/pet/dog/corgi/proc/place_on_head(obj/item/item_to_add, mob/user)
 
+	procstart = null
+	src.procstart = null
 	if(istype(item_to_add, /obj/item/grenade/plastic)) // last thing he ever wears, I guess
 		item_to_add.afterattack(src,user,1)
 		return
@@ -258,6 +274,8 @@
 	return valid
 
 /mob/living/simple_animal/pet/dog/corgi/proc/update_corgi_fluff()
+	procstart = null
+	src.procstart = null
 	// First, change back to defaults
 	name = real_name
 	desc = initial(desc)
@@ -295,6 +313,8 @@
 	var/saved_head //path
 
 /mob/living/simple_animal/pet/dog/corgi/Ian/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//parent call must happen first to ensure IAN
 	//is not in nullspace when child puppies spawn
@@ -317,17 +337,23 @@
 		turns_per_move = 20
 
 /mob/living/simple_animal/pet/dog/corgi/Ian/Life()
+	procstart = null
+	src.procstart = null
 	if(!stat && SSticker.current_state == GAME_STATE_FINISHED && !memory_saved)
 		Write_Memory(FALSE)
 		memory_saved = TRUE
 	..()
 
 /mob/living/simple_animal/pet/dog/corgi/Ian/death()
+	procstart = null
+	src.procstart = null
 	if(!memory_saved)
 		Write_Memory(TRUE)
 	..()
 
 /mob/living/simple_animal/pet/dog/corgi/Ian/proc/Read_Memory()
+	procstart = null
+	src.procstart = null
 	if(fexists("data/npc_saves/Ian.sav")) //legacy compatability to convert old format to new
 		var/savefile/S = new /savefile("data/npc_saves/Ian.sav")
 		S["age"] 		>> age
@@ -350,6 +376,8 @@
 		place_on_head(new saved_head)
 
 /mob/living/simple_animal/pet/dog/corgi/Ian/proc/Write_Memory(dead)
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/npc_saves/Ian.json")
 	var/list/file_data = list()
 	if(!dead)
@@ -370,6 +398,8 @@
 	WRITE_FILE(json_file, json_encode(file_data))
 
 /mob/living/simple_animal/pet/dog/corgi/Ian/Life()
+	procstart = null
+	src.procstart = null
 	..()
 
 	//Feeding, chasing food, FOOOOODDDD
@@ -424,6 +454,8 @@
 					sleep(1)
 
 /mob/living/simple_animal/pet/dog/corgi/Ian/narsie_act()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/magic/demon_dies.ogg', 75, TRUE)
 	var/mob/living/simple_animal/pet/dog/corgi/narsie/N = new(loc)
 	N.setDir(dir)
@@ -440,6 +472,8 @@
 	nofur = TRUE
 
 /mob/living/simple_animal/pet/dog/corgi/narsie/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/mob/living/simple_animal/pet/P in range(1, src))
 		if(P != src && prob(5))
@@ -450,6 +484,8 @@
 			P.gib()
 
 /mob/living/simple_animal/pet/dog/corgi/narsie/update_corgi_fluff()
+	procstart = null
+	src.procstart = null
 	..()
 	speak = list("Tari'karat-pasnar!", "IA! IA!", "BRRUUURGHGHRHR")
 	speak_emote = list("growls", "barks ominously")
@@ -457,10 +493,14 @@
 	emote_see = list("communes with the unnameable.", "ponders devouring some souls.", "shakes.")
 
 /mob/living/simple_animal/pet/dog/corgi/narsie/narsie_act()
+	procstart = null
+	src.procstart = null
 	adjustBruteLoss(-maxHealth)
 
 
 /mob/living/simple_animal/pet/dog/corgi/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(inventory_head)
 		var/image/head_icon
@@ -522,6 +562,8 @@
 
 //puppies cannot wear anything.
 /mob/living/simple_animal/pet/dog/corgi/puppy/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["remove_inv"] || href_list["add_inv"])
 		to_chat(usr, "<span class='warning'>You can't fit this on [src]!</span>")
 		return
@@ -541,6 +583,8 @@
 	maxbodytemp = T0C + 40
 
 /mob/living/simple_animal/pet/dog/corgi/puppy/void/Process_Spacemove(movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	return 1	//Void puppies can navigate space.
 
 
@@ -562,12 +606,16 @@
 
 //Lisa already has a cute bow!
 /mob/living/simple_animal/pet/dog/corgi/Lisa/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["remove_inv"] || href_list["add_inv"])
 		to_chat(usr, "<span class='danger'>[src] already has a cute bow!</span>")
 		return
 	..()
 
 /mob/living/simple_animal/pet/dog/corgi/Lisa/Life()
+	procstart = null
+	src.procstart = null
 	..()
 
 	make_babies()
@@ -581,6 +629,8 @@
 					sleep(1)
 
 /mob/living/simple_animal/pet/dog/pug/Life()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!stat && !resting && !buckled)
@@ -592,6 +642,8 @@
 					sleep(1)
 
 /mob/living/simple_animal/pet/dog/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(M.a_intent)
 		if("help")
@@ -600,6 +652,8 @@
 			wuv(-1,M)
 
 /mob/living/simple_animal/pet/dog/proc/wuv(change, mob/M)
+	procstart = null
+	src.procstart = null
 	if(change)
 		if(change > 0)
 			if(M && stat != DEAD) // Added check to see if this mob (the dog) is dead to fix issue 2454

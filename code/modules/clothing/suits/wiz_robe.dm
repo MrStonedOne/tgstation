@@ -155,10 +155,14 @@
 
 
 /obj/item/clothing/suit/wizrobe/paper/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	stickmen()
 
 
 /obj/item/clothing/suit/wizrobe/paper/verb/stickmen()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "Summon Stick Minions"
 	set src in usr
@@ -210,6 +214,8 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 
 /obj/item/clothing/head/helmet/space/hardsuit/shielded/wizard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/wizard_armour_charge
@@ -219,6 +225,8 @@
 	icon_state = "electricity2"
 
 /obj/item/wizard_armour_charge/afterattack(obj/item/clothing/suit/space/hardsuit/shielded/wizard/W, mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istype(W))
 		to_chat(user, "<span class='warning'>The rune can only be used on battlemage armour!</span>")

@@ -7,22 +7,30 @@
 
 
 /mob/living/carbon/human/virtual_reality/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	quit_action = new()
 	quit_action.Grant(src)
 
 
 /mob/living/carbon/human/virtual_reality/death()
+	procstart = null
+	src.procstart = null
 	revert_to_reality()
 	..()
 
 
 /mob/living/carbon/human/virtual_reality/Destroy()
+	procstart = null
+	src.procstart = null
 	revert_to_reality()
 	return ..()
 
 
 /mob/living/carbon/human/virtual_reality/ghost()
+	procstart = null
+	src.procstart = null
 	set category = "OOC"
 	set name = "Ghost"
 	set desc = "Relinquish your life and enter the land of the dead."
@@ -33,6 +41,8 @@
 
 
 /mob/living/carbon/human/virtual_reality/proc/revert_to_reality(refcleanup = TRUE, deathchecks = TRUE)
+	procstart = null
+	src.procstart = null
 	if(real_me && mind)
 		mind.transfer_to(real_me)
 		if(deathchecks && vr_sleeper && vr_sleeper.you_die_in_the_game_you_die_for_real)
@@ -47,6 +57,8 @@
 	name = "Quit Virtual Reality"
 
 /datum/action/quit_vr/Trigger()
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(owner, /mob/living/carbon/human/virtual_reality))
 			var/mob/living/carbon/human/virtual_reality/VR = owner

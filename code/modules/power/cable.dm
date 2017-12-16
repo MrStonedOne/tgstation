@@ -79,6 +79,8 @@ By design, d1 is the smallest direction and d2 is the highest
 
 // the power cable object
 /obj/structure/cable/Initialize(mapload, param_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// ensure d1 & d2 reflect the icon_state for entering and exiting cable
@@ -109,6 +111,8 @@ By design, d1 is the smallest direction and d2 is the highest
 	return ..()									// then go ahead and delete the cable
 
 /obj/structure/cable/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/turf/T = loc
 		stored.forceMove(T)
@@ -121,11 +125,15 @@ By design, d1 is the smallest direction and d2 is the highest
 //If underfloor, hide the cable
 /obj/structure/cable/hide(i)
 
+	procstart = null
+	src.procstart = null
 	if(level == 1 && isturf(loc))
 		invisibility = i ? INVISIBILITY_MAXIMUM : 0
 	update_icon()
 
 /obj/structure/cable/update_icon()
+	procstart = null
+	src.procstart = null
 	if(invisibility)
 		icon_state = "[d1]-[d2]-f"
 	else
@@ -134,6 +142,8 @@ By design, d1 is the smallest direction and d2 is the highest
 	add_atom_colour(cable_color, FIXED_COLOUR_PRIORITY)
 
 /obj/structure/cable/proc/handlecable(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(T.intact)
 		return
@@ -174,11 +184,15 @@ By design, d1 is the smallest direction and d2 is the highest
 //   - Multitool : get the power currently passing through the cable
 //
 /obj/structure/cable/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	handlecable(W, user, params)
 
 
 // shock the user with probability prb
 /obj/structure/cable/proc/shock(mob/user, prb, siemens_coeff = 1)
+	procstart = null
+	src.procstart = null
 	if(!prob(prb))
 		return 0
 	if (electrocute_mob(user, powernet, src, siemens_coeff))
@@ -188,11 +202,15 @@ By design, d1 is the smallest direction and d2 is the highest
 		return 0
 
 /obj/structure/cable/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
 
 /obj/structure/cable/proc/update_stored(length = 1, colorC = "red")
+	procstart = null
+	src.procstart = null
 	stored.amount = length
 	stored.item_color = colorC
 	stored.update_icon()
@@ -202,20 +220,28 @@ By design, d1 is the smallest direction and d2 is the highest
 ///////////////////////////////////////////
 
 /obj/structure/cable/proc/add_avail(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.newavail += amount
 
 /obj/structure/cable/proc/add_load(amount)
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		powernet.load += amount
 
 /obj/structure/cable/proc/surplus()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return powernet.avail-powernet.load
 	else
 		return 0
 
 /obj/structure/cable/proc/avail()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		return powernet.avail
 	else
@@ -229,6 +255,8 @@ By design, d1 is the smallest direction and d2 is the highest
 //for info : direction^3 is flipping horizontally, direction^12 is flipping vertically
 /obj/structure/cable/proc/mergeDiagonalsNetworks(direction)
 
+	procstart = null
+	src.procstart = null
 	//search for and merge diagonally matching cables from the first direction component (north/south)
 	var/turf/T  = get_step(src, direction&3)//go north/south
 
@@ -273,6 +301,8 @@ By design, d1 is the smallest direction and d2 is the highest
 // merge with the powernets of power objects in the given direction
 /obj/structure/cable/proc/mergeConnectedNetworks(direction)
 
+	procstart = null
+	src.procstart = null
 	var/fdir = (!direction)? 0 : turn(direction, 180) //flip the direction, to match with the source position on its turf
 
 	if(!(d1 == direction || d2 == direction)) //if the cable is not pointed in this direction, do nothing
@@ -300,6 +330,8 @@ By design, d1 is the smallest direction and d2 is the highest
 
 // merge with the powernets of power objects in the source turf
 /obj/structure/cable/proc/mergeConnectedNetworksOnTurf()
+	procstart = null
+	src.procstart = null
 	var/list/to_connect = list()
 
 	if(!powernet) //if we somehow have no powernet, make one (should not happen for cables)
@@ -348,6 +380,8 @@ By design, d1 is the smallest direction and d2 is the highest
 
 //if powernetless_only = 1, will only get connections without powernet
 /obj/structure/cable/proc/get_connections(powernetless_only = 0)
+	procstart = null
+	src.procstart = null
 	. = list()	// this will be a list of all connected power objects
 	var/turf/T
 
@@ -386,6 +420,8 @@ By design, d1 is the smallest direction and d2 is the highest
 //should be called after placing a cable which extends another cable, creating a "smooth" cable that no longer terminates in the centre of a turf.
 //needed as this can, unlike other placements, disconnect cables
 /obj/structure/cable/proc/denode()
+	procstart = null
+	src.procstart = null
 	var/turf/T1 = loc
 	if(!T1)
 		return
@@ -399,12 +435,16 @@ By design, d1 is the smallest direction and d2 is the highest
 			qdel(PN)
 
 /obj/structure/cable/proc/auto_propogate_cut_cable(obj/O)
+	procstart = null
+	src.procstart = null
 	if(O && !QDELETED(O))
 		var/datum/powernet/newPN = new()// creates a new powernet...
 		propagate_network(O, newPN)//... and propagates it to the other side of the cable
 
 // cut the cable's powernet at this cable and updates the powergrid
 /obj/structure/cable/proc/cut_cable_from_powernet(remove=TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/T1 = loc
 	var/list/P_list
 	if(!T1)
@@ -480,11 +520,15 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe("cable restrai
 	cost = 1
 
 /obj/item/stack/cable_coil/cyborg/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/cable_color = input(user,"Pick a cable color.","Cable Color") in list("red","yellow","green","blue","pink","orange","cyan","white")
 	item_color = cable_color
 	update_icon()
 
 /obj/item/stack/cable_coil/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/chair/stool) in get_turf(user))
 		user.visible_message("<span class='suicide'>[user] is making a noose with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	else
@@ -492,6 +536,8 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe("cable restrai
 	return(OXYLOSS)
 
 /obj/item/stack/cable_coil/Initialize(mapload, new_amount = null, param_color = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_amount) // MAXCOIL by default
 		amount = new_amount
@@ -513,6 +559,8 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe("cable restrai
 
 //you can use wires to heal robotics
 /obj/item/stack/cable_coil/attack(mob/living/carbon/human/H, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(H))
 		return ..()
 
@@ -530,12 +578,16 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe("cable restrai
 
 
 /obj/item/stack/cable_coil/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(item_state)][amount < 3 ? amount : ""]"
 	name = "cable [amount < 3 ? "piece" : "coil"]"
 	color = null
 	add_atom_colour(item_color, FIXED_COLOUR_PRIORITY)
 
 /obj/item/stack/cable_coil/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/cable_coil/new_cable = ..()
 	if(istype(new_cable))
 		new_cable.item_color = item_color
@@ -543,6 +595,8 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe("cable restrai
 
 //add cables to the stack
 /obj/item/stack/cable_coil/proc/give(extra)
+	procstart = null
+	src.procstart = null
 	if(amount + extra > max_amount)
 		amount = max_amount
 	else
@@ -556,11 +610,15 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe("cable restrai
 //////////////////////////////////////////////
 
 /obj/item/stack/cable_coil/proc/get_new_cable(location)
+	procstart = null
+	src.procstart = null
 	var/path = /obj/structure/cable
 	return new path(location, item_color)
 
 // called when cable_coil is clicked on a turf
 /obj/item/stack/cable_coil/proc/place_turf(turf/T, mob/user, dirnew)
+	procstart = null
+	src.procstart = null
 	if(!isturf(user.loc))
 		return
 
@@ -620,6 +678,8 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe("cable restrai
 // called when cable_coil is click on an installed obj/cable
 // or click on a turf that already contains a "node" cable
 /obj/item/stack/cable_coil/proc/cable_join(obj/structure/cable/C, mob/user, var/showerror = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/U = user.loc
 	if(!isturf(U))
 		return
@@ -745,6 +805,8 @@ GLOBAL_LIST_INIT(cable_coil_recipes, list (new/datum/stack_recipe("cable restrai
 /////////////////////////////
 
 /obj/item/stack/cable_coil/cut/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	amount = rand(1,2)
 	pixel_x = rand(-2,2)

@@ -4,9 +4,13 @@
 	icon_state = "x"
 
 /obj/effect/manifest/New()
+	procstart = null
+	src.procstart = null
 	src.invisibility = INVISIBILITY_ABSTRACT
 
 /obj/effect/manifest/proc/manifest()
+	procstart = null
+	src.procstart = null
 	var/dat = "<B>Crew Manifest</B>:<BR>"
 	for(var/mob/living/carbon/human/M in GLOB.carbon_list)
 		dat += text("    <B>[]</B> -  []<BR>", M.name, M.get_assignment())

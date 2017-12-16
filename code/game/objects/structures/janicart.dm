@@ -17,11 +17,15 @@
 
 
 /obj/structure/janitorialcart/New()
+	procstart = null
+	src.procstart = null
 	create_reagents(100)
 	..()
 
 
 /obj/structure/janitorialcart/proc/wet_mop(obj/item/mop, mob/user)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume < 1)
 		to_chat(user, "<span class='warning'>[src] is out of water!</span>")
 		return 0
@@ -32,6 +36,8 @@
 		return 1
 
 /obj/structure/janitorialcart/proc/put_in_cart(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.transferItemToLoc(I, src))
 		return
 	updateUsrDialog()
@@ -40,6 +46,8 @@
 
 
 /obj/structure/janitorialcart/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/fail_msg = "<span class='warning'>There is already one of those in [src]!</span>"
 
 	if(istype(I, /obj/item/mop))
@@ -90,6 +98,8 @@
 		return ..()
 
 /obj/structure/janitorialcart/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat
 	if(mybag)
@@ -108,6 +118,8 @@
 
 
 /obj/structure/janitorialcart/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!in_range(src, usr))
 		return
 	if(!isliving(usr))
@@ -149,6 +161,8 @@
 
 
 /obj/structure/janitorialcart/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(mybag)
 		add_overlay("cart_garbage")

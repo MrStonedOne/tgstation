@@ -26,6 +26,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc sends the asset to the client, but only if it needs it.
 //This proc blocks(sleeps) unless verify is set to false
 /proc/send_asset(var/client/client, var/asset_name, var/verify = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(client))
 		if(ismob(client))
 			var/mob/M = client
@@ -73,6 +75,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 //This proc blocks(sleeps) unless verify is set to false
 /proc/send_asset_list(var/client/client, var/list/asset_list, var/verify = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(client))
 		if(ismob(client))
 			var/mob/M = client
@@ -125,6 +129,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc will download the files without clogging up the browse() queue, used for passively sending files on connection start.
 //The proc calls procs that sleep for long times.
 /proc/getFilesSlow(var/client/client, var/list/files, var/register_asset = TRUE)
+	procstart = null
+	src.procstart = null
 	for(var/file in files)
 		if (!client)
 			break
@@ -136,12 +142,16 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc "registers" an asset, it adds it to the cache for further use, you cannot touch it from this point on or you'll fuck things up.
 //if it's an icon or something be careful, you'll have to copy it before further use.
 /proc/register_asset(var/asset_name, var/asset)
+	procstart = null
+	src.procstart = null
 	SSassets.cache[asset_name] = asset
 
 //Generated names do not include file extention.
 //Used mainly for code that deals with assets in a generic way
 //The same asset will always lead to the same asset name
 /proc/generate_asset_name(var/file)
+	procstart = null
+	src.procstart = null
 	return "asset.[md5(fcopy_rsc(file))]"
 
 
@@ -152,17 +162,25 @@ GLOBAL_LIST_EMPTY(asset_datums)
 
 //get an assetdatum or make a new one
 /proc/get_asset_datum(var/type)
+	procstart = null
+	src.procstart = null
 	if (!(type in GLOB.asset_datums))
 		return new type()
 	return GLOB.asset_datums[type]
 
 /datum/asset/New()
+	procstart = null
+	src.procstart = null
 	GLOB.asset_datums[type] = src
 
 /datum/asset/proc/register()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/asset/proc/send(client)
+	procstart = null
+	src.procstart = null
 	return
 
 //If you don't need anything complicated.
@@ -171,9 +189,13 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/verify = FALSE
 
 /datum/asset/simple/register()
+	procstart = null
+	src.procstart = null
 	for(var/asset_name in assets)
 		register_asset(asset_name, assets[asset_name])
 /datum/asset/simple/send(client)
+	procstart = null
+	src.procstart = null
 	send_asset_list(client,assets,verify)
 
 
@@ -190,6 +212,8 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	verify = FALSE
 
 /datum/asset/simple/icon_states/register(_icon = icon)
+	procstart = null
+	src.procstart = null
 	for(var/icon_state_name in icon_states(_icon))
 		for(var/direction in directions)
 			var/asset = icon(_icon, icon_state_name, direction, frame, movement_states)
@@ -207,6 +231,8 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	var/list/icons
 
 /datum/asset/simple/icon_states/multiple_icons/register()
+	procstart = null
+	src.procstart = null
 	for(var/i in icons)
 		..(i)
 
@@ -347,12 +373,16 @@ GLOBAL_LIST_EMPTY(asset_datums)
 
 //Registers HTML Interface assets.
 /datum/asset/HTML_interface/register()
+	procstart = null
+	src.procstart = null
 	for(var/path in typesof(/datum/html_interface))
 		var/datum/html_interface/hi = new path()
 		hi.registerResources()
 
 //this exists purely to avoid meta by pre-loading all language icons.
 /datum/asset/language/register()
+	procstart = null
+	src.procstart = null
 	for(var/path in typesof(/datum/language))
 		set waitfor = FALSE
 		var/datum/language/L = new path ()
@@ -367,10 +397,14 @@ GLOBAL_LIST_EMPTY(asset_datums)
 	prefix = "pipe"
 
 /datum/asset/simple/icon_states/multiple_icons/pipes/New()
+	procstart = null
+	src.procstart = null
 	directions = GLOB.alldirs
 	..()
 
 /datum/asset/simple/icon_states/multiple_icons/pipes/register()
+	procstart = null
+	src.procstart = null
 	..()
 	var/meter = icon('icons/obj/atmospherics/pipes/simple.dmi', "meterX", SOUTH, frame, movement_states)
 	if(meter)

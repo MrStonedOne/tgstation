@@ -56,9 +56,13 @@ Contents:
 
 
 /obj/item/clothing/suit/space/space_ninja/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/clothing/suit/space/space_ninja/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	//Spark Init
@@ -77,6 +81,8 @@ Contents:
 
 //Simply deletes all the attachments and self, killing all related procs.
 /obj/item/clothing/suit/space/space_ninja/proc/terminate()
+	procstart = null
+	src.procstart = null
 	qdel(n_hood)
 	qdel(n_gloves)
 	qdel(n_shoes)
@@ -85,6 +91,8 @@ Contents:
 
 //Randomizes suit parameters.
 /obj/item/clothing/suit/space/space_ninja/proc/randomize_param()
+	procstart = null
+	src.procstart = null
 	s_cost = rand(1,20)
 	s_acost = rand(20,100)
 	s_delay = rand(10,100)
@@ -94,6 +102,8 @@ Contents:
 
 //This proc prevents the suit from being taken off.
 /obj/item/clothing/suit/space/space_ninja/proc/lock_suit(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!istype(H))
 		return FALSE
 	if(!is_ninja(H))
@@ -122,6 +132,8 @@ Contents:
 	return TRUE
 
 /obj/item/clothing/suit/space/space_ninja/proc/lockIcons(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	icon_state = H.gender==FEMALE ? "s-ninjanf" : "s-ninjan"
 	H.gloves.icon_state = "s-ninjan"
 	H.gloves.item_state = "s-ninjan"
@@ -129,6 +141,8 @@ Contents:
 
 //This proc allows the suit to be taken off.
 /obj/item/clothing/suit/space/space_ninja/proc/unlock_suit()
+	procstart = null
+	src.procstart = null
 	affecting = null
 	flags_1 &= ~NODROP_1
 	slowdown = 1
@@ -147,6 +161,8 @@ Contents:
 
 
 /obj/item/clothing/suit/space/space_ninja/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(s_initialized)
 		if(user == affecting)
@@ -156,6 +172,8 @@ Contents:
 			to_chat(user, "There are <B>[a_boost]</B> adrenaline booster\s remaining.")
 
 /obj/item/clothing/suit/space/space_ninja/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/initialize_ninja_suit))
 		toggle_on_off()
 		return TRUE

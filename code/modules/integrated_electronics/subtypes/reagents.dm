@@ -4,6 +4,8 @@
 	var/volume = 0
 
 /obj/item/integrated_circuit/reagent/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(volume)
 		create_reagents(volume)
@@ -37,6 +39,8 @@
 	var/notified = FALSE
 
 /obj/item/integrated_circuit/reagent/smoke/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	//reset warning only if we have reagents now
 	if(changetype == ADD_REAGENT)
 		notified = FALSE
@@ -44,6 +48,8 @@
 	push_data()
 
 /obj/item/integrated_circuit/reagent/smoke/do_work()
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(src)
 	var/datum/effect_system/smoke_spread/chem/S = new
 	S.attach(location)
@@ -94,16 +100,22 @@
 	var/busy = FALSE
 
 /obj/item/integrated_circuit/reagent/injector/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 2, WEAKREF(src))
 	push_data()
 	..()
 
 
 /obj/item/integrated_circuit/reagent/injector/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 1, reagents.total_volume)
 	push_data()
 
 /obj/item/integrated_circuit/reagent/injector/on_data_written()
+	procstart = null
+	src.procstart = null
 	var/new_amount = get_pin_data(IC_INPUT, 2)
 	if(new_amount < 0)
 		new_amount = -new_amount
@@ -118,6 +130,8 @@
 // This is a dirty hack to make injecting reagents into them work.
 // TODO: refactor that.
 /obj/item/integrated_circuit/reagent/proc/inject_tray(obj/machinery/hydroponics/tray, atom/movable/source, amount)
+	procstart = null
+	src.procstart = null
 	var/datum/reagents/temp_reagents = new /datum/reagents()
 	temp_reagents.my_atom = tray
 
@@ -128,6 +142,8 @@
 	qdel(temp_reagents)
 
 /obj/item/integrated_circuit/reagent/injector/do_work()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE // Don't sleep in a proc that is called by a processor without this set, otherwise it'll delay the entire thing
 	var/atom/movable/AM = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
 	var/atom/movable/acting_object = get_object()
@@ -228,6 +244,8 @@
 	power_draw_per_use = 10
 
 /obj/item/integrated_circuit/reagent/pump/on_data_written()
+	procstart = null
+	src.procstart = null
 	var/new_amount = get_pin_data(IC_INPUT, 3)
 	if(new_amount < 0)
 		new_amount = -new_amount
@@ -239,6 +257,8 @@
 		transfer_amount = new_amount
 
 /obj/item/integrated_circuit/reagent/pump/do_work()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/source = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
 	var/atom/movable/target = get_pin_data_as_type(IC_INPUT, 2, /atom/movable)
 
@@ -290,11 +310,15 @@
 
 
 /obj/item/integrated_circuit/reagent/storage/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 2, WEAKREF(src))
 	push_data()
 	..()
 
 /obj/item/integrated_circuit/reagent/storage/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 1, reagents.total_volume)
 	push_data()
 
@@ -308,6 +332,8 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/reagent/storage/cryo/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.set_reacting(FALSE)
 
@@ -340,6 +366,8 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/reagent/storage/scan/do_work()
+	procstart = null
+	src.procstart = null
 	var/cont[0]
 	for(var/datum/reagent/RE in reagents.reagent_list)
 		cont += RE.id
@@ -377,6 +405,8 @@
 	power_draw_per_use = 10
 
 /obj/item/integrated_circuit/reagent/filter/on_data_written()
+	procstart = null
+	src.procstart = null
 	var/new_amount = get_pin_data(IC_INPUT, 3)
 	if(new_amount < 0)
 		new_amount = -new_amount
@@ -388,6 +418,8 @@
 		transfer_amount = new_amount
 
 /obj/item/integrated_circuit/reagent/filter/do_work()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/source = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
 	var/atom/movable/target = get_pin_data_as_type(IC_INPUT, 2, /atom/movable)
 	var/list/demand = get_pin_data(IC_INPUT, 4)

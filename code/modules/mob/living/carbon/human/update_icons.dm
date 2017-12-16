@@ -50,19 +50,27 @@ There are several things that need to be remembered:
 
 //HAIR OVERLAY
 /mob/living/carbon/human/update_hair()
+	procstart = null
+	src.procstart = null
 	dna.species.handle_hair(src)
 
 //used when putting/removing clothes that hide certain mutant body parts to just update those and not update the whole body.
 /mob/living/carbon/human/proc/update_mutant_bodyparts()
+	procstart = null
+	src.procstart = null
 	dna.species.handle_mutant_bodyparts(src)
 
 
 /mob/living/carbon/human/update_body()
+	procstart = null
+	src.procstart = null
 	remove_overlay(BODY_LAYER)
 	dna.species.handle_body(src)
 	..()
 
 /mob/living/carbon/human/update_fire()
+	procstart = null
+	src.procstart = null
 	..((fire_stacks > 3) ? "Standing" : "Generic_mob_burning")
 
 
@@ -70,6 +78,8 @@ There are several things that need to be remembered:
 //For legacy support.
 /mob/living/carbon/human/regenerate_icons()
 
+	procstart = null
+	src.procstart = null
 	if(!..())
 		icon_render_key = null //invalidate bodyparts cache
 		update_body()
@@ -98,6 +108,8 @@ There are several things that need to be remembered:
 //vvvvvv UPDATE_INV PROCS vvvvvv
 
 /mob/living/carbon/human/update_inv_w_uniform()
+	procstart = null
+	src.procstart = null
 	remove_overlay(UNIFORM_LAYER)
 
 	if(client && hud_used)
@@ -145,6 +157,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_wear_id()
+	procstart = null
+	src.procstart = null
 	remove_overlay(ID_LAYER)
 
 	if(client && hud_used)
@@ -170,6 +184,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_gloves()
+	procstart = null
+	src.procstart = null
 	remove_overlay(GLOVES_LAYER)
 
 	if(client && hud_used && hud_used.inv_slots[slot_gloves])
@@ -206,6 +222,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_glasses()
+	procstart = null
+	src.procstart = null
 	remove_overlay(GLASSES_LAYER)
 
 	if(!get_bodypart("head")) //decapitated
@@ -234,6 +252,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_ears()
+	procstart = null
+	src.procstart = null
 	remove_overlay(EARS_LAYER)
 
 	if(!get_bodypart("head")) //decapitated
@@ -260,6 +280,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_shoes()
+	procstart = null
+	src.procstart = null
 	remove_overlay(SHOES_LAYER)
 
 	if(get_num_legs() <2)
@@ -286,6 +308,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_s_store()
+	procstart = null
+	src.procstart = null
 	remove_overlay(SUIT_STORE_LAYER)
 
 	if(client && hud_used)
@@ -310,6 +334,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_head()
+	procstart = null
+	src.procstart = null
 	..()
 	update_mutant_bodyparts()
 	var/mutable_appearance/head_overlay = overlays_standing[HEAD_LAYER]
@@ -322,6 +348,8 @@ There are several things that need to be remembered:
 	apply_overlay(HEAD_LAYER)
 
 /mob/living/carbon/human/update_inv_belt()
+	procstart = null
+	src.procstart = null
 	remove_overlay(BELT_LAYER)
 
 	if(client && hud_used)
@@ -350,6 +378,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_wear_suit()
+	procstart = null
+	src.procstart = null
 	remove_overlay(SUIT_LAYER)
 
 	if(client && hud_used)
@@ -376,6 +406,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_pockets()
+	procstart = null
+	src.procstart = null
 	if(client && hud_used)
 		var/obj/screen/inventory/inv
 
@@ -399,6 +431,8 @@ There are several things that need to be remembered:
 
 
 /mob/living/carbon/human/update_inv_wear_mask()
+	procstart = null
+	src.procstart = null
 	..()
 	var/mutable_appearance/mask_overlay = overlays_standing[FACEMASK_LAYER]
 	if(mask_overlay)
@@ -411,6 +445,8 @@ There are several things that need to be remembered:
 	update_mutant_bodyparts() //e.g. upgate needed because mask now hides lizard snout
 
 /mob/living/carbon/human/update_inv_back()
+	procstart = null
+	src.procstart = null
 	..()
 	var/mutable_appearance/back_overlay = overlays_standing[BACK_LAYER]
 	if(back_overlay)
@@ -422,6 +458,8 @@ There are several things that need to be remembered:
 		apply_overlay(BACK_LAYER)
 
 /mob/living/carbon/human/update_inv_legcuffed()
+	procstart = null
+	src.procstart = null
 	remove_overlay(LEGCUFF_LAYER)
 	clear_alert("legcuffed")
 	if(legcuffed)
@@ -430,6 +468,8 @@ There are several things that need to be remembered:
 		throw_alert("legcuffed", /obj/screen/alert/restrained/legcuffed, new_master = src.legcuffed)
 
 /proc/wear_female_version(t_color, icon, layer, type)
+	procstart = null
+	src.procstart = null
 	var/index = t_color
 	var/icon/female_clothing_icon = GLOB.female_clothing_icons[index]
 	if(!female_clothing_icon) 	//Create standing/laying icons if they don't exist
@@ -437,6 +477,8 @@ There are several things that need to be remembered:
 	return mutable_appearance(GLOB.female_clothing_icons[t_color], layer = -layer)
 
 /mob/living/carbon/human/proc/get_overlays_copy(list/unwantedLayers)
+	procstart = null
+	src.procstart = null
 	var/list/out = new
 	for(var/i in 1 to TOTAL_LAYERS)
 		if(overlays_standing[i])
@@ -450,6 +492,8 @@ There are several things that need to be remembered:
 
 //update whether our head item appears on our hud.
 /mob/living/carbon/human/update_hud_head(obj/item/I)
+	procstart = null
+	src.procstart = null
 	I.screen_loc = ui_head
 	if(client && hud_used && hud_used.hud_shown)
 		if(hud_used.inventory_shown)
@@ -458,6 +502,8 @@ There are several things that need to be remembered:
 
 //update whether our mask item appears on our hud.
 /mob/living/carbon/human/update_hud_wear_mask(obj/item/I)
+	procstart = null
+	src.procstart = null
 	I.screen_loc = ui_mask
 	if(client && hud_used && hud_used.hud_shown)
 		if(hud_used.inventory_shown)
@@ -466,6 +512,8 @@ There are several things that need to be remembered:
 
 //update whether our neck item appears on our hud.
 /mob/living/carbon/human/update_hud_neck(obj/item/I)
+	procstart = null
+	src.procstart = null
 	I.screen_loc = ui_neck
 	if(client && hud_used && hud_used.hud_shown)
 		if(hud_used.inventory_shown)
@@ -474,6 +522,8 @@ There are several things that need to be remembered:
 
 //update whether our back item appears on our hud.
 /mob/living/carbon/human/update_hud_back(obj/item/I)
+	procstart = null
+	src.procstart = null
 	I.screen_loc = ui_back
 	if(client && hud_used && hud_used.hud_shown)
 		client.screen += I
@@ -509,6 +559,8 @@ generate/load female uniform sprites matching all previously decided variables
 */
 /obj/item/proc/build_worn_icon(var/state = "", var/default_layer = 0, var/default_icon_file = null, var/isinhands = FALSE, var/femaleuniform = NO_FEMALE_UNIFORM)
 
+	procstart = null
+	src.procstart = null
 	//Find a valid icon file from variables+arguments
 	var/file2use
 	if(!isinhands && alternate_worn_icon)
@@ -552,6 +604,8 @@ generate/load female uniform sprites matching all previously decided variables
 
 
 /obj/item/proc/get_held_offsets()
+	procstart = null
+	src.procstart = null
 	var/list/L
 	if(ismob(loc))
 		var/mob/M = loc
@@ -561,6 +615,8 @@ generate/load female uniform sprites matching all previously decided variables
 
 //Can't think of a better way to do this, sadly
 /mob/proc/get_item_offsets_for_index(i)
+	procstart = null
+	src.procstart = null
 	switch(i)
 		if(3) //odd = left hands
 			return list("x" = 0, "y" = 16)
@@ -573,6 +629,8 @@ generate/load female uniform sprites matching all previously decided variables
 
 //produces a key based on the human's limbs
 /mob/living/carbon/human/generate_icon_render_key()
+	procstart = null
+	src.procstart = null
 	. = "[dna.species.limbs_id]"
 
 	if(dna.check_mutation(HULK))
@@ -604,12 +662,16 @@ generate/load female uniform sprites matching all previously decided variables
 		. += "-husk"
 
 /mob/living/carbon/human/load_limb_from_cache()
+	procstart = null
+	src.procstart = null
 	..()
 	update_hair()
 
 
 
 /mob/living/carbon/human/proc/update_observer_view(obj/item/I, inventory)
+	procstart = null
+	src.procstart = null
 	if(observers && observers.len)
 		for(var/M in observers)
 			var/mob/dead/observe = M

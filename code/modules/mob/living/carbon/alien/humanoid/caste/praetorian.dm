@@ -9,6 +9,8 @@
 
 /mob/living/carbon/alien/humanoid/royal/praetorian/Initialize()
 
+	procstart = null
+	src.procstart = null
 	real_name = name
 
 	AddSpell(new /obj/effect/proc_holder/spell/aoe_turf/repulse/xeno(src))
@@ -16,6 +18,8 @@
 	. = ..()
 
 /mob/living/carbon/alien/humanoid/royal/praetorian/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	internal_organs += new /obj/item/organ/alien/plasmavessel/large
 	internal_organs += new /obj/item/organ/alien/resinspinner
 	internal_organs += new /obj/item/organ/alien/acid
@@ -24,6 +28,8 @@
 
 
 /mob/living/carbon/alien/humanoid/royal/praetorian/movement_delay()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += 1
 
@@ -35,6 +41,8 @@
 	action_icon_state = "alien_evolve_praetorian"
 
 /obj/effect/proc_holder/alien/royal/praetorian/evolve/fire(mob/living/carbon/alien/humanoid/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/alien/hivenode/node = user.getorgan(/obj/item/organ/alien/hivenode)
 	if(!node) //Just in case this particular Praetorian gets violated and kept by the RD as a replacement for Lamarr.
 		to_chat(user, "<span class='danger'>Without the hivemind, you would be unfit to rule as queen!</span>")

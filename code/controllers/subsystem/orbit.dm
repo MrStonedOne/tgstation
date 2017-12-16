@@ -8,10 +8,14 @@ SUBSYSTEM_DEF(orbit)
 	var/list/processing = list()
 
 /datum/controller/subsystem/orbit/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("P:[processing.len]")
 
 
 /datum/controller/subsystem/orbit/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = processing.Copy()
 

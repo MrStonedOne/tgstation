@@ -8,6 +8,8 @@
 
 //Revive from revival stasis
 /obj/effect/proc_holder/changeling/revive/sting_action(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	user.status_flags &= ~(FAKEDEATH)
 	user.tod = null
 	user.revive(full_heal = 1)
@@ -30,6 +32,8 @@
 	return TRUE
 
 /obj/effect/proc_holder/changeling/revive/can_be_used_by(mob/user)
+	procstart = null
+	src.procstart = null
 	if((user.stat != DEAD) && !(user.status_flags & FAKEDEATH))
 		var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 		changeling.purchasedpowers -= src

@@ -16,6 +16,8 @@
 
 /obj/machinery/telecomms/allinone/receive_signal(datum/signal/signal)
 
+	procstart = null
+	src.procstart = null
 	if(!on) // has to be on to receive messages
 		return
 
@@ -56,5 +58,7 @@
 
 /obj/machinery/telecomms/allinone/attackby(obj/item/P, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/device/multitool))
 		attack_hand(user)

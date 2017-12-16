@@ -16,11 +16,15 @@
 	var/wave_name = "normal"
 
 /datum/round_event/meteor_wave/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!wave_type)
 		determine_wave_type()
 
 /datum/round_event/meteor_wave/proc/determine_wave_type()
+	procstart = null
+	src.procstart = null
 	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
 		wave_name = "halloween"
 	if(!wave_name)
@@ -46,9 +50,13 @@
 			kill()
 
 /datum/round_event/meteor_wave/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Meteors have been detected on collision course with the station.", "Meteor Alert", 'sound/ai/meteors.ogg')
 
 /datum/round_event/meteor_wave/tick()
+	procstart = null
+	src.procstart = null
 	if(IsMultiple(activeFor, 3))
 		spawn_meteors(5, wave_type) //meteor list types defined in gamemode/meteor/meteors.dm
 

@@ -31,6 +31,8 @@
 	var/struck_target_leap = FALSE
 
 /mob/living/simple_animal/hostile/jungle/mook/CanPass(atom/movable/O)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /mob/living/simple_animal/hostile/jungle/mook))
 		var/mob/living/simple_animal/hostile/jungle/mook/M = O
 		if(M.attack_state == MOOK_ATTACK_ACTIVE && M.throwing)
@@ -38,10 +40,14 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/mook/death()
+	procstart = null
+	src.procstart = null
 	desc = "A deceased primitive. Upon closer inspection, it was suffering from severe cellular degeneration and its garments are machine made..."//Can you guess the twist
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/mook/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		if(ranged_cooldown <= world.time && attack_state == MOOK_ATTACK_NEUTRAL)
 			var/mob/living/L = target
@@ -53,16 +59,22 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/mook/Goto()
+	procstart = null
+	src.procstart = null
 	if(attack_state != MOOK_ATTACK_NEUTRAL)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/mook/Move()
+	procstart = null
+	src.procstart = null
 	if(attack_state == MOOK_ATTACK_WARMUP || attack_state == MOOK_ATTACK_RECOVERY)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/mook/proc/WarmupAttack(forced_slash_combo = FALSE)
+	procstart = null
+	src.procstart = null
 	if(attack_state == MOOK_ATTACK_NEUTRAL && target)
 		attack_state = MOOK_ATTACK_WARMUP
 		walk(src,0)
@@ -76,6 +88,8 @@
 	ResetNeutral()
 
 /mob/living/simple_animal/hostile/jungle/mook/proc/SlashCombo()
+	procstart = null
+	src.procstart = null
 	if(attack_state == MOOK_ATTACK_WARMUP && !stat)
 		attack_state = MOOK_ATTACK_ACTIVE
 		update_icons()
@@ -85,6 +99,8 @@
 		addtimer(CALLBACK(src, .proc/AttackRecovery), 9)
 
 /mob/living/simple_animal/hostile/jungle/mook/proc/SlashAttack()
+	procstart = null
+	src.procstart = null
 	if(target && !stat && attack_state == MOOK_ATTACK_ACTIVE)
 		melee_damage_lower = 15
 		melee_damage_upper = 15
@@ -100,6 +116,8 @@
 		playsound(src, 'sound/weapons/slashmiss.ogg', 50, 1)
 
 /mob/living/simple_animal/hostile/jungle/mook/proc/LeapAttack()
+	procstart = null
+	src.procstart = null
 	if(target && !stat && attack_state == MOOK_ATTACK_WARMUP)
 		attack_state = MOOK_ATTACK_ACTIVE
 		density = FALSE
@@ -116,6 +134,8 @@
 	ResetNeutral()
 
 /mob/living/simple_animal/hostile/jungle/mook/proc/AttackRecovery()
+	procstart = null
+	src.procstart = null
 	if(attack_state == MOOK_ATTACK_ACTIVE && !stat)
 		attack_state = MOOK_ATTACK_RECOVERY
 		density = TRUE
@@ -136,6 +156,8 @@
 		addtimer(CALLBACK(src, .proc/ResetNeutral), ATTACK_INTERMISSION_TIME)
 
 /mob/living/simple_animal/hostile/jungle/mook/proc/ResetNeutral()
+	procstart = null
+	src.procstart = null
 	if(attack_state == MOOK_ATTACK_RECOVERY)
 		attack_state = MOOK_ATTACK_NEUTRAL
 		ranged_cooldown = world.time + ranged_cooldown_time
@@ -145,6 +167,8 @@
 			Goto(target, move_to_delay, minimum_distance)
 
 /mob/living/simple_animal/hostile/jungle/mook/throw_impact(atom/hit_atom, throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(hit_atom) && attack_state == MOOK_ATTACK_ACTIVE)
 		var/mob/living/L = hit_atom
@@ -177,11 +201,15 @@
 					continue
 
 /mob/living/simple_animal/hostile/jungle/mook/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(attack_state)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/mook/OpenFire()
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/L = target
 		if(L.incapacitated())
@@ -189,6 +217,8 @@
 	WarmupAttack()
 
 /mob/living/simple_animal/hostile/jungle/mook/update_icons()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!stat)
 		switch(attack_state)

@@ -7,6 +7,8 @@
 	text_gain_indication = "<span class='danger'>You feel nervous.</span>"
 
 /datum/mutation/human/nervousness/on_life(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		owner.stuttering = max(10, owner.stuttering)
 
@@ -18,6 +20,8 @@
 	text_lose_indication = "<span class='notice'>The off sensation passes.</span>"
 
 /datum/mutation/human/wacky/get_spans()
+	procstart = null
+	src.procstart = null
 	return list(SPAN_SANS)
 
 
@@ -28,11 +32,15 @@
 	text_lose_indication = "<span class='danger'>You feel able to speak freely again.</span>"
 
 /datum/mutation/human/mute/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.disabilities |= MUTE
 
 /datum/mutation/human/mute/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.disabilities &= ~MUTE
@@ -46,6 +54,8 @@
 	text_lose_indication = "<span class='notice'>Everything is terrible again. :(</span>"
 
 /datum/mutation/human/smile/say_mod(message)
+	procstart = null
+	src.procstart = null
 	if(message)
 		message = " [message] "
 		//Time for a friendly game of SS13
@@ -103,6 +113,8 @@
 	text_lose_indication = "<span class='danger'>Your mind feels more clear.</span>"
 
 /datum/mutation/human/unintelligible/say_mod(message)
+	procstart = null
+	src.procstart = null
 	if(message)
 		var/prefix=copytext(message,1,2)
 		if(prefix == ";")
@@ -136,6 +148,8 @@
 	text_lose_indication = "<span class='notice'>The feeling of Swedishness passes.</span>"
 
 /datum/mutation/human/swedish/say_mod(message)
+	procstart = null
+	src.procstart = null
 	if(message)
 		message = replacetext(message,"w","v")
 		message = replacetext(message,"j","y")
@@ -155,6 +169,8 @@
 	text_lose_indication = "<span class='notice'>You no longer feel like being rude and sassy.</span>"
 
 /datum/mutation/human/chav/say_mod(message)
+	procstart = null
+	src.procstart = null
 	if(message)
 		message = " [message] "
 		message = replacetext(message," looking at  ","  gawpin' at ")
@@ -189,6 +205,8 @@
 	text_lose_indication = "<span class='notice'>You feel a little less conversation would be great.</span>"
 
 /datum/mutation/human/elvis/on_life(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	switch(pick(1,2))
 		if(1)
 			if(prob(15))
@@ -200,6 +218,8 @@
 				owner.visible_message("<b>[owner]</b> [pick("jiggles their hips", "rotates their hips", "gyrates their hips", "taps their foot", "dances to an imaginary song", "jiggles their legs", "snaps their fingers")]!")
 
 /datum/mutation/human/elvis/say_mod(message)
+	procstart = null
+	src.procstart = null
 	if(message)
 		message = " [message] "
 		message = replacetext(message," i'm not "," I aint ")
@@ -222,11 +242,15 @@
 	text_lose_indication = "<span class='notice'>You feel like you have a better sense of time.</span>"
 
 /datum/mutation/human/stoner/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	..()
 	owner.grant_language(/datum/language/beachbum)
 	owner.remove_language(/datum/language/common)
 
 /datum/mutation/human/stoner/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	..()
 	owner.grant_language(/datum/language/common)
 	owner.remove_language(/datum/language/beachbum)

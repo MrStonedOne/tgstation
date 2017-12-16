@@ -1,5 +1,7 @@
 
 /obj/item/clothing/suit/space/space_ninja/proc/ninja_sword_recall()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = affecting
 
 	var/cost = 0

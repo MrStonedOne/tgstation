@@ -1,5 +1,7 @@
 
 /proc/create_portal_pair(turf/source, turf/destination, _creator = null, _lifespan = 300, accuracy = 0, newtype = /obj/effect/portal)
+	procstart = null
+	src.procstart = null
 	if(!istype(source) || !istype(destination))
 		return
 	var/turf/actual_destination = get_teleport_turf(destination, accuracy)
@@ -34,16 +36,22 @@
 	mech_sized = TRUE
 
 /obj/effect/portal/Move(newloc)
+	procstart = null
+	src.procstart = null
 	for(var/T in newloc)
 		if(istype(T, /obj/effect/portal))
 			return FALSE
 	return ..()
 
 /obj/effect/portal/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(user && Adjacent(user))
 		user.forceMove(get_turf(src))
 
 /obj/effect/portal/Crossed(atom/movable/AM, oldloc)
+	procstart = null
+	src.procstart = null
 	if(isobserver(AM))
 		return ..()
 	if(linked && (get_turf(oldloc) == get_turf(linked)))
@@ -52,15 +60,21 @@
 		return ..()
 
 /obj/effect/portal/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/portal/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_turf(user) == get_turf(src))
 		teleport(user)
 	if(Adjacent(user))
 		user.forceMove(get_turf(src))
 
 /obj/effect/portal/Initialize(mapload, _creator, _lifespan = 0, obj/effect/portal/_linked, automatic_link = FALSE, turf/hard_target_override, atmos_link_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.portals += src
 	if(!istype(_linked) && automatic_link)
@@ -77,17 +91,25 @@
 		hard_target = hard_target_override
 
 /obj/effect/portal/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/portal/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/portal/proc/link_portal(obj/effect/portal/newlink)
+	procstart = null
+	src.procstart = null
 	linked = newlink
 	if(atmos_link)
 		link_atmos()
 
 /obj/effect/portal/proc/link_atmos()
+	procstart = null
+	src.procstart = null
 	if(atmos_source || atmos_destination)
 		unlink_atmos()
 	if(!isopenturf(get_turf(src)))
@@ -114,6 +136,8 @@
 	atmos_destination.air_update_turf(FALSE)
 
 /obj/effect/portal/proc/unlink_atmos()
+	procstart = null
+	src.procstart = null
 	if(istype(atmos_source))
 		if(istype(atmos_destination) && !atmos_source.Adjacent(atmos_destination) && !CANATMOSPASS(atmos_destination, atmos_source))
 			LAZYREMOVE(atmos_source.atmos_adjacent_turfs, atmos_destination)
@@ -136,10 +160,14 @@
 	return ..()
 
 /obj/effect/portal/attack_ghost(mob/dead/observer/O)
+	procstart = null
+	src.procstart = null
 	if(!teleport(O))
 		return ..()
 
 /obj/effect/portal/proc/teleport(atom/movable/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || istype(M, /obj/effect) || (ismecha(M) && !mech_sized) || (!isobj(M) && !ismob(M))) //Things that shouldn't teleport.
 		return
 	var/turf/real_target = get_link_target_turf()
@@ -157,6 +185,8 @@
 	return FALSE
 
 /obj/effect/portal/proc/get_link_target_turf()
+	procstart = null
+	src.procstart = null
 	var/turf/real_target
 	if(!istype(linked) || QDELETED(linked))
 		if(hardlinked)

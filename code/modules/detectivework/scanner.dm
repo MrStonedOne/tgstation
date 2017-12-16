@@ -18,6 +18,8 @@
 	var/view_check = TRUE
 
 /obj/item/device/detective_scanner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(log.len && !scanning)
 		scanning = 1
 		to_chat(user, "<span class='notice'>Printing report, please wait...</span>")
@@ -26,9 +28,13 @@
 		to_chat(user, "<span class='notice'>The scanner has no logs or is in use.</span>")
 
 /obj/item/device/detective_scanner/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/device/detective_scanner/proc/PrintReport()
+	procstart = null
+	src.procstart = null
 	// Create our paper
 	var/obj/item/paper/P = new(get_turf(src))
 	P.name = "paper- 'Scanner Report'"
@@ -47,10 +53,14 @@
 	scanning = 0
 
 /obj/item/device/detective_scanner/afterattack(atom/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	scan(A, user)
 	return FALSE
 
 /obj/item/device/detective_scanner/proc/scan(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	if(!scanning)
 		// Can remotely scan objects and mobs.
@@ -161,6 +171,8 @@
 		return
 
 /obj/item/device/detective_scanner/proc/add_log(msg, broadcast = 1)
+	procstart = null
+	src.procstart = null
 	if(scanning)
 		if(broadcast && ismob(loc))
 			var/mob/M = loc
@@ -170,4 +182,6 @@
 		CRASH("[src] [REF(src)] is adding a log when it was never put in scanning mode!")
 
 /proc/get_timestamp()
+	procstart = null
+	src.procstart = null
 	return time2text(world.time + 432000, ":ss")

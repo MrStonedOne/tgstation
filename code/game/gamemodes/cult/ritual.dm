@@ -14,6 +14,8 @@ This file contains the arcane tome files.
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/tome/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!LAZYLEN(GLOB.rune_types))
 		GLOB.rune_types = list()
@@ -23,6 +25,8 @@ This file contains the arcane tome files.
 			GLOB.rune_types[initial(R.cultist_name)] = R //Uses the cultist name for displaying purposes
 
 /obj/item/tome/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(iscultist(user) || isobserver(user))
 		to_chat(user, "<span class='cult'>The scriptures of the Geometer. Allows the scribing of runes and access to the knowledge archives of the cult of Nar-Sie.</span>")
@@ -31,6 +35,8 @@ This file contains the arcane tome files.
 		to_chat(user, "<span class='cult'>Striking a noncultist, however, will sear their flesh.</span>")
 
 /obj/item/tome/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 	if(!iscultist(user))
@@ -52,12 +58,16 @@ This file contains the arcane tome files.
 	add_logs(user, M, "smacked", src)
 
 /obj/item/tome/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user))
 		to_chat(user, "<span class='warning'>[src] seems full of unintelligible shapes, scribbles, and notes. Is this some sort of joke?</span>")
 		return
 	open_tome(user)
 
 /obj/item/tome/proc/open_tome(mob/user)
+	procstart = null
+	src.procstart = null
 	var/choice = alert(user,"You open the tome...",,"Scribe Rune","More Information","Cancel")
 	switch(choice)
 		if("More Information")
@@ -68,6 +78,8 @@ This file contains the arcane tome files.
 			return
 
 /obj/item/tome/proc/read_tome(mob/user)
+	procstart = null
+	src.procstart = null
 	var/text = ""
 	text += "<center><font color='red' size=3><b><i>Archives of the Dark One</i></b></font></center><br><br><br>"
 	text += "A rune's name and effects can be revealed by examining the rune.<br><br>"
@@ -172,6 +184,8 @@ This file contains the arcane tome files.
 	return 1
 
 /obj/item/tome/proc/scribe_rune(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/Turf = get_turf(user)
 	var/chosen_keyword
 	var/obj/effect/rune/rune_to_scribe
@@ -258,6 +272,8 @@ This file contains the arcane tome files.
 	SSblackbox.record_feedback("tally", "cult_runes_scribed", 1, R.cultist_name)
 
 /obj/item/tome/proc/check_rune_turf(turf/T, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(T))
 		to_chat(user, "<span class='warning'>You cannot scribe runes in space!</span>")
 		return FALSE

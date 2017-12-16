@@ -1,6 +1,8 @@
 GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 
 /proc/initialize_global_uplink_items()
+	procstart = null
+	src.procstart = null
 	GLOB.uplink_items = list()
 	for(var/item in subtypesof(/datum/uplink_item))
 		var/datum/uplink_item/I = new item()
@@ -11,6 +13,8 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 		GLOB.uplink_items[I.category][I.name] = I
 
 /proc/get_uplink_items(var/datum/game_mode/gamemode = null)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.uplink_items.len)
 		initialize_global_uplink_items()
 
@@ -87,13 +91,19 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	var/purchase_log_vis = TRUE // Visible in the purchase log?
 
 /datum/uplink_item/proc/get_discount()
+	procstart = null
+	src.procstart = null
 	return pick(4;0.75,2;0.5,1;0.25)
 
 /datum/uplink_item/proc/spawn_item(turf/loc, datum/component/uplink/U, mob/user)
+	procstart = null
+	src.procstart = null
 	if(item)
 		return new item(loc)
 
 /datum/uplink_item/Destroy()
+	procstart = null
+	src.procstart = null
 	if(src in GLOB.uplink_items)
 		GLOB.uplink_items -= src	//Take us out instead of leaving a null!
 	return ..()
@@ -255,6 +265,8 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	cost = 16
 
 /datum/uplink_item/dangerous/doublesword/get_discount()
+	procstart = null
+	src.procstart = null
 	return pick(4;0.8,2;0.65,1;0.5)
 
 /datum/uplink_item/dangerous/powerfist
@@ -944,6 +956,8 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	cost = 6
 
 /datum/uplink_item/device_tools/briefcase_launchpad/spawn_item(turf/loc, datum/component/uplink/U, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/launchpad_remote/L = new(loc) //free remote
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -1165,6 +1179,8 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	include_modes = list(/datum/game_mode/nuclear)
 
 /datum/uplink_item/cyber_implants/spawn_item(turf/loc, obj/item/device/uplink/U)
+	procstart = null
+	src.procstart = null
 	if(item)
 		if(istype(item, /obj/item/organ))
 			SSblackbox.record_feedback("nested tally", "traitor_uplink_items_bought", 1, list("[initial(name)]", "[cost]"))
@@ -1348,6 +1364,8 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	cant_discount = TRUE
 
 /datum/uplink_item/badass/surplus/spawn_item(turf/loc, datum/component/uplink/U)
+	procstart = null
+	src.procstart = null
 	var/list/uplink_items = get_uplink_items(SSticker && SSticker.mode? SSticker.mode : null)
 
 	var/crate_value = 50
@@ -1376,6 +1394,8 @@ GLOBAL_LIST_EMPTY(uplink_items) // Global list so we only initialize this once.
 	cant_discount = TRUE
 
 /datum/uplink_item/badass/random/spawn_item(turf/loc, datum/component/uplink/U)
+	procstart = null
+	src.procstart = null
 	var/list/uplink_items = get_uplink_items(SSticker && SSticker.mode? SSticker.mode : null)
 	var/list/possible_items = list()
 	for(var/category in uplink_items)

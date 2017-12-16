@@ -22,6 +22,8 @@ GLOBAL_LIST_EMPTY(uplinks)
 	var/hidden_crystals = 0
 
 /datum/component/uplink/Initialize(_owner, _lockable = TRUE, _enabled = FALSE, datum/game_mode/_gamemode, starting_tc = 20)
+	procstart = null
+	src.procstart = null
 	if(!isitem(parent))
 		return COMPONENT_INCOMPATIBLE
 	GLOB.uplinks += src
@@ -44,6 +46,8 @@ GLOBAL_LIST_EMPTY(uplinks)
 		locked = FALSE
 
 /datum/component/uplink/InheritComponent(datum/component/uplink/U)
+	procstart = null
+	src.procstart = null
 	lockable |= U.lockable
 	active |= U.active
 	if(!gamemode)
@@ -53,11 +57,15 @@ GLOBAL_LIST_EMPTY(uplinks)
 		purchase_log.MergeWithAndDel(U.purchase_log)
 
 /datum/component/uplink/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.uplinks -= src
 	gamemode = null
 	return ..()
 
 /datum/component/uplink/proc/LoadTC(mob/user, obj/item/stack/telecrystal/TC, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!silent)
 		to_chat(user, "<span class='notice'>You slot [TC] into [parent] and charge its internal uplink.</span>")
 	var/amt = TC.amount
@@ -65,10 +73,14 @@ GLOBAL_LIST_EMPTY(uplinks)
 	TC.use(amt)
 
 /datum/component/uplink/proc/set_gamemode(_gamemode)
+	procstart = null
+	src.procstart = null
 	gamemode = _gamemode
 	uplink_items = get_uplink_items(gamemode)
 
 /datum/component/uplink/proc/OnAttackBy(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return	//no hitting everyone/everything just to try to slot tcs in!
 	if(istype(I, /obj/item/stack/telecrystal))
@@ -94,6 +106,8 @@ GLOBAL_LIST_EMPTY(uplinks)
 			return
 
 /datum/component/uplink/proc/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return
 	active = TRUE
@@ -111,6 +125,8 @@ GLOBAL_LIST_EMPTY(uplinks)
 		ui.open()
 
 /datum/component/uplink/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.mind)
 		return
 	var/list/data = list()
@@ -143,6 +159,8 @@ GLOBAL_LIST_EMPTY(uplinks)
 	return data
 
 /datum/component/uplink/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 
@@ -169,6 +187,8 @@ GLOBAL_LIST_EMPTY(uplinks)
 	return TRUE
 
 /datum/component/uplink/proc/MakePurchase(mob/user, datum/uplink_item/U)
+	procstart = null
+	src.procstart = null
 	if(!istype(U))
 		return
 	if (!user || user.incapacitated())

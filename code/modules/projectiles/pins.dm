@@ -15,11 +15,15 @@
 
 
 /obj/item/device/firing_pin/New(newloc)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(newloc, /obj/item/gun))
 		gun = newloc
 
 /obj/item/device/firing_pin/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(proximity_flag)
 		if(istype(target, /obj/item/gun))
 			var/obj/item/gun/G = target
@@ -37,26 +41,36 @@
 				to_chat(user, "<span class ='notice'>This firearm already has a firing pin installed.</span>")
 
 /obj/item/device/firing_pin/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
 	to_chat(user, "<span class='notice'>You override the authentication mechanism.</span>")
 
 /obj/item/device/firing_pin/proc/gun_insert(mob/living/user, obj/item/gun/G)
+	procstart = null
+	src.procstart = null
 	gun = G
 	forceMove(gun)
 	gun.pin = src
 	return
 
 /obj/item/device/firing_pin/proc/gun_remove(mob/living/user)
+	procstart = null
+	src.procstart = null
 	gun.pin = null
 	gun = null
 	return
 
 /obj/item/device/firing_pin/proc/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/item/device/firing_pin/proc/auth_fail(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.show_message(fail_message, 1)
 	if(selfdestruct)
 		user.show_message("<span class='danger'>SELF-DESTRUCTING...</span><br>", 1)
@@ -80,6 +94,8 @@
 	pin_removeable = 1
 
 /obj/item/device/firing_pin/test_range/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/magnetic_controller/M in range(user, 3))
 		return 1
 	return 0
@@ -93,6 +109,8 @@
 	var/obj/item/implant/req_implant = null
 
 /obj/item/device/firing_pin/implant/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(user))
 		for(var/obj/item/implant/I in user.implants)
 			if(req_implant && I.type == req_implant)
@@ -122,22 +140,30 @@
 	force_replace = 1
 
 /obj/item/device/firing_pin/clown/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/bikehorn.ogg', 50, 1)
 	return 0
 
 // Ultra-honk pin, clown's deadly joke item.
 // A gun with ultra-honk pin is useful for clown and useless for everyone else.
 /obj/item/device/firing_pin/clown/ultra/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/bikehorn.ogg', 50, 1)
 	if(!(user.disabilities & CLUMSY) && !(user.mind && user.mind.assigned_role == "Clown"))
 		return 0
 	return 1
 
 /obj/item/device/firing_pin/clown/ultra/gun_insert(mob/living/user, obj/item/gun/G)
+	procstart = null
+	src.procstart = null
 	..()
 	G.clumsy_check = 0
 
 /obj/item/device/firing_pin/clown/ultra/gun_remove(mob/living/user)
+	procstart = null
+	src.procstart = null
 	gun.clumsy_check = initial(gun.clumsy_check)
 	..()
 
@@ -157,6 +183,8 @@
 	var/unique_enzymes = null
 
 /obj/item/device/firing_pin/dna/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	..()
 	if(proximity_flag && iscarbon(target))
 		var/mob/living/carbon/M = target
@@ -165,6 +193,8 @@
 			to_chat(user, "<span class='notice'>DNA-LOCK SET.</span>")
 
 /obj/item/device/firing_pin/dna/pin_auth(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(istype(user) && user.dna && user.dna.unique_enzymes)
 		if(user.dna.unique_enzymes == unique_enzymes)
 			return 1
@@ -172,6 +202,8 @@
 	return 0
 
 /obj/item/device/firing_pin/dna/auth_fail(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!unique_enzymes)
 		if(istype(user) && user.dna && user.dna.unique_enzymes)
 			unique_enzymes = user.dna.unique_enzymes
@@ -193,6 +225,8 @@
 	var/tagcolor = ""
 
 /obj/item/device/firing_pin/tag/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		var/mob/living/carbon/human/M = user
 		if(istype(M.wear_suit, suit_requirement))
@@ -213,6 +247,8 @@
 	tagcolor = "blue"
 
 /obj/item/device/firing_pin/Destroy()
+	procstart = null
+	src.procstart = null
 	if(gun)
 		gun.pin = null
 	return ..()

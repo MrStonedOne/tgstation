@@ -6,9 +6,13 @@
 //returning TRUE won't produce the "cannot be fabricated" message and will still prevent fabrication
 
 /atom/proc/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/proc/consume_visual(obj/item/clockwork/replica_fabricator/fabricator, power_amount)
+	procstart = null
+	src.procstart = null
 	if(get_clockwork_power(power_amount))
 		var/obj/effect/temp_visual/ratvar/beam/itemconsume/B = new /obj/effect/temp_visual/ratvar/beam/itemconsume(get_turf(src))
 		B.pixel_x = pixel_x
@@ -28,12 +32,18 @@
 	return list("operation_time" = 80, "new_obj_type" = /turf/closed/wall/clockwork, "power_cost" = POWER_WALL_TOTAL, "spawn_dir" = SOUTH)
 
 /turf/closed/wall/r_wall/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/closed/wall/clockwork/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return list("operation_time" = 50, "new_obj_type" = /turf/open/floor/clockwork, "power_cost" = -POWER_WALL_MINUS_FLOOR, "spawn_dir" = SOUTH)
 
 /turf/open/floor/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	if(floor_tile == /obj/item/stack/tile/plasteel)
 		new floor_tile(src)
 		make_plating()
@@ -41,15 +51,23 @@
 	return list("operation_time" = 30, "new_obj_type" = /turf/open/floor/clockwork, "power_cost" = POWER_FLOOR, "spawn_dir" = SOUTH)
 
 /turf/open/floor/plating/asteroid/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/floor/plating/ashplanet/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/lava/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/floor/clockwork/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/table) in src)
 		return FALSE
 	if(locate(/obj/structure/falsewall) in contents)
@@ -65,6 +83,8 @@
 
 //False wall conversion
 /obj/structure/falsewall/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	var/cost = POWER_WALL_MINUS_FLOOR
 	if(ispath(mineral, /obj/item/stack/sheet/metal))
 		cost -= (POWER_METAL * (2 + mineral_amount)) //four sheets of metal, plus an assumption that the girder is also two
@@ -76,13 +96,19 @@
 	return list("operation_time" = 50, "new_obj_type" = /obj/structure/falsewall/brass, "power_cost" = POWER_WALL_MINUS_FLOOR - (POWER_METAL * 2) - (POWER_ROD * 2), "spawn_dir" = SOUTH)
 
 /obj/structure/falsewall/reinforced/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/falsewall/brass/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Metal conversion
 /obj/item/stack/tile/plasteel/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	if(source)
 		return FALSE
 	var/amount_temp = get_amount()
@@ -99,6 +125,8 @@
 	return list("operation_time" = 0, "new_obj_type" = null, "power_cost" = -amount_temp, "spawn_dir" = SOUTH, "no_target_deletion" = no_delete)
 
 /obj/item/stack/rods/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	if(source)
 		return FALSE
 	var/power_amount = -(amount*POWER_ROD)
@@ -106,6 +134,8 @@
 	return list("operation_time" = 0, "new_obj_type" = null, "power_cost" = power_amount, "spawn_dir" = SOUTH)
 
 /obj/item/stack/sheet/metal/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	if(source)
 		return FALSE
 	var/power_amount = -(amount*POWER_METAL)
@@ -113,6 +143,8 @@
 	return list("operation_time" = 0, "new_obj_type" = null, "power_cost" = power_amount, "spawn_dir" = SOUTH)
 
 /obj/item/stack/sheet/plasteel/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	if(source)
 		return FALSE
 	var/power_amount = -(amount*POWER_PLASTEEL)
@@ -121,6 +153,8 @@
 
 //Brass directly to power
 /obj/item/stack/tile/brass/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	if(source)
 		return FALSE
 	var/power_amount = -(amount*POWER_FLOOR)
@@ -129,16 +163,22 @@
 
 //Airlock conversion
 /obj/machinery/door/airlock/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	var/doortype = /obj/machinery/door/airlock/clockwork
 	if(glass)
 		doortype = /obj/machinery/door/airlock/clockwork/brass
 	return list("operation_time" = 60, "new_obj_type" = doortype, "power_cost" = POWER_WALL_TOTAL, "spawn_dir" = dir, "transfer_name" = TRUE)
 
 /obj/machinery/door/airlock/clockwork/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Table conversion
 /obj/structure/table/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	var/fabrication_cost = POWER_STANDARD
 	if(framestack == /obj/item/stack/rods)
 		fabrication_cost -= POWER_ROD*framestackamount
@@ -151,9 +191,13 @@
 	return list("operation_time" = 20, "new_obj_type" = /obj/structure/table/reinforced/brass, "power_cost" = fabrication_cost, "spawn_dir" = SOUTH)
 
 /obj/structure/table/reinforced/brass/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/table_frame/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	var/fabrication_cost = POWER_FLOOR
 	if(framestack == /obj/item/stack/rods)
 		fabrication_cost -= POWER_ROD*framestackamount
@@ -162,10 +206,14 @@
 	return list("operation_time" = 10, "new_obj_type" = /obj/structure/table_frame/brass, "power_cost" = fabrication_cost, "spawn_dir" = SOUTH)
 
 /obj/structure/table_frame/brass/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Window conversion
 /obj/structure/window/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	var/windowtype = /obj/structure/window/reinforced/clockwork
 	var/new_dir = TRUE
 	var/fabrication_time = 15
@@ -184,17 +232,25 @@
 	return list("operation_time" = fabrication_time, "new_obj_type" = windowtype, "power_cost" = fabrication_cost, "spawn_dir" = dir, "dir_in_new" = new_dir)
 
 /obj/structure/window/reinforced/clockwork/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Windoor conversion
 /obj/machinery/door/window/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return list("operation_time" = 30, "new_obj_type" = /obj/machinery/door/window/clockwork, "power_cost" = POWER_STANDARD, "spawn_dir" = dir, "dir_in_new" = TRUE, "transfer_name" = TRUE)
 
 /obj/machinery/door/window/clockwork/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Grille conversion
 /obj/structure/grille/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	var/grilletype = /obj/structure/grille/ratvar
 	var/fabrication_time = 15
 	if(broken)
@@ -203,24 +259,36 @@
 	return list("operation_time" = fabrication_time, "new_obj_type" = grilletype, "power_cost" = 0, "spawn_dir" = dir)
 
 /obj/structure/grille/ratvar/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Lattice conversion
 /obj/structure/lattice/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return list("operation_time" = 0, "new_obj_type" = /obj/structure/lattice/clockwork, "power_cost" = 0, "spawn_dir" = SOUTH, "no_target_deletion" = TRUE)
 
 /obj/structure/lattice/clockwork/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	ratvar_act() //just in case we're the wrong type for some reason??
 	return FALSE
 
 /obj/structure/lattice/catwalk/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return list("operation_time" = 0, "new_obj_type" = /obj/structure/lattice/catwalk/clockwork, "power_cost" = 0, "spawn_dir" = SOUTH, "no_target_deletion" = TRUE)
 
 /obj/structure/lattice/catwalk/clockwork/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Girder conversion
 /obj/structure/girder/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	var/fabrication_cost = POWER_GEAR - (POWER_METAL * 2)
 	if(state == GIRDER_REINF_STRUTS || state == GIRDER_REINF)
 		fabrication_cost -= POWER_PLASTEEL
@@ -228,6 +296,8 @@
 
 //Hitting a clockwork structure will try to repair it.
 /obj/structure/destructible/clockwork/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/list/repair_values = list()
 	if(!fabricator.fabricator_repair_checks(repair_values, src, user))
@@ -251,6 +321,8 @@
 
 //Fabricator mob heal proc, to avoid as much copypaste as possible.
 /mob/living/proc/fabricator_heal(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator)
+	procstart = null
+	src.procstart = null
 	var/list/repair_values = list()
 	if(!fabricator.fabricator_repair_checks(repair_values, src, user))
 		return
@@ -271,14 +343,20 @@
 	return TRUE
 
 /mob/living/proc/fabricator_heal_tick(amount)
+	procstart = null
+	src.procstart = null
 	var/static/list/damage_heal_order = list(BRUTE, BURN, TOX, OXY)
 	heal_ordered_damage(amount, damage_heal_order)
 
 /mob/living/simple_animal/fabricator_heal_tick(amount)
+	procstart = null
+	src.procstart = null
 	adjustHealth(-amount)
 
 //Hitting a ratvar'd silicon will also try to repair it.
 /mob/living/silicon/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(health == maxHealth) //if we're at maximum health, replace the turf under us
 		return FALSE
@@ -288,6 +366,8 @@
 
 //Same with clockwork mobs.
 /mob/living/simple_animal/hostile/clockwork/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(health == maxHealth) //if we're at maximum health, replace the turf under us
 		return FALSE
@@ -297,6 +377,8 @@
 
 //Cogscarabs get special interaction because they're drones and have innate self-heals/revives.
 /mob/living/simple_animal/drone/cogscarab/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(stat == DEAD)
 		try_reactivate(user) //if we're dead, try to repair us
@@ -316,6 +398,8 @@
 
 //Convert shards and gear bits directly to power
 /obj/item/clockwork/alloy_shards/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent, power_amount)
+	procstart = null
+	src.procstart = null
 	if(!power_amount)
 		power_amount = -POWER_STANDARD
 	consume_visual(fabricator, power_amount)
@@ -327,21 +411,29 @@
 	return list("operation_time" = 0, "new_obj_type" = null, "power_cost" = power_amount, "spawn_dir" = SOUTH)
 
 /obj/item/clockwork/alloy_shards/medium/gear_bit/large/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent, power_amount)
+	procstart = null
+	src.procstart = null
 	if(!power_amount)
 		power_amount = -(CLOCKCULT_POWER_UNIT*0.08)
 	return ..()
 
 /obj/item/clockwork/alloy_shards/large/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent, power_amount)
+	procstart = null
+	src.procstart = null
 	if(!power_amount)
 		power_amount = -(CLOCKCULT_POWER_UNIT*0.06)
 	return ..()
 
 /obj/item/clockwork/alloy_shards/medium/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent, power_amount)
+	procstart = null
+	src.procstart = null
 	if(!power_amount)
 		power_amount = -(CLOCKCULT_POWER_UNIT*0.04)
 	return ..()
 
 /obj/item/clockwork/alloy_shards/small/fabrication_vals(mob/living/user, obj/item/clockwork/replica_fabricator/fabricator, silent, power_amount)
+	procstart = null
+	src.procstart = null
 	if(!power_amount)
 		power_amount = -(CLOCKCULT_POWER_UNIT*0.02)
 	return ..()

@@ -1,5 +1,7 @@
 //like orange but only checks north/south/east/west for one step
 /proc/cardinalrange(var/center)
+	procstart = null
+	src.procstart = null
 	var/list/things = list()
 	for(var/direction in GLOB.cardinals)
 		var/turf/T = get_step(center, direction)
@@ -30,20 +32,28 @@
 
 
 /obj/machinery/am_shielding/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/controllerscan), 10)
 
 /obj/machinery/am_shielding/proc/overheat()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>[src] melts!</span>")
 	new /obj/effect/hotspot(loc)
 	qdel(src)
 
 /obj/machinery/am_shielding/proc/collapse()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='notice'>[src] collapses back into a container!</span>")
 	new /obj/item/device/am_shielding_container(drop_location())
 	qdel(src)
 
 /obj/machinery/am_shielding/proc/controllerscan(priorscan = 0)
+	procstart = null
+	src.procstart = null
 	//Make sure we are the only one here
 	if(!isturf(loc))
 		collapse()
@@ -72,6 +82,8 @@
 
 
 /obj/machinery/am_shielding/Destroy()
+	procstart = null
+	src.procstart = null
 	if(control_unit)
 		control_unit.remove_shielding(src)
 	if(processing)
@@ -81,10 +93,14 @@
 
 
 /obj/machinery/am_shielding/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	return 0
 
 
 /obj/machinery/am_shielding/process()
+	procstart = null
+	src.procstart = null
 	if(!processing)
 		. = PROCESS_KILL
 	//TODO: core functions and stability
@@ -96,12 +112,16 @@
 	return 0
 
 /obj/machinery/am_shielding/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	stability -= (80 - (severity * 20))
 	check_stability()
 	return
 
 
 /obj/machinery/am_shielding/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(Proj.flag != "bullet")
 		stability -= Proj.force/2
@@ -109,6 +129,8 @@
 
 
 /obj/machinery/am_shielding/update_icon()
+	procstart = null
+	src.procstart = null
 	dirs = 0
 	coredirs = 0
 	cut_overlays()
@@ -147,6 +169,8 @@
 
 
 /obj/machinery/am_shielding/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(sound_effect)
@@ -166,6 +190,8 @@
 
 //Call this to link a detected shilding unit to the controller
 /obj/machinery/am_shielding/proc/link_control(obj/machinery/power/am_control_unit/AMC)
+	procstart = null
+	src.procstart = null
 	if(!istype(AMC))
 		return 0
 	if(control_unit && control_unit != AMC)
@@ -177,6 +203,8 @@
 
 //Scans cards for shields or the control unit and if all there it
 /obj/machinery/am_shielding/proc/core_check()
+	procstart = null
+	src.procstart = null
 	for(var/direction in GLOB.alldirs)
 		var/found_am_device=0
 		for(var/obj/machinery/machine in get_step(loc, direction))
@@ -191,6 +219,8 @@
 
 
 /obj/machinery/am_shielding/proc/setup_core()
+	procstart = null
+	src.procstart = null
 	processing = TRUE
 	GLOB.machines |= src
 	START_PROCESSING(SSmachines, src)
@@ -202,6 +232,8 @@
 
 
 /obj/machinery/am_shielding/proc/shutdown_core()
+	procstart = null
+	src.procstart = null
 	processing = FALSE
 	if(!control_unit)
 		return
@@ -211,6 +243,8 @@
 
 
 /obj/machinery/am_shielding/proc/check_stability(injecting_fuel = 0)
+	procstart = null
+	src.procstart = null
 	if(stability > 0)
 		return
 	if(injecting_fuel && control_unit)
@@ -247,6 +281,8 @@
 	materials = list(MAT_METAL=100)
 
 /obj/item/device/am_shielding_container/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/multitool) && istype(src.loc, /turf))
 		new/obj/machinery/am_shielding(src.loc)
 		qdel(src)

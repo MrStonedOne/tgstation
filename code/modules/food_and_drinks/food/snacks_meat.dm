@@ -26,6 +26,8 @@
 	foodtype = MEAT
 
 /obj/item/reagent_containers/food/snacks/carpmeat/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eatverb = pick("bite","chew","choke down","gnaw","swallow","chomp")
 
@@ -115,6 +117,8 @@
 	foodtype = MEAT
 
 /obj/item/reagent_containers/food/snacks/sausage/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eatverb = pick("bite","chew","nibble","deep throat","gobble","chomp")
 
@@ -184,6 +188,8 @@
 	foodtype = MEAT | SUGAR
 
 /obj/item/reagent_containers/food/snacks/monkeycube/proc/Expand()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='notice'>[src] expands!</span>")
 	var/mob/spammer = get_mob_by_key(fingerprintslast)
 	var/mob/living/carbon/monkey/bananas = new(drop_location())
@@ -213,6 +219,8 @@
 	foodtype = VEGETABLES
 
 /obj/item/reagent_containers/food/snacks/stewedsoymeat/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eatverb = pick("slurp","sip","suck","inhale","drink")
 
@@ -258,6 +266,8 @@
 	foodtype = MEAT
 
 /obj/item/reagent_containers/food/snacks/nugget/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/shape = pick("lump", "star", "lizard", "corgi")
 	desc = "A 'chicken' nugget vaguely shaped like a [shape]."

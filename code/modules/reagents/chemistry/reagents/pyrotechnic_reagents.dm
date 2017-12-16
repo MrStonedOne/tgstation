@@ -8,10 +8,14 @@
 	taste_description = "sweet tasting metal"
 
 /datum/reagent/thermite/reaction_turf(turf/T, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(reac_volume >= 1)
 		T.AddComponent(/datum/component/thermite, reac_volume)
 
 /datum/reagent/thermite/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustFireLoss(1, 0)
 	..()
 	. = 1
@@ -41,6 +45,8 @@
 	taste_description = "burning"
 
 /datum/reagent/clf3/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjust_fire_stacks(2)
 	var/burndmg = max(0.3*M.fire_stacks, 0.3)
 	M.adjustFireLoss(burndmg, 0)
@@ -48,6 +54,8 @@
 	. = 1
 
 /datum/reagent/clf3/reaction_turf(turf/T, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(isplatingturf(T))
 		var/turf/open/floor/plating/F = T
 		if(prob(10 + F.burnt + 5*F.broken)) //broken or burnt plating is more susceptible to being destroyed
@@ -68,6 +76,8 @@
 			W.ChangeTurf(/turf/open/floor/plating)
 
 /datum/reagent/clf3/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(istype(M))
 		if(method != INGEST && method != INJECT)
 			M.adjust_fire_stacks(min(reac_volume/5, 10))
@@ -101,11 +111,15 @@
 	taste_description = "salt"
 
 /datum/reagent/blackpowder/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isplasmaman(M))
 		M.hallucination += 10
 
 /datum/reagent/blackpowder/on_ex_act()
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	var/datum/effect_system/reagents_explosion/e = new()
 	e.set_up(1 + round(volume/6, 1), location, 0, 0, message = 0)
@@ -145,6 +159,8 @@
 	taste_description = "burning"
 
 /datum/reagent/phlogiston/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	M.adjust_fire_stacks(1)
 	var/burndmg = max(0.3*M.fire_stacks, 0.3)
 	M.adjustFireLoss(burndmg, 0)
@@ -152,6 +168,8 @@
 	..()
 
 /datum/reagent/phlogiston/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjust_fire_stacks(1)
 	var/burndmg = max(0.3*M.fire_stacks, 0.3)
 	M.adjustFireLoss(burndmg, 0)
@@ -167,10 +185,14 @@
 	taste_description = "burning"
 
 /datum/reagent/napalm/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjust_fire_stacks(1)
 	..()
 
 /datum/reagent/napalm/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(istype(M))
 		if(method != INGEST && method != INJECT)
 			M.adjust_fire_stacks(min(reac_volume/4, 20))
@@ -191,6 +213,8 @@
 	..()
 
 /datum/reagent/cryostylane/reaction_turf(turf/T, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(reac_volume >= 5)
 		for(var/mob/living/simple_animal/slime/M in T)
 			M.adjustToxLoss(rand(15,30))
@@ -204,6 +228,8 @@
 	taste_description = "bitterness"
 
 /datum/reagent/pyrosium/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.reagents.has_reagent("oxygen"))
 		M.reagents.remove_reagent("oxygen", 0.5)
 		M.bodytemperature += 15
@@ -220,6 +246,8 @@
 	var/shock_timer = 0
 
 /datum/reagent/teslium/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	shock_timer++
 	if(shock_timer >= rand(5,30)) //Random shocks are wildly unpredictable
 		shock_timer = 0

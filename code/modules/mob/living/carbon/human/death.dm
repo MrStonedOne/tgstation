@@ -2,21 +2,29 @@
 	new /obj/effect/temp_visual/gib_animation(loc, "gibbed-h")
 
 /mob/living/carbon/human/dust_animation()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/dust_animation(loc, "dust-h")
 
 /mob/living/carbon/human/spawn_gibs(with_bodyparts)
+	procstart = null
+	src.procstart = null
 	if(with_bodyparts)
 		new /obj/effect/gibspawner/human(get_turf(src), dna, get_static_viruses())
 	else
 		new /obj/effect/gibspawner/humanbodypartless(get_turf(src), dna, get_static_viruses())
 
 /mob/living/carbon/human/spawn_dust(just_ash = FALSE)
+	procstart = null
+	src.procstart = null
 	if(just_ash)
 		new /obj/effect/decal/cleanable/ash(loc)
 	else
 		new /obj/effect/decal/remains/human(loc)
 
 /mob/living/carbon/human/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	stop_sound_channel(CHANNEL_HEARTBEAT)
@@ -42,12 +50,16 @@
 		INVOKE_ASYNC(is_devil(src), /datum/antagonist/devil.proc/beginResurrectionCheck, src)
 
 /mob/living/carbon/human/proc/makeSkeleton()
+	procstart = null
+	src.procstart = null
 	status_flags |= DISFIGURED
 	set_species(/datum/species/skeleton)
 	return 1
 
 
 /mob/living/carbon/proc/Drain()
+	procstart = null
+	src.procstart = null
 	become_husk()
 	disabilities |= NOCLONE
 	blood_volume = 0

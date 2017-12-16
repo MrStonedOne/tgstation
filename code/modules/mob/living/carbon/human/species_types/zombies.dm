@@ -15,6 +15,8 @@
 	liked_food = GROSS | MEAT | RAW
 
 /datum/species/zombie/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
 		return TRUE
 	return ..()
@@ -30,18 +32,26 @@
 	var/regen_cooldown = 0
 
 /datum/species/zombie/infectious/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 
 /datum/species/zombie/infectious/spec_stun(mob/living/carbon/human/H,amount)
+	procstart = null
+	src.procstart = null
 	. = min(2, amount)
 
 /datum/species/zombie/infectious/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		regen_cooldown = world.time + REGENERATION_DELAY
 
 /datum/species/zombie/infectious/spec_life(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.a_intent = INTENT_HARM // THE SUFFERING MUST FLOW
 	if(regen_cooldown < world.time)
@@ -55,6 +65,8 @@
 		// succumb otherwise, and will standup again soon
 
 /datum/species/zombie/infectious/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Deal with the source of this zombie corruption

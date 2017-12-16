@@ -14,6 +14,8 @@
 	var/eject_range = 2
 
 /obj/structure/disposaloutlet/Initialize(mapload, obj/structure/disposalconstruct/make_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(make_from)
 		setDir(make_from.dir)
@@ -29,10 +31,14 @@
 		trunk.linked = src	// link the pipe trunk to self
 
 /obj/structure/disposaloutlet/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION)
 
 /obj/structure/disposaloutlet/Destroy()
+	procstart = null
+	src.procstart = null
 	if(trunk)
 		trunk.linked = null
 		trunk = null
@@ -42,6 +48,8 @@
 // expel the contents of the holder object, then delete it
 // called when the holder exits the outlet
 /obj/structure/disposaloutlet/proc/expel(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	H.active = FALSE
 	flick("outlet-open", src)
 	if((start_eject + 30) < world.time)
@@ -52,6 +60,8 @@
 		addtimer(CALLBACK(src, .proc/expel_holder, H), 20)
 
 /obj/structure/disposaloutlet/proc/expel_holder(obj/structure/disposalholder/H, playsound=FALSE)
+	procstart = null
+	src.procstart = null
 	if(playsound)
 		playsound(src, 'sound/machines/hiss.ogg', 50, 0, 0)
 
@@ -71,6 +81,8 @@
 
 
 /obj/structure/disposaloutlet/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(I, /obj/item/weldingtool))
 		var/obj/item/weldingtool/W = I

@@ -30,23 +30,33 @@
 	CanAtmosPass = ATMOS_PASS_DENSITY
 
 /obj/structure/falsewall/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	air_update_turf(TRUE)
 
 /obj/structure/falsewall/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_MEDIUM_INSULATION)
 
 /obj/structure/falsewall/Destroy()
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	air_update_turf(1)
 	return ..()
 
 /obj/structure/falsewall/ratvar_act()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/falsewall/brass(loc)
 	qdel(src)
 
 /obj/structure/falsewall/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(opening)
 		return
 
@@ -61,6 +71,8 @@
 	air_update_turf(1)
 
 /obj/structure/falsewall/proc/toggle_open()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		density = !density
 		set_opacity(density)
@@ -84,6 +96,8 @@
 			icon_state = "fwall_open"
 
 /obj/structure/falsewall/proc/ChangeToWall(delete = 1)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	T.ChangeTurf(walltype)
 	if(delete)
@@ -91,6 +105,8 @@
 	return T
 
 /obj/structure/falsewall/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(opening)
 		to_chat(user, "<span class='warning'>You must wait until the door has stopped moving!</span>")
 		return
@@ -123,6 +139,8 @@
 		return ..()
 
 /obj/structure/falsewall/proc/dismantle(mob/user, disassembled=TRUE, obj/item/tool = null)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] dismantles the false wall.", "<span class='notice'>You dismantle the false wall.</span>")
 	if(tool)
 		playsound(src, tool.usesound, 100, 1)
@@ -131,6 +149,8 @@
 	deconstruct(disassembled)
 
 /obj/structure/falsewall/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(disassembled)
 			new girder_type(loc)
@@ -140,6 +160,8 @@
 	qdel(src)
 
 /obj/structure/falsewall/get_dumping_location(obj/item/storage/source,mob/user)
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/structure/falsewall/examine_status(mob/user) //So you can't detect falsewalls by examine.
@@ -159,10 +181,14 @@
 	mineral = /obj/item/stack/sheet/plasteel
 
 /obj/structure/falsewall/reinforced/examine_status(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>The outer <b>grille</b> is fully intact.</span>")
 	return null
 
 /obj/structure/falsewall/reinforced/attackby(obj/item/tool, mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(tool, /obj/item/wirecutters))
 		dismantle(user, TRUE, tool)
@@ -183,14 +209,20 @@
 	canSmoothWith = list(/obj/structure/falsewall/uranium, /turf/closed/wall/mineral/uranium)
 
 /obj/structure/falsewall/uranium/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	radiate()
 	return ..()
 
 /obj/structure/falsewall/uranium/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	radiate()
 	..()
 
 /obj/structure/falsewall/uranium/proc/radiate()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(world.time > last_event+15)
 			active = 1
@@ -243,6 +275,8 @@
 	canSmoothWith = list(/obj/structure/falsewall/plasma, /turf/closed/wall/mineral/plasma)
 
 /obj/structure/falsewall/plasma/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.is_hot() > 300)
 		var/turf/T = get_turf(src)
 		message_admins("Plasma falsewall ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(T)]",0,1)
@@ -252,12 +286,16 @@
 		return ..()
 
 /obj/structure/falsewall/plasma/proc/burnbabyburn(user)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/welder.ogg', 100, 1)
 	atmos_spawn_air("plasma=400;TEMP=1000")
 	new /obj/structure/girder/displaced(loc)
 	qdel(src)
 
 /obj/structure/falsewall/plasma/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		burnbabyburn()
 
@@ -340,6 +378,8 @@
 	mineral = /obj/item/stack/tile/brass
 
 /obj/structure/falsewall/brass/New(loc)
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/T = get_turf(src)
 	new /obj/effect/temp_visual/ratvar/wall/false(T)
@@ -347,9 +387,13 @@
 	change_construction_value(4)
 
 /obj/structure/falsewall/brass/Destroy()
+	procstart = null
+	src.procstart = null
 	change_construction_value(-4)
 	return ..()
 
 /obj/structure/falsewall/brass/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		obj_integrity = max_integrity

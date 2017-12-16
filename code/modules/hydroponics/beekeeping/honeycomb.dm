@@ -14,6 +14,8 @@
 	var/honey_color = ""
 
 /obj/item/reagent_containers/honeycomb/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(8,-8)
 	pixel_y = rand(8,-8)
@@ -21,6 +23,8 @@
 
 
 /obj/item/reagent_containers/honeycomb/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	var/mutable_appearance/honey_overlay = mutable_appearance(icon, "honey")
 	if(honey_color)
@@ -30,6 +34,8 @@
 
 
 /obj/item/reagent_containers/honeycomb/proc/set_reagent(reagent)
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/R = GLOB.chemical_reagents_list[reagent]
 	if(istype(R))
 		name = "honeycomb ([R.name])"

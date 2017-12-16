@@ -18,6 +18,8 @@
 
 /obj/item/stack/medical/attack(mob/living/M, mob/user)
 
+	procstart = null
+	src.procstart = null
 	if(M.stat == DEAD)
 		var/t_him = "it"
 		if(M.gender == MALE)
@@ -114,6 +116,8 @@
 	grind_results = list("styptic_powder" = 1)
 
 /obj/item/stack/medical/bruise_pack/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is bludgeoning [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS)
 

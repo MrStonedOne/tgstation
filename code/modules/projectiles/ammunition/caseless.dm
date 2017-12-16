@@ -6,6 +6,8 @@
 	firing_effect_type = null
 
 /obj/item/ammo_casing/caseless/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread)
+	procstart = null
+	src.procstart = null
 	if (..()) //successfully firing
 		moveToNullspace()
 		return 1
@@ -13,6 +15,8 @@
 		return 0
 
 /obj/item/ammo_casing/caseless/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "[initial(icon_state)]"
 
@@ -63,6 +67,8 @@
 	var/modified = 0
 
 /obj/item/ammo_casing/caseless/foam_dart/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if (modified)
 		icon_state = "foamdart_empty"
@@ -77,6 +83,8 @@
 
 
 /obj/item/ammo_casing/caseless/foam_dart/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/obj/item/projectile/bullet/reusable/foam_dart/FD = BB
 	if (istype(A, /obj/item/screwdriver) && !modified)
 		modified = 1
@@ -101,6 +109,8 @@
 		return ..()
 
 /obj/item/ammo_casing/caseless/foam_dart/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/projectile/bullet/reusable/foam_dart/FD = BB
 	if(FD.pen)
 		FD.damage = initial(FD.damage)

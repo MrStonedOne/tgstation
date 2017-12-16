@@ -18,6 +18,8 @@
 	pipe_state = "junction"
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(SOUTH)
 			initialize_directions = NORTH
@@ -33,9 +35,13 @@
 			initialize_directions_he = WEST
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction/getNodeConnects()
+	procstart = null
+	src.procstart = null
 	return list(turn(dir, 180), dir)
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/junction/can_be_node(obj/machinery/atmospherics/target, iteration)
+	procstart = null
+	src.procstart = null
 	var/init_dir
 	switch(iteration)
 		if(1)

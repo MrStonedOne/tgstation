@@ -32,6 +32,8 @@ Bonus
 					  <b>Stealth 4:</b> The virus mimics positive symptoms.."
 
 /datum/symptom/hallucigen/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4) //fake good symptom messages
@@ -41,6 +43,8 @@ Bonus
 		power = 2
 
 /datum/symptom/hallucigen/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob

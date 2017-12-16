@@ -20,11 +20,15 @@
 	var/battle_screech_cooldown = 50
 
 /mob/living/carbon/monkey/proc/IsStandingStill()
+	procstart = null
+	src.procstart = null
 	return resisting || pickpocketing || disposing_body
 
 // blocks
 // taken from /mob/living/carbon/human/interactive/
 /mob/living/carbon/monkey/proc/walk2derpless(target)
+	procstart = null
+	src.procstart = null
 	if(!target || IsStandingStill())
 		return 0
 
@@ -49,6 +53,8 @@
 
 // taken from /mob/living/carbon/human/interactive/
 /mob/living/carbon/monkey/proc/IsDeadOrIncap(checkDead = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!canmove)
 		return 1
 	if(health <= 0 && checkDead)
@@ -62,6 +68,8 @@
 	return 0
 
 /mob/living/carbon/monkey/proc/battle_screech()
+	procstart = null
+	src.procstart = null
 	if(next_battle_screech < world.time)
 		emote(pick("roar","screech"))
 		for(var/mob/living/carbon/monkey/M in view(7,src))
@@ -69,6 +77,8 @@
 
 /mob/living/carbon/monkey/proc/equip_item(var/obj/item/I)
 
+	procstart = null
+	src.procstart = null
 	if(I.loc == src)
 		return TRUE
 
@@ -101,12 +111,16 @@
 	return FALSE
 
 /mob/living/carbon/monkey/proc/pickup_and_wear(var/obj/item/clothing/C)
+	procstart = null
+	src.procstart = null
 	if(!equip_to_appropriate_slot(C))
 		monkeyDrop(get_item_by_slot(C)) // remove the existing item if worn
 		sleep(5)
 		equip_to_appropriate_slot(C)
 
 /mob/living/carbon/monkey/resist_restraints()
+	procstart = null
+	src.procstart = null
 	var/obj/item/I = null
 	if(handcuffed)
 		I = handcuffed
@@ -119,6 +133,8 @@
 
 /mob/living/carbon/monkey/proc/should_target(var/mob/living/L)
 
+	procstart = null
+	src.procstart = null
 	if(L == src)
 		return 0
 
@@ -132,6 +148,8 @@
 	return 0
 
 /mob/living/carbon/monkey/proc/handle_combat()
+	procstart = null
+	src.procstart = null
 	// Don't do any AI if inside another mob (devoured)
 	if (ismob(loc))
 		// Really no idea what needs to be returned but everything else is TRUE
@@ -357,6 +375,8 @@
 	return IsStandingStill()
 
 /mob/living/carbon/monkey/proc/pickpocket(var/mob/M)
+	procstart = null
+	src.procstart = null
 	if(do_mob(src, M, MONKEY_ITEM_SNATCH_DELAY) && pickupTarget)
 		for(var/obj/item/I in M.held_items)
 			if(I == pickupTarget)
@@ -370,6 +390,8 @@
 	pickupTimer = 0
 
 /mob/living/carbon/monkey/proc/stuff_mob_in()
+	procstart = null
+	src.procstart = null
 	if(bodyDisposal && target && Adjacent(bodyDisposal))
 		bodyDisposal.stuff_mob_in(target, src)
 	disposing_body = FALSE
@@ -377,6 +399,8 @@
 
 /mob/living/carbon/monkey/proc/back_to_idle()
 
+	procstart = null
+	src.procstart = null
 	if(pulling)
 		stop_pulling()
 
@@ -388,6 +412,8 @@
 
 // attack using a held weapon otherwise bite the enemy, then if we are angry there is a chance we might calm down a little
 /mob/living/carbon/monkey/proc/monkey_attack(mob/living/L)
+	procstart = null
+	src.procstart = null
 	var/obj/item/Weapon = locate(/obj/item) in held_items
 
 	// attack with weapon if we have one
@@ -417,6 +443,8 @@
 
 // get angry are a mob
 /mob/living/carbon/monkey/proc/retaliate(mob/living/L)
+	procstart = null
+	src.procstart = null
 	mode = MONKEY_HUNT
 	target = L
 	enemies[L] += MONKEY_HATRED_AMOUNT
@@ -426,6 +454,8 @@
 		a_intent = INTENT_HARM
 
 /mob/living/carbon/monkey/attack_hand(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(L.a_intent == INTENT_HARM && prob(MONKEY_RETALIATE_HARM_PROB))
 		retaliate(L)
 	else if(L.a_intent == INTENT_DISARM && prob(MONKEY_RETALIATE_DISARM_PROB))
@@ -433,6 +463,8 @@
 	return ..()
 
 /mob/living/carbon/monkey/attack_paw(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(L.a_intent == INTENT_HARM && prob(MONKEY_RETALIATE_HARM_PROB))
 		retaliate(L)
 	else if(L.a_intent == INTENT_DISARM && prob(MONKEY_RETALIATE_DISARM_PROB))
@@ -440,11 +472,15 @@
 	return ..()
 
 /mob/living/carbon/monkey/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if((W.force) && (!target) && (W.damtype != STAMINA) )
 		retaliate(user)
 
 /mob/living/carbon/monkey/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(istype(Proj , /obj/item/projectile/beam)||istype(Proj, /obj/item/projectile/bullet))
 		if((Proj.damage_type == BURN) || (Proj.damage_type == BRUTE))
 			if(!Proj.nodamage && Proj.damage < src.health)
@@ -452,6 +488,8 @@
 	..()
 
 /mob/living/carbon/monkey/hitby(atom/movable/AM, skipcatch = FALSE, hitpush = TRUE, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/item))
 		var/obj/item/I = AM
 		if(I.throwforce < src.health && I.thrownby && ishuman(I.thrownby))
@@ -460,6 +498,8 @@
 	..()
 
 /mob/living/carbon/monkey/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!IsDeadOrIncap() && ismob(AM) && target)
 		var/mob/living/carbon/monkey/M = AM
 		if(!istype(M) || !M)
@@ -469,6 +509,8 @@
 	..()
 
 /mob/living/carbon/monkey/proc/monkeyDrop(var/obj/item/A)
+	procstart = null
+	src.procstart = null
 	if(A)
 		dropItemToGround(A, TRUE)
 		update_icons()

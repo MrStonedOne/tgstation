@@ -17,6 +17,8 @@
 	var/obj/item/pen/bin_pen
 
 /obj/item/paper_bin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		return
@@ -27,11 +29,15 @@
 		update_icon()
 
 /obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(!total_paper)
 		return
 	..()
 
 /obj/item/paper_bin/Destroy()
+	procstart = null
+	src.procstart = null
 	if(papers)
 		for(var/i in papers)
 			qdel(i)
@@ -39,12 +45,16 @@
 	. = ..()
 
 /obj/item/paper_bin/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(total_paper)
 		total_paper = 0
 		update_icon()
 	..()
 
 /obj/item/paper_bin/MouseDrop(atom/over_object)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = usr
 	if(!istype(M) || M.incapacitated() || !Adjacent(M))
 		return
@@ -60,10 +70,14 @@
 
 
 /obj/item/paper_bin/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 
 /obj/item/paper_bin/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.lying)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -100,6 +114,8 @@
 
 
 /obj/item/paper_bin/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/paper))
 		var/obj/item/paper/P = I
 		if(!user.transferItemToLoc(P, src))
@@ -119,6 +135,8 @@
 		return ..()
 
 /obj/item/paper_bin/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(total_paper)
 		to_chat(user, "It contains " + (total_paper > 1 ? "[total_paper] papers" : " one paper")+".")
@@ -127,6 +145,8 @@
 
 
 /obj/item/paper_bin/update_icon()
+	procstart = null
+	src.procstart = null
 	if(total_paper < 1)
 		icon_state = "paper_bin0"
 	else
@@ -148,12 +168,18 @@
 	papertype = /obj/item/paper/natural
 	resistance_flags = FLAMMABLE
 /obj/item/paper_bin/bundlenatural/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(total_paper < 1)
 		qdel(src)
 /obj/item/paper_bin/bundlenatural/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 /obj/item/paper_bin/bundlenatural/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(W.is_sharp())
 		to_chat(user, "<span class='notice'>You snip \the [src], spilling paper everywhere.</span>")
 		var/turf/T = get_turf(src.loc)

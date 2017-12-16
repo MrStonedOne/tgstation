@@ -7,6 +7,8 @@
 //message = the message
 //language = the language.
 /datum/saymode/proc/handle_message(mob/living/user, message, datum/language/language)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
@@ -15,6 +17,8 @@
 	mode = MODE_CHANGELING
 
 /datum/saymode/changeling/handle_message(mob/living/user, message, datum/language/language)
+	procstart = null
+	src.procstart = null
 	switch(user.lingcheck())
 		if(LINGHIVE_LINK)
 			var/msg = "<i><font color=#800040><b>[user.mind]:</b> [message]</font></i>"
@@ -58,6 +62,8 @@
 	mode = MODE_ALIEN
 
 /datum/saymode/xeno/handle_message(mob/living/user, message, datum/language/language)
+	procstart = null
+	src.procstart = null
 	if(user.hivecheck())
 		user.alien_talk(message)
 	return FALSE
@@ -68,6 +74,8 @@
 	mode = MODE_VOCALCORDS
 
 /datum/saymode/vocalcords/handle_message(mob/living/user, message, datum/language/language)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
 		var/obj/item/organ/vocal_cords/V = C.getorganslot(ORGAN_SLOT_VOICE)
@@ -82,6 +90,8 @@
 	mode = MODE_BINARY
 
 /datum/saymode/binary/handle_message(mob/living/user, message, datum/language/language)
+	procstart = null
+	src.procstart = null
 	if(isswarmer(user))
 		var/mob/living/simple_animal/hostile/swarmer/S = user
 		S.swarmer_chat(message)
@@ -105,6 +115,8 @@
 	mode = MODE_HOLOPAD
 
 /datum/saymode/holopad/handle_message(mob/living/user, message, datum/language/language)
+	procstart = null
+	src.procstart = null
 	if(isAI(user))
 		var/mob/living/silicon/ai/AI = user
 		AI.holopad_talk(message, language)
@@ -116,6 +128,8 @@
 	mode = MODE_MONKEY
 
 /datum/saymode/monkey/handle_message(mob/living/user, message, datum/language/language)
+	procstart = null
+	src.procstart = null
 	var/datum/mind = user.mind
 	if(!mind)
 		return TRUE

@@ -206,6 +206,8 @@
 							/obj/machinery/vending/wallmed = "NanoMed")
 
 /obj/item/circuitboard/machine/vendor/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		var/position = vending_names_paths.Find(build_path)
 		position = (position == vending_names_paths.len) ? 1 : (position + 1)
@@ -217,11 +219,15 @@
 		return ..()
 
 /obj/item/circuitboard/machine/vendor/proc/set_type(obj/machinery/vending/typepath)
+	procstart = null
+	src.procstart = null
 	build_path = typepath
 	name = "[vending_names_paths[build_path]] Vendor (Machine Board)"
 	req_components = list(initial(typepath.refill_canister) = initial(typepath.refill_count))
 
 /obj/item/circuitboard/machine/vendor/apply_default_parts(obj/machinery/M)
+	procstart = null
+	src.procstart = null
 	for(var/typepath in vending_names_paths)
 		if(istype(M, typepath))
 			set_type(typepath)
@@ -265,6 +271,8 @@
 #define PATH_HEATER  /obj/machinery/atmospherics/components/unary/thermomachine/heater
 
 /obj/item/circuitboard/machine/thermomachine/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!build_path)
 		if(prob(50))
@@ -275,6 +283,8 @@
 			build_path = PATH_HEATER
 
 /obj/item/circuitboard/machine/thermomachine/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		var/obj/item/circuitboard/new_type
 		var/new_setting
@@ -330,6 +340,8 @@
 		/obj/item/stock_parts/manipulator = 1)
 
 /obj/item/circuitboard/machine/processor/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		if(build_path == /obj/machinery/processor)
 			name = "Slime Processor (Machine Board)"
@@ -359,11 +371,15 @@
 		/obj/machinery/smartfridge/disks = "disks")
 
 /obj/item/circuitboard/machine/smartfridge/Initialize(mapload, new_type)
+	procstart = null
+	src.procstart = null
 	if(new_type)
 		build_path = new_type
 	return ..()
 
 /obj/item/circuitboard/machine/smartfridge/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		var/position = fridges_name_paths.Find(build_path, fridges_name_paths)
 		position = (position == fridges_name_paths.len) ? 1 : (position + 1)
@@ -373,6 +389,8 @@
 		return ..()
 
 /obj/item/circuitboard/machine/smartfridge/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='info'>[src] is set to [fridges_name_paths[build_path]]. You can use a screwdriver to reconfigure it.</span>")
 
@@ -570,6 +588,8 @@
 		/obj/item/stack/sheet/glass = 1)
 
 /obj/item/circuitboard/machine/chem_master/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		var/new_name = "ChemMaster"
 		var/new_path = /obj/machinery/chem_master

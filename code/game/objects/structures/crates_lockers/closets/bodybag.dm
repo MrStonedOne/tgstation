@@ -16,6 +16,8 @@
 	var/tagged = 0 // so closet code knows to put the tag overlay back
 
 /obj/structure/closet/body_bag/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(I, /obj/item/pen) || istype(I, /obj/item/toy/crayon))
 		var/t = stripped_input(user, "What would you like the label to be?", name, null, 53)
 		if(user.get_active_held_item() != I)
@@ -36,17 +38,23 @@
 		update_icon()
 
 /obj/structure/closet/body_bag/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if (tagged)
 		add_overlay("bodybag_label")
 
 /obj/structure/closet/body_bag/close()
+	procstart = null
+	src.procstart = null
 	if(..())
 		density = FALSE
 		return 1
 	return 0
 
 /obj/structure/closet/body_bag/MouseDrop(over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	..()
 	if(over_object == usr && Adjacent(usr) && (in_range(src, usr) || usr.contents.Find(src)))
 		if(!ishuman(usr))
@@ -71,6 +79,8 @@
 	max_mob_size = MOB_SIZE_LARGE
 
 /obj/structure/closet/body_bag/bluespace/MouseDrop(over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	..()
 	if(over_object == usr && Adjacent(usr) && (in_range(src, usr) || usr.contents.Find(src)))
 		if(!ishuman(usr))

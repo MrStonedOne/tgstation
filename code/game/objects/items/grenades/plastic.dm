@@ -19,16 +19,22 @@
 	var/boom_sizes = list(0, 0, 3)
 
 /obj/item/grenade/plastic/New()
+	procstart = null
+	src.procstart = null
 	plastic_overlay = mutable_appearance(icon, "[item_state]2", HIGH_OBJ_LAYER)
 	..()
 
 /obj/item/grenade/plastic/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(nadeassembly)
 	nadeassembly = null
 	target = null
 	..()
 
 /obj/item/grenade/plastic/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!nadeassembly && istype(I, /obj/item/device/assembly_holder))
 		var/obj/item/device/assembly_holder/A = I
 		if(!user.transferItemToLoc(I, src))
@@ -50,6 +56,8 @@
 	..()
 
 /obj/item/grenade/plastic/prime()
+	procstart = null
+	src.procstart = null
 	var/turf/location
 	if(target)
 		if(!QDELETED(target))
@@ -71,17 +79,25 @@
 
 //assembly stuff
 /obj/item/grenade/plastic/receive_signal()
+	procstart = null
+	src.procstart = null
 	prime()
 
 /obj/item/grenade/plastic/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(nadeassembly)
 		nadeassembly.Crossed(AM)
 
 /obj/item/grenade/plastic/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(nadeassembly)
 		nadeassembly.on_found(finder)
 
 /obj/item/grenade/plastic/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(nadeassembly)
 		nadeassembly.attack_self(user)
 		return
@@ -92,6 +108,8 @@
 		to_chat(user, "Timer set for [det_time] seconds.")
 
 /obj/item/grenade/plastic/afterattack(atom/movable/AM, mob/user, flag)
+	procstart = null
+	src.procstart = null
 	aim_dir = get_dir(user,AM)
 	if(!flag)
 		return
@@ -123,6 +141,8 @@
 			qdel(src)	//How?
 
 /obj/item/grenade/plastic/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	message_admins("[ADMIN_LOOKUPFLW(user)] suicided with [src] at [ADMIN_COORDJMP(user)]",0,1)
 	log_game("[key_name(user)] suicided with [src] at [COORD(user)]")
 	user.visible_message("<span class='suicide'>[user] activates [src] and holds it above [user.p_their()] head! It looks like [user.p_theyre()] going out with a bang!</span>")
@@ -144,6 +164,8 @@
 	qdel(src)
 
 /obj/item/grenade/plastic/update_icon()
+	procstart = null
+	src.procstart = null
 	if(nadeassembly)
 		icon_state = "[item_state]1"
 	else
@@ -161,16 +183,22 @@
 	var/open_panel = 0
 
 /obj/item/grenade/plastic/c4/New()
+	procstart = null
+	src.procstart = null
 	wires = new /datum/wires/explosive/c4(src)
 	..()
 
 /obj/item/grenade/plastic/c4/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(wires)
 	wires = null
 	target = null
 	return ..()
 
 /obj/item/grenade/plastic/c4/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] activates the [src.name] and holds it above [user.p_their()] head! It looks like [user.p_theyre()] going out with a bang!</span>")
 	var/message_say = "FOR NO RAISIN!"
 	if(user.mind)
@@ -193,6 +221,8 @@
 	user.gib(1, 1)
 
 /obj/item/grenade/plastic/c4/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		open_panel = !open_panel
 		to_chat(user, "<span class='notice'>You [open_panel ? "open" : "close"] the wire panel.</span>")
@@ -202,6 +232,8 @@
 		return ..()
 
 /obj/item/grenade/plastic/c4/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/newtime = input(usr, "Please set the timer.", "Timer", 10) as num
 	if(user.get_active_held_item() == src)
 		newtime = Clamp(newtime, 10, 60000)
@@ -209,6 +241,8 @@
 		to_chat(user, "Timer set for [timer] seconds.")
 
 /obj/item/grenade/plastic/c4/afterattack(atom/movable/AM, mob/user, flag)
+	procstart = null
+	src.procstart = null
 	if (!flag)
 		return
 	if (ismob(AM))
@@ -240,6 +274,8 @@
 		addtimer(CALLBACK(src, .proc/explode), timer * 10)
 
 /obj/item/grenade/plastic/c4/proc/explode()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	var/turf/location
@@ -255,6 +291,8 @@
 	qdel(src)
 
 /obj/item/grenade/plastic/c4/attack(mob/M, mob/user, def_zone)
+	procstart = null
+	src.procstart = null
 	return
 
 // X4 is an upgraded directional variant of c4 which is relatively safe to be standing next to. And much less safe to be standing on the other side of.

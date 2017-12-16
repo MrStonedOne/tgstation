@@ -8,20 +8,28 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/bodybag/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	deploy_bodybag(user, user.loc)
 
 /obj/item/bodybag/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(proximity)
 		if(isopenturf(target))
 			deploy_bodybag(user, target)
 
 /obj/item/bodybag/proc/deploy_bodybag(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/body_bag/R = new unfoldedbag_path(location)
 	R.open(user)
 	R.add_fingerprint(user)
 	qdel(src)
 
 /obj/item/bodybag/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(user.loc))
 		user.visible_message("<span class='suicide'>[user] is crawling into [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 		var/obj/structure/closet/body_bag/R = new unfoldedbag_path(user.loc)
@@ -45,12 +53,16 @@
 
 
 /obj/item/bodybag/bluespace/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(contents.len)
 		var/s = contents.len == 1 ? "" : "s"
 		to_chat(user, "<span class='notice'>You can make out the shape[s] of [contents.len] object[s] through the fabric.</span>")
 
 /obj/item/bodybag/bluespace/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/A in contents)
 		A.forceMove(get_turf(src))
 		if(isliving(A))
@@ -58,6 +70,8 @@
 	return ..()
 
 /obj/item/bodybag/bluespace/deploy_bodybag(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/body_bag/R = new unfoldedbag_path(location)
 	for(var/atom/movable/A in contents)
 		A.forceMove(R)
@@ -68,6 +82,8 @@
 	qdel(src)
 
 /obj/item/bodybag/bluespace/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't get out while you're restrained like this!</span>")
 		return

@@ -13,6 +13,8 @@
 
 
 /datum/round_event/anomaly/setup(loop=0)
+	procstart = null
+	src.procstart = null
 	var/safety_loop = loop + 1
 	if(safety_loop > 50)
 		kill()
@@ -25,9 +27,13 @@
 		setup(safety_loop)
 
 /datum/round_event/anomaly/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Localized energetic flux wave detected on long range scanners. Expected location of impact: [impact_area.name].", "Anomaly Alert")
 
 /datum/round_event/anomaly/start()
+	procstart = null
+	src.procstart = null
 	var/turf/T = safepick(get_area_turfs(impact_area))
 	if(T)
 		newAnomaly = new /obj/effect/anomaly/flux(T)

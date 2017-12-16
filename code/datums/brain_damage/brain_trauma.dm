@@ -13,6 +13,8 @@
 	var/permanent = FALSE //can this be cured?
 
 /datum/brain_trauma/New(obj/item/organ/brain/B, _permanent)
+	procstart = null
+	src.procstart = null
 	brain = B
 	owner = B.owner
 	permanent = _permanent
@@ -20,6 +22,8 @@
 		on_gain()
 
 /datum/brain_trauma/Destroy()
+	procstart = null
+	src.procstart = null
 	brain.traumas -= src
 	if(owner)
 		on_lose()
@@ -29,21 +33,31 @@
 
 //Called on life ticks
 /datum/brain_trauma/proc/on_life()
+	procstart = null
+	src.procstart = null
 	return
 
 //Called when given to a mob
 /datum/brain_trauma/proc/on_gain()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, gain_text)
 
 //Called when removed from a mob
 /datum/brain_trauma/proc/on_lose(silent)
+	procstart = null
+	src.procstart = null
 	if(!silent)
 		to_chat(owner, lose_text)
 
 //Called when hearing a spoken message
 /datum/brain_trauma/proc/on_hear(message, speaker, message_language, raw_message, radio_freq)
+	procstart = null
+	src.procstart = null
 	return message
 
 //Called when speaking
 /datum/brain_trauma/proc/on_say(message)
+	procstart = null
+	src.procstart = null
 	return message

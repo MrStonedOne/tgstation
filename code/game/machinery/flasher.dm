@@ -25,6 +25,8 @@
 	density = TRUE
 
 /obj/machinery/flasher/Initialize(mapload, ndir = 0, built = 0)
+	procstart = null
+	src.procstart = null
 	. = ..() // ..() is EXTREMELY IMPORTANT, never forget to add it
 	if(built)
 		setDir(ndir)
@@ -34,10 +36,14 @@
 		bulb = new(src)
 
 /obj/machinery/flasher/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(bulb)
 	return ..()
 
 /obj/machinery/flasher/power_change()
+	procstart = null
+	src.procstart = null
 	if (powered() && anchored && bulb)
 		stat &= ~NOPOWER
 		if(bulb.crit_fail)
@@ -50,6 +56,8 @@
 
 //Don't want to render prison breaks impossible
 /obj/machinery/flasher/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if (istype(W, /obj/item/wirecutters))
 		if (bulb)
@@ -85,15 +93,21 @@
 
 //Let the AI trigger them directly.
 /obj/machinery/flasher/attack_ai()
+	procstart = null
+	src.procstart = null
 	if (anchored)
 		return flash()
 
 /obj/machinery/flasher/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" && damage_amount < 10) //any melee attack below 10 dmg does nothing
 		return 0
 	. = ..()
 
 /obj/machinery/flasher/proc/flash()
+	procstart = null
+	src.procstart = null
 	if (!powered() || !bulb)
 		return
 
@@ -121,6 +135,8 @@
 
 
 /obj/machinery/flasher/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!(stat & (BROKEN|NOPOWER)))
 		if(bulb && prob(75/severity))
 			flash()
@@ -129,6 +145,8 @@
 	..()
 
 /obj/machinery/flasher/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(!(stat & BROKEN))
 			stat |= BROKEN
@@ -137,6 +155,8 @@
 				power_change()
 
 /obj/machinery/flasher/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(bulb)
 			bulb.forceMove(loc)
@@ -151,10 +171,14 @@
 	qdel(src)
 
 /obj/machinery/flasher/portable/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, 0)
 
 /obj/machinery/flasher/portable/HasProximity(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if (last_flash && world.time < last_flash + 150)
 		return
 
@@ -164,6 +188,8 @@
 			flash()
 
 /obj/machinery/flasher/portable/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(W, /obj/item/wrench))
 		playsound(src.loc, W.usesound, 100, 1)
 
@@ -192,10 +218,14 @@
 	var/id = null
 
 /obj/item/wallframe/flasher/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Its channel ID is '[id]'.</span>")
 
 /obj/item/wallframe/flasher/after_attach(var/obj/O)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/machinery/flasher/F = O
 	F.id = id

@@ -22,6 +22,8 @@
 
 /obj/machinery/atmospherics/components/binary/circulator/proc/return_transfer_air()
 
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/air1 = AIR1
 	var/datum/gas_mixture/air2 = AIR2
 
@@ -52,10 +54,14 @@
 		last_pressure_delta = 0
 
 /obj/machinery/atmospherics/components/binary/circulator/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/circulator/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		icon_state = "circ[side]-p"
 	else if(last_pressure_delta > 0)

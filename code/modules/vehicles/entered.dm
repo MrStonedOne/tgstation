@@ -2,16 +2,22 @@
 	var/enter_delay = 20
 
 /obj/vehicle/sealed/generate_actions()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_passenger_action_type(/datum/action/vehicle/sealed/climb_out)
 
 /obj/vehicle/sealed/generate_action_type()
+	procstart = null
+	src.procstart = null
 	var/datum/action/vehicle/sealed/E = ..()
 	. = E
 	if(istype(E))
 		E.vehicle_entered_target = src
 
 /obj/vehicle/sealed/MouseDrop_T(atom/dropping, mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(dropping) || !istype(M))
 		return ..()
 	if(M == dropping)
@@ -19,6 +25,8 @@
 	return ..()
 
 /obj/vehicle/sealed/proc/mob_try_enter(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	if(occupant_amount() >= max_occupants)
@@ -29,9 +37,13 @@
 	return FALSE
 
 /obj/vehicle/sealed/proc/get_enter_delay(mob/M)
+	procstart = null
+	src.procstart = null
 	return enter_delay
 
 /obj/vehicle/sealed/proc/mob_enter(mob/M, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	if(!silent)
@@ -41,9 +53,13 @@
 	return TRUE
 
 /obj/vehicle/sealed/proc/mob_try_exit(mob/M, mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	mob_exit(M, silent)
 
 /obj/vehicle/sealed/proc/mob_exit(mob/M, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	remove_occupant(M)
@@ -53,4 +69,6 @@
 	return TRUE
 
 /obj/vehicle/sealed/proc/exit_location(M)
+	procstart = null
+	src.procstart = null
 	return drop_location()

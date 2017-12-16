@@ -13,6 +13,8 @@
 	action_icon_state = "knock"
 
 /obj/effect/proc_holder/spell/aoe_turf/knock/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	SEND_SOUND(user, sound('sound/magic/knock.ogg'))
 	for(var/turf/T in targets)
 		for(var/obj/machinery/door/door in T.contents)
@@ -21,11 +23,15 @@
 			INVOKE_ASYNC(src, .proc/open_closet, C)
 
 /obj/effect/proc_holder/spell/aoe_turf/knock/proc/open_door(var/obj/machinery/door/door)
+	procstart = null
+	src.procstart = null
 	if(istype(door, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/A = door
 		A.locked = FALSE
 	door.open()
 
 /obj/effect/proc_holder/spell/aoe_turf/knock/proc/open_closet(var/obj/structure/closet/C)
+	procstart = null
+	src.procstart = null
 	C.locked = FALSE
 	C.open()

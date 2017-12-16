@@ -20,6 +20,8 @@
 	var/datum/objective_team/nuclear/nuke_team
 
 /datum/game_mode/nuclear/pre_setup()
+	procstart = null
+	src.procstart = null
 	var/n_agents = min(round(num_players() / 10), antag_candidates.len, agents_possible)
 	for(var/i = 0, i < n_agents, ++i)
 		var/datum/mind/new_op = pick_n_take(antag_candidates)
@@ -32,6 +34,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////
 
 /datum/game_mode/nuclear/post_setup()
+	procstart = null
+	src.procstart = null
 	//Assign leader
 	var/datum/mind/leader_mind = pre_nukeops[1]
 	var/datum/antagonist/nukeop/L = leader_mind.add_antag_datum(/datum/antagonist/nukeop/leader)
@@ -43,15 +47,21 @@
 	return ..()
 
 /datum/game_mode/nuclear/OnNukeExplosion(off_station)
+	procstart = null
+	src.procstart = null
 	..()
 	nukes_left--
 
 /datum/game_mode/nuclear/check_win()
+	procstart = null
+	src.procstart = null
 	if (nukes_left == 0)
 		return TRUE
 	return ..()
 
 /datum/game_mode/proc/are_operatives_dead()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/operative_mind in get_antagonists(/datum/antagonist/nukeop))
 		if(ishuman(operative_mind.current) && (operative_mind.current.stat != DEAD))
 			return FALSE
@@ -70,6 +80,8 @@
 	..()
 
 /datum/game_mode/nuclear/set_round_result()
+	procstart = null
+	src.procstart = null
 	..()
 	var result = nuke_team.get_result()
 	switch(result)
@@ -105,11 +117,15 @@
 			SSticker.news_report = OPERATIVE_SKIRMISH
 
 /datum/game_mode/nuclear/generate_report()
+	procstart = null
+	src.procstart = null
 	return "One of Central Command's trading routes was recently disrupted by a raid carried out by the Gorlex Marauders. They seemed to only be after one ship - a highly-sensitive \
 			transport containing a nuclear fission explosive, although it is useless without the proper code and authorization disk. While the code was likely found in minutes, the only disk that \
 			can activate this explosive is on your station. Ensure that it is protected at all times, and remain alert for possible intruders."
 
 /proc/is_nuclear_operative(mob/M)
+	procstart = null
+	src.procstart = null
 	return M && istype(M) && M.mind && M.mind.has_antag_datum(/datum/antagonist/nukeop)
 
 /datum/outfit/syndicate
@@ -140,6 +156,8 @@
 	tc = 0
 
 /datum/outfit/syndicate/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/radio/R = H.ears
 	R.set_frequency(FREQ_SYNDICATE)
 	R.freqlock = TRUE

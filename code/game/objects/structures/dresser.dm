@@ -7,6 +7,8 @@
 	anchored = TRUE
 
 /obj/structure/dresser/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/wrench))
 		to_chat(user, "<span class='notice'>You begin to [anchored ? "unwrench" : "wrench"] [src].</span>")
 		playsound(src, P.usesound, 50, 1)
@@ -17,10 +19,14 @@
 		return ..()
 
 /obj/structure/dresser/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood (get_turf(src), 10)
 	qdel(src)
 
 /obj/structure/dresser/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!Adjacent(user))//no tele-grooming
 		return
 	if(ishuman(user))

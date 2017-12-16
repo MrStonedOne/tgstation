@@ -6,6 +6,8 @@
 	var/list/datum/techweb_node/sold_nodes = list()
 
 /datum/export/tech/get_cost(obj/O)
+	procstart = null
+	src.procstart = null
 	var/obj/item/disk/tech_disk/D = O
 	var/cost = 0
 	for(var/V in D.stored_research.researched_nodes)
@@ -16,6 +18,8 @@
 	return cost
 
 /datum/export/tech/sell_object(obj/O)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/disk/tech_disk/D = O
 	for(var/V in D.stored_research.researched_nodes)

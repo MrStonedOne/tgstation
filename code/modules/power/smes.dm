@@ -40,11 +40,15 @@
 	var/obj/machinery/power/terminal/terminal = null
 
 /obj/machinery/power/smes/examine(user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!terminal)
 		to_chat(user, "<span class='warning'>This SMES has no power terminal!</span>")
 
 /obj/machinery/power/smes/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dir_loop:
 		for(var/d in GLOB.cardinals)
@@ -61,6 +65,8 @@
 		update_icon()
 
 /obj/machinery/power/smes/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/IO = 0
 	var/MC = 0
 	var/C
@@ -76,6 +82,8 @@
 		charge = C / 15000 * 1e6
 
 /obj/machinery/power/smes/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	//opening using screwdriver
 	if(default_deconstruction_screwdriver(user, "[initial(icon_state)]-o", initial(icon_state), I))
 		update_icon()
@@ -166,6 +174,8 @@
 	return ..()
 
 /obj/machinery/power/smes/default_deconstruction_crowbar(obj/item/crowbar/C)
+	procstart = null
+	src.procstart = null
 	if(istype(C) && terminal)
 		to_chat(usr, "<span class='warning'>You must first remove the power terminal!</span>")
 		return FALSE
@@ -173,10 +183,14 @@
 	return ..()
 
 /obj/machinery/power/smes/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stock_parts/cell/cell in component_parts)
 		cell.charge = (charge / capacity) * cell.maxcharge
 
 /obj/machinery/power/smes/Destroy()
+	procstart = null
+	src.procstart = null
 	if(SSticker.IsRoundInProgress())
 		var/area/A = get_area(src)
 		var/turf/T = get_turf(src)
@@ -190,12 +204,16 @@
 // create a terminal object pointing towards the SMES
 // wires will attach to this
 /obj/machinery/power/smes/proc/make_terminal(turf/T)
+	procstart = null
+	src.procstart = null
 	terminal = new/obj/machinery/power/terminal(T)
 	terminal.setDir(get_dir(T,src))
 	terminal.master = src
 	stat &= ~BROKEN
 
 /obj/machinery/power/smes/disconnect_terminal()
+	procstart = null
+	src.procstart = null
 	if(terminal)
 		terminal.master = null
 		terminal = null
@@ -203,6 +221,8 @@
 
 
 /obj/machinery/power/smes/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(stat & BROKEN)
 		return
@@ -227,9 +247,13 @@
 
 
 /obj/machinery/power/smes/proc/chargedisplay()
+	procstart = null
+	src.procstart = null
 	return Clamp(round(5.5*charge/capacity),0,5)
 
 /obj/machinery/power/smes/process()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		return
 
@@ -288,6 +312,8 @@
 // called after all power processes are finished
 // restores charge level to smes if there was excess this ptick
 /obj/machinery/power/smes/proc/restore()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		return
 
@@ -316,6 +342,8 @@
 
 
 /obj/machinery/power/smes/add_load(amount)
+	procstart = null
+	src.procstart = null
 	if(terminal && terminal.powernet)
 		terminal.powernet.load += amount
 
@@ -327,6 +355,8 @@
 		ui.open()
 
 /obj/machinery/power/smes/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"capacityPercent" = round(100*charge/capacity, 0.1),
 		"capacity" = capacity,
@@ -349,6 +379,8 @@
 	return data
 
 /obj/machinery/power/smes/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -408,10 +440,14 @@
 				log_smes(usr.ckey)
 
 /obj/machinery/power/smes/proc/log_smes(user = "")
+	procstart = null
+	src.procstart = null
 	investigate_log("input/output; [input_level>output_level?"<font color='green'>":"<font color='red'>"][input_level]/[output_level]</font> | Charge: [charge] | Output-mode: [output_attempt?"<font color='green'>on</font>":"<font color='red'>off</font>"] | Input-mode: [input_attempt?"<font color='green'>auto</font>":"<font color='red'>off</font>"] by [user]", INVESTIGATE_SINGULO)
 
 
 /obj/machinery/power/smes/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	input_attempt = rand(0,1)
 	inputting = input_attempt
 	output_attempt = rand(0,1)
@@ -433,6 +469,8 @@
 	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit. Magically produces power."
 
 /obj/machinery/power/smes/magical/process()
+	procstart = null
+	src.procstart = null
 	capacity = INFINITY
 	charge = INFINITY
 	..()

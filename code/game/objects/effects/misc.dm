@@ -13,9 +13,13 @@
 	pass_flags = PASSTABLE
 
 /obj/effect/beam/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/beam/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/spawner
@@ -56,10 +60,14 @@
 	layer = RIPPLE_LAYER
 
 /obj/effect/abstract/marker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.all_abstract_markers += src
 
 /obj/effect/abstract/marker/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.all_abstract_markers -= src
 	. = ..()
 

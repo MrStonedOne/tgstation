@@ -1,15 +1,21 @@
 
 
 /atom/proc/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	return null
 
 
 
 /turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /turf/open/hotspot_expose(exposed_temperature, exposed_volume, soh)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/air_contents = return_air()
 	if(!air_contents)
 		return 0
@@ -60,6 +66,8 @@
 	var/bypassing = FALSE
 
 /obj/effect/hotspot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSair.hotspots += src
 	perform_exposure()
@@ -67,6 +75,8 @@
 	air_update_turf()
 
 /obj/effect/hotspot/proc/perform_exposure()
+	procstart = null
+	src.procstart = null
 	var/turf/open/location = loc
 	if(!istype(location) || !(location.air))
 		return
@@ -98,6 +108,8 @@
 
 #define INSUFFICIENT(path) (!location.air.gases[path] || location.air.gases[path][MOLES] < 0.5)
 /obj/effect/hotspot/process()
+	procstart = null
+	src.procstart = null
 	if(just_spawned)
 		just_spawned = FALSE
 		return
@@ -150,6 +162,8 @@
 	return TRUE
 
 /obj/effect/hotspot/Destroy()
+	procstart = null
+	src.procstart = null
 	set_light(0)
 	SSair.hotspots -= src
 	var/turf/open/T = loc
@@ -159,6 +173,8 @@
 	return ..()
 
 /obj/effect/hotspot/proc/DestroyTurf()
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		var/turf/T = loc
 		if(T.to_be_destroyed)
@@ -174,12 +190,16 @@
 				T.max_fire_temperature_sustained = 0
 
 /obj/effect/hotspot/Crossed(atom/movable/AM, oldLoc)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isliving(AM))
 		var/mob/living/L = AM
 		L.fire_act(temperature, volume)
 
 /obj/effect/hotspot/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/dummy/fire
@@ -190,6 +210,8 @@
 	light_range = LIGHT_RANGE_FIRE
 
 /obj/effect/dummy/fire/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(loc))
 		return INITIALIZE_HINT_QDEL

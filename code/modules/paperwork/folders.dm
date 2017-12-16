@@ -25,12 +25,16 @@
 
 
 /obj/item/folder/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(contents.len)
 		add_overlay("folder_paper")
 
 
 /obj/item/folder/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/paper) || istype(W, /obj/item/photo) || istype(W, /obj/item/documents))
 		if(!user.transferItemToLoc(W, src))
 			return
@@ -43,6 +47,8 @@
 
 
 /obj/item/folder/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = "<title>[name]</title>"
 
 	for(var/obj/item/I in src)
@@ -53,6 +59,8 @@
 
 
 /obj/item/folder/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usr.stat || usr.restrained())
 		return
@@ -79,6 +87,8 @@
 	desc = "A folder stamped \"Top Secret - Property of Nanotrasen Corporation. Unauthorized distribution is punishable by death.\""
 
 /obj/item/folder/documents/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/documents/nanotrasen(src)
 	update_icon()
@@ -92,6 +102,8 @@
 	icon_state = "folder_sred"
 
 /obj/item/folder/syndicate/red/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/documents/syndicate/red(src)
 	update_icon()
@@ -100,11 +112,15 @@
 	icon_state = "folder_sblue"
 
 /obj/item/folder/syndicate/blue/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/documents/syndicate/blue(src)
 	update_icon()
 
 /obj/item/folder/syndicate/mining/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/documents/syndicate/mining(src)
 	update_icon()

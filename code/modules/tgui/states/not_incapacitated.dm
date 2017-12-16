@@ -18,10 +18,14 @@ GLOBAL_DATUM_INIT(not_incapacitated_turf_state, /datum/ui_state/not_incapacitate
 	var/turf_check = FALSE
 
 /datum/ui_state/not_incapacitated_state/New(loc, no_turfs = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	turf_check = no_turfs
 
 /datum/ui_state/not_incapacitated_state/can_use_topic(src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat)
 		return UI_CLOSE
 	if(user.incapacitated() || user.lying || (turf_check && !isturf(user.loc)))

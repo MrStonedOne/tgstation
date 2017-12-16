@@ -5,9 +5,13 @@
 	var/datum/objective_team/brother_team/team
 
 /datum/antagonist/brother/New(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /datum/antagonist/brother/create_team(datum/objective_team/brother_team/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		return
 	if(!istype(new_team))
@@ -15,9 +19,13 @@
 	team = new_team
 
 /datum/antagonist/brother/get_team()
+	procstart = null
+	src.procstart = null
 	return team
 
 /datum/antagonist/brother/on_gain()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.brothers += owner
 	owner.objectives += team.objectives
 	owner.special_role = special_role
@@ -25,6 +33,8 @@
 	return ..()
 
 /datum/antagonist/brother/on_removal()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.brothers -= owner
 	owner.objectives -= team.objectives
 	if(owner.current)
@@ -33,12 +43,16 @@
 	return ..()
 
 /datum/antagonist/brother/proc/give_meeting_area()
+	procstart = null
+	src.procstart = null
 	if(!owner.current || !team || !team.meeting_area)
 		return
 	to_chat(owner.current, "<B>Your designated meeting area:</B> [team.meeting_area]")
 	owner.store_memory("<b>Meeting Area</b>: [team.meeting_area]")
 
 /datum/antagonist/brother/greet()
+	procstart = null
+	src.procstart = null
 	var/brother_text = ""
 	var/list/brothers = team.members - owner
 	for(var/i = 1 to brothers.len)
@@ -54,6 +68,8 @@
 	give_meeting_area()
 
 /datum/antagonist/brother/proc/finalize_brother()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.update_brother_icons_added(owner)
 
 
@@ -63,9 +79,13 @@
 	var/meeting_area
 
 /datum/objective_team/brother_team/is_solo()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/objective_team/brother_team/proc/update_name()
+	procstart = null
+	src.procstart = null
 	var/list/last_names = list()
 	for(var/datum/mind/M in members)
 		var/list/split_name = splittext(M.name," ")
@@ -74,6 +94,8 @@
 	name = last_names.Join(" & ")
 
 /datum/objective_team/brother_team/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	parts += "<span class='header'>The blood brothers of [name] were:</span>"
@@ -96,6 +118,8 @@
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div>"
 
 /datum/objective_team/brother_team/proc/add_objective(datum/objective/O, needs_target = FALSE)
+	procstart = null
+	src.procstart = null
 	O.team = src
 	if(needs_target)
 		O.find_target()
@@ -103,6 +127,8 @@
 	objectives += O
 
 /datum/objective_team/brother_team/proc/forge_brother_objectives()
+	procstart = null
+	src.procstart = null
 	objectives = list()
 	var/is_hijacker = prob(10)
 	for(var/i = 1 to max(1, CONFIG_GET(number/brother_objectives_amount) + (members.len > 2) - is_hijacker))
@@ -114,6 +140,8 @@
 		add_objective(new/datum/objective/escape)
 
 /datum/objective_team/brother_team/proc/forge_single_objective()
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		if(LAZYLEN(active_ais()) && prob(100/GLOB.joined_player_list.len))
 			add_objective(new/datum/objective/destroy, TRUE)

@@ -7,6 +7,8 @@ GLOBAL_VAR_INIT(security_level, 0)
 //config.alert_desc_blue_downto
 
 /proc/set_security_level(level)
+	procstart = null
+	src.procstart = null
 	switch(level)
 		if("green")
 			level = SEC_LEVEL_GREEN
@@ -79,6 +81,8 @@ GLOBAL_VAR_INIT(security_level, 0)
 		return
 
 /proc/get_security_level()
+	procstart = null
+	src.procstart = null
 	switch(GLOB.security_level)
 		if(SEC_LEVEL_GREEN)
 			return "green"
@@ -90,6 +94,8 @@ GLOBAL_VAR_INIT(security_level, 0)
 			return "delta"
 
 /proc/num2seclevel(num)
+	procstart = null
+	src.procstart = null
 	switch(num)
 		if(SEC_LEVEL_GREEN)
 			return "green"
@@ -101,6 +107,8 @@ GLOBAL_VAR_INIT(security_level, 0)
 			return "delta"
 
 /proc/seclevel2num(seclevel)
+	procstart = null
+	src.procstart = null
 	switch( lowertext(seclevel) )
 		if("green")
 			return SEC_LEVEL_GREEN

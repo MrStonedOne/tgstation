@@ -15,18 +15,28 @@
 	qdel(src)
 
 /mob/living/proc/gib_animation()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/spawn_gibs()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/gibspawner/generic(get_turf(src), null, get_static_viruses())
 
 /mob/living/proc/spill_organs()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/spread_bodyparts()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/dust(just_ash = FALSE)
+	procstart = null
+	src.procstart = null
 	death(1)
 
 	if(buckled)
@@ -37,13 +47,19 @@
 	QDEL_IN(src,5) // since this is sometimes called in the middle of movement, allow half a second for movement to finish, ghosting to happen and animation to play. Looks much nicer and doesn't cause multiple runtimes.
 
 /mob/living/proc/dust_animation()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/spawn_dust(just_ash = FALSE)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/decal/cleanable/ash(loc)
 
 
 /mob/living/death(gibbed)
+	procstart = null
+	src.procstart = null
 	stat = DEAD
 	unset_machine()
 	timeofdeath = world.time

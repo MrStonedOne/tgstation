@@ -18,11 +18,15 @@
 
 
 /datum/species/dullahan/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
 		return TRUE
 	return FALSE
 
 /datum/species/dullahan/on_species_gain(mob/living/carbon/human/H, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	H.flags_1 &= ~HEAR_1
 	var/obj/item/bodypart/head/head = H.get_bodypart("head")
@@ -34,6 +38,8 @@
 		H.put_in_hands(head)
 
 /datum/species/dullahan/on_species_loss(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.flags_1 |= ~HEAR_1
 	H.reset_perspective(H)
 	if(myhead)
@@ -45,6 +51,8 @@
 	..()
 
 /datum/species/dullahan/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(myhead))
 		myhead = null
 		H.gib()
@@ -54,6 +62,8 @@
 		H.gib()
 
 /datum/species/dullahan/proc/update_vision_perspective(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = H.getorganslot(ORGAN_SLOT_EYES)
 	if(eyes)
 		H.update_tint()
@@ -70,6 +80,8 @@
 	zone = "abstract"
 
 /obj/item/organ/tongue/dullahan/TongueSpeech(var/message)
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		if(H.dna.species.id == "dullahan")
@@ -94,6 +106,8 @@
 	desc = "Switch between seeing normally from your head, or blindly from your body."
 
 /datum/action/item_action/organ_action/dullahan/Trigger()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/eyes/dullahan/DE = target
 	if(DE.tint)
@@ -112,16 +126,22 @@
 	flags_1 = HEAR_1
 
 /obj/item/dullahan_relay/Initialize(mapload,new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner = new_owner
 	START_PROCESSING(SSobj, src)
 
 /obj/item/dullahan_relay/process()
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/item/bodypart/head) || QDELETED(owner))
 		. = PROCESS_KILL
 		qdel(src)
 
 /obj/item/dullahan_relay/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(owner))
 		message = compose_message(speaker, message_language, raw_message, radio_freq, spans, message_mode)
 		to_chat(owner,message)
@@ -130,6 +150,8 @@
 
 
 /obj/item/dullahan_relay/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(owner))
 		var/mob/living/carbon/human/H = owner
 		if(H.dna.species.id == "dullahan")

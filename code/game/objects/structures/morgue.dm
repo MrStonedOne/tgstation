@@ -27,6 +27,8 @@
 	var/breakout_time = 600
 
 /obj/structure/bodycontainer/Destroy()
+	procstart = null
+	src.procstart = null
 	open()
 	if(connected)
 		qdel(connected)
@@ -34,13 +36,19 @@
 	return ..()
 
 /obj/structure/bodycontainer/on_log(login)
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/structure/bodycontainer/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/bodycontainer/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || !isturf(loc))
 		return
 	if(locked)
@@ -51,9 +59,13 @@
 	open()
 
 /obj/structure/bodycontainer/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/structure/bodycontainer/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		to_chat(user, "<span class='danger'>It's locked.</span>")
 		return
@@ -67,11 +79,15 @@
 	add_fingerprint(user)
 
 /obj/structure/bodycontainer/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.Adjacent(src))
 		return
 	return attack_hand(user)
 
 /obj/structure/bodycontainer/attackby(obj/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(P, /obj/item/pen))
 		var/t = stripped_input(user, "What would you like the label to be?", text("[]", name), null)
@@ -87,10 +103,14 @@
 		return ..()
 
 /obj/structure/bodycontainer/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/metal (loc, 5)
 	qdel(src)
 
 /obj/structure/bodycontainer/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		open()
 		return
@@ -107,6 +127,8 @@
 		open()
 
 /obj/structure/bodycontainer/proc/open()
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/deconstruct.ogg', 50, 1)
 	var/turf/T = get_step(src, opendir)
 	for(var/atom/movable/AM in src)
@@ -114,6 +136,8 @@
 	update_icon()
 
 /obj/structure/bodycontainer/proc/close()
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/deconstruct.ogg', 50, 1)
 	for(var/atom/movable/AM in connected.loc)
 		if(!AM.anchored || AM == connected)
@@ -121,6 +145,8 @@
 	update_icon()
 
 /obj/structure/bodycontainer/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))
 		user.overlay_fullscreen("remote_view", /obj/screen/fullscreen/impaired, 2)
 /*
@@ -133,11 +159,15 @@
 	opendir = EAST
 
 /obj/structure/bodycontainer/morgue/New()
+	procstart = null
+	src.procstart = null
 	connected = new/obj/structure/tray/m_tray(src)
 	connected.connected = src
 	..()
 
 /obj/structure/bodycontainer/morgue/update_icon()
+	procstart = null
+	src.procstart = null
 	if (!connected || connected.loc != src) // Open or tray is gone.
 		icon_state = "morgue0"
 	else
@@ -174,10 +204,14 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	return
 
 /obj/structure/bodycontainer/crematorium/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.crematoriums.Remove(src)
 	return ..()
 
 /obj/structure/bodycontainer/crematorium/New()
+	procstart = null
+	src.procstart = null
 	connected = new/obj/structure/tray/c_tray(src)
 	connected.connected = src
 
@@ -185,6 +219,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	..()
 
 /obj/structure/bodycontainer/crematorium/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!connected || connected.loc != src)
 		icon_state = "crema0"
 	else
@@ -200,6 +236,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	return
 
 /obj/structure/bodycontainer/crematorium/proc/cremate(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return //don't let you cremate something twice or w/e
 	// Make sure we don't delete the actual morgue and its tray
@@ -244,6 +282,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	desc = "A human incinerator. Works well during ice cream socials."
 
 /obj/structure/bodycontainer/crematorium/creamatorium/cremate(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/icecreams = new()
 	for(var/mob/living/i_scream in GetAllContents())
 		var/obj/item/reagent_containers/food/snacks/icecream/IC = new()
@@ -269,6 +309,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	max_integrity = 350
 
 /obj/structure/tray/Destroy()
+	procstart = null
+	src.procstart = null
 	if(connected)
 		connected.connected = null
 		connected.update_icon()
@@ -276,13 +318,19 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	return ..()
 
 /obj/structure/tray/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/metal (loc, 2)
 	qdel(src)
 
 /obj/structure/tray/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/structure/tray/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if (src.connected)
 		connected.close()
 		add_fingerprint(user)
@@ -290,6 +338,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 		to_chat(user, "<span class='warning'>That's not connected to anything!</span>")
 
 /obj/structure/tray/MouseDrop_T(atom/movable/O as mob|obj, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ismovableatom(O) || O.anchored || !Adjacent(user) || !user.Adjacent(O) || O.loc == user)
 		return
 	if(!ismob(O))
@@ -323,6 +373,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	icon_state = "morguet"
 
 /obj/structure/tray/m_tray/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSTABLE))
 		return 1
 	if(locate(/obj/structure/table) in get_turf(mover))
@@ -331,6 +383,8 @@ GLOBAL_LIST_EMPTY(crematoriums)
 		return 0
 
 /obj/structure/tray/m_tray/CanAStarPass(ID, dir, caller)
+	procstart = null
+	src.procstart = null
 	. = !density
 	if(ismovableatom(caller))
 		var/atom/movable/mover = caller

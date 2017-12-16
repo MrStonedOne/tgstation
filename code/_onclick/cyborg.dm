@@ -7,6 +7,8 @@
 */
 
 /mob/living/silicon/robot/ClickOn(var/atom/A, var/params)
+	procstart = null
+	src.procstart = null
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
@@ -88,18 +90,28 @@
 
 //Middle click cycles through selected modules.
 /mob/living/silicon/robot/MiddleClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	cycle_modules()
 	return
 
 //Give cyborgs hotkey clicks without breaking existing uses of hotkey clicks
 // for non-doors/apcs
 /mob/living/silicon/robot/CtrlShiftClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	A.BorgCtrlShiftClick(src)
 /mob/living/silicon/robot/ShiftClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	A.BorgShiftClick(src)
 /mob/living/silicon/robot/CtrlClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	A.BorgCtrlClick(src)
 /mob/living/silicon/robot/AltClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	A.BorgAltClick(src)
 
 /atom/proc/BorgCtrlShiftClick(mob/living/silicon/robot/user) //forward to human click if not overriden
@@ -144,6 +156,8 @@
 		..()
 
 /atom/proc/BorgAltClick(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	AltClick(user)
 	return
 
@@ -168,10 +182,16 @@
 	change attack_robot() above to the proper function
 */
 /mob/living/silicon/robot/UnarmedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	A.attack_robot(src)
 /mob/living/silicon/robot/RangedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	A.attack_robot(src)
 
 /atom/proc/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_ai(user)
 	return

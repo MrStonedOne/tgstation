@@ -23,6 +23,8 @@
 															)
 
 /mob/living/silicon/pai/proc/paiInterface()
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	var/left_part = ""
 	var/right_part = softwareMenu()
@@ -113,6 +115,8 @@
 
 
 /mob/living/silicon/pai/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/soft = href_list["software"]
 	var/sub = href_list["sub"]
@@ -326,6 +330,8 @@
 
 
 /mob/living/silicon/pai/proc/downloadSoftware()
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 
 	dat += "<h2>CentCom pAI Module Subversion Network</h2><br>"
@@ -345,6 +351,8 @@
 
 
 /mob/living/silicon/pai/proc/directives()
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 
 	dat += "[(master) ? "Your master: [master] ([master_dna])" : "You are bound to no one."]"
@@ -368,6 +376,8 @@
 	return dat
 
 /mob/living/silicon/pai/proc/CheckDNA(mob/living/carbon/M, mob/living/silicon/pai/P)
+	procstart = null
+	src.procstart = null
 	var/answer = input(M, "[P] is requesting a DNA sample from you. Will you allow it to confirm your identity?", "[P] Check DNA", "No") in list("Yes", "No")
 	if(answer == "Yes")
 		M.visible_message("<span class='notice'>[M] presses [M.p_their()] thumb against [P].</span>",\
@@ -388,6 +398,8 @@
 
 //Remote Signaller
 /mob/living/silicon/pai/proc/softwareSignal()
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	dat += "<h3>Remote Signaller</h3><br><br>"
 	dat += {"<B>Frequency/Code</B> for signaler:<BR>
@@ -410,6 +422,8 @@
 
 // Crew Manifest
 /mob/living/silicon/pai/proc/softwareManifest()
+	procstart = null
+	src.procstart = null
 	. += "<h2>Crew Manifest</h2><br><br>"
 	if(GLOB.data_core.general)
 		for(var/datum/data/record/t in sortRecord(GLOB.data_core.general))
@@ -419,6 +433,8 @@
 
 // Medical Records
 /mob/living/silicon/pai/proc/softwareMedicalRecord()
+	procstart = null
+	src.procstart = null
 	switch(subscreen)
 		if(0)
 			. += "<h3>Medical Records</h3><HR>"
@@ -440,6 +456,8 @@
 
 // Security Records
 /mob/living/silicon/pai/proc/softwareSecurityRecord()
+	procstart = null
+	src.procstart = null
 	. = ""
 	switch(subscreen)
 		if(0)
@@ -462,6 +480,8 @@
 
 // Universal Translator
 /mob/living/silicon/pai/proc/softwareTranslator()
+	procstart = null
+	src.procstart = null
 	var/translator_on = (flags_2 & OMNITONGUE_2)
 	. = {"<h3>Universal Translator</h3><br>
 				When enabled, this device will permamently be able to speak and understand all known forms of communication.<br><br>
@@ -470,6 +490,8 @@
 
 // Security HUD
 /mob/living/silicon/pai/proc/facialRecognition()
+	procstart = null
+	src.procstart = null
 	var/dat = {"<h3>Facial Recognition Suite</h3><br>
 				When enabled, this package will scan all viewable faces and compare them against the known criminal database, providing real-time graphical data about any detected persons of interest.<br><br>
 				The package is currently [ (secHUD) ? "<font color=#55FF55>en" : "<font color=#FF5555>dis" ]abled.</font><br>
@@ -479,6 +501,8 @@
 
 // Medical HUD
 /mob/living/silicon/pai/proc/medicalAnalysis()
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	if(subscreen == 0)
 		dat += {"<h3>Medical Analysis Suite</h3><br>
@@ -523,6 +547,8 @@
 
 // Atmospheric Scanner
 /mob/living/silicon/pai/proc/softwareAtmo()
+	procstart = null
+	src.procstart = null
 	var/dat = "<h3>Atmospheric Sensor</h4>"
 
 	var/turf/T = get_turf(loc)
@@ -549,6 +575,8 @@
 
 // Camera Jack - Clearly not finished
 /mob/living/silicon/pai/proc/softwareCamera()
+	procstart = null
+	src.procstart = null
 	var/dat = "<h3>Camera Jack</h3>"
 	dat += "Cable status : "
 
@@ -568,6 +596,8 @@
 
 // Door Jack
 /mob/living/silicon/pai/proc/softwareDoor()
+	procstart = null
+	src.procstart = null
 	var/dat = "<h3>Airlock Jack</h3>"
 	dat += "Cable status : "
 	if(!cable)
@@ -593,6 +623,8 @@
 
 // Door Jack - supporting proc
 /mob/living/silicon/pai/proc/hackloop()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	for(var/mob/living/silicon/ai/AI in GLOB.player_list)
 		if(T.loc)
@@ -604,6 +636,8 @@
 // Digital Messenger
 /mob/living/silicon/pai/proc/pdamessage()
 
+	procstart = null
+	src.procstart = null
 	var/dat = "<h3>Digital Messenger</h3>"
 	dat += {"<b>Signal/Receiver Status:</b> <A href='byond://?src=[REF(src)];software=pdamessage;toggler=1'>
 	[(pda.toff) ? "<font color='red'>\[Off\]</font>" : "<font color='green'>\[On\]</font>"]</a><br>

@@ -31,6 +31,8 @@
 	//--end of love :'(--
 
 /obj/item/toy/plush/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/squeak, squeak_override)
 
@@ -50,6 +52,8 @@
 	normal_desc = desc
 
 /obj/item/toy/plush/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(grenade)
 
 	//inform next of kin and... acquaintances
@@ -97,11 +101,15 @@
 	return ..()
 
 /obj/item/toy/plush/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == grenade)
 		grenade = null
 	..()
 
 /obj/item/toy/plush/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stuffed || grenade)
 		to_chat(user, "<span class='notice'>You pet [src]. D'awww.</span>")
@@ -116,6 +124,8 @@
 		to_chat(user, "<span class='notice'>You try to pet [src], but it has no stuffing. Aww...</span>")
 
 /obj/item/toy/plush/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(I.is_sharp())
 		if(!grenade)
 			if(!stuffed)
@@ -217,6 +227,8 @@
 		user.show_message("<span class='warning'>[Kisser] and [src] don't know what to do with one another.</span>", 0)
 
 /obj/item/toy/plush/proc/heartbreak(obj/item/toy/plush/Brutus)
+	procstart = null
+	src.procstart = null
 	if(lover != Brutus)
 		to_chat(world, "lover != Brutus")
 		return	//why are we considering someone we don't love?
@@ -239,9 +251,13 @@
 	update_desc()
 
 /obj/item/toy/plush/proc/scorned_by(obj/item/toy/plush/Outmoded)
+	procstart = null
+	src.procstart = null
 	scorned_by.Add(Outmoded)
 
 /obj/item/toy/plush/proc/new_lover(obj/item/toy/plush/Juliet)
+	procstart = null
+	src.procstart = null
 	if(lover == Juliet)
 		return	//nice try
 	lover = Juliet
@@ -256,6 +272,8 @@
 		partner = null	//more like who cares
 
 /obj/item/toy/plush/proc/new_partner(obj/item/toy/plush/Apple_of_my_eye)
+	procstart = null
+	src.procstart = null
 	if(partner == Apple_of_my_eye)
 		return	//double marriage is just insecurity
 	if(lover != Apple_of_my_eye)
@@ -270,6 +288,8 @@
 	update_desc()
 
 /obj/item/toy/plush/proc/plop(obj/item/toy/plush/Daddy)
+	procstart = null
+	src.procstart = null
 	if(partner != Daddy)
 		return	//we do not have bastards in our toyshop
 
@@ -281,6 +301,8 @@
 	plush_child.make_young(src, Daddy)
 
 /obj/item/toy/plush/proc/make_young(obj/item/toy/plush/Mama, obj/item/toy/plush/Dada)
+	procstart = null
+	src.procstart = null
 	if(Mama == Dada)
 		return	//cloning is reserved for plants and spacemen
 
@@ -355,6 +377,8 @@
 	cheer_up()
 
 /obj/item/toy/plush/proc/update_desc()
+	procstart = null
+	src.procstart = null
 	desc = normal_desc
 	if(mood_message)
 		desc += mood_message
@@ -382,6 +406,8 @@
 	gender = MALE	//he's a boy, right?
 
 /obj/item/toy/plush/plushvar/Moved()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(clash_target)
 		return
@@ -390,6 +416,8 @@
 		clash_of_the_plushies(P)
 
 /obj/item/toy/plush/plushvar/proc/clash_of_the_plushies(obj/item/toy/plush/narplush/P)
+	procstart = null
+	src.procstart = null
 	clash_target = P
 	P.clashing = TRUE
 	say("YOU.")
@@ -468,6 +496,8 @@
 	gender = FEMALE	//it's canon if the toy is
 
 /obj/item/toy/plush/narplush/Moved()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/toy/plush/plushvar/P = locate() in range(1, src)
 	if(P && istype(P.loc, /turf/open) && !P.clash_target && !clashing)

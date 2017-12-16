@@ -10,6 +10,8 @@
 	fakeable = FALSE
 
 /datum/round_event/ghost_role/nightmare/spawn_role()
+	procstart = null
+	src.procstart = null
 	var/list/candidates = get_candidates("alien", null, ROLE_ALIEN)
 	if(!candidates.len)
 		return NOT_ENOUGH_PLAYERS

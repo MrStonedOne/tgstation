@@ -7,6 +7,8 @@
 	var/static/dmm_suite/maploader = new
 
 /datum/map_template/New(path = null, rename = null)
+	procstart = null
+	src.procstart = null
 	if(path)
 		mappath = path
 	if(mappath)
@@ -15,6 +17,8 @@
 		name = rename
 
 /datum/map_template/proc/preload_size(path)
+	procstart = null
+	src.procstart = null
 	var/bounds = maploader.load_map(file(path), 1, 1, 1, cropMap=FALSE, measureOnly=TRUE)
 	if(bounds)
 		width = bounds[MAP_MAXX] // Assumes all templates are rectangular, have a single Z level, and begin at 1,1,1
@@ -22,6 +26,8 @@
 	return bounds
 
 /datum/map_template/proc/initTemplateBounds(var/list/bounds)
+	procstart = null
+	src.procstart = null
 	var/list/obj/machinery/atmospherics/atmos_machines = list()
 	var/list/obj/structure/cable/cables = list()
 	var/list/atom/atoms = list()
@@ -49,6 +55,8 @@
 	SSair.setup_template_machinery(atmos_machines)
 
 /datum/map_template/proc/load_new_z()
+	procstart = null
+	src.procstart = null
 	var/x = round(world.maxx/2)
 	var/y = round(world.maxy/2)
 
@@ -65,6 +73,8 @@
 	log_game("Z-level [name] loaded at at [x],[y],[world.maxz]")
 
 /datum/map_template/proc/load(turf/T, centered = FALSE)
+	procstart = null
+	src.procstart = null
 	if(centered)
 		T = locate(T.x - round(width/2) , T.y - round(height/2) , T.z)
 	if(!T)
@@ -88,6 +98,8 @@
 	return TRUE
 
 /datum/map_template/proc/get_affected_turfs(turf/T, centered = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/placement = T
 	if(centered)
 		var/turf/corner = locate(placement.x - round(width/2), placement.y - round(height/2), placement.z)
@@ -99,5 +111,7 @@
 //for your ever biggening badminnery kevinz000
 //❤ - Cyberboss
 /proc/load_new_z_level(var/file, var/name)
+	procstart = null
+	src.procstart = null
 	var/datum/map_template/template = new(file, name)
 	template.load_new_z()

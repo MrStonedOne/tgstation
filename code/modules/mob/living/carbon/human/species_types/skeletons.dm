@@ -13,6 +13,8 @@
 	liked_food = GROSS | MEAT | RAW
 
 /datum/species/skeleton/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
 		return TRUE
 	return ..()

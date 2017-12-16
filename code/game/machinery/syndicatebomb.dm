@@ -32,19 +32,27 @@
 	var/explode_now = FALSE
 
 /obj/machinery/syndicatebomb/proc/try_detonate(ignore_active = FALSE)
+	procstart = null
+	src.procstart = null
 	. = (payload in src) && (active || ignore_active) && !defused
 	if(.)
 		payload.detonate()
 
 /obj/machinery/syndicatebomb/obj_break()
+	procstart = null
+	src.procstart = null
 	if(!try_detonate())
 		..()
 
 /obj/machinery/syndicatebomb/obj_destruction()
+	procstart = null
+	src.procstart = null
 	if(!try_detonate())
 		..()
 
 /obj/machinery/syndicatebomb/process()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		STOP_PROCESSING(SSfastprocess, src)
 		detonation_timer = null
@@ -83,6 +91,8 @@
 			STOP_PROCESSING(SSfastprocess, src)
 
 /obj/machinery/syndicatebomb/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires = new /datum/wires/syndicatebomb(src)
 	if(payload)
@@ -91,25 +101,35 @@
 	countdown = new(src)
 
 /obj/machinery/syndicatebomb/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(wires)
 	QDEL_NULL(countdown)
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/machinery/syndicatebomb/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "A digital display on it reads \"[seconds_remaining()]\".")
 
 /obj/machinery/syndicatebomb/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][active ? "-active" : "-inactive"][open_panel ? "-wires" : ""]"
 
 /obj/machinery/syndicatebomb/proc/seconds_remaining()
+	procstart = null
+	src.procstart = null
 	if(active)
 		. = max(0, round((detonation_timer - world.time) / 10))
 	else
 		. = timer_set
 
 /obj/machinery/syndicatebomb/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench) && can_unanchor)
 		if(!anchored)
 			if(!isturf(loc) || isspaceturf(loc))
@@ -181,12 +201,18 @@
 			to_chat(user, "<span class='warning'>That seems like a really bad idea...</span>")
 
 /obj/machinery/syndicatebomb/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/machinery/syndicatebomb/attack_ai()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/syndicatebomb/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	wires.interact(user)
 	if(!open_panel)
 		if(!active)
@@ -195,6 +221,8 @@
 			to_chat(user, "<span class='warning'>The bomb is bolted to the floor!</span>")
 
 /obj/machinery/syndicatebomb/proc/activate()
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	START_PROCESSING(SSfastprocess, src)
 	countdown.start()
@@ -203,6 +231,8 @@
 	playsound(loc, 'sound/machines/click.ogg', 30, 1)
 
 /obj/machinery/syndicatebomb/proc/settings(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_timer = input(user, "Please set the timer.", "Timer", "[timer_set]") as num
 	if(in_range(src, user) && isliving(user)) //No running off and setting bombs from across the station
 		timer_set = Clamp(new_timer, minimum_timer, maximum_timer)
@@ -254,6 +284,8 @@
 	timer_set = 120
 
 /obj/machinery/syndicatebomb/empty/New()
+	procstart = null
+	src.procstart = null
 	..()
 	wires.cut_all()
 
@@ -286,10 +318,14 @@
 
 
 /obj/item/bombcore/burn()
+	procstart = null
+	src.procstart = null
 	detonate()
 	..()
 
 /obj/item/bombcore/proc/detonate()
+	procstart = null
+	src.procstart = null
 	if(adminlog)
 		message_admins(adminlog)
 		log_game(adminlog)
@@ -311,6 +347,8 @@
 	var/attempts = 0
 
 /obj/item/bombcore/training/proc/reset()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/holder = loc
 	if(istype(holder))
 		if(holder.wires)
@@ -324,6 +362,8 @@
 		holder.updateDialog()
 
 /obj/item/bombcore/training/detonate()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/holder = loc
 	if(istype(holder))
 		attempts++
@@ -333,6 +373,8 @@
 		qdel(src)
 
 /obj/item/bombcore/training/defuse()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/holder = loc
 	if(istype(holder))
 		attempts++
@@ -356,6 +398,8 @@
 	var/amt_summon = 1
 
 /obj/item/bombcore/badmin/summon/detonate()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/B = loc
 	spawn_and_random_walk(summon_path, src, amt_summon, walk_chance=50, admin_spawn=TRUE)
 	qdel(B)
@@ -366,6 +410,8 @@
 	amt_summon 	= 100
 
 /obj/item/bombcore/badmin/summon/clown/defuse()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/misc/sadtrombone.ogg', 50)
 	..()
 
@@ -396,6 +442,8 @@
 
 /obj/item/bombcore/chemical/detonate()
 
+	procstart = null
+	src.procstart = null
 	if(time_release > 0)
 		var/total_volume = 0
 		for(var/obj/item/reagent_containers/RC in beakers)
@@ -447,6 +495,8 @@
 	qdel(src)
 
 /obj/item/bombcore/chemical/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/crowbar) && beakers.len > 0)
 		playsound(loc, I.usesound, 50, 1)
 		for (var/obj/item/B in beakers)
@@ -465,6 +515,8 @@
 	..()
 
 /obj/item/bombcore/chemical/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	// Using different grenade casings, causes the payload to have different properties.
 	var/obj/item/stock_parts/matter_bin/MB = locate(/obj/item/stock_parts/matter_bin) in src
@@ -523,6 +575,8 @@
 	var/existant =	0
 
 /obj/item/device/syndicatedetonator/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(timer < world.time)
 		for(var/obj/machinery/syndicatebomb/B in GLOB.machines)
 			if(B.active)

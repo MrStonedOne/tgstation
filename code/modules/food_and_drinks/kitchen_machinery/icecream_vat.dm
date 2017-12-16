@@ -29,6 +29,8 @@
 		"singulo" = 5)
 
 /obj/machinery/icecream_vat/proc/get_ingredient_list(type)
+	procstart = null
+	src.procstart = null
 	switch(type)
 		if(ICECREAM_CHOCOLATE)
 			return list("milk", "ice", "cocoa")
@@ -45,6 +47,8 @@
 
 
 /obj/machinery/icecream_vat/proc/get_flavour_name(flavour_type)
+	procstart = null
+	src.procstart = null
 	switch(flavour_type)
 		if(ICECREAM_CHOCOLATE)
 			return "chocolate"
@@ -61,6 +65,8 @@
 
 
 /obj/machinery/icecream_vat/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	while(product_types.len < 6)
 		product_types.Add(5)
@@ -70,10 +76,14 @@
 		reagents.add_reagent(reagent, icecream_vat_reagents[reagent])
 
 /obj/machinery/icecream_vat/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	interact(user)
 
 /obj/machinery/icecream_vat/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += "<b>ICE CREAM</b><br><div class='statusDisplay'>"
 	dat += "<b>Dispensing: [flavour_name] icecream </b> <br><br>"
@@ -96,6 +106,8 @@
 	popup.open()
 
 /obj/machinery/icecream_vat/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/reagent_containers/food/snacks/icecream))
 		var/obj/item/reagent_containers/food/snacks/icecream/I = O
 		if(!I.ice_creamed)
@@ -118,6 +130,8 @@
 		return ..()
 
 /obj/machinery/icecream_vat/proc/make(mob/user, make_type, amount)
+	procstart = null
+	src.procstart = null
 	for(var/R in get_ingredient_list(make_type))
 		if(reagents.has_reagent(R, amount))
 			continue
@@ -136,6 +150,8 @@
 		to_chat(user, "<span class='warning'>You don't have the ingredients to make this!</span>")
 
 /obj/machinery/icecream_vat/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(href_list["select"])
@@ -183,11 +199,15 @@
 	foodtype = DAIRY
 
 /obj/item/reagent_containers/food/snacks/icecream/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(20)
 	reagents.add_reagent("nutriment", 4)
 
 /obj/item/reagent_containers/food/snacks/icecream/proc/set_cone_type(var/cone_name)
+	procstart = null
+	src.procstart = null
 	cone_type = cone_name
 	icon_state = "icecream_cone_[cone_name]"
 	switch (cone_type)
@@ -200,6 +220,8 @@
 
 
 /obj/item/reagent_containers/food/snacks/icecream/proc/add_ice_cream(var/flavour_name)
+	procstart = null
+	src.procstart = null
 	name = "[flavour_name] icecream"
 	src.add_overlay("icecream_[flavour_name]")
 	switch (flavour_name) // adding the actual reagents advertised in the ingredient list
@@ -220,10 +242,14 @@
 	ice_creamed = 1
 
 /obj/item/reagent_containers/food/snacks/icecream/proc/add_mob_flavor(var/mob/M)
+	procstart = null
+	src.procstart = null
 	add_ice_cream("mob")
 	name = "[M.name] icecream"
 
 /obj/machinery/icecream_vat/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc, 4)
 	qdel(src)

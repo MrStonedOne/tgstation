@@ -38,6 +38,8 @@
 	var/copy_type = null
 
 /obj/item/documents/photocopy/New(loc, obj/item/documents/copy=null)
+	procstart = null
+	src.procstart = null
 	..()
 	if(copy)
 		copy_type = copy.type
@@ -46,6 +48,8 @@
 			copy_type = C.copy_type
 
 /obj/item/documents/photocopy/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/toy/crayon/red) || istype(O, /obj/item/toy/crayon/blue))
 		if (forgedseal)
 			to_chat(user, "<span class='warning'>You have already forged a seal on [src]!</span>")

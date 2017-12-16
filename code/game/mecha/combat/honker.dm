@@ -16,6 +16,8 @@
 	var/squeak = 0
 
 /obj/mecha/combat/honker/get_stats_part()
+	procstart = null
+	src.procstart = null
 	var/integrity = obj_integrity/max_integrity*100
 	var/cell_charge = get_charge()
 	var/datum/gas_mixture/int_tank_air = internal_tank.return_air()
@@ -40,6 +42,8 @@
 	return output
 
 /obj/mecha/combat/honker/get_stats_html()
+	procstart = null
+	src.procstart = null
 	var/output = {"<html>
 						<head><title>[src.name] data</title>
 						<style>
@@ -95,6 +99,8 @@
 	return output
 
 /obj/mecha/combat/honker/get_commands()
+	procstart = null
+	src.procstart = null
 	var/output = {"<div class='wr'>
 						<div class='header'>Sounds of HONK:</div>
 						<div class='links'>
@@ -107,6 +113,8 @@
 
 
 /obj/mecha/combat/honker/get_equipment_list()
+	procstart = null
+	src.procstart = null
 	if(!equipment.len)
 		return
 	var/output = "<b>Honk-ON-Systems:</b><div style=\"margin-left: 15px;\">"
@@ -118,6 +126,8 @@
 
 
 /obj/mecha/combat/honker/mechstep(direction)
+	procstart = null
+	src.procstart = null
 	var/result = step(src,direction)
 	if(result)
 		if(!squeak)
@@ -128,6 +138,8 @@
 	return result
 
 /obj/mecha/combat/honker/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if (href_list["play_sound"])
 		switch(href_list["play_sound"])
@@ -136,6 +148,8 @@
 	return
 
 /proc/rand_hex_color()
+	procstart = null
+	src.procstart = null
 	var/list/colors = list("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f")
 	var/color=""
 	for (var/i=0;i<6;i++)

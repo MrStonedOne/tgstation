@@ -18,6 +18,8 @@
 	var/has_latches = TRUE
 
 /obj/item/storage/toolbox/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_latches)
 		if(prob(10))
@@ -27,6 +29,8 @@
 	update_icon()
 
 /obj/item/storage/toolbox/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	cut_overlays()
 	if(has_latches)
@@ -34,6 +38,8 @@
 
 
 /obj/item/storage/toolbox/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] robusts [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS)
 
@@ -43,6 +49,8 @@
 	item_state = "toolbox_red"
 
 /obj/item/storage/toolbox/emergency/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/crowbar/red(src)
 	new /obj/item/weldingtool/mini(src)
 	new /obj/item/extinguisher/mini(src)
@@ -66,6 +74,8 @@
 	item_state = "toolbox_blue"
 
 /obj/item/storage/toolbox/mechanical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool(src)
@@ -84,6 +94,8 @@
 	item_state = "toolbox_yellow"
 
 /obj/item/storage/toolbox/electrical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/pickedcolor = pick("red","yellow","green","blue","pink","orange","cyan","white")
 	new /obj/item/screwdriver(src)
 	new /obj/item/wirecutters(src)
@@ -105,6 +117,8 @@
 	throwforce = 18
 
 /obj/item/storage/toolbox/syndicate/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/nuke(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool/largetank(src)
@@ -119,6 +133,8 @@
 	item_state = "toolbox_blue"
 
 /obj/item/storage/toolbox/drone/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/pickedcolor = pick("red","yellow","green","blue","pink","orange","cyan","white")
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
@@ -143,6 +159,8 @@
 	var/fabricator_type = /obj/item/clockwork/replica_fabricator/scarab
 
 /obj/item/storage/toolbox/brass/prefilled/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new fabricator_type(src)
 	new /obj/item/screwdriver/brass(src)
 	new /obj/item/wirecutters/brass(src)
@@ -158,6 +176,8 @@
 	var/slab_type = /obj/item/clockwork/slab
 
 /obj/item/storage/toolbox/brass/prefilled/ratvar/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new slab_type(src)
 
@@ -176,6 +196,8 @@
 	w_class = WEIGHT_CLASS_GIGANTIC //Holds more than a regular toolbox!
 
 /obj/item/storage/toolbox/artistic/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new/obj/item/storage/crayons(src)
 	new/obj/item/crowbar(src)
 	new/obj/item/stack/cable_coil/red(src)

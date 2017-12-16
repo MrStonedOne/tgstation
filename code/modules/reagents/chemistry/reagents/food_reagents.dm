@@ -15,6 +15,8 @@
 	var/nutriment_factor = 1 * REAGENTS_METABOLISM
 
 /datum/reagent/consumable/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	current_cycle++
 	M.nutrition += nutriment_factor
 	holder.remove_reagent(src.id, metabolization_rate)
@@ -31,12 +33,16 @@
 	var/burn_heal = 0
 
 /datum/reagent/consumable/nutriment/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		M.heal_bodypart_damage(brute_heal,burn_heal, 0)
 		. = 1
 	..()
 
 /datum/reagent/consumable/nutriment/on_new(list/supplied_data)
+	procstart = null
+	src.procstart = null
 	// taste data can sometimes be ("salt" = 3, "chips" = 1)
 	// and we want it to be in the form ("salt" = 0.75, "chips" = 0.25)
 	// which is called "normalizing"
@@ -49,6 +55,8 @@
 	data = counterlist_normalise(supplied_data)
 
 /datum/reagent/consumable/nutriment/on_merge(list/newdata, newvolume)
+	procstart = null
+	src.procstart = null
 	if(!islist(newdata) || !newdata.len)
 		return
 
@@ -79,6 +87,8 @@
 	burn_heal = 1
 
 /datum/reagent/consumable/nutriment/vitamin/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.satiety < 600)
 		M.satiety += 30
 	. = ..()
@@ -96,6 +106,8 @@
 	var/boiling //Used in mob life to determine if the oil kills, and only on touch application
 
 /datum/reagent/consumable/cooking_oil/reaction_obj(obj/O, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(holder && holder.chem_temp >= fry_temperature)
 		if(isitem(O))
 			O.loc.visible_message("<span class='warning'>[O] rapidly fries as it's splashed with hot oil! Somehow.</span>")
@@ -103,6 +115,8 @@
 			F.fry(O, volume)
 
 /datum/reagent/consumable/cooking_oil/reaction_mob(mob/living/M, method = TOUCH, reac_volume, show_message = 1, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 	if(holder && holder.chem_temp >= fry_temperature)
@@ -120,6 +134,8 @@
 	return TRUE
 
 /datum/reagent/consumable/cooking_oil/reaction_turf(turf/open/T, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(!istype(T))
 		return
 	if(reac_volume >= 5)
@@ -140,11 +156,15 @@
 	taste_description = "sweetness"
 
 /datum/reagent/consumable/sugar/overdose_start(mob/living/M)
+	procstart = null
+	src.procstart = null
 	to_chat(M, "<span class='userdanger'>You go into hyperglycaemic shock! Lay off the twinkies!</span>")
 	M.AdjustSleeping(600, FALSE)
 	. = 1
 
 /datum/reagent/consumable/sugar/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.AdjustSleeping(40, FALSE)
 	..()
 	. = 1
@@ -183,6 +203,8 @@
 	taste_mult = 1.5
 
 /datum/reagent/consumable/capsaicin/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	switch(current_cycle)
 		if(1 to 15)
 			M.bodytemperature += 5 * TEMPERATURE_DAMAGE_COEFFICIENT
@@ -212,6 +234,8 @@
 	taste_description = "mint"
 
 /datum/reagent/consumable/frostoil/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	switch(current_cycle)
 		if(1 to 15)
 			M.bodytemperature -= 10 * TEMPERATURE_DAMAGE_COEFFICIENT
@@ -238,6 +262,8 @@
 	..()
 
 /datum/reagent/consumable/frostoil/reaction_turf(turf/T, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(reac_volume >= 5)
 		for(var/mob/living/simple_animal/slime/M in T)
 			M.adjustToxLoss(rand(15,30))
@@ -255,6 +281,8 @@
 	taste_description = "scorching agony"
 
 /datum/reagent/consumable/condensedcapsaicin/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(M) && !ismonkey(M))
 		return
 
@@ -316,6 +344,8 @@
 		victim.update_damage_hud()
 
 /datum/reagent/consumable/condensedcapsaicin/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(5))
 		M.visible_message("<span class='warning'>[M] [pick("dry heaves!","coughs!","splutters!")]</span>")
 	..()
@@ -329,6 +359,8 @@
 	taste_description = "salt"
 
 /datum/reagent/consumable/sodiumchloride/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 	if(M.has_bane(BANE_SALT))
@@ -370,6 +402,8 @@
 	glass_desc = "Tasty."
 
 /datum/reagent/consumable/hot_coco/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if (M.bodytemperature < 310)//310 is the normal bodytemp. 310.055
 		M.bodytemperature = min(310, M.bodytemperature + (5 * TEMPERATURE_DAMAGE_COEFFICIENT))
 	..()
@@ -383,6 +417,8 @@
 	taste_description = "mushroom"
 
 /datum/reagent/mushroomhallucinogen/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!M.slurring)
 		M.slurring = 1
 	switch(current_cycle)
@@ -413,6 +449,8 @@
 	taste_description = "childhood whimsy"
 
 /datum/reagent/consumable/sprinkles/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M) && M.job in list("Security Officer", "Head of Security", "Detective", "Warden"))
 		M.heal_bodypart_damage(1,1, 0)
 		. = 1
@@ -427,6 +465,8 @@
 	taste_description = "slime"
 
 /datum/reagent/consumable/cornoil/reaction_turf(turf/open/T, reac_volume)
+	procstart = null
+	src.procstart = null
 	if (!istype(T))
 		return
 	T.MakeSlippery(min_wet_time = 10, wet_time_to_add = reac_volume*2)
@@ -462,6 +502,8 @@
 	taste_description = "wet and cheap noodles"
 
 /datum/reagent/consumable/hot_ramen/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if (M.bodytemperature < 310)//310 is the normal bodytemp. 310.055
 		M.bodytemperature = min(310, M.bodytemperature + (10 * TEMPERATURE_DAMAGE_COEFFICIENT))
 	..()
@@ -475,6 +517,8 @@
 	taste_description = "wet and cheap noodles on fire"
 
 /datum/reagent/consumable/hell_ramen/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.bodytemperature += 10 * TEMPERATURE_DAMAGE_COEFFICIENT
 	..()
 
@@ -487,6 +531,8 @@
 	taste_description = "chalky wheat"
 
 /datum/reagent/consumable/flour/reaction_turf(turf/T, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(!isspaceturf(T))
 		var/obj/effect/decal/cleanable/reagentdecal = new/obj/effect/decal/cleanable/flour(T)
 		reagentdecal.reagents.add_reagent("flour", reac_volume)
@@ -546,6 +592,8 @@
 	taste_description = "sweet slime"
 
 /datum/reagent/consumable/corn_syrup/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	holder.add_reagent("sugar", 3)
 	..()
 
@@ -559,6 +607,8 @@
 	taste_description = "sweetness"
 
 /datum/reagent/consumable/honey/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.reagents.add_reagent("sugar",3)
 	if(prob(55))
 		M.adjustBruteLoss(-1*REM, 0)
@@ -582,6 +632,8 @@
 	taste_description = "bitterness"
 
 /datum/reagent/consumable/tearjuice/reaction_mob(mob/living/M, method=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 	var/unprotected = FALSE
@@ -604,6 +656,8 @@
 	..()
 
 /datum/reagent/consumable/tearjuice/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	..()
 	if(M.eye_blurry)	//Don't worsen vision if it was otherwise fine
 		M.blur_eyes(4)
@@ -623,6 +677,8 @@
 	taste_description = "bitter mushroom"
 
 /datum/reagent/consumable/entpoly/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(current_cycle >= 10)
 		M.Unconscious(40, 0)
 		. = 1
@@ -643,9 +699,13 @@
 	taste_description = "tingling mushroom"
 
 /datum/reagent/consumable/tinlux/reaction_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.set_light(2)
 
 /datum/reagent/consumable/tinlux/on_mob_delete(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.set_light(-2)
 
 /datum/reagent/consumable/vitfro
@@ -657,6 +717,8 @@
 	taste_description = "fruity mushroom"
 
 /datum/reagent/consumable/vitfro/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(80))
 		M.adjustBruteLoss(-1*REM, 0)
 		M.adjustFireLoss(-1*REM, 0)

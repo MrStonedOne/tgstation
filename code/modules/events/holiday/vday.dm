@@ -13,6 +13,8 @@
 	earliest_start = 0
 
 /datum/round_event/valentines/start()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/mob/living/carbon/human/H in GLOB.alive_mob_list)
 		H.put_in_hands(new /obj/item/valentine)
@@ -53,6 +55,8 @@
 
 /proc/forge_valentines_objective(mob/living/lover,mob/living/date)
 
+	procstart = null
+	src.procstart = null
 	SSticker.mode.traitors |= lover.mind
 	lover.mind.special_role = "valentine"
 	
@@ -69,6 +73,8 @@
 
 
 /datum/round_event/valentines/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("It's Valentine's Day! Give a valentine to that special someone!")
 
 /obj/item/valentine
@@ -81,6 +87,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/valentine/New()
+	procstart = null
+	src.procstart = null
 	..()
 	message = pick("Roses are red / Violets are good / One day while Andy...",
 	               "My love for you is like the singularity. It cannot be contained.",
@@ -141,6 +149,8 @@
 	               "Are you wearing space pants? Wanna not be?" )
 
 /obj/item/valentine/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/pen) || istype(W, /obj/item/toy/crayon))
 		var/recipient = stripped_input(user, "Who is receiving this valentine?", "To:", null , 20)
@@ -149,6 +159,8 @@
 			name = "valentine - To: [recipient] From: [sender]"
 
 /obj/item/valentine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(in_range(user, src) || isobserver(user))
 		if( !(ishuman(user) || isobserver(user) || issilicon(user)) )
 			user << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(message)]</BODY></HTML>", "window=[name]")
@@ -160,6 +172,8 @@
 		to_chat(user, "<span class='notice'>It is too far away.</span>")
 
 /obj/item/valentine/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.examinate(src)
 
 /obj/item/reagent_containers/food/snacks/candyheart
@@ -171,6 +185,8 @@
 	junkiness = 5
 
 /obj/item/reagent_containers/food/snacks/candyheart/New()
+	procstart = null
+	src.procstart = null
 	..()
 	desc = pick("A heart-shaped candy that reads: HONK ME",
                 "A heart-shaped candy that reads: ERP",

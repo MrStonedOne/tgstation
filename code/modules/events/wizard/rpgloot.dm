@@ -6,6 +6,8 @@
 	earliest_start = 0
 
 /datum/round_event/wizard/rpgloot/start()
+	procstart = null
+	src.procstart = null
 	var/upgrade_scroll_chance = 0
 	for(var/obj/item/I in world)
 		if(!istype(I.rpg_loot))
@@ -33,6 +35,8 @@
 	var/one_use = TRUE
 
 /obj/item/upgradescroll/afterattack(obj/item/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || !istype(target))
 		return
 
@@ -68,14 +72,20 @@
 	var/original_name
 
 /datum/rpg_loot/New(attached_item=null)
+	procstart = null
+	src.procstart = null
 	attached = attached_item
 
 	randomise()
 
 /datum/rpg_loot/Destroy()
+	procstart = null
+	src.procstart = null
 	attached = null
 
 /datum/rpg_loot/proc/randomise()
+	procstart = null
+	src.procstart = null
 	var/static/list/prefixespositive = list("greater", "major", "blessed", "superior", "enpowered", "honed", "true", "glorious", "robust")
 	var/static/list/prefixesnegative = list("lesser", "minor", "blighted", "inferior", "enfeebled", "rusted", "unsteady", "tragic", "gimped")
 	var/static/list/suffixes = list("orc slaying", "elf slaying", "corgi slaying", "strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma", "the forest", "the hills", "the plains", "the sea", "the sun", "the moon", "the void", "the world", "the fool", "many secrets", "many tales", "many colors", "rending", "sundering", "the night", "the day")
@@ -92,6 +102,8 @@
 	modify(new_quality)
 
 /datum/rpg_loot/proc/rename()
+	procstart = null
+	src.procstart = null
 	var/obj/item/I = attached
 	if(!original_name)
 		original_name = I.name
@@ -103,6 +115,8 @@
 		I.name = "[positive_prefix] [original_name] of [suffix] +[quality]"
 
 /datum/rpg_loot/proc/modify(quality_mod)
+	procstart = null
+	src.procstart = null
 	var/obj/item/I = attached
 	quality += quality_mod
 

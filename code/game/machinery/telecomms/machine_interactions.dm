@@ -10,6 +10,8 @@
 
 /obj/machinery/telecomms/attackby(obj/item/P, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	var/icon_closed = initial(icon_state)
 	var/icon_open = "[initial(icon_state)]_o"
 	if(!on)
@@ -33,10 +35,14 @@
 
 
 /obj/machinery/telecomms/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/machinery/telecomms/attack_hand(mob/user)
 
+	procstart = null
+	src.procstart = null
 	// You need a multitool to use this, or be silicon
 	if(!issilicon(user))
 		// istype returns false if the value is null
@@ -112,6 +118,8 @@
 
 /obj/machinery/telecomms/relay/proc/toggle_level()
 
+	procstart = null
+	src.procstart = null
 	var/turf/position = get_turf(src)
 
 	// Toggle on/off getting signals from the station or the current Z level
@@ -124,6 +132,8 @@
 
 /obj/machinery/telecomms/proc/get_multitool(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/multitool/P = null
 	// Let's double check
 	if(!issilicon(user) && istype(user.get_active_held_item(), /obj/item/device/multitool))
@@ -140,16 +150,22 @@
 // Example of how to use below.
 
 /obj/machinery/telecomms/proc/Options_Menu()
+	procstart = null
+	src.procstart = null
 	return ""
 
 // The topic for Additional Options. Use this for checking href links for your specific option.
 // Example of how to use below.
 /obj/machinery/telecomms/proc/Options_Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	return
 
 // RELAY
 
 /obj/machinery/telecomms/relay/Options_Menu()
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	dat += "<br>Broadcasting: <A href='?src=[REF(src)];broadcast=1'>[broadcasting ? "YES" : "NO"]</a>"
 	dat += "<br>Receiving:    <A href='?src=[REF(src)];receive=1'>[receiving ? "YES" : "NO"]</a>"
@@ -157,6 +173,8 @@
 
 /obj/machinery/telecomms/relay/Options_Topic(href, href_list)
 
+	procstart = null
+	src.procstart = null
 	if(href_list["receive"])
 		receiving = !receiving
 		temp = "<font color = #666633>-% Receiving mode changed. %-</font color>"
@@ -167,11 +185,15 @@
 // BUS
 
 /obj/machinery/telecomms/bus/Options_Menu()
+	procstart = null
+	src.procstart = null
 	var/dat = "<br>Change Signal Frequency: <A href='?src=[REF(src)];change_freq=1'>[change_frequency ? "YES ([change_frequency])" : "NO"]</a>"
 	return dat
 
 /obj/machinery/telecomms/bus/Options_Topic(href, href_list)
 
+	procstart = null
+	src.procstart = null
 	if(href_list["change_freq"])
 
 		var/newfreq = input(usr, "Specify a new frequency for new signals to change to. Enter null to turn off frequency changing. Decimals assigned automatically.", src, network) as null|num
@@ -188,6 +210,8 @@
 
 
 /obj/machinery/telecomms/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -299,6 +323,8 @@
 	updateUsrDialog()
 
 /obj/machinery/telecomms/proc/canAccess(mob/user)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user) || in_range(user, src))
 		return TRUE
 	return FALSE

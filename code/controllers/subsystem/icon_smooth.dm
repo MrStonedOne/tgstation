@@ -8,6 +8,8 @@ SUBSYSTEM_DEF(icon_smooth)
 	var/list/smooth_queue = list()
 
 /datum/controller/subsystem/icon_smooth/fire()
+	procstart = null
+	src.procstart = null
 	while(smooth_queue.len)
 		var/atom/A = smooth_queue[smooth_queue.len]
 		smooth_queue.len--
@@ -18,6 +20,8 @@ SUBSYSTEM_DEF(icon_smooth)
 		can_fire = 0
 
 /datum/controller/subsystem/icon_smooth/Initialize()
+	procstart = null
+	src.procstart = null
 	smooth_zlevel(1,TRUE)
 	smooth_zlevel(2,TRUE)
 	var/queue = smooth_queue

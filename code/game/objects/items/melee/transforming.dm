@@ -14,6 +14,8 @@
 	var/w_class_on = WEIGHT_CLASS_BULKY
 
 /obj/item/melee/transforming/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		if(attack_verb_on.len)
@@ -23,10 +25,14 @@
 			attack_verb = attack_verb_off
 
 /obj/item/melee/transforming/attack_self(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(transform_weapon(user))
 		clumsy_transform_effect(user)
 
 /obj/item/melee/transforming/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/nemesis_faction = FALSE
 	if(LAZYLEN(nemesis_factions))
 		for(var/F in target.faction)
@@ -40,6 +46,8 @@
 		force -= faction_bonus_force
 
 /obj/item/melee/transforming/proc/transform_weapon(mob/living/user, supress_message_text)
+	procstart = null
+	src.procstart = null
 	active = !active
 	if(active)
 		force = force_on
@@ -64,14 +72,20 @@
 	return TRUE
 
 /obj/item/melee/transforming/proc/nemesis_effects(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/melee/transforming/proc/transform_messages(mob/living/user, supress_message_text)
+	procstart = null
+	src.procstart = null
 	playsound(user, active ? 'sound/weapons/saberon.ogg' : 'sound/weapons/saberoff.ogg', 35, 1)  //changed it from 50% volume to 35% because deafness
 	if(!supress_message_text)
 		to_chat(user, "<span class='notice'>[src] [active ? "is now active":"can now be concealed"].</span>")
 
 /obj/item/melee/transforming/proc/clumsy_transform_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.disabilities & CLUMSY && prob(50))
 		to_chat(user, "<span class='warning'>You accidentally cut yourself with [src], like a doofus!</span>")
 		user.take_bodypart_damage(5,5)

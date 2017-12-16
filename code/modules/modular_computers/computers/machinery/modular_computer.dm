@@ -28,22 +28,32 @@
 	var/obj/item/device/modular_computer/processor/cpu = null				// CPU that handles most logic while this type only handles power and other specific things.
 
 /obj/machinery/modular_computer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cpu = new(src)
 	cpu.physical = src
 
 /obj/machinery/modular_computer/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cpu)
 	return ..()
 
 /obj/machinery/modular_computer/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(cpu)
 		cpu.attack_ghost(user)
 
 /obj/machinery/modular_computer/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	return cpu ? cpu.emag_act(user) : 1
 
 /obj/machinery/modular_computer/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	icon_state = icon_state_powered
 
@@ -66,6 +76,8 @@
 
 // Eject ID card from computer, if it has ID slot with card inside.
 /obj/machinery/modular_computer/proc/eject_id()
+	procstart = null
+	src.procstart = null
 	set name = "Eject ID"
 	set category = "Object"
 
@@ -74,6 +86,8 @@
 
 // Eject ID card from computer, if it has ID slot with card inside.
 /obj/machinery/modular_computer/proc/eject_disk()
+	procstart = null
+	src.procstart = null
 	set name = "Eject Data Disk"
 	set category = "Object"
 
@@ -81,6 +95,8 @@
 		cpu.eject_disk()
 
 /obj/machinery/modular_computer/proc/eject_card()
+	procstart = null
+	src.procstart = null
 	set name = "Eject Intellicard"
 	set category = "Object"
 	set src in view(1)
@@ -89,16 +105,22 @@
 		cpu.eject_card()
 
 /obj/machinery/modular_computer/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cpu)
 		cpu.AltClick(user)
 
 // On-click handling. Turns on the computer if it's off and opens the GUI.
 /obj/machinery/modular_computer/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cpu)
 		cpu.attack_self(user) // CPU is an item, that's why we route attack_hand to attack_self
 
 // Process currently calls handle_power(), may be expanded in future if more things are added.
 /obj/machinery/modular_computer/process()
+	procstart = null
+	src.procstart = null
 	if(cpu)
 		// Keep names in sync.
 		cpu.name = src.name
@@ -106,6 +128,8 @@
 
 // Used in following function to reduce copypaste
 /obj/machinery/modular_computer/proc/power_failure(malfunction = 0)
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/battery/battery_module = cpu.all_components[MC_CELL]
 	if(cpu && cpu.enabled) // Shut down the computer
 		visible_message("<span class='danger'>\The [src]'s screen flickers [battery_module ? "\"BATTERY [malfunction ? "MALFUNCTION" : "CRITICAL"]\"" : "\"EXTERNAL POWER LOSS\""] warning as it shuts down unexpectedly.</span>")
@@ -117,6 +141,8 @@
 
 // Modular computers can have battery in them, we handle power in previous proc, so prevent this from messing it up for us.
 /obj/machinery/modular_computer/power_change()
+	procstart = null
+	src.procstart = null
 	if(cpu && cpu.use_power()) // If MC_CPU still has a power source, PC wouldn't go offline.
 		stat &= ~NOPOWER
 		update_icon()
@@ -125,6 +151,8 @@
 	update_icon()
 
 /obj/machinery/modular_computer/attackby(var/obj/item/W as obj, mob/user)
+	procstart = null
+	src.procstart = null
 	if(cpu && !(flags_1 & NODECONSTRUCT_1))
 		return cpu.attackby(W, user)
 	return ..()
@@ -133,12 +161,16 @@
 // Stronger explosions cause serious damage to internal components
 // Minor explosions are mostly mitigitated by casing.
 /obj/machinery/modular_computer/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	if(cpu)
 		cpu.ex_act(severity)
 	..()
 
 // EMPs are similar to explosions, but don't cause physical damage to the casing. Instead they screw up the components
 /obj/machinery/modular_computer/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(cpu)
 		cpu.emp_act(severity)
 
@@ -146,5 +178,7 @@
 // "Burn" damage is equally strong against internal components and exterior casing
 // "Brute" damage mostly damages the casing.
 /obj/machinery/modular_computer/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(cpu)
 		cpu.bullet_act(Proj)

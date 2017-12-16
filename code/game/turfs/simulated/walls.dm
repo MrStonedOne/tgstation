@@ -41,13 +41,19 @@
 	)
 
 /turf/closed/wall/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	deconstruction_hints(user)
 
 /turf/closed/wall/proc/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>The outer plating is <b>welded</b> firmly in place.</span>")
 
 /turf/closed/wall/attack_tk()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/closed/wall/handle_ricochet(obj/item/projectile/P)			//A huge pile of shitcode!
@@ -65,6 +71,8 @@
 	return TRUE
 
 /turf/closed/wall/proc/dismantle_wall(devastated=0, explode=0)
+	procstart = null
+	src.procstart = null
 	if(devastated)
 		devastate_wall()
 	else
@@ -81,15 +89,21 @@
 	ChangeTurf(/turf/open/floor/plating)
 
 /turf/closed/wall/proc/break_wall()
+	procstart = null
+	src.procstart = null
 	new sheet_type(src, sheet_amount)
 	return new girder_type(src)
 
 /turf/closed/wall/proc/devastate_wall()
+	procstart = null
+	src.procstart = null
 	new sheet_type(src, sheet_amount)
 	if(girder_type)
 		new /obj/item/stack/sheet/metal(src)
 
 /turf/closed/wall/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(target == src)
 		dismantle_wall(1,1)
 		return
@@ -112,12 +126,16 @@
 
 
 /turf/closed/wall/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		dismantle_wall()
 	else
 		add_dent(WALL_DENT_HIT)
 
 /turf/closed/wall/mech_melee_attack(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	M.do_attack_animation(src)
 	switch(M.damtype)
 		if(BRUTE)
@@ -135,11 +153,15 @@
 			return FALSE
 
 /turf/closed/wall/attack_paw(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	return src.attack_hand(user)
 
 
 /turf/closed/wall/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	M.changeNext_move(CLICK_CD_MELEE)
 	M.do_attack_animation(src)
 	if((M.environment_smash & ENVIRONMENT_SMASH_WALLS) || (M.environment_smash & ENVIRONMENT_SMASH_RWALLS))
@@ -148,6 +170,8 @@
 		return
 
 /turf/closed/wall/attack_hulk(mob/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	..(user, 1)
 	if(prob(hardness))
 		playsound(src, 'sound/effects/meteorimpact.ogg', 100, 1)
@@ -160,6 +184,8 @@
 	return TRUE
 
 /turf/closed/wall/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	to_chat(user, "<span class='notice'>You push the wall but nothing happens!</span>")
 	playsound(src, 'sound/weapons/genhit.ogg', 25, 1)
@@ -168,6 +194,8 @@
 
 
 /turf/closed/wall/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	if (!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
@@ -188,6 +216,8 @@
 	return ..()
 
 /turf/closed/wall/proc/try_clean(obj/item/W, mob/user, turf/T)
+	procstart = null
+	src.procstart = null
 	if((user.a_intent != INTENT_HELP) || !LAZYLEN(dent_decals) || !istype(W, /obj/item/weldingtool))
 		return FALSE
 	var/obj/item/weldingtool/WT = W
@@ -203,6 +233,8 @@
 	return FALSE
 
 /turf/closed/wall/proc/try_wallmount(obj/item/W, mob/user, turf/T)
+	procstart = null
+	src.procstart = null
 	//check for wall mounted frames
 	if(istype(W, /obj/item/wallframe))
 		var/obj/item/wallframe/F = W
@@ -217,6 +249,8 @@
 	return FALSE
 
 /turf/closed/wall/proc/try_decon(obj/item/W, mob/user, turf/T)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/weldingtool))
 		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
@@ -242,6 +276,8 @@
 
 
 /turf/closed/wall/proc/try_destroy(obj/item/W, mob/user, turf/T)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pickaxe/drill/jackhammer))
 		var/obj/item/pickaxe/drill/jackhammer/D = W
 		if(!iswallturf(src) || !user || !W || !T)
@@ -254,6 +290,8 @@
 	return FALSE
 
 /turf/closed/wall/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		if(prob(50))
@@ -264,33 +302,47 @@
 			dismantle_wall()
 
 /turf/closed/wall/narsie_act(force, ignore_mobs, probability = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		ChangeTurf(/turf/closed/wall/mineral/cult)
 
 /turf/closed/wall/ratvar_act(force, ignore_mobs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		ChangeTurf(/turf/closed/wall/clockwork)
 
 /turf/closed/wall/get_dumping_location(obj/item/storage/source, mob/user)
+	procstart = null
+	src.procstart = null
 	return null
 
 /turf/closed/wall/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	if(explosion_block >= 2)
 		acidpwr = min(acidpwr, 50) //we reduce the power so strong walls never get melted.
 	. = ..()
 
 /turf/closed/wall/acid_melt()
+	procstart = null
+	src.procstart = null
 	dismantle_wall(1)
 
 /turf/closed/wall/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)
 			return list("mode" = RCD_DECONSTRUCT, "delay" = 40, "cost" = 26)
 	return FALSE
 
 /turf/closed/wall/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	procstart = null
+	src.procstart = null
 	switch(passed_mode)
 		if(RCD_DECONSTRUCT)
 			to_chat(user, "<span class='notice'>You deconstruct the wall.</span>")
@@ -299,6 +351,8 @@
 	return FALSE
 
 /turf/closed/wall/proc/add_dent(denttype, x=rand(-8, 8), y=rand(-8, 8))
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(dent_decals) >= MAX_DENT_DECALS)
 		return
 

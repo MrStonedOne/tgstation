@@ -16,6 +16,8 @@
 	var/cast_sound = 'sound/items/welder.ogg'
 
 /obj/effect/proc_holder/spell/aoe_turf/conjure/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(user), cast_sound, 50,1)
 	for(var/turf/T in targets)
 		if(T.density && !summon_ignore_density)
@@ -45,6 +47,8 @@
 			post_summon(summoned_object, user)
 
 /obj/effect/proc_holder/spell/aoe_turf/conjure/proc/post_summon(atom/summoned_object, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/spell/aoe_turf/conjure/summonEdSwarm //test purposes - Also a lot of fun
@@ -70,6 +74,8 @@
 	cooldown_min = 10
 
 /obj/effect/proc_holder/spell/targeted/conjure_item/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if (item && !QDELETED(item))
 		qdel(item)
 		item = null
@@ -79,10 +85,14 @@
 				C.put_in_hands(make_item(), TRUE)
 
 /obj/effect/proc_holder/spell/targeted/conjure_item/Destroy()
+	procstart = null
+	src.procstart = null
 	if(item)
 		qdel(item)
 	return ..()
 
 /obj/effect/proc_holder/spell/targeted/conjure_item/proc/make_item()
+	procstart = null
+	src.procstart = null
 	item = new item_type
 	return item

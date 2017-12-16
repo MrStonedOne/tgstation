@@ -12,6 +12,8 @@
 	overdose_threshold = 30
 
 /datum/reagent/drug/space_drugs/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.set_drugginess(15)
 	if(isturf(M.loc) && !isspaceturf(M.loc))
 		if(M.canmove)
@@ -22,10 +24,14 @@
 	..()
 
 /datum/reagent/drug/space_drugs/overdose_start(mob/living/M)
+	procstart = null
+	src.procstart = null
 	to_chat(M, "<span class='userdanger'>You start tripping hard!</span>")
 
 
 /datum/reagent/drug/space_drugs/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.hallucination < volume && prob(20))
 		M.hallucination += 5
 	..()
@@ -40,6 +46,8 @@
 	taste_description = "smoke"
 
 /datum/reagent/drug/nicotine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(1))
 		var/smoke_message = pick("You feel relaxed.", "You feel calmed.","You feel alert.","You feel rugged.")
 		to_chat(M, "<span class='notice'>[smoke_message]</span>")
@@ -68,6 +76,8 @@
 	addiction_threshold = 10
 
 /datum/reagent/drug/crank/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(5))
 		var/high_message = pick("You feel jittery.", "You feel like you gotta go fast.", "You feel like you need to step it up.")
 		to_chat(M, "<span class='notice'>[high_message]</span>")
@@ -78,6 +88,8 @@
 	. = 1
 
 /datum/reagent/drug/crank/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBrainLoss(2*REM)
 	M.adjustToxLoss(2*REM, 0)
 	M.adjustBruteLoss(2*REM, 0)
@@ -85,20 +97,28 @@
 	. = 1
 
 /datum/reagent/drug/crank/addiction_act_stage1(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBrainLoss(5*REM)
 	..()
 
 /datum/reagent/drug/crank/addiction_act_stage2(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(5*REM, 0)
 	..()
 	. = 1
 
 /datum/reagent/drug/crank/addiction_act_stage3(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBruteLoss(5*REM, 0)
 	..()
 	. = 1
 
 /datum/reagent/drug/crank/addiction_act_stage4(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBrainLoss(3*REM)
 	M.adjustToxLoss(5*REM, 0)
 	M.adjustBruteLoss(5*REM, 0)
@@ -116,29 +136,39 @@
 
 
 /datum/reagent/drug/krokodil/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/high_message = pick("You feel calm.", "You feel collected.", "You feel like you need to relax.")
 	if(prob(5))
 		to_chat(M, "<span class='notice'>[high_message]</span>")
 	..()
 
 /datum/reagent/drug/krokodil/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBrainLoss(0.25*REM)
 	M.adjustToxLoss(0.25*REM, 0)
 	..()
 	. = 1
 
 /datum/reagent/drug/krokodil/addiction_act_stage1(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBrainLoss(2*REM)
 	M.adjustToxLoss(2*REM, 0)
 	..()
 	. = 1
 
 /datum/reagent/krokodil/addiction_act_stage2(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(25))
 		to_chat(M, "<span class='danger'>Your skin feels loose...</span>")
 	..()
 
 /datum/reagent/drug/krokodil/addiction_act_stage3(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(25))
 		to_chat(M, "<span class='danger'>Your skin starts to peel away...</span>")
 	M.adjustBruteLoss(3*REM, 0)
@@ -146,6 +176,8 @@
 	. = 1
 
 /datum/reagent/drug/krokodil/addiction_act_stage4(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	CHECK_DNA_AND_SPECIES(M)
 	if(!istype(M.dna.species, /datum/species/krokodil_addict))
 		to_chat(M, "<span class='userdanger'>Your skin falls off easily!</span>")
@@ -167,6 +199,8 @@
 	metabolization_rate = 0.75 * REAGENTS_METABOLISM
 
 /datum/reagent/drug/methamphetamine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/high_message = pick("You feel hyper.", "You feel like you need to go faster.", "You feel like you can run the world.")
 	if(prob(5))
 		to_chat(M, "<span class='notice'>[high_message]</span>")
@@ -183,6 +217,8 @@
 	. = 1
 
 /datum/reagent/drug/methamphetamine/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.canmove && !ismovableatom(M.loc))
 		for(var/i in 1 to 4)
 			step(M, pick(GLOB.cardinals))
@@ -197,12 +233,16 @@
 	. = 1
 
 /datum/reagent/drug/methamphetamine/addiction_act_stage1(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.Jitter(5)
 	if(prob(20))
 		M.emote(pick("twitch","drool","moan"))
 	..()
 
 /datum/reagent/drug/methamphetamine/addiction_act_stage2(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.Jitter(10)
 	M.Dizzy(10)
 	if(prob(30))
@@ -210,6 +250,8 @@
 	..()
 
 /datum/reagent/drug/methamphetamine/addiction_act_stage3(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.canmove && !ismovableatom(M.loc))
 		for(var/i = 0, i < 4, i++)
 			step(M, pick(GLOB.cardinals))
@@ -220,6 +262,8 @@
 	..()
 
 /datum/reagent/drug/methamphetamine/addiction_act_stage4(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if(M.canmove && !ismovableatom(M.loc))
 		for(var/i = 0, i < 8, i++)
 			step(M, pick(GLOB.cardinals))
@@ -243,6 +287,8 @@
 
 
 /datum/reagent/drug/bath_salts/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")
 	if(prob(5))
 		to_chat(M, "<span class='notice'>[high_message]</span>")
@@ -260,6 +306,8 @@
 	. = 1
 
 /datum/reagent/drug/bath_salts/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.hallucination += 10
 	if(M.canmove && !ismovableatom(M.loc))
 		for(var/i in 1 to 8)
@@ -271,6 +319,8 @@
 	..()
 
 /datum/reagent/drug/bath_salts/addiction_act_stage1(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.hallucination += 10
 	if(M.canmove && !ismovableatom(M.loc))
 		for(var/i = 0, i < 8, i++)
@@ -282,6 +332,8 @@
 	..()
 
 /datum/reagent/drug/bath_salts/addiction_act_stage2(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.hallucination += 20
 	if(M.canmove && !ismovableatom(M.loc))
 		for(var/i = 0, i < 8, i++)
@@ -294,6 +346,8 @@
 	..()
 
 /datum/reagent/drug/bath_salts/addiction_act_stage3(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.hallucination += 30
 	if(M.canmove && !ismovableatom(M.loc))
 		for(var/i = 0, i < 12, i++)
@@ -306,6 +360,8 @@
 	..()
 
 /datum/reagent/drug/bath_salts/addiction_act_stage4(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	M.hallucination += 40
 	if(M.canmove && !ismovableatom(M.loc))
 		for(var/i = 0, i < 16, i++)
@@ -327,6 +383,8 @@
 	color = "#78FFF0"
 
 /datum/reagent/drug/aranesp/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/high_message = pick("You feel amped up.", "You feel ready.", "You feel like you can push it to the limit.")
 	if(prob(5))
 		to_chat(M, "<span class='notice'>[high_message]</span>")

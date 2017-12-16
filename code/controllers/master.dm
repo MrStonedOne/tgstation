@@ -59,6 +59,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/static/current_ticklimit = TICK_LIMIT_RUNNING
 
 /datum/controller/master/New()
+	procstart = null
+	src.procstart = null
 	// Highlander-style: there can only be one! Kill off the old and replace it with the new.
 	var/list/_subsystems = list()
 	subsystems = _subsystems
@@ -77,11 +79,15 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		new /datum/controller/global_vars
 
 /datum/controller/master/Destroy()
+	procstart = null
+	src.procstart = null
 	..()
 	// Tell qdel() to Del() this object.
 	return QDEL_HINT_HARDDEL_NOW
 
 /datum/controller/master/Shutdown()
+	procstart = null
+	src.procstart = null
 	processing = FALSE
 	sortTim(subsystems, /proc/cmp_subsystem_init)
 	reverseRange(subsystems)
@@ -93,6 +99,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 // Returns 1 if we created a new mc, 0 if we couldn't due to a recent restart,
 //	-1 if we encountered a runtime trying to recreate it
 /proc/Recreate_MC()
+	procstart = null
+	src.procstart = null
 	. = -1 //so if we runtime, things know we failed
 	if (world.time < Master.restart_timeout)
 		return 0
@@ -111,6 +119,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 
 /datum/controller/master/Recover()
+	procstart = null
+	src.procstart = null
 	var/msg = "## DEBUG: [time2text(world.timeofday)] MC restarted. Reports:\n"
 	for (var/varname in Master.vars)
 		switch (varname)
@@ -155,6 +165,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 // Please don't stuff random bullshit here,
 // 	Make a subsystem, give it the SS_NO_FIRE flag, and do your work in it's Initialize()
 /datum/controller/master/Initialize(delay, init_sss)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 
 	if(delay)
@@ -200,6 +212,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	Master.StartProcessing(0)
 
 /datum/controller/master/proc/SetRunLevel(new_runlevel)
+	procstart = null
+	src.procstart = null
 	var/old_runlevel = current_runlevel
 	if(isnull(old_runlevel))
 		old_runlevel = "NULL"
@@ -211,6 +225,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 // Starts the mc, and sticks around to restart it if the loop ever ends.
 /datum/controller/master/proc/StartProcessing(delay)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	if(delay)
 		sleep(delay)
@@ -229,6 +245,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 // Main loop.
 /datum/controller/master/proc/Loop()
+	procstart = null
+	src.procstart = null
 	. = -1
 	//Prep the loop (most of this is because we want MC restarts to reset as much state as we can, and because
 	//	local vars rock
@@ -375,6 +393,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 // This is what decides if something should run.
 /datum/controller/master/proc/CheckQueue(list/subsystemstocheck)
+	procstart = null
+	src.procstart = null
 	. = 0 //so the mc knows if we runtimed
 
 	//we create our variables outside of the loops to save on overhead
@@ -403,6 +423,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 // Run thru the queue of subsystems to run, running them while balancing out their allocated tick precentage
 /datum/controller/master/proc/RunQueue()
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/datum/controller/subsystem/queue_node
 	var/queue_node_flags
@@ -527,6 +549,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 //resets the queue, and all subsystems, while filtering out the subsystem lists
 //	called if any mc's queue procs runtime or exit improperly.
 /datum/controller/master/proc/SoftReset(list/ticker_SS, list/runlevel_SS)
+	procstart = null
+	src.procstart = null
 	. = 0
 	log_world("MC: SoftReset called, resetting MC queue state.")
 	if (!istype(subsystems) || !istype(ticker_SS) || !istype(runlevel_SS))
@@ -569,6 +593,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 
 /datum/controller/master/stat_entry()
+	procstart = null
+	src.procstart = null
 	if(!statclick)
 		statclick = new/obj/effect/statclick/debug(null, "Initializing...", src)
 
@@ -576,6 +602,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	stat("Master Controller:", statclick.update("(TickRate:[Master.processing]) (Iteration:[Master.iteration])"))
 
 /datum/controller/master/StartLoadingMap()
+	procstart = null
+	src.procstart = null
 	//disallow more than one map to load at once, multithreading it will just cause race conditions
 	while(map_loading)
 		stoplag()
@@ -585,6 +613,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	map_loading = TRUE
 
 /datum/controller/master/StopLoadingMap(bounds = null)
+	procstart = null
+	src.procstart = null
 	map_loading = FALSE
 	for(var/S in subsystems)
 		var/datum/controller/subsystem/SS = S
@@ -592,6 +622,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 
 /datum/controller/master/proc/UpdateTickRate()
+	procstart = null
+	src.procstart = null
 	if (!processing)
 		return
 	var/client_count = length(GLOB.clients)

@@ -47,10 +47,14 @@ other types of metals and chemistry for reagents).
 	var/icon_cache
 
 /datum/design/Destroy()
+	procstart = null
+	src.procstart = null
 	CRASH("DESIGN DATUMS SHOULD NOT EVER BE DESTROYED AS THEY ARE ONLY MEANT TO BE IN A GLOBAL LIST AND REFERENCED FOR US.")
 	return ..()
 
 /datum/design/proc/icon_html(client/user)
+	procstart = null
+	src.procstart = null
 	if (!icon_cache)
 		// construct the icon and slap it into the resource cache
 		var/atom/item = build_path
@@ -99,6 +103,8 @@ other types of metals and chemistry for reagents).
 	var/max_blueprints = 1
 
 /obj/item/disk/design_disk/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)

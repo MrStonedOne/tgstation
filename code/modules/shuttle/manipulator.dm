@@ -21,10 +21,14 @@
 	var/datum/map_template/shuttle/preview_template
 
 /obj/machinery/shuttle_manipulator/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/machinery/shuttle_manipulator/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	var/mutable_appearance/hologram_projection = mutable_appearance(icon, "hologram_on")
 	hologram_projection.pixel_y = 22
@@ -34,12 +38,16 @@
 	add_overlay(hologram_ship)
 
 /obj/machinery/shuttle_manipulator/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.admin_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "shuttle_manipulator", name, 800, 600, master_ui, state)
 		ui.open()
 
 /proc/shuttlemode2str(mode)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(SHUTTLE_IDLE)
 			. = "idle"
@@ -62,6 +70,8 @@
 
 
 /obj/machinery/shuttle_manipulator/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["tabs"] = list("Status", "Templates", "Modification")
 
@@ -119,6 +129,8 @@
 	return data
 
 /obj/machinery/shuttle_manipulator/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -286,6 +298,8 @@
 	S.on_bought()
 
 /obj/machinery/shuttle_manipulator/proc/unload_preview()
+	procstart = null
+	src.procstart = null
 	if(preview_shuttle)
 		preview_shuttle.jumpToNullSpace()
 	preview_shuttle = null

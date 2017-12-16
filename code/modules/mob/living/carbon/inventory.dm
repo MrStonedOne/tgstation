@@ -15,6 +15,8 @@
 	return null
 
 /mob/living/carbon/proc/equip_in_one_of_slots(obj/item/I, list/slots, qdel_on_fail = 1)
+	procstart = null
+	src.procstart = null
 	for(var/slot in slots)
 		if(equip_to_slot_if_possible(I, slots[slot], qdel_on_fail = 0, disable_warning = TRUE))
 			return slot
@@ -24,6 +26,8 @@
 
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()
 /mob/living/carbon/equip_to_slot(obj/item/I, slot)
+	procstart = null
+	src.procstart = null
 	if(!slot)
 		return
 	if(!istype(I))
@@ -89,6 +93,8 @@
 	return not_handled
 
 /mob/living/carbon/doUnEquip(obj/item/I)
+	procstart = null
+	src.procstart = null
 	. = ..() //Sets the default return value to what the parent returns.
 	if(!. || !I) //We don't want to set anything to null if the parent returned 0.
 		return
@@ -122,15 +128,21 @@
 
 //handle stuff to update when a mob equips/unequips a mask.
 /mob/living/proc/wear_mask_update(obj/item/clothing/C, toggle_off = 1)
+	procstart = null
+	src.procstart = null
 	update_inv_wear_mask()
 
 /mob/living/carbon/wear_mask_update(obj/item/clothing/C, toggle_off = 1)
+	procstart = null
+	src.procstart = null
 	if(C.tint || initial(C.tint))
 		update_tint()
 	update_inv_wear_mask()
 
 //handle stuff to update when a mob equips/unequips a headgear.
 /mob/living/carbon/proc/head_update(obj/item/I, forced)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/clothing))
 		var/obj/item/clothing/C = I
 		if(C.tint || initial(C.tint))

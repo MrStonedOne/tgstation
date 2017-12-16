@@ -13,9 +13,13 @@
 	var/obj/screen/alert/status_effect/linked_alert = null //the alert itself, if it exists
 
 /datum/status_effect/New(list/arguments)
+	procstart = null
+	src.procstart = null
 	on_creation(arglist(arguments))
 
 /datum/status_effect/proc/on_creation(mob/living/new_owner, ...)
+	procstart = null
+	src.procstart = null
 	if(new_owner)
 		owner = new_owner
 	if(owner)
@@ -34,6 +38,8 @@
 	return TRUE
 
 /datum/status_effect/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	if(owner)
 		owner.clear_alert(id)
@@ -43,6 +49,8 @@
 	return ..()
 
 /datum/status_effect/process()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		qdel(src)
 		return

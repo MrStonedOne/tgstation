@@ -6,6 +6,8 @@
 	var/lastprocess
 
 /datum/orbit/New(_orbiter, _orbiting, _lock)
+	procstart = null
+	src.procstart = null
 	orbiter = _orbiter
 	orbiting = _orbiting
 	SSorbit.processing += src
@@ -21,6 +23,8 @@
 
 //do not qdel directly, use stop_orbit on the orbiter. (This way the orbiter can bind to the orbit stopping)
 /datum/orbit/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	SSorbit.processing -= src
 	if (orbiter)
 		orbiter.orbiting = null
@@ -34,6 +38,8 @@
 	return ..()
 
 /datum/orbit/proc/Check(turf/targetloc)
+	procstart = null
+	src.procstart = null
 	if (!orbiter)
 		qdel(src)
 		return
@@ -74,6 +80,8 @@
 //lockinorbit: Forces src to always be on A's turf, otherwise the orbit cancels when src gets too far away (eg: ghosts)
 
 /atom/movable/proc/orbit(atom/A, radius = 10, clockwise = FALSE, rotation_speed = 20, rotation_segments = 36, pre_rotation = TRUE, lockinorbit = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!istype(A))
 		return
 
@@ -101,10 +109,14 @@
 	transform = initial_transform
 
 /atom/movable/proc/stop_orbit()
+	procstart = null
+	src.procstart = null
 	SpinAnimation(0,0)
 	qdel(orbiting)
 
 /atom/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (orbiters)
 		for (var/thing in orbiters)
@@ -113,11 +125,15 @@
 				O.orbiter.stop_orbit()
 
 /atom/movable/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (orbiting)
 		stop_orbit()
 
 /atom/movable/proc/transfer_observers_to(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(orbiters)
 		for(var/thing in orbiters)
 			var/datum/orbit/O = thing

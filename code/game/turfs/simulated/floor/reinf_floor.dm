@@ -8,6 +8,8 @@
 	floor_tile = /obj/item/stack/rods
 
 /turf/open/floor/engine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>The reinforcement rods are <b>wrenched</b> firmly in place.</span>")
 
@@ -15,17 +17,25 @@
 	initial_gas_mix = "TEMP=2.7"
 
 /turf/open/floor/engine/break_tile()
+	procstart = null
+	src.procstart = null
 	return //unbreakable
 
 /turf/open/floor/engine/burn_tile()
+	procstart = null
+	src.procstart = null
 	return //unburnable
 
 /turf/open/floor/engine/make_plating(force = 0)
+	procstart = null
+	src.procstart = null
 	if(force)
 		..()
 	return //unplateable
 
 /turf/open/floor/engine/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!C || !user)
 		return
 	if(istype(C, /obj/item/wrench))
@@ -39,10 +49,14 @@
 			return
 
 /turf/open/floor/engine/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	acidpwr = min(acidpwr, 50) //we reduce the power so reinf floor never get melted.
 	. = ..()
 
 /turf/open/floor/engine/ex_act(severity,target)
+	procstart = null
+	src.procstart = null
 	var/shielded = is_shielded()
 	contents_explosion(severity, target)
 	if(severity != 1 && shielded && target != src)
@@ -63,6 +77,8 @@
 				make_plating(1)
 
 /turf/open/floor/engine/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		if(floor_tile)
@@ -73,9 +89,13 @@
 			ReplaceWithLattice()
 
 /turf/open/floor/engine/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /turf/open/floor/engine/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.Move_Pulled(src)
 
 
@@ -113,25 +133,35 @@
 	var/obj/effect/clockwork/overlay/floor/bloodcult/realappearence
 
 /turf/open/floor/engine/cult/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/cult/turf/floor(src)
 	realappearence = new /obj/effect/clockwork/overlay/floor/bloodcult(src)
 	realappearence.linked = src
 
 /turf/open/floor/engine/cult/Destroy()
+	procstart = null
+	src.procstart = null
 	be_removed()
 	return ..()
 
 /turf/open/floor/engine/cult/ChangeTurf(path, new_baseturf, defer_change = FALSE, ignore_air = FALSE, forceop = FALSE)
+	procstart = null
+	src.procstart = null
 	if(path != type)
 		be_removed()
 	return ..()
 
 /turf/open/floor/engine/cult/proc/be_removed()
+	procstart = null
+	src.procstart = null
 	qdel(realappearence)
 	realappearence = null
 
 /turf/open/floor/engine/cult/ratvar_act()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(src, /turf/open/floor/engine/cult)) //if we haven't changed type
 		var/previouscolor = color

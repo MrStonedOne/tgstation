@@ -7,6 +7,8 @@
 	var/list/items
 
 /obj/effect/spawner/bundle/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	if(items && items.len)
 		var/turf/T = get_turf(src)

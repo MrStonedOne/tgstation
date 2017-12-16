@@ -34,6 +34,8 @@
 	icon_state = "adamantine_cords"
 
 /datum/action/item_action/organ_action/use/adamantine_vocal_cords/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!IsAvailable())
 		return
 	var/message = input(owner, "Resonate a message to all nearby golems.", "Resonate")
@@ -42,6 +44,8 @@
 	owner.say(".x[message]")
 
 /obj/item/organ/vocal_cords/adamantine/handle_speech(message)
+	procstart = null
+	src.procstart = null
 	var/msg = "<span class='resonate'><span class='name'>[owner.real_name]</span> <span class='message'>resonates, \"[message]\"</span></span>"
 	for(var/m in GLOB.player_list)
 		if(iscarbon(m))
@@ -68,10 +72,14 @@
 	var/obj/item/organ/vocal_cords/colossus/cords = null
 
 /datum/action/item_action/organ_action/colossus/New()
+	procstart = null
+	src.procstart = null
 	..()
 	cords = target
 
 /datum/action/item_action/organ_action/colossus/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(world.time < cords.next_command)
 		return FALSE
 	if(!owner)
@@ -84,6 +92,8 @@
 	return TRUE
 
 /datum/action/item_action/organ_action/colossus/Trigger()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!IsAvailable())
 		if(world.time < cords.next_command)
@@ -97,6 +107,8 @@
 	owner.say(".x[command]")
 
 /obj/item/organ/vocal_cords/colossus/can_speak_with()
+	procstart = null
+	src.procstart = null
 	if(world.time < next_command)
 		to_chat(owner, "<span class='notice'>You must wait [DisplayTimeText(next_command - world.time)] before Speaking again.</span>")
 		return FALSE
@@ -108,10 +120,14 @@
 	return TRUE
 
 /obj/item/organ/vocal_cords/colossus/handle_speech(message)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(owner), 'sound/magic/clockwork/invoke_general.ogg', 300, 1, 5)
 	return //voice of god speaks for us
 
 /obj/item/organ/vocal_cords/colossus/speak_with(message)
+	procstart = null
+	src.procstart = null
 	var/cooldown = voice_of_god(uppertext(message), owner, spans, base_multiplier)
 	next_command = world.time + (cooldown * cooldown_mod)
 
@@ -120,6 +136,8 @@
 //////////////////////////////////////
 
 /proc/voice_of_god(message, mob/living/user, list/span_list, base_multiplier = 1)
+	procstart = null
+	src.procstart = null
 	var/cooldown = 0
 
 	if(!user || !user.can_speak() || user.stat)

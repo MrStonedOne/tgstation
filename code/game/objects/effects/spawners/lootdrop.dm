@@ -7,6 +7,8 @@
 	var/list/loot			//a list of possible items to spawn e.g. list(/obj/item, /obj/structure, /obj/effect)
 
 /obj/effect/spawner/lootdrop/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	if(loot && loot.len)
 		var/turf/T = get_turf(src)
@@ -80,6 +82,8 @@
 			/obj/item/reagent_containers/food/snacks/burger/fivealarm)
 
 /obj/effect/spawner/lootdrop/three_course_meal/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	loot = list(pick(soups) = 1,pick(salads) = 1,pick(mains) = 1)
 	. = ..()
 
@@ -88,6 +92,8 @@
 	// see code/_globalvars/lists/maintenance_loot.dm for loot table
 
 /obj/effect/spawner/lootdrop/maintenance/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	loot = GLOB.maintenance_loot
 	. = ..()
 
@@ -127,6 +133,8 @@
 	name = "random costume spawner"
 
 /obj/effect/spawner/lootdrop/costume/Initialize()
+	procstart = null
+	src.procstart = null
 	loot = list()
 	for(var/path in subtypesof(/obj/effect/spawner/bundle/costume))
 		loot[path] = TRUE

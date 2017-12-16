@@ -30,10 +30,14 @@
 	var/shield_health_regen = 0 //When world.time equals this, shield health will regenerate
 
 /mob/living/simple_animal/hostile/clockwork/marauder/examine_info()
+	procstart = null
+	src.procstart = null
 	if(!shield_health)
 		return "<span class='warning'>Its shield has been destroyed!</span>"
 
 /mob/living/simple_animal/hostile/clockwork/marauder/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!GLOB.ratvar_awakens && health / maxHealth <= MARAUDER_SLOWDOWN_PERCENTAGE)
 		speed = initial(speed) + 1 //Yes, this slows them down
@@ -45,6 +49,8 @@
 		shield_health = max_shield_health
 
 /mob/living/simple_animal/hostile/clockwork/marauder/update_values()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens) //Massive attack damage bonuses and health increase, because Ratvar
 		health = 300
 		maxHealth = 300
@@ -62,14 +68,20 @@
 		max_shield_health = 4
 
 /mob/living/simple_animal/hostile/clockwork/marauder/death(gibbed)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>[src]'s equipment clatters lifelessly to the ground as the red flames within dissipate.</span>", \
 	"<span class='userdanger'>Dented and scratched, your armor falls away, and your fragile form breaks apart without its protection.</span>")
 	. = ..()
 
 /mob/living/simple_animal/hostile/clockwork/marauder/Process_Spacemove(movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/simple_animal/hostile/clockwork/marauder/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(amount > 0)
 		for(var/mob/living/L in view(2, src))
 			if(L.is_holding_item_of_type(/obj/item/nullrod))
@@ -79,11 +91,15 @@
 	. = ..()
 
 /mob/living/simple_animal/hostile/clockwork/marauder/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(deflect_projectile(P))
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/clockwork/marauder/proc/deflect_projectile(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(!shield_health)
 		return
 	var/energy_projectile = istype(P, /obj/item/projectile/energy) || istype(P, /obj/item/projectile/beam)

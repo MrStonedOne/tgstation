@@ -504,6 +504,8 @@
 	can_adjust = FALSE
 
 /obj/item/clothing/under/maid/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/clothing/accessory/maidapron/A = new (src)
 	attach_accessory(A)
@@ -626,11 +628,15 @@
 
 
 /obj/item/clothing/under/plasmaman/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>There are [extinguishes_left] extinguisher charges left in this suit.</span>")
 
 
 /obj/item/clothing/under/plasmaman/proc/Extinguish(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!istype(H))
 		return
 
@@ -646,6 +652,8 @@
 	return 0
 
 /obj/item/clothing/under/plasmaman/attackby(obj/item/E, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if (istype(E, /obj/item/device/extinguisher_refill))
 		if (extinguishes_left == 5)

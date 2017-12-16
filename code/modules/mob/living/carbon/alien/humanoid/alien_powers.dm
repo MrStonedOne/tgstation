@@ -18,10 +18,14 @@ Doesn't work on other aliens/AI.*/
 	action_background_icon_state = "bg_alien"
 
 /obj/effect/proc_holder/alien/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	action = new(src)
 
 /obj/effect/proc_holder/alien/Click()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(usr))
 		return 1
 	var/mob/living/carbon/user = usr
@@ -31,20 +35,30 @@ Doesn't work on other aliens/AI.*/
 	return 1
 
 /obj/effect/proc_holder/alien/on_gain(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/alien/on_lose(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/alien/fire(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/effect/proc_holder/alien/get_panel_text()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(plasma_cost > 0)
 		return "[plasma_cost]"
 
 /obj/effect/proc_holder/alien/proc/cost_check(check_turf=0,mob/living/carbon/user,silent = 0)
+	procstart = null
+	src.procstart = null
 	if(user.stat)
 		if(!silent)
 			to_chat(user, "<span class='noticealien'>You must be conscious to do this.</span>")
@@ -67,6 +81,8 @@ Doesn't work on other aliens/AI.*/
 	action_icon_state = "alien_plant"
 
 /obj/effect/proc_holder/alien/plant/fire(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/alien/weeds/node) in get_turf(user))
 		to_chat(user, "There's already a weed node here.")
 		return 0
@@ -81,6 +97,8 @@ Doesn't work on other aliens/AI.*/
 	action_icon_state = "alien_whisper"
 
 /obj/effect/proc_holder/alien/whisper/fire(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/list/options = list()
 	for(var/mob/living/Ms in oview(user))
 		options += Ms
@@ -109,6 +127,8 @@ Doesn't work on other aliens/AI.*/
 	action_icon_state = "alien_transfer"
 
 /obj/effect/proc_holder/alien/transfer/fire(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/list/mob/living/carbon/aliens_around = list()
 	for(var/mob/living/carbon/A  in oview(user))
 		if(A.getorgan(/obj/item/organ/alien/plasmavessel))
@@ -135,12 +155,18 @@ Doesn't work on other aliens/AI.*/
 	action_icon_state = "alien_acid"
 
 /obj/effect/proc_holder/alien/acid/on_gain(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	user.verbs.Add(/mob/living/carbon/proc/corrosive_acid)
 
 /obj/effect/proc_holder/alien/acid/on_lose(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	user.verbs.Remove(/mob/living/carbon/proc/corrosive_acid)
 
 /obj/effect/proc_holder/alien/acid/proc/corrode(atom/target,mob/living/carbon/user = usr)
+	procstart = null
+	src.procstart = null
 	if(target in oview(1,user))
 		if(target.acid_act(200, 100))
 			user.visible_message("<span class='alertalien'>[user] vomits globs of vile stuff all over [target]. It begins to sizzle and melt under the bubbling mess of acid!</span>")
@@ -156,6 +182,8 @@ Doesn't work on other aliens/AI.*/
 
 
 /obj/effect/proc_holder/alien/acid/fire(mob/living/carbon/alien/user)
+	procstart = null
+	src.procstart = null
 	var/O = input("Select what to dissolve:","Dissolve",null) as obj|turf in oview(1,user)
 	if(!O || user.incapacitated())
 		return 0
@@ -181,6 +209,8 @@ Doesn't work on other aliens/AI.*/
 	active = FALSE
 
 /obj/effect/proc_holder/alien/neurotoxin/fire(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/message
 	if(active)
 		message = "<span class='notice'>You empty your neurotoxin gland.</span>"
@@ -190,10 +220,14 @@ Doesn't work on other aliens/AI.*/
 		add_ranged_ability(user, message, TRUE)
 
 /obj/effect/proc_holder/alien/neurotoxin/update_icon()
+	procstart = null
+	src.procstart = null
 	action.button_icon_state = "alien_neurotoxin_[active]"
 	action.UpdateButtonIcon()
 
 /obj/effect/proc_holder/alien/neurotoxin/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/p_cost = 50
@@ -223,9 +257,13 @@ Doesn't work on other aliens/AI.*/
 	return TRUE
 
 /obj/effect/proc_holder/alien/neurotoxin/on_lose(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	remove_ranged_ability()
 
 /obj/effect/proc_holder/alien/neurotoxin/add_ranged_ability(mob/living/user, msg)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isalienadult(user))
 		var/mob/living/carbon/alien/humanoid/A = user
@@ -233,6 +271,8 @@ Doesn't work on other aliens/AI.*/
 		A.update_icons()
 
 /obj/effect/proc_holder/alien/neurotoxin/remove_ranged_ability(mob/living/user, msg)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isalienadult(user))
 		var/mob/living/carbon/alien/humanoid/A = user
@@ -252,6 +292,8 @@ Doesn't work on other aliens/AI.*/
 	action_icon_state = "alien_resin"
 
 /obj/effect/proc_holder/alien/resin/fire(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/alien/resin) in user.loc)
 		to_chat(user, "<span class='danger'>There is already a resin structure there.</span>")
 		return 0
@@ -274,6 +316,8 @@ Doesn't work on other aliens/AI.*/
 	action_icon_state = "alien_barf"
 
 /obj/effect/proc_holder/alien/regurgitate/fire(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(user.stomach_contents.len)
 		for(var/atom/movable/A in user.stomach_contents)
 			user.stomach_contents.Remove(A)
@@ -292,6 +336,8 @@ Doesn't work on other aliens/AI.*/
 	action_icon_state = "alien_sneak"
 
 /obj/effect/proc_holder/alien/sneak/fire(mob/living/carbon/alien/humanoid/user)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		user.alpha = 75 //Still easy to see in lit areas with bright tiles, almost invisible on resin.
 		user.sneaking = 1
@@ -305,6 +351,8 @@ Doesn't work on other aliens/AI.*/
 
 
 /mob/living/carbon/proc/getPlasma()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/alien/plasmavessel/vessel = getorgan(/obj/item/organ/alien/plasmavessel)
 	if(!vessel)
 		return 0
@@ -312,6 +360,8 @@ Doesn't work on other aliens/AI.*/
 
 
 /mob/living/carbon/proc/adjustPlasma(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/alien/plasmavessel/vessel = getorgan(/obj/item/organ/alien/plasmavessel)
 	if(!vessel)
 		return 0
@@ -324,10 +374,14 @@ Doesn't work on other aliens/AI.*/
 	return 1
 
 /mob/living/carbon/alien/adjustPlasma(amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	updatePlasmaDisplay()
 
 /mob/living/carbon/proc/usePlasma(amount)
+	procstart = null
+	src.procstart = null
 	if(getPlasma() >= amount)
 		adjustPlasma(-amount)
 		return 1

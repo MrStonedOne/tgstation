@@ -10,6 +10,8 @@
 
 
 /obj/structure/transit_tube_pod/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	air_contents.add_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
 	air_contents.gases[/datum/gas/oxygen][MOLES] = MOLES_O2STANDARD
@@ -18,16 +20,22 @@
 
 
 /obj/structure/transit_tube_pod/Destroy()
+	procstart = null
+	src.procstart = null
 	empty_pod()
 	return ..()
 
 /obj/structure/transit_tube_pod/update_icon()
+	procstart = null
+	src.procstart = null
 	if(contents.len)
 		icon_state = "pod_occupied"
 	else
 		icon_state = "pod"
 
 /obj/structure/transit_tube_pod/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/crowbar))
 		if(!moving)
 			playsound(src.loc, I.usesound, 50, 1)
@@ -40,6 +48,8 @@
 		return ..()
 
 /obj/structure/transit_tube_pod/deconstruct(disassembled = TRUE, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/atom/location = get_turf(src)
 		if(user)
@@ -53,20 +63,28 @@
 	qdel(src)
 
 /obj/structure/transit_tube_pod/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!QDELETED(src))
 		empty_pod()
 
 /obj/structure/transit_tube_pod/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/AM in contents)
 		AM.ex_act(severity, target)
 
 /obj/structure/transit_tube_pod/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct(FALSE)
 
 /obj/structure/transit_tube_pod/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.incapacitated())
 		empty_pod()
 		return
@@ -79,6 +97,8 @@
 			empty_pod()
 
 /obj/structure/transit_tube_pod/proc/empty_pod(atom/location)
+	procstart = null
+	src.procstart = null
 	if(!location)
 		location = get_turf(src)
 	for(var/atom/movable/M in contents)
@@ -86,12 +106,16 @@
 	update_icon()
 
 /obj/structure/transit_tube_pod/Process_Spacemove()
+	procstart = null
+	src.procstart = null
 	if(moving) //No drifting while moving in the tubes
 		return 1
 	else
 		return ..()
 
 /obj/structure/transit_tube_pod/proc/follow_tube()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	if(moving)
 		return
@@ -151,15 +175,23 @@
 		deconstruct(FALSE)	//we automatically deconstruct the pod
 
 /obj/structure/transit_tube_pod/return_air()
+	procstart = null
+	src.procstart = null
 	return air_contents
 
 /obj/structure/transit_tube_pod/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	return air_contents.merge(giver)
 
 /obj/structure/transit_tube_pod/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	return air_contents.remove(amount)
 
 /obj/structure/transit_tube_pod/relaymove(mob/mob, direction)
+	procstart = null
+	src.procstart = null
 	if(istype(mob) && mob.client)
 		if(!moving)
 			for(var/obj/structure/transit_tube/station/station in loc)
@@ -183,4 +215,6 @@
 						return
 
 /obj/structure/transit_tube_pod/return_temperature()
+	procstart = null
+	src.procstart = null
 	return air_contents.temperature

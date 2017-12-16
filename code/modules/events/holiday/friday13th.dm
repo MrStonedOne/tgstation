@@ -9,10 +9,14 @@
 	earliest_start = 0
 
 /datum/round_event/fridaythethirteen/start()
+	procstart = null
+	src.procstart = null
 	//Very unlucky, cut the frequency of events in half.
 	events.frequency_lower /= 2
 	events.frequency_upper /= 2
 
 /datum/round_event/fridaythethirteen/announce(fake)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/L in player_list)
 		to_chat(L, "<span class='warning'>You are feeling unlucky today.</span>")

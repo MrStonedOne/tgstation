@@ -20,6 +20,8 @@
 
 
 /obj/item/ammo_casing/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(projectile_type)
 		BB = new projectile_type(src)
@@ -29,6 +31,8 @@
 	update_icon()
 
 /obj/item/ammo_casing/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "[initial(icon_state)][BB ? "-live" : ""]"
 	desc = "[initial(desc)][BB ? "" : " This one is spent"]"
@@ -39,6 +43,8 @@
 		BB = new projectile_type(src)
 
 /obj/item/ammo_casing/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/ammo_box))
 		var/obj/item/ammo_box/box = I
 		if(isturf(loc))

@@ -15,6 +15,8 @@
 	var/spent = FALSE
 
 /obj/item/device/soulstone/proc/was_used()
+	procstart = null
+	src.procstart = null
 	if(!reusable)
 		spent = TRUE
 		name = "dull [name]"
@@ -30,12 +32,16 @@
 	reusable = FALSE
 
 /obj/item/device/soulstone/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!iscultist(user) && !iswizard(user) && !usability)
 		to_chat(user, "<span class='danger'>An overwhelming feeling of dread comes over you as you pick up the soulstone. It would be wise to be rid of this quickly.</span>")
 		user.Dizzy(120)
 
 /obj/item/device/soulstone/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usability || iscultist(user) || iswizard(user) || isobserver(user))
 		to_chat(user, "<span class='cult'>A soulstone, used to capture souls, either from unconscious or sleeping humans or from freed shades.</span>")
@@ -51,6 +57,8 @@
 //////////////////////////////Capturing////////////////////////////////////////////////////////
 
 /obj/item/device/soulstone/attack(mob/living/carbon/human/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user) && !iswizard(user) && !usability)
 		user.Unconscious(100)
 		to_chat(user, "<span class='userdanger'>Your body is wracked with debilitating pain!</span>")
@@ -69,6 +77,8 @@
 ///////////////////Options for using captured souls///////////////////////////////////////
 
 /obj/item/device/soulstone/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!in_range(src, user))
 		return
 	if(!iscultist(user) && !iswizard(user) && !usability)
@@ -78,6 +88,8 @@
 	release_shades(user)
 
 /obj/item/device/soulstone/proc/release_shades(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/simple_animal/shade/A in src)
 		A.status_flags &= ~GODMODE
 		A.canmove = 1
@@ -99,6 +111,8 @@
 	desc = "A wicked machine used by those skilled in magical arts. It is inactive."
 
 /obj/structure/constructshell/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(iscultist(user) || iswizard(user) || user.stat == DEAD)
 		to_chat(user, "<span class='cult'>A construct shell, used to house bound souls from a soulstone.</span>")
@@ -108,6 +122,8 @@
 		to_chat(user, "<span class='cult'>A <b>Juggernaut</b>, which is very hard to kill and can produce temporary walls, but is slow.</span>")
 
 /obj/structure/constructshell/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/device/soulstone))
 		var/obj/item/device/soulstone/SS = O
 		if(!iscultist(user) && !iswizard(user) && !SS.usability)
@@ -123,6 +139,8 @@
 
 
 /obj/item/device/soulstone/proc/transfer_soul(choice as text, target, mob/user)
+	procstart = null
+	src.procstart = null
 	switch(choice)
 		if("FORCE")
 			if(!iscarbon(target))		//TODO: Add sacrifice stoning for non-organics, just because you have no body doesnt mean you dont have a soul
@@ -209,6 +227,8 @@
 
 
 /proc/makeNewConstruct(mob/living/simple_animal/hostile/construct/ctype, mob/target, mob/stoner = null, cultoverride = 0, loc_override = null)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/construct/newstruct = new ctype((loc_override) ? (loc_override) : (get_turf(target)))
 	if(stoner)
 		newstruct.faction |= "[REF(stoner)]"
@@ -231,6 +251,8 @@
 
 
 /obj/item/device/soulstone/proc/init_shade(mob/living/carbon/human/T, mob/U, vic = 0)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/decal/remains/human(T.loc) //Spawns a skeleton
 	T.stop_sound_channel(CHANNEL_HEARTBEAT)
 	T.invisibility = INVISIBILITY_ABSTRACT
@@ -258,6 +280,8 @@
 
 
 /obj/item/device/soulstone/proc/getCultGhost(mob/living/carbon/human/T, mob/U)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/chosen_ghost
 
 	for(var/mob/dead/observer/ghost in GLOB.player_list) //We put them back in their body

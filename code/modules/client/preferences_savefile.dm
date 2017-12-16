@@ -20,6 +20,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	initial() values if necessary.
 */
 /datum/preferences/proc/savefile_needs_update(savefile/S)
+	procstart = null
+	src.procstart = null
 	var/savefile_version
 	S["version"] >> savefile_version
 
@@ -32,6 +34,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 
 /datum/preferences/proc/update_antagchoices(current_version, savefile/S)
+	procstart = null
+	src.procstart = null
 	if((!islist(be_special) || old_be_special ) && current_version < 12)
 		//Archived values of when antag pref defines were a bitfield+fitflags
 		var/B_traitor = 1
@@ -98,6 +102,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 //It's only really meant to avoid annoying frequent players
 //if your savefile is 3 months out of date, then 'tough shit'.
 /datum/preferences/proc/update_character(current_version, savefile/S)
+	procstart = null
+	src.procstart = null
 	if(current_version < 16)
 		var/berandom
 		S["userandomjob"] >> berandom
@@ -112,11 +118,15 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 
 
 /datum/preferences/proc/load_path(ckey,filename="preferences.sav")
+	procstart = null
+	src.procstart = null
 	if(!ckey)
 		return
 	path = "data/player_saves/[copytext(ckey,1,2)]/[ckey]/[filename]"
 
 /datum/preferences/proc/load_preferences()
+	procstart = null
+	src.procstart = null
 	if(!path)
 		return 0
 	if(!fexists(path))
@@ -189,6 +199,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return 1
 
 /datum/preferences/proc/save_preferences()
+	procstart = null
+	src.procstart = null
 	if(!path)
 		return 0
 	var/savefile/S = new /savefile(path)
@@ -229,6 +241,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return 1
 
 /datum/preferences/proc/load_character(slot)
+	procstart = null
+	src.procstart = null
 	if(!path)
 		return 0
 	if(!fexists(path))
@@ -369,6 +383,8 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 	return 1
 
 /datum/preferences/proc/save_character()
+	procstart = null
+	src.procstart = null
 	if(!path)
 		return 0
 	var/savefile/S = new /savefile(path)
@@ -439,10 +455,14 @@ SAVEFILE UPDATING/VERSIONING - 'Simplified', or rather, more coder-friendly ~Car
 //Some crude tools for testing savefiles
 //path is the savefile path
 /client/verb/savefile_export(path as text)
+	procstart = null
+	src.procstart = null
 	var/savefile/S = new /savefile(path)
 	S.ExportText("/",file("[path].txt"))
 //path is the savefile path
 /client/verb/savefile_import(path as text)
+	procstart = null
+	src.procstart = null
 	var/savefile/S = new /savefile(path)
 	S.ImportText("/",file("[path].txt"))
 

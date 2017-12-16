@@ -18,6 +18,8 @@
 	var/filterToxins = TRUE //whether to filter toxins
 
 /obj/item/organ/liver/on_life()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = owner
 
 	//slowly heal liver damage
@@ -48,6 +50,8 @@
 				to_chat(C, "<span class='notice'>You feel [pick("nauseous", "dull pain in your lower body", "confused")].</span>")
 
 /obj/item/organ/liver/prepare_eat()
+	procstart = null
+	src.procstart = null
 	var/obj/S = ..()
 	S.reagents.add_reagent("iron", 5)
 	return S
@@ -78,6 +82,8 @@
 	toxLethality = 0.3 //20% less damage than a normal liver
 
 /obj/item/organ/liver/cybernetic/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			damage+=100

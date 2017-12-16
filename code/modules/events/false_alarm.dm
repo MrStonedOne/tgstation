@@ -7,6 +7,8 @@
 
 
 /datum/round_event_control/falsealarm/admin_setup()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_FUN))
 		return
 
@@ -21,6 +23,8 @@
 	forced_type = input(usr, "Select the scare.","False event") as null|anything in possible_types
 
 /datum/round_event_control/falsealarm/canSpawnEvent(players_amt, gamemode)
+	procstart = null
+	src.procstart = null
 	return ..() && length(gather_false_events())
 
 /datum/round_event/falsealarm
@@ -29,6 +33,8 @@
 	fakeable = FALSE
 
 /datum/round_event/falsealarm/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(fake) //What are you doing
 		return
 	var/players_amt = get_active_player_count(alive_check = 1, afk_check = 1, human_check = 1)
@@ -49,6 +55,8 @@
 		Event.announce(TRUE) 	//just announce it like it's happening
 
 /proc/gather_false_events(players_amt, gamemode)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/round_event_control/E in SSevents.control)
 		if(istype(E, /datum/round_event_control/falsealarm))

@@ -72,10 +72,14 @@
 	var/obj/item/organ/I = null
 
 /datum/surgery_step/manipulate_organs/New()
+	procstart = null
+	src.procstart = null
 	..()
 	implements = implements + implements_extract
 
 /datum/surgery_step/manipulate_organs/tool_check(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/weldingtool))
 		var/obj/item/weldingtool/WT = tool
 		if(!WT.isOn())
@@ -95,6 +99,8 @@
 
 
 /datum/surgery_step/manipulate_organs/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	I = null
 	if(istype(tool, /obj/item/organ_storage))
 		if(!tool.contents.len)
@@ -142,6 +148,8 @@
 		return -1
 
 /datum/surgery_step/manipulate_organs/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	if(current_type == "insert")
 		if(istype(tool, /obj/item/organ_storage))
 			I = tool.contents[1]

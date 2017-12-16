@@ -18,18 +18,26 @@
 	var/volume = 500
 
 /obj/item/watertank/New()
+	procstart = null
+	src.procstart = null
 	..()
 	create_reagents(volume)
 	noz = make_noz()
 
 /obj/item/watertank/ui_action_click()
+	procstart = null
+	src.procstart = null
 	toggle_mister()
 
 /obj/item/watertank/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot == user.getBackSlot())
 		return 1
 
 /obj/item/watertank/verb/toggle_mister()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Mister"
 	set category = "Object"
 	if (usr.get_item_by_slot(usr.getBackSlot()) != src)
@@ -56,37 +64,51 @@
 	return
 
 /obj/item/watertank/proc/make_noz()
+	procstart = null
+	src.procstart = null
 	return new /obj/item/reagent_containers/spray/mister(src)
 
 /obj/item/watertank/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot != slot_back)
 		remove_noz()
 
 /obj/item/watertank/proc/remove_noz()
+	procstart = null
+	src.procstart = null
 	if(ismob(noz.loc))
 		var/mob/M = noz.loc
 		M.temporarilyRemoveItemFromInventory(noz, TRUE)
 	return
 
 /obj/item/watertank/Destroy()
+	procstart = null
+	src.procstart = null
 	if (on)
 		qdel(noz)
 	return ..()
 
 /obj/item/watertank/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(src.loc == user)
 		ui_action_click()
 		return
 	..()
 
 /obj/item/watertank/MouseDrop(obj/over_object)
+	procstart = null
+	src.procstart = null
 	var/mob/M = src.loc
 	if(istype(M) && istype(over_object, /obj/screen/inventory/hand))
 		var/obj/screen/inventory/hand/H = over_object
 		M.putItemFromInventoryInHandIfPossible(src, H.held_index)
 
 /obj/item/watertank/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W == noz)
 		remove_noz()
 		return 1
@@ -94,6 +116,8 @@
 		return ..()
 
 /obj/item/watertank/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	remove_noz()
 
@@ -120,6 +144,8 @@
 	var/obj/item/watertank/tank
 
 /obj/item/reagent_containers/spray/mister/New(parent_tank)
+	procstart = null
+	src.procstart = null
 	..()
 	if(check_tank_exists(parent_tank, src))
 		tank = parent_tank
@@ -128,15 +154,21 @@
 	return
 
 /obj/item/reagent_containers/spray/mister/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>The mister snaps back onto the watertank.</span>")
 	tank.on = 0
 	forceMove(tank)
 
 /obj/item/reagent_containers/spray/mister/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /proc/check_tank_exists(parent_tank, mob/living/carbon/human/M, obj/O)
+	procstart = null
+	src.procstart = null
 	if (!parent_tank || !istype(parent_tank, /obj/item/watertank))	//To avoid weird issues from admin spawns
 		qdel(O)
 		return 0
@@ -144,11 +176,15 @@
 		return 1
 
 /obj/item/reagent_containers/spray/mister/Move()
+	procstart = null
+	src.procstart = null
 	..()
 	if(loc != tank.loc)
 		forceMove(tank.loc)
 
 /obj/item/reagent_containers/spray/mister/afterattack(obj/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(target.loc == loc) //Safety check so you don't fill your mister with mutagen or something and then blast yourself in the face with it
 		return
 	..()
@@ -161,6 +197,8 @@
 	item_state = "waterbackpackjani"
 
 /obj/item/watertank/janitor/New()
+	procstart = null
+	src.procstart = null
 	..()
 	reagents.add_reagent("cleaner", 500)
 
@@ -176,9 +214,13 @@
 	possible_transfer_amounts = list()
 
 /obj/item/watertank/janitor/make_noz()
+	procstart = null
+	src.procstart = null
 	return new /obj/item/reagent_containers/spray/mister/janitor(src)
 
 /obj/item/reagent_containers/spray/mister/janitor/attack_self(var/mob/user)
+	procstart = null
+	src.procstart = null
 	amount_per_transfer_from_this = (amount_per_transfer_from_this == 10 ? 5 : 10)
 	to_chat(user, "<span class='notice'>You [amount_per_transfer_from_this == 10 ? "remove" : "fix"] the nozzle. You'll now use [amount_per_transfer_from_this] units per spray.</span>")
 
@@ -197,13 +239,19 @@
 	slowdown = 0
 
 /obj/item/watertank/atmos/New()
+	procstart = null
+	src.procstart = null
 	..()
 	reagents.add_reagent("water", 200)
 
 /obj/item/watertank/atmos/make_noz()
+	procstart = null
+	src.procstart = null
 	return new /obj/item/extinguisher/mini/nozzle(src)
 
 /obj/item/watertank/atmos/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "waterbackpackatmos"
 	if(istype(noz, /obj/item/extinguisher/mini/nozzle))
@@ -231,6 +279,8 @@
 	var/resin_cooldown = 0
 
 /obj/item/extinguisher/mini/nozzle/New(parent_tank)
+	procstart = null
+	src.procstart = null
 	..()
 	if(check_tank_exists(parent_tank, src))
 		tank = parent_tank
@@ -240,12 +290,16 @@
 
 
 /obj/item/extinguisher/mini/nozzle/Move()
+	procstart = null
+	src.procstart = null
 	..()
 	if(loc != tank.loc)
 		forceMove(tank)
 	return
 
 /obj/item/extinguisher/mini/nozzle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(nozzle_mode)
 		if(EXTINGUISHER)
 			nozzle_mode = RESIN_LAUNCHER
@@ -265,12 +319,16 @@
 	return
 
 /obj/item/extinguisher/mini/nozzle/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>The nozzle snaps back onto the tank!</span>")
 	tank.on = 0
 	forceMove(tank)
 
 /obj/item/extinguisher/mini/nozzle/afterattack(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(nozzle_mode == EXTINGUISHER)
 		..()
 		return
@@ -326,6 +384,8 @@
 	pass_flags = PASSTABLE
 
 /obj/effect/resin_container/proc/Smoke()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/particle_effect/foam/metal/resin/S = new /obj/effect/particle_effect/foam/metal/resin(get_turf(loc))
 	S.amount = 4
 	playsound(src,'sound/effects/bamf.ogg',100,1)
@@ -356,13 +416,19 @@
 	possible_transfer_amounts = list(5,10,15)
 
 /obj/item/reagent_containers/chemtank/ui_action_click()
+	procstart = null
+	src.procstart = null
 	toggle_injection()
 
 /obj/item/reagent_containers/chemtank/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot == slot_back)
 		return 1
 
 /obj/item/reagent_containers/chemtank/proc/toggle_injection()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = usr
 	if(!istype(user))
 		return
@@ -376,6 +442,8 @@
 
 //Todo : cache these.
 /obj/item/reagent_containers/chemtank/proc/update_filling()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	if(reagents.total_volume)
@@ -412,18 +480,24 @@
 		. += filling
 
 /obj/item/reagent_containers/chemtank/proc/turn_on()
+	procstart = null
+	src.procstart = null
 	on = TRUE
 	START_PROCESSING(SSobj, src)
 	if(ismob(loc))
 		to_chat(loc, "<span class='notice'>[src] turns on.</span>")
 
 /obj/item/reagent_containers/chemtank/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	STOP_PROCESSING(SSobj, src)
 	if(ismob(loc))
 		to_chat(loc, "<span class='notice'>[src] turns off.</span>")
 
 /obj/item/reagent_containers/chemtank/process()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(loc))
 		turn_off()
 		return
@@ -452,6 +526,8 @@
 	slowdown = 0
 
 /obj/item/watertank/op/New()
+	procstart = null
+	src.procstart = null
 	..()
 	reagents.add_reagent("mutagen",350)
 	reagents.add_reagent("napalm",125)
@@ -473,4 +549,6 @@
 	possible_transfer_amounts = list(75,100,150)
 
 /obj/item/watertank/op/make_noz()
+	procstart = null
+	src.procstart = null
 	return new /obj/item/reagent_containers/spray/mister/op(src)

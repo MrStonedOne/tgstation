@@ -4,12 +4,16 @@
 		add_overlay(.)
 
 /mob/living/simple_animal/hostile/gorilla/proc/remove_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	var/I = gorilla_overlays[cache_index]
 	if(I)
 		cut_overlay(I)
 		gorilla_overlays[cache_index] = null
 
 /mob/living/simple_animal/hostile/gorilla/update_inv_hands()
+	procstart = null
+	src.procstart = null
 	cut_overlays("standing_overlay")
 	remove_overlay(GORILLA_HANDS_LAYER)
 
@@ -51,5 +55,7 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/gorilla/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	update_inv_hands()
 

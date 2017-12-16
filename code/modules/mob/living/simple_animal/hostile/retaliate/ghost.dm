@@ -39,6 +39,8 @@
 	var/random = TRUE //if you want random names for ghosts or not
 
 /mob/living/simple_animal/hostile/retaliate/ghost/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	give_hair()
 	set_light(1, 2) // same glowing as visible player ghosts
@@ -51,6 +53,8 @@
 
 
 /mob/living/simple_animal/hostile/retaliate/ghost/proc/give_hair()
+	procstart = null
+	src.procstart = null
 	if(ghost_hair_style != null)
 		ghost_hair = mutable_appearance('icons/mob/human_face.dmi', "hair_[ghost_hair_style]", -HAIR_LAYER)
 		ghost_hair.alpha = 200

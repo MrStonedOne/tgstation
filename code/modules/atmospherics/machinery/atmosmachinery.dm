@@ -40,6 +40,8 @@ Pipelines + Other Objects -> Pipe network
 	var/pipe_state //icon_state as a pipe item
 
 /obj/machinery/atmospherics/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_type_in_list(src, GLOB.ventcrawl_machinery) && isliving(user))
 		var/mob/living/L = user
@@ -47,6 +49,8 @@ Pipelines + Other Objects -> Pipe network
 			to_chat(L, "<span class='notice'>Alt-click to crawl through it.</span>")
 
 /obj/machinery/atmospherics/New(loc, process = TRUE, setdir)
+	procstart = null
+	src.procstart = null
 	if(!isnull(setdir))
 		setDir(setdir)
 	if(pipe_flags & PIPING_CARDINAL_AUTONORMALIZE)
@@ -60,6 +64,8 @@ Pipelines + Other Objects -> Pipe network
 	SetInitDirections()
 
 /obj/machinery/atmospherics/Destroy()
+	procstart = null
+	src.procstart = null
 	for(DEVICE_TYPE_LOOP)
 		nullifyNode(I)
 
@@ -73,19 +79,27 @@ Pipelines + Other Objects -> Pipe network
 	//return QDEL_HINT_FINDREFERENCE
 
 /obj/machinery/atmospherics/proc/destroy_network()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/proc/build_network()
+	procstart = null
+	src.procstart = null
 	// Called to build a network from this node
 	return
 
 /obj/machinery/atmospherics/proc/nullifyNode(I)
+	procstart = null
+	src.procstart = null
 	if(NODE_I)
 		var/obj/machinery/atmospherics/N = NODE_I
 		N.disconnect(src)
 		NODE_I = null
 
 /obj/machinery/atmospherics/proc/getNodeConnects()
+	procstart = null
+	src.procstart = null
 	var/list/node_connects = list()
 	node_connects.len = device_type
 
@@ -99,6 +113,8 @@ Pipelines + Other Objects -> Pipe network
 	return node_connects
 
 /obj/machinery/atmospherics/proc/normalize_cardinal_directions()
+	procstart = null
+	src.procstart = null
 	if(dir==SOUTH)
 		setDir(NORTH)
 	else if(dir==WEST)
@@ -106,6 +122,8 @@ Pipelines + Other Objects -> Pipe network
 
 //this is called just after the air controller sets up turfs
 /obj/machinery/atmospherics/proc/atmosinit(var/list/node_connects)
+	procstart = null
+	src.procstart = null
 	if(!node_connects) //for pipes where order of nodes doesn't matter
 		node_connects = getNodeConnects()
 
@@ -117,6 +135,8 @@ Pipelines + Other Objects -> Pipe network
 	update_icon()
 
 /obj/machinery/atmospherics/proc/setPipingLayer(new_layer)
+	procstart = null
+	src.procstart = null
 	if(pipe_flags & PIPING_DEFAULT_LAYER_ONLY)
 		new_layer = PIPING_LAYER_DEFAULT
 	piping_layer = new_layer
@@ -125,21 +145,29 @@ Pipelines + Other Objects -> Pipe network
 	layer = initial(layer) + ((piping_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_LCHANGE)
 
 /obj/machinery/atmospherics/proc/can_be_node(obj/machinery/atmospherics/target)
+	procstart = null
+	src.procstart = null
 	return connection_check(target, piping_layer)
 
 //Find a connecting /obj/machinery/atmospherics in specified direction
 /obj/machinery/atmospherics/proc/findConnecting(direction, prompted_layer)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/atmospherics/target in get_step(src, direction))
 		if(target.initialize_directions & get_dir(target,src))
 			if(connection_check(target, prompted_layer))
 				return target
 
 /obj/machinery/atmospherics/proc/connection_check(obj/machinery/atmospherics/target, given_layer)
+	procstart = null
+	src.procstart = null
 	if(isConnectable(target, given_layer) && target.isConnectable(src, given_layer) && (target.initialize_directions & get_dir(target,src)))
 		return TRUE
 	return FALSE
 
 /obj/machinery/atmospherics/proc/isConnectable(obj/machinery/atmospherics/target, given_layer)
+	procstart = null
+	src.procstart = null
 	if(isnull(given_layer))
 		given_layer = piping_layer
 	if((target.piping_layer == given_layer) || (target.pipe_flags & PIPING_ALL_LAYER))
@@ -147,27 +175,43 @@ Pipelines + Other Objects -> Pipe network
 	return FALSE
 
 /obj/machinery/atmospherics/proc/pipeline_expansion()
+	procstart = null
+	src.procstart = null
 	return nodes
 
 /obj/machinery/atmospherics/proc/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/proc/GetInitDirections()
+	procstart = null
+	src.procstart = null
 	return initialize_directions
 
 /obj/machinery/atmospherics/proc/returnPipenet()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/proc/returnPipenetAir()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/proc/setPipenet()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/proc/replacePipenet()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/proc/disconnect(obj/machinery/atmospherics/reference)
+	procstart = null
+	src.procstart = null
 	if(istype(reference, /obj/machinery/atmospherics/pipe))
 		var/obj/machinery/atmospherics/pipe/P = reference
 		P.destroy_network()
@@ -176,9 +220,13 @@ Pipelines + Other Objects -> Pipe network
 	update_icon()
 
 /obj/machinery/atmospherics/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pipe)) //lets you autodrop
 		var/obj/item/pipe/pipe = W
 		if(user.dropItemToGround(pipe))
@@ -218,10 +266,14 @@ Pipelines + Other Objects -> Pipe network
 		return ..()
 
 /obj/machinery/atmospherics/proc/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	return can_unwrench
 
 // Throws the user when they unwrench a pipe with a major difference between the internal and environmental pressure.
 /obj/machinery/atmospherics/proc/unsafe_pressure_release(mob/user, pressures = null)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	if(!pressures)
@@ -240,6 +292,8 @@ Pipelines + Other Objects -> Pipe network
 	user.throw_at(target, range, speed)
 
 /obj/machinery/atmospherics/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(can_unwrench)
 			var/obj/item/pipe/stored = new construction_type(loc, null, dir, src)
@@ -251,6 +305,8 @@ Pipelines + Other Objects -> Pipe network
 
 /obj/machinery/atmospherics/proc/getpipeimage(iconset, iconstate, direction, col=rgb(255,255,255))
 
+	procstart = null
+	src.procstart = null
 	//Add identifiers for the iconset
 	if(iconsetids[iconset] == null)
 		iconsetids[iconset] = num2text(iconsetids.len + 1)
@@ -264,17 +320,23 @@ Pipelines + Other Objects -> Pipe network
 		pipe_overlay.color = col
 
 /obj/machinery/atmospherics/proc/icon_addintact(var/obj/machinery/atmospherics/node)
+	procstart = null
+	src.procstart = null
 	var/image/img = getpipeimage('icons/obj/atmospherics/components/binary_devices.dmi', "pipe_intact", get_dir(src,node), node.pipe_color)
 	underlays += img
 	return img.dir
 
 /obj/machinery/atmospherics/proc/icon_addbroken(var/connected = FALSE)
+	procstart = null
+	src.procstart = null
 	var/unconnected = (~connected) & initialize_directions
 	for(var/direction in GLOB.cardinals)
 		if(unconnected & direction)
 			underlays += getpipeimage('icons/obj/atmospherics/components/binary_devices.dmi', "pipe_exposed", direction)
 
 /obj/machinery/atmospherics/on_construction(obj_color, set_layer)
+	procstart = null
+	src.procstart = null
 	if(can_unwrench)
 		add_atom_colour(obj_color, FIXED_COLOUR_PRIORITY)
 		pipe_color = obj_color
@@ -289,12 +351,16 @@ Pipelines + Other Objects -> Pipe network
 	build_network()
 
 /obj/machinery/atmospherics/Entered(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /mob/living))
 		var/mob/living/L = AM
 		L.ventcrawl_layer = piping_layer
 	return ..()
 
 /obj/machinery/atmospherics/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	if(current_size >= STAGE_FIVE)
 		deconstruct(FALSE)
 	return ..()
@@ -302,6 +368,8 @@ Pipelines + Other Objects -> Pipe network
 #define VENT_SOUND_DELAY 30
 
 /obj/machinery/atmospherics/relaymove(mob/living/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!(direction & initialize_directions)) //cant go this way.
 		return
 
@@ -333,6 +401,8 @@ Pipelines + Other Objects -> Pipe network
 
 
 /obj/machinery/atmospherics/AltClick(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_list(src, GLOB.ventcrawl_machinery))
 		L.handle_ventcrawl(src)
 		return
@@ -340,14 +410,22 @@ Pipelines + Other Objects -> Pipe network
 
 
 /obj/machinery/atmospherics/proc/can_crawl_through()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/machinery/atmospherics/proc/returnPipenets()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/machinery/atmospherics/update_remote_sight(mob/user)
+	procstart = null
+	src.procstart = null
 	user.sight |= (SEE_TURFS|BLIND)
 
 //Used for certain children of obj/machinery/atmospherics to not show pipe vision when mob is inside it.
 /obj/machinery/atmospherics/proc/can_see_pipes()
+	procstart = null
+	src.procstart = null
 	return TRUE

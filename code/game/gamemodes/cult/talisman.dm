@@ -7,6 +7,8 @@
 	var/creation_time = 100 //how long it takes an imbue rune to make this type of talisman
 
 /obj/item/paper/talisman/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscultist(user) || user.stat == DEAD)
 		to_chat(user, "<b>Name:</b> [cultist_name]")
 		to_chat(user, "<b>Effect:</b> [cultist_desc]")
@@ -15,6 +17,8 @@
 		to_chat(user, "<span class='danger'>There are indecipherable images scrawled on the paper in what looks to be... <i>blood?</i></span>")
 
 /obj/item/paper/talisman/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user))
 		to_chat(user, "<span class='danger'>There are indecipherable images scrawled on the paper in what looks to be... <i>blood?</i></span>")
 		return
@@ -24,6 +28,8 @@
 		qdel(src)
 
 /obj/item/paper/talisman/proc/invoke(mob/living/user, successfuluse = 1)
+	procstart = null
+	src.procstart = null
 	. = successfuluse
 	if(successfuluse) //if the calling whatever says we succeed, do the fancy stuff
 		if(invocation)
@@ -39,6 +45,8 @@
 	invocation = "Ra'sha yoka!"
 
 /obj/item/paper/talisman/malformed/invoke(mob/living/user, successfuluse = 1)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='cultitalic'>You feel a pain in your head. The Geometer is displeased.</span>")
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
@@ -54,6 +62,8 @@
 	creation_time = 80
 
 /obj/item/paper/talisman/teleport/invoke(mob/living/user, successfuluse = 1)
+	procstart = null
+	src.procstart = null
 	var/list/potential_runes = list()
 	var/list/teleportnames = list()
 	for(var/R in GLOB.teleport_runes)
@@ -94,6 +104,8 @@
 	creation_time = 30
 
 /obj/item/paper/talisman/summon_tome/invoke(mob/living/user, successfuluse = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message("<span class='warning'>[user]'s hand glows red for a moment.</span>", \
 						 "<span class='cultitalic'>You speak the words of the talisman!</span>")
@@ -112,6 +124,8 @@
 	var/revealing = FALSE //if it reveals or not
 
 /obj/item/paper/talisman/true_sight/invoke(mob/living/user, successfuluse = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!revealing)
 		user.visible_message("<span class='warning'>Thin grey dust falls from [user]'s hand!</span>", \
@@ -135,6 +149,8 @@
 	health_cost = 5
 
 /obj/item/paper/talisman/emp/invoke(mob/living/user, successfuluse = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message("<span class='warning'>[user]'s hand flashes a bright blue!</span>", \
 						 "<span class='cultitalic'>You speak the words of the talisman, emitting an EMP blast.</span>")
@@ -150,6 +166,8 @@
 	health_cost = 10
 
 /obj/item/paper/talisman/stun/invoke(mob/living/user, successfuluse = 0)
+	procstart = null
+	src.procstart = null
 	if(successfuluse) //if we're forced to be successful(we normally aren't) then do the normal stuff
 		return ..()
 	if(iscultist(user))
@@ -159,6 +177,8 @@
 	return 0
 
 /obj/item/paper/talisman/stun/attack(mob/living/target, mob/living/user, successfuluse = 1)
+	procstart = null
+	src.procstart = null
 	if(iscultist(user))
 		invoke(user, 1)
 		user.visible_message("<span class='warning'>[user] holds up [src], which explodes in a flash of red light!</span>", \
@@ -195,6 +215,8 @@
 	creation_time = 80
 
 /obj/item/paper/talisman/armor/invoke(mob/living/user, successfuluse = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	user.visible_message("<span class='warning'>Otherworldly armor suddenly appears on [user]!</span>", \
 						 "<span class='cultitalic'>You speak the words of the talisman, arming yourself!</span>")
@@ -207,6 +229,8 @@
 	user.put_in_hands(new /obj/item/restraints/legcuffs/bola/cult(user))
 
 /obj/item/paper/talisman/armor/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscultist(user) && iscultist(target))
 		user.temporarilyRemoveItemFromInventory(src)
 		invoke(target)
@@ -224,6 +248,8 @@
 	creation_time = 80
 
 /obj/item/paper/talisman/horror/afterattack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscultist(user) && (get_dist(user, target) < 7))
 		if(iscarbon(target))
 			to_chat(user, "<span class='cultitalic'>You disturb [target] with visions of madness!</span>")
@@ -246,6 +272,8 @@
 	creation_time = 80
 
 /obj/item/paper/talisman/construction/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscultist(user))
 		to_chat(user, "<span class='warning'>To use this talisman, place it upon a stack of metal sheets.</span>")
 	else
@@ -253,6 +281,8 @@
 
 
 /obj/item/paper/talisman/construction/attack(obj/M,mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscultist(user))
 		to_chat(user, "<span class='cultitalic'>This talisman will only work on a stack of metal or plasteel sheets!</span>")
 		log_game("Construct talisman failed - not a valid target")
@@ -260,6 +290,8 @@
 		..()
 
 /obj/item/paper/talisman/construction/afterattack(obj/item/stack/sheet/target, mob/user, proximity_flag, click_parameters)
+	procstart = null
+	src.procstart = null
 	..()
 	if(proximity_flag && iscultist(user))
 		var/turf/T = get_turf(target)
@@ -295,6 +327,8 @@
 	uses = 6
 
 /obj/item/paper/talisman/shackle/invoke(mob/living/user, successfuluse = 0)
+	procstart = null
+	src.procstart = null
 	if(successfuluse) //if we're forced to be successful(we normally aren't) then do the normal stuff
 		return ..()
 	if(iscultist(user))
@@ -304,6 +338,8 @@
 	return 0
 
 /obj/item/paper/talisman/shackle/attack(mob/living/carbon/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscultist(user) && istype(target))
 		if(target.stat == DEAD)
 			user.visible_message("<span class='cultitalic'>This talisman's magic does not affect the dead!</span>")
@@ -313,6 +349,8 @@
 	..()
 
 /obj/item/paper/talisman/shackle/proc/CuffAttack(mob/living/carbon/C, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!C.handcuffed)
 		invoke(user, 1)
 		playsound(loc, 'sound/weapons/cablecuff.ogg', 30, 1, -2)
@@ -341,6 +379,8 @@
 	flags_1 = DROPDEL_1
 
 /obj/item/restraints/handcuffs/energy/cult/used/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='danger'>[user]'s shackles shatter in a discharge of dark magic!</span>", \
 							"<span class='userdanger'>Your [src] shatters in a discharge of dark magic!</span>")
 	. = ..()

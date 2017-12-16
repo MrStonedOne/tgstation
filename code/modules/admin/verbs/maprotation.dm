@@ -10,6 +10,8 @@
 	SSmapping.maprotate()
 
 /client/proc/adminchangemap()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set name = "Change Map"
 	var/list/maprotatechoices = list()

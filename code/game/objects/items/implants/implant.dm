@@ -12,24 +12,36 @@
 
 
 /obj/item/implant/proc/trigger(emote, mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/implant/proc/activate()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/implant/ui_action_click()
+	procstart = null
+	src.procstart = null
 	activate("action_button")
 
 /obj/item/implant/proc/can_be_implanted_in(mob/living/target) // for human-only and other special requirements
 	return TRUE
 
 /mob/living/proc/can_be_implanted()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/silicon/can_be_implanted()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/simple_animal/can_be_implanted()
+	procstart = null
+	src.procstart = null
 	return healable //Applies to robots and most non-organics, exceptions can override.
 
 
@@ -38,6 +50,8 @@
 //return 1 if the implant injects
 //return 0 if there is no room for implant / it fails
 /obj/item/implant/proc/implant(mob/living/target, mob/user, silent = 0)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(target.implants)
 	if(!target.can_be_implanted() || !can_be_implanted_in(target))
 		return 0
@@ -72,6 +86,8 @@
 	return 1
 
 /obj/item/implant/proc/removed(mob/living/source, silent = 0, special = 0)
+	procstart = null
+	src.procstart = null
 	moveToNullspace()
 	imp_in = null
 	source.implants -= src
@@ -85,13 +101,19 @@
 	return 1
 
 /obj/item/implant/Destroy()
+	procstart = null
+	src.procstart = null
 	if(imp_in)
 		removed(imp_in)
 	return ..()
 
 /obj/item/implant/proc/get_data()
+	procstart = null
+	src.procstart = null
 	return "No information available"
 
 /obj/item/implant/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = 1
 	..()

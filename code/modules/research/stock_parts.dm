@@ -23,6 +23,8 @@ If you create T5+ please take a pass at gene_modder.dm [L40]. Max_values MUST fi
 	var/alt_sound = null
 
 /obj/item/storage/part_replacer/afterattack(obj/machinery/T, mob/living/carbon/human/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(flag)
 		return
 	else if(works_from_distance)
@@ -45,6 +47,8 @@ If you create T5+ please take a pass at gene_modder.dm [L40]. Max_values MUST fi
 	alt_sound = 'sound/items/pshoom_2.ogg'
 
 /obj/item/storage/part_replacer/bluespace/dump_content_at(atom/dest_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(Adjacent(user))
 		var/atom/dumping_location = dest_object.get_dumping_location()
 		if(get_dist(user, dumping_location) < 8)
@@ -57,6 +61,8 @@ If you create T5+ please take a pass at gene_modder.dm [L40]. Max_values MUST fi
 	return 0
 
 /obj/item/storage/part_replacer/proc/play_rped_sound()
+	procstart = null
+	src.procstart = null
 	//Plays the sound for RPED exhanging or installing parts.
 	if(alt_sound && prob(1))
 		playsound(src, alt_sound, 40, 1)
@@ -66,6 +72,8 @@ If you create T5+ please take a pass at gene_modder.dm [L40]. Max_values MUST fi
 //Sorts stock parts inside an RPED by their rating.
 //Only use /obj/item/stock_parts/ with this sort proc!
 /proc/cmp_rped_sort(obj/item/stock_parts/A, obj/item/stock_parts/B)
+	procstart = null
+	src.procstart = null
 	return B.rating - A.rating
 
 /obj/item/stock_parts
@@ -76,6 +84,8 @@ If you create T5+ please take a pass at gene_modder.dm [L40]. Max_values MUST fi
 	var/rating = 1
 
 /obj/item/stock_parts/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)

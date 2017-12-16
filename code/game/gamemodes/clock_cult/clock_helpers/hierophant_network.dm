@@ -1,5 +1,7 @@
 //Sends a string to all servants and optionally ghosts, who will get a follow link to whatever is provided as the target.
 /proc/hierophant_message(message, servantsonly, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!message)
 		return FALSE
 	for(var/M in GLOB.mob_list)
@@ -15,6 +17,8 @@
 
 //Sends a titled message from a mob to all servants of ratvar and ghosts.
 /proc/titled_hierophant_message(mob/user, message, name_span = "heavy_brass", message_span = "brass", user_title = "Servant")
+	procstart = null
+	src.procstart = null
 	if(!user || !message)
 		return FALSE
 	var/parsed_message = "<span class='[name_span]'>[user_title ? "[user_title] ":""][findtextEx(user.name, user.real_name) ? user.name : "[user.real_name] (as [user.name])"]: \
@@ -36,11 +40,15 @@
 	var/span_for_message = "brass"
 
 /datum/action/innate/hierophant/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(owner))
 		return FALSE
 	return ..()
 
 /datum/action/innate/hierophant/Activate()
+	procstart = null
+	src.procstart = null
 	var/input = stripped_input(usr, "Please enter a message to send to other servants.", "Hierophant Network", "")
 	if(!input || !IsAvailable())
 		return

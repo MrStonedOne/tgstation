@@ -45,11 +45,15 @@
 	stat = DEAD
 
 /obj/item/clothing/mask/facehugger/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	..()
 	if(obj_integrity < 90)
 		Die()
 
 /obj/item/clothing/mask/facehugger/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return O.attack_obj(src, user)
 
 /obj/item/clothing/mask/facehugger/attack_alien(mob/user) //can be picked up by aliens
@@ -57,17 +61,23 @@
 	return
 
 /obj/item/clothing/mask/facehugger/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if((stat == CONSCIOUS && !sterile) && !isalien(user))
 		if(Leap(user))
 			return
 	..()
 
 /obj/item/clothing/mask/facehugger/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.transferItemToLoc(src, get_turf(M)))
 		Leap(M)
 
 /obj/item/clothing/mask/facehugger/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!real)//So that giant red text about probisci doesn't show up.
 		return
@@ -81,27 +91,39 @@
 
 
 /obj/item/clothing/mask/facehugger/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		Die()
 
 /obj/item/clothing/mask/facehugger/equipped(mob/M)
+	procstart = null
+	src.procstart = null
 	Attach(M)
 
 /obj/item/clothing/mask/facehugger/Crossed(atom/target)
+	procstart = null
+	src.procstart = null
 	HasProximity(target)
 	return
 
 /obj/item/clothing/mask/facehugger/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(stat == CONSCIOUS)
 		return HasProximity(finder)
 	return 0
 
 /obj/item/clothing/mask/facehugger/HasProximity(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(CanHug(AM) && Adjacent(AM))
 		return Leap(AM)
 	return 0
 
 /obj/item/clothing/mask/facehugger/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(stat == CONSCIOUS)
@@ -109,16 +131,22 @@
 		addtimer(CALLBACK(src, .proc/clear_throw_icon_state), 15)
 
 /obj/item/clothing/mask/facehugger/proc/clear_throw_icon_state()
+	procstart = null
+	src.procstart = null
 	if(icon_state == "[initial(icon_state)]_thrown")
 		icon_state = "[initial(icon_state)]"
 
 /obj/item/clothing/mask/facehugger/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat == CONSCIOUS)
 		icon_state = "[initial(icon_state)]"
 		Leap(hit_atom)
 
 /obj/item/clothing/mask/facehugger/proc/valid_to_attach(mob/living/M)
+	procstart = null
+	src.procstart = null
 	// valid targets: carbons except aliens and devils
 	// facehugger state early exit checks
 	if(stat != CONSCIOUS)
@@ -142,6 +170,8 @@
 	return FALSE
 
 /obj/item/clothing/mask/facehugger/proc/Leap(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!valid_to_attach(M))
 		return FALSE
 	if(iscarbon(M))
@@ -173,6 +203,8 @@
 	return TRUE // time for a smoke
 
 /obj/item/clothing/mask/facehugger/proc/Attach(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!valid_to_attach(M))
 		return
 	// early returns and validity checks done: attach.
@@ -190,9 +222,13 @@
 	addtimer(CALLBACK(src, .proc/Impregnate, M), rand(MIN_IMPREGNATION_TIME, MAX_IMPREGNATION_TIME))
 
 /obj/item/clothing/mask/facehugger/proc/detach()
+	procstart = null
+	src.procstart = null
 	attached = 0
 
 /obj/item/clothing/mask/facehugger/proc/Impregnate(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!target || target.stat == DEAD) //was taken off or something
 		return
 
@@ -218,6 +254,8 @@
 								"<span class='userdanger'>[src] violates [target]'s face!</span>")
 
 /obj/item/clothing/mask/facehugger/proc/GoActive()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD || stat == CONSCIOUS)
 		return
 
@@ -225,6 +263,8 @@
 	icon_state = "[initial(icon_state)]"
 
 /obj/item/clothing/mask/facehugger/proc/GoIdle()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD || stat == UNCONSCIOUS)
 		return
 
@@ -234,6 +274,8 @@
 	addtimer(CALLBACK(src, .proc/GoActive), rand(MIN_ACTIVE_TIME, MAX_ACTIVE_TIME))
 
 /obj/item/clothing/mask/facehugger/proc/Die()
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 
@@ -244,6 +286,8 @@
 	visible_message("<span class='danger'>[src] curls up into a ball!</span>")
 
 /proc/CanHug(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return 0
 	if(M.stat == DEAD)

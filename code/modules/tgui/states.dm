@@ -15,6 +15,8 @@
   * return UI_state The state of the UI.
  **/
 /datum/proc/ui_status(mob/user, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	var/src_object = ui_host()
 	. = UI_CLOSE
 	if(!state)
@@ -46,6 +48,8 @@
   * return UI_state The state of the UI.
  **/
 /datum/ui_state/proc/can_use_topic(src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	return UI_CLOSE // Don't allow interaction by default.
 
  /**
@@ -56,6 +60,8 @@
   * return UI_state The state of the UI.
  **/
 /mob/proc/shared_ui_interaction(src_object)
+	procstart = null
+	src.procstart = null
 	if(!client) // Close UIs if mindless.
 		return UI_CLOSE
 	else if(stat) // Disable UIs if unconcious.
@@ -65,11 +71,15 @@
 	return UI_INTERACTIVE
 
 /mob/living/silicon/ai/shared_ui_interaction(src_object)
+	procstart = null
+	src.procstart = null
 	if(lacks_power()) // Disable UIs if the AI is unpowered.
 		return UI_DISABLED
 	return ..()
 
 /mob/living/silicon/robot/shared_ui_interaction(src_object)
+	procstart = null
+	src.procstart = null
 	if(cell.charge <= 0 || lockcharge) // Disable UIs if the Borg is unpowered or locked.
 		return UI_DISABLED
 	return ..()
@@ -87,6 +97,8 @@
   * return UI_state The state of the UI.
  **/
 /atom/proc/contents_ui_distance(src_object, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return user.shared_living_ui_distance(src_object) // Just call this mob's check.
 
  /**
@@ -99,6 +111,8 @@
   * return UI_state The state of the UI.
  **/
 /mob/living/proc/shared_living_ui_distance(atom/movable/src_object)
+	procstart = null
+	src.procstart = null
 	if(!(src_object in view(src))) // If the object is obscured, close it.
 		return UI_CLOSE
 
@@ -112,6 +126,8 @@
 	return UI_CLOSE // Otherwise, we got nothing.
 
 /mob/living/carbon/human/shared_living_ui_distance(atom/movable/src_object)
+	procstart = null
+	src.procstart = null
 	if(dna.check_mutation(TK) && tkMaxRangeCheck(src, src_object))
 		return UI_INTERACTIVE
 	return ..()

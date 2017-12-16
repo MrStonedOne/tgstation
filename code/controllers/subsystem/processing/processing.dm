@@ -1,6 +1,8 @@
 //Used to process objects. Fires once every second.
 
 SUBSYSTEM_DEF(processing)
+	procstart = null
+	src.procstart = null
 	name = "Processing"
 	priority = FIRE_PRIORITY_PROCESS
 	flags = SS_BACKGROUND|SS_POST_FIRE_TIMING|SS_NO_INIT
@@ -11,9 +13,13 @@ SUBSYSTEM_DEF(processing)
 	var/list/currentrun = list()
 
 /datum/controller/subsystem/processing/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("[stat_tag]:[processing.len]")
 
 /datum/controller/subsystem/processing/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		currentrun = processing.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -29,6 +35,8 @@ SUBSYSTEM_DEF(processing)
 
 /datum/var/isprocessing = FALSE
 /datum/proc/process()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	STOP_PROCESSING(SSobj, src)
 	return 0

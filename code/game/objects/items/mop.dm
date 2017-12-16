@@ -19,11 +19,15 @@
 	force_string = "robust... against germs"
 
 /obj/item/mop/New()
+	procstart = null
+	src.procstart = null
 	..()
 	create_reagents(mopcap)
 
 
 /obj/item/mop/proc/clean(turf/A)
+	procstart = null
+	src.procstart = null
 	if(reagents.has_reagent("water", 1) || reagents.has_reagent("holywater", 1) || reagents.has_reagent("vodka", 1) || reagents.has_reagent("cleaner", 1))
 		A.clean_blood()
 		A.SendSignal(COMSIG_COMPONENT_CLEAN_ACT, CLEAN_MEDIUM)
@@ -35,6 +39,8 @@
 
 
 /obj/item/mop/afterattack(atom/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 
@@ -56,6 +62,8 @@
 
 
 /obj/effect/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/mop) || istype(I, /obj/item/soap))
 		return
 	else
@@ -63,6 +71,8 @@
 
 
 /obj/item/mop/proc/janicart_insert(mob/user, obj/structure/janitorialcart/J)
+	procstart = null
+	src.procstart = null
 	J.put_in_cart(src, user)
 	J.mymop=src
 	J.update_icon()
@@ -70,6 +80,8 @@
 /obj/item/mop/cyborg
 
 /obj/item/mop/cyborg/janicart_insert(mob/user, obj/structure/janitorialcart/J)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/mop/advanced
@@ -89,10 +101,14 @@
 	var/refill_reagent = "water" //Determins what reagent to use for refilling, just in case someone wanted to make a HOLY MOP OF PURGING
 
 /obj/item/mop/advanced/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/mop/advanced/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	refill_enabled = !refill_enabled
 	if(refill_enabled)
 		START_PROCESSING(SSobj, src)
@@ -103,14 +119,20 @@
 
 /obj/item/mop/advanced/process()
 
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume < mopcap)
 		reagents.add_reagent(refill_reagent, refill_rate)
 
 /obj/item/mop/advanced/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>The condenser switch is set to <b>[refill_enabled ? "ON" : "OFF"]</b>.</span>")
 
 /obj/item/mop/advanced/Destroy()
+	procstart = null
+	src.procstart = null
 	if(refill_enabled)
 		STOP_PROCESSING(SSobj, src)
 	return ..()

@@ -23,6 +23,8 @@
 	var/spawn_fast = 0 //if 1, ignores checking for mobs on loc before spawning
 
 /obj/item/veilrender/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(charges > 0)
 		new /obj/effect/rend(get_turf(user), spawn_type, spawn_amt, rend_desc, spawn_fast)
 		charges--
@@ -42,6 +44,8 @@
 	var/spawn_fast = 0
 
 /obj/effect/rend/New(loc, var/spawn_type, var/spawn_amt, var/desc, var/spawn_fast)
+	procstart = null
+	src.procstart = null
 	src.spawn_path = spawn_type
 	src.spawn_amt_left = spawn_amt
 	src.desc = desc
@@ -50,6 +54,8 @@
 	return
 
 /obj/effect/rend/process()
+	procstart = null
+	src.procstart = null
 	if(!spawn_fast)
 		if(locate(/mob) in loc)
 			return
@@ -59,6 +65,8 @@
 		qdel(src)
 
 /obj/effect/rend/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/nullrod))
 		user.visible_message("<span class='danger'>[user] seals \the [src] with \the [I].</span>")
 		qdel(src)
@@ -67,9 +75,13 @@
 		return ..()
 
 /obj/effect/rend/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/rend/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/veilrender/vealrender
@@ -104,6 +116,8 @@
 	allowed_size = STAGE_FOUR
 
 /obj/singularity/wizard/process()
+	procstart = null
+	src.procstart = null
 	move()
 	eat()
 	return
@@ -122,6 +136,8 @@
 	hitsound = 'sound/items/welder2.ogg'
 
 /obj/item/scrying/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>You can see...everything!</span>")
 	visible_message("<span class='danger'>[user] stares into [src], their eyes glazing over.</span>")
 	user.ghostize(1)
@@ -145,6 +161,8 @@
 	unlimited = 1
 
 /obj/item/device/necromantic_stone/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return ..()
 
@@ -175,6 +193,8 @@
 	desc = "A shard capable of resurrecting humans as skeleton thralls[unlimited ? "." : ", [spooky_scaries.len]/3 active thralls."]"
 
 /obj/item/device/necromantic_stone/proc/check_spooky()
+	procstart = null
+	src.procstart = null
 	if(unlimited) //no point, the list isn't used.
 		return
 
@@ -191,6 +211,8 @@
 
 //Funny gimmick, skeletons always seem to wear roman/ancient armour
 /obj/item/device/necromantic_stone/proc/equip_roman_skeleton(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in H)
 		H.dropItemToGround(I)
 
@@ -220,6 +242,8 @@
 	resistance_flags = FLAMMABLE
 
 /obj/item/voodoo/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(target && cooldown < world.time)
 		if(I.is_hot())
 			to_chat(target, "<span class='userdanger'>You suddenly feel very hot</span>")
@@ -245,11 +269,15 @@
 				update_targets()
 
 /obj/item/voodoo/check_eye(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc != user)
 		user.reset_perspective(null)
 		user.unset_machine()
 
 /obj/item/voodoo/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!target && possible.len)
 		target = input(user, "Select your victim!", "Voodoo") as null|anything in possible
 		return
@@ -290,6 +318,8 @@
 		cooldown = world.time + cooldown_time
 
 /obj/item/voodoo/proc/update_targets()
+	procstart = null
+	src.procstart = null
 	possible = list()
 	if(!linked_item)
 		return
@@ -298,6 +328,8 @@
 			possible |= H
 
 /obj/item/voodoo/proc/GiveHint(mob/victim,force=0)
+	procstart = null
+	src.procstart = null
 	if(prob(50) || force)
 		var/way = dir2text(get_dir(victim,get_turf(src)))
 		to_chat(victim, "<span class='notice'>You feel a dark presence from [way]</span>")
@@ -311,6 +343,8 @@
     return(BRUTELOSS)
 
 /obj/item/voodoo/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(target)
 		target.adjust_fire_stacks(20)
 		target.IgniteMob()
@@ -335,12 +369,16 @@
 	var/mob/living/carbon/last_user
 
 /obj/item/warpwhistle/proc/interrupted(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!user || QDELETED(src))
 		on_cooldown = FALSE
 		return TRUE
 	return FALSE
 
 /obj/item/warpwhistle/attack_self(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || on_cooldown)
 		return
 	on_cooldown = TRUE
@@ -378,6 +416,8 @@
 	on_cooldown = 0
 
 /obj/item/warpwhistle/Destroy()
+	procstart = null
+	src.procstart = null
 	if(on_cooldown == 1 && last_user) //Flute got dunked somewhere in the teleport
 		last_user.invisibility = initial(last_user.invisibility)
 		last_user.status_flags &= ~GODMODE
@@ -395,5 +435,7 @@
 	pixel_x = 500
 
 /obj/effect/temp_visual/tornado/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, pixel_x = -500, time = 40)

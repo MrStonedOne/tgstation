@@ -12,6 +12,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 
 //Needs to return the amount drained from the atom, if no drain on a power object, return FALSE, otherwise, return a define.
 /atom/proc/ninjadrain_act()
+	procstart = null
+	src.procstart = null
 	return INVALID_DRAIN
 
 
@@ -19,6 +21,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 
 //APC//
 /obj/machinery/power/apc/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/S, mob/living/carbon/human/H, obj/item/clothing/gloves/space_ninja/G)
+	procstart = null
+	src.procstart = null
 	if(!S || !H || !G)
 		return INVALID_DRAIN
 
@@ -63,6 +67,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 
 //SMES//
 /obj/machinery/power/smes/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/S, mob/living/carbon/human/H, obj/item/clothing/gloves/space_ninja/G)
+	procstart = null
+	src.procstart = null
 	if(!S || !H || !G)
 		return INVALID_DRAIN
 
@@ -98,6 +104,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 
 //CELL//
 /obj/item/stock_parts/cell/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/S, mob/living/carbon/human/H, obj/item/clothing/gloves/space_ninja/G)
+	procstart = null
+	src.procstart = null
 	if(!S || !H || !G)
 		return INVALID_DRAIN
 
@@ -115,6 +123,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 			update_icon()
 
 /obj/machinery/proc/AI_notify_hack()
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(src)
 	var/alertstr = "<span class='userdanger'>Network Alert: Hacking attempt detected[location?" in [location]":". Unable to pinpoint location"]</span>."
 	for(var/mob/living/silicon/ai/AI in GLOB.player_list)
@@ -122,6 +132,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 
 //RDCONSOLE//
 /obj/machinery/computer/rdconsole/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/S, mob/living/carbon/human/H, obj/item/clothing/gloves/space_ninja/G)
+	procstart = null
+	src.procstart = null
 	if(!S || !H || !G)
 		return INVALID_DRAIN
 
@@ -139,6 +151,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 //RD SERVER//
 //Shamelessly copypasted from above, since these two used to be the same proc, but with MANY colon operators
 /obj/machinery/rnd/server/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/S, mob/living/carbon/human/H, obj/item/clothing/gloves/space_ninja/G)
+	procstart = null
+	src.procstart = null
 	if(!S || !H || !G)
 		return INVALID_DRAIN
 
@@ -156,6 +170,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 
 //WIRE//
 /obj/structure/cable/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/S, mob/living/carbon/human/H, obj/item/clothing/gloves/space_ninja/G)
+	procstart = null
+	src.procstart = null
 	if(!S || !H || !G)
 		return INVALID_DRAIN
 
@@ -192,6 +208,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 
 //MECH//
 /obj/mecha/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/S, mob/living/carbon/human/H, obj/item/clothing/gloves/space_ninja/G)
+	procstart = null
+	src.procstart = null
 	if(!S || !H || !G)
 		return INVALID_DRAIN
 
@@ -219,6 +237,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 
 //BORG//
 /mob/living/silicon/robot/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/S, mob/living/carbon/human/H, obj/item/clothing/gloves/space_ninja/G)
+	procstart = null
+	src.procstart = null
 	if(!S || !H || !G)
 		return INVALID_DRAIN
 
@@ -248,6 +268,8 @@ They *could* go in their appropriate files, but this is supposed to be modular
 
 //CARBON MOBS//
 /mob/living/carbon/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/S, mob/living/carbon/human/H, obj/item/clothing/gloves/space_ninja/G)
+	procstart = null
+	src.procstart = null
 	if(!S || !H || !G)
 		return INVALID_DRAIN
 

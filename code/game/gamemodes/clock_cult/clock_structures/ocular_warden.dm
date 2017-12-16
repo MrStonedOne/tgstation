@@ -17,21 +17,31 @@
 	var/list/idle_messages = list(" sulkily glares around.", " lazily drifts from side to side.", " looks around for something to burn.", " slowly turns in circles.")
 
 /obj/structure/destructible/clockwork/ocular_warden/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/structure/destructible/clockwork/ocular_warden/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/structure/destructible/clockwork/ocular_warden/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='brass'>[target ? "<b>It's fixated on [target]!</b>" : "Its gaze is wandering aimlessly."]</span>")
 
 /obj/structure/destructible/clockwork/ocular_warden/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 25
 
 /obj/structure/destructible/clockwork/ocular_warden/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		for(var/obj/structure/destructible/clockwork/ocular_warden/W in orange(OCULAR_WARDEN_EXCLUSION_RANGE, src))
 			if(W.anchored)
@@ -41,6 +51,8 @@
 	return SUCCESSFUL_UNFASTEN
 
 /obj/structure/destructible/clockwork/ocular_warden/ratvar_act()
+	procstart = null
+	src.procstart = null
 	..()
 	if(GLOB.ratvar_awakens)
 		damage_per_tick = 10
@@ -50,6 +62,8 @@
 		sight_range = initial(sight_range)
 
 /obj/structure/destructible/clockwork/ocular_warden/process()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		lose_target()
 		return
@@ -100,6 +114,8 @@
 				setDir(pick(GLOB.cardinals))//Random rotation
 
 /obj/structure/destructible/clockwork/ocular_warden/proc/acquire_nearby_targets()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/mob/living/L in viewers(sight_range, src)) //Doesn't attack the blind
 		var/obj/item/storage/book/bible/B = L.bible_check()
@@ -138,6 +154,8 @@
 				. += M
 
 /obj/structure/destructible/clockwork/ocular_warden/proc/lose_target()
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return 0
 	target = null
@@ -145,6 +163,8 @@
 	return 1
 
 /obj/structure/destructible/clockwork/ocular_warden/get_efficiency_mod()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		return 2
 	. = 1

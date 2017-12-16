@@ -4,6 +4,8 @@ GLOBAL_PROTECT(exp_to_update)
 
 // Procs
 /datum/job/proc/required_playtime_remaining(client/C)
+	procstart = null
+	src.procstart = null
 	if(!C)
 		return 0
 	if(!CONFIG_GET(flag/use_exp_tracking))
@@ -25,6 +27,8 @@ GLOBAL_PROTECT(exp_to_update)
 		return (job_requirement - my_exp)
 
 /datum/job/proc/get_exp_req_amount()
+	procstart = null
+	src.procstart = null
 	if(title in GLOB.command_positions)
 		var/uerhh = CONFIG_GET(number/use_exp_restrictions_heads_hours)
 		if(uerhh)
@@ -32,12 +36,16 @@ GLOBAL_PROTECT(exp_to_update)
 	return exp_requirements
 
 /datum/job/proc/get_exp_req_type()
+	procstart = null
+	src.procstart = null
 	if(title in GLOB.command_positions)
 		if(CONFIG_GET(flag/use_exp_restrictions_heads_department) && exp_type_department)
 			return exp_type_department
 	return exp_type
 
 /proc/job_is_xp_locked(jobtitle)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/use_exp_restrictions_heads) && jobtitle in GLOB.command_positions)
 		return FALSE
 	if(!CONFIG_GET(flag/use_exp_restrictions_other) && !(jobtitle in GLOB.command_positions))
@@ -45,6 +53,8 @@ GLOBAL_PROTECT(exp_to_update)
 	return TRUE
 
 /client/proc/calc_exp_type(exptype)
+	procstart = null
+	src.procstart = null
 	var/list/explist = prefs.exp.Copy()
 	var/amount = 0
 	var/list/typelist = GLOB.exp_jobsmap[exptype]
@@ -56,6 +66,8 @@ GLOBAL_PROTECT(exp_to_update)
 	return amount
 
 /client/proc/get_exp_report()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/use_exp_tracking))
 		return "Tracking is disabled in the server configuration file."
 	var/list/play_records = prefs.exp
@@ -113,12 +125,16 @@ GLOBAL_PROTECT(exp_to_update)
 
 
 /client/proc/get_exp_living()
+	procstart = null
+	src.procstart = null
 	if(!prefs.exp)
 		return "No data"
 	var/exp_living = text2num(prefs.exp[EXP_TYPE_LIVING])
 	return get_exp_format(exp_living)
 
 /proc/get_exp_format(expnum)
+	procstart = null
+	src.procstart = null
 	if(expnum > 60)
 		return num2text(round(expnum / 60)) + "h"
 	else if(expnum > 0)
@@ -127,6 +143,8 @@ GLOBAL_PROTECT(exp_to_update)
 		return "0h"
 
 /datum/controller/subsystem/blackbox/proc/update_exp(mins, ann = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return -1
 	for(var/client/L in GLOB.clients)
@@ -135,11 +153,15 @@ GLOBAL_PROTECT(exp_to_update)
 		addtimer(CALLBACK(L,/client/proc/update_exp_list,mins,ann),10)
 
 /datum/controller/subsystem/blackbox/proc/update_exp_db()
+	procstart = null
+	src.procstart = null
 	SSdbcore.MassInsert(format_table_name("role_time"),GLOB.exp_to_update,TRUE)
 	LAZYCLEARLIST(GLOB.exp_to_update)
 
 //resets a client's exp to what was in the db.
 /client/proc/set_exp_from_db()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/use_exp_tracking))
 		return -1
 	if(!SSdbcore.Connect())
@@ -164,6 +186,8 @@ GLOBAL_PROTECT(exp_to_update)
 //updates player db flags
 /client/proc/update_flag_db(newflag, state = FALSE)
 
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return -1
 
@@ -182,6 +206,8 @@ GLOBAL_PROTECT(exp_to_update)
 
 
 /client/proc/update_exp_list(minutes, announce_changes = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/use_exp_tracking))
 		return -1
 	if(!SSdbcore.Connect())
@@ -251,6 +277,8 @@ GLOBAL_PROTECT(exp_to_update)
 
 //ALWAYS call this at beginning to any proc touching player flags, or your database admin will probably be mad
 /client/proc/set_db_player_flags()
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return FALSE
 

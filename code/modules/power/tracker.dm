@@ -19,16 +19,22 @@
 	var/obj/machinery/power/solar_control/control = null
 
 /obj/machinery/power/tracker/Initialize(mapload, obj/item/solar_assembly/S)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	Make(S)
 	connect_to_network()
 
 /obj/machinery/power/tracker/Destroy()
+	procstart = null
+	src.procstart = null
 	unset_control() //remove from control computer
 	return ..()
 
 //set the control of the tracker to a given computer if closer than SOLAR_MAX_DIST
 /obj/machinery/power/tracker/proc/set_control(obj/machinery/power/solar_control/SC)
+	procstart = null
+	src.procstart = null
 	if(!SC || (get_dist(src, SC) > SOLAR_MAX_DIST))
 		return 0
 	control = SC
@@ -37,11 +43,15 @@
 
 //set the control of the tracker to null and removes it from the previous control computer if needed
 /obj/machinery/power/tracker/proc/unset_control()
+	procstart = null
+	src.procstart = null
 	if(control)
 		control.connected_tracker = null
 	control = null
 
 /obj/machinery/power/tracker/proc/Make(obj/item/solar_assembly/S)
+	procstart = null
+	src.procstart = null
 	if(!S)
 		S = new /obj/item/solar_assembly(src)
 		S.glass_type = /obj/item/stack/sheet/glass
@@ -52,6 +62,8 @@
 
 //updates the tracker icon and the facing angle for the control computer
 /obj/machinery/power/tracker/proc/set_angle(angle)
+	procstart = null
+	src.procstart = null
 	sun_angle = angle
 
 	//set icon dir to show sun illumination
@@ -62,6 +74,8 @@
 
 /obj/machinery/power/tracker/attackby(obj/item/W, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/crowbar))
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
 		user.visible_message("[user] begins to take the glass off the solar tracker.", "<span class='notice'>You begin to take the glass off the solar tracker...</span>")
@@ -73,12 +87,16 @@
 		return ..()
 
 /obj/machinery/power/tracker/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(stat & BROKEN) && !(flags_1 & NODECONSTRUCT_1))
 		playsound(loc, 'sound/effects/glassbr3.ogg', 100, 1)
 		stat |= BROKEN
 		unset_control()
 
 /obj/machinery/power/solar/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(disassembled)
 			var/obj/item/solar_assembly/S = locate() in src

@@ -32,6 +32,8 @@ Bonus
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
 /datum/symptom/choking/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 8)
@@ -41,6 +43,8 @@ Bonus
 		suppress_warning = TRUE
 
 /datum/symptom/choking/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -61,10 +65,14 @@ Bonus
 			M.emote("gasp")
 
 /datum/symptom/choking/proc/Choke_stage_3_4(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	M.adjustOxyLoss(rand(6,13))
 	return 1
 
 /datum/symptom/choking/proc/Choke(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	M.adjustOxyLoss(rand(10,18))
 	return 1
 
@@ -101,6 +109,8 @@ Bonus
 	var/paralysis = FALSE
 
 /datum/symptom/asphyxiation/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 8)
@@ -109,6 +119,8 @@ Bonus
 		power = 2
 
 /datum/symptom/asphyxiation/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -127,11 +139,15 @@ Bonus
 	return
 
 /datum/symptom/asphyxiation/proc/Asphyxiate_stage_3_4(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(10,15) * power
 	M.adjustOxyLoss(get_damage)
 	return 1
 
 /datum/symptom/asphyxiation/proc/Asphyxiate(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(15,21) * power
 	M.adjustOxyLoss(get_damage)
 	if(paralysis)
@@ -139,6 +155,8 @@ Bonus
 	return 1
 
 /datum/symptom/asphyxiation/proc/Asphyxiate_death(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(25,35) * power
 	M.adjustOxyLoss(get_damage)
 	M.adjustBrainLoss(get_damage/2)

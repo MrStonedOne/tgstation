@@ -21,6 +21,8 @@
 
 /obj/machinery/telecomms/processor/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
 
+	procstart = null
+	src.procstart = null
 	if(is_freq_listening(signal))
 
 		if(process_mode)

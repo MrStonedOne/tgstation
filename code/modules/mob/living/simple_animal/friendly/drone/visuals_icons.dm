@@ -7,11 +7,15 @@
 
 
 /mob/living/simple_animal/drone/proc/apply_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	if((. = drone_overlays[cache_index]))
 		add_overlay(.)
 
 
 /mob/living/simple_animal/drone/proc/remove_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	var/I = drone_overlays[cache_index]
 	if(I)
 		cut_overlay(I)
@@ -19,6 +23,8 @@
 
 
 /mob/living/simple_animal/drone/update_inv_hands()
+	procstart = null
+	src.procstart = null
 	remove_overlay(DRONE_HANDS_LAYER)
 	var/list/hands_overlays = list()
 
@@ -70,12 +76,16 @@
 
 
 /mob/living/simple_animal/drone/proc/update_inv_internal_storage()
+	procstart = null
+	src.procstart = null
 	if(internal_storage && client && hud_used && hud_used.hud_shown)
 		internal_storage.screen_loc = ui_drone_storage
 		client.screen += internal_storage
 
 
 /mob/living/simple_animal/drone/update_inv_head()
+	procstart = null
+	src.procstart = null
 	remove_overlay(DRONE_HEAD_LAYER)
 
 	if(head)
@@ -93,9 +103,13 @@
 	apply_overlay(DRONE_HEAD_LAYER)
 
 /mob/living/simple_animal/drone/update_inv_wear_mask()
+	procstart = null
+	src.procstart = null
 	update_inv_head()
 
 /mob/living/simple_animal/drone/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	// Drones only have 4 slots, which in this specific instance
 	// is a small blessing.
 	update_inv_hands()
@@ -104,6 +118,8 @@
 
 
 /mob/living/simple_animal/drone/proc/pickVisualAppearence()
+	procstart = null
+	src.procstart = null
 	picked = FALSE
 	var/appearence = input("Choose your appearence!", "Appearence", "Maintenance Drone") in list("Maintenance Drone", "Repair Drone", "Scout Drone")
 	switch(appearence)
@@ -134,6 +150,8 @@
 
 
 /mob/living/simple_animal/drone/proc/getItemPixelShiftY()
+	procstart = null
+	src.procstart = null
 	switch(visualAppearence)
 		if(MAINTDRONE)
 			. = 0
@@ -141,6 +159,8 @@
 			. = -6
 
 /mob/living/simple_animal/drone/proc/updateSeeStaticMobs()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 
@@ -164,4 +184,6 @@
 
 
 /mob/living/simple_animal/drone/generateStaticOverlay()
+	procstart = null
+	src.procstart = null
 	return

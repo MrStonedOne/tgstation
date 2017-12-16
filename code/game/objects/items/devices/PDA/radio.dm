@@ -12,20 +12,28 @@
 	var/datum/radio_frequency/radio_connection
 
 /obj/item/integrated_signaler/Destroy()
+	procstart = null
+	src.procstart = null
 	radio_connection = null
 	return ..()
 
 /obj/item/integrated_signaler/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (frequency < MIN_FREE_FREQ || frequency > MAX_FREE_FREQ)
 		frequency = sanitize_frequency(frequency)
 	set_frequency(frequency)
 
 /obj/item/integrated_signaler/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	frequency = new_frequency
 	radio_connection = SSradio.return_frequency(frequency)
 
 /obj/item/integrated_signaler/proc/send_activation()
+	procstart = null
+	src.procstart = null
 	if(last_transmission && world.time < (last_transmission + 5))
 		return
 	last_transmission = world.time

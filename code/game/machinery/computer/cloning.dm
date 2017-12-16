@@ -20,10 +20,14 @@
 	light_color = LIGHT_COLOR_BLUE
 
 /obj/machinery/computer/cloning/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	updatemodules(TRUE)
 
 /obj/machinery/computer/cloning/Destroy()
+	procstart = null
+	src.procstart = null
 	if(pods)
 		for(var/P in pods)
 			DetachCloner(P)
@@ -31,6 +35,8 @@
 	return ..()
 
 /obj/machinery/computer/cloning/proc/GetAvailablePod(mind = null)
+	procstart = null
+	src.procstart = null
 	if(pods)
 		for(var/P in pods)
 			var/obj/machinery/clonepod/pod = P
@@ -40,6 +46,8 @@
 				return pod
 
 /obj/machinery/computer/cloning/proc/HasEfficientPod()
+	procstart = null
+	src.procstart = null
 	if(pods)
 		for(var/P in pods)
 			var/obj/machinery/clonepod/pod = P
@@ -47,6 +55,8 @@
 				return TRUE
 
 /obj/machinery/computer/cloning/proc/GetAvailableEfficientPod(mind = null)
+	procstart = null
+	src.procstart = null
 	if(pods)
 		for(var/P in pods)
 			var/obj/machinery/clonepod/pod = P
@@ -56,6 +66,8 @@
 				. = pod
 
 /obj/machinery/computer/cloning/process()
+	procstart = null
+	src.procstart = null
 	if(!(scanner && LAZYLEN(pods) && autoprocess))
 		return
 
@@ -75,11 +87,15 @@
 			records -= R
 
 /obj/machinery/computer/cloning/proc/updatemodules(findfirstcloner)
+	procstart = null
+	src.procstart = null
 	src.scanner = findscanner()
 	if(findfirstcloner && !LAZYLEN(pods))
 		findcloner()
 
 /obj/machinery/computer/cloning/proc/findscanner()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/dna_scannernew/scannerf = null
 
 	// Loop through every direction
@@ -96,6 +112,8 @@
 	return null
 
 /obj/machinery/computer/cloning/proc/findcloner()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/clonepod/podf = null
 
 	for(var/direction in GLOB.cardinals)
@@ -105,15 +123,21 @@
 			AttachCloner(podf)
 
 /obj/machinery/computer/cloning/proc/AttachCloner(obj/machinery/clonepod/pod)
+	procstart = null
+	src.procstart = null
 	if(!pod.connected)
 		pod.connected = src
 		LAZYADD(pods, pod)
 
 /obj/machinery/computer/cloning/proc/DetachCloner(obj/machinery/clonepod/pod)
+	procstart = null
+	src.procstart = null
 	pod.connected = null
 	LAZYREMOVE(pods, pod)
 
 /obj/machinery/computer/cloning/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/disk/data)) //INSERT SOME DISKETTES
 		if (!src.diskette)
 			if (!user.transferItemToLoc(W,src))
@@ -143,11 +167,15 @@
 		return ..()
 
 /obj/machinery/computer/cloning/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/computer/cloning/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	add_fingerprint(user)
 
@@ -275,6 +303,8 @@
 	popup.open()
 
 /obj/machinery/computer/cloning/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -432,6 +462,8 @@
 	return
 
 /obj/machinery/computer/cloning/proc/scan_occupant(occupant)
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_occupant = get_mob_or_brainmob(occupant)
 	var/datum/dna/dna
 	if(iscarbon(mob_occupant))

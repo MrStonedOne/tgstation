@@ -7,6 +7,8 @@
 	requires_bodypart_type = 0
 
 /datum/surgery/prosthetic_replacement/can_start(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(target))
 		return 0
 	var/mob/living/carbon/C = target
@@ -22,6 +24,8 @@
 	var/organ_rejection_dam = 0
 
 /datum/surgery_step/add_prosthetic/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/organ_storage))
 		if(!tool.contents.len)
 			to_chat(user, "<span class='notice'>There is nothing inside [tool]!</span>")
@@ -59,6 +63,8 @@
 		return -1
 
 /datum/surgery_step/add_prosthetic/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/organ_storage))
 		tool.icon_state = initial(tool.icon_state)
 		tool.desc = initial(tool.desc)

@@ -14,6 +14,8 @@
 	var/alt_inhands_file = 'icons/mob/alienqueen.dmi'
 
 /mob/living/carbon/alien/humanoid/royal/can_inject()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/carbon/alien/humanoid/royal/queen
@@ -31,6 +33,8 @@
 	var/small = 0
 
 /datum/action/small_sprite/Trigger()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!small)
 		var/image/I = image(icon = 'icons/mob/alien.dmi' , icon_state = "alienq", loc = owner)
@@ -45,6 +49,8 @@
 		small = 0
 
 /mob/living/carbon/alien/humanoid/royal/queen/Initialize()
+	procstart = null
+	src.procstart = null
 	//there should only be one queen
 	for(var/mob/living/carbon/alien/humanoid/royal/queen/Q in GLOB.carbon_list)
 		if(Q == src)
@@ -63,6 +69,8 @@
 	..()
 
 /mob/living/carbon/alien/humanoid/royal/queen/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	internal_organs += new /obj/item/organ/alien/plasmavessel/large/queen
 	internal_organs += new /obj/item/organ/alien/resinspinner
 	internal_organs += new /obj/item/organ/alien/acid
@@ -71,6 +79,8 @@
 	..()
 
 /mob/living/carbon/alien/humanoid/royal/queen/movement_delay()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += 3
 
@@ -83,6 +93,8 @@
 	action_icon_state = "alien_egg"
 
 /obj/effect/proc_holder/alien/lay_egg/fire(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/alien/egg) in get_turf(user))
 		to_chat(user, "There's already an egg here.")
 		return 0
@@ -101,6 +113,8 @@
 
 
 /obj/effect/proc_holder/alien/royal/queen/promote/fire(mob/living/carbon/alien/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/queenpromote/prom
 	if(get_alien_type(/mob/living/carbon/alien/humanoid/royal/praetorian/))
 		to_chat(user, "<span class='noticealien'>You already have a Praetorian!</span>")
@@ -127,6 +141,8 @@
 	icon = 'icons/mob/alien.dmi'
 
 /obj/item/queenpromote/attack(mob/living/M, mob/living/carbon/alien/humanoid/user)
+	procstart = null
+	src.procstart = null
 	if(!isalienadult(M) || isalienroyal(M))
 		to_chat(user, "<span class='noticealien'>You may only use this with your adult, non-royal children!</span>")
 		return
@@ -151,5 +167,7 @@
 		to_chat(user, "<span class='warning'>This child must be alert and responsive to become a Praetorian!</span>")
 
 /obj/item/queenpromote/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='noticealien'>You discard [src].</span>")
 	qdel(src)

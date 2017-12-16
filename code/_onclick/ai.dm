@@ -10,6 +10,8 @@
 	Note that AI have no need for the adjacency proc, and so this proc is a lot cleaner.
 */
 /mob/living/silicon/ai/DblClickOn(var/atom/A, params)
+	procstart = null
+	src.procstart = null
 	if(client.click_intercept)
 		if(call(client.click_intercept, "InterceptClickOn")(src, params, A))
 			return
@@ -23,6 +25,8 @@
 		A.move_camera_by_click()
 
 /mob/living/silicon/ai/ClickOn(var/atom/A, params)
+	procstart = null
+	src.procstart = null
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
@@ -89,11 +93,17 @@
 	it functions and re-insert it above.
 */
 /mob/living/silicon/ai/UnarmedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	A.attack_ai(src)
 /mob/living/silicon/ai/RangedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	A.attack_ai(src)
 
 /atom/proc/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /*
@@ -103,12 +113,20 @@
 */
 
 /mob/living/silicon/ai/CtrlShiftClickOn(var/atom/A)
+	procstart = null
+	src.procstart = null
 	A.AICtrlShiftClick(src)
 /mob/living/silicon/ai/ShiftClickOn(var/atom/A)
+	procstart = null
+	src.procstart = null
 	A.AIShiftClick(src)
 /mob/living/silicon/ai/CtrlClickOn(var/atom/A)
+	procstart = null
+	src.procstart = null
 	A.AICtrlClick(src)
 /mob/living/silicon/ai/AltClickOn(var/atom/A)
+	procstart = null
+	src.procstart = null
 	A.AIAltClick(src)
 
 /*
@@ -119,13 +137,21 @@
 
 /* Atom Procs */
 /atom/proc/AICtrlClick()
+	procstart = null
+	src.procstart = null
 	return
 /atom/proc/AIAltClick(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	AltClick(user)
 	return
 /atom/proc/AIShiftClick()
+	procstart = null
+	src.procstart = null
 	return
 /atom/proc/AICtrlShiftClick()
+	procstart = null
+	src.procstart = null
 	return
 
 /* Airlocks */
@@ -181,4 +207,6 @@
 //
 
 /mob/living/silicon/ai/TurfAdjacent(var/turf/T)
+	procstart = null
+	src.procstart = null
 	return (GLOB.cameranet && GLOB.cameranet.checkTurfVis(T))

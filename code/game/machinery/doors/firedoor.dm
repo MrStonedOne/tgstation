@@ -27,10 +27,14 @@
 	var/list/affecting_areas
 
 /obj/machinery/door/firedoor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	CalculateAffectingAreas()
 
 /obj/machinery/door/firedoor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!density)
 		to_chat(user, "<span class='notice'>It is open, but could be <b>pried</b> closed.</span>")
@@ -42,6 +46,8 @@
 		to_chat(user, "<span class='notice'>The bolt locks have been <i>unscrewed</i>, but the bolts themselves are still <b>wrenched</b> to the floor.</span>")
 
 /obj/machinery/door/firedoor/proc/CalculateAffectingAreas()
+	procstart = null
+	src.procstart = null
 	remove_from_areas()
 	affecting_areas = get_adjacent_open_areas(src) | get_area(src)
 	for(var/I in affecting_areas)
@@ -56,17 +62,23 @@
 //see also turf/AfterChange for adjacency shennanigans
 
 /obj/machinery/door/firedoor/proc/remove_from_areas()
+	procstart = null
+	src.procstart = null
 	if(affecting_areas)
 		for(var/I in affecting_areas)
 			var/area/A = I
 			LAZYREMOVE(A.firedoors, src)
 
 /obj/machinery/door/firedoor/Destroy()
+	procstart = null
+	src.procstart = null
 	remove_from_areas()
 	affecting_areas.Cut()
 	return ..()
 
 /obj/machinery/door/firedoor/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(panel_open || operating)
 		return
 	if(!density)
@@ -75,6 +87,8 @@
 
 
 /obj/machinery/door/firedoor/power_change()
+	procstart = null
+	src.procstart = null
 	if(powered(power_channel))
 		stat &= ~NOPOWER
 		latetoggle()
@@ -82,6 +96,8 @@
 		stat |= NOPOWER
 
 /obj/machinery/door/firedoor/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(operating || !density)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -91,6 +107,8 @@
 	playsound(loc, 'sound/effects/glassknock.ogg', 10, FALSE, frequency = 32000)
 
 /obj/machinery/door/firedoor/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(operating)
 		return
@@ -120,9 +138,13 @@
 	return ..()
 
 /obj/machinery/door/firedoor/try_to_activate_door(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/firedoor/try_to_weld(obj/item/weldingtool/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(W.remove_fuel(0, user))
 		playsound(get_turf(src), W.usesound, 50, 1)
 		user.visible_message("<span class='notice'>[user] starts [welded ? "unwelding" : "welding"] [src].</span>", "<span class='notice'>You start welding [src].</span>")
@@ -133,6 +155,8 @@
 			update_icon()
 
 /obj/machinery/door/firedoor/try_to_crowbar(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(welded || operating)
 		return
 
@@ -142,6 +166,8 @@
 		close()
 
 /obj/machinery/door/firedoor/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(welded || operating || stat & NOPOWER)
 		return
@@ -151,6 +177,8 @@
 		close()
 
 /obj/machinery/door/firedoor/attack_alien(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(welded)
 		to_chat(user, "<span class='warning'>[src] refuses to budge!</span>")
@@ -158,6 +186,8 @@
 	open()
 
 /obj/machinery/door/firedoor/do_animate(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if("opening")
 			flick("door_opening", src)
@@ -165,6 +195,8 @@
 			flick("door_closing", src)
 
 /obj/machinery/door/firedoor/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(density)
 		icon_state = "door_closed"
@@ -176,14 +208,20 @@
 			add_overlay("welded_open")
 
 /obj/machinery/door/firedoor/open()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	latetoggle()
 
 /obj/machinery/door/firedoor/close()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	latetoggle()
 
 /obj/machinery/door/firedoor/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/obj/structure/firelock_frame/F = new assemblytype(get_turf(src))
 		if(disassembled)
@@ -196,6 +234,8 @@
 
 
 /obj/machinery/door/firedoor/proc/latetoggle()
+	procstart = null
+	src.procstart = null
 	if(operating || stat & NOPOWER || !nextstate)
 		return
 	switch(nextstate)
@@ -212,6 +252,8 @@
 	CanAtmosPass = ATMOS_PASS_PROC
 
 /obj/machinery/door/firedoor/border_only/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
 	if(get_dir(loc, target) == dir) //Make sure looking at appropriate border
@@ -220,6 +262,8 @@
 		return 1
 
 /obj/machinery/door/firedoor/border_only/CheckExit(atom/movable/mover as mob|obj, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
 	if(get_dir(loc, target) == dir)
@@ -228,6 +272,8 @@
 		return 1
 
 /obj/machinery/door/firedoor/border_only/CanAtmosPass(turf/T)
+	procstart = null
+	src.procstart = null
 	if(get_dir(loc, T) == dir)
 		return !density
 	else
@@ -258,6 +304,8 @@
 	var/reinforced = 0
 
 /obj/structure/firelock_frame/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(constructionStep)
 		if(CONSTRUCTION_PANEL_OPEN)
@@ -272,10 +320,14 @@
 			to_chat(user, "<span class='notice'>There are no <i>firelock electronics</i> in the frame. The frame could be <b>cut</b> apart.</span>")
 
 /obj/structure/firelock_frame/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "frame[constructionStep]"
 
 /obj/structure/firelock_frame/attackby(obj/item/C, mob/user)
+	procstart = null
+	src.procstart = null
 	switch(constructionStep)
 		if(CONSTRUCTION_PANEL_OPEN)
 			if(istype(C, /obj/item/crowbar))

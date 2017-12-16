@@ -61,10 +61,14 @@ GLOBAL_LIST_EMPTY(allConsoles)
 	armor = list(melee = 70, bullet = 30, laser = 30, energy = 30, bomb = 0, bio = 0, rad = 0, fire = 90, acid = 90)
 
 /obj/machinery/requests_console/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/requests_console/update_icon()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		set_light(0)
 	else
@@ -88,6 +92,8 @@ GLOBAL_LIST_EMPTY(allConsoles)
 			icon_state = "req_comp0"
 
 /obj/machinery/requests_console/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "\improper [department] requests console"
 	GLOB.allConsoles += src
@@ -128,11 +134,15 @@ GLOBAL_LIST_EMPTY(allConsoles)
 	Radio.listening = 0
 
 /obj/machinery/requests_console/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(Radio)
 	GLOB.allConsoles -= src
 	return ..()
 
 /obj/machinery/requests_console/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/dat = ""
@@ -263,6 +273,8 @@ GLOBAL_LIST_EMPTY(allConsoles)
 	return
 
 /obj/machinery/requests_console/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -440,6 +452,8 @@ GLOBAL_LIST_EMPTY(allConsoles)
 	return
 
 /obj/machinery/requests_console/say_mod(input, message_mode)
+	procstart = null
+	src.procstart = null
 	var/ending = copytext(input, length(input) - 2)
 	if (ending == "!!!")
 		. = "blares"
@@ -447,10 +461,14 @@ GLOBAL_LIST_EMPTY(allConsoles)
 		. = ..()
 
 /obj/machinery/requests_console/proc/clear_emergency()
+	procstart = null
+	src.procstart = null
 	emergency = null
 	update_icon()
 
 /obj/machinery/requests_console/proc/createmessage(source, title, message, priority)
+	procstart = null
+	src.procstart = null
 	var/linkedsender
 	if(istype(source, /obj/machinery/requests_console))
 		var/obj/machinery/requests_console/sender = source
@@ -488,6 +506,8 @@ GLOBAL_LIST_EMPTY(allConsoles)
 			src.messages += "<b>From:</b> [linkedsender]<BR>[message]"
 
 /obj/machinery/requests_console/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/crowbar))
 		if(open)
 			to_chat(user, "<span class='notice'>You close the maintenance panel.</span>")

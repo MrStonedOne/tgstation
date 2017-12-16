@@ -12,10 +12,14 @@
 	var/obj/item/device/mmi/brain = null
 
 /obj/structure/AIcore/New()
+	procstart = null
+	src.procstart = null
 	..()
 	laws.set_laws_config()
 
 /obj/structure/AIcore/Destroy()
+	procstart = null
+	src.procstart = null
 	if(circuit)
 		qdel(circuit)
 		circuit = null
@@ -25,6 +29,8 @@
 	return ..()
 
 /obj/structure/AIcore/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/wrench))
 		return default_unfasten_wrench(user, P, 20)
 	if(!anchored)
@@ -206,6 +212,8 @@
 	return ..()
 
 /obj/structure/AIcore/update_icon()
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(EMPTY_CORE)
 			icon_state = "0"
@@ -224,6 +232,8 @@
 			icon_state = "ai-empty"
 
 /obj/structure/AIcore/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(state == GLASS_CORE)
 		new /obj/item/stack/sheet/rglass(loc, 2)
 	if(state >= CABLED_CORE)
@@ -241,6 +251,8 @@
 	state = AI_READY_CORE
 
 /obj/structure/AIcore/deactivated/New()
+	procstart = null
+	src.procstart = null
 	..()
 	circuit = new(src)
 
@@ -254,6 +266,8 @@ That prevents a few funky behaviors.
 
 
 /atom/proc/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/device/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(istype(card))
 		if(card.flush)
 			to_chat(user, "<span class='boldannounce'>ERROR</span>: AI flush is in progress, cannot execute transfer protocol.")
@@ -262,6 +276,8 @@ That prevents a few funky behaviors.
 
 
 /obj/structure/AIcore/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/device/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(state != AI_READY_CORE || !..())
 		return
  //Transferring a carded AI to a core.

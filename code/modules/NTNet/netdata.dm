@@ -13,11 +13,15 @@
 	. |= json_list_generation()
 
 /datum/netdata/proc/json_list_generation()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. |= json_list_generation_netlog()
 	.["network_id"] = network_id
 
 /datum/netdata/proc/json_list_generation_netlog()
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["recipient_ids"] = recipient_ids
 	.["sender_id"] = sender_id
@@ -26,4 +30,6 @@
 	.["plaintext_passkey"] = plaintext_passkey
 
 /datum/netdata/proc/generate_netlog()
+	procstart = null
+	src.procstart = null
 	return "[json_encode(json_list_generation_netlog())]"

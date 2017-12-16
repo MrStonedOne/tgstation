@@ -5,6 +5,8 @@
 	var/registered_name = null
 
 /obj/structure/closet/secure_closet/personal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(50))
 		new /obj/item/storage/backpack/duffelbag(src)
@@ -18,6 +20,8 @@
 	name = "patient's closet"
 
 /obj/structure/closet/secure_closet/personal/patient/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/color/white( src )
 	new /obj/item/clothing/shoes/sneakers/white( src )
 
@@ -27,11 +31,15 @@
 	max_integrity = 70
 
 /obj/structure/closet/secure_closet/personal/cabinet/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/backpack/satchel/leather/withwallet( src )
 	new /obj/item/device/instrument/piano_synth(src)
 	new /obj/item/device/radio/headset( src )
 
 /obj/structure/closet/secure_closet/personal/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/I = W.GetID()
 	if(istype(I))
 		if(broken)

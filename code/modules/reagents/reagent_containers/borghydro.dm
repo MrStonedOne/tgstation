@@ -33,6 +33,8 @@ Borg Hypospray
 
 
 /obj/item/reagent_containers/borghypo/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/R in reagent_ids)
@@ -42,6 +44,8 @@ Borg Hypospray
 
 
 /obj/item/reagent_containers/borghypo/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -57,6 +61,8 @@ Borg Hypospray
 
 // Use this to add more chemicals for the borghypo to produce.
 /obj/item/reagent_containers/borghypo/proc/add_reagent(reagent)
+	procstart = null
+	src.procstart = null
 	reagent_ids |= reagent
 	var/datum/reagents/RG = new(30)
 	RG.my_atom = src
@@ -68,6 +74,8 @@ Borg Hypospray
 	modes[reagent] = modes.len + 1
 
 /obj/item/reagent_containers/borghypo/proc/regenerate_reagents()
+	procstart = null
+	src.procstart = null
 	if(iscyborg(src.loc))
 		var/mob/living/silicon/robot/R = src.loc
 		if(R && R.cell)
@@ -78,6 +86,8 @@ Borg Hypospray
 					RG.add_reagent(reagent_ids[i], 5)		//And fill hypo with reagent.
 
 /obj/item/reagent_containers/borghypo/attack(mob/living/carbon/M, mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/reagents/R = reagent_list[mode]
 	if(!R.total_volume)
 		to_chat(user, "<span class='notice'>The injector is empty.</span>")
@@ -99,6 +109,8 @@ Borg Hypospray
 	add_logs(user, M, "injected", src, "(CHEMICALS: [english_list(injected)])")
 
 /obj/item/reagent_containers/borghypo/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/chosen_reagent = modes[input(user, "What reagent do you want to dispense?") as null|anything in reagent_ids]
 	if(!chosen_reagent)
 		return
@@ -109,11 +121,15 @@ Borg Hypospray
 	return
 
 /obj/item/reagent_containers/borghypo/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	usr = user
 	..()
 	DescribeContents()	//Because using the standardized reagents datum was just too cool for whatever fuckwit wrote this
 
 /obj/item/reagent_containers/borghypo/proc/DescribeContents()
+	procstart = null
+	src.procstart = null
 	var/empty = 1
 
 	for(var/datum/reagents/RS in reagent_list)
@@ -156,9 +172,13 @@ Borg Shaker
 	reagent_ids = list("beer", "orangejuice", "limejuice", "tomatojuice", "cola", "tonic", "sodawater", "ice", "cream", "whiskey", "vodka", "rum", "gin", "tequila", "vermouth", "wine", "kahlua", "cognac", "ale")
 
 /obj/item/reagent_containers/borghypo/borgshaker/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return //Can't inject stuff with a shaker, can we? //not with that attitude
 
 /obj/item/reagent_containers/borghypo/borgshaker/regenerate_reagents()
+	procstart = null
+	src.procstart = null
 	if(iscyborg(src.loc))
 		var/mob/living/silicon/robot/R = src.loc
 		if(R && R.cell)
@@ -170,6 +190,8 @@ Borg Shaker
 					RG.add_reagent(reagent_ids[valueofi], 5)
 
 /obj/item/reagent_containers/borghypo/borgshaker/afterattack(obj/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 
@@ -187,6 +209,8 @@ Borg Shaker
 		to_chat(user, "<span class='notice'>You transfer [trans] unit\s of the solution to [target].</span>")
 
 /obj/item/reagent_containers/borghypo/borgshaker/DescribeContents()
+	procstart = null
+	src.procstart = null
 	var/empty = 1
 
 	var/datum/reagents/RS = reagent_list[mode]

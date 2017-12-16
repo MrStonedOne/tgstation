@@ -13,6 +13,8 @@
 	var/can_contaminate
 
 /datum/component/radioactive/Initialize(_strength=0, _source, _half_life=RAD_HALF_LIFE, _can_contaminate=TRUE)
+	procstart = null
+	src.procstart = null
 	strength = _strength
 	source = _source
 	hl3_release_date = _half_life
@@ -33,10 +35,14 @@
 	START_PROCESSING(SSradiation, src)
 
 /datum/component/radioactive/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSradiation, src)
 	return ..()
 
 /datum/component/radioactive/process()
+	procstart = null
+	src.procstart = null
 	if(!prob(50))
 		return
 	radiation_pulse(parent, strength, RAD_DISTANCE_COEFFICIENT*2, FALSE, can_contaminate)
@@ -48,6 +54,8 @@
 		return PROCESS_KILL
 
 /datum/component/radioactive/InheritComponent(datum/component/C, i_am_original)
+	procstart = null
+	src.procstart = null
 	if(!i_am_original)
 		return
 	if(!hl3_release_date) // Permanently radioactive things don't get to grow stronger
@@ -56,6 +64,8 @@
 	strength = max(strength, other.strength)
 
 /datum/component/radioactive/proc/rad_examine(mob/user, atom/thing)
+	procstart = null
+	src.procstart = null
 	var/atom/master = parent
 	var/list/out = list()
 	if(get_dist(master, user) <= 1)
@@ -72,6 +82,8 @@
 	to_chat(user, out.Join())
 
 /datum/component/radioactive/proc/rad_attack(atom/movable/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	radiation_pulse(parent, strength/20)
 	target.rad_act(strength/2)
 	strength -= strength / hl3_release_date

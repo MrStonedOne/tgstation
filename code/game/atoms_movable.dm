@@ -29,6 +29,8 @@
 	var/movement_type = GROUND		//Incase you have multiple types, you automatically use the most useful one. IE: Skating on ice, flippers on water, flying over chasm/space, etc.
 
 /atom/movable/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	var/static/list/banned_edits = list("step_x", "step_y", "step_size")
 	var/static/list/careful_edits = list("bound_x", "bound_y", "bound_width", "bound_height")
 	if(var_name in banned_edits)
@@ -62,6 +64,8 @@
 	return ..()
 
 /atom/movable/Move(atom/newloc, direct = 0)
+	procstart = null
+	src.procstart = null
 	if(!loc || !newloc)
 		return FALSE
 	var/atom/oldloc = loc
@@ -118,6 +122,8 @@
 
 //Called after a successful Move(). By this point, we've already moved
 /atom/movable/proc/Moved(atom/OldLoc, Dir, Forced = FALSE)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_MOVABLE_MOVED, OldLoc, Dir, Forced)
 	if (!inertia_moving)
 		inertia_next_move = world.time + inertia_move_delay
@@ -142,6 +148,8 @@
 	return 1
 
 /atom/movable/proc/clean_on_move()
+	procstart = null
+	src.procstart = null
 	var/turf/tile = loc
 	if(isturf(tile))
 		tile.clean_blood()
@@ -171,6 +179,8 @@
 					to_chat(cleaned_human, "<span class='danger'>[src] cleans your face!</span>")
 
 /atom/movable/Destroy(force)
+	procstart = null
+	src.procstart = null
 	var/inform_admins = (flags_2 & INFORM_ADMINS_ON_RELOCATE_2)
 	var/stationloving = (flags_2 & STATIONLOVING_2)
 
@@ -210,6 +220,8 @@
 // This is automatically called when something enters your square
 //oldloc = old location on atom, inserted when forceMove is called and ONLY when forceMove is called!
 /atom/movable/Crossed(atom/movable/AM, oldloc)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_MOVABLE_CROSSED, AM)
 
 
@@ -217,6 +229,8 @@
 //to differentiate it, naturally everyone forgot about this immediately and so some things
 //would bump twice, so now it's called Collide
 /atom/movable/proc/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_MOVABLE_COLLIDE, A)
 	if(A)
 		if(throwing)
@@ -227,6 +241,8 @@
 		A.CollidedWith(src)
 
 /atom/movable/proc/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(destination)
 		. = doMove(destination)
@@ -234,9 +250,13 @@
 		CRASH("No valid destination passed into forceMove")
 
 /atom/movable/proc/moveToNullspace()
+	procstart = null
+	src.procstart = null
 	return doMove(null)
 
 /atom/movable/proc/doMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(destination)
 		if(pulledby)
@@ -283,6 +303,8 @@
 		loc = null
 
 /atom/movable/proc/onTransitZ(old_z,new_z)
+	procstart = null
+	src.procstart = null
 	for (var/item in src) // Notify contents of Z-transition. This can be overridden IF we know the items contents do not care.
 		var/atom/movable/AM = item
 		AM.onTransitZ(old_z,new_z)
@@ -293,6 +315,8 @@
 //Mobs should return 1 if they should be able to move of their own volition, see client/Move() in mob_movement.dm
 //movement_dir == 0 when stopping or any dir when trying to move
 /atom/movable/proc/Process_Spacemove(movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	if(has_gravity(src))
 		return 1
 
@@ -321,11 +345,15 @@
 	return 1
 
 /atom/movable/proc/throw_impact(atom/hit_atom, throwingdatum)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	SendSignal(COMSIG_MOVABLE_IMPACT, hit_atom, throwingdatum)
 	return hit_atom.hitby(src)
 
 /atom/movable/hitby(atom/movable/AM, skipcatch, hitpush = TRUE, blocked)
+	procstart = null
+	src.procstart = null
 	if(!anchored && hitpush)
 		step(src, AM.dir)
 	..()
@@ -411,6 +439,8 @@
 
 
 /atom/movable/proc/handle_buckled_mob_movement(newloc,direct)
+	procstart = null
+	src.procstart = null
 	for(var/m in buckled_mobs)
 		var/mob/living/buckled_mob = m
 		if(!buckled_mob.Move(newloc, direct))
@@ -422,12 +452,16 @@
 	return 1
 
 /atom/movable/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(mover in buckled_mobs)
 		return 1
 	return ..()
 
 
 /atom/movable/proc/get_spacemove_backup()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/dense_object_backup
 	for(var/A in orange(1, get_turf(src)))
 		if(isarea(A))
@@ -448,10 +482,14 @@
 
 //called when a mob resists while inside a container that is itself inside something.
 /atom/movable/proc/relay_container_resist(mob/living/user, obj/O)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /atom/movable/proc/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect, end_pixel_y)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && (visual_effect_icon || used_item))
 		do_item_attack_animation(A, visual_effect_icon, used_item)
 
@@ -478,6 +516,8 @@
 	animate(pixel_x = initial(pixel_x), pixel_y = final_pixel_y, time = 2)
 
 /atom/movable/proc/do_item_attack_animation(atom/A, visual_effect_icon, obj/item/used_item)
+	procstart = null
+	src.procstart = null
 	var/image/I
 	if(visual_effect_icon)
 		I = image('icons/effects/effects.dmi', A, visual_effect_icon, A.layer + 0.1)
@@ -513,12 +553,16 @@
 	animate(I, alpha = 175, pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
 
 /atom/movable/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. -= "Jump to"
 	.["Follow"] = "?_src_=holder;[HrefToken()];adminplayerobservefollow=[REF(src)]"
 	.["Get"] = "?_src=holder;[HrefToken()];admingetmovable=[REF(src)]"
 
 /atom/movable/proc/ex_check(ex_id)
+	procstart = null
+	src.procstart = null
 	if(!ex_id)
 		return TRUE
 	LAZYINITLIST(acted_explosions)
@@ -529,6 +573,8 @@
 
 //TODO: Better floating
 /atom/movable/proc/float(on)
+	procstart = null
+	src.procstart = null
 	if(throwing)
 		return
 	if(on && !floating)
@@ -563,6 +609,8 @@
 */
 
 /atom/movable/proc/set_stationloving(state, inform_admins=FALSE)
+	procstart = null
+	src.procstart = null
 	var/currently = (flags_2 & STATIONLOVING_2)
 
 	if(inform_admins)
@@ -580,6 +628,8 @@
 		flags_2 |= STATIONLOVING_2
 
 /atom/movable/proc/relocate()
+	procstart = null
+	src.procstart = null
 	var/targetturf = find_safe_turf(ZLEVEL_STATION_PRIMARY)
 	if(!targetturf)
 		if(GLOB.blobstart.len > 0)
@@ -599,6 +649,8 @@
 	return targetturf
 
 /atom/movable/proc/check_in_bounds()
+	procstart = null
+	src.procstart = null
 	if(in_bounds())
 		return
 	else
@@ -610,6 +662,8 @@
 			message_admins("[src] has been moved out of bounds in [ADMIN_COORDJMP(currentturf)]. Moving it to [ADMIN_COORDJMP(targetturf)].")
 
 /atom/movable/proc/in_bounds()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/turf/currentturf = get_turf(src)
 	if(currentturf && (currentturf.z == ZLEVEL_CENTCOM || (currentturf.z in GLOB.station_z_levels) || currentturf.z == ZLEVEL_TRANSIT))
@@ -618,6 +672,8 @@
 
 /* Language procs */
 /atom/movable/proc/get_language_holder(shadow=TRUE)
+	procstart = null
+	src.procstart = null
 	if(language_holder)
 		return language_holder
 	else
@@ -625,39 +681,57 @@
 		return language_holder
 
 /atom/movable/proc/grant_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/H = get_language_holder()
 	H.grant_language(dt)
 
 /atom/movable/proc/grant_all_languages(omnitongue=FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/H = get_language_holder()
 	H.grant_all_languages(omnitongue)
 
 /atom/movable/proc/get_random_understood_language()
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/H = get_language_holder()
 	. = H.get_random_understood_language()
 
 /atom/movable/proc/remove_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/H = get_language_holder()
 	H.remove_language(dt)
 
 /atom/movable/proc/remove_all_languages()
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/H = get_language_holder()
 	H.remove_all_languages()
 
 /atom/movable/proc/has_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/H = get_language_holder()
 	. = H.has_language(dt)
 
 /atom/movable/proc/copy_known_languages_from(thing, replace=FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/H = get_language_holder()
 	. = H.copy_known_languages_from(thing, replace)
 
 // Whether an AM can speak in a language or not, independent of whether
 // it KNOWS the language
 /atom/movable/proc/could_speak_in_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 /atom/movable/proc/can_speak_in_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/H = get_language_holder()
 
 	if(!H.has_language(dt))
@@ -670,6 +744,8 @@
 		return FALSE
 
 /atom/movable/proc/get_default_language()
+	procstart = null
+	src.procstart = null
 	// if no language is specified, and we want to say() something, which
 	// language do we use?
 	var/datum/language_holder/H = get_language_holder()
@@ -699,15 +775,21 @@
 
 /* End language procs */
 /atom/movable/proc/ConveyorMove(movedir)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!anchored && has_gravity())
 		step(src, movedir)
 
 //Returns an atom's power cell, if it has one. Overload for individual items.
 /atom/movable/proc/get_cell()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/proc/can_be_pulled(user)
+	procstart = null
+	src.procstart = null
 	if(src == user || !isturf(loc))
 		return FALSE
 	if(anchored || throwing)

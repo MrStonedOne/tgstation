@@ -26,6 +26,8 @@
 	var/chew_probability = 1
 
 /mob/living/simple_animal/mouse/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/squeak, list('sound/effects/mousesqueek.ogg'=1), 100)
 	if(!body_color)
@@ -36,11 +38,15 @@
 
 
 /mob/living/simple_animal/mouse/proc/splat()
+	procstart = null
+	src.procstart = null
 	src.health = 0
 	src.icon_dead = "mouse_[body_color]_splat"
 	death()
 
 /mob/living/simple_animal/mouse/death(gibbed, toast)
+	procstart = null
+	src.procstart = null
 	if(!ckey)
 		..(1)
 		var/obj/item/reagent_containers/food/snacks/deadmouse/M = new(loc)
@@ -54,6 +60,8 @@
 		..(gibbed)
 
 /mob/living/simple_animal/mouse/Crossed(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if( ishuman(AM) )
 		if(!stat)
 			var/mob/M = AM
@@ -61,6 +69,8 @@
 	..()
 
 /mob/living/simple_animal/mouse/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(prob(chew_probability))
 		var/turf/open/floor/F = get_turf(src)
 		if(istype(F) && !F.intact)
@@ -112,4 +122,6 @@
 	grind_results = list("blood" = 20, "liquidgibs" = 5)
 
 /obj/item/reagent_containers/food/snacks/deadmouse/on_grind()
+	procstart = null
+	src.procstart = null
 	reagents.clear_reagents()

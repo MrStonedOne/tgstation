@@ -67,11 +67,15 @@
 	var/late_joiner = FALSE
 
 /datum/mind/New(var/key)
+	procstart = null
+	src.procstart = null
 	src.key = key
 	soulOwner = src
 	martial_art = default_martial_art
 
 /datum/mind/Destroy()
+	procstart = null
+	src.procstart = null
 	SSticker.minds -= src
 	if(islist(antag_datums))
 		for(var/i in antag_datums)
@@ -82,6 +86,8 @@
 	return ..()
 
 /datum/mind/proc/get_language_holder()
+	procstart = null
+	src.procstart = null
 	if(!language_holder)
 		var/datum/language_holder/L = current.get_language_holder(shadow=FALSE)
 		language_holder = L.copy(src)
@@ -89,6 +95,8 @@
 	return language_holder
 
 /datum/mind/proc/transfer_to(mob/new_character, var/force_key_move = 0)
+	procstart = null
+	src.procstart = null
 	if(current)	// remove ourself from our old body's mind variable
 		current.mind = null
 		SStgui.on_transfer(current, new_character)
@@ -123,13 +131,19 @@
 		new_character.key = key		//now transfer the key to link the client to our new body
 
 /datum/mind/proc/store_memory(new_text)
+	procstart = null
+	src.procstart = null
 	memory += "[new_text]<BR>"
 
 /datum/mind/proc/wipe_memory()
+	procstart = null
+	src.procstart = null
 	memory = null
 
 // Datum antag mind procs
 /datum/mind/proc/add_antag_datum(datum_type_or_instance, team)
+	procstart = null
+	src.procstart = null
 	if(!datum_type_or_instance)
 		return
 	var/datum/antagonist/A
@@ -151,6 +165,8 @@
 	return A
 
 /datum/mind/proc/remove_antag_datum(datum_type)
+	procstart = null
+	src.procstart = null
 	if(!datum_type)
 		return
 	var/datum/antagonist/A = has_antag_datum(datum_type)
@@ -165,6 +181,8 @@
 		A.on_removal()
 
 /datum/mind/proc/has_antag_datum(datum_type, check_subtypes = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!datum_type)
 		return
 	. = FALSE
@@ -181,38 +199,52 @@
 */
 
 /datum/mind/proc/remove_changeling()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/C = has_antag_datum(/datum/antagonist/changeling)
 	if(C)
 		remove_antag_datum(/datum/antagonist/changeling)
 		special_role = null
 
 /datum/mind/proc/remove_traitor()
+	procstart = null
+	src.procstart = null
 	if(src in SSticker.mode.traitors)
 		remove_antag_datum(ANTAG_DATUM_TRAITOR)
 	SSticker.mode.update_traitor_icons_removed(src)
 
 /datum/mind/proc/remove_brother()
+	procstart = null
+	src.procstart = null
 	if(src in SSticker.mode.brothers)
 		remove_antag_datum(ANTAG_DATUM_BROTHER)
 	SSticker.mode.update_brother_icons_removed(src)
 
 /datum/mind/proc/remove_nukeop()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/nukeop/nuke = has_antag_datum(/datum/antagonist/nukeop,TRUE)
 	if(nuke)
 		remove_antag_datum(nuke.type)
 		special_role = null
 
 /datum/mind/proc/remove_wizard()
+	procstart = null
+	src.procstart = null
 	remove_antag_datum(/datum/antagonist/wizard)
 	special_role = null
 
 /datum/mind/proc/remove_cultist()
+	procstart = null
+	src.procstart = null
 	if(src in SSticker.mode.cult)
 		SSticker.mode.remove_cultist(src, 0, 0)
 	special_role = null
 	remove_antag_equip()
 
 /datum/mind/proc/remove_rev()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/rev/rev = has_antag_datum(/datum/antagonist/rev)
 	if(rev)
 		remove_antag_datum(rev.type)
@@ -220,6 +252,8 @@
 
 
 /datum/mind/proc/remove_antag_equip()
+	procstart = null
+	src.procstart = null
 	var/list/Mob_Contents = current.get_contents()
 	for(var/obj/item/I in Mob_Contents)
 		if(istype(I, /obj/item/device/pda))
@@ -241,6 +275,8 @@
 	SSticker.mode.update_cult_icons_removed(src)
 
 /datum/mind/proc/equip_traitor(var/employer = "The Syndicate", var/silent = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!current)
 		return
 	var/mob/living/carbon/human/traitor_mob = current
@@ -312,6 +348,8 @@
 //Link a new mobs mind to the creator of said mob. They will join any team they are currently on, and will only switch teams when their creator does.
 
 /datum/mind/proc/enslave_mind_to_creator(mob/living/creator)
+	procstart = null
+	src.procstart = null
 	if(iscultist(creator))
 		SSticker.mode.add_cultist(src)
 
@@ -340,6 +378,8 @@
 		to_chat(current, "<span class='userdanger'>Despite your creators current allegiances, your true master remains [creator.real_name]. If their loyalities change, so do yours. This will never change unless your creator's body is destroyed.</span>")
 
 /datum/mind/proc/show_memory(mob/recipient, window=1)
+	procstart = null
+	src.procstart = null
 	if(!recipient)
 		recipient = current
 	var/output = "<B>[current.real_name]'s Memories:</B><br>"
@@ -363,6 +403,8 @@
 		to_chat(recipient, "<i>[output]</i>")
 
 /datum/mind/proc/edit_memory()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		alert("Not before round-start!", "Alert")
 		return
@@ -749,6 +791,8 @@
 
 
 /datum/mind/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 
@@ -1341,6 +1385,8 @@
 	edit_memory()
 
 /datum/mind/proc/announce_objectives()
+	procstart = null
+	src.procstart = null
 	var/obj_count = 1
 	to_chat(current, "<span class='notice'>Your current objectives:</span>")
 	for(var/objective in objectives)
@@ -1349,6 +1395,8 @@
 		obj_count++
 
 /datum/mind/proc/find_syndicate_uplink()
+	procstart = null
+	src.procstart = null
 	var/list/L = current.GetAllContents()
 	for (var/i in L)
 		var/atom/movable/I = i
@@ -1357,15 +1405,21 @@
 			break
 
 /datum/mind/proc/take_uplink()
+	procstart = null
+	src.procstart = null
 	qdel(find_syndicate_uplink())
 
 /datum/mind/proc/make_Traitor()
+	procstart = null
+	src.procstart = null
 	if(!(has_antag_datum(ANTAG_DATUM_TRAITOR)))
 		var/datum/antagonist/traitor/T = new(src)
 		T.should_specialise = TRUE
 		add_antag_datum(T)
 
 /datum/mind/proc/make_Changling()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/C = has_antag_datum(/datum/antagonist/changeling)
 	if(!C)
 		C = add_antag_datum(/datum/antagonist/changeling)
@@ -1373,6 +1427,8 @@
 	return C
 
 /datum/mind/proc/make_Wizard()
+	procstart = null
+	src.procstart = null
 	if(!has_antag_datum(/datum/antagonist/wizard))
 		special_role = "Wizard"
 		assigned_role = "Wizard"
@@ -1380,6 +1436,8 @@
 
 
 /datum/mind/proc/make_Cultist()
+	procstart = null
+	src.procstart = null
 	if(!has_antag_datum(/datum/antagonist/cult,TRUE))
 		SSticker.mode.add_cultist(src,FALSE,equip=TRUE)
 		special_role = "Cultist"
@@ -1387,6 +1445,8 @@
 		to_chat(current, "<font color=\"purple\"><b><i>Assist your new bretheren in their dark dealings. Their goal is yours, and yours is theirs. You serve the Dark One above all else. Bring It back.</b></i></font>")
 
 /datum/mind/proc/make_Rev()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/rev/head/head = new(src)
 	head.give_flash = TRUE
 	head.give_hud = TRUE
@@ -1394,14 +1454,20 @@
 	special_role = "Head Revolutionary"
 
 /datum/mind/proc/AddSpell(obj/effect/proc_holder/spell/S)
+	procstart = null
+	src.procstart = null
 	spell_list += S
 	S.action.Grant(current)
 
 /datum/mind/proc/owns_soul()
+	procstart = null
+	src.procstart = null
 	return soulOwner == src
 
 //To remove a specific spell from a mind
 /datum/mind/proc/RemoveSpell(obj/effect/proc_holder/spell/spell)
+	procstart = null
+	src.procstart = null
 	if(!spell)
 		return
 	for(var/X in spell_list)
@@ -1411,10 +1477,14 @@
 			qdel(S)
 
 /datum/mind/proc/RemoveAllSpells()
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/proc_holder/S in spell_list)
 		RemoveSpell(S)
 
 /datum/mind/proc/transfer_martial_arts(mob/living/new_character)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(new_character))
 		return
 	if(martial_art)
@@ -1424,17 +1494,23 @@
 			martial_art.teach(new_character)
 
 /datum/mind/proc/transfer_actions(mob/living/new_character)
+	procstart = null
+	src.procstart = null
 	if(current && current.actions)
 		for(var/datum/action/A in current.actions)
 			A.Grant(new_character)
 	transfer_mindbound_actions(new_character)
 
 /datum/mind/proc/transfer_mindbound_actions(mob/living/new_character)
+	procstart = null
+	src.procstart = null
 	for(var/X in spell_list)
 		var/obj/effect/proc_holder/spell/S = X
 		S.action.Grant(new_character)
 
 /datum/mind/proc/disrupt_spells(delay, list/exceptions = New())
+	procstart = null
+	src.procstart = null
 	for(var/X in spell_list)
 		var/obj/effect/proc_holder/spell/S = X
 		for(var/type in exceptions)
@@ -1445,6 +1521,8 @@
 		INVOKE_ASYNC(S, /obj/effect/proc_holder/spell.proc/start_recharge)
 
 /datum/mind/proc/get_ghost(even_if_they_cant_reenter)
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/observer/G in GLOB.dead_mob_list)
 		if(G.mind == src)
 			if(G.can_reenter_corpse || even_if_they_cant_reenter)
@@ -1452,23 +1530,33 @@
 			break
 
 /datum/mind/proc/grab_ghost(force)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = get_ghost(even_if_they_cant_reenter = force)
 	. = G
 	if(G)
 		G.reenter_corpse()
 
 /mob/proc/sync_mind()
+	procstart = null
+	src.procstart = null
 	mind_initialize()	//updates the mind (or creates and initializes one if one doesn't exist)
 	mind.active = 1		//indicates that the mind is currently synced with a client
 
 /mob/dead/new_player/sync_mind()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/dead/observer/sync_mind()
+	procstart = null
+	src.procstart = null
 	return
 
 //Initialisation procs
 /mob/proc/mind_initialize()
+	procstart = null
+	src.procstart = null
 	if(mind)
 		mind.key = key
 
@@ -1480,32 +1568,44 @@
 	mind.current = src
 
 /mob/living/carbon/mind_initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	last_mind = mind
 
 //HUMAN
 /mob/living/carbon/human/mind_initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!mind.assigned_role)
 		mind.assigned_role = "Unassigned" //default
 
 //XENO
 /mob/living/carbon/alien/mind_initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	mind.special_role = "Alien"
 
 //AI
 /mob/living/silicon/ai/mind_initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	mind.assigned_role = "AI"
 
 //BORG
 /mob/living/silicon/robot/mind_initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	mind.assigned_role = "Cyborg"
 
 //PAI
 /mob/living/silicon/pai/mind_initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	mind.assigned_role = "pAI"
 	mind.special_role = ""

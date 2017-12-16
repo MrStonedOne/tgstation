@@ -29,6 +29,8 @@
 	loot = list(/obj/effect/decal/cleanable/robot_debris)
 
 /mob/living/simple_animal/hostile/hivebot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deathmessage = "[src] blows apart!"
 
@@ -62,5 +64,7 @@
 	ranged = 1
 
 /mob/living/simple_animal/hostile/hivebot/death(gibbed)
+	procstart = null
+	src.procstart = null
 	do_sparks(3, TRUE, src)
 	..(1)

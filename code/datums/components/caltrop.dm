@@ -7,6 +7,8 @@
 	var/cooldown = 0
 
 /datum/component/caltrop/Initialize(_min_damage = 0, _max_damage = 0, _probability = 100,  _flags = NONE)
+	procstart = null
+	src.procstart = null
 	min_damage = _min_damage
 	max_damage = max(_min_damage, _max_damage)
 	probability = _probability
@@ -15,6 +17,8 @@
 	RegisterSignal(list(COMSIG_MOVABLE_CROSSED), .proc/Crossed)
 
 /datum/component/caltrop/proc/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/atom/A = parent
 	if(!A.has_gravity())
 		return

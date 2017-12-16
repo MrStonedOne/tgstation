@@ -21,9 +21,13 @@
 	liked_food = GROSS | MEAT
 
 /datum/species/lizard/after_equip_job(datum/job/J, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.grant_language(/datum/language/draconic)
 
 /datum/species/lizard/random_name(gender,unique,lastname)
+	procstart = null
+	src.procstart = null
 	if(unique)
 		return random_unique_lizard_name(gender)
 
@@ -36,6 +40,8 @@
 
 //I wag in death
 /datum/species/lizard/spec_death(gibbed, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H)
 		H.endTailWag()
 

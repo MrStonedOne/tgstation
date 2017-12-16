@@ -14,17 +14,23 @@
 					//Setting this to 1 will set src.locked to null after a player enters the portal and will not allow hand-teles to open portals to that location.
 
 /obj/machinery/computer/teleporter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id = "[rand(1000, 9999)]"
 	link_power_station()
 
 /obj/machinery/computer/teleporter/Destroy()
+	procstart = null
+	src.procstart = null
 	if (power_station)
 		power_station.teleporter_console = null
 		power_station = null
 	return ..()
 
 /obj/machinery/computer/teleporter/proc/link_power_station()
+	procstart = null
+	src.procstart = null
 	if(power_station)
 		return
 	for(var/direction in GLOB.cardinals)
@@ -34,6 +40,8 @@
 	return power_station
 
 /obj/machinery/computer/teleporter/attackby(obj/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/gps))
 		var/obj/item/device/gps/L = I
 		if(L.locked_location && !(stat & (NOPOWER|BROKEN)))
@@ -46,14 +54,20 @@
 		return ..()
 
 /obj/machinery/computer/teleporter/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/computer/teleporter/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/computer/teleporter/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = "<h3>Teleporter Status</h3>"
 	if(!power_station)
 		data += "<div class='statusDisplay'>No power station linked.</div>"
@@ -86,6 +100,8 @@
 	popup.open()
 
 /obj/machinery/computer/teleporter/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -138,6 +154,8 @@
 	updateDialog()
 
 /obj/machinery/computer/teleporter/proc/check_hub_connection()
+	procstart = null
+	src.procstart = null
 	if(!power_station)
 		return FALSE
 	if(!power_station.teleporter_hub)
@@ -145,6 +163,8 @@
 	return TRUE
 
 /obj/machinery/computer/teleporter/proc/reset_regime()
+	procstart = null
+	src.procstart = null
 	target = null
 	if(regime_set == "Teleporter")
 		regime_set = "Gate"
@@ -152,11 +172,15 @@
 		regime_set = "Teleporter"
 
 /obj/machinery/computer/teleporter/proc/eject()
+	procstart = null
+	src.procstart = null
 	if(locked)
 		locked.forceMove(get_turf(src))
 		locked = null
 
 /obj/machinery/computer/teleporter/proc/set_target(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/L = list()
 	var/list/areaindex = list()
 	if(regime_set == "Teleporter")
@@ -200,6 +224,8 @@
 				trg.teleporter_console.update_icon()
 
 /obj/machinery/computer/teleporter/proc/is_eligible(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(AM)
 	if(!T)
 		return FALSE

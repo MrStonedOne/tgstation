@@ -9,6 +9,8 @@
 	var/disgust_metabolism = 1
 
 /obj/item/organ/stomach/on_life()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 
 	if(istype(H))
@@ -16,6 +18,8 @@
 		handle_disgust(H)
 
 /obj/item/organ/stomach/proc/handle_disgust(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.disgust)
 		var/pukeprob = 5 + 0.05 * H.disgust
 		if(H.disgust >= DISGUST_LEVEL_GROSS)
@@ -48,6 +52,8 @@
 			H.throw_alert("disgust", /obj/screen/alert/disgusted)
 
 /obj/item/organ/stomach/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	if(istype(H))
 		H.clear_alert("disgust")

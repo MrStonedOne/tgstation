@@ -8,11 +8,15 @@ SUBSYSTEM_DEF(idlenpcpool)
 	var/list/currentrun = list()
 
 /datum/controller/subsystem/idlenpcpool/stat_entry()
+	procstart = null
+	src.procstart = null
 	var/list/idlelist = GLOB.simple_animals[AI_IDLE]
 	..("IdleNPCS:[idlelist.len]")
 
 /datum/controller/subsystem/idlenpcpool/fire(resumed = FALSE)
 
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		var/list/idlelist = GLOB.simple_animals[AI_IDLE]
 		src.currentrun = idlelist.Copy()

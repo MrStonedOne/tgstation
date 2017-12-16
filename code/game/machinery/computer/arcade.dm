@@ -49,9 +49,13 @@
 	light_color = LIGHT_COLOR_GREEN
 
 /obj/machinery/computer/arcade/proc/Reset()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/computer/arcade/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// If it's a generic arcade machine, pick a random arcade
 	// circuit board for it and make the new machine
@@ -65,6 +69,8 @@
 #define PULSE_MEDAL "Jackpot"
 
 /obj/machinery/computer/arcade/proc/prizevend()
+	procstart = null
+	src.procstart = null
 	if(prob(0.0001)) //1 in a million
 		new /obj/item/gun/energy/pulse/prize(src)
 		UnlockMedal(PULSE_MEDAL,usr.client)
@@ -80,6 +86,8 @@
 #undef PULSE_MEDAL
 
 /obj/machinery/computer/arcade/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	..(severity)
 
 	if(stat & (NOPOWER|BROKEN))
@@ -117,6 +125,8 @@
 	var/turtle = 0
 
 /obj/machinery/computer/arcade/battle/Reset()
+	procstart = null
+	src.procstart = null
 	var/name_action
 	var/name_part1
 	var/name_part2
@@ -130,6 +140,8 @@
 	name = (name_action + name_part1 + name_part2)
 
 /obj/machinery/computer/arcade/battle/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	user.set_machine(src)
@@ -153,6 +165,8 @@
 	popup.open()
 
 /obj/machinery/computer/arcade/battle/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -221,6 +235,8 @@
 	return
 
 /obj/machinery/computer/arcade/battle/proc/arcade_action()
+	procstart = null
+	src.procstart = null
 	if ((enemy_mp <= 0) || (enemy_hp <= 0))
 		if(!gameover)
 			gameover = TRUE
@@ -286,6 +302,8 @@
 
 
 /obj/machinery/computer/arcade/battle/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	temp = "If you die in the game, you die for real!"
@@ -362,6 +380,8 @@
 	var/canContinueEvent = 0
 
 /obj/machinery/computer/arcade/orion_trail/Reset()
+	procstart = null
+	src.procstart = null
 	// Sets up the main trail
 	stops = list("Pluto","Asteroid Belt","Proxima Centauri","Dead Space","Rigel Prime","Tau Ceti Beta","Black Hole","Space Outpost Beta-9","Orion Prime")
 	stopblurbs = list(
@@ -377,6 +397,8 @@
 		)
 
 /obj/machinery/computer/arcade/orion_trail/proc/newgame()
+	procstart = null
+	src.procstart = null
 	// Set names of settlers in crew
 	settlers = list()
 	for(var/i = 1; i <= 3; i++)
@@ -400,6 +422,8 @@
 	last_spaceport_action = ""
 
 /obj/machinery/computer/arcade/orion_trail/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(fuel <= 0 || food <=0 || settlers.len == 0)
@@ -464,6 +488,8 @@
 	return
 
 /obj/machinery/computer/arcade/orion_trail/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(href_list["close"])
@@ -748,6 +774,8 @@
 
 
 /obj/machinery/computer/arcade/orion_trail/proc/event()
+	procstart = null
+	src.procstart = null
 	eventdat = "<center><h1>[event]</h1></center>"
 	canContinueEvent = 0
 	switch(event)
@@ -988,6 +1016,8 @@
 
 //Add Random/Specific crewmember
 /obj/machinery/computer/arcade/orion_trail/proc/add_crewmember(var/specific = "")
+	procstart = null
+	src.procstart = null
 	var/newcrew = ""
 	if(specific)
 		newcrew = specific
@@ -1004,6 +1034,8 @@
 
 //Remove Random/Specific crewmember
 /obj/machinery/computer/arcade/orion_trail/proc/remove_crewmember(var/specific = "", var/dont_remove = "")
+	procstart = null
+	src.procstart = null
 	var/list/safe2remove = settlers
 	var/removed = ""
 	if(dont_remove)
@@ -1022,6 +1054,8 @@
 
 
 /obj/machinery/computer/arcade/orion_trail/proc/win()
+	procstart = null
+	src.procstart = null
 	gameStatus = ORION_STATUS_START
 	say("Congratulations, you made it to Orion!")
 	if(emagged)
@@ -1035,6 +1069,8 @@
 	desc = "Learn how our ancestors got to Orion, and have fun in the process!"
 
 /obj/machinery/computer/arcade/orion_trail/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	to_chat(user, "<span class='notice'>You override the cheat code menu and skip to Cheat #[rand(1, 50)]: Realism Mode.</span>")
@@ -1059,6 +1095,8 @@
 	var/active = 0 //if the ship is on
 
 /obj/item/orion_ship/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!(in_range(user, src)))
 		return

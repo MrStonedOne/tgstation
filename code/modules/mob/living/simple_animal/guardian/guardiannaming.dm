@@ -15,6 +15,8 @@
 	stainself = 1
 
 /datum/guardianname/carp/New()
+	procstart = null
+	src.procstart = null
 	prefixname = pick(GLOB.carp_names)
 
 /datum/guardianname/carp/sand
@@ -70,6 +72,8 @@
 	theme = "magic"
 
 /datum/guardianname/magic/New()
+	procstart = null
+	src.procstart = null
 	prefixname = pick("Aries", "Leo", "Sagittarius", "Taurus", "Virgo", "Capricorn", "Gemini", "Libra", "Aquarius", "Cancer", "Scorpio", "Pisces", "Ophiuchus")
 
 /datum/guardianname/magic/red
@@ -98,6 +102,8 @@
 	colour = "#78C4DB"
 
 /datum/guardianname/tech/New()
+	procstart = null
+	src.procstart = null
 	prefixname = pick("Gallium", "Indium", "Thallium", "Bismuth", "Aluminium", "Mercury", "Iron", "Silver", "Zinc", "Titanium", "Chromium", "Nickel", "Platinum", "Tellurium", "Palladium", "Rhodium", "Cobalt", "Osmium", "Tungsten", "Iridium")
 
 /datum/guardianname/tech/rose

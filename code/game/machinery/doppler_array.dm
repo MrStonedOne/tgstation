@@ -12,21 +12,31 @@ GLOBAL_LIST_EMPTY(doppler_arrays)
 	verb_say = "states coldly"
 
 /obj/machinery/doppler_array/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.doppler_arrays += src
 
 /obj/machinery/doppler_array/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.doppler_arrays -= src
 	return ..()
 
 /obj/machinery/doppler_array/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Its dish is facing to the [dir2text(dir)].</span>")
 
 /obj/machinery/doppler_array/process()
+	procstart = null
+	src.procstart = null
 	return PROCESS_KILL
 
 /obj/machinery/doppler_array/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/wrench))
 		if(!anchored && !isinspace())
 			anchored = TRUE
@@ -41,6 +51,8 @@ GLOBAL_LIST_EMPTY(doppler_arrays)
 		return ..()
 
 /obj/machinery/doppler_array/verb/rotate()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate Tachyon-doppler Dish"
 	set category = "Object"
 	set src in oview(1)
@@ -54,6 +66,8 @@ GLOBAL_LIST_EMPTY(doppler_arrays)
 	playsound(src, 'sound/items/screwdriver2.ogg', 50, 1)
 
 /obj/machinery/doppler_array/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
 		return
@@ -98,6 +112,8 @@ GLOBAL_LIST_EMPTY(doppler_arrays)
 			say(message)
 
 /obj/machinery/doppler_array/power_change()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		icon_state = "[initial(icon_state)]-broken"
 	else
@@ -135,8 +151,12 @@ GLOBAL_LIST_EMPTY(doppler_arrays)
 /obj/machinery/doppler_array/research/science
 
 /obj/machinery/doppler_array/research/science/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	linked_techweb = SSresearch.science_tech
 
 /proc/techweb_scale_bomb(lightradius)
+	procstart = null
+	src.procstart = null
 	return (lightradius ** 0.5) * 13000

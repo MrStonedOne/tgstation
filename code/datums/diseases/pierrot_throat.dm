@@ -12,6 +12,8 @@
 	severity = VIRUS_SEVERITY_MEDIUM
 
 /datum/disease/pierrot_throat/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(1)

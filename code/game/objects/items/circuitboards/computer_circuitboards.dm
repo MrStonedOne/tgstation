@@ -62,6 +62,8 @@
 	var/list/dept_list = list("General","Security","Medical","Science","Engineering")
 
 /obj/item/circuitboard/computer/card/minor/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		target_dept = (target_dept == dept_list.len) ? 1 : (target_dept + 1)
 		to_chat(user, "<span class='notice'>You set the board to \"[dept_list[target_dept]]\".</span>")
@@ -69,6 +71,8 @@
 		return ..()
 
 /obj/item/circuitboard/computer/card/minor/examine(user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "Currently set to \"[dept_list[target_dept]]\".")
 
@@ -155,6 +159,8 @@
 	build_path = /obj/machinery/computer/rdconsole/core
 
 /obj/item/circuitboard/computer/rdconsole/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		if(build_path == /obj/machinery/computer/rdconsole/core)
 			name = "R&D Console - Robotics (Computer Board)"
@@ -189,6 +195,8 @@
 	var/contraband = FALSE
 
 /obj/item/circuitboard/computer/cargo/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/multitool))
 		if(!emagged)
 			contraband = !contraband
@@ -273,6 +281,8 @@
 	build_path = /obj/machinery/computer/libraryconsole
 
 /obj/item/circuitboard/computer/libraryconsole/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		if(build_path == /obj/machinery/computer/libraryconsole/bookmanagement)
 			name = "Library Visitor Console (Computer Board)"
@@ -300,10 +310,14 @@
 	var/moved = FALSE
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.syndicate_shuttle_boards += src
 
 /obj/item/circuitboard/computer/syndicate_shuttle/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.syndicate_shuttle_boards -= src
 	return ..()
 

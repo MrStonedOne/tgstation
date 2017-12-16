@@ -15,6 +15,8 @@
 	var/bonus_burn = 5
 
 /obj/item/clockwork/weapon/ratvarian_spear/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens) //If Ratvar is alive, the spear is extremely powerful
 		force = 20
 		bonus_burn = 10
@@ -27,6 +29,8 @@
 		armour_penetration = initial(armour_penetration)
 
 /obj/item/clockwork/weapon/ratvarian_spear/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		to_chat(user, "<span class='inathneq_small'>Attacks on living non-Servants will generate <b>[bonus_burn]</b> units of vitality.</span>")
@@ -34,6 +38,8 @@
 			to_chat(user, "<span class='brass'>Throwing the spear will do massive damage, break the spear, and knock down the target.</span>")
 
 /obj/item/clockwork/weapon/ratvarian_spear/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(target) && target.stat != DEAD && !target.null_rod_check() && !is_servant_of_ratvar(target)) //we do bonus damage on attacks unless they're a servant, have a null rod, or are dead
 		var/bonus_damage = bonus_burn //normally a total of 20 damage, 30 with ratvar
@@ -46,6 +52,8 @@
 		GLOB.clockwork_vitality += target.adjustFireLoss(bonus_damage) //adds the damage done to existing vitality
 
 /obj/item/clockwork/weapon/ratvarian_spear/throw_impact(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	if(isliving(target))
 		var/mob/living/L = target
@@ -66,6 +74,8 @@
 		..()
 
 /obj/item/clockwork/weapon/ratvarian_spear/proc/break_spear(turf/T)
+	procstart = null
+	src.procstart = null
 	if(src)
 		if(!T)
 			T = get_turf(src)

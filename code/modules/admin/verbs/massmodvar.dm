@@ -15,6 +15,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Mass Edit Variables") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/massmodify_variables(datum/O, var_name = "", method = 0)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_VAREDIT))
 		return
 	if(!istype(O))
@@ -199,6 +201,8 @@
 
 
 /proc/get_all_of_type(var/T, subtypes = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/typecache = list()
 	typecache[T] = 1
 	if (subtypes)

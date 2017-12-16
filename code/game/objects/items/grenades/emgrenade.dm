@@ -5,6 +5,8 @@
 	item_state = "emp"
 
 /obj/item/grenade/empgrenade/prime()
+	procstart = null
+	src.procstart = null
 	update_mob()
 	empulse(src, 4, 10)
 	qdel(src)

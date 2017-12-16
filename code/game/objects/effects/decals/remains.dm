@@ -4,6 +4,8 @@
 	icon = 'icons/effects/blood.dmi'
 
 /obj/effect/decal/remains/acid_act()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>[src] dissolve[gender==PLURAL?"":"s"] into a puddle of sizzling goop!</span>")
 	playsound(src, 'sound/items/welder.ogg', 150, 1)
 	new /obj/effect/decal/cleanable/greenglow(drop_location())

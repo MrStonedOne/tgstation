@@ -11,12 +11,16 @@
 	step_energy_drain = 6
 
 /obj/mecha/medical/odysseus/moved_inside(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/datum/atom_hud/hud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 		hud.add_hud_to(H)
 
 /obj/mecha/medical/odysseus/go_out()
+	procstart = null
+	src.procstart = null
 	if(ishuman(occupant))
 		var/mob/living/carbon/human/H = occupant
 		var/datum/atom_hud/hud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]

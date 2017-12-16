@@ -9,12 +9,18 @@
 	var/list/special_equipment = list()
 
 /datum/objective_item/proc/check_special_completion() //for objectives with special checks (is that slime extract unused? does that intellicard have an ai in it? etcetc)
+	procstart = null
+	src.procstart = null
 	return 1
 
 /datum/objective_item/proc/TargetExists()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/objective_item/steal/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(TargetExists())
 		GLOB.possible_items += src
@@ -22,6 +28,8 @@
 		qdel(src)
 
 /datum/objective_item/steal/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.possible_items -= src
 	return ..()
 
@@ -96,6 +104,8 @@
 	difficulty = 15
 
 /datum/objective_item/steal/nuke_core/New()
+	procstart = null
+	src.procstart = null
 	special_equipment += /obj/item/storage/box/syndie_kit/nuke
 	..()
 
@@ -105,10 +115,14 @@
 	difficulty = 15
 
 /datum/objective_item/steal/supermatter/New()
+	procstart = null
+	src.procstart = null
 	special_equipment += /obj/item/storage/box/syndie_kit/supermatter
 	..()
 
 /datum/objective_item/steal/supermatter/TargetExists()
+	procstart = null
+	src.procstart = null
 	return GLOB.main_supermatter_engine != null
 
 //Items with special checks!
@@ -119,6 +133,8 @@
 	excludefromjob = list("Chief Engineer","Research Director","Station Engineer","Scientist","Atmospheric Technician")
 
 /datum/objective_item/steal/plasma/check_special_completion(obj/item/tank/T)
+	procstart = null
+	src.procstart = null
 	var/target_amount = text2num(name)
 	var/found_amount = 0
 	found_amount += T.air_contents.gases[/datum/gas/plasma] ? T.air_contents.gases[/datum/gas/plasma][MOLES] : 0
@@ -131,6 +147,8 @@
 	difficulty = 20 //beyond the impossible
 
 /datum/objective_item/steal/functionalai/check_special_completion(obj/item/device/aicard/C)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/silicon/ai/A in C)
 		if(isAI(A) && A.stat != DEAD) //See if any AI's are alive inside that card.
 			return 1
@@ -144,6 +162,8 @@
 	altitems = list(/obj/item/photo)
 
 /datum/objective_item/steal/blueprints/check_special_completion(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/areaeditor/blueprints))
 		return 1
 	if(istype(I, /obj/item/photo))
@@ -159,6 +179,8 @@
 	excludefromjob = list("Research Director","Scientist")
 
 /datum/objective_item/steal/slime/check_special_completion(obj/item/slime_extract/E)
+	procstart = null
+	src.procstart = null
 	if(E.Uses > 0)
 		return 1
 	return 0
@@ -175,6 +197,8 @@
 	difficulty = 10
 
 /datum/objective_item/special/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(TargetExists())
 		GLOB.possible_items_special += src
@@ -182,6 +206,8 @@
 		qdel(src)
 
 /datum/objective_item/special/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.possible_items_special -= src
 	return ..()
 
@@ -222,6 +248,8 @@
 	difficulty = 5
 
 /datum/objective_item/stack/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(TargetExists())
 		GLOB.possible_items_special += src
@@ -229,6 +257,8 @@
 		qdel(src)
 
 /datum/objective_item/stack/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.possible_items_special -= src
 	return ..()
 
@@ -239,6 +269,8 @@
 	difficulty = 9001
 
 /datum/objective_item/stack/check_special_completion(obj/item/stack/S)
+	procstart = null
+	src.procstart = null
 	var/target_amount = text2num(name)
 	var/found_amount = 0
 

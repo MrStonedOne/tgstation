@@ -18,6 +18,8 @@
 	var/mob/living/silicon/ai/masterAI
 
 /obj/machinery/transformer/Initialize()
+	procstart = null
+	src.procstart = null
 	// On us
 	. = ..()
 	new /obj/machinery/conveyor/auto(locate(x - 1, y, z), WEST)
@@ -27,20 +29,28 @@
 	countdown.start()
 
 /obj/machinery/transformer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cooldown && (issilicon(user) || isobserver(user)))
 		var/seconds_remaining = (cooldown_timer - world.time) / 10
 		to_chat(user, "It will be ready in [max(0, seconds_remaining)] seconds.")
 
 /obj/machinery/transformer/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(countdown)
 	. = ..()
 
 /obj/machinery/transformer/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/transformer/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & (BROKEN|NOPOWER) || cooldown == 1)
 		icon_state = "separator-AO0"
@@ -48,6 +58,8 @@
 		icon_state = initial(icon_state)
 
 /obj/machinery/transformer/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(cooldown == 1)
 		return
 
@@ -61,6 +73,8 @@
 			do_transform(AM)
 
 /obj/machinery/transformer/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	// Allows items to go through,
 	// to stop them from blocking the conveyor belt.
 	if(!ishuman(mover))
@@ -70,11 +84,15 @@
 	return 0
 
 /obj/machinery/transformer/process()
+	procstart = null
+	src.procstart = null
 	if(cooldown && (cooldown_timer <= world.time))
 		cooldown = FALSE
 		update_icon()
 
 /obj/machinery/transformer/proc/do_transform(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 	if(cooldown == 1)
@@ -109,6 +127,8 @@
 	addtimer(CALLBACK(src, .proc/unlock_new_robot, R), 50)
 
 /obj/machinery/transformer/proc/unlock_new_robot(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
 	sleep(30)
 	if(R)

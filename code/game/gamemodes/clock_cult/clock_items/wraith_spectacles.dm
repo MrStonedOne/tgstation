@@ -13,21 +13,31 @@
 	tint = 3 //this'll get reset, but it won't handle vision updates properly otherwise
 
 /obj/item/clothing/glasses/wraith_spectacles/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.all_clockwork_objects += src
 
 /obj/item/clothing/glasses/wraith_spectacles/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.all_clockwork_objects -= src
 	return ..()
 
 /obj/item/clothing/glasses/wraith_spectacles/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	weldingvisortoggle(user)
 
 /obj/item/clothing/glasses/wraith_spectacles/visor_toggling()
+	procstart = null
+	src.procstart = null
 	..()
 	set_vision_vars(FALSE)
 
 /obj/item/clothing/glasses/wraith_spectacles/weldingvisortoggle(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
@@ -47,6 +57,8 @@
 				to_chat(H, "<span class='heavy_brass'>You push the spectacles down, but you can't see through the glass.</span>")
 
 /obj/item/clothing/glasses/wraith_spectacles/proc/blind_cultist(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(iscultist(victim))
 		to_chat(victim, "<span class='heavy_brass'>\"It looks like Nar-Sie's dogs really don't value their eyes.\"</span>")
 		to_chat(victim, "<span class='userdanger'>Your eyes explode with horrific pain!</span>")
@@ -57,6 +69,8 @@
 		return TRUE
 
 /obj/item/clothing/glasses/wraith_spectacles/proc/set_vision_vars(update_vision)
+	procstart = null
+	src.procstart = null
 	lighting_alpha = null
 	tint = 0
 	vision_flags = NONE
@@ -73,6 +87,8 @@
 		C.head_update(src, forced = 1)
 
 /obj/item/clothing/glasses/wraith_spectacles/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot != slot_glasses || up)
 		return
@@ -108,6 +124,8 @@
 	alerttooltipstyle = "clockcult"
 
 /obj/screen/alert/status_effect/wraith_spectacles/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/L = usr
 	if(istype(L)) //this is probably more safety than actually needed
 		var/datum/status_effect/wraith_spectacles/W = attached_effect
@@ -126,12 +144,16 @@
 	..()
 
 /datum/status_effect/wraith_spectacles/on_apply()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		apply_eye_damage(H)
 		return ..()
 
 /datum/status_effect/wraith_spectacles/tick()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner))
 		qdel(src)
 		return
@@ -153,6 +175,8 @@
 			qdel(src)
 
 /datum/status_effect/wraith_spectacles/proc/apply_eye_damage(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.disabilities & BLIND)
 		return
 	H.adjust_eye_damage(0.5)

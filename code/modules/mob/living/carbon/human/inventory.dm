@@ -3,6 +3,8 @@
 
 // Return the item currently in the slot ID
 /mob/living/carbon/human/get_item_by_slot(slot_id)
+	procstart = null
+	src.procstart = null
 	switch(slot_id)
 		if(slot_back)
 			return back
@@ -41,9 +43,13 @@
 	return null
 
 /mob/living/carbon/human/proc/get_all_slots()
+	procstart = null
+	src.procstart = null
 	. = get_head_slots() | get_body_slots()
 
 /mob/living/carbon/human/proc/get_body_slots()
+	procstart = null
+	src.procstart = null
 	return list(
 		back,
 		s_store,
@@ -60,6 +66,8 @@
 		)
 
 /mob/living/carbon/human/proc/get_head_slots()
+	procstart = null
+	src.procstart = null
 	return list(
 		head,
 		wear_mask,
@@ -69,6 +77,8 @@
 		)
 
 /mob/living/carbon/human/proc/get_storage_slots()
+	procstart = null
+	src.procstart = null
 	return list(
 		back,
 		belt,
@@ -79,6 +89,8 @@
 
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()
 /mob/living/carbon/human/equip_to_slot(obj/item/I, slot)
+	procstart = null
+	src.procstart = null
 	if(!..()) //a check failed or the item has already found its slot
 		return
 
@@ -144,6 +156,8 @@
 	return not_handled //For future deeper overrides
 
 /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE)
+	procstart = null
+	src.procstart = null
 	var/index = get_held_index_of_item(I)
 	. = ..() //See mob.dm for an explanation on this and some rage about people copypasting instead of calling ..() like they should.
 	if(!. || !I)
@@ -225,6 +239,8 @@
 			update_inv_s_store()
 
 /mob/living/carbon/human/wear_mask_update(obj/item/clothing/C, toggle_off = 1)
+	procstart = null
+	src.procstart = null
 	if((C.flags_inv & (HIDEHAIR|HIDEFACIALHAIR)) || (initial(C.flags_inv) & (HIDEHAIR|HIDEFACIALHAIR)))
 		update_hair()
 	if(toggle_off && internal && !getorganslot(ORGAN_SLOT_BREATHING_TUBE))
@@ -236,6 +252,8 @@
 	..()
 
 /mob/living/carbon/human/head_update(obj/item/I, forced)
+	procstart = null
+	src.procstart = null
 	if((I.flags_inv & (HIDEHAIR|HIDEFACIALHAIR)) || forced)
 		update_hair()
 	else
@@ -250,6 +268,8 @@
 	..()
 
 /mob/living/carbon/human/proc/equipOutfit(outfit, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/outfit/O = null
 
 	if(ispath(outfit))
@@ -266,6 +286,8 @@
 
 //delete all equipment without dropping anything
 /mob/living/carbon/human/proc/delete_equipment()
+	procstart = null
+	src.procstart = null
 	for(var/slot in get_all_slots())//order matters, dependant slots go first
 		qdel(slot)
 	for(var/obj/item/I in held_items)

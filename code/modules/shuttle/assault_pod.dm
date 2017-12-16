@@ -6,11 +6,15 @@
 	height = 7
 
 /obj/docking_port/mobile/assault_pod/request()
+	procstart = null
+	src.procstart = null
 	if(z == initial(src.z)) //No launching pods that have already launched
 		return ..()
 
 
 /obj/docking_port/mobile/assault_pod/dock(obj/docking_port/stationary/S1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(S1, /obj/docking_port/stationary/transit))
 		playsound(get_turf(src.loc), 'sound/effects/explosion1.ogg',50,1)
@@ -33,6 +37,8 @@
 
 
 /obj/item/device/assault_pod/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/target_area
 	target_area = input("Area to land", "Select a Landing Zone", target_area) in GLOB.teleportlocs
 	var/area/picked_area = GLOB.teleportlocs[target_area]

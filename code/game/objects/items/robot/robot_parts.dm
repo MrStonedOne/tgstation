@@ -23,10 +23,14 @@
 	var/panel_locked = TRUE
 
 /obj/item/robot_suit/New()
+	procstart = null
+	src.procstart = null
 	..()
 	updateicon()
 
 /obj/item/robot_suit/prebuilt/New()
+	procstart = null
+	src.procstart = null
 	l_arm = new(src)
 	r_arm = new(src)
 	l_leg = new(src)
@@ -40,6 +44,8 @@
 	..()
 
 /obj/item/robot_suit/proc/updateicon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(l_arm)
 		add_overlay("[l_arm.icon_state]+o")
@@ -55,6 +61,8 @@
 		add_overlay("[head.icon_state]+o")
 
 /obj/item/robot_suit/proc/check_completion()
+	procstart = null
+	src.procstart = null
 	if(src.l_arm && src.r_arm)
 		if(src.l_leg && src.r_leg)
 			if(src.chest && src.head)
@@ -64,6 +72,8 @@
 
 /obj/item/robot_suit/attackby(obj/item/W, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stack/sheet/metal))
 		var/obj/item/stack/sheet/metal/M = W
 		if(!l_arm && !r_arm && !l_leg && !r_leg && !chest && !head)
@@ -287,6 +297,8 @@
 		return ..()
 
 /obj/item/robot_suit/proc/Interact(mob/user)
+			procstart = null
+			src.procstart = null
 			var/t1 = "Designation: <A href='?src=[REF(src)];Name=1'>[(created_name ? "[created_name]" : "Default Cyborg")]</a><br>\n"
 			t1 += "Master AI: <A href='?src=[REF(src)];Master=1'>[(forced_ai ? "[forced_ai.name]" : "Automatic")]</a><br><br>\n"
 
@@ -299,6 +311,8 @@
 			popup.open()
 
 /obj/item/robot_suit/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(usr.incapacitated() || !Adjacent(usr))
 		return
 

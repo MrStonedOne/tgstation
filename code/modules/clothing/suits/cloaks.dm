@@ -19,6 +19,8 @@
 	flags_inv = HIDEHAIR|HIDEEARS
 
 /obj/item/clothing/neck/cloak/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is strangling [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return(OXYLOSS)
 

@@ -1,6 +1,8 @@
 
 
 /obj/item/clothing/suit/space/space_ninja/attackby(obj/item/I, mob/U, params)
+	procstart = null
+	src.procstart = null
 	if(U!=affecting)//Safety, in case you try doing this without wearing the suit/being the person with the suit.
 		return ..()
 

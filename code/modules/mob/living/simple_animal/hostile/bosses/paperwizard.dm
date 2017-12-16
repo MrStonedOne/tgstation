@@ -37,6 +37,8 @@
 	var/static/summoned_minions = 0
 
 /datum/action/boss/wizard_summon_minions/Trigger()
+	procstart = null
+	src.procstart = null
 	if(summoned_minions <= 6 && ..())
 		var/list/minions = list(
 		/mob/living/simple_animal/hostile/stickman,
@@ -63,6 +65,8 @@
 	say_when_triggered = ""
 
 /datum/action/boss/wizard_mimic/Trigger()
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/mob/living/target
 		if(!boss.client) //AI's target
@@ -102,6 +106,8 @@
 
 //Hit a fake? eat pain!
 /mob/living/simple_animal/hostile/boss/paper_wizard/copy/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(amount > 0) //damage
 		if(original)
 			original.minimum_distance = 3
@@ -119,6 +125,8 @@
 
 //Hit the real guy? copies go bai-bai
 /mob/living/simple_animal/hostile/boss/paper_wizard/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. > 0)//damage
 		minimum_distance = 3
@@ -127,6 +135,8 @@
 			qdel(copy)
 
 /mob/living/simple_animal/hostile/boss/paper_wizard/copy/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	qdel(src) //I see through your ruse!
 
@@ -152,12 +162,16 @@
 	randomdir = FALSE
 
 /obj/effect/temp_visual/paperwiz_dying/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message("<span class='boldannounce'>The wizard cries out in pain as a gate appears behind him, sucking him in!</span>")
 	playsound(get_turf(src),'sound/magic/mandswap.ogg', 50, 1, 1)
 	playsound(get_turf(src),'sound/hallucinations/wail.ogg', 50, 1, 1)
 
 /obj/effect/temp_visual/paperwiz_dying/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in range(7,src))
 		shake_camera(M, 7, 1)
 	var/turf/T = get_turf(src)

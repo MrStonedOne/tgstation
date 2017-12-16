@@ -30,15 +30,21 @@
 	var/reset_path = /obj/effect/ctf/flag_reset
 
 /obj/item/twohanded/ctf/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(reset)
 	return ..()
 
 /obj/item/twohanded/ctf/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!reset)
 		reset = new reset_path(get_turf(src))
 
 /obj/item/twohanded/ctf/process()
+	procstart = null
+	src.procstart = null
 	if(world.time > reset_cooldown)
 		forceMove(get_turf(src.reset))
 		for(var/mob/M in GLOB.player_list)
@@ -48,6 +54,8 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/twohanded/ctf/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_ctf_target(user))
 		to_chat(user, "Non players shouldn't be moving the flag!")
 		return
@@ -70,6 +78,8 @@
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/twohanded/ctf/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.anchored = FALSE
 	reset_cooldown = world.time + 200 //20 seconds
@@ -118,6 +128,8 @@
 		would go."
 
 /proc/toggle_all_ctf(mob/user)
+	procstart = null
+	src.procstart = null
 	var/ctf_enabled = FALSE
 	for(var/obj/machinery/capture_the_flag/CTF in GLOB.machines)
 		ctf_enabled = CTF.toggle_ctf()
@@ -152,6 +164,8 @@
 	var/static/arena_reset = FALSE
 
 /obj/machinery/capture_the_flag/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ctf_object_typecache)
 		ctf_object_typecache = typecacheof(list(
@@ -166,10 +180,14 @@
 	GLOB.poi_list |= src
 
 /obj/machinery/capture_the_flag/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list.Remove(src)
 	..()
 
 /obj/machinery/capture_the_flag/process()
+	procstart = null
+	src.procstart = null
 	for(var/i in spawned_mobs)
 		if(!i)
 			spawned_mobs -= i
@@ -199,6 +217,8 @@
 	instagib_gear = /datum/outfit/ctf/blue/instagib
 
 /obj/machinery/capture_the_flag/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ctf_enabled == FALSE)
 		if(user.client && user.client.holder)
 			var/response = alert("Enable CTF?", "CTF", "Yes", "No")
@@ -234,6 +254,8 @@
 	spawn_team_member(new_team_member)
 
 /obj/machinery/capture_the_flag/proc/ctf_dust_old(mob/living/body)
+	procstart = null
+	src.procstart = null
 	if(isliving(body) && (team in body.faction))
 		var/turf/T = get_turf(body)
 		new /obj/effect/ctf/ammo(T)
@@ -242,9 +264,13 @@
 		body.dust()
 
 /obj/machinery/capture_the_flag/proc/clear_cooldown(var/ckey)
+	procstart = null
+	src.procstart = null
 	recently_dead_ckeys -= ckey
 
 /obj/machinery/capture_the_flag/proc/spawn_team_member(client/new_team_member)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/M = new/mob/living/carbon/human(get_turf(src))
 	new_team_member.prefs.copy_to(M)
 	M.set_species(/datum/species/synth)
@@ -254,12 +280,16 @@
 	spawned_mobs += M
 
 /obj/machinery/capture_the_flag/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["join"])
 		var/mob/dead/observer/ghost = usr
 		if(istype(ghost))
 			attack_ghost(ghost)
 
 /obj/machinery/capture_the_flag/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/twohanded/ctf))
 		var/obj/item/twohanded/ctf/flag = I
 		if(flag.team != src.team)
@@ -273,6 +303,8 @@
 			victory()
 
 /obj/machinery/capture_the_flag/proc/victory()
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in GLOB.mob_list)
 		var/area/mob_area = get_area(M)
 		if(istype(mob_area, /area/ctf))
@@ -294,6 +326,8 @@
 			addtimer(CALLBACK(CTF, .proc/start_ctf), 300)
 
 /obj/machinery/capture_the_flag/proc/toggle_ctf()
+	procstart = null
+	src.procstart = null
 	if(!ctf_enabled)
 		start_ctf()
 		. = TRUE
@@ -302,6 +336,8 @@
 		. = FALSE
 
 /obj/machinery/capture_the_flag/proc/start_ctf()
+	procstart = null
+	src.procstart = null
 	ctf_enabled = TRUE
 	for(var/d in dead_barricades)
 		var/obj/effect/ctf/dead_barricade/D = d
@@ -316,6 +352,8 @@
 		arena_reset = TRUE
 
 /obj/machinery/capture_the_flag/proc/reset_the_arena()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	for(var/atm in A)
 		if(!is_type_in_typecache(atm, ctf_object_typecache))
@@ -325,6 +363,8 @@
 			S.obj_integrity = S.max_integrity
 
 /obj/machinery/capture_the_flag/proc/stop_ctf()
+	procstart = null
+	src.procstart = null
 	ctf_enabled = FALSE
 	arena_reset = FALSE
 	var/area/A = get_area(src)
@@ -337,12 +377,16 @@
 	recently_dead_ckeys.Cut()
 
 /obj/machinery/capture_the_flag/proc/instagib_mode()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/capture_the_flag/CTF in GLOB.machines)
 		if(CTF.ctf_enabled == TRUE)
 			CTF.ctf_gear = CTF.instagib_gear
 			CTF.respawn_cooldown = INSTAGIB_RESPAWN
 
 /obj/machinery/capture_the_flag/proc/normal_mode()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/capture_the_flag/CTF in GLOB.machines)
 		if(CTF.ctf_enabled == TRUE)
 			CTF.ctf_gear = initial(ctf_gear)
@@ -354,10 +398,14 @@
 	mag_type = /obj/item/ammo_box/magazine/m50/ctf
 
 /obj/item/gun/ballistic/automatic/pistol/deagle/ctf/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/floor_vanish), 1)
 
 /obj/item/gun/ballistic/automatic/pistol/deagle/ctf/proc/floor_vanish()
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		qdel(src)
 
@@ -371,6 +419,8 @@
 	damage = 0
 
 /obj/item/projectile/bullet/ctf/prehit(atom/target)
+	procstart = null
+	src.procstart = null
 	if(is_ctf_target(target))
 		damage = 60
 	. = ..()
@@ -381,10 +431,14 @@
 	force = 50
 
 /obj/item/gun/ballistic/automatic/laser/ctf/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/floor_vanish), 1)
 
 /obj/item/gun/ballistic/automatic/laser/ctf/proc/floor_vanish()
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		qdel(src)
 
@@ -392,10 +446,14 @@
 	ammo_type = /obj/item/ammo_casing/caseless/laser/ctf
 
 /obj/item/ammo_box/magazine/recharge/ctf/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/floor_vanish), 1)
 
 /obj/item/ammo_box/magazine/recharge/ctf/proc/floor_vanish()
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		qdel(src)
 
@@ -407,11 +465,15 @@
 	icon_state = "omnilaser"
 
 /obj/item/projectile/beam/ctf/prehit(atom/target)
+	procstart = null
+	src.procstart = null
 	if(is_ctf_target(target))
 		damage = 150
 	. = ..()
 
 /proc/is_ctf_target(atom/target)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(istype(target, /obj/structure/barricade/security/ctf))
 		. = TRUE
@@ -465,6 +527,8 @@
 	r_hand = /obj/item/gun/ballistic/automatic/laser/ctf
 
 /datum/outfit/ctf/post_equip(mob/living/carbon/human/H, visualsOnly=FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 	var/list/no_drops = list()
@@ -507,6 +571,8 @@
 	shoes = /obj/item/clothing/shoes/jackboots/fast
 
 /datum/outfit/ctf/red/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/device/radio/R = H.ears
 	R.set_frequency(FREQ_CTF_RED)
@@ -515,6 +581,8 @@
 	H.dna.species.stunmod = 0
 
 /datum/outfit/ctf/blue/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/device/radio/R = H.ears
 	R.set_frequency(FREQ_CTF_BLUE)
@@ -535,9 +603,13 @@
 	alpha = 255
 
 /obj/structure/trap/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/trap/ctf/trap_effect(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!is_ctf_target(L))
 		return
 	if(!(src.team in L.faction))
@@ -559,6 +631,8 @@
 	deploy_message = 0
 
 /obj/structure/barricade/security/ctf/make_debris()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/ctf/dead_barricade(get_turf(src))
 
 /obj/effect/ctf
@@ -579,19 +653,29 @@
 	invisibility = 0
 
 /obj/effect/ctf/ammo/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	QDEL_IN(src, AMMO_DROP_LIFETIME)
 
 /obj/effect/ctf/ammo/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	reload(AM)
 
 /obj/effect/ctf/ammo/Collide(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	reload(AM)
 
 /obj/effect/ctf/ammo/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	reload(AM)
 
 /obj/effect/ctf/ammo/proc/reload(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(M))
 		return
 	for(var/obj/machinery/capture_the_flag/CTF in GLOB.machines)
@@ -613,11 +697,15 @@
 	icon_state = "barrier0"
 
 /obj/effect/ctf/dead_barricade/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/capture_the_flag/CTF in GLOB.machines)
 		CTF.dead_barricades += src
 
 /obj/effect/ctf/dead_barricade/proc/respawn()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		new /obj/structure/barricade/security/ctf(get_turf(src))
 		qdel(src)
@@ -637,18 +725,26 @@
 	var/point_rate = 1
 
 /obj/machinery/control_point/process()
+	procstart = null
+	src.procstart = null
 	if(controlling)
 		controlling.control_points += point_rate
 		if(controlling.control_points >= controlling.control_points_to_win)
 			controlling.victory()
 
 /obj/machinery/control_point/attackby(mob/user, params)
+	procstart = null
+	src.procstart = null
 	capture(user)
 
 /obj/machinery/control_point/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	capture(user)
 
 /obj/machinery/control_point/proc/capture(mob/user)
+	procstart = null
+	src.procstart = null
 	if(do_after(user, 30, target = src))
 		for(var/obj/machinery/capture_the_flag/CTF in GLOB.machines)
 			if(CTF.ctf_enabled && (user.ckey in CTF.team_members))

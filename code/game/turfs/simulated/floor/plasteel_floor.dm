@@ -5,10 +5,14 @@
 	burnt_states = list("floorscorched1", "floorscorched2")
 
 /turf/open/floor/plasteel/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>There's a <b>small crack</b> on the edge of it.</span>")
 
 /turf/open/floor/plasteel/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	if(!broken && !burnt)
@@ -361,6 +365,8 @@
 	desc = "\"This is a plaque in honour of our comrades on the G4407 Stations. Hopefully TG4407 model can live up to your fame and fortune.\" Scratched in beneath that is a crude image of a meteor and a spaceman. The spaceman is laughing. The meteor is exploding."
 
 /turf/open/floor/plasteel/cult/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/plasteel/cult/airless

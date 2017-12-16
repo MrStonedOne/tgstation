@@ -16,6 +16,8 @@
 	var/panel_open = FALSE
 
 /obj/structure/sign/barsign/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 //filling the barsigns list
@@ -28,6 +30,8 @@
 	set_sign(pick(barsigns))
 
 /obj/structure/sign/barsign/proc/set_sign(datum/barsign/sign)
+	procstart = null
+	src.procstart = null
 	if(!istype(sign))
 		return
 	icon_state = sign.icon
@@ -38,15 +42,21 @@
 		desc = "It displays \"[name]\"."
 
 /obj/structure/sign/barsign/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!broken && !(flags_1 & NODECONSTRUCT_1))
 		broken = 1
 
 /obj/structure/sign/barsign/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/metal (loc, 2)
 	new /obj/item/stack/cable_coil (loc, 2)
 	qdel(src)
 
 /obj/structure/sign/barsign/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src.loc, 'sound/effects/glasshit.ogg', 75, 1)
@@ -54,11 +64,15 @@
 			playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/structure/sign/barsign/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 
 
 /obj/structure/sign/barsign/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!src.allowed(user))
 		to_chat(user, "<span class='info'>Access denied.</span>")
 		return
@@ -71,6 +85,8 @@
 
 
 /obj/structure/sign/barsign/attackby(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		if(!allowed(user))
 			to_chat(user, "<span class='info'>Access denied.</span>")
@@ -115,6 +131,8 @@
 
 
 /obj/structure/sign/barsign/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(broken || emagged)
 		to_chat(user, "<span class='warning'>Nothing interesting happens!</span>")
 		return
@@ -126,6 +144,8 @@
 
 
 /obj/structure/sign/barsign/proc/pick_sign()
+	procstart = null
+	src.procstart = null
 	var/picked_name = input("Available Signage", "Bar Sign") as null|anything in barsigns
 	if(!picked_name)
 		return

@@ -6,6 +6,8 @@
 	var/_has_ai = 0
 
 /obj/machinery/modular_computer/console/preset/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!cpu)
 		return
@@ -23,6 +25,8 @@
 
 // Override in child types to install preset-specific programs.
 /obj/machinery/modular_computer/console/preset/proc/install_programs()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -33,6 +37,8 @@
 	 desc = "A stationary computer. This one comes preloaded with engineering programs."
 
 /obj/machinery/modular_computer/console/preset/engineering/install_programs()
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/hard_drive/hard_drive = cpu.all_components[MC_HDD]
 	hard_drive.store_file(new/datum/computer_file/program/power_monitor())
 	hard_drive.store_file(new/datum/computer_file/program/alarm_monitor())
@@ -45,10 +51,14 @@
 	 _has_ai = 1
 
 /obj/machinery/modular_computer/console/preset/research/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to eject the intelliCard.</span>")
 
 /obj/machinery/modular_computer/console/preset/research/install_programs()
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/hard_drive/hard_drive = cpu.all_components[MC_HDD]
 	hard_drive.store_file(new/datum/computer_file/program/ntnetmonitor())
 	hard_drive.store_file(new/datum/computer_file/program/nttransfer())
@@ -64,10 +74,14 @@
 	 _has_printer = 1
 
 /obj/machinery/modular_computer/console/preset/command/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click [src] to eject the identification card.</span>")
 
 /obj/machinery/modular_computer/console/preset/command/install_programs()
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/hard_drive/hard_drive = cpu.all_components[MC_HDD]
 	hard_drive.store_file(new/datum/computer_file/program/chatclient())
 	hard_drive.store_file(new/datum/computer_file/program/card_mod())
@@ -78,6 +92,8 @@
 	 desc = "A stationary computer. This one comes preloaded with generic programs."
 
 /obj/machinery/modular_computer/console/preset/civilian/install_programs()
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/hard_drive/hard_drive = cpu.all_components[MC_HDD]
 	hard_drive.store_file(new/datum/computer_file/program/chatclient())
 	hard_drive.store_file(new/datum/computer_file/program/nttransfer())

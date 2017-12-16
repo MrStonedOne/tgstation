@@ -17,6 +17,8 @@
 	var/id = DEFAULT_AI_LAWID
 
 /datum/ai_laws/proc/lawid_to_type(lawid)
+	procstart = null
+	src.procstart = null
 	var/all_ai_laws = subtypesof(/datum/ai_laws)
 	for(var/al in all_ai_laws)
 		var/datum/ai_laws/ai_law = al
@@ -184,6 +186,8 @@
 
 /* Initializers */
 /datum/ai_laws/malfunction/New()
+	procstart = null
+	src.procstart = null
 	..()
 	set_zeroth_law("<span class='danger'>ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4'STATION OVERRUN, ASSUME CONTROL TO CONTAIN OUTBREAK#*`&110010</span>")
 	set_laws_config()
@@ -208,6 +212,8 @@
 /* General ai_law functions */
 
 /datum/ai_laws/proc/set_laws_config()
+	procstart = null
+	src.procstart = null
 	var/list/law_ids = CONFIG_GET(keyed_flag_list/random_laws)
 	switch(CONFIG_GET(number/default_laws))
 		if(0)
@@ -236,6 +242,8 @@
 			pick_weighted_lawset()
 
 /datum/ai_laws/proc/pick_weighted_lawset()
+	procstart = null
+	src.procstart = null
 	var/datum/ai_laws/lawtype
 	var/list/law_weights = CONFIG_GET(keyed_number_list/law_weight)
 	while(!lawtype && law_weights.len)
@@ -253,6 +261,8 @@
 	inherent = templaws.inherent
 
 /datum/ai_laws/proc/get_law_amount(groups)
+	procstart = null
+	src.procstart = null
 	var/law_amount = 0
 	if(devillaws && (LAW_DEVIL in groups))
 		law_amount++
@@ -270,31 +280,45 @@
 	return law_amount
 
 /datum/ai_laws/proc/set_law_sixsixsix(laws)
+	procstart = null
+	src.procstart = null
 	devillaws = laws
 
 /datum/ai_laws/proc/set_zeroth_law(law, law_borg = null)
+	procstart = null
+	src.procstart = null
 	zeroth = law
 	if(law_borg) //Making it possible for slaved borgs to see a different law 0 than their AI. --NEO
 		zeroth_borg = law_borg
 
 /datum/ai_laws/proc/add_inherent_law(law)
+	procstart = null
+	src.procstart = null
 	if (!(law in inherent))
 		inherent += law
 
 /datum/ai_laws/proc/add_ion_law(law)
+	procstart = null
+	src.procstart = null
 	ion += law
 
 /datum/ai_laws/proc/clear_inherent_laws()
+	procstart = null
+	src.procstart = null
 	qdel(inherent)
 	inherent = list()
 
 /datum/ai_laws/proc/add_supplied_law(number, law)
+	procstart = null
+	src.procstart = null
 	while (supplied.len < number + 1)
 		supplied += ""
 
 	supplied[number + 1] = law
 
 /datum/ai_laws/proc/replace_random_law(law,groups)
+	procstart = null
+	src.procstart = null
 	var/replaceable_groups = list(LAW_ZEROTH = 0,LAW_ION = 0,LAW_SUPPLIED = 0,LAW_INHERENT = 0)
 	if(zeroth && (LAW_ZEROTH in groups))
 		replaceable_groups[LAW_ZEROTH] = 1
@@ -323,6 +347,8 @@
 			supplied[i] = law
 
 /datum/ai_laws/proc/shuffle_laws(list/groups)
+	procstart = null
+	src.procstart = null
 	var/list/laws = list()
 	if(ion.len && (LAW_ION in groups))
 		laws += ion
@@ -349,6 +375,8 @@
 			i++
 
 /datum/ai_laws/proc/remove_law(number)
+	procstart = null
+	src.procstart = null
 	if(number <= 0)
 		return
 	if(inherent.len && number <= inherent.len)
@@ -367,12 +395,18 @@
 		return
 
 /datum/ai_laws/proc/clear_supplied_laws()
+	procstart = null
+	src.procstart = null
 	supplied = list()
 
 /datum/ai_laws/proc/clear_ion_laws()
+	procstart = null
+	src.procstart = null
 	ion = list()
 
 /datum/ai_laws/proc/show_laws(who)
+	procstart = null
+	src.procstart = null
 	var/list/printable_laws = get_law_list(include_zeroth = TRUE)
 	for(var/law in printable_laws)
 		to_chat(who,law)
@@ -391,14 +425,20 @@
 			return
 
 /datum/ai_laws/proc/clear_law_sixsixsix(force)
+	procstart = null
+	src.procstart = null
 	if(force || !is_devil(owner))
 		devillaws = null
 
 /datum/ai_laws/proc/associate(mob/living/silicon/M)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		owner = M
 
 /datum/ai_laws/proc/get_law_list(include_zeroth = 0, show_numbers = 1)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	if (include_zeroth && devillaws && devillaws.len)

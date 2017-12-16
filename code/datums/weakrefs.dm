@@ -8,12 +8,18 @@
 	var/reference
 
 /datum/weakref/New(datum/thing)
+	procstart = null
+	src.procstart = null
 	reference = REF(thing)
 
 /datum/weakref/Destroy()
+	procstart = null
+	src.procstart = null
 	return QDEL_HINT_LETMELIVE	//Let BYOND autoGC thiswhen nothing is using it anymore.
 
 /datum/weakref/proc/resolve()
+	procstart = null
+	src.procstart = null
 	var/datum/D = locate(reference)
 	return (!QDELETED(D) && D.weak_reference == src) ? D : null
 

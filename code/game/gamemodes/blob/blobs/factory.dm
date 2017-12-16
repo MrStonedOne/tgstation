@@ -14,11 +14,15 @@
 
 
 /obj/structure/blob/factory/scannerreport()
+	procstart = null
+	src.procstart = null
 	if(naut)
 		return "It is currently sustaining a blobbernaut, making it fragile and unable to produce blob spores."
 	return "Will produce a blob spore every few seconds."
 
 /obj/structure/blob/factory/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/simple_animal/hostile/blob/blobspore/spore in spores)
 		if(spore.factory == src)
 			spore.factory = null
@@ -30,6 +34,8 @@
 	return ..()
 
 /obj/structure/blob/factory/Be_Pulsed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(naut)
 		return

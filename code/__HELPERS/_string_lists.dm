@@ -7,6 +7,8 @@ GLOBAL_VAR(string_filename_current_key)
 
 
 /proc/strings_replacement(filename, key)
+	procstart = null
+	src.procstart = null
 	load_strings_file(filename)
 
 	if((filename in GLOB.string_cache) && (key in GLOB.string_cache[filename]))
@@ -18,6 +20,8 @@ GLOBAL_VAR(string_filename_current_key)
 		CRASH("strings list not found: strings/[filename], index=[key]")
 
 /proc/strings(filename as text, key as text)
+	procstart = null
+	src.procstart = null
 	load_strings_file(filename)
 	if((filename in GLOB.string_cache) && (key in GLOB.string_cache[filename]))
 		return GLOB.string_cache[filename][key]
@@ -25,9 +29,13 @@ GLOBAL_VAR(string_filename_current_key)
 		CRASH("strings list not found: strings/[filename], index=[key]")
 
 /proc/strings_subkey_lookup(match, group1)
+	procstart = null
+	src.procstart = null
 	return pick_list(GLOB.string_filename_current_key, group1)
 
 /proc/load_strings_file(filename)
+	procstart = null
+	src.procstart = null
 	GLOB.string_filename_current_key = filename
 	if(filename in GLOB.string_cache)
 		return //no work to do

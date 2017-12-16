@@ -25,6 +25,8 @@
 	// find the attached trunk (if present) and init gas resvr.
 
 /obj/machinery/disposal/Initialize(mapload, obj/structure/disposalconstruct/make_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(make_from)
@@ -44,10 +46,14 @@
 	return INITIALIZE_HINT_LATELOAD //we need turfs to have air
 
 /obj/machinery/disposal/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION)
 
 /obj/machinery/disposal/proc/trunk_check()
+	procstart = null
+	src.procstart = null
 	trunk = locate() in loc
 	if(!trunk)
 		pressure_charging = FALSE
@@ -59,17 +65,23 @@
 		trunk.linked = src // link the pipe trunk to self
 
 /obj/machinery/disposal/Destroy()
+	procstart = null
+	src.procstart = null
 	eject()
 	if(trunk)
 		trunk.linked = null
 	return ..()
 
 /obj/machinery/disposal/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
 
 /obj/machinery/disposal/LateInitialize()
+	procstart = null
+	src.procstart = null
 	//this will get a copy of the air turf and take a SEND PRESSURE amount of air from it
 	var/atom/L = loc
 	var/datum/gas_mixture/env = new
@@ -79,6 +91,8 @@
 	trunk_check()
 
 /obj/machinery/disposal/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!pressure_charging && !full_pressure && !flush)
 		if(istype(I, /obj/item/screwdriver))
@@ -108,15 +122,21 @@
 		return ..()
 
 /obj/machinery/disposal/proc/place_item_in_disposal(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	I.forceMove(src)
 	user.visible_message("[user.name] places \the [I] into \the [src].", "<span class='notice'>You place \the [I] into \the [src].</span>")
 
 //mouse drop another mob or self
 /obj/machinery/disposal/MouseDrop_T(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(target))
 		stuff_mob_in(target, user)
 
 /obj/machinery/disposal/proc/stuff_mob_in(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user) && !user.ventcrawler) //only carbon and ventcrawlers can climb into disposal by themselves.
 		return
 	if(!isturf(user.loc)) //No magically doing it from inside closets
@@ -144,24 +164,34 @@
 		update_icon()
 
 /obj/machinery/disposal/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	attempt_escape(user)
 
 // resist to escape the bin
 /obj/machinery/disposal/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	attempt_escape(user)
 
 /obj/machinery/disposal/proc/attempt_escape(mob/user)
+	procstart = null
+	src.procstart = null
 	if(flushing)
 		return
 	go_out(user)
 
 // leave the disposal
 /obj/machinery/disposal/proc/go_out(mob/user)
+	procstart = null
+	src.procstart = null
 	user.forceMove(loc)
 	update_icon()
 
 // monkeys and xenos can only pull the flush lever
 /obj/machinery/disposal/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		return
 	flush = !flush
@@ -170,6 +200,8 @@
 
 // eject the contents of the disposal unit
 /obj/machinery/disposal/proc/eject()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	for(var/atom/movable/AM in src)
 		AM.forceMove(T)
@@ -178,9 +210,13 @@
 
 // update the icon & overlays to reflect mode & status
 /obj/machinery/disposal/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/disposal/proc/flush()
+	procstart = null
+	src.procstart = null
 	flushing = TRUE
 	flushAnimation()
 	sleep(10)
@@ -199,20 +235,28 @@
 	flush = FALSE
 
 /obj/machinery/disposal/proc/newHolderDestination(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/smallDelivery/O in src)
 		H.tomail = TRUE
 		return
 
 /obj/machinery/disposal/proc/flushAnimation()
+	procstart = null
+	src.procstart = null
 	flick("[icon_state]-flush", src)
 
 // called when area power changes
 /obj/machinery/disposal/power_change()
+	procstart = null
+	src.procstart = null
 	..()	// do default setting/reset of stat NOPOWER bit
 	update_icon()	// update icon
 
 // called when holder is expelled from a disposal
 /obj/machinery/disposal/proc/expel(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	H.active = FALSE
 
 	var/turf/T = get_turf(src)
@@ -232,6 +276,8 @@
 	qdel(H)
 
 /obj/machinery/disposal/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(stored)
@@ -245,10 +291,14 @@
 	..()
 
 /obj/machinery/disposal/get_dumping_location(obj/item/storage/source,mob/user)
+	procstart = null
+	src.procstart = null
 	return src
 
 //How disposal handles getting a storage dump from a storage object
 /obj/machinery/disposal/storage_contents_dump_act(obj/item/storage/src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in src_object)
 		if(user.s_active != src_object)
 			if(I.on_found(user))
@@ -270,6 +320,8 @@
 
 // attack by item places it in to disposal
 /obj/machinery/disposal/bin/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/storage/bag/trash))
 		var/obj/item/storage/bag/trash/T = I
 		to_chat(user, "<span class='warning'>You empty the bag.</span>")
@@ -292,6 +344,8 @@
 		ui.open()
 
 /obj/machinery/disposal/bin/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["flush"] = flush
 	data["full_pressure"] = full_pressure
@@ -303,6 +357,8 @@
 	return data
 
 /obj/machinery/disposal/bin/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -332,6 +388,8 @@
 
 
 /obj/machinery/disposal/bin/hitby(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isitem(AM) && AM.CanEnterDisposals())
 		if(prob(75))
 			AM.forceMove(src)
@@ -344,12 +402,16 @@
 		return ..()
 
 /obj/machinery/disposal/bin/flush()
+	procstart = null
+	src.procstart = null
 	..()
 	full_pressure = FALSE
 	pressure_charging = TRUE
 	update_icon()
 
 /obj/machinery/disposal/bin/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(stat & BROKEN)
 		pressure_charging = FALSE
@@ -375,12 +437,16 @@
 		add_overlay("dispover-ready")
 
 /obj/machinery/disposal/bin/proc/do_flush()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	flush()
 
 //timed process
 //charge the gas reservoir and perform flush if ready
 /obj/machinery/disposal/bin/process()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN) //nothing can happen if broken
 		return
 
@@ -429,6 +495,8 @@
 	return
 
 /obj/machinery/disposal/bin/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))
 		user.overlay_fullscreen("remote_view", /obj/screen/fullscreen/impaired, 2)
 
@@ -442,12 +510,16 @@
 	pressure_charging = FALSE // the chute doesn't need charging and always works
 
 /obj/machinery/disposal/deliveryChute/Initialize(mapload, obj/structure/disposalconstruct/make_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	trunk = locate() in loc
 	if(trunk)
 		trunk.linked = src	// link the pipe trunk to self
 
 /obj/machinery/disposal/deliveryChute/place_item_in_disposal(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(I.CanEnterDisposals())
 		..()
 		flush()
@@ -481,16 +553,26 @@
 	flush()
 
 /atom/movable/proc/CanEnterDisposals()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/projectile/CanEnterDisposals()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/CanEnterDisposals()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/mecha/CanEnterDisposals()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/disposal/deliveryChute/newHolderDestination(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	H.destinationTag = 1

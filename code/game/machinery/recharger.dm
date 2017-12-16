@@ -18,10 +18,14 @@
 		/obj/item/device/modular_computer))
 
 /obj/machinery/recharger/RefreshParts()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stock_parts/capacitor/C in component_parts)
 		recharge_coeff = C.rating
 
 /obj/machinery/recharger/attackby(obj/item/G, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(G, /obj/item/wrench))
 		if(charging)
 			to_chat(user, "<span class='notice'>Remove the charging item first!</span>")
@@ -73,6 +77,8 @@
 	return ..()
 
 /obj/machinery/recharger/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user))
 		return
 
@@ -86,9 +92,13 @@
 		update_icon()
 
 /obj/machinery/recharger/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/recharger/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(charging)
 		charging.update_icon()
 		charging.forceMove(drop_location())
@@ -97,6 +107,8 @@
 		update_icon()
 
 /obj/machinery/recharger/process()
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN) || !anchored)
 		return
 
@@ -120,10 +132,14 @@
 			return
 
 /obj/machinery/recharger/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/recharger/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!(stat & (NOPOWER|BROKEN)) && anchored)
 		if(istype(charging,  /obj/item/gun/energy))
 			var/obj/item/gun/energy/E = charging

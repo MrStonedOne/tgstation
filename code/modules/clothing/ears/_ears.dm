@@ -28,14 +28,20 @@
 	var/headphones_on = FALSE
 
 /obj/item/clothing/ears/headphones/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/clothing/ears/headphones/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)]_[headphones_on? "on" : "off"]"
 	item_state = "[initial(item_state)]_[headphones_on? "on" : "off"]"
 
 /obj/item/clothing/ears/headphones/proc/toggle(owner)
+	procstart = null
+	src.procstart = null
 	headphones_on = !headphones_on
 	update_icon()
 	var/mob/living/carbon/human/H = owner

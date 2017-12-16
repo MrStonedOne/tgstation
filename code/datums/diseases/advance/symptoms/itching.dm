@@ -33,6 +33,8 @@ BONUS
 					  <b>Stage Speed 7:</b> The host will scrath itself when itching, causing superficial damage."
 
 /datum/symptom/itching/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["transmittable"] >= 6) //itch more often
@@ -42,6 +44,8 @@ BONUS
 		scratch = TRUE
 
 /datum/symptom/itching/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob

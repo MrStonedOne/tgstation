@@ -54,6 +54,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/plasmasolidification/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/stack/sheet/mineral/plasma(location)
@@ -65,6 +67,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/goldsolidification/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/stack/sheet/mineral/gold(location)
@@ -83,6 +87,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/soapification/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/soap/homemade(location)
@@ -95,6 +101,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/candlefication/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/candle(location)
@@ -106,6 +114,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/meatification/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/snacks/meat/slab/meatproduct(location)
@@ -296,6 +306,8 @@
 
 /datum/chemical_reaction/mix_virus/on_reaction(datum/reagents/holder, created_volume)
 
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
 	if(B && B.data)
 		var/datum/disease/advance/D = locate(/datum/disease/advance) in B.data["viruses"]
@@ -400,6 +412,8 @@
 
 /datum/chemical_reaction/mix_virus/rem_virus/on_reaction(datum/reagents/holder, created_volume)
 
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
 	if(B && B.data)
 		var/datum/disease/advance/D = locate(/datum/disease/advance) in B.data["viruses"]
@@ -415,6 +429,8 @@
 
 /datum/chemical_reaction/mix_virus/neuter_virus/on_reaction(datum/reagents/holder, created_volume)
 
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
 	if(B && B.data)
 		var/datum/disease/advance/D = locate(/datum/disease/advance) in B.data["viruses"]
@@ -439,6 +455,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/foam/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/mob/M in viewers(5, location))
 		to_chat(M, "<span class='danger'>The solution spews out foam!</span>")
@@ -456,6 +474,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/metalfoam/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 
 	for(var/mob/M in viewers(5, location))
@@ -473,6 +493,8 @@
 	mob_react = TRUE
 
 /datum/chemical_reaction/smart_foam/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/turf/location = get_turf(holder.my_atom)
 	location.visible_message("<span class='danger'>The solution spews out metallic foam!</span>")
 	var/datum/effect_system/foam_spread/metal/smart/s = new()
@@ -487,6 +509,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/ironfoam/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/mob/M in viewers(5, location))
 		to_chat(M, "<span class='danger'>The solution spews out a metallic foam!</span>")
@@ -599,6 +623,8 @@
 	required_temp = 374
 
 /datum/chemical_reaction/life/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	chemical_mob_spawn(holder, rand(1, round(created_volume, 1)), "Life") // Lol.
 
 /datum/chemical_reaction/corgium
@@ -608,6 +634,8 @@
 	required_temp = 374
 
 /datum/chemical_reaction/corgium/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = rand(1, created_volume), i <= created_volume, i++) // More lulz.
 		new /mob/living/simple_animal/pet/dog/corgi(location)
@@ -668,6 +696,8 @@
 	required_temp = 374 //lazily consistent with soap & other crafted objects generically created with heat.
 
 /datum/chemical_reaction/plastic_polymers/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i in 1 to 10)
 		new /obj/item/stack/sheet/plastic(location)

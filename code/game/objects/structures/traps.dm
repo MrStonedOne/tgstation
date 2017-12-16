@@ -16,6 +16,8 @@
 	var/datum/effect_system/spark_spread/spark_system
 
 /obj/structure/trap/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spark_system = new
 	spark_system.set_up(4,1,src)
@@ -27,11 +29,15 @@
 			/mob/dead))
 
 /obj/structure/trap/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(spark_system)
 	spark_system = null
 	. = ..()
 
 /obj/structure/trap/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isliving(user))
 		return
@@ -42,6 +48,8 @@
 		flare()
 
 /obj/structure/trap/proc/flare()
+	procstart = null
+	src.procstart = null
 	// Makes the trap visible, and starts the cooldown until it's
 	// able to be triggered again.
 	visible_message("<span class='warning'>[src] flares brightly!</span>")
@@ -56,6 +64,8 @@
 		animate(src, alpha = initial(alpha), time = time_between_triggers)
 
 /obj/structure/trap/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(last_trigger + time_between_triggers > world.time)
 		return
 	// Don't want the traps triggered by sparks, ghosts or projectiles.
@@ -72,6 +82,8 @@
 		trap_effect(AM)
 
 /obj/structure/trap/proc/trap_effect(mob/living/L)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/trap/stun
@@ -80,6 +92,8 @@
 	icon_state = "trap-shock"
 
 /obj/structure/trap/stun/trap_effect(mob/living/L)
+	procstart = null
+	src.procstart = null
 	L.electrocute_act(30, src, safety=1) // electrocute act does a message.
 	L.Knockdown(100)
 
@@ -89,10 +103,14 @@
 	icon_state = "trap-fire"
 
 /obj/structure/trap/fire/trap_effect(mob/living/L)
+	procstart = null
+	src.procstart = null
 	to_chat(L, "<span class='danger'><B>Spontaneous combustion!</B></span>")
 	L.Knockdown(20)
 
 /obj/structure/trap/fire/flare()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/effect/hotspot(get_turf(src))
 
@@ -103,6 +121,8 @@
 	icon_state = "trap-frost"
 
 /obj/structure/trap/chill/trap_effect(mob/living/L)
+	procstart = null
+	src.procstart = null
 	to_chat(L, "<span class='danger'><B>You're frozen solid!</B></span>")
 	L.Knockdown(20)
 	L.bodytemperature -= 300
@@ -116,11 +136,15 @@
 
 
 /obj/structure/trap/damage/trap_effect(mob/living/L)
+	procstart = null
+	src.procstart = null
 	to_chat(L, "<span class='danger'><B>The ground quakes beneath your feet!</B></span>")
 	L.Knockdown(100)
 	L.adjustBruteLoss(35)
 
 /obj/structure/trap/damage/flare()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/structure/flora/rock/giant_rock = new(get_turf(src))
 	QDEL_IN(giant_rock, 200)
@@ -135,5 +159,7 @@
 
 
 /obj/structure/trap/ward/New()
+	procstart = null
+	src.procstart = null
 	..()
 	QDEL_IN(src, time_between_triggers)

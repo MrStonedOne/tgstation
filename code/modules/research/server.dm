@@ -18,6 +18,8 @@
 	req_access = list(ACCESS_RD) //ONLY THE R&D CAN CHANGE SERVER SETTINGS.
 
 /obj/machinery/rnd/server/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSresearch.servers |= src
 	stored_research = SSresearch.science_tech
@@ -25,41 +27,57 @@
 	B.apply_default_parts(src)
 
 /obj/machinery/rnd/server/Destroy()
+	procstart = null
+	src.procstart = null
 	SSresearch.servers -= src
 	return ..()
 
 /obj/machinery/rnd/server/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/tot_rating = 0
 	for(var/obj/item/stock_parts/SP in src)
 		tot_rating += SP.rating
 	heat_gen /= max(1, tot_rating)
 
 /obj/machinery/rnd/server/proc/refresh_working()
+	procstart = null
+	src.procstart = null
 	if(stat & EMPED)
 		working = FALSE
 	else
 		working = TRUE
 
 /obj/machinery/rnd/server/emp_act()
+	procstart = null
+	src.procstart = null
 	stat |= EMPED
 	addtimer(CALLBACK(src, .proc/unemp), 600)
 	refresh_working()
 	return ..()
 
 /obj/machinery/rnd/server/proc/unemp()
+	procstart = null
+	src.procstart = null
 	stat &= ~EMPED
 	refresh_working()
 
 /obj/machinery/rnd/server/proc/mine()
+	procstart = null
+	src.procstart = null
 	. = base_mining_income
 	var/penalty = max((get_env_temp() - temp_tolerance_low), 0) / temp_penalty_coefficient
 	. = max(. - penalty, 0)
 
 /obj/machinery/rnd/server/proc/get_env_temp()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/environment = loc.return_air()
 	return environment.temperature
 
 /obj/machinery/rnd/server/proc/produce_heat(heat_amt)
+	procstart = null
+	src.procstart = null
 	if(!(stat & (NOPOWER|BROKEN))) //Blatently stolen from space heater.
 		var/turf/L = loc
 		if(istype(L))
@@ -88,6 +106,8 @@
 	return
 
 /proc/fix_noid_research_servers()
+	procstart = null
+	src.procstart = null
 	var/list/no_id_servers = list()
 	var/list/server_ids = list()
 	for(var/obj/machinery/rnd/server/S in GLOB.machines)
@@ -123,6 +143,8 @@
 	circuit = /obj/item/circuitboard/computer/rdservercontrol
 
 /obj/machinery/computer/rdservercontrol/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -139,6 +161,8 @@
 	return
 
 /obj/machinery/computer/rdservercontrol/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	user.set_machine(src)
@@ -159,10 +183,14 @@
 	return
 
 /obj/machinery/computer/rdservercontrol/attackby(obj/item/D, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.updateUsrDialog()
 
 /obj/machinery/computer/rdservercontrol/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	playsound(src, "sparks", 75, 1)

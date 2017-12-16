@@ -9,6 +9,8 @@
 // But it has no material_id, so any applies_to check will return false, and these types reduce amount of copypasta a lot
 
 /datum/export/material/get_amount(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!material_id)
 		return 0
 	if(!isitem(O))

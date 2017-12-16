@@ -23,12 +23,16 @@
 	var/breakout_time = 600
 
 /obj/machinery/implantchair/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	open_machine()
 	update_icon()
 
 
 /obj/machinery/implantchair/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.notcontained_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "implantchair", name, 375, 280, master_ui, state)
@@ -36,6 +40,8 @@
 
 
 /obj/machinery/implantchair/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["occupied"] = occupant ? 1 : 0
 	data["open"] = state_open
@@ -54,6 +60,8 @@
 	return data
 
 /obj/machinery/implantchair/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -68,6 +76,8 @@
 			. = TRUE
 
 /obj/machinery/implantchair/proc/implant(mob/living/M,mob/user)
+	procstart = null
+	src.procstart = null
 	if (!istype(M))
 		return
 	if(!ready_implants || !ready)
@@ -85,6 +95,8 @@
 	update_icon()
 
 /obj/machinery/implantchair/proc/implant_action(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/obj/item/I = new implant_type
 	if(istype(I, /obj/item/implant))
 		var/obj/item/implant/P = I
@@ -98,6 +110,8 @@
 		return TRUE
 
 /obj/machinery/implantchair/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 	if(state_open)
 		icon_state += "_open"
@@ -109,6 +123,8 @@
 		cut_overlays()
 
 /obj/machinery/implantchair/proc/replenish()
+	procstart = null
+	src.procstart = null
 	if(ready_implants < max_implants)
 		ready_implants++
 	if(ready_implants < max_implants)
@@ -117,10 +133,14 @@
 		replenishing = FALSE
 
 /obj/machinery/implantchair/proc/set_ready()
+	procstart = null
+	src.procstart = null
 	ready = TRUE
 	update_icon()
 
 /obj/machinery/implantchair/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	user.visible_message("<span class='notice'>You see [user] kicking against the door of [src]!</span>", \
@@ -134,16 +154,22 @@
 		open_machine()
 
 /obj/machinery/implantchair/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(message_cooldown <= world.time)
 		message_cooldown = world.time + 50
 		to_chat(user, "<span class='warning'>[src]'s door won't budge!</span>")
 
 /obj/machinery/implantchair/MouseDrop_T(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || user.lying || !Adjacent(user) || !user.Adjacent(target) || !isliving(target) || !user.IsAdvancedToolUser())
 		return
 	close_machine(target)
 
 /obj/machinery/implantchair/close_machine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if((isnull(user) || istype(user)) && state_open)
 		..(user)
 		if(auto_inject && ready && ready_implants > 0)
@@ -158,6 +184,8 @@
 	replenish_cooldown = 300
 
 /obj/machinery/implantchair/genepurge/implant_action(mob/living/carbon/human/H,mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(H))
 		return 0
 	H.set_species(/datum/species/human, 1)//lizards go home
@@ -178,6 +206,8 @@
 	var/custom = FALSE
 
 /obj/machinery/implantchair/brainwash/implant_action(mob/living/C,mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(C) || !C.mind) // I don't know how this makes any sense for silicons but laws trump objectives anyway.
 		return 0
 	if(custom)

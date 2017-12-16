@@ -14,10 +14,14 @@
 			to_chat(S, "[link] [rendered]")
 
 /mob/living/carbon/alien/humanoid/royal/queen/alien_talk(message, shown_name = name)
+	procstart = null
+	src.procstart = null
 	shown_name = "<FONT size = 3>[shown_name]</FONT>"
 	..(message, shown_name)
 
 /mob/living/carbon/hivecheck()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/alien/hivenode/N = getorgan(/obj/item/organ/alien/hivenode)
 	if(N && !N.recent_queen_death) //Mob has alien hive node and is not under the dead queen special effect.
 		return N

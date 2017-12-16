@@ -47,14 +47,20 @@
 	mouse_opacity = MOUSE_OPACITY_OPAQUE // Easier to click on in melee, they're giant targets anyway
 
 /mob/living/simple_animal/hostile/megafauna/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_status_effect(STATUS_EFFECT_CRUSHERDAMAGETRACKING)
 
 /mob/living/simple_animal/hostile/megafauna/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(internal)
 	. = ..()
 
 /mob/living/simple_animal/hostile/megafauna/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(health > 0)
 		return
 	else
@@ -69,21 +75,29 @@
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/proc/spawn_crusher_loot()
+	procstart = null
+	src.procstart = null
 	loot = crusher_loot
 
 /mob/living/simple_animal/hostile/megafauna/gib()
+	procstart = null
+	src.procstart = null
 	if(health > 0)
 		return
 	else
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/dust()
+	procstart = null
+	src.procstart = null
 	if(health > 0)
 		return
 	else
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(recovery_time >= world.time)
 		return
 	. = ..()
@@ -96,6 +110,8 @@
 			devour(L)
 
 /mob/living/simple_animal/hostile/megafauna/proc/devour(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!L)
 		return
 	visible_message(
@@ -106,6 +122,8 @@
 	L.gib()
 
 /mob/living/simple_animal/hostile/megafauna/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch (severity)
 		if (1)
 			adjustBruteLoss(250)
@@ -117,9 +135,13 @@
 			adjustBruteLoss(50)
 
 /mob/living/simple_animal/hostile/megafauna/proc/SetRecoveryTime(buffer_time)
+	procstart = null
+	src.procstart = null
 	recovery_time = world.time + buffer_time
 
 /mob/living/simple_animal/hostile/megafauna/proc/grant_achievement(medaltype,scoretype)
+	procstart = null
+	src.procstart = null
 	if(medal_type == "Boss")	//Don't award medals if the medal type isn't set
 		return FALSE
 
@@ -140,6 +162,8 @@
 	return TRUE
 
 /proc/UnlockMedal(medal,client/player)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!player || !medal)
 		return
@@ -154,6 +178,8 @@
 
 
 /proc/SetScore(score,client/player,increment,force)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!score || !player)
 		return
@@ -179,6 +205,8 @@
 
 /proc/GetScore(score,client/player,returnlist)
 
+	procstart = null
+	src.procstart = null
 	if(!score || !player)
 		return
 	if(MedalsAvailable())
@@ -200,6 +228,8 @@
 
 /proc/CheckMedal(medal,client/player)
 
+	procstart = null
+	src.procstart = null
 	if(!player || !medal)
 		return
 	if(MedalsAvailable())
@@ -215,6 +245,8 @@
 
 /proc/LockMedal(medal,client/player)
 
+	procstart = null
+	src.procstart = null
 	if(!player || !medal)
 		return
 	if(MedalsAvailable())
@@ -232,9 +264,13 @@
 
 
 /proc/ClearScore(client/player)
+	procstart = null
+	src.procstart = null
 	world.SetScores(player.ckey, "", CONFIG_GET(string/medal_hub_address), CONFIG_GET(string/medal_hub_password))
 
 /proc/MedalsAvailable()
+	procstart = null
+	src.procstart = null
 	return CONFIG_GET(string/medal_hub_address) && CONFIG_GET(string/medal_hub_password) && GLOB.medals_enabled
 
 #undef MEDAL_PREFIX

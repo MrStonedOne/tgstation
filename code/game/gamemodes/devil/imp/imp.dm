@@ -39,10 +39,14 @@
 							of intentionally harming a fellow devil.</B>"
 
 /mob/living/simple_animal/imp/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	boost = world.time + 30
 
 /mob/living/simple_animal/imp/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(boost<world.time)
 		speed = 1
@@ -50,6 +54,8 @@
 		speed = 0
 
 /mob/living/simple_animal/imp/death()
+	procstart = null
+	src.procstart = null
 	..(1)
 	playsound(get_turf(src),'sound/magic/demon_dies.ogg', 200, 1)
 	visible_message("<span class='danger'>[src] screams in agony as it sublimates into a sulfurous smoke.</span>")

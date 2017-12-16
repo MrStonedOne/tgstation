@@ -9,11 +9,15 @@
 	var/obj/item/clothing/suit/space/chronos/suit = null
 
 /obj/item/clothing/head/helmet/space/chronos/dropped()
+	procstart = null
+	src.procstart = null
 	if(suit)
 		suit.deactivate(1, 1)
 	..()
 
 /obj/item/clothing/head/helmet/space/chronos/Destroy()
+	procstart = null
+	src.procstart = null
 	dropped()
 	return ..()
 
@@ -38,11 +42,15 @@
 	var/phase_timer_id
 
 /obj/item/clothing/suit/space/chronos/New()
+	procstart = null
+	src.procstart = null
 	..()
 	teleport_now.chronosuit = src
 	teleport_now.target = src
 
 /obj/item/clothing/suit/space/chronos/proc/new_camera(mob/user)
+	procstart = null
+	src.procstart = null
 	if(camera)
 		qdel(camera)
 	camera = new /obj/effect/chronos_cam(user)
@@ -51,6 +59,8 @@
 	user.remote_control = camera
 
 /obj/item/clothing/suit/space/chronos/ui_action_click()
+	procstart = null
+	src.procstart = null
 	if((cooldown <= world.time) && !teleporting && !activating)
 		if(!activated)
 			activate()
@@ -58,15 +68,21 @@
 			deactivate()
 
 /obj/item/clothing/suit/space/chronos/dropped()
+	procstart = null
+	src.procstart = null
 	if(activated)
 		deactivate()
 	..()
 
 /obj/item/clothing/suit/space/chronos/Destroy()
+	procstart = null
+	src.procstart = null
 	dropped()
 	return ..()
 
 /obj/item/clothing/suit/space/chronos/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = src.loc
 	switch(severity)
 		if(1)
@@ -77,6 +93,8 @@
 			deactivate(1, 1)
 
 /obj/item/clothing/suit/space/chronos/proc/finish_chronowalk(mob/living/carbon/human/user, turf/to_turf)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		user = src.loc
 	if(phase_timer_id)
@@ -102,6 +120,8 @@
 		teleport_now.UpdateButtonIcon()
 
 /obj/item/clothing/suit/space/chronos/proc/chronowalk(atom/location)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = src.loc
 	if(activated && !teleporting && user && istype(user) && location && user.loc && location.loc && user.wear_suit == src && user.stat == CONSCIOUS)
 		teleporting = 1
@@ -143,6 +163,8 @@
 		phase_timer_id = addtimer(CALLBACK(src, .proc/phase_2, user, to_turf, phase_in_ds), 3, TIMER_STOPPABLE)
 
 /obj/item/clothing/suit/space/chronos/proc/phase_2(mob/living/carbon/human/user, turf/to_turf, phase_in_ds)
+	procstart = null
+	src.procstart = null
 	if(teleporting && activated && user)
 		animate(user, alpha = 0, time = 2)
 		phase_timer_id = addtimer(CALLBACK(src, .proc/phase_3, user, to_turf, phase_in_ds), 2, TIMER_STOPPABLE)
@@ -150,6 +172,8 @@
 		finish_chronowalk(user, to_turf)
 
 /obj/item/clothing/suit/space/chronos/proc/phase_3(mob/living/carbon/human/user, turf/to_turf, phase_in_ds)
+	procstart = null
+	src.procstart = null
 	if(teleporting && activated && user)
 		user.forceMove(to_turf)
 		animate(user, alpha = 255, time = phase_in_ds)
@@ -158,6 +182,8 @@
 		finish_chronowalk(user, to_turf)
 
 /obj/item/clothing/suit/space/chronos/proc/phase_4(mob/living/carbon/human/user, turf/to_turf)
+	procstart = null
+	src.procstart = null
 	if(teleporting && activated && user)
 		animate(user, color = "#ffffff", time = 3)
 		phase_timer_id = addtimer(CALLBACK(src, .proc/finish_chronowalk, user, to_turf), 3, TIMER_STOPPABLE)
@@ -165,6 +191,8 @@
 		finish_chronowalk(user, to_turf)
 
 /obj/item/clothing/suit/space/chronos/process()
+	procstart = null
+	src.procstart = null
 	if(activated)
 		var/mob/living/carbon/human/user = src.loc
 		if(user && ishuman(user) && (user.wear_suit == src))
@@ -181,6 +209,8 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/space/chronos/proc/activate()
+	procstart = null
+	src.procstart = null
 	if(!activating && !activated && !teleporting)
 		activating = 1
 		var/mob/living/carbon/human/user = src.loc
@@ -208,6 +238,8 @@
 		activating = 0
 
 /obj/item/clothing/suit/space/chronos/proc/deactivate(force = 0, silent = 0)
+	procstart = null
+	src.procstart = null
 	if(activated && (!teleporting || force))
 		activating = 1
 		var/mob/living/carbon/human/user = src.loc
@@ -253,12 +285,18 @@
 	var/obj/item/clothing/suit/space/chronos/chronosuit
 
 /obj/effect/chronos_cam/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/chronos_cam/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/chronos_cam/proc/create_target_ui()
+	procstart = null
+	src.procstart = null
 	if(holder && holder.client && chronosuit)
 		if(target_ui)
 			remove_target_ui()
@@ -266,11 +304,15 @@
 		holder.client.screen += target_ui
 
 /obj/effect/chronos_cam/proc/remove_target_ui()
+	procstart = null
+	src.procstart = null
 	if(target_ui)
 		qdel(target_ui)
 		target_ui = null
 
 /obj/effect/chronos_cam/relaymove(var/mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		qdel(src)
 		return
@@ -296,13 +338,19 @@
 			phase_time = world.time + phase_time_length
 
 /obj/effect/chronos_cam/check_eye(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user != holder)
 		user.unset_machine()
 
 /obj/effect/chronos_cam/on_unset_machine(mob/user)
+	procstart = null
+	src.procstart = null
 	user.reset_perspective(null)
 
 /obj/effect/chronos_cam/Destroy()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		if(holder.remote_control == src)
 			holder.remote_control = null
@@ -317,6 +365,8 @@
 	blend_mode = BLEND_SUBTRACT
 
 /obj/screen/chronos_target/New(loc, var/mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		var/icon/user_icon = getFlatIcon(user)
 		icon = user_icon
@@ -332,9 +382,13 @@
 	var/obj/item/clothing/suit/space/chronos/chronosuit = null
 
 /datum/action/innate/chrono_teleport/IsAvailable()
+	procstart = null
+	src.procstart = null
 	return (chronosuit && chronosuit.activated && chronosuit.camera && !chronosuit.teleporting)
 
 /datum/action/innate/chrono_teleport/Activate()
+	procstart = null
+	src.procstart = null
 	if(IsAvailable())
 		if(chronosuit.camera)
 			chronosuit.chronowalk(chronosuit.camera)

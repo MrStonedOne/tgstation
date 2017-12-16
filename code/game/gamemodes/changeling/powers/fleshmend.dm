@@ -12,20 +12,28 @@
 	var/total_healing = 100
 
 /obj/effect/proc_holder/changeling/fleshmend/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/proc_holder/changeling/fleshmend/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/effect/proc_holder/changeling/fleshmend/process()
+	procstart = null
+	src.procstart = null
 	if(recent_uses > 1)
 		recent_uses = max(1, recent_uses - (1 / healing_ticks))
 
 //Starts healing you every second for 10 seconds.
 //Can be used whilst unconscious.
 /obj/effect/proc_holder/changeling/fleshmend/sting_action(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>We begin to heal rapidly.</span>")
 	if(recent_uses > 1)
 		to_chat(user, "<span class='warning'>Our healing's effectiveness is reduced \
@@ -37,6 +45,8 @@
 
 /obj/effect/proc_holder/changeling/fleshmend/proc/fleshmend(mob/living/user)
 
+	procstart = null
+	src.procstart = null
 	// The healing itself - doesn't heal toxin damage
 	// (that's anatomic panacea) and the effectiveness decreases with
 	// each use in a short timespan

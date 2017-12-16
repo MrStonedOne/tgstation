@@ -25,9 +25,13 @@
 	verb_yell = "flutters intensely"
 
 /mob/living/simple_animal/butterfly/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/newcolor = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
 	add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
 
 /mob/living/simple_animal/butterfly/bee_friendly()
+	procstart = null
+	src.procstart = null
 	return TRUE //treaty signed at the Beeneeva convention

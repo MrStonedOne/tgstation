@@ -12,16 +12,22 @@
 	lose_text = "<span class='notice'>You suddenly remember how to speak.</span>"
 
 /datum/brain_trauma/severe/mute/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.disabilities |= MUTE
 	..()
 
 //no fiddling with genetics to get out of this one
 /datum/brain_trauma/severe/mute/on_life()
+	procstart = null
+	src.procstart = null
 	if(!(owner.disabilities & MUTE))
 		on_gain()
 	..()
 
 /datum/brain_trauma/severe/mute/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.disabilities &= ~MUTE
 	..()
 
@@ -33,16 +39,22 @@
 	lose_text = "<span class='notice'>Your vision returns.</span>"
 
 /datum/brain_trauma/severe/blindness/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.become_blind()
 	..()
 
 //no fiddling with genetics to get out of this one
 /datum/brain_trauma/severe/blindness/on_life()
+	procstart = null
+	src.procstart = null
 	if(!(owner.disabilities & BLIND))
 		on_gain()
 	..()
 
 /datum/brain_trauma/severe/blindness/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.cure_blind()
 	..()
 
@@ -54,10 +66,14 @@
 	lose_text = "<span class='notice'>You can feel your limbs again!</span>"
 
 /datum/brain_trauma/severe/paralysis/on_life()
+	procstart = null
+	src.procstart = null
 	owner.Knockdown(200, ignore_canknockdown = TRUE)
 	..()
 
 /datum/brain_trauma/severe/paralysis/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.SetKnockdown(0)
 	..()
 
@@ -69,6 +85,8 @@
 	lose_text = "<span class='notice'>You feel awake and aware again.</span>"
 
 /datum/brain_trauma/severe/narcolepsy/on_life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(owner.IsSleeping())
 		return
@@ -93,6 +111,8 @@
 	var/stress = 0
 
 /datum/brain_trauma/severe/monophobia/on_gain()
+	procstart = null
+	src.procstart = null
 	..()
 	if(check_alone())
 		to_chat(owner, "<span class='warning'>You feel really lonely...</span>")
@@ -100,6 +120,8 @@
 		to_chat(owner, "<span class='notice'>You feel safe, as long as you have people around you.</span>")
 
 /datum/brain_trauma/severe/monophobia/on_life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(check_alone())
 		stress = min(stress + 0.5, 100)
@@ -109,6 +131,8 @@
 		stress -= 4
 
 /datum/brain_trauma/severe/monophobia/proc/check_alone()
+	procstart = null
+	src.procstart = null
 	if(owner.disabilities & BLIND)
 		return TRUE
 	for(var/mob/M in oview(owner, 7))
@@ -119,6 +143,8 @@
 	return TRUE
 
 /datum/brain_trauma/severe/monophobia/proc/stress_reaction()
+	procstart = null
+	src.procstart = null
 	if(owner.stat != CONSCIOUS)
 		return
 
@@ -171,9 +197,13 @@
 	lose_text = "<span class='notice'>You feel in control of your hands again.</span>"
 
 /datum/brain_trauma/severe/discoordination/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.disabilities |= MONKEYLIKE
 	..()
 
 /datum/brain_trauma/severe/discoordination/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.disabilities &= ~MONKEYLIKE
 	..()

@@ -12,6 +12,8 @@
 	var/sound2 = 'sound/weapons/zapbang.ogg'
 
 /obj/effect/proc_holder/spell/targeted/turf_teleport/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(user), sound1, 50,1)
 	for(var/mob/living/target in targets)
 		var/list/turfs = new/list()

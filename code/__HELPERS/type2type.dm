@@ -13,6 +13,8 @@
 //skips preceding invalid characters
 //breaks when hittin invalid characters thereafter
 /proc/hex2num(hex)
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/place = 1
 	for(var/i in length(hex) to 1 step -1)
@@ -39,6 +41,8 @@
 //if an invalid number is provided, it assumes num==0
 //Note, unlike previous versions, this one works from low to high <-- that way
 /proc/num2hex(num, len=2)
+	procstart = null
+	src.procstart = null
 	if(!isnum(num))
 		num = 0
 	num = round(abs(num))
@@ -66,12 +70,16 @@
 
 //Splits the text of a file at seperator and returns them in a list.
 /world/proc/file2list(filename, seperator="\n", trim = TRUE)
+	procstart = null
+	src.procstart = null
 	if (trim)
 		return splittext(trim(file2text(filename)),seperator)
 	return splittext(file2text(filename),seperator)
 
 //Turns a direction into text
 /proc/dir2text(direction)
+	procstart = null
+	src.procstart = null
 	switch(direction)
 		if(1)
 			return "north"
@@ -94,6 +102,8 @@
 
 //Turns text into proper directions
 /proc/text2dir(direction)
+	procstart = null
+	src.procstart = null
 	switch(uppertext(direction))
 		if("NORTH")
 			return 1
@@ -117,6 +127,8 @@
 //Converts an angle (degrees) into an ss13 direction
 /proc/angle2dir(degree)
 
+	procstart = null
+	src.procstart = null
 	degree = SimplifyDegrees(degree)
 	switch(degree)
 		if(0 to 22.5) //north requires two angle ranges
@@ -140,6 +152,8 @@
 
 //returns the north-zero clockwise angle in degrees, given a direction
 /proc/dir2angle(D)
+	procstart = null
+	src.procstart = null
 	switch(D)
 		if(NORTH)
 			return 0
@@ -162,10 +176,14 @@
 
 //Returns the angle in english
 /proc/angle2text(degree)
+	procstart = null
+	src.procstart = null
 	return dir2text(angle2dir(degree))
 
 //Converts a blend_mode constant to one acceptable to icon.Blend()
 /proc/blendMode2iconMode(blend_mode)
+	procstart = null
+	src.procstart = null
 	switch(blend_mode)
 		if(BLEND_MULTIPLY)
 			return ICON_MULTIPLY
@@ -178,6 +196,8 @@
 
 //Converts a rights bitfield into a string
 /proc/rights2text(rights, seperator="", list/adds, list/subs)
+	procstart = null
+	src.procstart = null
 	if(rights & R_BUILDMODE)
 		. += "[seperator]+BUILDMODE"
 	if(rights & R_ADMIN)
@@ -212,6 +232,8 @@
 	return .
 
 /proc/ui_style2icon(ui_style)
+	procstart = null
+	src.procstart = null
 	switch(ui_style)
 		if("Retro")
 			return 'icons/mob/screen_retro.dmi'
@@ -228,6 +250,8 @@
 
 //colour formats
 /proc/rgb2hsl(red, green, blue)
+	procstart = null
+	src.procstart = null
 	red /= 255;green /= 255;blue /= 255;
 	var/max = max(red,green,blue)
 	var/min = min(red,green,blue)
@@ -259,6 +283,8 @@
 	return list(hue, saturation, lightness)
 
 /proc/hsl2rgb(hue, saturation, lightness)
+	procstart = null
+	src.procstart = null
 	var/red;var/green;var/blue;
 	if(saturation == 0)
 		red = lightness * 255
@@ -279,6 +305,8 @@
 	return list(red, green, blue)
 
 /proc/hue2rgb(a, b, hue)
+	procstart = null
+	src.procstart = null
 	if(hue < 0)
 		hue++
 	else if(hue > 1)
@@ -295,6 +323,8 @@
 // returns "YYYY-MM-DD" by default
 /proc/unix2date(timestamp, seperator = "-")
 
+	procstart = null
+	src.procstart = null
 	if(timestamp < 0)
 		return 0 //Do not accept negative values
 
@@ -334,6 +364,8 @@
 	return "[year][seperator][((month < 10) ? "0[month]" : month)][seperator][((day < 10) ? "0[day]" : day)]"
 
 /proc/isLeap(y)
+	procstart = null
+	src.procstart = null
 	return ((y) % 4 == 0 && ((y) % 100 != 0 || (y) % 400 == 0))
 
 
@@ -341,6 +373,8 @@
 //Turns a Body_parts_covered bitfield into a list of organ/limb names.
 //(I challenge you to find a use for this)
 /proc/body_parts_covered2organ_names(bpc)
+	procstart = null
+	src.procstart = null
 	var/list/covered_parts = list()
 
 	if(!bpc)
@@ -395,10 +429,14 @@
 
 //adapted from http://www.tannerhelland.com/4435/convert-temperature-rgb-algorithm-code/
 /proc/heat2colour(temp)
+	procstart = null
+	src.procstart = null
 	return rgb(heat2colour_r(temp), heat2colour_g(temp), heat2colour_b(temp))
 
 
 /proc/heat2colour_r(temp)
+	procstart = null
+	src.procstart = null
 	temp /= 100
 	if(temp <= 66)
 		. = 255
@@ -407,6 +445,8 @@
 
 
 /proc/heat2colour_g(temp)
+	procstart = null
+	src.procstart = null
 	temp /= 100
 	if(temp <= 66)
 		. = max(0, min(255, 99.4708025861 * log(temp) - 161.1195681661))
@@ -415,6 +455,8 @@
 
 
 /proc/heat2colour_b(temp)
+	procstart = null
+	src.procstart = null
 	temp /= 100
 	if(temp >= 66)
 		. = 255
@@ -479,6 +521,8 @@
 //The datum is used as a source for var names, to check validity
 //Otherwise every single word could technically be a variable!
 /proc/string2listofvars(var/t_string, var/datum/var_source)
+	procstart = null
+	src.procstart = null
 	if(!t_string || !var_source)
 		return list()
 
@@ -507,6 +551,8 @@
 
 //assumes format #RRGGBB #rrggbb
 /proc/color_hex2num(A)
+	procstart = null
+	src.procstart = null
 	if(!A)
 		return 0
 	var/R = hex2num(copytext(A,2,4))
@@ -516,6 +562,8 @@
 
 //word of warning: using a matrix like this as a color value will simplify it back to a string after being set
 /proc/color_hex2color_matrix(string)
+	procstart = null
+	src.procstart = null
 	var/length = length(string)
 	if(length != 7 && length != 9)
 		return color_matrix_identity()
@@ -531,11 +579,15 @@
 
 //will drop all values not on the diagonal
 /proc/color_matrix2color_hex(list/the_matrix)
+	procstart = null
+	src.procstart = null
 	if(!istype(the_matrix) || the_matrix.len != 20)
 		return "#ffffffff"
 	return rgb(the_matrix[1]*255, the_matrix[6]*255, the_matrix[11]*255, the_matrix[16]*255)
 
 /proc/type2parent(child)
+	procstart = null
+	src.procstart = null
 	var/string_type = "[child]"
 	var/last_slash = findlasttext(string_type, "/")
 	if(last_slash == 1)
@@ -552,6 +604,8 @@
 
 //returns a string the last bit of a type, without the preceeding '/'
 /proc/type2top(the_type)
+	procstart = null
+	src.procstart = null
 	//handle the builtins manually
 	if(!ispath(the_type))
 		return
@@ -572,6 +626,8 @@
 			return lowertext(replacetext("[the_type]", "[type2parent(the_type)]/", ""))
 
 /proc/strtohex(str)
+	procstart = null
+	src.procstart = null
 	if(!istext(str)||!str)
 		return
 	var/r
@@ -582,6 +638,8 @@
 	return r
 
 /proc/hextostr(str)
+	procstart = null
+	src.procstart = null
 	if(!istext(str)||!str)
 		return
 	var/r

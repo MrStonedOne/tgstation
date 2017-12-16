@@ -11,23 +11,33 @@
 	give_objectives = FALSE
 
 /datum/antagonist/ninja/New(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	if(new_owner && !ishuman(new_owner.current))//It's fine if we aren't passed a mind, but if we are, they have to be human.
 		throw EXCEPTION("Only humans and/or humanoids may be ninja'ed")
 	..(new_owner)
 
 /datum/antagonist/ninja/randomAllegiance/New(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	..(new_owner)
 	helping_station = rand(0,1)
 
 /datum/antagonist/ninja/proc/equip_space_ninja(mob/living/carbon/human/H = owner.current)
+	procstart = null
+	src.procstart = null
 	return H.equipOutfit(/datum/outfit/ninja)
 
 /datum/antagonist/ninja/proc/addMemories()
+	procstart = null
+	src.procstart = null
 	owner.store_memory("I am an elite mercenary assassin of the mighty Spider Clan. A <font color='red'><B>SPACE NINJA</B></font>!")
 	owner.store_memory("Surprise is my weapon. Shadows are my armor. Without them, I am nothing. (//initialize your suit by right clicking on it, to use abilities like stealth)!")
 	owner.store_memory("Officially, [helping_station?"Nanotrasen":"The Syndicate"] are my employer.")
 
 /datum/antagonist/ninja/proc/addObjectives(quantity = 6)
+	procstart = null
+	src.procstart = null
 	var/list/possible_targets = list()
 	for(var/datum/mind/M in SSticker.minds)
 		if(M.current && M.current.stat != DEAD)
@@ -97,6 +107,8 @@
 
 
 /proc/remove_ninja(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!L || !L.mind)
 		return FALSE
 	var/datum/antagonist/datum = L.mind.has_antag_datum(ANTAG_DATUM_NINJA)
@@ -104,15 +116,21 @@
 	return TRUE
 
 /proc/add_ninja(mob/living/carbon/human/H, type = ANTAG_DATUM_NINJA_RANDOM)
+	procstart = null
+	src.procstart = null
 	if(!H || !H.mind)
 		return FALSE
 	return H.mind.add_antag_datum(type)
 
 /proc/is_ninja(mob/living/M)
+	procstart = null
+	src.procstart = null
 	return M && M.mind && M.mind.has_antag_datum(ANTAG_DATUM_NINJA)
 
 
 /datum/antagonist/ninja/greet()
+	procstart = null
+	src.procstart = null
 	SEND_SOUND(owner.current, sound('sound/effects/ninja_greeting.ogg'))
 	to_chat(owner.current, "I am an elite mercenary assassin of the mighty Spider Clan. A <font color='red'><B>SPACE NINJA</B></font>!")
 	to_chat(owner.current, "Surprise is my weapon. Shadows are my armor. Without them, I am nothing. (//initialize your suit by right clicking on it, to use abilities like stealth)!")
@@ -120,6 +138,8 @@
 	return
 
 /datum/antagonist/ninja/on_gain()
+	procstart = null
+	src.procstart = null
 	if(give_objectives)
 		addObjectives()
 	addMemories()

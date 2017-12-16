@@ -6,11 +6,15 @@
 	invisibility = INVISIBILITY_ABSTRACT
 
 /obj/effect/landmark/New()
+	procstart = null
+	src.procstart = null
 	..()
 	tag = text("landmark*[]", name)
 	GLOB.landmarks_list += src
 
 /obj/effect/landmark/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.landmarks_list -= src
 	return ..()
 
@@ -23,6 +27,8 @@
 	var/delete_after_roundstart = TRUE
 
 /obj/effect/landmark/start/New()
+	procstart = null
+	src.procstart = null
 	GLOB.start_landmarks_list += src
 	if(jobspawn_override)
 		if(!GLOB.jobspawn_overrides[name])
@@ -33,6 +39,8 @@
 		tag = "start*[name]"
 
 /obj/effect/landmark/start/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.start_landmarks_list -= src
 	if(jobspawn_override)
 		GLOB.jobspawn_overrides[name] -= src
@@ -148,10 +156,14 @@
 	name = "department_sec"
 
 /obj/effect/landmark/start/depsec/New()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.department_security_spawns += src
 
 /obj/effect/landmark/start/depsec/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.department_security_spawns -= src
 	return ..()
 
@@ -171,6 +183,8 @@
 	name = "wizard"
 
 /obj/effect/landmark/start/wizard/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.wizardstart += loc
 	return INITIALIZE_HINT_QDEL
@@ -179,6 +193,8 @@
 	name = "nukeop"
 
 /obj/effect/landmark/start/nukeop/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.nukeop_start += loc
 	return INITIALIZE_HINT_QDEL
@@ -187,6 +203,8 @@
 	name = "nukeop leader"
 
 /obj/effect/landmark/start/nukeop_leader/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.nukeop_leader_start += loc
 	return INITIALIZE_HINT_QDEL
@@ -199,6 +217,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "New Player"
 
 /obj/effect/landmark/start/new_player/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.newplayer_start += loc
 	return INITIALIZE_HINT_QDEL
@@ -207,6 +227,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "JoinLate"
 
 /obj/effect/landmark/latejoin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	SSjob.latejoin_trackers += loc
 	return INITIALIZE_HINT_QDEL
@@ -236,6 +258,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "xeno_spawn"
 
 /obj/effect/landmark/xeno_spawn/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.xeno_spawn += loc
 	return INITIALIZE_HINT_QDEL
@@ -245,6 +269,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "blobstart"
 
 /obj/effect/landmark/blobstart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.blobstart += loc
 	return INITIALIZE_HINT_QDEL
@@ -253,6 +279,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "secequipment"
 
 /obj/effect/landmark/secequipment/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.secequipment += loc
 	return INITIALIZE_HINT_QDEL
@@ -261,6 +289,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "prisonwarp"
 
 /obj/effect/landmark/prisonwarp/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.prisonwarp += loc
 	return INITIALIZE_HINT_QDEL
@@ -269,6 +299,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "Emergencyresponseteam"
 
 /obj/effect/landmark/ert_spawn/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.emergencyresponseteamspawn += loc
 	return INITIALIZE_HINT_QDEL
@@ -277,6 +309,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "Holding Facility"
 
 /obj/effect/landmark/holding_facility/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.holdingfacility += loc
 	return INITIALIZE_HINT_QDEL
@@ -285,6 +319,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "tdomeobserve"
 
 /obj/effect/landmark/thunderdome/observe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.tdomeobserve += loc
 	return INITIALIZE_HINT_QDEL
@@ -293,6 +329,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "tdome1"
 
 /obj/effect/landmark/thunderdome/one/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.tdome1	+= loc
 	return INITIALIZE_HINT_QDEL
@@ -301,6 +339,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "tdome2"
 
 /obj/effect/landmark/thunderdome/two/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.tdome2 += loc
 	return INITIALIZE_HINT_QDEL
@@ -309,6 +349,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "tdomeadmin"
 
 /obj/effect/landmark/thunderdome/admin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.tdomeadmin += loc
 	return INITIALIZE_HINT_QDEL
@@ -318,6 +360,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	name = "servant of ratvar spawn"
 
 /obj/effect/landmark/servant_of_ratvar/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.servant_spawns += loc
 	return INITIALIZE_HINT_QDEL
@@ -328,6 +372,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	icon_state = "x4"
 
 /obj/effect/landmark/city_of_cogs/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.city_of_cogs_spawns += loc
 	return INITIALIZE_HINT_QDEL
@@ -339,10 +385,14 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 
 
 /obj/effect/landmark/event_spawn/New()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.generic_event_spawns += src
 
 /obj/effect/landmark/event_spawn/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.generic_event_spawns -= src
 	return ..()
 
@@ -350,12 +400,16 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark/start/new_player)
 	var/datum/map_template/ruin/ruin_template
 
 /obj/effect/landmark/ruin/New(loc, my_ruin_template)
+	procstart = null
+	src.procstart = null
 	name = "ruin_[GLOB.ruin_landmarks.len + 1]"
 	..(loc)
 	ruin_template = my_ruin_template
 	GLOB.ruin_landmarks |= src
 
 /obj/effect/landmark/ruin/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.ruin_landmarks -= src
 	ruin_template = null
 	. = ..()

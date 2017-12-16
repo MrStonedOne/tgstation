@@ -68,6 +68,8 @@
 GLOBAL_LIST_EMPTY(teleportlocs)
 
 /proc/process_teleport_locs()
+	procstart = null
+	src.procstart = null
 	for(var/V in GLOB.sortedAreas)
 		var/area/AR = V
 		if(istype(AR, /area/shuttle) || AR.noteleport)
@@ -89,6 +91,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 // want to find machines, mobs, etc, in the same logical area, you will need to check all the
 // related areas.  This returns a master contents list to assist in that.
 /proc/area_contents(area/A)
+	procstart = null
+	src.procstart = null
 	if(!istype(A))
 		return null
 	var/list/contents = list()
@@ -100,6 +104,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 
 /area/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = ""
 	layer = AREA_LAYER
 	uid = ++global_uid
@@ -147,13 +153,19 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	return INITIALIZE_HINT_LATELOAD
 
 /area/LateInitialize()
+	procstart = null
+	src.procstart = null
 	power_change()		// all machines set to current power level, also updates icon
 
 /area/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /area/proc/poweralert(state, obj/source)
+	procstart = null
+	src.procstart = null
 	if (state != poweralm)
 		poweralm = state
 		if(istype(source))	//Only report power alarms on the z-level where the source is located.
@@ -185,6 +197,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 					p.triggerAlarm("Power", src, cameras, source)
 
 /area/proc/atmosalert(danger_level, obj/source)
+	procstart = null
+	src.procstart = null
 	if(danger_level != atmosalm)
 		if (danger_level==2)
 			var/list/cameras = list()
@@ -225,6 +239,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	return 0
 
 /area/proc/ModifyFiredoors(opening)
+	procstart = null
+	src.procstart = null
 	if(firedoors)
 		firedoors_last_closed_on = world.time
 		for(var/FD in firedoors)
@@ -243,6 +259,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 					INVOKE_ASYNC(D, (opening ? /obj/machinery/door/firedoor.proc/open : /obj/machinery/door/firedoor.proc/close))
 
 /area/proc/firealert(obj/source)
+	procstart = null
+	src.procstart = null
 	if(always_unpowered == 1) //no fire alarms in space/asteroid
 		return
 
@@ -275,6 +293,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	START_PROCESSING(SSobj, src)
 
 /area/proc/firereset(obj/source)
+	procstart = null
+	src.procstart = null
 	for(var/area/RA in related)
 		if (RA.fire)
 			RA.fire = 0
@@ -301,17 +321,23 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	STOP_PROCESSING(SSobj, src)
 
 /area/process()
+	procstart = null
+	src.procstart = null
 	if(firedoors_last_closed_on + 100 < world.time)	//every 10 seconds
 		for(var/area/RA in related)
 			RA.ModifyFiredoors(FALSE)
 
 /area/proc/close_and_lock_door(obj/machinery/door/DOOR)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	DOOR.close()
 	if(DOOR.density)
 		DOOR.lock()
 
 /area/proc/burglaralert(obj/trigger)
+	procstart = null
+	src.procstart = null
 	if(always_unpowered == 1) //no burglar alarms in space/asteroid
 		return
 
@@ -334,11 +360,15 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 			addtimer(CALLBACK(SILICON, /mob/living/silicon.proc/cancelAlarm,"Burglar",src,trigger), 600)
 
 /area/proc/set_fire_alarm_effect()
+	procstart = null
+	src.procstart = null
 	fire = 1
 	updateicon()
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /area/proc/readyalert()
+	procstart = null
+	src.procstart = null
 	if(name == "Space")
 		return
 	if(!eject)
@@ -346,11 +376,15 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		updateicon()
 
 /area/proc/readyreset()
+	procstart = null
+	src.procstart = null
 	if(eject)
 		eject = 0
 		updateicon()
 
 /area/proc/partyalert()
+	procstart = null
+	src.procstart = null
 	if(src.name == "Space") //no parties in space!!!
 		return
 	if (!( src.party ))
@@ -359,6 +393,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 		src.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /area/proc/partyreset()
+	procstart = null
+	src.procstart = null
 	if (src.party)
 		src.party = 0
 		src.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
@@ -371,6 +407,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 					INVOKE_ASYNC(D, /obj/machinery/door/firedoor.proc/open)
 
 /area/proc/updateicon()
+	procstart = null
+	src.procstart = null
 	if ((fire || eject || party) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.
 		if(fire && !eject && !party)
 			icon_state = "blue"
@@ -391,6 +429,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 			icon_state = null
 
 /area/space/updateicon()
+	procstart = null
+	src.procstart = null
 	icon_state = null
 
 /*
@@ -421,12 +461,16 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 // called when power status changes
 
 /area/proc/power_change()
+	procstart = null
+	src.procstart = null
 	for(var/area/RA in related)
 		for(var/obj/machinery/M in RA)	// for each machine in the area
 			M.power_change()				// reverify power status (to update icons etc.)
 		RA.updateicon()
 
 /area/proc/usage(chan)
+	procstart = null
+	src.procstart = null
 	var/used = 0
 	switch(chan)
 		if(LIGHT)
@@ -446,6 +490,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	return used
 
 /area/proc/addStaticPower(value, powerchannel)
+	procstart = null
+	src.procstart = null
 	switch(powerchannel)
 		if(STATIC_EQUIP)
 			static_equip += value
@@ -455,12 +501,16 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 			static_environ += value
 
 /area/proc/clear_usage()
+	procstart = null
+	src.procstart = null
 	used_equip = 0
 	used_light = 0
 	used_environ = 0
 
 /area/proc/use_power(amount, chan)
 
+	procstart = null
+	src.procstart = null
 	switch(chan)
 		if(EQUIP)
 			used_equip += amount
@@ -471,6 +521,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 
 
 /area/Entered(A)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!isliving(A))
 		return
@@ -496,9 +548,13 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 			addtimer(CALLBACK(L.client, /client/proc/ResetAmbiencePlayed), 600)
 
 /client/proc/ResetAmbiencePlayed()
+	procstart = null
+	src.procstart = null
 	played = FALSE
 
 /atom/proc/has_gravity(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T || !isturf(T))
 		T = get_turf(src)
 	var/area/A = get_area(T)
@@ -513,6 +569,8 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	return FALSE
 
 /area/proc/setup(a_name)
+	procstart = null
+	src.procstart = null
 	name = a_name
 	power_equip = FALSE
 	power_light = FALSE
@@ -523,7 +581,11 @@ GLOBAL_LIST_EMPTY(teleportlocs)
 	addSorted()
 
 /area/AllowDrop()
+	procstart = null
+	src.procstart = null
 	CRASH("Bad op: area/AllowDrop() called")
 
 /area/drop_location()
+	procstart = null
+	src.procstart = null
 	CRASH("Bad op: area/drop_location() called")

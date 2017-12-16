@@ -33,6 +33,8 @@
 	var/next_dest_loc
 
 /mob/living/simple_animal/bot/cleanbot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	get_targets()
 	icon_state = "cleanbot[on]"
@@ -42,27 +44,37 @@
 	prev_access = access_card.access
 
 /mob/living/simple_animal/bot/cleanbot/turn_on()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "cleanbot[on]"
 	bot_core.updateUsrDialog()
 
 /mob/living/simple_animal/bot/cleanbot/turn_off()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "cleanbot[on]"
 	bot_core.updateUsrDialog()
 
 /mob/living/simple_animal/bot/cleanbot/bot_reset()
+	procstart = null
+	src.procstart = null
 	..()
 	ignore_list = list() //Allows the bot to clean targets it previously ignored due to being unreachable.
 	target = null
 	oldloc = null
 
 /mob/living/simple_animal/bot/cleanbot/set_custom_texts()
+	procstart = null
+	src.procstart = null
 	text_hack = "You corrupt [name]'s cleaning software."
 	text_dehack = "[name]'s software has been reset!"
 	text_dehack_fail = "[name] does not seem to respond to your repair code!"
 
 /mob/living/simple_animal/bot/cleanbot/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/card/id)||istype(W, /obj/item/device/pda))
 		if(bot_core.allowed(user) && !open && !emagged)
 			locked = !locked
@@ -78,12 +90,16 @@
 		return ..()
 
 /mob/living/simple_animal/bot/cleanbot/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(emagged == 2)
 		if(user)
 			to_chat(user, "<span class='danger'>[src] buzzes and beeps.</span>")
 
 /mob/living/simple_animal/bot/cleanbot/process_scan(atom/A)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(A))
 		var/mob/living/carbon/C = A
 		if(C.stat != DEAD && C.lying)
@@ -92,6 +108,8 @@
 		return A
 
 /mob/living/simple_animal/bot/cleanbot/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -169,6 +187,8 @@
 	oldloc = loc
 
 /mob/living/simple_animal/bot/cleanbot/proc/get_targets()
+	procstart = null
+	src.procstart = null
 	target_types = list(
 		/obj/effect/decal/cleanable/oil,
 		/obj/effect/decal/cleanable/vomit,
@@ -201,6 +221,8 @@
 	target_types = typecacheof(target_types)
 
 /mob/living/simple_animal/bot/cleanbot/UnarmedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/effect/decal/cleanable))
 		anchored = TRUE
 		icon_state = "cleanbot-c"
@@ -256,6 +278,8 @@
 		..()
 
 /mob/living/simple_animal/bot/cleanbot/explode()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	visible_message("<span class='boldannounce'>[src] blows apart!</span>")
 	var/atom/Tsec = drop_location()
@@ -275,6 +299,8 @@
 
 
 /mob/living/simple_animal/bot/cleanbot/get_controls(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += hack(user)
 	dat += showpai(user)
@@ -290,6 +316,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"})
 	return dat
 
 /mob/living/simple_animal/bot/cleanbot/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	if(href_list["operation"])

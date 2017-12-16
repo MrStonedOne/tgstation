@@ -6,6 +6,8 @@
 
 //returns TRUE if this mob has sufficient access to use this object
 /obj/proc/allowed(mob/M)
+	procstart = null
+	src.procstart = null
 	//check if it doesn't require any access at all
 	if(src.check_access(null))
 		return TRUE
@@ -33,12 +35,18 @@
 	return FALSE
 
 /obj/item/proc/GetAccess()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/item/proc/GetID()
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/proc/text2access(access_text)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!access_text)
 		return
@@ -50,6 +58,8 @@
 
 //Call this before using req_access or req_one_access directly
 /obj/proc/gen_access()
+	procstart = null
+	src.procstart = null
 	//These generations have been moved out of /obj/New() because they were slowing down the creation of objects that never even used the access system.
 	if(!req_access)
 		req_access = list()
@@ -61,6 +71,8 @@
 			req_one_access += b
 
 /obj/proc/check_access(obj/item/I)
+	procstart = null
+	src.procstart = null
 	gen_access()
 
 	if(!istype(src.req_access, /list)) //something's very wrong
@@ -83,6 +95,8 @@
 
 
 /obj/proc/check_access_list(list/L)
+	procstart = null
+	src.procstart = null
 	if(!src.req_access  && !src.req_one_access)
 		return TRUE
 	if(!istype(src.req_access, /list))
@@ -104,6 +118,8 @@
 	return TRUE
 
 /proc/get_centcom_access(job)
+	procstart = null
+	src.procstart = null
 	switch(job)
 		if("VIP Guest")
 			return list(ACCESS_CENT_GENERAL)
@@ -137,6 +153,8 @@
 			return list(ACCESS_CENT_GENERAL, ACCESS_CENT_LIVING, ACCESS_CENT_BAR)
 
 /proc/get_all_accesses()
+	procstart = null
+	src.procstart = null
 	return list(ACCESS_SECURITY, ACCESS_SEC_DOORS, ACCESS_BRIG, ACCESS_ARMORY, ACCESS_FORENSICS_LOCKERS, ACCESS_COURT,
 	            ACCESS_MEDICAL, ACCESS_GENETICS, ACCESS_MORGUE, ACCESS_RD,
 	            ACCESS_TOX, ACCESS_TOX_STORAGE, ACCESS_CHEMISTRY, ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_MAINT_TUNNELS,
@@ -150,9 +168,13 @@
 	            ACCESS_KEYCARD_AUTH, ACCESS_TCOMSAT, ACCESS_GATEWAY, ACCESS_MINERAL_STOREROOM, ACCESS_MINISAT, ACCESS_NETWORK, ACCESS_CLONING)
 
 /proc/get_all_centcom_access()
+	procstart = null
+	src.procstart = null
 	return list(ACCESS_CENT_GENERAL, ACCESS_CENT_THUNDER, ACCESS_CENT_SPECOPS, ACCESS_CENT_MEDICAL, ACCESS_CENT_LIVING, ACCESS_CENT_STORAGE, ACCESS_CENT_TELEPORTER, ACCESS_CENT_CAPTAIN)
 
 /proc/get_ert_access(class)
+	procstart = null
+	src.procstart = null
 	switch(class)
 		if("commander")
 			return get_all_centcom_access()
@@ -164,9 +186,13 @@
 			return list(ACCESS_CENT_GENERAL, ACCESS_CENT_SPECOPS, ACCESS_CENT_MEDICAL, ACCESS_CENT_LIVING)
 
 /proc/get_all_syndicate_access()
+	procstart = null
+	src.procstart = null
 	return list(ACCESS_SYNDICATE, ACCESS_SYNDICATE)
 
 /proc/get_region_accesses(code)
+	procstart = null
+	src.procstart = null
 	switch(code)
 		if(0)
 			return get_all_accesses()
@@ -186,6 +212,8 @@
 			return list(ACCESS_HEADS, ACCESS_RC_ANNOUNCE, ACCESS_KEYCARD_AUTH, ACCESS_CHANGE_IDS, ACCESS_AI_UPLOAD, ACCESS_TELEPORTER, ACCESS_EVA, ACCESS_GATEWAY, ACCESS_ALL_PERSONAL_LOCKERS, ACCESS_HEADS_VAULT, ACCESS_HOP, ACCESS_CAPTAIN)
 
 /proc/get_region_accesses_name(code)
+	procstart = null
+	src.procstart = null
 	switch(code)
 		if(0)
 			return "All"
@@ -205,6 +233,8 @@
 			return "Command"
 
 /proc/get_access_desc(A)
+	procstart = null
+	src.procstart = null
 	switch(A)
 		if(ACCESS_CARGO)
 			return "Cargo Bay"
@@ -340,6 +370,8 @@
 			return "Cloning Room"
 
 /proc/get_centcom_access_desc(A)
+	procstart = null
+	src.procstart = null
 	switch(A)
 		if(ACCESS_CENT_GENERAL)
 			return "Code Grey"
@@ -361,6 +393,8 @@
 			return "Code Scotch"
 
 /proc/get_all_jobs()
+	procstart = null
+	src.procstart = null
 	return list("Assistant", "Captain", "Head of Personnel", "Bartender", "Cook", "Botanist", "Quartermaster", "Cargo Technician",
 				"Shaft Miner", "Clown", "Mime", "Janitor", "Curator", "Lawyer", "Chaplain", "Chief Engineer", "Station Engineer",
 				"Atmospheric Technician", "Chief Medical Officer", "Medical Doctor", "Chemist", "Geneticist", "Virologist",
@@ -370,6 +404,8 @@
 	return get_all_jobs() + list("Prisoner")
 
 /proc/get_all_centcom_jobs()
+	procstart = null
+	src.procstart = null
 	return list("VIP Guest","Custodian","Thunderdome Overseer","CentCom Official","Medical Officer","Death Commando","Research Officer","Special Ops Officer","Admiral","CentCom Commander","Emergency Response Team Commander","Security Response Officer","Engineer Response Officer", "Medical Response Officer","CentCom Bartender")
 
 /obj/item/proc/GetJobName() //Used in secHUD icon generation

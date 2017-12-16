@@ -15,6 +15,8 @@
 	dog_fashion = /datum/dog_fashion/head
 
 /obj/item/clothing/head/hardhat/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	icon_state = "hardhat[on]_[item_color]"
 	item_state = "hardhat[on]_[item_color]"
@@ -29,9 +31,13 @@
 		A.UpdateButtonIcon()
 
 /obj/item/clothing/head/hardhat/proc/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	set_light(brightness_on)
 
 /obj/item/clothing/head/hardhat/proc/turn_off(mob/user)
+	procstart = null
+	src.procstart = null
 	set_light(0)
 
 /obj/item/clothing/head/hardhat/orange

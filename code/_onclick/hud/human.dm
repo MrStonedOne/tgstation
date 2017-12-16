@@ -7,6 +7,8 @@
 
 /obj/screen/human/toggle/Click()
 
+	procstart = null
+	src.procstart = null
 	var/mob/targetmob = usr
 
 	if(isobserver(usr))
@@ -28,6 +30,8 @@
 	icon_state = "act_equip"
 
 /obj/screen/human/equip/Click()
+	procstart = null
+	src.procstart = null
 	if(ismecha(usr.loc)) // stops inventory actions in a mech
 		return 1
 	var/mob/living/carbon/human/H = usr
@@ -43,6 +47,8 @@
 	screen_loc = ui_devilsouldisplay
 
 /obj/screen/devil/soul_counter/proc/update_counter(souls = 0)
+	procstart = null
+	src.procstart = null
 	invisibility = 0
 	maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#FF0000'>[souls]</font></div>"
 	switch(souls)
@@ -60,6 +66,8 @@
 			icon_state = "Devil-6"
 
 /obj/screen/devil/soul_counter/proc/clear()
+	procstart = null
+	src.procstart = null
 	invisibility = INVISIBILITY_ABSTRACT
 
 /obj/screen/ling
@@ -70,6 +78,8 @@
 	screen_loc = ui_lingstingdisplay
 
 /obj/screen/ling/sting/Click()
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr))
 		return
 	var/mob/living/carbon/U = usr
@@ -81,11 +91,15 @@
 	screen_loc = ui_lingchemdisplay
 
 /mob/living/carbon/human/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/human(src, ui_style2icon(client.prefs.UI_style))
 
 
 /datum/hud/human/New(mob/living/carbon/human/owner, ui_style = 'icons/mob/screen_midnight.dmi')
+	procstart = null
+	src.procstart = null
 	..()
 	owner.overlay_fullscreen("see_through_darkness", /obj/screen/fullscreen/see_through_darkness)
 
@@ -312,6 +326,8 @@
 	update_locked_slots()
 
 /datum/hud/human/update_locked_slots()
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	var/mob/living/carbon/human/H = mymob
@@ -326,6 +342,8 @@
 				inv.alpha = initial(inv.alpha)
 
 /datum/hud/human/hidden_inventory_update(mob/viewer)
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	var/mob/living/carbon/human/H = mymob
@@ -374,6 +392,8 @@
 
 
 /datum/hud/human/persistent_inventory_update(mob/viewer)
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	..()
@@ -426,6 +446,8 @@
 
 
 /mob/living/carbon/human/verb/toggle_hotkey_verbs()
+	procstart = null
+	src.procstart = null
 	set category = "OOC"
 	set name = "Toggle hotkey buttons"
 	set desc = "This disables or enables the user interface buttons which can be used with hotkeys."

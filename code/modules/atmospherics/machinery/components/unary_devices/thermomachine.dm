@@ -21,19 +21,27 @@
 	var/interactive = TRUE // So mapmakers can disable interaction.
 
 /obj/machinery/atmospherics/components/unary/thermomachine/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_directions = dir
 
 /obj/machinery/atmospherics/components/unary/thermomachine/on_construction()
+	procstart = null
+	src.procstart = null
 	..(dir,dir)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/B
 	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		B += M.rating
 	heat_capacity = 5000 * ((B - 1) ** 2)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/update_icon()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = icon_state_open
 	else if(on && is_operational())
@@ -42,11 +50,15 @@
 		icon_state = initial(icon_state)
 
 /obj/machinery/atmospherics/components/unary/thermomachine/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(showpipe)
 		add_overlay(getpipeimage(icon, "scrub_cap", initialize_directions))
 
 /obj/machinery/atmospherics/components/unary/thermomachine/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!on || !NODE1)
 		return
@@ -69,10 +81,14 @@
 	return 1
 
 /obj/machinery/atmospherics/components/unary/thermomachine/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/atmospherics/components/unary/thermomachine/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!(on || state_open))
 		if(default_deconstruction_screwdriver(user, icon_state_open, initial(icon_state), I))
 			return
@@ -85,6 +101,8 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/thermomachine/default_change_direction_wrench(mob/user, obj/item/wrench/W)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	SetInitDirections()
@@ -103,6 +121,8 @@
 	return 1
 
 /obj/machinery/atmospherics/components/unary/thermomachine/ui_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(interactive)
 		return ..()
 	return UI_CLOSE
@@ -115,6 +135,8 @@
 		ui.open()
 
 /obj/machinery/atmospherics/components/unary/thermomachine/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["on"] = on
 
@@ -130,6 +152,8 @@
 
 /obj/machinery/atmospherics/components/unary/thermomachine/ui_act(action, params)
 
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -168,6 +192,8 @@
 	circuit = /obj/item/circuitboard/machine/thermomachine/freezer
 
 /obj/machinery/atmospherics/components/unary/thermomachine/freezer/RefreshParts()
+	procstart = null
+	src.procstart = null
 	..()
 	var/L
 	for(var/obj/item/stock_parts/micro_laser/M in component_parts)
@@ -184,6 +210,8 @@
 	circuit = /obj/item/circuitboard/machine/thermomachine/heater
 
 /obj/machinery/atmospherics/components/unary/thermomachine/heater/RefreshParts()
+	procstart = null
+	src.procstart = null
 	..()
 	var/L
 	for(var/obj/item/stock_parts/micro_laser/M in component_parts)

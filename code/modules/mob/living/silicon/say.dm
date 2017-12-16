@@ -1,8 +1,12 @@
 
 /mob/living/silicon/get_spans()
+	procstart = null
+	src.procstart = null
 	return ..() | SPAN_ROBOT
 
 /mob/living/proc/robot_talk(message)
+	procstart = null
+	src.procstart = null
 	log_talk(src,"[key_name(src)] : [message]",LOGSAY)
 	log_message(message, INDIVIDUAL_SAY_LOG)
 	var/desig = "Default Cyborg" //ezmode for taters
@@ -29,12 +33,18 @@
 			to_chat(M, "<span class='binarysay'>[link] [rendered]</span>")
 
 /mob/living/silicon/binarycheck()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /mob/living/silicon/lingcheck()
+	procstart = null
+	src.procstart = null
 	return 0 //Borged or AI'd lings can't speak on the ling channel.
 
 /mob/living/silicon/radio(message, message_mode, list/spans, language)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. != 0)
 		return .
@@ -52,6 +62,8 @@
 	return 0
 
 /mob/living/silicon/get_message_mode(message)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(..() == MODE_HEADSET)
 		return MODE_ROBOT

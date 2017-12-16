@@ -4,15 +4,21 @@
 	var/list/datum/mind/cult = list()
 
 /proc/iscultist(mob/living/M)
+	procstart = null
+	src.procstart = null
 	return istype(M) && M.mind && M.mind.has_antag_datum(ANTAG_DATUM_CULT)
 
 /datum/objective_team/cult/proc/is_sacrifice_target(datum/mind/mind)
+	procstart = null
+	src.procstart = null
 	for(var/datum/objective/sacrifice/sac_objective in objectives)
 		if(mind == sac_objective.target)
 			return TRUE
 	return FALSE
  
 /proc/is_convertable_to_cult(mob/living/M,datum/objective_team/cult/specific_cult)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	if(M.mind)
@@ -58,6 +64,8 @@
 
 
 /datum/game_mode/cult/pre_setup()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		restricted_jobs += protected_jobs
 
@@ -85,6 +93,8 @@
 
 
 /datum/game_mode/cult/post_setup()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/cult_mind in cultists_to_cult)
 		add_cultist(cult_mind, 0, equip=TRUE)
 	..()
@@ -103,6 +113,8 @@
 		return 1
 
 /datum/game_mode/proc/remove_cultist(datum/mind/cult_mind, silent, stun)
+	procstart = null
+	src.procstart = null
 	if(cult_mind.current)
 		var/datum/antagonist/cult/cult_datum = cult_mind.has_antag_datum(ANTAG_DATUM_CULT)
 		if(!cult_datum)
@@ -114,20 +126,28 @@
 		return TRUE
 
 /datum/game_mode/proc/update_cult_icons_added(datum/mind/cult_mind)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/culthud = GLOB.huds[ANTAG_HUD_CULT]
 	culthud.join_hud(cult_mind.current)
 	set_antag_hud(cult_mind.current, "cult")
 
 /datum/game_mode/proc/update_cult_icons_removed(datum/mind/cult_mind)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/culthud = GLOB.huds[ANTAG_HUD_CULT]
 	culthud.leave_hud(cult_mind.current)
 	set_antag_hud(cult_mind.current, null)
 
 /datum/game_mode/cult/proc/check_cult_victory()
+	procstart = null
+	src.procstart = null
 	return main_cult.check_cult_victory()
 
 
 /datum/game_mode/cult/set_round_result()
+	procstart = null
+	src.procstart = null
 	..()
 	if(check_cult_victory())
 		SSticker.mode_result = "win - cult win"
@@ -137,6 +157,8 @@
 		SSticker.news_report = CULT_FAILURE
 
 /datum/game_mode/cult/proc/check_survive()
+	procstart = null
+	src.procstart = null
 	var/acolytes_survived = 0
 	for(var/datum/mind/cult_mind in cult)
 		if (cult_mind.current && cult_mind.current.stat != DEAD)
@@ -149,6 +171,8 @@
 
 
 /datum/game_mode/cult/generate_report()
+	procstart = null
+	src.procstart = null
 	return "Some stations in your sector have reported evidence of blood sacrifice and strange magic. Ties to the Wizards' Federation have been proven not to exist, and many employees \
 			have disappeared; even Central Command employees light-years away have felt strange presences and at times hysterical compulsions. Interrogations point towards this being the work of \
 			the cult of Nar-Sie. If evidence of this cult is discovered aboard your station, extreme caution and extreme vigilance must be taken going forward, and all resources should be \

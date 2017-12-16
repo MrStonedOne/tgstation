@@ -7,29 +7,43 @@
 	var/brightness_on = 3
 
 /obj/item/melee/transforming/energy/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active)
 		set_light(brightness_on)
 		START_PROCESSING(SSobj, src)
 
 /obj/item/melee/transforming/energy/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/melee/transforming/energy/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is [pick("slitting [user.p_their()] stomach open with", "falling on")] [src]! It looks like [user.p_theyre()] trying to commit seppuku!</span>")
 	return (BRUTELOSS|FIRELOSS)
 
 /obj/item/melee/transforming/energy/add_blood(list/blood_dna)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/melee/transforming/energy/is_sharp()
+	procstart = null
+	src.procstart = null
 	return active * sharpness
 
 /obj/item/melee/transforming/energy/process()
+	procstart = null
+	src.procstart = null
 	open_flame()
 
 /obj/item/melee/transforming/energy/transform_weapon(mob/living/user, supress_message_text)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(active)
@@ -42,9 +56,13 @@
 			set_light(0)
 
 /obj/item/melee/transforming/energy/is_hot()
+	procstart = null
+	src.procstart = null
 	return active * heat
 
 /obj/item/melee/transforming/energy/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return ""
 
@@ -79,6 +97,8 @@
 	light_color = "#40ceff"
 
 /obj/item/melee/transforming/energy/axe/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] swings [src] towards [user.p_their()] head! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS|FIRELOSS)
 
@@ -101,11 +121,15 @@
 	block_chance = 50
 
 /obj/item/melee/transforming/energy/sword/transform_weapon(mob/living/user, supress_message_text)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && active && item_color)
 		icon_state = "sword[item_color]"
 
 /obj/item/melee/transforming/energy/sword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return ..()
 	return 0
@@ -115,6 +139,8 @@
 	var/hitcost = 50
 
 /obj/item/melee/transforming/energy/sword/cyborg/attack(mob/M, var/mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(R.cell)
 		var/obj/item/stock_parts/cell/C = R.cell
 		if(active && !(C.use(hitcost)))
@@ -139,6 +165,8 @@
 	light_color = "#40ceff"
 
 /obj/item/melee/transforming/energy/sword/cyborg/saw/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/melee/transforming/energy/sword/saber
@@ -146,6 +174,8 @@
 	var/hacked = FALSE
 
 /obj/item/melee/transforming/energy/sword/saber/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(possible_colors))
 		var/set_color = pick(possible_colors)
@@ -153,6 +183,8 @@
 		light_color = possible_colors[set_color]
 
 /obj/item/melee/transforming/energy/sword/saber/process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(hacked)
 		var/set_color = pick(possible_colors)
@@ -172,6 +204,8 @@
 	possible_colors = list("purple" = LIGHT_COLOR_LAVENDER)
 
 /obj/item/melee/transforming/energy/sword/saber/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		if(!hacked)
 			hacked = TRUE
@@ -213,12 +247,16 @@
 
 //Most of the other special functions are handled in their own files. aka special snowflake code so kewl
 /obj/item/melee/transforming/energy/blade/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spark_system = new /datum/effect_system/spark_spread()
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
 /obj/item/melee/transforming/energy/blade/transform_weapon(mob/living/user, supress_message_text)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/melee/transforming/energy/blade/hardlight

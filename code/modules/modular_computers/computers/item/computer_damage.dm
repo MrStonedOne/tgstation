@@ -14,9 +14,13 @@
 
 
 /obj/item/device/modular_computer/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	break_apart()
 
 /obj/item/device/modular_computer/proc/break_apart()
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		physical.visible_message("\The [src] breaks apart!")
 		var/turf/newloc = get_turf(src)

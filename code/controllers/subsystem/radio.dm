@@ -6,12 +6,16 @@ SUBSYSTEM_DEF(radio)
 	var/list/saymodes = list()
 
 /datum/controller/subsystem/radio/PreInit(timeofday)
+	procstart = null
+	src.procstart = null
 	for(var/_SM in subtypesof(/datum/saymode))
 		var/datum/saymode/SM = new _SM()
 		saymodes[SM.key] = SM
 	return ..()
 
 /datum/controller/subsystem/radio/proc/add_object(obj/device, new_frequency as num, filter = null as text|null)
+	procstart = null
+	src.procstart = null
 	var/f_text = num2text(new_frequency)
 	var/datum/radio_frequency/frequency = frequencies[f_text]
 	if(!frequency)
@@ -20,6 +24,8 @@ SUBSYSTEM_DEF(radio)
 	return frequency
 
 /datum/controller/subsystem/radio/proc/remove_object(obj/device, old_frequency)
+	procstart = null
+	src.procstart = null
 	var/f_text = num2text(old_frequency)
 	var/datum/radio_frequency/frequency = frequencies[f_text]
 	if(frequency)
@@ -28,6 +34,8 @@ SUBSYSTEM_DEF(radio)
 	return 1
 
 /datum/controller/subsystem/radio/proc/return_frequency(new_frequency as num)
+	procstart = null
+	src.procstart = null
 	var/f_text = num2text(new_frequency)
 	var/datum/radio_frequency/frequency = frequencies[f_text]
 	if(!frequency)

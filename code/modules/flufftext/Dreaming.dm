@@ -12,10 +12,14 @@
 	return 1
 
 /mob/living/carbon/proc/handle_dreams()
+	procstart = null
+	src.procstart = null
 	if(prob(5) && !dreaming)
 		dream()
 
 /mob/living/carbon/proc/experience_dream(dream_image)
+	procstart = null
+	src.procstart = null
 	dreaming--
 	if(stat != UNCONSCIOUS || InCritical())
 		return

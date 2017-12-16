@@ -10,6 +10,8 @@
 /datum/round_event/spawn_swarmer
 
 /datum/round_event/spawn_swarmer/start()
+	procstart = null
+	src.procstart = null
 	if(find_swarmer())
 		return 0
 	if(!GLOB.the_gateway)
@@ -21,6 +23,8 @@
 		print_command_report(swarmer_report, announce=TRUE)
 
 /datum/round_event/spawn_swarmer/proc/find_swarmer()
+	procstart = null
+	src.procstart = null
 	for(var/i in GLOB.mob_living_list)
 		var/mob/living/L = i
 		if(istype(L, /mob/living/simple_animal/hostile/swarmer) && L.client) //If there is a swarmer with an active client, we've found our swarmer

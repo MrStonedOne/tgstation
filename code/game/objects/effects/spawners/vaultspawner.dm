@@ -5,6 +5,8 @@
 	var/minY = 2
 
 /obj/effect/vaultspawner/New(turf/location,lX = minX,uX = maxX,lY = minY,uY = maxY,type = null)
+	procstart = null
+	src.procstart = null
 	if(!type)
 		type = pick("sandstone","rock","alien")
 

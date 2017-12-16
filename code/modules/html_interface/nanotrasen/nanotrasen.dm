@@ -15,6 +15,8 @@ The client is optional and may be a /mob, /client or /html_interface_client obje
 */
 
 /datum/html_interface/nanotrasen/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	// Add appropriate CSS and set the default layout.
@@ -22,20 +24,28 @@ The client is optional and may be a /mob, /client or /html_interface_client obje
 	src.updateLayout("")
 
 /datum/html_interface/nanotrasen/updateLayout(layout)
+	procstart = null
+	src.procstart = null
 	// Wrap the layout in our custom HTML
 	return ..("<div id=\"ntbgcenter\"></div><div id=\"content\">[layout]</div>")
 
 /datum/html_interface/specificRenderTitle(datum/html_interface_client/hclient, ignore_cache = FALSE)
+	procstart = null
+	src.procstart = null
 	// Update the title in our custom header (in addition to default functionality)
 	winset(hclient.client, "browser_[REF(src)].uiTitle", list2params(list("text" = "[src.title]")))
 
 /datum/html_interface/nanotrasen/registerResources(var/list/resources = list())
+	procstart = null
+	src.procstart = null
 	resources["uiBg.png"] = 'uiBg.png'
 	resources["uiBgcenter.png"] = 'uiBgcenter.png'
 	resources["hi-nanotrasen.css"] = 'hi-nanotrasen.css'
 	..(resources)
 
 /datum/html_interface/nanotrasen/createWindow(datum/html_interface_client/hclient)
+	procstart = null
+	src.procstart = null
 	. = ..() // we want the default window
 
 	// Remove the titlebar
@@ -146,16 +156,22 @@ The client is optional and may be a /mob, /client or /html_interface_client obje
 	)))
 
 /datum/html_interface/nanotrasen/enableFor(datum/html_interface_client/hclient)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.setEyeColor("green", hclient)
 
 /datum/html_interface/nanotrasen/disableFor(datum/html_interface_client/hclient)
+	procstart = null
+	src.procstart = null
 	hclient.active = FALSE
 
 	src.setEyeColor("red", hclient)
 
 /datum/html_interface/nanotrasen/proc/setEyeColor(color, datum/html_interface_client/hclient)
+	procstart = null
+	src.procstart = null
 	hclient = getClient(hclient)
 
 	if (istype(hclient))

@@ -19,10 +19,14 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	var/waiting = 0
 
 /obj/machinery/keycard_auth/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ev = GLOB.keycard_events.addEvent("triggerEvent", CALLBACK(src, .proc/triggerEvent))
 
 /obj/machinery/keycard_auth/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.keycard_events.clearEvent("triggerEvent", ev)
 	QDEL_NULL(ev)
 	return ..()
@@ -35,6 +39,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 		ui.open()
 
 /obj/machinery/keycard_auth/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["waiting"] = waiting
 	data["auth_required"] = event_source ? event_source.event : 0
@@ -44,6 +50,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	return data
 
 /obj/machinery/keycard_auth/ui_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isanimal(user))
 		var/mob/living/simple_animal/A = user
 		if(!A.dextrous)
@@ -52,6 +60,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	return ..()
 
 /obj/machinery/keycard_auth/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..() || waiting || !allowed(usr))
 		return
 	switch(action)
@@ -74,6 +84,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 				. = TRUE
 
 /obj/machinery/keycard_auth/proc/sendEvent(event_type)
+	procstart = null
+	src.procstart = null
 	triggerer = usr
 	event = event_type
 	waiting = 1
@@ -81,20 +93,28 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 	addtimer(CALLBACK(src, .proc/eventSent), 20)
 
 /obj/machinery/keycard_auth/proc/eventSent()
+	procstart = null
+	src.procstart = null
 	triggerer = null
 	event = ""
 	waiting = 0
 
 /obj/machinery/keycard_auth/proc/triggerEvent(source)
+	procstart = null
+	src.procstart = null
 	icon_state = "auth_on"
 	event_source = source
 	addtimer(CALLBACK(src, .proc/eventTriggered), 20)
 
 /obj/machinery/keycard_auth/proc/eventTriggered()
+	procstart = null
+	src.procstart = null
 	icon_state = "auth_off"
 	event_source = null
 
 /obj/machinery/keycard_auth/proc/trigger_event(confirmer)
+	procstart = null
+	src.procstart = null
 	log_game("[key_name(triggerer)] triggered and [key_name(confirmer)] confirmed event [event]")
 	message_admins("[key_name(triggerer)] triggered and [key_name(confirmer)] confirmed event [event]")
 	switch(event)
@@ -107,6 +127,8 @@ GLOBAL_DATUM_INIT(keycard_events, /datum/events, new)
 
 GLOBAL_VAR_INIT(emergency_access, FALSE)
 /proc/make_maint_all_access()
+	procstart = null
+	src.procstart = null
 	for(var/area/maintenance/A in world)
 		for(var/obj/machinery/door/airlock/D in A)
 			D.emergency = TRUE
@@ -116,6 +138,8 @@ GLOBAL_VAR_INIT(emergency_access, FALSE)
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "enabled"))
 
 /proc/revoke_maint_all_access()
+	procstart = null
+	src.procstart = null
 	for(var/area/maintenance/A in world)
 		for(var/obj/machinery/door/airlock/D in A)
 			D.emergency = FALSE
@@ -125,6 +149,8 @@ GLOBAL_VAR_INIT(emergency_access, FALSE)
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "disabled"))
 
 /proc/toggle_bluespace_artillery()
+	procstart = null
+	src.procstart = null
 	GLOB.bsa_unlock = !GLOB.bsa_unlock
 	minor_announce("Bluespace Artillery firing protocols have been [GLOB.bsa_unlock? "unlocked" : "locked"]", "Weapons Systems Update:")
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("bluespace artillery", GLOB.bsa_unlock? "unlocked" : "locked"))

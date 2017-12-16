@@ -60,6 +60,8 @@ Difficulty: Hard
 	invisibility = 100
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. > 0 && prob(25))
 		var/obj/effect/decal/cleanable/blood/gibs/bubblegum/B = new /obj/effect/decal/cleanable/blood/gibs/bubblegum(loc)
@@ -75,13 +77,19 @@ Difficulty: Hard
 	bloodiness = 20
 
 /obj/effect/decal/cleanable/blood/gibs/bubblegum/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	move_to_delay = Clamp((health/maxHealth) * 10, 5, 10)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/OpenFire()
+	procstart = null
+	src.procstart = null
 	anger_modifier = Clamp(((maxHealth - health)/60),0,20)
 	if(charging)
 		return
@@ -105,6 +113,8 @@ Difficulty: Hard
 
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/mob/living/simple_animal/hostile/megafauna/bubblegum/B in GLOB.mob_living_list)
 		if(B != src)
@@ -116,23 +126,33 @@ Difficulty: Hard
 	internal = new/obj/item/device/gps/internal/bubblegum(src)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/grant_achievement(medaltype,scoretype)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		SSshuttle.shuttle_purchase_requirements_met |= "bubblegum"
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/do_attack_animation(atom/A, visual_effect_icon)
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		return ..()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/Goto(target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/Move()
+	procstart = null
+	src.procstart = null
 	if(charging)
 		new /obj/effect/temp_visual/decoy/fading(loc,src)
 		DestroySurroundings()
@@ -143,10 +163,14 @@ Difficulty: Hard
 		DestroySurroundings()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/warp_charge()
+	procstart = null
+	src.procstart = null
 	blood_warp()
 	charge()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/charge(bonus_charges)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	if(!T || T == loc)
 		return
@@ -161,6 +185,8 @@ Difficulty: Hard
 	throw_at(T, get_dist(src, T), 1, src, 0, callback = CALLBACK(src, .charge_end, bonus_charges))
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/charge_end(bonus_charges, list/effects_to_destroy)
+	procstart = null
+	src.procstart = null
 	charging = FALSE
 	try_bloodattack()
 	if(target)
@@ -173,6 +199,8 @@ Difficulty: Hard
 
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	if(charging)
 		if(isturf(A) || isobj(A) && A.density)
 			A.ex_act(EXPLODE_HEAVY)
@@ -180,6 +208,8 @@ Difficulty: Hard
 	..()
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/throw_impact(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		return ..()
 
@@ -197,6 +227,8 @@ Difficulty: Hard
 
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/get_mobs_on_blood()
+	procstart = null
+	src.procstart = null
 	var/list/targets = ListTargets()
 	. = list()
 	for(var/mob/living/L in targets)
@@ -205,6 +237,8 @@ Difficulty: Hard
 			. += L
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/try_bloodattack()
+	procstart = null
+	src.procstart = null
 	var/list/targets = get_mobs_on_blood()
 	if(targets.len)
 		INVOKE_ASYNC(src, .proc/bloodattack, targets, prob(50))
@@ -213,6 +247,8 @@ Difficulty: Hard
 	return FALSE
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/bloodattack(list/targets, handedness)
+	procstart = null
+	src.procstart = null
 	var/mob/living/target_one = pick_n_take(targets)
 	var/turf/target_one_turf = get_turf(target_one)
 	var/mob/living/target_two
@@ -245,6 +281,8 @@ Difficulty: Hard
 					bloodsmack(target_one_turf, handedness)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/bloodsmack(turf/T, handedness)
+	procstart = null
+	src.procstart = null
 	if(handedness)
 		new /obj/effect/temp_visual/bubblegum_hands/rightsmack(T)
 	else
@@ -259,6 +297,8 @@ Difficulty: Hard
 	sleep(3)
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/bloodgrab(turf/T, handedness)
+	procstart = null
+	src.procstart = null
 	if(handedness)
 		new /obj/effect/temp_visual/bubblegum_hands/rightpaw(T)
 		new /obj/effect/temp_visual/bubblegum_hands/rightthumb(T)
@@ -305,6 +345,8 @@ Difficulty: Hard
 	icon_state = "leftsmack"
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/blood_warp()
+	procstart = null
+	src.procstart = null
 	if(Adjacent(target))
 		return FALSE
 	var/list/can_jaunt = get_pools(get_turf(src), 1)
@@ -342,12 +384,16 @@ Difficulty: Hard
 	return FALSE
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/get_pools(turf/T, range)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/effect/decal/cleanable/nearby in view(T, range))
 		if(nearby.can_bloodcrawl_in())
 			. += nearby
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/blood_spray()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>[src] sprays a stream of gore!</span>")
 	var/range = 6 + round(anger_modifier * 0.4)
 	var/turf/previousturf = get_turf(src)
@@ -371,9 +417,13 @@ Difficulty: Hard
 	bloodiness = 0
 
 /obj/effect/decal/cleanable/blood/bubblegum/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/simple_animal/hostile/megafauna/bubblegum/proc/slaughterlings()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>[src] summons a shoal of slaughterlings!</span>")
 	var/max_amount = 6
 	for(var/H in get_pools(get_turf(src), 1))
@@ -397,6 +447,8 @@ Difficulty: Hard
 	weather_immunities = list("lava","ash")
 
 /mob/living/simple_animal/hostile/asteroid/hivelordbrood/slaughter/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover, /mob/living/simple_animal/hostile/megafauna/bubblegum))
 		return 1
 	return 0

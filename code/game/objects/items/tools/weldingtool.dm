@@ -33,6 +33,8 @@
 	toolspeed = 1
 
 /obj/item/weldingtool/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(max_fuel)
 	reagents.add_reagent("welding_fuel", max_fuel)
@@ -40,6 +42,8 @@
 
 
 /obj/item/weldingtool/proc/update_torch()
+	procstart = null
+	src.procstart = null
 	if(welding)
 		add_overlay("[initial(icon_state)]-on")
 		item_state = "[initial(item_state)]1"
@@ -48,6 +52,8 @@
 
 
 /obj/item/weldingtool/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(change_icons)
 		var/ratio = get_fuel() / max_fuel
@@ -58,6 +64,8 @@
 
 
 /obj/item/weldingtool/process()
+	procstart = null
+	src.procstart = null
 	switch(welding)
 		if(0)
 			force = 3
@@ -80,11 +88,15 @@
 
 
 /obj/item/weldingtool/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] welds [user.p_their()] every orifice closed! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (FIRELOSS)
 
 
 /obj/item/weldingtool/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		flamethrower_screwdriver(I, user)
 	else if(istype(I, /obj/item/stack/rods))
@@ -94,12 +106,16 @@
 	update_icon()
 
 /obj/item/weldingtool/proc/explode()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(loc)
 	var/plasmaAmount = reagents.get_reagent_amount("plasma")
 	dyn_explosion(T, plasmaAmount/5)//20 plasma in a standard welder has a 4 power explosion. no breaches, but enough to kill/dismember holder
 	qdel(src)
 
 /obj/item/weldingtool/attack(mob/living/carbon/human/H, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(H))
 		return ..()
 
@@ -118,6 +134,8 @@
 
 
 /obj/item/weldingtool/afterattack(atom/O, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(!status && istype(O, /obj/item/reagent_containers) && O.is_open_container())
@@ -139,6 +157,8 @@
 
 
 /obj/item/weldingtool/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(src.reagents.has_reagent("plasma"))
 		message_admins("[key_name_admin(user)] activated a rigged welder.")
 		explode()
@@ -151,11 +171,15 @@
 
 //Returns the amount of fuel in the welder
 /obj/item/weldingtool/proc/get_fuel()
+	procstart = null
+	src.procstart = null
 	return reagents.get_reagent_amount("welding_fuel")
 
 
 //Removes fuel from the welding tool. If a mob is passed, it will try to flash the mob's eyes. This should probably be renamed to use()
 /obj/item/weldingtool/proc/remove_fuel(amount = 1, mob/living/M = null)
+	procstart = null
+	src.procstart = null
 	if(!welding || !check_fuel())
 		return 0
 	if(amount)
@@ -174,6 +198,8 @@
 
 //Turns off the welder if there is no more fuel (does this really need to be its own proc?)
 /obj/item/weldingtool/proc/check_fuel(mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_fuel() <= 0 && welding)
 		switched_on(user)
 		update_icon()
@@ -187,6 +213,8 @@
 
 //Switches the welder on
 /obj/item/weldingtool/proc/switched_on(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!status)
 		to_chat(user, "<span class='warning'>[src] can't be turned on while unsecured!</span>")
 		return
@@ -210,6 +238,8 @@
 
 //Switches the welder off
 /obj/item/weldingtool/proc/switched_off(mob/user)
+	procstart = null
+	src.procstart = null
 	welding = 0
 	set_light(0)
 
@@ -220,18 +250,26 @@
 
 
 /obj/item/weldingtool/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "It contains [get_fuel()] unit\s of fuel out of [max_fuel].")
 
 /obj/item/weldingtool/is_hot()
+	procstart = null
+	src.procstart = null
 	return welding * heat
 
 //Returns whether or not the welding tool is currently on.
 /obj/item/weldingtool/proc/isOn()
+	procstart = null
+	src.procstart = null
 	return welding
 
 
 /obj/item/weldingtool/proc/flamethrower_screwdriver(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(welding)
 		to_chat(user, "<span class='warning'>Turn it off first!</span>")
 		return
@@ -245,6 +283,8 @@
 	add_fingerprint(user)
 
 /obj/item/weldingtool/proc/flamethrower_rods(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!status)
 		var/obj/item/stack/rods/R = I
 		if (R.use(1))
@@ -259,6 +299,8 @@
 			to_chat(user, "<span class='warning'>You need one rod to start building a flamethrower!</span>")
 
 /obj/item/weldingtool/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(welding && remove_fuel(1, user))
 		. = "<span class='notice'>[user] casually lights [A] with [src], what a badass.</span>"
 	else
@@ -277,6 +319,8 @@
 	toolspeed = 0.5
 
 /obj/item/weldingtool/largetank/flamethrower_screwdriver()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -290,6 +334,8 @@
 	change_icons = 0
 
 /obj/item/weldingtool/mini/flamethrower_screwdriver()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/weldingtool/abductor
@@ -302,6 +348,8 @@
 	change_icons = 0
 
 /obj/item/weldingtool/abductor/process()
+	procstart = null
+	src.procstart = null
 	if(get_fuel() <= max_fuel)
 		reagents.add_reagent("welding_fuel", 1)
 	..()
@@ -337,6 +385,8 @@
 
 
 /obj/item/weldingtool/experimental/process()
+	procstart = null
+	src.procstart = null
 	..()
 	if(get_fuel() < max_fuel && nextrefueltick < world.time)
 		nextrefueltick = world.time + 10

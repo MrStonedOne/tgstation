@@ -26,27 +26,39 @@
 	var/active = 0
 
 /obj/item/holo/esword/green/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	item_color = "green"
 
 
 /obj/item/holo/esword/red/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	item_color = "red"
 
 /obj/item/holo/esword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return ..()
 	return 0
 
 /obj/item/holo/esword/attack(target as mob, mob/user as mob)
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/item/holo/esword/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	item_color = pick("red","blue","green","purple")
 
 /obj/item/holo/esword/attack_self(mob/living/user as mob)
+	procstart = null
+	src.procstart = null
 	active = !active
 	if (active)
 		force = 30
@@ -81,6 +93,8 @@
 	desc = "Used for playing the most violent and degrading of childhood games."
 
 /obj/item/toy/beach_ball/holoball/dodgeball/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	..()
 	if((ishuman(hit_atom)))
 		var/mob/living/carbon/M = hit_atom
@@ -103,11 +117,15 @@
 	density = TRUE
 
 /obj/structure/holohoop/attackby(obj/item/W as obj, mob/user as mob, params)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src,user)<2)
 		if(user.transferItemToLoc(W, drop_location()))
 			visible_message("<span class='warning'> [user] dunks [W] into \the [src]!</span>")
 
 /obj/structure/holohoop/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.pulling && user.a_intent == INTENT_GRAB && isliving(user.pulling))
 		var/mob/living/L = user.pulling
 		if(user.grab_state < GRAB_AGGRESSIVE)
@@ -121,6 +139,8 @@
 		..()
 
 /obj/structure/holohoop/hitby(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if (isitem(AM) && !istype(AM,/obj/item/projectile))
 		if(prob(50))
 			AM.forceMove(get_turf(src))
@@ -154,17 +174,25 @@
 	power_channel = ENVIRON
 
 /obj/machinery/readybutton/attack_ai(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "The station AI is not to interact with these devices.")
 	return
 
 /obj/machinery/readybutton/attack_paw(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='warning'>You are too primitive to use this device!</span>")
 	return
 
 /obj/machinery/readybutton/attackby(obj/item/W as obj, mob/user as mob, params)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "The device is a solid button, there's nothing you can do with it!")
 
 /obj/machinery/readybutton/attack_hand(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if(user.stat || stat & (NOPOWER|BROKEN))
 		to_chat(user, "<span class='warning'>This device is not powered!</span>")
 		return
@@ -192,6 +220,8 @@
 		begin_event()
 
 /obj/machinery/readybutton/update_icon()
+	procstart = null
+	src.procstart = null
 	if(ready)
 		icon_state = "auth_on"
 	else
@@ -199,6 +229,8 @@
 
 /obj/machinery/readybutton/proc/begin_event()
 
+	procstart = null
+	src.procstart = null
 	eventstarted = TRUE
 
 	for(var/obj/structure/window/W in currentarea)
@@ -211,6 +243,8 @@
 /obj/machinery/conveyor/holodeck
 
 /obj/machinery/conveyor/holodeck/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!user.transferItemToLoc(I, drop_location()))
 		return ..()
 

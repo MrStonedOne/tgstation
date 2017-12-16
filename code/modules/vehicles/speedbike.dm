@@ -3,6 +3,8 @@
 	name = "Generic Space Vehicle!"
 
 /obj/vehicle/ridden/space/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
 	D.override_allow_spacemove = TRUE
@@ -16,6 +18,8 @@
 	var/mutable_appearance/overlay
 
 /obj/vehicle/ridden/space/speedbike/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	overlay = mutable_appearance(icon, overlay_state, ABOVE_MOB_LAYER)
 	add_overlay(overlay)
@@ -28,6 +32,8 @@
 	D.set_vehicle_dir_offsets(WEST, -18, 0)
 
 /obj/vehicle/ridden/space/speedbike/Move(newloc,move_dir)
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs())
 		new /obj/effect/temp_visual/dir_setting/speedbike_trail(loc,move_dir)
 	. = ..()
@@ -51,6 +57,8 @@
 	pixel_x = -48
 
 /obj/vehicle/ridden/space/speedwagon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay(overlay)
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
@@ -63,6 +71,8 @@
 		D.set_vehicle_dir_layer(i, BELOW_MOB_LAYER)
 
 /obj/vehicle/ridden/space/speedwagon/Collide(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(A.density && has_buckled_mobs())
 		var/atom/throw_target = get_edge_target_turf(A, dir)
@@ -81,6 +91,8 @@
 				playsound(src, 'sound/effects/bang.ogg', 50, 1)
 
 /obj/vehicle/ridden/space/speedwagon/Moved()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_buckled_mobs())
 		for(var/atom/A in range(2, src))

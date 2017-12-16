@@ -14,33 +14,45 @@
 	var/on = FALSE
 
 /obj/machinery/chem_heater/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/chem_heater/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(A == beaker)
 		beaker = null
 		update_icon()
 
 /obj/machinery/chem_heater/update_icon()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		icon_state = "mixer1b"
 	else
 		icon_state = "mixer0b"
 
 /obj/machinery/chem_heater/proc/eject_beaker()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		beaker.forceMove(drop_location())
 		beaker = null
 		update_icon()
 
 /obj/machinery/chem_heater/RefreshParts()
+	procstart = null
+	src.procstart = null
 	heater_coefficient = 0.1
 	for(var/obj/item/stock_parts/micro_laser/M in component_parts)
 		heater_coefficient *= M.rating
 
 /obj/machinery/chem_heater/process()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & NOPOWER)
 		return
@@ -55,6 +67,8 @@
 			beaker.reagents.handle_reactions()
 
 /obj/machinery/chem_heater/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "mixer0b", "mixer0b", I))
 		return
 
@@ -79,6 +93,8 @@
 	return ..()
 
 /obj/machinery/chem_heater/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	eject_beaker()
 	return ..()
 
@@ -90,6 +106,8 @@
 		ui.open()
 
 /obj/machinery/chem_heater/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["targetTemp"] = target_temperature
 	data["isActive"] = on
@@ -107,6 +125,8 @@
 	return data
 
 /obj/machinery/chem_heater/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)

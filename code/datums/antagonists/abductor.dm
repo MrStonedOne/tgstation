@@ -21,6 +21,8 @@
 	greet_text = "Use your stealth technology and equipment to incapacitate humans for your scientist to retrieve."
 
 /datum/antagonist/abductor/create_team(datum/objective_team/abductor_team/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		return
 	if(!istype(new_team))
@@ -28,9 +30,13 @@
 	team = new_team
 
 /datum/antagonist/abductor/get_team()
+	procstart = null
+	src.procstart = null
 	return team
 
 /datum/antagonist/abductor/on_gain()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.abductors += owner
 	owner.special_role = "[name] [sub_role]"
 	owner.objectives += team.objectives
@@ -38,6 +44,8 @@
 	return ..()
 
 /datum/antagonist/abductor/on_removal()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.abductors -= owner
 	owner.objectives -= team.objectives
 	if(owner.current)
@@ -46,12 +54,16 @@
 	return ..()
 
 /datum/antagonist/abductor/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner.current, "<span class='notice'>You are the [owner.special_role]!</span>")
 	to_chat(owner.current, "<span class='notice'>With the help of your teammate, kidnap and experiment on station crew members!</span>")
 	to_chat(owner.current, "<span class='notice'>[greet_text]</span>")
 	owner.announce_objectives()
 
 /datum/antagonist/abductor/proc/finalize_abductor()
+	procstart = null
+	src.procstart = null
 	//Equip
 	var/mob/living/carbon/human/H = owner.current
 	H.set_species(/datum/species/abductor)
@@ -67,6 +79,8 @@
 	SSticker.mode.update_abductor_icons_added(owner)
 
 /datum/antagonist/abductor/scientist/finalize_abductor()
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/carbon/human/H = owner.current
 	var/datum/species/abductor/A = H.dna.species
@@ -79,14 +93,20 @@
 	var/list/datum/mind/abductees = list()
 
 /datum/objective_team/abductor_team/is_solo()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /datum/objective_team/abductor_team/proc/add_objective(datum/objective/O)
+	procstart = null
+	src.procstart = null
 	O.team = src
 	O.update_explanation_text()
 	objectives += O
 
 /datum/objective_team/abductor_team/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 
 	var/won = TRUE
@@ -111,15 +131,21 @@
 	roundend_category = "abductees"
 
 /datum/antagonist/abductee/on_gain()
+	procstart = null
+	src.procstart = null
 	give_objective()
 	. = ..()
 
 /datum/antagonist/abductee/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='warning'><b>Your mind snaps!</b></span>")
 	to_chat(owner, "<big><span class='warning'><b>You can't remember how you got here...</b></span></big>")
 	owner.announce_objectives()
 
 /datum/antagonist/abductee/proc/give_objective()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner.current
 	if(istype(H))
 		H.gain_trauma_type(BRAIN_TRAUMA_MILD)
@@ -129,7 +155,11 @@
 	owner.objectives += objectives
 	
 /datum/antagonist/abductee/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	SSticker.mode.update_abductor_icons_added(mob_override ? mob_override.mind : owner)
 
 /datum/antagonist/abductee/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	SSticker.mode.update_abductor_icons_removed(mob_override ? mob_override.mind : owner)

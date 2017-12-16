@@ -14,6 +14,8 @@
 
 
 /obj/machinery/mass_driver/proc/drive(amount)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 	use_power(500)
@@ -31,6 +33,8 @@
 
 
 /obj/machinery/mass_driver/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 	drive()

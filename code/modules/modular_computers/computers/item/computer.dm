@@ -48,6 +48,8 @@
 
 
 /obj/item/device/modular_computer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	if(!physical)
@@ -57,6 +59,8 @@
 	update_icon()
 
 /obj/item/device/modular_computer/Destroy()
+	procstart = null
+	src.procstart = null
 	kill_program(forced = TRUE)
 	STOP_PROCESSING(SSobj, src)
 	for(var/H in all_components)
@@ -71,6 +75,8 @@
 
 
 /obj/item/device/modular_computer/proc/add_verb(var/path)
+	procstart = null
+	src.procstart = null
 	switch(path)
 		if(MC_CARD)
 			verbs += /obj/item/device/modular_computer/proc/eject_id
@@ -80,6 +86,8 @@
 			verbs += /obj/item/device/modular_computer/proc/eject_card
 
 /obj/item/device/modular_computer/proc/remove_verb(path)
+	procstart = null
+	src.procstart = null
 	switch(path)
 		if(MC_CARD)
 			verbs -= /obj/item/device/modular_computer/proc/eject_id
@@ -90,6 +98,8 @@
 
 // Eject ID card from computer, if it has ID slot with card inside.
 /obj/item/device/modular_computer/proc/eject_id()
+	procstart = null
+	src.procstart = null
 	set name = "Eject ID"
 	set category = "Object"
 	set src in view(1)
@@ -102,6 +112,8 @@
 
 // Eject ID card from computer, if it has ID slot with card inside.
 /obj/item/device/modular_computer/proc/eject_card()
+	procstart = null
+	src.procstart = null
 	set name = "Eject Intellicard"
 	set category = "Object"
 
@@ -114,6 +126,8 @@
 
 // Eject ID card from computer, if it has ID slot with card inside.
 /obj/item/device/modular_computer/proc/eject_disk()
+	procstart = null
+	src.procstart = null
 	set name = "Eject Data Disk"
 	set category = "Object"
 
@@ -126,6 +140,8 @@
 			portable_drive.verb_pickup()
 
 /obj/item/device/modular_computer/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(issilicon(user))
 		return
@@ -146,27 +162,37 @@
 
 // Gets IDs/access levels from card slot. Would be useful when/if PDAs would become modular PCs.
 /obj/item/device/modular_computer/GetAccess()
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/card_slot/card_slot = all_components[MC_CARD]
 	if(card_slot)
 		return card_slot.GetAccess()
 	return ..()
 
 /obj/item/device/modular_computer/GetID()
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/card_slot/card_slot = all_components[MC_CARD]
 	if(card_slot)
 		return card_slot.GetID()
 	return ..()
 
 /obj/item/device/modular_computer/MouseDrop(obj/over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	var/mob/M = usr
 	if((!istype(over_object, /obj/screen)) && usr.canUseTopic(src))
 		return attack_self(M)
 	return
 
 /obj/item/device/modular_computer/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_self(user)
 
 /obj/item/device/modular_computer/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(enabled)
 		ui_interact(user)
 	else if(IsAdminGhost(user))
@@ -175,6 +201,8 @@
 			turn_on(user)
 
 /obj/item/device/modular_computer/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		to_chat(user, "<span class='warning'>\The [src] was already emagged.</span>")
 		return 0
@@ -184,6 +212,8 @@
 		return 1
 
 /obj/item/device/modular_computer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(obj_integrity <= integrity_failure)
 		to_chat(user, "<span class='danger'>It is heavily damaged!</span>")
@@ -191,6 +221,8 @@
 		to_chat(user, "<span class='warning'>It is damaged.</span>")
 
 /obj/item/device/modular_computer/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(!enabled)
 		icon_state = icon_state_unpowered
@@ -208,12 +240,16 @@
 
 // On-click handling. Turns on the computer if it's off and opens the GUI.
 /obj/item/device/modular_computer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(enabled)
 		ui_interact(user)
 	else
 		turn_on(user)
 
 /obj/item/device/modular_computer/proc/turn_on(mob/user)
+	procstart = null
+	src.procstart = null
 	var/issynth = issilicon(user) // Robots and AIs get different activation messages.
 	if(obj_integrity <= integrity_failure)
 		if(issynth)
@@ -243,6 +279,8 @@
 
 // Process currently calls handle_power(), may be expanded in future if more things are added.
 /obj/item/device/modular_computer/process()
+	procstart = null
+	src.procstart = null
 	if(!enabled) // The computer is turned off
 		last_power_usage = 0
 		return 0
@@ -279,6 +317,8 @@
 
 // Function used by NanoUI's to obtain data for header. All relevant entries begin with "PC_"
 /obj/item/device/modular_computer/proc/get_header_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/obj/item/computer_hardware/battery/battery_module = all_components[MC_CELL]
@@ -337,6 +377,8 @@
 
 // Relays kill program request to currently active program. Use this to quit current program.
 /obj/item/device/modular_computer/proc/kill_program(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(active_program)
 		active_program.kill_program(forced)
 		active_program = null
@@ -347,6 +389,8 @@
 
 // Returns 0 for No Signal, 1 for Low Signal and 2 for Good Signal. 3 is for wired connection (always-on)
 /obj/item/device/modular_computer/proc/get_ntnet_status(specific_action = 0)
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/network_card/network_card = all_components[MC_NET]
 	if(network_card)
 		return network_card.get_signal(specific_action)
@@ -354,12 +398,16 @@
 		return 0
 
 /obj/item/device/modular_computer/proc/add_log(text)
+	procstart = null
+	src.procstart = null
 	if(!get_ntnet_status())
 		return FALSE
 	var/obj/item/computer_hardware/network_card/network_card = all_components[MC_NET]
 	return SSnetworks.station_network.add_log(text, network_card)
 
 /obj/item/device/modular_computer/proc/shutdown_computer(loud = 1)
+	procstart = null
+	src.procstart = null
 	kill_program(forced = TRUE)
 	for(var/datum/computer_file/program/P in idle_threads)
 		P.kill_program(forced = TRUE)
@@ -371,6 +419,8 @@
 
 
 /obj/item/device/modular_computer/attackby(obj/item/W as obj, mob/user as mob)
+	procstart = null
+	src.procstart = null
 	// Insert items into the components
 	for(var/h in all_components)
 		var/obj/item/computer_hardware/H = all_components[h]
@@ -438,10 +488,14 @@
 
 // Used by processor to relay qdel() to machinery type.
 /obj/item/device/modular_computer/proc/relay_qdel()
+	procstart = null
+	src.procstart = null
 	return
 
 // Perform adjacency checks on our physical counterpart, if any.
 /obj/item/device/modular_computer/Adjacent(atom/neighbor)
+	procstart = null
+	src.procstart = null
 	if(physical && physical != src)
 		return physical.Adjacent(neighbor)
 	return ..()

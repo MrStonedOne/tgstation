@@ -23,6 +23,8 @@
 
 /obj/machinery/telecomms/bus/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
 
+	procstart = null
+	src.procstart = null
 	if(is_freq_listening(signal))
 		if(change_frequency)
 			if(signal.frequency != FREQ_SYNDICATE)
@@ -76,6 +78,8 @@
 	autolinkers = list("processor4", "engineering", "common")
 
 /obj/machinery/telecomms/bus/preset_four/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i = MIN_FREQ, i <= MAX_FREQ, i += 2)
 		freq_listening |= i

@@ -1,5 +1,7 @@
 // Ensure the frequency is within bounds of what it should be sending/recieving at
 /proc/sanitize_frequency(frequency, free = FALSE)
+	procstart = null
+	src.procstart = null
 	. = round(frequency)
 	if(free)
 		. = Clamp(frequency, MIN_FREE_FREQ, MAX_FREE_FREQ)
@@ -10,5 +12,7 @@
 
 // Format frequency by moving the decimal.
 /proc/format_frequency(frequency)
+	procstart = null
+	src.procstart = null
 	frequency = text2num(frequency)
 	return "[round(frequency / 10)].[frequency % 10]"

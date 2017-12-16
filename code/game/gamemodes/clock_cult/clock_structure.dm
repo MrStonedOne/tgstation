@@ -19,20 +19,28 @@
 	var/immune_to_servant_attacks = FALSE //if we ignore attacks from servants of ratvar instead of taking damage
 
 /obj/structure/destructible/clockwork/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	change_construction_value(construction_value)
 	GLOB.all_clockwork_objects += src
 
 /obj/structure/destructible/clockwork/Destroy()
+	procstart = null
+	src.procstart = null
 	change_construction_value(-construction_value)
 	GLOB.all_clockwork_objects -= src
 	return ..()
 
 /obj/structure/destructible/clockwork/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens || GLOB.clockwork_gateway_activated)
 		obj_integrity = max_integrity
 
 /obj/structure/destructible/clockwork/narsie_act()
+	procstart = null
+	src.procstart = null
 	if(take_damage(rand(25, 50), BRUTE) && src) //if we still exist
 		var/previouscolor = color
 		color = "#960000"
@@ -40,6 +48,8 @@
 		addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 8)
 
 /obj/structure/destructible/clockwork/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/can_see_clockwork = is_servant_of_ratvar(user) || isobserver(user)
 	if(can_see_clockwork && clockwork_desc)
 		desc = clockwork_desc
@@ -49,6 +59,8 @@
 		to_chat(user, "<span class='notice'>[src] is [anchored ? "":"not "]secured to the floor.</span>")
 
 /obj/structure/destructible/clockwork/examine_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		var/t_It = p_they(TRUE)
 		var/t_is = p_are()
@@ -60,34 +72,48 @@
 	return ..()
 
 /obj/structure/destructible/clockwork/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user) && immune_to_servant_attacks)
 		return FALSE
 	return ..()
 
 /obj/structure/destructible/clockwork/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 20
 
 /obj/structure/destructible/clockwork/attack_generic(mob/user, damage_amount = 0, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user) && immune_to_servant_attacks)
 		return FALSE
 	return ..()
 
 /obj/structure/destructible/clockwork/mech_melee_attack(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	if(M.occupant && is_servant_of_ratvar(M.occupant) && immune_to_servant_attacks)
 		return FALSE
 	return ..()
 
 /obj/structure/destructible/clockwork/proc/get_efficiency_mod()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		return 2
 	. = max(sqrt(obj_integrity/max(max_integrity, 1)), 0.5)
 	. = round(., 0.01)
 
 /obj/structure/destructible/clockwork/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user))
 		attack_hand(user)
 
 /obj/structure/destructible/clockwork/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(M))
 		attack_hand(M)
 		return FALSE
@@ -95,6 +121,8 @@
 		return ..()
 
 /obj/structure/destructible/clockwork/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user) && istype(I, /obj/item/wrench) && unanchored_icon)
 		if(default_unfasten_wrench(user, I, 50) == SUCCESSFUL_UNFASTEN)
 			update_anchored(user)
@@ -102,11 +130,15 @@
 	return ..()
 
 /obj/structure/destructible/clockwork/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user) && immune_to_servant_attacks)
 		return FALSE
 	return ..()
 
 /obj/structure/destructible/clockwork/proc/update_anchored(mob/user, do_damage)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		icon_state = initial(icon_state)
 	else
@@ -117,6 +149,8 @@
 			to_chat(user, "<span class='warning'>As you unsecure [src] from the floor, you see cracks appear in its surface!</span>")
 
 /obj/structure/destructible/clockwork/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(anchored && unanchored_icon)
 		anchored = FALSE
 		update_anchored(null, obj_integrity > max_integrity * 0.25)
@@ -132,14 +166,20 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF | FREEZE_PROOF
 
 /obj/structure/destructible/clockwork/massive/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.poi_list += src
 
 /obj/structure/destructible/clockwork/massive/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list -= src
 	return ..()
 
 /obj/structure/destructible/clockwork/massive/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -152,6 +192,8 @@
 	var/inactive_icon = null //icon_state while process() isn't being called
 
 /obj/structure/destructible/clockwork/powered/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		if(!can_access_clockwork_power(src))
@@ -160,15 +202,21 @@
 			to_chat(user, "<span class='brass'>It has access to <b>[DisplayPower(get_clockwork_power())]</b> of power.</span>")
 
 /obj/structure/destructible/clockwork/powered/Destroy()
+	procstart = null
+	src.procstart = null
 	SSfastprocess.processing -= src
 	SSobj.processing -= src
 	return ..()
 
 /obj/structure/destructible/clockwork/powered/process()
+	procstart = null
+	src.procstart = null
 	var/powered = can_access_clockwork_power(src)
 	return powered == PROCESS_KILL ? 25 : powered //make sure we don't accidentally return the arbitrary PROCESS_KILL define
 
 /obj/structure/destructible/clockwork/powered/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(!silent)
 			to_chat(user, "<span class='warning'>[src] needs to be disabled before it can be unsecured!</span>")
@@ -176,6 +224,8 @@
 	return ..()
 
 /obj/structure/destructible/clockwork/powered/proc/toggle(fast_process, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		if(!is_servant_of_ratvar(user))
 			return FALSE
@@ -199,10 +249,14 @@
 	return TRUE
 
 /obj/structure/destructible/clockwork/powered/proc/forced_disable(bad_effects)
+	procstart = null
+	src.procstart = null
 	if(active)
 		toggle()
 
 /obj/structure/destructible/clockwork/powered/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(forced_disable(TRUE))
 		new /obj/effect/temp_visual/emp(loc)
 

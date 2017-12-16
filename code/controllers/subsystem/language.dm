@@ -4,6 +4,8 @@ SUBSYSTEM_DEF(language)
 	flags = SS_NO_FIRE
 
 /datum/controller/subsystem/language/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	for(var/L in subtypesof(/datum/language))
 		var/datum/language/language = L
 		if(!initial(language.key))

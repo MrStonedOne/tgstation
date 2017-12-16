@@ -14,15 +14,21 @@
 
 
 /datum/map_template/shuttle/proc/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/map_template/shuttle/New()
+	procstart = null
+	src.procstart = null
 	shuttle_id = "[port_id]_[suffix]"
 	mappath = "[prefix][shuttle_id].dmm"
 	. = ..()
 
 //Whatever special stuff you want
 /datum/map_template/shuttle/proc/on_bought()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/map_template/shuttle/emergency
@@ -50,10 +56,14 @@
 	credit_cost = -7500
 
 /datum/map_template/shuttle/emergency/airless/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	// first 10 minutes only
 	return world.time - SSticker.round_start_time < 6000
 
 /datum/map_template/shuttle/emergency/airless/on_bought()
+	procstart = null
+	src.procstart = null
 	//enable buying engines from cargo
 	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/shuttle_engine]
 	P.special_enabled = TRUE
@@ -109,6 +119,8 @@
 	credit_cost = 10000
 
 /datum/map_template/shuttle/emergency/arena/prerequisites_met()
+	procstart = null
+	src.procstart = null
 	if("bubblegum" in SSshuttle.shuttle_purchase_requirements_met)
 		return TRUE
 	return FALSE

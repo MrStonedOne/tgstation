@@ -49,6 +49,8 @@
 	var/ui_style_icon = 'icons/mob/screen_midnight.dmi'
 
 /datum/hud/New(mob/owner , ui_style = 'icons/mob/screen_midnight.dmi')
+	procstart = null
+	src.procstart = null
 	mymob = owner
 
 	ui_style_icon = ui_style
@@ -66,6 +68,8 @@
 		instance.backdrop(mymob)
 
 /datum/hud/Destroy()
+	procstart = null
+	src.procstart = null
 	if(mymob.hud_used == src)
 		mymob.hud_used = null
 
@@ -127,12 +131,16 @@
 	return ..()
 
 /mob/proc/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud(src)
 		update_sight()
 
 //Version denotes which style should be displayed. blank or 0 means "next version"
 /datum/hud/proc/show_hud(version = 0,mob/viewmob)
+	procstart = null
+	src.procstart = null
 	if(!ismob(mymob))
 		return 0
 	var/mob/screenmob = viewmob || mymob
@@ -207,22 +215,32 @@
 	update_parallax_pref(screenmob)
 
 /datum/hud/human/show_hud(version = 0,mob/viewmob)
+	procstart = null
+	src.procstart = null
 	..()
 	hidden_inventory_update(viewmob)
 
 /datum/hud/robot/show_hud(version = 0, mob/viewmob)
+	procstart = null
+	src.procstart = null
 	..()
 	update_robot_modules_display()
 
 /datum/hud/proc/hidden_inventory_update()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/hud/proc/persistent_inventory_update(mob/viewer)
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 
 //Triggered when F12 is pressed (Unless someone changed something in the DMF)
 /mob/verb/button_pressed_F12()
+	procstart = null
+	src.procstart = null
 	set name = "F12"
 	set hidden = 1
 
@@ -237,6 +255,8 @@
 //not really worth jugglying existing ones so we just scrap+rebuild
 //9/10 this is only called once per mob and only for 2 hands
 /datum/hud/proc/build_hand_slots(ui_style = 'icons/mob/screen_midnight.dmi')
+	procstart = null
+	src.procstart = null
 	for(var/h in hand_slots)
 		var/obj/screen/inventory/hand/H = hand_slots[h]
 		if(H)
@@ -265,4 +285,6 @@
 		show_hud(HUD_STYLE_STANDARD,mymob)
 
 /datum/hud/proc/update_locked_slots()
+	procstart = null
+	src.procstart = null
 	return

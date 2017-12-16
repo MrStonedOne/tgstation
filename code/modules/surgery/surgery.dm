@@ -16,6 +16,8 @@
 	var/requires_real_bodypart = 0							//Some surgeries don't work on limbs that don't really exist
 
 /datum/surgery/New(surgery_target, surgery_location, surgery_bodypart)
+	procstart = null
+	src.procstart = null
 	..()
 	if(surgery_target)
 		target = surgery_target
@@ -26,6 +28,8 @@
 			operated_bodypart = surgery_bodypart
 
 /datum/surgery/Destroy()
+	procstart = null
+	src.procstart = null
 	if(target)
 		target.surgeries -= src
 	target = null
@@ -34,12 +38,16 @@
 
 
 /datum/surgery/proc/can_start(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	// if 0 surgery wont show up in list
 	// put special restrictions here
 	return 1
 
 
 /datum/surgery/proc/next_step(mob/user)
+	procstart = null
+	src.procstart = null
 	if(step_in_progress)
 		return 1
 
@@ -50,10 +58,14 @@
 	return 0
 
 /datum/surgery/proc/get_surgery_step()
+	procstart = null
+	src.procstart = null
 	var/step_type = steps[status]
 	return new step_type
 
 /datum/surgery/proc/get_surgery_next_step()
+	procstart = null
+	src.procstart = null
 	if(status < steps.len)
 		var/step_type = steps[status + 1]
 		return new step_type
@@ -61,11 +73,15 @@
 		return null
 
 /datum/surgery/proc/complete()
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "surgeries_completed", 1, type)
 	qdel(src)
 
 
 /datum/surgery/proc/get_propability_multiplier()
+	procstart = null
+	src.procstart = null
 	var/propability = 0.5
 	var/turf/T = get_turf(target)
 

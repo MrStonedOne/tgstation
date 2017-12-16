@@ -70,10 +70,14 @@
 
 
 /obj/item/toy/crayon/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is jamming [src] up [user.p_their()] nose and into [user.p_their()] brain. It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS|OXYLOSS)
 
 /obj/item/toy/crayon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Makes crayons identifiable in things like grinders
 	if(name == "crayon")
@@ -85,6 +89,8 @@
 	refill()
 
 /obj/item/toy/crayon/proc/refill()
+	procstart = null
+	src.procstart = null
 	if(charges == -1)
 		charges_left = 100
 	else
@@ -105,6 +111,8 @@
 		reagents.add_reagent(reagent, amount)
 
 /obj/item/toy/crayon/proc/use_charges(mob/user, amount = 1, requires_full = TRUE)
+	procstart = null
+	src.procstart = null
 	// Returns number of charges actually used
 	if(charges == -1)
 		. = amount
@@ -117,6 +125,8 @@
 			charges_left -= .
 
 /obj/item/toy/crayon/proc/check_empty(mob/user, amount = 1, requires_full = TRUE)
+	procstart = null
+	src.procstart = null
 	// When eating a crayon, check_empty() can be called twice producing
 	// two messages unless we check for being deleted first
 	if(QDELETED(src))
@@ -136,6 +146,8 @@
 		. = TRUE
 
 /obj/item/toy/crayon/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.hands_state)
+	procstart = null
+	src.procstart = null
 	// tgui is a plague upon this codebase
 
 	SStgui.try_update_ui(user, src, ui_key, ui, force_open)
@@ -145,6 +157,8 @@
 		ui.open()
 
 /obj/item/toy/crayon/spraycan/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.canUseTopic(src, be_close=TRUE))
 		if(has_cap)
 			is_capped = !is_capped
@@ -152,6 +166,8 @@
 			update_icon()
 
 /obj/item/toy/crayon/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["drawables"] = list()
 	var/list/D = data["drawables"]
@@ -202,6 +218,8 @@
 	return data
 
 /obj/item/toy/crayon/ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -233,6 +251,8 @@
 	update_icon()
 
 /obj/item/toy/crayon/proc/crayon_text_strip(text)
+	procstart = null
+	src.procstart = null
 	var/list/base = string2charlist(lowertext(text))
 	var/list/out = list()
 	for(var/a in base)
@@ -241,6 +261,8 @@
 	return jointext(out,"")
 
 /obj/item/toy/crayon/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || !check_allowed_items(target))
 		return
 
@@ -356,6 +378,8 @@
 	check_empty(user)
 
 /obj/item/toy/crayon/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(edible && (M == user))
 		to_chat(user, "You take a bite of the [src.name]. Delicious!")
 		var/eaten = use_charges(user, 5, FALSE)
@@ -434,6 +458,8 @@
 	charges = -1
 
 /obj/item/toy/crayon/rainbow/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	paint_color = rgb(rand(0,255), rand(0,255), rand(0,255))
 	. = ..()
 
@@ -453,6 +479,8 @@
 	)
 
 /obj/item/storage/crayons/New()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/toy/crayon/red(src)
 	new /obj/item/toy/crayon/orange(src)
@@ -464,11 +492,15 @@
 	update_icon()
 
 /obj/item/storage/crayons/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	for(var/obj/item/toy/crayon/crayon in contents)
 		add_overlay(mutable_appearance('icons/obj/crayons.dmi', crayon.item_color))
 
 /obj/item/storage/crayons/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/toy/crayon))
 		var/obj/item/toy/crayon/C = W
 		switch(C.item_color)
@@ -513,6 +545,8 @@
 	post_noise = FALSE
 
 /obj/item/toy/crayon/spraycan/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = user
 	if(is_capped || !actually_paints)
 		user.visible_message("<span class='suicide'>[user] shakes up [src] with a rattle and lifts it to [user.p_their()] mouth, but nothing happens!</span>")
@@ -538,6 +572,8 @@
 		return (OXYLOSS)
 
 /obj/item/toy/crayon/spraycan/New()
+	procstart = null
+	src.procstart = null
 	..()
 	// If default crayon red colour, pick a more fun spraycan colour
 	if(!paint_color)
@@ -548,6 +584,8 @@
 
 
 /obj/item/toy/crayon/spraycan/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(charges_left)
 		to_chat(user, "It has [charges_left] use\s left.")
@@ -555,6 +593,8 @@
 		to_chat(user, "It is empty.")
 
 /obj/item/toy/crayon/spraycan/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 
@@ -611,6 +651,8 @@
 	. = ..()
 
 /obj/item/toy/crayon/spraycan/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = is_capped ? icon_capped : icon_uncapped
 	if(use_overlays)
 		cut_overlays()
@@ -624,6 +666,8 @@
 	charges = -1
 
 /obj/item/toy/crayon/spraycan/borg/afterattack(atom/target,mob/user,proximity)
+	procstart = null
+	src.procstart = null
 	var/diff = ..()
 	if(!iscyborg(user))
 		to_chat(user, "<span class='notice'>How did you get this?</span>")

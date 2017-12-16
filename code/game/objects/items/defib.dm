@@ -25,6 +25,8 @@
 	var/grab_ghost = FALSE // Do we pull the ghost back into their body?
 
 /obj/item/defibrillator/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/defibrillator/Initialize() //starts without a cell for rnd
@@ -41,11 +43,15 @@
 	return
 
 /obj/item/defibrillator/update_icon()
+	procstart = null
+	src.procstart = null
 	update_power()
 	update_overlays()
 	update_charge()
 
 /obj/item/defibrillator/proc/update_power()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		if(cell.charge < paddles.revivecost)
 			powered = FALSE
@@ -55,6 +61,8 @@
 		powered = FALSE
 
 /obj/item/defibrillator/proc/update_overlays()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(!on)
 		add_overlay("[initial(icon_state)]-paddles")
@@ -66,6 +74,8 @@
 		add_overlay("[initial(icon_state)]-emagged")
 
 /obj/item/defibrillator/proc/update_charge()
+	procstart = null
+	src.procstart = null
 	if(powered) //so it doesn't show charge if it's unpowered
 		if(cell)
 			var/ratio = cell.charge / cell.maxcharge
@@ -73,14 +83,20 @@
 			add_overlay("[initial(icon_state)]-charge[ratio]")
 
 /obj/item/defibrillator/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	cell = locate(/obj/item/stock_parts/cell) in contents
 	update_icon()
 
 /obj/item/defibrillator/ui_action_click()
+	procstart = null
+	src.procstart = null
 	toggle_paddles()
 
 /obj/item/defibrillator/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user)
 		if(slot_flags == SLOT_BACK)
 			if(user.get_item_by_slot(slot_back) == src)
@@ -97,6 +113,8 @@
 	..()
 
 /obj/item/defibrillator/MouseDrop(obj/over_object)
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		var/mob/M = loc
 		if(!M.incapacitated() && istype(over_object, /obj/screen/inventory/hand))
@@ -104,6 +122,8 @@
 			M.putItemFromInventoryInHandIfPossible(src, H.held_index)
 
 /obj/item/defibrillator/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W == paddles)
 		paddles.unwield()
 		toggle_paddles()
@@ -132,6 +152,8 @@
 		return ..()
 
 /obj/item/defibrillator/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(safety)
 		safety = FALSE
 		to_chat(user, "<span class='warning'>You silently disable [src]'s safety protocols with the cryptographic sequencer.</span>")
@@ -140,6 +162,8 @@
 		to_chat(user, "<span class='notice'>You silently enable [src]'s safety protocols with the cryptographic sequencer.</span>")
 
 /obj/item/defibrillator/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(cell)
 		deductcharge(1000 / severity)
 	if(safety)
@@ -154,6 +178,8 @@
 	..()
 
 /obj/item/defibrillator/proc/toggle_paddles()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Paddles"
 	set category = "Object"
 	on = !on
@@ -178,15 +204,21 @@
 		A.UpdateButtonIcon()
 
 /obj/item/defibrillator/proc/make_paddles()
+	procstart = null
+	src.procstart = null
 	return new /obj/item/twohanded/shockpaddles(src)
 
 /obj/item/defibrillator/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if((slot_flags == SLOT_BACK && slot != slot_back) || (slot_flags == SLOT_BELT && slot != slot_belt))
 		remove_paddles(user)
 		update_icon()
 
 /obj/item/defibrillator/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot == user.getBackSlot())
 		return 1
 
@@ -197,6 +229,8 @@
 	return
 
 /obj/item/defibrillator/Destroy()
+	procstart = null
+	src.procstart = null
 	if(on)
 		var/M = get(paddles, /mob)
 		remove_paddles(M)
@@ -204,6 +238,8 @@
 	update_icon()
 
 /obj/item/defibrillator/proc/deductcharge(chrgdeductamt)
+	procstart = null
+	src.procstart = null
 	if(cell)
 		if(cell.charge < (paddles.revivecost+chrgdeductamt))
 			powered = FALSE
@@ -216,6 +252,8 @@
 			return FALSE
 
 /obj/item/defibrillator/proc/cooldowncheck(mob/user)
+	procstart = null
+	src.procstart = null
 	spawn(50)
 		if(cell)
 			if(cell.charge >= paddles.revivecost)
@@ -237,10 +275,14 @@
 	slot_flags = SLOT_BELT
 
 /obj/item/defibrillator/compact/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot == user.getBeltSlot())
 		return TRUE
 
 /obj/item/defibrillator/compact/loaded/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	paddles = make_paddles()
 	cell = new(src)
@@ -253,12 +295,16 @@
 	safety = FALSE
 
 /obj/item/defibrillator/compact/combat/loaded/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	paddles = make_paddles()
 	cell = new /obj/item/stock_parts/cell/infinite(src)
 	update_icon()
 
 /obj/item/defibrillator/compact/combat/loaded/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W == paddles)
 		paddles.unwield()
 		toggle_paddles()
@@ -287,6 +333,8 @@
 	var/tlimit = DEFIB_TIME_LIMIT * 10
 
 /obj/item/twohanded/shockpaddles/proc/recharge(var/time)
+	procstart = null
+	src.procstart = null
 	if(req_defib || !time)
 		return
 	cooldown = TRUE
@@ -299,6 +347,8 @@
 	update_icon()
 
 /obj/item/twohanded/shockpaddles/New(mainunit)
+	procstart = null
+	src.procstart = null
 	..()
 	if(check_defib_exists(mainunit, src) && req_defib)
 		defib = mainunit
@@ -307,12 +357,16 @@
 		update_icon()
 
 /obj/item/twohanded/shockpaddles/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "defibpaddles[wielded]"
 	item_state = "defibpaddles[wielded]"
 	if(cooldown)
 		icon_state = "defibpaddles[wielded]_cooldown"
 
 /obj/item/twohanded/shockpaddles/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='danger'>[user] is putting the live paddles on [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	if(req_defib)
 		defib.deductcharge(revivecost)
@@ -320,6 +374,8 @@
 	return (OXYLOSS)
 
 /obj/item/twohanded/shockpaddles/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!req_defib)
 		return ..()
 	if(user)
@@ -333,6 +389,8 @@
 	return unwield(user)
 
 /obj/item/twohanded/shockpaddles/proc/check_defib_exists(mainunit, mob/living/carbon/human/M, obj/O)
+	procstart = null
+	src.procstart = null
 	if(!req_defib)
 		return TRUE //If it doesn't need a defib, just say it exists
 	if (!mainunit || !istype(mainunit, /obj/item/defibrillator))	//To avoid weird issues from admin spawns
@@ -343,6 +401,8 @@
 
 /obj/item/twohanded/shockpaddles/attack(mob/M, mob/user)
 
+	procstart = null
+	src.procstart = null
 	if(busy)
 		return
 	if(req_defib && !defib.powered)
@@ -392,10 +452,14 @@
 	do_help(H, user)
 
 /obj/item/twohanded/shockpaddles/proc/can_defib(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/BR = H.getorgan(/obj/item/organ/brain)
 	return	(!H.suiciding && !(H.disabilities & NOCLONE) && !H.hellbound && ((world.time - H.timeofdeath) < tlimit) && (H.getBruteLoss() < 180) && (H.getFireLoss() < 180) && H.getorgan(/obj/item/organ/heart) && BR && !BR.damaged_brain)
 
 /obj/item/twohanded/shockpaddles/proc/shock_touching(dmg, mob/H)
+	procstart = null
+	src.procstart = null
 	if(isliving(H.pulledby))		//CLEAR!
 		var/mob/living/M = H.pulledby
 		if(M.electrocute_act(30, src))
@@ -403,6 +467,8 @@
 			M.emote("scream")
 
 /obj/item/twohanded/shockpaddles/proc/do_disarm(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(req_defib && defib.safety)
 		return
 	if(!req_defib && !combat)
@@ -427,6 +493,8 @@
 		recharge(60)
 
 /obj/item/twohanded/shockpaddles/proc/do_harm(mob/living/carbon/human/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(req_defib && defib.safety)
 		return
 	if(!req_defib && !combat)
@@ -482,6 +550,8 @@
 	update_icon()
 
 /obj/item/twohanded/shockpaddles/proc/do_help(mob/living/carbon/human/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='warning'>[user] begins to place [src] on [H]'s chest.</span>", "<span class='warning'>You begin to place [src] on [H]'s chest...</span>")
 	busy = TRUE
 	update_icon()
@@ -588,6 +658,8 @@
 	req_defib = FALSE
 
 /obj/item/twohanded/shockpaddles/cyborg/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/R = user
 		if(R.emagged)

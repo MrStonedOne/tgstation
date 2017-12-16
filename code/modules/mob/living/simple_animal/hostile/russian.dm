@@ -67,6 +67,8 @@
 				/obj/item/gun/ballistic/automatic/pistol/APS)
 
 /mob/living/simple_animal/hostile/russian/ranged/officer/Aggro()
+	procstart = null
+	src.procstart = null
 	..()
 	summon_backup(15)
 	say("V BOJ!!")

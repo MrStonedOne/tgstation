@@ -122,6 +122,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	var/list/juice_results //A reagent list containing blah blah... but when JUICED in a grinder!
 
 /obj/item/Initialize()
+	procstart = null
+	src.procstart = null
 	if (!materials)
 		materials = list()
 	. = ..()
@@ -142,6 +144,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 			hitsound = "swing_hit"
 
 /obj/item/Destroy()
+	procstart = null
+	src.procstart = null
 	flags_1 &= ~DROPDEL_1	//prevent reqdels
 	if(ismob(loc))
 		var/mob/m = loc
@@ -155,12 +159,16 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	icon = 'icons/obj/device.dmi'
 
 /obj/item/proc/check_allowed_items(atom/target, not_inside, target_self)
+	procstart = null
+	src.procstart = null
 	if(((src in target) && !target_self) || (!isturf(target.loc) && !isturf(target) && not_inside))
 		return 0
 	else
 		return 1
 
 /obj/item/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(B && B.loc == loc)
 		qdel(src)
 
@@ -172,9 +180,13 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 //OXYLOSS = 8
 //Output a creative message and then return the damagetype done
 /obj/item/proc/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/verb/move_to_top()
+	procstart = null
+	src.procstart = null
 	set name = "Move To Top"
 	set category = "Object"
 	set src in oview(1)
@@ -238,14 +250,20 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	return message
 
 /obj/item/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	ui_interact(user)
 
 /obj/item/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(usr)
 	return ..()
 
 /obj/item/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	if(anchored)
@@ -294,6 +312,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 
 /obj/item/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	if(anchored)
@@ -315,6 +335,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		dropped(user)
 
 /obj/item/attack_alien(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/alien/A = user
 
 	if(!A.has_fine_manipulation)
@@ -325,6 +347,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	attack_paw(A)
 
 /obj/item/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(src.loc, /obj/item/robot_module))
 		//If the item is part of a cyborg module, equip it
 		if(!iscyborg(user))
@@ -339,6 +363,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 // The lack of ..() is intentional, do not add one
 // added one, fuck the police
 /obj/item/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/storage))
 		var/obj/item/storage/S = W
 		if(S.use_to_pickup)
@@ -370,6 +396,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	return ..()
 
 /obj/item/proc/handle_mass_pickup(obj/item/storage/S, list/things, atom/thing_loc, list/rejections, datum/progressbar/progress)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in things)
 		things -= I
 		if(I.loc != thing_loc)
@@ -392,20 +420,28 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	return FALSE
 
 /obj/item/proc/GetDeconstructableContents()
+	procstart = null
+	src.procstart = null
 	return GetAllContents() - src
 
 // afterattack() and attack() prototypes moved to _onclick/item_attack.dm for consistency
 
 /obj/item/proc/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(prob(final_block_chance))
 		owner.visible_message("<span class='danger'>[owner] blocks [attack_text] with [src]!</span>")
 		return 1
 	return 0
 
 /obj/item/proc/talk_into(mob/M, input, channel, spans, datum/language/language)
+	procstart = null
+	src.procstart = null
 	return ITALICS | REDUCE_RANGE
 
 /obj/item/proc/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/X in actions)
 		var/datum/action/A = X
 		A.Remove(user)
@@ -415,20 +451,28 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 // called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	in_inventory = TRUE
 	return
 
 
 // called when this item is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
 /obj/item/proc/on_exit_storage(obj/item/storage/S)
+	procstart = null
+	src.procstart = null
 	return
 
 // called when this item is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
 /obj/item/proc/on_enter_storage(obj/item/storage/S)
+	procstart = null
+	src.procstart = null
 	return
 
 // called when "found" in pockets and storage items. Returns 1 if the search should end.
 /obj/item/proc/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	return
 
 // called after an item is placed in an equipment slot //NOPE, for example, if you put a helmet in slot_head, it is NOT in user's head variable yet, how stupid.
@@ -437,6 +481,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 // for items that can be placed in multiple slots
 // note this isn't called during the initial dressing of a player
 /obj/item/proc/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	for(var/X in actions)
 		var/datum/action/A = X
 		if(item_action_slot_check(slot, user)) //some items only give their actions buttons when in a specific slot.
@@ -445,6 +491,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 //sometimes we only want to grant the item's action if it's equipped in a specific slot.
 /obj/item/proc/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot == slot_in_backpack || slot == slot_legcuffed) //these aren't true slots, so avoid granting actions there
 		return FALSE
 	return TRUE
@@ -454,12 +502,16 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 //If you are making custom procs but would like to retain partial or complete functionality of this one, include a 'return ..()' to where you want this to happen.
 //Set disable_warning to 1 if you wish it to not give you outputs.
 /obj/item/proc/mob_can_equip(mob/living/M, mob/living/equipper, slot, disable_warning = FALSE, bypass_equip_delay_self = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!M)
 		return 0
 
 	return M.can_equip(src, slot, disable_warning, bypass_equip_delay_self)
 
 /obj/item/verb/verb_pickup()
+	procstart = null
+	src.procstart = null
 	set src in oview(1)
 	set category = "Object"
 	set name = "Pick up"
@@ -474,6 +526,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 //The default action is attack_self().
 //Checks before we get to here are: mob is alive, mob is not restrained, stunned, asleep, resting, laying, item is on the mob.
 /obj/item/proc/ui_action_click(mob/user, actiontype)
+	procstart = null
+	src.procstart = null
 	attack_self(user)
 
 /obj/item/proc/IsReflect(var/def_zone) //This proc determines if and at what% an object will reflect energy projectiles if it's in l_hand,r_hand or wear_suit
@@ -481,6 +535,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 /obj/item/proc/eyestab(mob/living/carbon/M, mob/living/carbon/user)
 
+	procstart = null
+	src.procstart = null
 	var/is_human_victim = 0
 	var/obj/item/bodypart/affecting = M.get_bodypart("head")
 	if(ishuman(M))
@@ -557,6 +613,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 				to_chat(M, "<span class='danger'>You go blind!</span>")
 
 /obj/item/clean_blood()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(initial(icon) && initial(icon_state))
@@ -566,11 +624,15 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 				cut_overlay(blood_splatter_icon)
 
 /obj/item/clothing/gloves/clean_blood()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		transfer_blood = 0
 
 /obj/item/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FOUR)
 		throw_at(S,14,3, spin=0)
@@ -578,6 +640,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		return
 
 /obj/item/throw_impact(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A && !QDELETED(A))
 		if(is_hot() && isliving(A))
 			var/mob/living/L = A
@@ -588,12 +652,16 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		return A.hitby(src, 0, itempush)
 
 /obj/item/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	thrownby = thrower
 	callback = CALLBACK(src, .proc/after_throw, callback) //replace their callback with our own
 	. = ..(target, range, speed, thrower, spin, diagonals_first, callback)
 
 
 /obj/item/proc/after_throw(datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	if (callback) //call the original callback
 		. = callback.Invoke()
 	throw_speed = initial(throw_speed) //explosions change this.
@@ -612,23 +680,33 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	return mutable_appearance('icons/obj/clothing/belt_overlays.dmi', icon_state)
 
 /obj/item/proc/is_hot()
+	procstart = null
+	src.procstart = null
 	return heat
 
 /obj/item/proc/is_sharp()
+	procstart = null
+	src.procstart = null
 	return sharpness
 
 /obj/item/proc/get_dismemberment_chance(obj/item/bodypart/affecting)
+	procstart = null
+	src.procstart = null
 	if(affecting.can_dismember(src))
 		if((sharpness || damtype == BURN) && w_class >= 3)
 			. = force*(w_class-1)
 
 /obj/item/proc/get_dismember_sound()
+	procstart = null
+	src.procstart = null
 	if(damtype == BURN)
 		. = 'sound/weapons/sear.ogg'
 	else
 		. = pick('sound/misc/desceration-01.ogg', 'sound/misc/desceration-02.ogg', 'sound/misc/desceration-03.ogg')
 
 /obj/item/proc/open_flame(flame_heat=700)
+	procstart = null
+	src.procstart = null
 	var/turf/location = loc
 	if(ismob(location))
 		var/mob/M = location
@@ -641,6 +719,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		location.hotspot_expose(flame_heat, 5)
 
 /obj/item/proc/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_hot())
 		. = "<span class='notice'>[user] lights [A] with [src].</span>"
 	else
@@ -649,21 +729,33 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 //when an item modify our speech spans when in our active hand. Override this to modify speech spans.
 /obj/item/proc/get_held_item_speechspans(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/hitby(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/attack_hulk(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/mech_melee_attack(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/burn()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		var/turf/T = get_turf(src)
 		var/ash_type = /obj/effect/decal/cleanable/ash
@@ -674,6 +766,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		..()
 
 /obj/item/acid_melt()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		var/turf/T = get_turf(src)
 		var/obj/effect/decal/cleanable/molten_object/MO = new(T)
@@ -683,6 +777,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		..()
 
 /obj/item/proc/microwave_act(obj/machinery/microwave/M)
+	procstart = null
+	src.procstart = null
 	if(M && M.dirty < 100)
 		M.dirty++
 
@@ -698,6 +794,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 /obj/item/proc/on_juice()
 
 /obj/item/proc/set_force_string()
+	procstart = null
+	src.procstart = null
 	switch(force)
 		if(0 to 4)
 			force_string = "very low"
@@ -716,6 +814,8 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	last_force_string_check = force
 
 /obj/item/proc/openTip(location, control, params, user)
+	procstart = null
+	src.procstart = null
 	if(last_force_string_check != force && !force_string_override)
 		set_force_string()
 	if(!force_string_override)
@@ -724,11 +824,15 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 		openToolTip(user,src,params,title = name,content = "[desc]<br><b>Force:</b> [force_string]",theme = "")
 
 /obj/item/MouseEntered(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(in_inventory && usr.client.prefs.enable_tips)
 		var/timedelay = usr.client.prefs.tip_delay/100
 		var/user = usr
 		tip_timer = addtimer(CALLBACK(src, .proc/openTip, location, control, params, user), timedelay, TIMER_STOPPABLE)//timer takes delay in deciseconds, but the pref is in milliseconds. dividing by 100 converts it.
 
 /obj/item/MouseExited()
+	procstart = null
+	src.procstart = null
 	deltimer(tip_timer)//delete any in-progress timer if the mouse is moved off the item before it finishes
 	closeToolTip(usr)

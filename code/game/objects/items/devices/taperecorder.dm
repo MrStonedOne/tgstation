@@ -21,6 +21,8 @@
 
 
 /obj/item/device/taperecorder/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(starting_tape_type)
 		mytape = new starting_tape_type(src)
@@ -28,11 +30,15 @@
 
 
 /obj/item/device/taperecorder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "The wire panel is [open_panel ? "opened" : "closed"].")
 
 
 /obj/item/device/taperecorder/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!mytape && istype(I, /obj/item/device/tape))
 		if(!user.transferItemToLoc(I,src))
 			return
@@ -42,6 +48,8 @@
 
 
 /obj/item/device/taperecorder/proc/eject(mob/user)
+	procstart = null
+	src.procstart = null
 	if(mytape)
 		to_chat(user, "<span class='notice'>You remove [mytape] from [src].</span>")
 		stop()
@@ -50,10 +58,14 @@
 		update_icon()
 
 /obj/item/device/taperecorder/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	mytape.ruin() //Fires destroy the tape
 	..()
 
 /obj/item/device/taperecorder/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user)
 		if(mytape)
 			if(!user.is_holding(src))
@@ -65,6 +77,8 @@
 
 
 /obj/item/device/taperecorder/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user && ismob(user))
 		if(!user.incapacitated())
 			return 1
@@ -72,6 +86,8 @@
 
 
 /obj/item/device/taperecorder/verb/ejectverb()
+	procstart = null
+	src.procstart = null
 	set name = "Eject Tape"
 	set category = "Object"
 
@@ -84,6 +100,8 @@
 
 
 /obj/item/device/taperecorder/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!mytape)
 		icon_state = "taperecorder_empty"
 	else if(recording)
@@ -95,11 +113,15 @@
 
 
 /obj/item/device/taperecorder/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(mytape && recording)
 		mytape.timestamp += mytape.used_capacity
 		mytape.storedinfo += "\[[time2text(mytape.used_capacity * 10,"mm:ss")]\] [message]"
 
 /obj/item/device/taperecorder/verb/record()
+	procstart = null
+	src.procstart = null
 	set name = "Start Recording"
 	set category = "Object"
 
@@ -133,6 +155,8 @@
 
 
 /obj/item/device/taperecorder/verb/stop()
+	procstart = null
+	src.procstart = null
 	set name = "Stop"
 	set category = "Object"
 
@@ -153,6 +177,8 @@
 
 
 /obj/item/device/taperecorder/verb/play()
+	procstart = null
+	src.procstart = null
 	set name = "Play Tape"
 	set category = "Object"
 
@@ -195,6 +221,8 @@
 
 
 /obj/item/device/taperecorder/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!mytape || mytape.ruined)
 		return
 	if(recording)
@@ -204,6 +232,8 @@
 
 
 /obj/item/device/taperecorder/verb/print_transcript()
+	procstart = null
+	src.procstart = null
 	set name = "Print Transcript"
 	set category = "Object"
 
@@ -253,16 +283,22 @@
 	var/ruined = 0
 
 /obj/item/device/tape/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	ruin()
 	..()
 
 /obj/item/device/tape/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ruined)
 		to_chat(user, "<span class='notice'>You pull out all the tape!</span>")
 		ruin()
 
 
 /obj/item/device/tape/proc/ruin()
+	procstart = null
+	src.procstart = null
 	//Lets not add infinite amounts of overlays when our fireact is called
 	//repeatedly
 	if(!ruined)
@@ -271,11 +307,15 @@
 
 
 /obj/item/device/tape/proc/fix()
+	procstart = null
+	src.procstart = null
 	cut_overlay("ribbonoverlay")
 	ruined = 0
 
 
 /obj/item/device/tape/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(ruined)
 		var/delay = -1
 		if (istype(I, /obj/item/screwdriver))
@@ -293,5 +333,7 @@
 	icon_state = "random_tape"
 
 /obj/item/device/tape/random/New()
+	procstart = null
+	src.procstart = null
 	icon_state = "tape_[pick("white", "blue", "red", "yellow", "purple")]"
 	..()

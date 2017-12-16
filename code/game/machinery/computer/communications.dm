@@ -34,22 +34,30 @@
 	light_color = LIGHT_COLOR_BLUE
 
 /obj/machinery/computer/communications/proc/checkCCcooldown()
+	procstart = null
+	src.procstart = null
 	var/obj/item/circuitboard/computer/communications/CM = circuit
 	if(CM.lastTimeUsed + 600 > world.time)
 		return FALSE
 	return TRUE
 
 /obj/machinery/computer/communications/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.shuttle_caller_list += src
 
 /obj/machinery/computer/communications/process()
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(state != STATE_STATUSDISPLAY)
 			updateDialog()
 
 
 /obj/machinery/computer/communications/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!(z in GLOB.station_z_levels) && z != ZLEVEL_CENTCOM) //Can only use on centcom and SS13
@@ -401,12 +409,16 @@
 	updateUsrDialog()
 
 /obj/machinery/computer/communications/attackby(obj/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/card/id))
 		attack_hand(user)
 	else
 		return ..()
 
 /obj/machinery/computer/communications/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
@@ -416,6 +428,8 @@
 	playsound(src, 'sound/machines/terminal_alert.ogg', 50, 0)
 
 /obj/machinery/computer/communications/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if (z > 6)
@@ -563,6 +577,8 @@
 	popup.open()
 
 /obj/machinery/computer/communications/proc/get_javascript_header(form_id)
+	procstart = null
+	src.procstart = null
 	var/dat = {"<script type="text/javascript">
 						function getLength(){
 							var reasonField = document.getElementById('reasonfield');
@@ -580,6 +596,8 @@
 	return dat
 
 /obj/machinery/computer/communications/proc/get_call_shuttle_form(ai_interface = 0)
+	procstart = null
+	src.procstart = null
 	var/form_id = "callshuttle"
 	var/dat = get_javascript_header(form_id)
 	dat += "<form name='callshuttle' id='[form_id]' action='?src=[REF(src)]' method='get' style='display: inline'>"
@@ -590,6 +608,8 @@
 	return dat
 
 /obj/machinery/computer/communications/proc/get_cancel_shuttle_form()
+	procstart = null
+	src.procstart = null
 	var/form_id = "cancelshuttle"
 	var/dat = get_javascript_header(form_id)
 	dat += "<form name='cancelshuttle' id='[form_id]' action='?src=[REF(src)]' method='get' style='display: inline'>"
@@ -600,6 +620,8 @@
 	return dat
 
 /obj/machinery/computer/communications/proc/interact_ai(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	switch(aistate)
 		if(STATE_DEFAULT)
@@ -683,6 +705,8 @@
 	return dat
 
 /obj/machinery/computer/communications/proc/make_announcement(mob/living/user, is_silicon)
+	procstart = null
+	src.procstart = null
 	if(!SScommunications.can_announce(user, is_silicon))
 		to_chat(user, "Intercomms recharging. Please stand by.")
 		return
@@ -693,6 +717,8 @@
 
 /obj/machinery/computer/communications/proc/post_status(command, data1, data2)
 
+	procstart = null
+	src.procstart = null
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)
@@ -710,15 +736,21 @@
 
 
 /obj/machinery/computer/communications/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.shuttle_caller_list -= src
 	SSshuttle.autoEvac()
 	return ..()
 
 /obj/machinery/computer/communications/proc/overrideCooldown()
+	procstart = null
+	src.procstart = null
 	var/obj/item/circuitboard/computer/communications/CM = circuit
 	CM.lastTimeUsed = 0
 
 /obj/machinery/computer/communications/proc/add_message(datum/comm_message/new_message)
+	procstart = null
+	src.procstart = null
 	messages += new_message
 
 /datum/comm_message
@@ -729,6 +761,8 @@
 	var/datum/callback/answer_callback
 
 /datum/comm_message/New(new_title,new_content,new_possible_answers)
+	procstart = null
+	src.procstart = null
 	..()
 	if(title)
 		title = new_title

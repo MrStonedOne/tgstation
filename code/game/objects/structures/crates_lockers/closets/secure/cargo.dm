@@ -4,6 +4,8 @@
 	icon_state = "qm"
 
 /obj/structure/closet/secure_closet/quartermaster/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/neck/cloak/qm(src)
 	new /obj/item/storage/lockbox/medal/cargo(src)

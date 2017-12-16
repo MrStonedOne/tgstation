@@ -4,6 +4,8 @@
 #define PROCESSING_ASSISTANTS 3
 
 SUBSYSTEM_DEF(npcpool)
+	procstart = null
+	src.procstart = null
 	name = "NPC Pool"
 	flags = SS_POST_FIRE_TIMING|SS_NO_INIT|SS_BACKGROUND
 	priority = FIRE_PRIORITY_NPC
@@ -18,9 +20,13 @@ SUBSYSTEM_DEF(npcpool)
 	var/stage
 
 /datum/controller/subsystem/npcpool/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("NPCS:[processing.len]|D:[needsDelegate.len]|A:[needsAssistant.len]|U:[canBeUsed.len]")
 
 /datum/controller/subsystem/npcpool/proc/stop_processing(mob/living/I)
+	procstart = null
+	src.procstart = null
 	processing -= I
 	currentrun -= I
 	needsDelegate -= I
@@ -28,6 +34,8 @@ SUBSYSTEM_DEF(npcpool)
 	needsAssistant -= I
 
 /datum/controller/subsystem/npcpool/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	//bot delegation and coordination systems
 	//General checklist/Tasks for delegating a task or coordinating it (for SNPCs)
 	// 1. Bot proximity to task target: if too far, delegate, if close, coordinate
@@ -145,4 +153,6 @@ SUBSYSTEM_DEF(npcpool)
 			return
 
 /datum/controller/subsystem/npcpool/Recover()
+	procstart = null
+	src.procstart = null
 	processing = SSnpcpool.processing

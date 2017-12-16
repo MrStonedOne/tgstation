@@ -7,9 +7,13 @@
 	var/hide_alpha = 0
 
 /obj/screen/plane_master/proc/Show(override)
+	procstart = null
+	src.procstart = null
 	alpha = override || show_alpha
 
 /obj/screen/plane_master/proc/Hide(override)
+	procstart = null
+	src.procstart = null
 	alpha = override || hide_alpha
 
 //Why do plane masters need a backdrop sometimes? Read http://www.byond.com/forum/?post=2141928
@@ -39,5 +43,7 @@
 	plane = PLANE_SPACE
 
 /obj/screen/plane_master/lighting/backdrop(mob/mymob)
+	procstart = null
+	src.procstart = null
 	mymob.overlay_fullscreen("lighting_backdrop_lit", /obj/screen/fullscreen/lighting_backdrop/lit)
 	mymob.overlay_fullscreen("lighting_backdrop_unlit", /obj/screen/fullscreen/lighting_backdrop/unlit)

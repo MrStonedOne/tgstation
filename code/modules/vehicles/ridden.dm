@@ -8,28 +8,40 @@
 	var/arms_requires = 0	//why not?
 
 /obj/vehicle/ridden/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LoadComponent(/datum/component/riding)
 
 /obj/vehicle/ridden/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, "<span class='notice'>Put a key inside it by clicking it with the key. If there's a key inside, you can remove it via Alt-Click!</span>")
 
 /obj/vehicle/ridden/generate_action_type(actiontype)
+	procstart = null
+	src.procstart = null
 	var/datum/action/vehicle/ridden/A = ..()
 	. = A
 	if(istype(A))
 		A.vehicle_ridden_target = src
 
 /obj/vehicle/ridden/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	remove_occupant(M)
 	return ..()
 
 /obj/vehicle/ridden/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	add_occupant(M)
 	return ..()
 
 /obj/vehicle/ridden/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(key_type && !is_key(inserted_key) && is_key(I))
 		if(user.transferItemToLoc(I, src))
 			to_chat(user, "<span class='notice'>You insert \the [I] into \the [src].</span>")
@@ -42,6 +54,8 @@
 	return ..()
 
 /obj/vehicle/ridden/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.Adjacent(src) && inserted_key)
 		if(!is_occupant(user))
 			to_chat(user, "<span class='notice'>You must be riding the [src] to remove [src]'s key!</span>")
@@ -53,6 +67,8 @@
 	return ..()
 
 /obj/vehicle/ridden/driver_move(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if(key_type && !is_key(inserted_key))
 		to_chat(user, "<span class='warning'>[src] has no key inserted!</span>")
 		return FALSE
@@ -61,6 +77,8 @@
 	return ..()
 
 /obj/vehicle/ridden/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated())
 		return
 	for(var/atom/movable/A in get_turf(src))
@@ -71,6 +89,8 @@
 	. = ..()
 
 /obj/vehicle/ridden/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!force && occupant_amount() >= max_occupants)
 		return FALSE
 	return ..()

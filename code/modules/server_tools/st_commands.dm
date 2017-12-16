@@ -8,9 +8,13 @@
 //sender is the display name of who sent the command
 //params is the trimmed string following the command name
 /datum/server_tools_command/proc/Run(sender, params)
+	procstart = null
+	src.procstart = null
 	CRASH("[type] has no implementation for Run()")
 
 /world/proc/ListServiceCustomCommands(warnings_only)
+	procstart = null
+	src.procstart = null
 	if(!warnings_only)
 		. = list()
 	var/list/command_name_types = list()
@@ -35,6 +39,8 @@
 			.[command_name] = list(SERVICE_JSON_PARAM_HELPTEXT = initial(stc.help_text), SERVICE_JSON_PARAM_ADMINONLY = initial(stc.admin_only), SERVICE_JSON_PARAM_REQUIREDPARAMETERS = initial(stc.required_parameters))
 
 /world/proc/HandleServiceCustomCommand(command, sender, params)
+	procstart = null
+	src.procstart = null
 	var/static/list/cached_custom_server_tools_commands
 	if(!cached_custom_server_tools_commands)
 		cached_custom_server_tools_commands = list()

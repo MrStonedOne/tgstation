@@ -3,9 +3,13 @@
 	icon = 'icons/mob/blob.dmi'
 
 /obj/screen/blob/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	openToolTip(usr,src,params,title = name,content = desc, theme = "blob")
 
 /obj/screen/blob/MouseExited()
+	procstart = null
+	src.procstart = null
 	closeToolTip(usr)
 
 /obj/screen/blob/BlobHelp
@@ -14,6 +18,8 @@
 	desc = "Help on playing blob!"
 
 /obj/screen/blob/BlobHelp/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
 		B.blob_help()
@@ -24,6 +30,8 @@
 	desc = "Moves your camera to a selected blob node."
 
 /obj/screen/blob/JumpToNode/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
 		B.jump_to_node()
@@ -34,6 +42,8 @@
 	desc = "Moves your camera to your blob core."
 
 /obj/screen/blob/JumpToCore/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(hud && hud.mymob && isovermind(hud.mymob))
 		var/mob/camera/blob/B = hud.mymob
 		if(!B.placed)
@@ -45,6 +55,8 @@
 	..()
 
 /obj/screen/blob/JumpToCore/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
 		if(!B.placed)
@@ -57,6 +69,8 @@
 	desc = "Produces a strong, smart blobbernaut from a factory blob for 40 resources.<br>The factory blob used will become fragile and unable to produce spores."
 
 /obj/screen/blob/Blobbernaut/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
 		B.create_blobbernaut()
@@ -67,6 +81,8 @@
 	desc = "Produces a resource blob for 40 resources.<br>Resource blobs will give you resources every few seconds."
 
 /obj/screen/blob/ResourceBlob/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
 		B.create_resource()
@@ -77,6 +93,8 @@
 	desc = "Produces a node blob for 50 resources.<br>Node blobs will expand and activate nearby resource and factory blobs."
 
 /obj/screen/blob/NodeBlob/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
 		B.create_node()
@@ -87,6 +105,8 @@
 	desc = "Produces a factory blob for 60 resources.<br>Factory blobs will produce spores every few seconds."
 
 /obj/screen/blob/FactoryBlob/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
 		B.create_factory()
@@ -97,6 +117,8 @@
 	desc = "Randomly rerolls your chemical for 40 resources."
 
 /obj/screen/blob/ReadaptChemical/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(hud && hud.mymob && isovermind(hud.mymob))
 		var/mob/camera/blob/B = hud.mymob
 		if(B.free_chem_rerolls)
@@ -108,6 +130,8 @@
 	..()
 
 /obj/screen/blob/ReadaptChemical/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
 		B.chemical_reroll()
@@ -118,11 +142,15 @@
 	desc = "Swaps a node and your core for 80 resources."
 
 /obj/screen/blob/RelocateCore/Click()
+	procstart = null
+	src.procstart = null
 	if(isovermind(usr))
 		var/mob/camera/blob/B = usr
 		B.relocate_core()
 
 /datum/hud/blob_overmind/New(mob/owner)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/screen/using
 
@@ -178,6 +206,8 @@
 
 
 /mob/camera/blob/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/blob_overmind(src)
 

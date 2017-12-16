@@ -16,6 +16,8 @@
 	var/revive_type = SENTIENCE_ORGANIC //So you can't revive boss monsters or robots with it
 
 /obj/item/lazarus_injector/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(!loaded)
 		return
 	if(isliving(target) && proximity_flag)
@@ -51,10 +53,14 @@
 			return
 
 /obj/item/lazarus_injector/emp_act()
+	procstart = null
+	src.procstart = null
 	if(!malfunctioning)
 		malfunctioning = 1
 
 /obj/item/lazarus_injector/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!loaded)
 		to_chat(user, "<span class='info'>[src] is empty.</span>")

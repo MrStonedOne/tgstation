@@ -12,12 +12,16 @@
 	cell_type = "/obj/item/stock_parts/cell/pulse"
 
 /obj/item/gun/energy/pulse/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/pulse/prize
 	pin = /obj/item/device/firing_pin
 
 /obj/item/gun/energy/pulse/prize/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.poi_list += src
 	var/msg = "A pulse rifle prize has been created at [ADMIN_COORDJMP(src)]"
@@ -28,6 +32,8 @@
 	notify_ghosts("Someone won a pulse rifle as a prize!", source = src, action = NOTIFY_ORBIT)
 
 /obj/item/gun/energy/pulse/prize/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list -= src
 	. = ..()
 
@@ -68,6 +74,8 @@
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse)
 
 /obj/item/gun/energy/pulse/destroyer/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='danger'>[src.name] has three settings, and they are all DESTROY.</span>")
 
 /obj/item/gun/energy/pulse/pistol/m1911

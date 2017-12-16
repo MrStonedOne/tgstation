@@ -64,6 +64,8 @@
 	restraint_check = TRUE
 
 /datum/emote/living/carbon/sign/select_param(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isnum(text2num(params)))
 		return message

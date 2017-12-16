@@ -23,6 +23,8 @@
 		/mob/living/simple_animal/hostile/construct/armored)
 
 /obj/effect/proc_holder/spell/targeted/shapeshift/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(src in user.mob_spell_list)
 		user.mob_spell_list.Remove(src)
 		user.mind.AddSpell(src)
@@ -50,6 +52,8 @@
 
 
 /obj/effect/proc_holder/spell/targeted/shapeshift/proc/Shapeshift(mob/living/caster)
+	procstart = null
+	src.procstart = null
 	var/obj/shapeshift_holder/H = locate() in caster
 	if(H)
 		to_chat(caster, "<span class='warning'>You're already shapeshifted!</span>")
@@ -62,6 +66,8 @@
 	human_req = 0
 
 /obj/effect/proc_holder/spell/targeted/shapeshift/proc/Restore(mob/living/shape)
+	procstart = null
+	src.procstart = null
 	var/obj/shapeshift_holder/H = locate() in shape
 	if(!H)
 		return
@@ -89,6 +95,8 @@
 	var/obj/effect/proc_holder/spell/targeted/shapeshift/source
 
 /obj/shapeshift_holder/Initialize(mapload,obj/effect/proc_holder/spell/targeted/shapeshift/source,mob/living/caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.source = source
 	shape = loc
@@ -103,6 +111,8 @@
 	slink.source = src
 
 /obj/shapeshift_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!restoring)
 		restore()
 	stored = null
@@ -110,19 +120,27 @@
 	. = ..()
 
 /obj/shapeshift_holder/Moved()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!restoring || QDELETED(src))
 		restore()
 
 /obj/shapeshift_holder/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == stored && !restoring)
 		restore()
 
 /obj/shapeshift_holder/Exited(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(AM == stored && !restoring)
 		restore()
 
 /obj/shapeshift_holder/proc/casterDeath()
+	procstart = null
+	src.procstart = null
 	//Something kills the stored caster through direct damage.
 	if(source.revert_on_death)
 		restore(death=TRUE)
@@ -130,6 +148,8 @@
 		shape.death()
 
 /obj/shapeshift_holder/proc/shapeDeath()
+	procstart = null
+	src.procstart = null
 	//Shape dies.
 	if(source.die_with_shapeshifted_form)
 		if(source.revert_on_death)
@@ -138,6 +158,8 @@
 		restore()
 
 /obj/shapeshift_holder/proc/restore(death=FALSE)
+	procstart = null
+	src.procstart = null
 	restoring = TRUE
 	qdel(slink)
 	stored.forceMove(get_turf(src))
@@ -153,9 +175,13 @@
 	var/obj/shapeshift_holder/source
 
 /datum/soullink/shapeshift/ownerDies(gibbed, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(source)
 		source.casterDeath(gibbed)
 
 /datum/soullink/shapeshift/sharerDies(gibbed, mob/living/sharer)
+	procstart = null
+	src.procstart = null
 	if(source)
 		source.shapeDeath(gibbed)

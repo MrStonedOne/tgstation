@@ -10,6 +10,8 @@
 	var/flipped = FALSE
 
 /obj/machinery/atmospherics/components/trinary/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			initialize_directions = EAST|NORTH|SOUTH
@@ -26,6 +28,8 @@ Housekeeping and pipe network stuff
 
 /obj/machinery/atmospherics/components/trinary/getNodeConnects()
 
+	procstart = null
+	src.procstart = null
 	//Mixer:
 	//1 and 2 is input
 	//Node 3 is output

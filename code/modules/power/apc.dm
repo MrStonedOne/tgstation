@@ -104,15 +104,21 @@
 	cell_type = /obj/item/stock_parts/cell/high/plus
 
 /obj/machinery/power/apc/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/machinery/power/apc/connect_to_network()
+	procstart = null
+	src.procstart = null
 	//Override because the APC does not directly connect to the network; it goes through a terminal.
 	//The terminal is what the power computer looks for anyway.
 	if(terminal)
 		terminal.connect_to_network()
 
 /obj/machinery/power/apc/New(turf/loc, var/ndir, var/building=0)
+	procstart = null
+	src.procstart = null
 	if (!req_access)
 		req_access = list(ACCESS_ENGINE_EQUIP)
 	if (!armor)
@@ -150,6 +156,8 @@
 		addtimer(CALLBACK(src, .proc/update), 5)
 
 /obj/machinery/power/apc/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.apcs_list -= src
 
 	if(malfai && operating)
@@ -169,12 +177,16 @@
 	. = ..()
 
 /obj/machinery/power/apc/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == cell)
 		cell = null
 		update_icon()
 		updateUsrDialog()
 
 /obj/machinery/power/apc/proc/make_terminal()
+	procstart = null
+	src.procstart = null
 	// create a terminal object at the same position as original turf loc
 	// wires will attach to this
 	terminal = new/obj/machinery/power/terminal(src.loc)
@@ -182,6 +194,8 @@
 	terminal.master = src
 
 /obj/machinery/power/apc/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		return
@@ -208,6 +222,8 @@
 	addtimer(CALLBACK(src, .proc/update), 5)
 
 /obj/machinery/power/apc/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & BROKEN)
 		return
@@ -234,6 +250,8 @@
 // update the APC icon to show the three base states
 // also add overlays for indicator lights
 /obj/machinery/power/apc/update_icon()
+	procstart = null
+	src.procstart = null
 	var/update = check_updates() 		//returns 0 if no need to update icons.
 						// 1 if we need to update the icon_state
 						// 2 if we need to update the overlays
@@ -299,6 +317,8 @@
 	icon_update_needed = FALSE
 
 /obj/machinery/power/apc/proc/check_updates()
+	procstart = null
+	src.procstart = null
 	var/last_update_state = update_state
 	var/last_update_overlay = update_overlay
 	update_state = 0
@@ -369,12 +389,16 @@
 
 // Used in process so it doesn't update the icon too much
 /obj/machinery/power/apc/proc/queue_icon_update()
+	procstart = null
+	src.procstart = null
 	icon_update_needed = TRUE
 
 //attack with an item - open/close cover, insert cell, or (un)lock interface
 
 /obj/machinery/power/apc/attackby(obj/item/W, mob/living/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(issilicon(user) && get_dist(src,user)>1)
 		return src.attack_hand(user)
 	if (istype(W, /obj/item/crowbar)) //Using crowbar
@@ -661,6 +685,8 @@
 		return ..()
 
 /obj/machinery/power/apc/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!issilicon(user) && (!user.canUseTopic(src, be_close=TRUE) || !isturf(loc)))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -669,6 +695,8 @@
 		togglelock(user)
 
 /obj/machinery/power/apc/proc/togglelock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		to_chat(user, "<span class='warning'>The interface is broken!</span>")
 	else if(opened)
@@ -686,16 +714,22 @@
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 
 /obj/machinery/power/apc/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" && damage_amount < 15 && (!(stat & BROKEN) || malfai))
 		return 0
 	. = ..()
 
 
 /obj/machinery/power/apc/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		set_broken()
 
 /obj/machinery/power/apc/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(!(stat & BROKEN))
 			set_broken()
@@ -705,6 +739,8 @@
 			update_icon()
 
 /obj/machinery/power/apc/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!emagged && !malfhack)
 		if(opened)
 			to_chat(user, "<span class='warning'>You must close the cover to swipe an ID card!</span>")
@@ -723,6 +759,8 @@
 // attack with hand - remove cell (if cover open) or interact with the APC
 
 /obj/machinery/power/apc/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	if(usr == user && opened && (!issilicon(user)))
@@ -749,6 +787,8 @@
 		ui.set_autoupdate(state = (failure_timer ? 1 : 0))
 
 /obj/machinery/power/apc/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"locked" = locked && !(integration_cog && is_servant_of_ratvar(user)),
 		"failTime" = failure_timer,
@@ -800,6 +840,8 @@
 
 
 /obj/machinery/power/apc/proc/get_malf_status(mob/living/silicon/ai/malf)
+	procstart = null
+	src.procstart = null
 	if(istype(malf) && malf.malf_picker)
 		if(malfai == (malf.parent || malf))
 			if(occupier == malf)
@@ -814,9 +856,13 @@
 		return 0 // 0 = User is not a Malf AI
 
 /obj/machinery/power/apc/proc/report()
+	procstart = null
+	src.procstart = null
 	return "[area.name] : [equipment]/[lighting]/[environ] ([lastused_equip+lastused_light+lastused_environ]) : [cell? cell.percent() : "N/C"] ([charging])"
 
 /obj/machinery/power/apc/proc/update()
+	procstart = null
+	src.procstart = null
 	if(operating && !shorted && !failure_timer)
 		area.power_light = (lighting > 1)
 		area.power_equip = (equipment > 1)
@@ -828,6 +874,8 @@
 	area.power_change()
 
 /obj/machinery/power/apc/proc/can_use(mob/user, loud = 0) //used by attack_hand() and Topic()
+	procstart = null
+	src.procstart = null
 	if(IsAdminGhost(user))
 		return TRUE
 	if(user.has_unlimited_silicon_privilege)
@@ -847,6 +895,8 @@
 	return TRUE
 
 /obj/machinery/power/apc/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..() || !can_use(usr, 1) || (locked && !usr.has_unlimited_silicon_privilege && !failure_timer && !(integration_cog && (is_servant_of_ratvar(usr)))))
 		return
 	switch(action)
@@ -912,11 +962,15 @@
 	return 1
 
 /obj/machinery/power/apc/proc/toggle_breaker()
+	procstart = null
+	src.procstart = null
 	operating = !operating
 	update()
 	update_icon()
 
 /obj/machinery/power/apc/proc/malfhack(mob/living/silicon/ai/malf)
+	procstart = null
+	src.procstart = null
 	if(!istype(malf))
 		return
 	if(get_malf_status(malf) != 1)
@@ -933,6 +987,8 @@
 	A.target = src
 
 /obj/machinery/power/apc/proc/malfoccupy(mob/living/silicon/ai/malf)
+	procstart = null
+	src.procstart = null
 	if(!istype(malf))
 		return
 	if(istype(malf.loc, /obj/machinery/power/apc)) // Already in an APC
@@ -960,6 +1016,8 @@
 
 
 /obj/machinery/power/apc/proc/malfvacate(forced)
+	procstart = null
+	src.procstart = null
 	if(!occupier)
 		return
 	if(occupier.parent && occupier.parent.stat != DEAD)
@@ -980,6 +1038,8 @@
 				P.alert = FALSE
 
 /obj/machinery/power/apc/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/device/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(card.AI)
 		to_chat(user, "<span class='warning'>[card] is already occupied!</span>")
 		return
@@ -1034,22 +1094,30 @@
 	return
 
 /obj/machinery/power/apc/surplus()
+	procstart = null
+	src.procstart = null
 	if(terminal)
 		return terminal.surplus()
 	else
 		return 0
 
 /obj/machinery/power/apc/add_load(amount)
+	procstart = null
+	src.procstart = null
 	if(terminal && terminal.powernet)
 		terminal.powernet.load += amount
 
 /obj/machinery/power/apc/avail()
+	procstart = null
+	src.procstart = null
 	if(terminal)
 		return terminal.avail()
 	else
 		return 0
 
 /obj/machinery/power/apc/process()
+	procstart = null
+	src.procstart = null
 	if(icon_update_needed)
 		update_icon()
 	if(stat & (BROKEN|MAINT))
@@ -1200,6 +1268,8 @@
 // on 0=off, 1=on, 2=autooff
 
 /obj/machinery/power/apc/proc/autoset(val, on)
+	procstart = null
+	src.procstart = null
 	if(on==0)
 		if(val==2)			// if on, return off
 			return 0
@@ -1214,6 +1284,8 @@
 	return val
 
 /obj/machinery/power/apc/proc/reset(wire)
+	procstart = null
+	src.procstart = null
 	switch(wire)
 		if(WIRE_IDSCAN)
 			locked = TRUE
@@ -1231,6 +1303,8 @@
 
 // damage and destruction acts
 /obj/machinery/power/apc/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(cell)
 		cell.emp_act(severity)
 	if(occupier)
@@ -1244,14 +1318,20 @@
 	..()
 
 /obj/machinery/power/apc/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	set_broken()
 
 /obj/machinery/power/apc/disconnect_terminal()
+	procstart = null
+	src.procstart = null
 	if(terminal)
 		terminal.master = null
 		terminal = null
 
 /obj/machinery/power/apc/proc/set_broken()
+	procstart = null
+	src.procstart = null
 	if(malfai && operating)
 		malfai.malf_picker.processing_time = Clamp(malfai.malf_picker.processing_time - 10,0,1000)
 	stat |= BROKEN
@@ -1264,6 +1344,8 @@
 // overload all the lights in this APC area
 
 /obj/machinery/power/apc/proc/overload_lighting()
+	procstart = null
+	src.procstart = null
 	if(/* !get_connection() || */ !operating || shorted)
 		return
 	if( cell && cell.charge>=20)
@@ -1271,6 +1353,8 @@
 		INVOKE_ASYNC(src, .proc/break_lights)
 
 /obj/machinery/power/apc/proc/break_lights()
+	procstart = null
+	src.procstart = null
 	for(var/area/A in area.related)
 		for(var/obj/machinery/light/L in A)
 			L.on = TRUE
@@ -1279,6 +1363,8 @@
 			stoplag()
 
 /obj/machinery/power/apc/proc/shock(mob/user, prb)
+	procstart = null
+	src.procstart = null
 	if(!prob(prb))
 		return 0
 	do_sparks(5, TRUE, src)
@@ -1290,6 +1376,8 @@
 		return 0
 
 /obj/machinery/power/apc/proc/setsubsystem(val)
+	procstart = null
+	src.procstart = null
 	if(cell && cell.charge > 0)
 		return (val==1) ? 0 : val
 	else if(val == 3)
@@ -1299,6 +1387,8 @@
 
 
 /obj/machinery/power/apc/proc/energy_fail(duration)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/M in area.contents)
 		if(M.critical_machine)
 			return

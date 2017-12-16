@@ -12,6 +12,8 @@
 	var/construct_type //The construct this shell will create
 
 /obj/item/clockwork/construct_chassis/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/A = get_area(src)
 	if(A && construct_type)
@@ -20,23 +22,31 @@
 	LAZYADD(GLOB.mob_spawners[name], src)
 
 /obj/item/clockwork/construct_chassis/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list -= src
 	var/list/spawners = GLOB.mob_spawners[name]
 	LAZYREMOVE(spawners, src)
 	. = ..()
 
 /obj/item/clockwork/construct_chassis/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	clockwork_desc = "[clockwork_desc]<br>[construct_desc]"
 	..()
 	clockwork_desc = initial(clockwork_desc)
 
 /obj/item/clockwork/construct_chassis/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(w_class >= WEIGHT_CLASS_HUGE)
 		to_chat(user, "<span class='warning'>[src] is too cumbersome to carry! Drag it around instead!</span>")
 		return
 	. = ..()
 
 /obj/item/clockwork/construct_chassis/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.mode)
 		to_chat(user, "<span class='danger'>You cannot use that before the game has started.</span>")
 		return
@@ -85,16 +95,22 @@
 	var/infinite_resources = TRUE
 
 /obj/item/clockwork/construct_chassis/cogscarab/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(GLOB.servants_active)
 		infinite_resources = FALSE //For any that are somehow spawned in late
 
 /obj/item/clockwork/construct_chassis/cogscarab/pre_spawn()
+	procstart = null
+	src.procstart = null
 	if(infinite_resources)
 		//During rounds where they can't interact with the station, let them experiment with builds
 		construct_type = /mob/living/simple_animal/drone/cogscarab/ratvar
 
 /obj/item/clockwork/construct_chassis/cogscarab/post_spawn(mob/living/construct)
+	procstart = null
+	src.procstart = null
 	if(infinite_resources) //Allow them to build stuff and recite scripture
 		var/list/cached_stuff = construct.GetAllContents()
 		for(var/obj/item/clockwork/replica_fabricator/F in cached_stuff)

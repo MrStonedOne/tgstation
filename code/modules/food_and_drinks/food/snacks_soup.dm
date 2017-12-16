@@ -9,6 +9,8 @@
 	foodtype = VEGETABLES
 
 /obj/item/reagent_containers/food/snacks/soup/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eatverb = pick("slurp","sip","suck","inhale","drink")
 
@@ -20,6 +22,8 @@
 	tastes = list("wishes" = 1)
 
 /obj/item/reagent_containers/food/snacks/soup/wish/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/wish_true = prob(25)
 	if(wish_true)
@@ -100,6 +104,8 @@
 	tastes = list("chaos" = 1)
 
 /obj/item/reagent_containers/food/snacks/soup/mystery/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	extra_reagent = pick("capsaicin", "frostoil", "omnizine", "banana", "blood", "slimejelly", "toxin", "banana", "carbon", "oculine")
 	bonus_reagents = list("[extra_reagent]" = 5, "nutriment" = 6)
@@ -174,6 +180,8 @@
 	foodtype = VEGETABLES
 
 /obj/item/reagent_containers/food/snacks/soup/beet/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = pick("borsch","bortsch","borstch","borsh","borshch","borscht")
 	tastes = list(name = 1)

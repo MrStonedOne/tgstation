@@ -19,11 +19,15 @@
 	var/item_recycle_sound = 'sound/items/welder.ogg'
 
 /obj/machinery/recycler/Initialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/material_container, list(MAT_METAL, MAT_GLASS, MAT_PLASMA, MAT_SILVER, MAT_GOLD, MAT_DIAMOND, MAT_URANIUM, MAT_BANANIUM, MAT_TITANIUM))
 	. = ..()
 	update_icon()
 
 /obj/machinery/recycler/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/amt_made = 0
 	var/mat_mod = 0
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
@@ -36,17 +40,23 @@
 	amount_produced = min(50, amt_made) + 50
 
 /obj/machinery/recycler/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "The power light is [(stat & NOPOWER) ? "off" : "on"].")
 	to_chat(user, "The safety-mode light is [safety_mode ? "on" : "off"].")
 	to_chat(user, "The safety-sensors status light is [emagged ? "off" : "on"].")
 
 /obj/machinery/recycler/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 
 /obj/machinery/recycler/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "grinder-oOpen", "grinder-o0", I))
 		return
 
@@ -64,6 +74,8 @@
 	return ..()
 
 /obj/machinery/recycler/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
@@ -74,6 +86,8 @@
 	to_chat(user, "<span class='notice'>You use the cryptographic sequencer on [src].</span>")
 
 /obj/machinery/recycler/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	var/is_powered = !(stat & (BROKEN|NOPOWER))
 	if(safety_mode)
@@ -82,6 +96,8 @@
 
 /obj/machinery/recycler/CollidedWith(atom/movable/AM)
 
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 	if(!anchored)
@@ -94,6 +110,8 @@
 		eat(AM)
 
 /obj/machinery/recycler/proc/eat(atom/AM0, sound=TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/to_eat
 	if(istype(AM0, /obj/item))
 		to_eat = AM0.GetAllContents()
@@ -125,6 +143,8 @@
 		playsound(src, item_recycle_sound, 50, 1)
 
 /obj/machinery/recycler/proc/recycle_item(obj/item/I)
+	procstart = null
+	src.procstart = null
 	I.forceMove(loc)
 
 	GET_COMPONENT(materials, /datum/component/material_container)
@@ -138,6 +158,8 @@
 
 
 /obj/machinery/recycler/proc/emergency_stop(mob/living/L)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/buzz-sigh.ogg', 50, 0)
 	safety_mode = TRUE
 	update_icon()
@@ -145,12 +167,16 @@
 	addtimer(CALLBACK(src, .proc/reboot), SAFETY_COOLDOWN)
 
 /obj/machinery/recycler/proc/reboot()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/ping.ogg', 50, 0)
 	safety_mode = FALSE
 	update_icon()
 
 /obj/machinery/recycler/proc/crush_living(mob/living/L)
 
+	procstart = null
+	src.procstart = null
 	L.forceMove(loc)
 
 	if(issilicon(L))

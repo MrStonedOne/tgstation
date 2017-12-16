@@ -13,19 +13,27 @@
 
 
 /turf/open/floor/light/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>There's a <b>small crack</b> on the edge of it.</span>")
 
 /turf/open/floor/light/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /turf/open/floor/light/break_tile()
+	procstart = null
+	src.procstart = null
 	..()
 	light_range = 0
 	update_light()
 
 /turf/open/floor/light/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(on)
 		switch(state)
@@ -48,10 +56,14 @@
 
 
 /turf/open/floor/light/ChangeTurf(path, new_baseturf, defer_change = FALSE, ignore_air = FALSE, forceop = FALSE)
+	procstart = null
+	src.procstart = null
 	set_light(0)
 	return ..()
 
 /turf/open/floor/light/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_modify_colour)
 		return
 	if(!on)
@@ -66,9 +78,13 @@
 	..()  //I am not sure what the parent procs have for attack_hand, best to check later.
 
 /turf/open/floor/light/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /turf/open/floor/light/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(istype(C, /obj/item/light/bulb)) //only for light tiles

@@ -13,6 +13,8 @@
 	weapon_weight = WEAPON_MEDIUM
 
 /obj/item/gun/ballistic/shotgun/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -24,17 +26,25 @@
 		update_icon()
 
 /obj/item/gun/ballistic/shotgun/process_chamber(empty_chamber = 0)
+	procstart = null
+	src.procstart = null
 	return ..() //changed argument value
 
 /obj/item/gun/ballistic/shotgun/chamber_round()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/shotgun/can_shoot()
+	procstart = null
+	src.procstart = null
 	if(!chambered)
 		return 0
 	return (chambered.BB ? 1 : 0)
 
 /obj/item/gun/ballistic/shotgun/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(recentpump > world.time)
 		return
 	pump(user)
@@ -42,12 +52,16 @@
 	return
 
 /obj/item/gun/ballistic/shotgun/blow_up(mob/user)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(chambered && chambered.BB)
 		process_fire(user, user,0)
 		. = 1
 
 /obj/item/gun/ballistic/shotgun/proc/pump(mob/M)
+	procstart = null
+	src.procstart = null
 	playsound(M, 'sound/weapons/shotgunpump.ogg', 60, 1)
 	pump_unload(M)
 	pump_reload(M)
@@ -55,12 +69,16 @@
 	return 1
 
 /obj/item/gun/ballistic/shotgun/proc/pump_unload(mob/M)
+	procstart = null
+	src.procstart = null
 	if(chambered)//We have a shell in the chamber
 		chambered.forceMove(drop_location())//Eject casing
 		chambered.SpinAnimation(5, 1)
 		chambered = null
 
 /obj/item/gun/ballistic/shotgun/proc/pump_reload(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!magazine.ammo_count())
 		return 0
 	var/obj/item/ammo_casing/AC = magazine.get_round() //load next casing.
@@ -68,6 +86,8 @@
 
 
 /obj/item/gun/ballistic/shotgun/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (chambered)
 		to_chat(user, "A [chambered.BB ? "live" : "spent"] one is in the chamber.")
@@ -85,6 +105,8 @@
 	sawn_desc = "Come with me if you want to live."
 
 /obj/item/gun/ballistic/shotgun/riot/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(A, /obj/item/circular_saw) || istype(A, /obj/item/gun/energy/plasmacutter))
 		sawoff(user)
@@ -110,6 +132,8 @@
 	knife_y_offset = 13
 
 /obj/item/gun/ballistic/shotgun/boltaction/pump(mob/M)
+	procstart = null
+	src.procstart = null
 	playsound(M, 'sound/weapons/shotgunpump.ogg', 60, 1)
 	if(bolt_open)
 		pump_reload(M)
@@ -120,12 +144,16 @@
 	return 1
 
 /obj/item/gun/ballistic/shotgun/boltaction/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!bolt_open)
 		to_chat(user, "<span class='notice'>The bolt is closed!</span>")
 		return
 	. = ..()
 
 /obj/item/gun/ballistic/shotgun/boltaction/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "The bolt is [bolt_open ? "open" : "closed"].")
 
@@ -151,26 +179,38 @@
 	mag_type = /obj/item/ammo_box/magazine/internal/boltaction/enchanted/arcane_barrage
 
 /obj/item/gun/ballistic/shotgun/boltaction/enchanted/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	bolt_open = TRUE
 	pump()
 	gun_type = type
 
 /obj/item/gun/ballistic/shotgun/boltaction/enchanted/dropped()
+	procstart = null
+	src.procstart = null
 	..()
 	guns_left = 0
 
 /obj/item/gun/ballistic/shotgun/boltaction/enchanted/proc/discard_gun(mob/user)
+	procstart = null
+	src.procstart = null
 	throw_at(pick(oview(7,get_turf(user))),1,1)
 	user.visible_message("<span class='warning'>[user] tosses aside the spent rifle!</span>")
 
 /obj/item/gun/ballistic/shotgun/boltaction/enchanted/arcane_barrage/discard_gun(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/shotgun/boltaction/enchanted/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/shotgun/boltaction/enchanted/shoot_live_shot(mob/living/user as mob|obj, pointblank = 0, mob/pbtarget = null, message = 1)
+	procstart = null
+	src.procstart = null
 	..()
 	if(guns_left)
 		var/obj/item/gun/ballistic/shotgun/boltaction/enchanted/GUN = new gun_type
@@ -185,6 +225,8 @@
 // Automatic Shotguns//
 
 /obj/item/gun/ballistic/shotgun/automatic/shoot_live_shot(mob/living/user as mob|obj)
+	procstart = null
+	src.procstart = null
 	..()
 	src.pump(user)
 
@@ -214,21 +256,29 @@
 	var/obj/item/ammo_box/magazine/internal/shot/alternate_magazine
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to pump it.</span>")
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!alternate_magazine)
 		alternate_magazine = new mag_type(src)
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!chambered && magazine.contents.len)
 		pump()
 	else
 		toggle_tube(user)
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/proc/toggle_tube(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/current_mag = magazine
 	var/alt_mag = alternate_magazine
 	magazine = alt_mag
@@ -240,6 +290,8 @@
 		to_chat(user, "You switch to tube A.")
 
 /obj/item/gun/ballistic/shotgun/automatic/dual_tube/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated() || !Adjacent(user) || !istype(user))
 		return
 	pump()

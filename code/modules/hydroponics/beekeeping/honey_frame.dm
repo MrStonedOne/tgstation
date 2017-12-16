@@ -8,6 +8,8 @@
 
 
 /obj/item/honey_frame/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(8,-8)
 	pixel_y = rand(8,-8)

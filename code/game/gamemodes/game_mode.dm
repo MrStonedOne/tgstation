@@ -53,6 +53,8 @@
 
 ///Checks to see if the game can be setup and ran with the current number of players or whatnot.
 /datum/game_mode/proc/can_start()
+	procstart = null
+	src.procstart = null
 	var/playerC = 0
 	for(var/mob/dead/new_player/player in GLOB.player_list)
 		if((player.client)&&(player.ready == PLAYER_READY_TO_PLAY))
@@ -72,6 +74,8 @@
 
 ///Attempts to select players for special roles the mode might have.
 /datum/game_mode/proc/pre_setup()
+	procstart = null
+	src.procstart = null
 	return 1
 
 ///Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things
@@ -99,6 +103,8 @@
 
 ///Handles late-join antag assignments
 /datum/game_mode/proc/make_antag_chance(mob/living/carbon/human/character)
+	procstart = null
+	src.procstart = null
 	if(replacementmode && round_converted == 2)
 		replacementmode.make_antag_chance(character)
 	return
@@ -106,6 +112,8 @@
 
 ///Allows rounds to basically be "rerolled" should the initial premise fall through. Also known as mulligan antags.
 /datum/game_mode/proc/convert_roundtype()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/list/living_crew = list()
 
@@ -181,10 +189,14 @@
 
 ///Called by the gameSSticker
 /datum/game_mode/process()
+	procstart = null
+	src.procstart = null
 	return 0
 
 //For things that do not die easily
 /datum/game_mode/proc/are_special_antags_dead()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
@@ -245,6 +257,8 @@
 	return 0
 
 /datum/game_mode/proc/send_intercept()
+	procstart = null
+	src.procstart = null
 	var/intercepttext = "<b><i>Central Command Status Summary</i></b><hr>"
 	intercepttext += "<b>Central Command has intercepted and partially decoded a Syndicate transmission with vital information regarding their movements. The following report outlines the most \
 	likely threats to appear in your sector.</b>"
@@ -275,6 +289,8 @@
 
 
 /datum/game_mode/proc/get_players_for_role(role)
+	procstart = null
+	src.procstart = null
 	var/list/players = list()
 	var/list/candidates = list()
 	var/list/drafted = list()
@@ -352,6 +368,8 @@
 
 
 /datum/game_mode/proc/num_players()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/mob/dead/new_player/P in GLOB.player_list)
 		if(P.client && P.ready == PLAYER_READY_TO_PLAY)
@@ -361,6 +379,8 @@
 //Reports player logouts//
 //////////////////////////
 /proc/display_roundstart_logout_report()
+	procstart = null
+	src.procstart = null
 	var/msg = "<span class='boldnotice'>Roundstart logout report\n\n</span>"
 	for(var/i in GLOB.mob_living_list)
 		var/mob/living/L = i
@@ -407,12 +427,16 @@
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/game_mode/proc/age_check(client/C)
+	procstart = null
+	src.procstart = null
 	if(get_remaining_days(C) == 0)
 		return 1	//Available in 0 days = available right now = player is old enough to play.
 	return 0
 
 
 /datum/game_mode/proc/get_remaining_days(client/C)
+	procstart = null
+	src.procstart = null
 	if(!C)
 		return 0
 	if(!CONFIG_GET(flag/use_age_restriction_for_jobs))
@@ -425,12 +449,16 @@
 	return max(0, enemy_minimum_age - C.player_age)
 
 /datum/game_mode/proc/remove_antag_for_borging(datum/mind/newborgie)
+	procstart = null
+	src.procstart = null
 	SSticker.mode.remove_cultist(newborgie, 0, 0)
 	var/datum/antagonist/rev/rev = newborgie.has_antag_datum(/datum/antagonist/rev)
 	if(rev)
 		rev.remove_revolutionary(TRUE)
 
 /datum/game_mode/proc/generate_station_goals()
+	procstart = null
+	src.procstart = null
 	var/list/possible = list()
 	for(var/T in subtypesof(/datum/station_goal))
 		var/datum/station_goal/G = T
@@ -449,16 +477,22 @@
 
 //By default nuke just ends the round
 /datum/game_mode/proc/OnNukeExplosion(off_station)
+	procstart = null
+	src.procstart = null
 	nuke_off_station = off_station
 	if(off_station < 2)
 		station_was_nuked = TRUE //Will end the round on next check.
 
 //Additional report section in roundend report
 /datum/game_mode/proc/special_report()
+	procstart = null
+	src.procstart = null
 	return
 
 //Set result and news report here
 /datum/game_mode/proc/set_round_result()
+	procstart = null
+	src.procstart = null
 	SSticker.mode_result = "undefined"
 	if(station_was_nuked)
 		SSticker.news_report = STATION_DESTROYED_NUKE

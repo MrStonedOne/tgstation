@@ -22,9 +22,13 @@
 	var/grown_battery = FALSE // If it's a grown that acts as a battery, add a wire overlay to it.
 
 /obj/item/stock_parts/cell/get_cell()
+	procstart = null
+	src.procstart = null
 	return src
 
 /obj/item/stock_parts/cell/Initialize(mapload, override_maxcharge)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	if (override_maxcharge)
@@ -35,10 +39,14 @@
 	update_icon()
 
 /obj/item/stock_parts/cell/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/stock_parts/cell/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if("self_recharge")
 			if(var_value)
@@ -48,12 +56,16 @@
 	. = ..()
 
 /obj/item/stock_parts/cell/process()
+	procstart = null
+	src.procstart = null
 	if(self_recharge)
 		give(chargerate * 0.25)
 	else
 		return PROCESS_KILL
 
 /obj/item/stock_parts/cell/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(grown_battery)
 		add_overlay("grown_wires")
@@ -69,6 +81,8 @@
 
 // use power from a cell
 /obj/item/stock_parts/cell/proc/use(amount)
+	procstart = null
+	src.procstart = null
 	if(rigged && amount > 0)
 		explode()
 		return 0
@@ -81,6 +95,8 @@
 
 // recharge the cell
 /obj/item/stock_parts/cell/proc/give(amount)
+	procstart = null
+	src.procstart = null
 	if(rigged && amount > 0)
 		explode()
 		return 0
@@ -91,6 +107,8 @@
 	return power_used
 
 /obj/item/stock_parts/cell/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(rigged)
 		to_chat(user, "<span class='danger'>This power cell seems to be faulty!</span>")
@@ -98,10 +116,14 @@
 		to_chat(user, "The charge meter reads [round(src.percent() )]%.")
 
 /obj/item/stock_parts/cell/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is licking the electrodes of [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (FIRELOSS)
 
 /obj/item/stock_parts/cell/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/reagent_containers/syringe))
 		var/obj/item/reagent_containers/syringe/S = W
@@ -113,6 +135,8 @@
 
 
 /obj/item/stock_parts/cell/proc/explode()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src.loc)
 	if (charge==0)
 		return
@@ -129,18 +153,24 @@
 	qdel(src)
 
 /obj/item/stock_parts/cell/proc/corrupt()
+	procstart = null
+	src.procstart = null
 	charge /= 2
 	maxcharge = max(maxcharge/2, chargerate)
 	if (prob(10))
 		rigged = 1 //broken batterys are dangerous
 
 /obj/item/stock_parts/cell/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	charge -= 1000 / severity
 	if (charge < 0)
 		charge = 0
 	..()
 
 /obj/item/stock_parts/cell/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!QDELETED(src))
 		switch(severity)
@@ -153,9 +183,13 @@
 
 
 /obj/item/stock_parts/cell/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	ex_act(EXPLODE_DEVASTATE)
 
 /obj/item/stock_parts/cell/proc/get_electrocute_damage()
+	procstart = null
+	src.procstart = null
 	if(charge >= 1000)
 		return Clamp(round(charge/10000), 10, 90) + rand(-5,5)
 	else
@@ -170,6 +204,8 @@
 	rating = 2
 
 /obj/item/stock_parts/cell/crap/empty/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge = 0
 
@@ -193,6 +229,8 @@
 	rating = 2.5
 
 /obj/item/stock_parts/cell/secborg/empty/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge = 0
 
@@ -226,6 +264,8 @@
 	chargerate = 2250
 
 /obj/item/stock_parts/cell/high/empty/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge = 0
 
@@ -238,6 +278,8 @@
 	chargerate = 2000
 
 /obj/item/stock_parts/cell/super/empty/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge = 0
 
@@ -250,6 +292,8 @@
 	chargerate = 3000
 
 /obj/item/stock_parts/cell/hyper/empty/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge = 0
 
@@ -263,6 +307,8 @@
 	chargerate = 4000
 
 /obj/item/stock_parts/cell/bluespace/empty/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge = 0
 
@@ -275,6 +321,8 @@
 	chargerate = 30000
 
 /obj/item/stock_parts/cell/infinite/use()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/item/stock_parts/cell/infinite/abductor
@@ -287,6 +335,8 @@
 	ratingdesc = FALSE
 
 /obj/item/stock_parts/cell/infinite/abductor/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -316,13 +366,19 @@
 	rating = 2
 
 /obj/item/stock_parts/cell/emproof/empty/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	charge = 0
 
 /obj/item/stock_parts/cell/emproof/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/stock_parts/cell/emproof/corrupt()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/stock_parts/cell/beam_rifle
@@ -333,9 +389,13 @@
 	rating = 4
 
 /obj/item/stock_parts/cell/beam_rifle/corrupt()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/stock_parts/cell/beam_rifle/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	charge = Clamp((charge-(10000/severity)),0,maxcharge)
 
 /obj/item/stock_parts/cell/emergency_light
@@ -347,6 +407,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/stock_parts/cell/emergency_light/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/A = get_area(src)
 	if(!A.lightswitch || !A.light_power)

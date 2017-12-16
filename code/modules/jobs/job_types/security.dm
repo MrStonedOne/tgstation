@@ -1,5 +1,7 @@
 //Warden and regular officers add this result to their get_access()
 /datum/job/proc/check_config_for_sec_maint()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/security_has_maint_access))
 		return list(ACCESS_MAINT_TUNNELS)
 	return list()
@@ -83,6 +85,8 @@ Warden
 	minimal_access = list(ACCESS_SECURITY, ACCESS_SEC_DOORS, ACCESS_BRIG, ACCESS_ARMORY, ACCESS_COURT, ACCESS_WEAPONS) //SEE /DATUM/JOB/WARDEN/GET_ACCESS()
 
 /datum/job/warden/get_access()
+	procstart = null
+	src.procstart = null
 	var/list/L = list()
 	L = ..() | check_config_for_sec_maint()
 	return L
@@ -155,6 +159,8 @@ Detective
 	implants = list(/obj/item/implant/mindshield)
 
 /datum/outfit/job/detective/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/clothing/mask/cigarette/cig = H.wear_mask
 	cig.light("")
@@ -186,6 +192,8 @@ Security Officer
 
 
 /datum/job/officer/get_access()
+	procstart = null
+	src.procstart = null
 	var/list/L = list()
 	L |= ..() | check_config_for_sec_maint()
 	return L
@@ -193,6 +201,8 @@ Security Officer
 GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, SEC_DEPT_SCIENCE, SEC_DEPT_SUPPLY))
 
 /datum/job/officer/after_spawn(mob/living/carbon/human/H, mob/M)
+	procstart = null
+	src.procstart = null
 	// Assign department security
 	var/department
 	if(M && M.client && M.client.prefs)
@@ -295,6 +305,8 @@ GLOBAL_LIST_INIT(available_depts, list(SEC_DEPT_ENGINEERING, SEC_DEPT_MEDICAL, S
 
 
 /obj/item/device/radio/headset/headset_sec/alt/department/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires = new/datum/wires/radio(src)
 	secure_radio_connections = new

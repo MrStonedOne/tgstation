@@ -9,6 +9,8 @@
 	var/poison_type = "toxin"
 
 /mob/living/simple_animal/hostile/poison/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && isliving(target))
 		var/mob/living/L = target
@@ -52,31 +54,43 @@
 	var/directive = "" //Message passed down to children, to relay the creator's orders
 
 /mob/living/simple_animal/hostile/poison/giant_spider/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	lay_web = new
 	lay_web.Grant(src)
 
 /mob/living/simple_animal/hostile/poison/giant_spider/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(lay_web)
 	return ..()
 
 /mob/living/simple_animal/hostile/poison/giant_spider/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["activate"])
 		var/mob/dead/observer/ghost = usr
 		if(istype(ghost) && playable_spider)
 			humanize_spider(ghost)
 
 /mob/living/simple_animal/hostile/poison/giant_spider/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	if(directive)
 		to_chat(src, "<span class='notice'>Your mother left you a directive! Follow it at all costs.</span>")
 		to_chat(src, "<span class='spider'><b>[directive]</b></span>")
 
 /mob/living/simple_animal/hostile/poison/giant_spider/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!humanize_spider(user))
 		return ..()
 
 /mob/living/simple_animal/hostile/poison/giant_spider/proc/humanize_spider(mob/user)
+	procstart = null
+	src.procstart = null
 	if(key || !playable_spider)//Someone is in it or the fun police are shutting it down
 		return 0
 	var/spider_ask = alert("Become a spider?", "Are you australian?", "Yes", "No")
@@ -109,6 +123,8 @@
 	var/static/list/consumed_mobs = list() //the tags of mobs that have been consumed by nurse spiders to lay eggs
 
 /mob/living/simple_animal/hostile/poison/giant_spider/nurse/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wrap = new
 	AddAbility(wrap)
@@ -118,6 +134,8 @@
 	set_directive.Grant(src)
 
 /mob/living/simple_animal/hostile/poison/giant_spider/nurse/Destroy()
+	procstart = null
+	src.procstart = null
 	RemoveAbility(wrap)
 	QDEL_NULL(lay_eggs)
 	QDEL_NULL(set_directive)
@@ -172,6 +190,8 @@
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/simple_animal/hostile/poison/giant_spider/tarantula/movement_delay()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(locate(/obj/structure/spider/stickyweb) in T)
 		speed = 2
@@ -192,11 +212,15 @@
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/simple_animal/hostile/poison/giant_spider/nurse/midwife/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	letmetalkpls = new
 	letmetalkpls.Grant(src)
 
 /mob/living/simple_animal/hostile/poison/giant_spider/nurse/midwife/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(letmetalkpls)
 	return ..()
 
@@ -228,6 +252,8 @@
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/simple_animal/hostile/poison/giant_spider/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!..()) //AIStatus is off
 		return 0
 	if(AIStatus == AI_IDLE)
@@ -241,6 +267,8 @@
 		return 1
 
 /mob/living/simple_animal/hostile/poison/giant_spider/nurse/proc/GiveUp(C)
+	procstart = null
+	src.procstart = null
 	spawn(100)
 		if(busy == MOVING_TO_TARGET)
 			if(cocoon_target == C && get_dist(src,cocoon_target) > 1)
@@ -249,6 +277,8 @@
 			stop_automated_movement = 0
 
 /mob/living/simple_animal/hostile/poison/giant_spider/nurse/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/list/can_see = view(src, 10)
 		if(!busy && prob(30))	//30% chance to stop wandering and do something
@@ -294,6 +324,8 @@
 		stop_automated_movement = FALSE
 
 /mob/living/simple_animal/hostile/poison/giant_spider/nurse/proc/cocoon()
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD && cocoon_target && !cocoon_target.anchored)
 		if(cocoon_target == src)
 			to_chat(src, "<span class='warning'>You can't wrap yourself!</span>")
@@ -343,6 +375,8 @@
 	button_icon_state = "lay_web"
 
 /datum/action/innate/spider/lay_web/Activate()
+	procstart = null
+	src.procstart = null
 	if(!istype(owner, /mob/living/simple_animal/hostile/poison/giant_spider/nurse))
 		return
 	var/mob/living/simple_animal/hostile/poison/giant_spider/nurse/S = owner
@@ -380,14 +414,20 @@
 	action_background_icon_state = "bg_alien"
 
 /obj/effect/proc_holder/wrap/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	action = new(src)
 
 /obj/effect/proc_holder/wrap/update_icon()
+	procstart = null
+	src.procstart = null
 	action.button_icon_state = "wrap_[active]"
 	action.UpdateButtonIcon()
 
 /obj/effect/proc_holder/wrap/Click()
+	procstart = null
+	src.procstart = null
 	if(!istype(usr, /mob/living/simple_animal/hostile/poison/giant_spider/nurse))
 		return TRUE
 	var/mob/living/simple_animal/hostile/poison/giant_spider/nurse/user = usr
@@ -395,6 +435,8 @@
 	return TRUE
 
 /obj/effect/proc_holder/wrap/proc/activate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/message
 	if(active)
 		message = "<span class='notice'>You no longer prepare to wrap something in a cocoon.</span>"
@@ -405,6 +447,8 @@
 		return 1
 
 /obj/effect/proc_holder/wrap/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(ranged_ability_user.incapacitated() || !istype(ranged_ability_user, /mob/living/simple_animal/hostile/poison/giant_spider/nurse))
@@ -423,6 +467,8 @@
 		return TRUE
 
 /obj/effect/proc_holder/wrap/on_lose(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	remove_ranged_ability()
 
 /datum/action/innate/spider/lay_eggs
@@ -432,6 +478,8 @@
 	button_icon_state = "lay_eggs"
 
 /datum/action/innate/spider/lay_eggs/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(!istype(owner, /mob/living/simple_animal/hostile/poison/giant_spider/nurse))
 			return 0
@@ -441,6 +489,8 @@
 		return 0
 
 /datum/action/innate/spider/lay_eggs/Activate()
+	procstart = null
+	src.procstart = null
 	if(!istype(owner, /mob/living/simple_animal/hostile/poison/giant_spider/nurse))
 		return
 	var/mob/living/simple_animal/hostile/poison/giant_spider/nurse/S = owner
@@ -477,16 +527,22 @@
 	button_icon_state = "directive"
 
 /datum/action/innate/spider/set_directive/Activate()
+	procstart = null
+	src.procstart = null
 	if(!istype(owner, /mob/living/simple_animal/hostile/poison/giant_spider/nurse))
 		return
 	var/mob/living/simple_animal/hostile/poison/giant_spider/nurse/S = owner
 	S.directive = stripped_input(S, "Enter the new directive", "Create directive", "[S.directive]", MAX_MESSAGE_LEN)
 
 /mob/living/simple_animal/hostile/poison/giant_spider/Login()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.spidermobs[src] = TRUE
 
 /mob/living/simple_animal/hostile/poison/giant_spider/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.spidermobs -= src
 	return ..()
 
@@ -496,11 +552,15 @@
 	button_icon_state = "command"
 
 /datum/action/innate/spider/comm/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!istype(owner, /mob/living/simple_animal/hostile/poison/giant_spider/nurse/midwife))
 		return FALSE
 	return TRUE
 
 /datum/action/innate/spider/comm/Trigger()
+	procstart = null
+	src.procstart = null
 	var/input = stripped_input(owner, "Input a command for your legions to follow.", "Command", "")
 	if(QDELETED(src) || !input || !IsAvailable())
 		return FALSE
@@ -508,6 +568,8 @@
 	return TRUE
 
 /datum/action/innate/spider/comm/proc/spider_command(mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	if(!message)
 		return
 	var/my_message
@@ -520,6 +582,8 @@
 	log_talk(user, "SPIDERCOMMAND: [key_name(user)] : [message]",LOGSAY)
 
 /mob/living/simple_animal/hostile/poison/giant_spider/handle_temperature_damage()
+	procstart = null
+	src.procstart = null
 	if(bodytemperature < minbodytemp)
 		adjustBruteLoss(20)
 	else if(bodytemperature > maxbodytemp)

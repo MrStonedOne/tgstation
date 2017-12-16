@@ -28,6 +28,8 @@
 	trigger_guard = TRIGGER_GUARD_NORMAL
 
 /obj/item/flamethrower/Destroy()
+	procstart = null
+	src.procstart = null
 	if(weldtool)
 		qdel(weldtool)
 	if(igniter)
@@ -37,6 +39,8 @@
 	return ..()
 
 /obj/item/flamethrower/process()
+	procstart = null
+	src.procstart = null
 	if(!lit || !igniter)
 		STOP_PROCESSING(SSobj, src)
 		return null
@@ -50,6 +54,8 @@
 
 
 /obj/item/flamethrower/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(igniter)
 		add_overlay("+igniter[status]")
@@ -66,6 +72,8 @@
 	return
 
 /obj/item/flamethrower/afterattack(atom/target, mob/user, flag)
+	procstart = null
+	src.procstart = null
 	if(flag)
 		return // too close
 	if(ishuman(user))
@@ -79,6 +87,8 @@
 			flame_turf(turflist)
 
 /obj/item/flamethrower/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench) && !status)//Taking this apart
 		var/turf/T = get_turf(src)
 		if(weldtool)
@@ -132,9 +142,13 @@
 
 
 /obj/item/flamethrower/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_igniter(user)
 
 /obj/item/flamethrower/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ptank && isliving(user) && !user.incapacitated() && Adjacent(user))
 		user.put_in_hands(ptank)
 		ptank = null
@@ -142,11 +156,15 @@
 		update_icon()
 
 /obj/item/flamethrower/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ptank)
 		to_chat(user, "<span class='notice'>\The [src] has \a [ptank] attached. Alt-click to remove it.</span>")
 
 /obj/item/flamethrower/proc/toggle_igniter(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ptank)
 		to_chat(user, "<span class='notice'>Attach a plasma tank first!</span>")
 		return
@@ -165,6 +183,8 @@
 	update_icon()
 
 /obj/item/flamethrower/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	weldtool = locate(/obj/item/weldingtool) in contents
 	igniter = locate(/obj/item/device/assembly/igniter) in contents
@@ -175,6 +195,8 @@
 
 //Called from turf.dm turf/dblclick
 /obj/item/flamethrower/proc/flame_turf(turflist)
+	procstart = null
+	src.procstart = null
 	if(!lit || operating)
 		return
 	operating = TRUE
@@ -198,6 +220,8 @@
 
 
 /obj/item/flamethrower/proc/default_ignite(turf/target, release_amount = 0.05)
+	procstart = null
+	src.procstart = null
 	//TODO: DEFERRED Consider checking to make sure tank pressure is high enough before doing this...
 	//Transfer 5% of current tank air contents to turf
 	var/datum/gas_mixture/air_transfer = ptank.air_contents.remove_ratio(release_amount)
@@ -211,6 +235,8 @@
 
 
 /obj/item/flamethrower/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(create_full)
 		if(!weldtool)
@@ -231,6 +257,8 @@
 	create_with_tank = TRUE
 
 /obj/item/flamethrower/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	var/obj/item/projectile/P = hitby
 	if(damage && attack_type == PROJECTILE_ATTACK && P.damage_type != STAMINA && prob(15))
 		owner.visible_message("<span class='danger'>[attack_text] hits the fueltank on [owner]'s [src], rupturing it! What a shot!</span>")
@@ -241,10 +269,16 @@
 
 
 /obj/item/device/assembly/igniter/proc/flamethrower_process(turf/open/location)
+	procstart = null
+	src.procstart = null
 	location.hotspot_expose(700,2)
 
 /obj/item/device/assembly/igniter/cold/flamethrower_process(turf/open/location)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/device/assembly/igniter/proc/ignite_turf(obj/item/flamethrower/F,turf/open/location,release_amount = 0.05)
+	procstart = null
+	src.procstart = null
 	F.default_ignite(location,release_amount)

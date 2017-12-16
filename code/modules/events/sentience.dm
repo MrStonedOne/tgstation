@@ -12,6 +12,8 @@
 	fakeable = TRUE
 
 /datum/round_event/ghost_role/sentience/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/sentience_report = ""
 
 	var/data = pick("scans from our long-range sensors", "our sophisticated probabilistic models", "our omnipotence", "the communications traffic on your station", "energy emissions we detected", "\[REDACTED\]")
@@ -23,6 +25,8 @@
 	priority_announce(sentience_report,"[command_name()] Medium-Priority Update")
 
 /datum/round_event/ghost_role/sentience/spawn_role()
+	procstart = null
+	src.procstart = null
 	var/list/mob/dead/observer/candidates
 	candidates = get_candidates(ROLE_ALIEN, null, ROLE_ALIEN)
 

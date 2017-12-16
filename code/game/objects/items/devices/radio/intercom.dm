@@ -22,12 +22,16 @@
 	freerange = TRUE
 
 /obj/item/device/radio/intercom/ratvar/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		to_chat(user, "<span class='danger'>[src] is fastened to the wall with [is_servant_of_ratvar(user) ? "replicant alloy" : "some material you've never seen"], and can't be removed.</span>")
 		return //no unfastening!
 	. = ..()
 
 /obj/item/device/radio/intercom/ratvar/process()
+	procstart = null
+	src.procstart = null
 	if(!istype(SSticker.mode, /datum/game_mode/clockwork_cult))
 		invisibility = INVISIBILITY_OBSERVER
 		alpha = 125
@@ -39,16 +43,22 @@
 	..()
 
 /obj/item/device/radio/intercom/Initialize(mapload, ndir, building)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(building)
 		setDir(ndir)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/device/radio/intercom/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/device/radio/intercom/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!unfastened)
 		to_chat(user, "<span class='notice'>It's <b>screwed</b> and secured to the wall.</span>")
@@ -56,6 +66,8 @@
 		to_chat(user, "<span class='notice'>It's <i>unscrewed</i> from the wall, and can be <b>detached</b>.</span>")
 
 /obj/item/device/radio/intercom/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		var/obj/item/screwdriver/S = I
 		if(unfastened)
@@ -92,16 +104,24 @@
 	return ..()
 
 /obj/item/device/radio/intercom/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/item/device/radio/intercom/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/item/device/radio/intercom/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	ui_interact(user, state = GLOB.default_state)
 
 /obj/item/device/radio/intercom/can_receive(freq, level)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return FALSE
 	if(wires.is_cut(WIRE_RX))
@@ -120,11 +140,15 @@
 
 
 /obj/item/device/radio/intercom/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(!anyai && !(speaker in ai))
 		return
 	..()
 
 /obj/item/device/radio/intercom/process()
+	procstart = null
+	src.procstart = null
 	if(((world.timeofday - last_tick) > 30) || ((world.timeofday - last_tick) < 0))
 		last_tick = world.timeofday
 
@@ -140,6 +164,8 @@
 			icon_state = initial(icon_state)
 
 /obj/item/device/radio/intercom/add_blood(list/blood_dna)
+	procstart = null
+	src.procstart = null
 	return 0
 
 //Created through the autolathe or through deconstructing intercoms. Can be applied to wall to make a new intercom on it!

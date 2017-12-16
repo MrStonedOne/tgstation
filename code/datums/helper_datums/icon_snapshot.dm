@@ -5,6 +5,8 @@
 	var/list/overlays
 
 /datum/icon_snapshot/proc/makeImg()
+	procstart = null
+	src.procstart = null
 	if(!icon || !icon_state)
 		return
 	var/obj/temp = new

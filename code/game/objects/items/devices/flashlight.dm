@@ -16,10 +16,14 @@
 	var/flashlight_power = 1 //strength of the light when on
 
 /obj/item/device/flashlight/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_brightness()
 
 /obj/item/device/flashlight/proc/update_brightness(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(flashlight_power)
@@ -31,6 +35,8 @@
 		set_light(0)
 
 /obj/item/device/flashlight/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	update_brightness(user)
 	for(var/X in actions)
@@ -39,12 +45,16 @@
 	return 1
 
 /obj/item/device/flashlight/suicide_act(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is putting [src] close to [user.p_their()] eyes and turning it on! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (FIRELOSS)
 
 
 
 /obj/item/device/flashlight/attack(mob/living/carbon/M, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(M) && on && user.zone_selected in list("eyes", "mouth"))
 
@@ -167,6 +177,8 @@
 	var/holo_cooldown = 0
 
 /obj/item/device/flashlight/pen/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(!proximity_flag)
 		if(holo_cooldown > world.time)
 			to_chat(user, "<span class='warning'>[src] is not ready yet!</span>")
@@ -185,6 +197,8 @@
 	duration = 30
 
 /obj/effect/temp_visual/medical_holosign/Initialize(mapload, creator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(loc, 'sound/machines/ping.ogg', 50, 0) //make some noise!
 	if(creator)
@@ -227,6 +241,8 @@
 
 
 /obj/item/device/flashlight/lamp/verb/toggle_light()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle light"
 	set category = "Object"
 	set src in oview(1)
@@ -259,10 +275,14 @@
 	grind_results = list("sulfur" = 15)
 
 /obj/item/device/flashlight/flare/New()
+	procstart = null
+	src.procstart = null
 	fuel = rand(800, 1000) // Sorry for changing this so much but I keep under-estimating how long X number of ticks last in seconds.
 	..()
 
 /obj/item/device/flashlight/flare/process()
+	procstart = null
+	src.procstart = null
 	open_flame(heat)
 	fuel = max(fuel - 1, 0)
 	if(!fuel || !on)
@@ -272,6 +292,8 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/device/flashlight/flare/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(fuel && on)
 		. = "<span class='notice'>[user] lights [A] with [src] like a real \
 			badass.</span>"
@@ -279,6 +301,8 @@
 		. = ""
 
 /obj/item/device/flashlight/flare/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	force = initial(src.force)
 	damtype = initial(src.damtype)
@@ -289,6 +313,8 @@
 		update_brightness(null)
 
 /obj/item/device/flashlight/flare/update_brightness(mob/user = null)
+	procstart = null
+	src.procstart = null
 	..()
 	if(on)
 		item_state = "[initial(item_state)]-on"
@@ -297,6 +323,8 @@
 
 /obj/item/device/flashlight/flare/attack_self(mob/user)
 
+	procstart = null
+	src.procstart = null
 	// Usual checks
 	if(!fuel)
 		to_chat(user, "<span class='warning'>[src] is out of fuel!</span>")
@@ -314,6 +342,8 @@
 		START_PROCESSING(SSobj, src)
 
 /obj/item/device/flashlight/flare/is_hot()
+	procstart = null
+	src.procstart = null
 	return on * heat
 
 /obj/item/device/flashlight/flare/torch
@@ -355,14 +385,20 @@
 
 
 /obj/item/device/flashlight/emp/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/device/flashlight/emp/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/item/device/flashlight/emp/process()
+	procstart = null
+	src.procstart = null
 	charge_tick++
 	if(charge_tick < 10)
 		return FALSE
@@ -371,11 +407,15 @@
 	return TRUE
 
 /obj/item/device/flashlight/emp/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(on && user.zone_selected in list("eyes", "mouth")) // call original attack when examining organs
 		..()
 	return
 
 /obj/item/device/flashlight/emp/afterattack(atom/movable/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 
@@ -409,15 +449,21 @@
 	var/fuel = 0
 
 /obj/item/device/flashlight/glowstick/Initialize()
+	procstart = null
+	src.procstart = null
 	fuel = rand(1600, 2000)
 	light_color = color
 	. = ..()
 
 /obj/item/device/flashlight/glowstick/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/item/device/flashlight/glowstick/process()
+	procstart = null
+	src.procstart = null
 	fuel = max(fuel - 1, 0)
 	if(!fuel)
 		turn_off()
@@ -425,10 +471,14 @@
 		update_icon()
 
 /obj/item/device/flashlight/glowstick/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	update_icon()
 
 /obj/item/device/flashlight/glowstick/update_icon()
+	procstart = null
+	src.procstart = null
 	item_state = "glowstick"
 	cut_overlays()
 	if(!fuel)
@@ -446,6 +496,8 @@
 		cut_overlays()
 
 /obj/item/device/flashlight/glowstick/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!fuel)
 		to_chat(user, "<span class='notice'>[src] is spent.</span>")
 		return
@@ -459,6 +511,8 @@
 		activate()
 
 /obj/item/device/flashlight/glowstick/proc/activate()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		on = TRUE
 		START_PROCESSING(SSobj, src)
@@ -493,6 +547,8 @@
 	color = null
 
 /obj/item/device/flashlight/glowstick/random/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/T = pick(typesof(/obj/item/device/flashlight/glowstick) - /obj/item/device/flashlight/glowstick/random)
 	new T(loc)

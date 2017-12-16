@@ -42,13 +42,19 @@
 
 
 /obj/item/toy/balloon/New()
+	procstart = null
+	src.procstart = null
 	create_reagents(10)
 	..()
 
 /obj/item/toy/balloon/attack(mob/living/carbon/human/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/toy/balloon/afterattack(atom/A as mob|obj, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if (istype(A, /obj/structure/reagent_dispensers))
@@ -64,6 +70,8 @@
 			update_icon()
 
 /obj/item/toy/balloon/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/reagent_containers/glass))
 		if(I.reagents)
 			if(I.reagents.total_volume <= 0)
@@ -81,10 +89,14 @@
 		return ..()
 
 /obj/item/toy/balloon/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..()) //was it caught by a mob?
 		balloon_burst(hit_atom)
 
 /obj/item/toy/balloon/proc/balloon_burst(atom/AT)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume >= 1)
 		var/turf/T
 		if(AT)
@@ -99,6 +111,8 @@
 		qdel(src)
 
 /obj/item/toy/balloon/update_icon()
+	procstart = null
+	src.procstart = null
 	if(src.reagents.total_volume >= 1)
 		icon_state = "waterballoon"
 		item_state = "balloon"
@@ -148,11 +162,15 @@
 	var/bullets = 7
 
 /obj/item/toy/gun/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "There [bullets == 1 ? "is" : "are"] [bullets] cap\s left.")
 
 /obj/item/toy/gun/attackby(obj/item/toy/ammo/gun/A, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/item/toy/ammo/gun))
 		if (src.bullets >= 7)
 			to_chat(user, "<span class='warning'>It's already fully loaded!</span>")
@@ -174,6 +192,8 @@
 		return ..()
 
 /obj/item/toy/gun/afterattack(atom/target as mob|obj|turf|area, mob/user, flag)
+	procstart = null
+	src.procstart = null
 	if (flag)
 		return
 	if (!user.IsAdvancedToolUser())
@@ -200,9 +220,13 @@
 	var/amount_left = 7
 
 /obj/item/toy/ammo/gun/update_icon()
+	procstart = null
+	src.procstart = null
 	src.icon_state = text("357OLD-[]", src.amount_left)
 
 /obj/item/toy/ammo/gun/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "There [amount_left == 1 ? "is" : "are"] [amount_left] cap\s left.")
 
@@ -223,6 +247,8 @@
 	var/hacked = FALSE
 
 /obj/item/toy/sword/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	active = !( active )
 	if (active)
 		to_chat(user, "<span class='notice'>You extend the plastic blade with a quick flick of your wrist.</span>")
@@ -244,6 +270,8 @@
 
 // Copied from /obj/item/melee/transforming/energy/sword/attackby
 /obj/item/toy/sword/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/toy/sword))
 		if((W.flags_1 & NODROP_1) || (flags_1 & NODROP_1))
 			to_chat(user, "<span class='warning'>\the [flags_1 & NODROP_1 ? src : W] is stuck to your hand, you can't attach it to \the [flags_1 & NODROP_1 ? W : src]!</span>")
@@ -298,6 +326,8 @@
 	attack_verb = list("robusted")
 
 /obj/item/toy/windupToolbox/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		icon_state = "his_grace_awakened"
 		to_chat(user, "<span class='warning'>You wind up [src], it begins to rumble.</span>")
@@ -307,6 +337,8 @@
 		to_chat(user, "[src] is already active.")
 
 /obj/item/toy/windupToolbox/proc/stopRumble()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 	active = FALSE
 
@@ -325,6 +357,8 @@
 	attack_verb = list("attacked", "struck", "hit")
 
 /obj/item/twohanded/dualsaber/toy/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/twohanded/dualsaber/toy/IsReflect()//Stops Toy Dualsabers from reflecting energy projectiles
@@ -359,6 +393,8 @@
 	var/ash_type = /obj/effect/decal/cleanable/ash
 
 /obj/item/toy/snappop/proc/pop_burst(var/n=3, var/c=1)
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/spark_spread/s = new()
 	s.set_up(n, c, src)
 	s.start()
@@ -369,13 +405,19 @@
 	qdel(src)
 
 /obj/item/toy/snappop/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	pop_burst()
 
 /obj/item/toy/snappop/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		pop_burst()
 
 /obj/item/toy/snappop/Crossed(H as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(ishuman(H) || issilicon(H)) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
 		if(issilicon(H) || M.m_intent == MOVE_INTENT_RUN)
@@ -391,10 +433,14 @@
 	var/respawn_time = 300
 
 /obj/effect/decal/cleanable/ash/snappop_phoenix/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/respawn), respawn_time)
 
 /obj/effect/decal/cleanable/ash/snappop_phoenix/proc/respawn()
+	procstart = null
+	src.procstart = null
 	new /obj/item/toy/snappop/phoenix(get_turf(src))
 	qdel(src)
 
@@ -411,6 +457,8 @@
 
 //all credit to skasi for toy mech fun ideas
 /obj/item/toy/prize/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(timer < world.time)
 		to_chat(user, "<span class='notice'>You play with [src].</span>")
 		timer = world.time + cooldown
@@ -420,6 +468,8 @@
 		. = ..()
 
 /obj/item/toy/prize/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user)
 		attack_self(user)
 	else
@@ -502,9 +552,13 @@
 
 // Talking toys are language universal, and thus all species can use them
 /obj/item/toy/talking/attack_alien(mob/user)
+	procstart = null
+	src.procstart = null
 	. = attack_hand(user)
 
 /obj/item/toy/talking/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!cooldown)
 		var/list/messages = generate_messages()
 		activation_message(user)
@@ -522,15 +576,21 @@
 	..()
 
 /obj/item/toy/talking/proc/activation_message(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		"<span class='notice'>[user] pulls the string on \the [src].</span>",
 		"<span class='notice'>You pull the string on \the [src].</span>",
 		"<span class='notice'>You hear a string being pulled.</span>")
 
 /obj/item/toy/talking/proc/generate_messages()
+	procstart = null
+	src.procstart = null
 	return list(pick(messages))
 
 /obj/item/toy/talking/proc/toy_talk(mob/user, message)
+	procstart = null
+	src.procstart = null
 	user.loc.visible_message("<span class='[span]'>[icon2html(src, viewers(user.loc))] [message]</span>")
 	if(chattering)
 		chatter(message, phomeme, user)
@@ -544,6 +604,8 @@
 	icon_state = "AI"
 
 /obj/item/toy/talking/AI/generate_messages()
+	procstart = null
+	src.procstart = null
 	return list(generate_ion_law())
 
 /obj/item/toy/talking/codex_gigas
@@ -557,12 +619,16 @@
 	recharge_time = 60
 
 /obj/item/toy/talking/codex_gigas/activation_message(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(
 		"<span class='notice'>[user] presses the button on \the [src].</span>",
 		"<span class='notice'>You press the button on \the [src].</span>",
 		"<span class='notice'>You hear a soft click.</span>")
 
 /obj/item/toy/talking/codex_gigas/generate_messages()
+	procstart = null
+	src.procstart = null
 	var/datum/fakeDevil/devil = new
 	var/list/messages = list()
 	messages += "Some fun facts about: [devil.truename]"
@@ -622,6 +688,8 @@
 	var/list/cards = list()
 
 /obj/item/toy/cards/deck/New()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "deck_[deckstyle]_full"
 	for(var/i = 2; i <= 10; i++)
@@ -648,6 +716,8 @@
 
 
 /obj/item/toy/cards/deck/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.lying)
 		return
 	var/choice = null
@@ -669,6 +739,8 @@
 	update_icon()
 
 /obj/item/toy/cards/deck/update_icon()
+	procstart = null
+	src.procstart = null
 	if(cards.len > 26)
 		icon_state = "deck_[deckstyle]_full"
 	else if(cards.len > 10)
@@ -679,6 +751,8 @@
 		icon_state = "deck_[deckstyle]_empty"
 
 /obj/item/toy/cards/deck/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown < world.time - 50)
 		cards = shuffle(cards)
 		playsound(user, 'sound/items/cardshuffle.ogg', 50, 1)
@@ -686,6 +760,8 @@
 		cooldown = world.time
 
 /obj/item/toy/cards/deck/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/toy/cards/singlecard))
 		var/obj/item/toy/cards/singlecard/SC = I
 		if(SC.parentdeck == src)
@@ -714,6 +790,8 @@
 		return ..()
 
 /obj/item/toy/cards/deck/MouseDrop(atom/over_object)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = usr
 	if(!istype(M) || usr.incapacitated() || usr.lying)
 		return
@@ -743,10 +821,14 @@
 
 
 /obj/item/toy/cards/cardhand/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	interact(user)
 
 /obj/item/toy/cards/cardhand/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = "You have:<BR>"
 	for(var/t in currenthand)
 		dat += "<A href='?src=[REF(src)];pick=[t]'>A [t].</A><BR>"
@@ -758,6 +840,8 @@
 
 
 /obj/item/toy/cards/cardhand/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(usr.stat || !ishuman(usr) || !usr.canmove)
@@ -796,6 +880,8 @@
 		return
 
 /obj/item/toy/cards/cardhand/attackby(obj/item/toy/cards/singlecard/C, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(C))
 		if(C.parentdeck == src.parentdeck)
 			src.currenthand += C.cardname
@@ -814,6 +900,8 @@
 		return ..()
 
 /obj/item/toy/cards/cardhand/apply_card_vars(obj/item/toy/cards/newobj,obj/item/toy/cards/sourceobj)
+	procstart = null
+	src.procstart = null
 	..()
 	newobj.deckstyle = sourceobj.deckstyle
 	newobj.icon_state = "[deckstyle]_hand2" // Another dumb hack, without this the hand is invisible (or has the default deckstyle) until another card is added.
@@ -837,6 +925,8 @@
 
 
 /obj/item/toy/cards/singlecard/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		var/mob/living/carbon/human/cardUser = user
 		if(cardUser.is_holding(src))
@@ -846,6 +936,8 @@
 
 
 /obj/item/toy/cards/singlecard/verb/Flip()
+	procstart = null
+	src.procstart = null
 	set name = "Flip Card"
 	set category = "Object"
 	set src in range(1)
@@ -867,6 +959,8 @@
 		src.pixel_x = -5
 
 /obj/item/toy/cards/singlecard/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/toy/cards/singlecard/))
 		var/obj/item/toy/cards/singlecard/C = I
 		if(C.parentdeck == src.parentdeck)
@@ -902,11 +996,15 @@
 		return ..()
 
 /obj/item/toy/cards/singlecard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(usr.stat || !ishuman(usr) || !usr.canmove || usr.restrained())
 		return
 	Flip()
 
 /obj/item/toy/cards/singlecard/apply_card_vars(obj/item/toy/cards/singlecard/newobj,obj/item/toy/cards/sourceobj)
+	procstart = null
+	src.procstart = null
 	..()
 	newobj.deckstyle = sourceobj.deckstyle
 	newobj.icon_state = "singlecard_down_[deckstyle]" // Without this the card is invisible until flipped. It's an ugly hack, but it works.
@@ -953,6 +1051,8 @@
 	var/cooldown = 0
 
 /obj/item/toy/nuke/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (cooldown < world.time)
 		cooldown = world.time + 1800 //3 minutes
 		user.visible_message("<span class='warning'>[user] presses a button on [src].</span>", "<span class='notice'>You activate [src], it plays a loud noise!</span>", "<span class='italics'>You hear the click of a button.</span>")
@@ -979,6 +1079,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/toy/minimeteor/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		playsound(src, 'sound/effects/meteorimpact.ogg', 40, 1)
 		for(var/mob/M in urange(10, src))
@@ -998,6 +1100,8 @@
 	var/cooldown = 0
 
 /obj/item/toy/redbutton/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (cooldown < world.time)
 		cooldown = (world.time + 300) // Sets cooldown at 30 seconds
 		user.visible_message("<span class='warning'>[user] presses the big red button.</span>", "<span class='notice'>You press the button, it plays a loud noise!</span>", "<span class='italics'>The button clicks loudly.</span>")
@@ -1022,10 +1126,14 @@
 	throwforce = 12 //pelt your enemies to death with lumps of snow
 
 /obj/item/toy/snowball/afterattack(atom/target as mob|obj|turf|area, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.dropItemToGround(src))
 		throw_at(target, throw_range, throw_speed)
 
 /obj/item/toy/snowball/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		playsound(src, 'sound/effects/pop.ogg', 20, 1)
 		qdel(src)
@@ -1041,6 +1149,8 @@
 	w_class = WEIGHT_CLASS_BULKY //Stops people from hiding it in their bags/pockets
 
 /obj/item/toy/beach_ball/afterattack(atom/target as mob|obj|turf|area, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.dropItemToGround(src))
 		throw_at(target, throw_range, throw_speed)
 
@@ -1057,6 +1167,8 @@
 	var/cooldown = 0
 
 /obj/item/toy/toy_xeno/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown <= world.time)
 		cooldown = (world.time + 50) //5 second cooldown
 		user.visible_message("<span class='notice'>[user] pulls back the string on [src].</span>")
@@ -1103,6 +1215,8 @@
     ..()
 
 /obj/item/toy/figure/attack_self(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if(cooldown <= world.time)
 		cooldown = world.time + 50
 		to_chat(user, "<span class='notice'>[src] says \"[toysay]\"</span>")
@@ -1306,6 +1420,8 @@
 
 //Add changing looks when i feel suicidal about making 20 inhands for these.
 /obj/item/toy/dummy/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_name = stripped_input(usr,"What would you like to name the dummy?","Input a name",doll_name,MAX_NAME_LEN)
 	if(!new_name)
 		return
@@ -1314,9 +1430,13 @@
 	name = "[initial(name)] - [doll_name]"
 
 /obj/item/toy/dummy/talk_into(atom/movable/M, message, channel, list/spans, datum/language/language)
+	procstart = null
+	src.procstart = null
 	log_talk(M,"[key_name(M)] : through dummy : [message]",LOGSAY)
 	say(message, language)
 	return NOPASS
 
 /obj/item/toy/dummy/GetVoice()
+	procstart = null
+	src.procstart = null
 	return doll_name

@@ -10,12 +10,16 @@
 	dynamic_hair_suffix = "+generic"
 
 /obj/item/clothing/head/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(loc) && dynamic_hair_suffix)
 		var/mob/living/carbon/human/H = loc
 		H.update_hair()
 
 /obj/item/clothing/head/worn_overlays(isinhands = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands)
 		if(damaged_clothes)
@@ -24,6 +28,8 @@
 			. += mutable_appearance('icons/effects/blood.dmi', "helmetblood")
 
 /obj/item/clothing/head/update_clothes_damaged_state(damaging = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc

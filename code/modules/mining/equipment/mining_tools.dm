@@ -27,6 +27,8 @@
 	materials = list(MAT_METAL=1000)
 
 /obj/item/pickaxe/proc/playDigSound()
+	procstart = null
+	src.procstart = null
 	playsound(src, pick(digsound),50,1)
 
 /obj/item/pickaxe/silver

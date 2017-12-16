@@ -32,6 +32,8 @@ Bonus
 					  <b>Resistance 10:</b> Further increases fever intensity."
 
 /datum/symptom/fever/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["resistance"] >= 5) //dangerous fever
@@ -41,6 +43,8 @@ Bonus
 		power = 2.5
 
 /datum/symptom/fever/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob
@@ -52,6 +56,8 @@ Bonus
 		Heat(M, A)
 
 /datum/symptom/fever/proc/Heat(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_heat = 6 * power
 	if(!unsafe)
 		M.bodytemperature = min(M.bodytemperature + (get_heat * A.stage), BODYTEMP_HEAT_DAMAGE_LIMIT - 1)

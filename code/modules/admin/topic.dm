@@ -12,6 +12,8 @@
 	log_admin_private("[key_name(usr)] clicked an href with [msg] authorization key! [href]")
 
 /datum/admins/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(usr.client != src.owner || !check_rights(0))
@@ -2382,6 +2384,8 @@
 		usr << browse(dat.Join("<br>"), "window=related_[C];size=420x300")
 
 /datum/admins/proc/HandleCMode()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 
@@ -2396,6 +2400,8 @@
 	usr << browse(dat, "window=c_mode")
 
 /datum/admins/proc/HandleFSecret()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 

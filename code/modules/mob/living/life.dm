@@ -72,16 +72,24 @@
 		return 1
 
 /mob/living/proc/handle_breathing(times_fired)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/handle_mutations_and_radiation()
+	procstart = null
+	src.procstart = null
 	radiation = 0 //so radiation don't accumulate in simple animals
 	return
 
 /mob/living/proc/handle_diseases()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/handle_diginvis()
+	procstart = null
+	src.procstart = null
 	if(!digitaldisguise)
 		src.digitaldisguise = image(loc = src)
 	src.digitaldisguise.override = 1
@@ -90,12 +98,18 @@
 
 
 /mob/living/proc/handle_random_events()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/handle_environment(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/handle_fire()
+	procstart = null
+	src.procstart = null
 	if(fire_stacks < 0) //If we've doused ourselves in water to avoid fire, dry off slowly
 		fire_stacks = min(0, fire_stacks + 1)//So we dry ourselves back to default, nonflammable.
 	if(!on_fire)
@@ -113,14 +127,20 @@
 	location.hotspot_expose(700, 50, 1)
 
 /mob/living/proc/handle_stomach()
+	procstart = null
+	src.procstart = null
 	return
 
 //this updates all special effects: knockdown, druggy, stuttering, etc..
 /mob/living/proc/handle_status_effects()
+	procstart = null
+	src.procstart = null
 	if(confused)
 		confused = max(0, confused - 1)
 
 /mob/living/proc/handle_disabilities()
+	procstart = null
+	src.procstart = null
 	//Eyes
 	if(eye_blind)			//blindness, heals slowly over time
 		if(!stat && !(disabilities & BLIND))
@@ -136,4 +156,6 @@
 			clear_fullscreen("blurry")
 
 /mob/living/proc/update_damage_hud()
+	procstart = null
+	src.procstart = null
 	return

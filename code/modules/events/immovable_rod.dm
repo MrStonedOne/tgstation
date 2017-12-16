@@ -17,9 +17,13 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	announceWhen = 5
 
 /datum/round_event/immovable_rod/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("What the fuck was that?!", "General Alert")
 
 /datum/round_event/immovable_rod/start()
+	procstart = null
+	src.procstart = null
 	var/startside = pick(GLOB.cardinals)
 	var/turf/startT = spaceDebrisStartLoc(startside, ZLEVEL_STATION_PRIMARY)
 	var/turf/endT = spaceDebrisFinishLoc(startside, ZLEVEL_STATION_PRIMARY)
@@ -38,6 +42,8 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	var/notify = TRUE
 
 /obj/effect/immovablerod/New(atom/start, atom/end)
+	procstart = null
+	src.procstart = null
 	..()
 	SSaugury.register_doom(src, 2000)
 	z_original = z
@@ -51,30 +57,44 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 		walk_towards(src, destination, 1)
 
 /obj/effect/immovablerod/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["orbit"])
 		var/mob/dead/observer/ghost = usr
 		if(istype(ghost))
 			ghost.ManualFollow(src)
 
 /obj/effect/immovablerod/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list -= src
 	. = ..()
 
 /obj/effect/immovablerod/Move()
+	procstart = null
+	src.procstart = null
 	if((z != z_original) || (loc == destination))
 		qdel(src)
 	return ..()
 
 /obj/effect/immovablerod/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/effect/immovablerod/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/immovablerod/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/immovablerod/Collide(atom/clong)
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		playsound(src, 'sound/effects/bang.ogg', 50, 1)
 		audible_message("<span class='danger'>You hear a CLANG!</span>")
@@ -100,6 +120,8 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 		qdel(other)
 
 /obj/effect/immovablerod/proc/penetrate(mob/living/L)
+	procstart = null
+	src.procstart = null
 	L.visible_message("<span class='danger'>[L] is penetrated by an immovable rod!</span>" , "<span class='userdanger'>The rod penetrates you!</span>" , "<span class ='danger'>You hear a CLANG!</span>")
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L

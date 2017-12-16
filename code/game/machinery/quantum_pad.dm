@@ -22,15 +22,21 @@
 	var/map_pad_link_id = "" as text //who's my friend
 	
 /obj/machinery/quantumpad/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(map_pad_id)
 		mapped_quantum_pads[map_pad_id] = src
 		
 /obj/machinery/quantumpad/Destroy()
+	procstart = null
+	src.procstart = null
 	mapped_quantum_pads -= map_pad_id
 	return ..()
 
 /obj/machinery/quantumpad/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/E = 0
 	for(var/obj/item/stock_parts/capacitor/C in component_parts)
 		E += C.rating
@@ -44,6 +50,8 @@
 	teleport_cooldown -= (E * 100)
 
 /obj/machinery/quantumpad/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "pad-idle-o", "qpad-idle", I))
 		return
 
@@ -69,6 +77,8 @@
 	return ..()
 
 /obj/machinery/quantumpad/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		to_chat(user, "<span class='warning'>The panel must be closed before operating this machine!</span>")
 		return
@@ -97,17 +107,23 @@
 	doteleport(user)
 
 /obj/machinery/quantumpad/proc/sparks()
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 	s.set_up(5, 1, get_turf(src))
 	s.start()
 
 /obj/machinery/quantumpad/attack_ghost(mob/dead/observer/ghost)
+	procstart = null
+	src.procstart = null
 	if(!linked_pad && map_pad_link_id)
 		initMappedLink()
 	if(linked_pad)
 		ghost.forceMove(get_turf(linked_pad))
 
 /obj/machinery/quantumpad/proc/doteleport(mob/user)
+	procstart = null
+	src.procstart = null
 	if(linked_pad)
 		playsound(get_turf(src), 'sound/weapons/flash.ogg', 25, 1)
 		teleporting = 1
@@ -153,6 +169,8 @@
 				do_teleport(ROI, get_turf(linked_pad))
 
 /obj/machinery/quantumpad/proc/initMappedLink()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/obj/machinery/quantumpad/link = mapped_quantum_pads[map_pad_link_id]
 	if(link)

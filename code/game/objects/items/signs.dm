@@ -11,6 +11,8 @@
 	var/last_wave = 0
 
 /obj/item/picket_sign/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pen) || istype(W, /obj/item/toy/crayon))
 		var/txt = stripped_input(user, "What would you like to write on the sign?", "Sign Label", null , 30)
 		if(txt)
@@ -21,6 +23,8 @@
 		return ..()
 
 /obj/item/picket_sign/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if( last_wave + 20 < world.time )
 		last_wave = world.time
 		if(label)

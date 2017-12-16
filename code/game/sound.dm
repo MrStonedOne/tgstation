@@ -27,6 +27,8 @@
 				M.playsound_local(turf_source, soundin, vol, vary, frequency, falloff, channel, pressure_affected, S)
 
 /mob/proc/playsound_local(turf/turf_source, soundin, vol as num, vary, frequency, falloff, channel = 0, pressure_affected = TRUE, sound/S)
+	procstart = null
+	src.procstart = null
 	if(!client || !can_hear())
 		return
 
@@ -84,6 +86,8 @@
 	SEND_SOUND(src, S)
 
 /proc/sound_to_playing_players(soundin, volume = 100, vary = FALSE, frequency = 0, falloff = FALSE, channel = 0, pressure_affected = FALSE, sound/S)
+	procstart = null
+	src.procstart = null
 	if(!S)
 		S = sound(get_sfx(soundin))
 	for(var/m in GLOB.player_list)
@@ -92,15 +96,21 @@
 			M.playsound_local(M, null, volume, vary, frequency, falloff, channel, pressure_affected, S)
 
 /proc/open_sound_channel()
+	procstart = null
+	src.procstart = null
 	var/static/next_channel = 1	//loop through the available 1024 - (the ones we reserve) channels and pray that its not still being used
 	. = ++next_channel
 	if(next_channel > CHANNEL_HIGHEST_AVAILABLE)
 		next_channel = 1
 
 /mob/proc/stop_sound_channel(chan)
+	procstart = null
+	src.procstart = null
 	SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = chan))
 
 /client/proc/playtitlemusic(vol = 85)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	UNTIL(SSticker.login_music) //wait for SSticker init to set the login music
 
@@ -108,9 +118,13 @@
 		SEND_SOUND(src, sound(SSticker.login_music, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
 
 /proc/get_rand_frequency()
+	procstart = null
+	src.procstart = null
 	return rand(32000, 55000) //Frequency stuff only works with 45kbps oggs.
 
 /proc/get_sfx(soundin)
+	procstart = null
+	src.procstart = null
 	if(istext(soundin))
 		switch(soundin)
 			if ("shatter")

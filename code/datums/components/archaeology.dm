@@ -6,6 +6,8 @@
 	var/datum/callback/callback
 
 /datum/component/archaeology/Initialize(_prob2drop, list/_archdrops = list(), datum/callback/_callback)
+	procstart = null
+	src.procstart = null
 	prob2drop = Clamp(_prob2drop, 0, 100)
 	archdrops = _archdrops
 	callback = _callback
@@ -14,12 +16,16 @@
 	RegisterSignal(COMSIG_ATOM_SING_PULL, .proc/SingDig)
 
 /datum/component/archaeology/InheritComponent(datum/component/archaeology/A, i_am_original)
+	procstart = null
+	src.procstart = null
 	var/list/other_archdrops = A.archdrops
 	var/list/_archdrops = archdrops
 	for(var/I in other_archdrops)
 		_archdrops[I] += other_archdrops[I]
 
 /datum/component/archaeology/proc/Dig(obj/item/W, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(dug)
 		to_chat(user, "<span class='notice'>Looks like someone has dug here already.</span>")
 		return
@@ -44,6 +50,8 @@
 			return COMPONENT_NO_AFTERATTACK
 
 /datum/component/archaeology/proc/gets_dug()
+	procstart = null
+	src.procstart = null
 	if(dug)
 		return
 	else
@@ -73,6 +81,8 @@
 		callback.Invoke()
 
 /datum/component/archaeology/proc/SingDig(S, current_size)
+	procstart = null
+	src.procstart = null
 	switch(current_size)
 		if(STAGE_THREE)
 			if(prob(30))
@@ -85,6 +95,8 @@
 				gets_dug()
 
 /datum/component/archaeology/proc/BombDig(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(3)
 			return

@@ -42,6 +42,8 @@
 	var/dmg_overlay_type //the type of damage overlay (if any) to use when this bodypart is bruised/burned.
 
 /obj/item/bodypart/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(brute_dam > 0)
 		to_chat(user, "<span class='warning'>This limb has [brute_dam > 30 ? "severe" : "minor"] bruising.</span>")
@@ -49,15 +51,21 @@
 		to_chat(user, "<span class='warning'>This limb has [burn_dam > 30 ? "severe" : "minor"] burns.</span>")
 
 /obj/item/bodypart/blob_act()
+	procstart = null
+	src.procstart = null
 	take_damage(max_damage)
 
 /obj/item/bodypart/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.bodyparts -= src
 		owner = null
 	return ..()
 
 /obj/item/bodypart/attack(mob/living/carbon/C, mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C
 		if(EASYLIMBATTACHMENT in H.dna.species.species_traits)
@@ -74,6 +82,8 @@
 	..()
 
 /obj/item/bodypart/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.sharpness)
 		add_fingerprint(user)
 		if(!contents.len)
@@ -88,6 +98,8 @@
 		return ..()
 
 /obj/item/bodypart/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	..()
 	if(status != BODYPART_ROBOTIC)
 		playsound(get_turf(src), 'sound/misc/splort.ogg', 50, 1, -1)
@@ -96,6 +108,8 @@
 
 //empties the bodypart from its organs and other things inside it
 /obj/item/bodypart/proc/drop_organs(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(status != BODYPART_ROBOTIC)
 		playsound(T, 'sound/misc/splort.ogg', 50, 1, -1)
@@ -106,6 +120,8 @@
 //Damage will not exceed max_damage using this proc
 //Cannot apply negative damage
 /obj/item/bodypart/proc/receive_damage(brute, burn, updating_health = 1)
+	procstart = null
+	src.procstart = null
 	if(owner && (owner.status_flags & GODMODE))
 		return 0	//godmode
 	var/dmg_mlt = CONFIG_GET(number/damage_multiplier)
@@ -152,6 +168,8 @@
 //Cannot remove negative damage (i.e. apply damage)
 /obj/item/bodypart/proc/heal_damage(brute, burn, only_robotic = 0, only_organic = 1, updating_health = 1)
 
+	procstart = null
+	src.procstart = null
 	if(only_robotic && status != BODYPART_ROBOTIC) //This makes organic limbs not heal when the proc is in Robotic mode.
 		return
 
@@ -167,12 +185,16 @@
 
 //Returns total damage...kinda pointless really
 /obj/item/bodypart/proc/get_damage()
+	procstart = null
+	src.procstart = null
 	return brute_dam + burn_dam
 
 
 //Updates an organ's brute/burn states for use by update_damage_overlays()
 //Returns 1 if we need to update overlays. 0 otherwise.
 /obj/item/bodypart/proc/update_bodypart_damage_state()
+	procstart = null
+	src.procstart = null
 	var/tbrute	= round( (brute_dam/max_damage)*3, 1 )
 	var/tburn	= round( (burn_dam/max_damage)*3, 1 )
 	if((tbrute != brutestate) || (tburn != burnstate))
@@ -185,6 +207,8 @@
 
 //Change organ status
 /obj/item/bodypart/proc/change_bodypart_status(new_limb_status, heal_limb, change_icon_to_default)
+	procstart = null
+	src.procstart = null
 	status = new_limb_status
 	if(heal_limb)
 		burn_dam = 0
@@ -206,6 +230,8 @@
 
 //we inform the bodypart of the changes that happened to the owner, or give it the informations from a source mob.
 /obj/item/bodypart/proc/update_limb(dropping_limb, mob/living/carbon/source)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C
 	if(source)
 		C = source
@@ -271,6 +297,8 @@
 
 //to update the bodypart's icon when not attached to a mob
 /obj/item/bodypart/proc/update_icon_dropped()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	var/list/standing = get_limb_icon(1)
 	if(!standing.len)
@@ -283,6 +311,8 @@
 
 //Gives you a proper icon appearance for the dismembered limb
 /obj/item/bodypart/proc/get_limb_icon(dropped)
+	procstart = null
+	src.procstart = null
 	icon_state = "" //to erase the default sprite, we're building the visual aspects of the bodypart through overlays alone.
 
 	. = list()
@@ -347,6 +377,8 @@
 			limb.color = "#[draw_color]"
 
 /obj/item/bodypart/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	drop_organs()
 	qdel(src)
 
@@ -362,11 +394,15 @@
 	var/obj/item/cavity_item
 
 /obj/item/bodypart/chest/Destroy()
+	procstart = null
+	src.procstart = null
 	if(cavity_item)
 		qdel(cavity_item)
 	return ..()
 
 /obj/item/bodypart/chest/drop_organs(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cavity_item)
 		cavity_item.forceMove(user.loc)
 		cavity_item = null

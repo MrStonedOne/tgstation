@@ -28,6 +28,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/addition/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	for(var/k in 1 to inputs.len)
 		var/datum/integrated_io/I = inputs[k]
@@ -51,6 +53,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/subtraction/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/A = inputs[1]
 	if(!isnum(A.data))
 		return
@@ -81,6 +85,8 @@
 
 
 /obj/item/integrated_circuit/arithmetic/multiplication/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/A = inputs[1]
 	if(!isnum(A.data))
 		return
@@ -109,6 +115,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/division/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/A = inputs[1]
 	if(!isnum(A.data))
 		return
@@ -136,6 +144,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/exponent/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	var/datum/integrated_io/A = inputs[1]
 	var/datum/integrated_io/B = inputs[2]
@@ -157,6 +167,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/sign/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	var/datum/integrated_io/A = inputs[1]
 	if(isnum(A.data))
@@ -182,6 +194,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/round/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	var/datum/integrated_io/A = inputs[1]
 	var/datum/integrated_io/B = inputs[2]
@@ -205,6 +219,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/absolute/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	for(var/k in 1 to inputs.len)
 		var/datum/integrated_io/I = inputs[k]
@@ -226,6 +242,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/average/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	var/inputs_used = 0
 	for(var/k in 1 to inputs.len)
@@ -251,6 +269,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/pi/do_work()
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 1, 3.14159)
 	push_data()
 	activate_pin(2)
@@ -266,6 +286,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/random/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	var/L = get_pin_data(IC_INPUT, 1)
 	var/H = get_pin_data(IC_INPUT, 2)
@@ -287,6 +309,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/square_root/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	for(var/k in 1 to inputs.len)
 		var/datum/integrated_io/I = inputs[k]
@@ -308,6 +332,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/arithmetic/modulo/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	var/A = get_pin_data(IC_INPUT, 1)
 	var/B = get_pin_data(IC_INPUT, 2)

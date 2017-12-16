@@ -5,14 +5,20 @@
 	var/datum/objective_team/pirate/crew
 
 /datum/antagonist/pirate/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='boldannounce'>You are a Space Pirate!</span>")
 	to_chat(owner, "<B>The station refused to pay for your protection, protect the ship, siphon the credits from the station and raid it for even more loot.</B>")
 	owner.announce_objectives()
 
 /datum/antagonist/pirate/get_team()
+	procstart = null
+	src.procstart = null
 	return crew
 
 /datum/antagonist/pirate/create_team(datum/objective_team/pirate/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		for(var/datum/antagonist/pirate/P in GLOB.antagonists)
 			if(P.crew)
@@ -26,11 +32,15 @@
 	crew = new_team
 
 /datum/antagonist/pirate/on_gain()
+	procstart = null
+	src.procstart = null
 	if(crew)
 		owner.objectives |= crew.objectives
 	. = ..()
 
 /datum/antagonist/pirate/on_removal()
+	procstart = null
+	src.procstart = null
 	if(crew)
 		owner.objectives -= crew.objectives
 	. = ..()
@@ -39,6 +49,8 @@
 	name = "Pirate crew"
 
 /datum/objective_team/pirate/proc/forge_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/loot/getbooty = new()
 	getbooty.team = src
 	getbooty.storage_area = locate(/area/shuttle/pirate/vault) in GLOB.sortedAreas
@@ -64,10 +76,14 @@ GLOBAL_LIST_INIT(pirate_loot_cache, typecacheof(list(
 	var/initial_value = 0 //Things in the vault at spawn time do not count
 
 /datum/objective/loot/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(storage_area)
 		explanation_text = "Acquire loot and store [target_value] of credits worth in [storage_area.name]."
 
 /datum/objective/loot/proc/loot_listing()
+	procstart = null
+	src.procstart = null
 	//Lists notable loot.
 	if(!storage_area)
 		return "Nothing"
@@ -91,6 +107,8 @@ GLOBAL_LIST_INIT(pirate_loot_cache, typecacheof(list(
 	return loot_texts.Join(", ")
 
 /datum/objective/loot/proc/get_loot_value()
+	procstart = null
+	src.procstart = null
 	if(!storage_area)
 		return 0
 	var/value = 0
@@ -99,14 +117,20 @@ GLOBAL_LIST_INIT(pirate_loot_cache, typecacheof(list(
 	return value - initial_value
 
 /datum/objective/loot/proc/update_initial_value()
+	procstart = null
+	src.procstart = null
 	initial_value = get_loot_value()
 
 /datum/objective/loot/check_completion()
+	procstart = null
+	src.procstart = null
 	return ..() || get_loot_value() >= target_value
 
 
 
 /datum/objective_team/pirate/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	parts += "<span class='header'>Space Pirates were:</span>"

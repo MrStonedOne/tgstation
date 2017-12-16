@@ -8,6 +8,8 @@ Contents:
 
 
 /obj/item/clothing/suit/space/space_ninja/proc/toggle_stealth()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/U = affecting
 	if(!U)
 		return
@@ -24,6 +26,8 @@ Contents:
 
 
 /obj/item/clothing/suit/space/space_ninja/proc/cancel_stealth()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/U = affecting
 	if(!U)
 		return 0
@@ -37,6 +41,8 @@ Contents:
 
 
 /obj/item/clothing/suit/space/space_ninja/proc/stealth()
+	procstart = null
+	src.procstart = null
 	if(!s_busy)
 		toggle_stealth()
 	else

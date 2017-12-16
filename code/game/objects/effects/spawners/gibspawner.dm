@@ -7,6 +7,8 @@
 	var/list/gibdirections = list() //of lists of possible directions to spread each gib decal type towards.
 
 /obj/effect/gibspawner/Initialize(mapload, datum/dna/MobDNA, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(gibtypes.len != gibamounts.len || gibamounts.len != gibdirections.len)
@@ -47,6 +49,8 @@
 	gibamounts = list(2,2,1)
 
 /obj/effect/gibspawner/generic/Initialize()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/blobattack.ogg', 40, 1)
 	gibdirections = list(list(WEST, NORTHWEST, SOUTHWEST, NORTH),list(EAST, NORTHEAST, SOUTHEAST, SOUTH), list())
 	. = ..()
@@ -56,6 +60,8 @@
 	gibamounts = list(1,1,1,1,1,1,1)
 
 /obj/effect/gibspawner/human/Initialize()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/blobattack.ogg', 50, 1)
 	gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST),list(SOUTH, SOUTHEAST, SOUTHWEST),list(WEST, NORTHWEST, SOUTHWEST),list(EAST, NORTHEAST, SOUTHEAST), GLOB.alldirs, GLOB.alldirs, list())
 	. = ..()
@@ -66,6 +72,8 @@
 	gibamounts = list(1, 1, 1, 1, 1, 1)
 
 /obj/effect/gibspawner/humanbodypartless/Initialize()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/blobattack.ogg', 50, 1)
 	gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST),list(SOUTH, SOUTHEAST, SOUTHWEST),list(WEST, NORTHWEST, SOUTHWEST),list(EAST, NORTHEAST, SOUTHEAST), GLOB.alldirs, list())
 	. = ..()
@@ -76,6 +84,8 @@
 	gibamounts = list(1,1,1,1,1,1,1)
 
 /obj/effect/gibspawner/xeno/Initialize()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/blobattack.ogg', 60, 1)
 	gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST),list(SOUTH, SOUTHEAST, SOUTHWEST),list(WEST, NORTHWEST, SOUTHWEST),list(EAST, NORTHEAST, SOUTHEAST), GLOB.alldirs, GLOB.alldirs, list())
 	. = ..()
@@ -87,6 +97,8 @@
 
 
 /obj/effect/gibspawner/xenobodypartless/Initialize()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/blobattack.ogg', 60, 1)
 	gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST),list(SOUTH, SOUTHEAST, SOUTHWEST),list(WEST, NORTHWEST, SOUTHWEST),list(EAST, NORTHEAST, SOUTHEAST), GLOB.alldirs, list())
 	. = ..()
@@ -96,6 +108,8 @@
 	gibamounts = list(1, 1, 1, 1)
 
 /obj/effect/gibspawner/larva/Initialize()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/blobattack.ogg', 60, 1)
 	gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST),list(SOUTH, SOUTHEAST, SOUTHWEST), list(), GLOB.alldirs)
 	. = ..()
@@ -105,6 +119,8 @@
 	gibamounts = list(1, 1, 1)
 
 /obj/effect/gibspawner/larvabodypartless/Initialize()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/blobattack.ogg', 60, 1)
 	gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST),list(SOUTH, SOUTHEAST, SOUTHWEST), list())
 	. = ..()
@@ -115,6 +131,8 @@
 	gibamounts = list(1,1,1,1,1,1)
 
 /obj/effect/gibspawner/robot/Initialize()
+	procstart = null
+	src.procstart = null
 	gibdirections = list(list(NORTH, NORTHEAST, NORTHWEST),list(SOUTH, SOUTHEAST, SOUTHWEST),list(WEST, NORTHWEST, SOUTHWEST),list(EAST, NORTHEAST, SOUTHEAST), GLOB.alldirs, GLOB.alldirs)
 	gibamounts[6] = pick(0,1,2)
 	. = ..()

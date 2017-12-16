@@ -13,6 +13,8 @@
 	var/list/no_coexistance_typecache //Used so you can't have specific spells together
 
 /datum/spellbook_entry/New()
+	procstart = null
+	src.procstart = null
 	..()
 	no_coexistance_typecache = typecacheof(no_coexistance_typecache)
 
@@ -66,6 +68,8 @@
 	return 1
 
 /datum/spellbook_entry/proc/CanRefund(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	if(!refundable)
 		return 0
 	if(!S)
@@ -91,6 +95,8 @@
 			return cost * (spell_levels+1)
 	return -1
 /datum/spellbook_entry/proc/GetInfo()
+	procstart = null
+	src.procstart = null
 	if(!S)
 		S = new spell_type()
 	var/dat =""
@@ -264,11 +270,15 @@
 
 
 /datum/spellbook_entry/item/Buy(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	new item_path(get_turf(user))
 	SSblackbox.record_feedback("tally", "wizard_spell_learned", 1, name)
 	return 1
 
 /datum/spellbook_entry/item/GetInfo()
+	procstart = null
+	src.procstart = null
 	var/dat =""
 	dat += "<b>[name]</b>"
 	dat += " Cost:[cost]<br>"
@@ -319,6 +329,8 @@
 	category = "Defensive"
 
 /datum/spellbook_entry/item/scryingorb/Buy(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if (!(user.dna.check_mutation(XRAY)))
 			user.dna.add_mutation(XRAY)
@@ -331,6 +343,8 @@
 	category = "Assistance"
 
 /datum/spellbook_entry/item/soulstones/Buy(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	. =..()
 	if(.)
 		user.mind.AddSpell(new /obj/effect/proc_holder/spell/aoe_turf/conjure/construct(null))
@@ -355,6 +369,8 @@
 	category = "Defensive"
 
 /datum/spellbook_entry/item/armor/Buy(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		new /obj/item/clothing/shoes/sandal/magic(get_turf(user)) //In case they've lost them.
@@ -374,6 +390,8 @@
 	category = "Assistance"
 
 /datum/spellbook_entry/item/guardian/Buy(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		new /obj/item/paper/guides/antag/guardian/wizard(get_turf(user))
@@ -438,9 +456,13 @@
 	var/active = 0
 
 /datum/spellbook_entry/summon/CanBuy(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	return ..() && !active
 
 /datum/spellbook_entry/summon/GetInfo()
+	procstart = null
+	src.procstart = null
 	var/dat =""
 	dat += "<b>[name]</b>"
 	if(cost>0)
@@ -458,12 +480,16 @@
 	cost = 0
 
 /datum/spellbook_entry/summon/ghosts/IsAvailible()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.mode)
 		return FALSE
 	else
 		return TRUE
 
 /datum/spellbook_entry/summon/ghosts/Buy(mob/living/carbon/human/user, obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "wizard_spell_learned", 1, name)
 	new /datum/round_event/wizard/ghost()
 	active = TRUE
@@ -476,11 +502,15 @@
 	desc = "Nothing could possibly go wrong with arming a crew of lunatics just itching for an excuse to kill you. Just be careful not to stand still too long!"
 
 /datum/spellbook_entry/summon/guns/IsAvailible()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.mode) // In case spellbook is placed on map
 		return 0
 	return !CONFIG_GET(flag/no_summon_guns)
 
 /datum/spellbook_entry/summon/guns/Buy(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "wizard_spell_learned", 1, name)
 	rightandwrong(0, user, 25)
 	active = 1
@@ -493,11 +523,15 @@
 	desc = "Share the wonders of magic with the crew and show them why they aren't to be trusted with it at the same time."
 
 /datum/spellbook_entry/summon/magic/IsAvailible()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.mode) // In case spellbook is placed on map
 		return 0
 	return !CONFIG_GET(flag/no_summon_magic)
 
 /datum/spellbook_entry/summon/magic/Buy(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "wizard_spell_learned", 1, name)
 	rightandwrong(1, user, 25)
 	active = 1
@@ -511,11 +545,15 @@
 	var/times = 0
 
 /datum/spellbook_entry/summon/events/IsAvailible()
+	procstart = null
+	src.procstart = null
 	if(!SSticker.mode) // In case spellbook is placed on map
 		return 0
 	return !CONFIG_GET(flag/no_summon_events)
 
 /datum/spellbook_entry/summon/events/Buy(mob/living/carbon/human/user,obj/item/spellbook/book)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "wizard_spell_learned", 1, name)
 	summonevents()
 	times++
@@ -524,6 +562,8 @@
 	return 1
 
 /datum/spellbook_entry/summon/events/GetInfo()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(times>0)
 		. += "You cast it [times] times.<br>"
@@ -546,6 +586,8 @@
 	var/list/categories = list()
 
 /obj/item/spellbook/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(owner)
 		to_chat(user, "There is a small signature on the front cover: \"[owner]\".")
@@ -553,10 +595,14 @@
 		to_chat(user, "It appears to have no author.")
 
 /obj/item/spellbook/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	prepare_spells()
 
 /obj/item/spellbook/proc/prepare_spells()
+	procstart = null
+	src.procstart = null
 	var/entry_types = subtypesof(/datum/spellbook_entry) - /datum/spellbook_entry/item - /datum/spellbook_entry/summon
 	for(var/T in entry_types)
 		var/datum/spellbook_entry/E = new T
@@ -568,6 +614,8 @@
 	tab = categories[1]
 
 /obj/item/spellbook/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/antag_spawner/contract))
 		var/obj/item/antag_spawner/contract/contract = O
 		if(contract.used)
@@ -588,6 +636,8 @@
 		qdel(O)
 
 /obj/item/spellbook/proc/GetCategoryHeader(category)
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	switch(category)
 		if("Offensive")
@@ -618,6 +668,8 @@
 	return dat
 
 /obj/item/spellbook/proc/wrap(content)
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	dat +="<html><head><title>Spellbook</title></head>"
 	dat += {"
@@ -638,6 +690,8 @@
 	return dat
 
 /obj/item/spellbook/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		to_chat(user, "<span class='notice'>You bind the spellbook to yourself.</span>")
 		owner = user
@@ -683,6 +737,8 @@
 	return
 
 /obj/item/spellbook/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/carbon/human/H = usr
 
@@ -730,9 +786,13 @@
 	persistence_replacement = null
 
 /obj/item/spellbook/oneuse/prepare_spells()
+	procstart = null
+	src.procstart = null
 	name += spellname
 
 /obj/item/spellbook/oneuse/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/proc_holder/spell/S = new spell
 	for(var/obj/effect/proc_holder/spell/knownspell in user.mind.spell_list)
 		if(knownspell.type == S.type)
@@ -751,13 +811,19 @@
 		onlearned(user)
 
 /obj/item/spellbook/oneuse/proc/recoil(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='warning'>[src] glows in a black light!</span>")
 
 /obj/item/spellbook/oneuse/proc/onlearned(mob/user)
+	procstart = null
+	src.procstart = null
 	used = 1
 	user.visible_message("<span class='caution'>[src] glows dark for a second!</span>")
 
 /obj/item/spellbook/oneuse/attackby()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/spellbook/oneuse/fireball
@@ -767,6 +833,8 @@
 	desc = "This book feels warm to the touch."
 
 /obj/item/spellbook/oneuse/fireball/recoil(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(user.loc, -1, 0, 2, 3, 0, flame_range = 2)
 	qdel(src)
@@ -781,6 +849,8 @@
 	spell = /obj/effect/proc_holder/spell/targeted/smoke/lesser
 
 /obj/item/spellbook/oneuse/smoke/recoil(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user,"<span class='caution'>Your stomach rumbles...</span>")
 	if(user.nutrition)
@@ -796,6 +866,8 @@
 	desc = "This book looks blurry, no matter how you look at it."
 
 /obj/item/spellbook/oneuse/blind/recoil(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user,"<span class='warning'>You go blind!</span>")
 	user.blind_eyes(10)
@@ -808,12 +880,16 @@
 	var/mob/stored_swap = null //Used in used book recoils to store an identity for mindswaps
 
 /obj/item/spellbook/oneuse/mindswap/onlearned()
+	procstart = null
+	src.procstart = null
 	spellname = pick("fireball","smoke","blind","forcewall","knock","barnyard","charge")
 	icon_state = "book[spellname]"
 	name = "spellbook of [spellname]" //Note, desc doesn't change by design
 	..()
 
 /obj/item/spellbook/oneuse/mindswap/recoil(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(stored_swap in GLOB.dead_mob_list)
 		stored_swap = null
@@ -839,6 +915,8 @@
 	desc = "This book has a dedication to mimes everywhere inside the front cover."
 
 /obj/item/spellbook/oneuse/forcewall/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user,"<span class='warning'>You suddenly feel very solid!</span>")
 	user.Stun(40, ignore_canstun = TRUE)
@@ -851,6 +929,8 @@
 	desc = "This book is hard to hold closed properly."
 
 /obj/item/spellbook/oneuse/knock/recoil(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user,"<span class='warning'>You're knocked down!</span>")
 	user.Knockdown(40)
@@ -862,6 +942,8 @@
 	desc = "This book is more horse than your mind has room for."
 
 /obj/item/spellbook/oneuse/barnyard/recoil(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		to_chat(user,"<font size='15' color='red'><b>HOR-SIE HAS RISEN</b></font>")
 		var/obj/item/clothing/mask/horsehead/magichead = new /obj/item/clothing/mask/horsehead
@@ -882,6 +964,8 @@
 	desc = "This book is made of 100% post-consumer wizard."
 
 /obj/item/spellbook/oneuse/charge/recoil(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user,"<span class='warning'>[src] suddenly feels very warm!</span>")
 	empulse(src, 1, 1)
@@ -893,6 +977,8 @@
 	desc = "This book is bright and garish, very hard to miss."
 
 /obj/item/spellbook/oneuse/summonitem/recoil(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user,"<span class='warning'>[src] suddenly vanishes!</span>")
 	qdel(src)
@@ -901,6 +987,8 @@
 	icon_state = "random_book"
 
 /obj/item/spellbook/oneuse/random/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	var/static/banned_spells = list(/obj/item/spellbook/oneuse/mimery_blockade, /obj/item/spellbook/oneuse/mimery_guns)
 	var/real_type = pick(subtypesof(/obj/item/spellbook/oneuse) - banned_spells)

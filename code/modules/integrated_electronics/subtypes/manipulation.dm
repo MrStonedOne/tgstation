@@ -34,10 +34,14 @@
 
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(installed_gun)
 	..()
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/attackby(var/obj/O, var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/gun/energy))
 		var/obj/item/gun/gun = O
 		if(installed_gun)
@@ -65,6 +69,8 @@
 		..()
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/attack_self(var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(installed_gun)
 		installed_gun.forceMove(drop_location())
 		to_chat(user, "<span class='notice'>You slide \the [installed_gun] out of the firing mechanism.</span>")
@@ -77,6 +83,8 @@
 		to_chat(user, "<span class='notice'>There's no weapon to remove from the mechanism.</span>")
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/do_work()
+	procstart = null
+	src.procstart = null
 	if(!installed_gun)
 		return
 	set_pin_data(IC_OUTPUT, 1, WEAKREF(installed_gun))
@@ -100,6 +108,8 @@
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/proc/shootAt(turf/target)
 
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/turf/U = target
 	if(!istype(T) || !istype(U))
@@ -145,6 +155,8 @@
 	power_draw_per_use = 100
 
 /obj/item/integrated_circuit/manipulation/locomotion/do_work()
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/T = get_turf(src)
 	if(T && assembly)
@@ -175,18 +187,24 @@
 	var/pre_attached_grenade_type
 
 /obj/item/integrated_circuit/manipulation/grenade/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pre_attached_grenade_type)
 		var/grenade = new pre_attached_grenade_type(src)
 		attach_grenade(grenade)
 
 /obj/item/integrated_circuit/manipulation/grenade/Destroy()
+	procstart = null
+	src.procstart = null
 	if(attached_grenade && !attached_grenade.active)
 		attached_grenade.forceMove(loc)
 	detach_grenade()
 	return ..()
 
 /obj/item/integrated_circuit/manipulation/grenade/attackby(var/obj/item/grenade/G, var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(G))
 		if(attached_grenade)
 			to_chat(user, "<span class='warning'>There is already a grenade attached!</span>")
@@ -198,6 +216,8 @@
 		return ..()
 
 /obj/item/integrated_circuit/manipulation/grenade/attack_self(var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(attached_grenade)
 		user.visible_message("<span class='warning'>\The [user] removes \an [attached_grenade] from \the [src]!</span>", "<span class='notice'>You remove \the [attached_grenade] from \the [src].</span>")
 		user.put_in_hands(attached_grenade)
@@ -206,6 +226,8 @@
 		return ..()
 
 /obj/item/integrated_circuit/manipulation/grenade/do_work()
+	procstart = null
+	src.procstart = null
 	if(attached_grenade && !attached_grenade.active)
 		var/datum/integrated_io/detonation_time = inputs[1]
 		var/dt
@@ -219,11 +241,15 @@
 
 // These procs do not relocate the grenade, that's the callers responsibility
 /obj/item/integrated_circuit/manipulation/grenade/proc/attach_grenade(var/obj/item/grenade/G)
+	procstart = null
+	src.procstart = null
 	attached_grenade = G
 	G.forceMove(src)
 	desc += " \An [attached_grenade] is attached to it!"
 
 /obj/item/integrated_circuit/manipulation/grenade/proc/detach_grenade()
+	procstart = null
+	src.procstart = null
 	if(!attached_grenade)
 		return
 	attached_grenade.forceMove(drop_location())
@@ -245,6 +271,8 @@
 	power_draw_per_use = 50
 
 /obj/item/integrated_circuit/manipulation/plant_module/do_work()
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/T = get_turf(src)
 	var/obj/machinery/hydroponics/AM = get_pin_data_as_type(IC_INPUT, 1, /obj/machinery/hydroponics)
@@ -300,6 +328,8 @@
 	var/max_items = 10
 
 /obj/item/integrated_circuit/manipulation/grabber/do_work()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/acting_object = get_object()
 	var/turf/T = get_turf(acting_object)
 	var/obj/item/AM = get_pin_data_as_type(IC_INPUT, 1, /obj/item)
@@ -331,6 +361,8 @@
 	activate_pin(2)
 
 /obj/item/integrated_circuit/manipulation/grabber/attack_self(var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(contents.len)
 		var/turf/T = get_turf(src)
 		var/obj/item/U
@@ -365,6 +397,8 @@
 	var/max_w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/integrated_circuit/manipulation/thrower/do_work()
+	procstart = null
+	src.procstart = null
 	var/target_x_rel = round(get_pin_data(IC_INPUT, 1))
 	var/target_y_rel = round(get_pin_data(IC_INPUT, 2))
 	var/obj/item/A = get_pin_data_as_type(IC_INPUT, 3, /obj/item)

@@ -15,11 +15,15 @@
 	var/info_text = "You are a <span class='danger'>Vampire</span>. You will slowly but constantly lose blood if outside of a coffin. If inside a coffin, you will slowly heal. You may gain more blood by grabbing a live victim and using your drain ability."
 
 /datum/species/vampire/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
 		return TRUE
 	return FALSE
 
 /datum/species/vampire/on_species_gain(mob/living/carbon/human/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(C, "[info_text]")
 	C.skin_tone = "albino"
@@ -28,6 +32,8 @@
 	C.AddSpell(B)
 
 /datum/species/vampire/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(C.mind)
 		for(var/S in C.mind.spell_list)
@@ -37,6 +43,8 @@
 				qdel(S2)
 
 /datum/species/vampire/spec_life(mob/living/carbon/human/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(C.loc, /obj/structure/closet/coffin))
 		C.heal_overall_damage(4,4)
@@ -68,6 +76,8 @@
 	desc = "Leech blood from any carbon victim you are passively grabbing."
 
 /datum/action/item_action/organ_action/vampire/Trigger()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(owner))
 		var/mob/living/carbon/H = owner
@@ -111,6 +121,8 @@
 	desc = "Check how much blood you have remaining."
 
 /datum/action/item_action/organ_action/vampire_heart/Trigger()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(owner))
 		var/mob/living/carbon/H = owner

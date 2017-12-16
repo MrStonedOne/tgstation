@@ -19,10 +19,14 @@
 
 
 /obj/machinery/gibber/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay("grjam")
 
 /obj/machinery/gibber/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/gib_time = 40
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		meat_produced += B.rating
@@ -33,6 +37,8 @@
 			ignore_clothing = 1
 
 /obj/machinery/gibber/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if (dirty)
 		add_overlay("grbloody")
@@ -46,15 +52,23 @@
 		add_overlay("gridle")
 
 /obj/machinery/gibber/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/gibber/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	go_out()
 
 /obj/machinery/gibber/relaymove(mob/living/user)
+	procstart = null
+	src.procstart = null
 	go_out()
 
 /obj/machinery/gibber/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(operating)
@@ -86,6 +100,8 @@
 		startgibbing(user)
 
 /obj/machinery/gibber/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "grinder_open", "grinder", P))
 		return
 
@@ -106,6 +122,8 @@
 
 
 /obj/machinery/gibber/verb/eject()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "empty gibber"
 	set src in oview(1)
@@ -117,10 +135,14 @@
 	return
 
 /obj/machinery/gibber/proc/go_out()
+	procstart = null
+	src.procstart = null
 	dropContents()
 	update_icon()
 
 /obj/machinery/gibber/proc/startgibbing(mob/user)
+	procstart = null
+	src.procstart = null
 	if(src.operating)
 		return
 	if(!src.occupant)
@@ -184,6 +206,8 @@
 	addtimer(CALLBACK(src, .proc/make_meat, skin, allmeat, meat_produced, gibtype, diseases), gibtime)
 
 /obj/machinery/gibber/proc/make_meat(obj/item/stack/sheet/animalhide/skin, list/obj/item/reagent_containers/food/snacks/meat/slab/allmeat, meat_produced, gibtype, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
 	operating = FALSE
 	var/turf/T = get_turf(src)
@@ -209,6 +233,8 @@
 	var/turf/input_plate
 
 /obj/machinery/gibber/autogibber/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in GLOB.cardinals)
 		var/obj/machinery/mineral/input/input_obj = locate() in get_step(loc, i)
@@ -223,6 +249,8 @@
 		return
 
 /obj/machinery/gibber/autogibber/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!input_plate)
 		return
 

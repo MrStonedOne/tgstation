@@ -3,6 +3,8 @@
 	category = CAT_FOOD
 
 /datum/crafting_recipe/food/New()
+	procstart = null
+	src.procstart = null
 	real_parts = parts.Copy()
 	parts |= reqs
 
@@ -16,6 +18,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/tofu/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/snacks/tofu(location)
@@ -27,6 +31,8 @@
 	required_reagents = list("soymilk" = 2, "cocoa" = 2, "sugar" = 2)
 
 /datum/chemical_reaction/chocolate_bar/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/snacks/chocolatebar(location)
@@ -40,6 +46,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/chocolate_bar2/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/snacks/chocolatebar(location)
@@ -83,6 +91,8 @@
 	required_catalysts = list("enzyme" = 5)
 
 /datum/chemical_reaction/cheesewheel/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/snacks/store/cheesewheel(location)
@@ -94,6 +104,8 @@
 	mob_react = FALSE
 
 /datum/chemical_reaction/synthmeat/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/snacks/meat/slab/synthmeat(location)
@@ -118,6 +130,8 @@
 	mix_message = "The mixture becomes similar to carp meat."
 
 /datum/chemical_reaction/imitationcarpmeat/on_reaction(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	new /obj/item/reagent_containers/food/snacks/carpmeat/imitation(location)
 	if(holder && holder.my_atom)
@@ -130,6 +144,8 @@
 	mix_message = "The ingredients form a dough."
 
 /datum/chemical_reaction/dough/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/snacks/dough(location)
@@ -141,6 +157,8 @@
 	mix_message = "The ingredients form a cake batter."
 
 /datum/chemical_reaction/cakebatter/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/snacks/cakebatter(location)
@@ -157,6 +175,8 @@
 	mix_message = "The rice absorbs the water."
 
 /datum/chemical_reaction/ricebowl/on_reaction(datum/reagents/holder)
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(holder.my_atom)
 	new /obj/item/reagent_containers/food/snacks/salad/ricebowl(location)
 	if(holder && holder.my_atom)

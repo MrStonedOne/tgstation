@@ -12,10 +12,14 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	pass_flags = PASSTABLE | PASSGRILLE
 
 /obj/effect/particle_effect/New()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.cameranet.updateVisibility(src)
 
 /obj/effect/particle_effect/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.cameranet.updateVisibility(src)
 	. = ..()
 
@@ -29,11 +33,15 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	var/autocleanup = FALSE //will delete itself after use
 
 /datum/effect_system/Destroy()
+	procstart = null
+	src.procstart = null
 	holder = null
 	location = null
 	return ..()
 
 /datum/effect_system/proc/set_up(n = 3, c = FALSE, loca)
+	procstart = null
+	src.procstart = null
 	if(n > 10)
 		n = 10
 	number = n
@@ -44,15 +52,21 @@ would spawn and follow the beaker, even if it is carried or thrown.
 		location = get_turf(loca)
 
 /datum/effect_system/proc/attach(atom/atom)
+	procstart = null
+	src.procstart = null
 	holder = atom
 
 /datum/effect_system/proc/start()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to number)
 		if(total_effects > 20)
 			return
 		INVOKE_ASYNC(src, .proc/generate_effect)
 
 /datum/effect_system/proc/generate_effect()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		location = get_turf(holder)
 	var/obj/effect/E = new effect_type(location)
@@ -69,6 +83,8 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	addtimer(CALLBACK(src, .proc/decrement_total_effect), 20)
 
 /datum/effect_system/proc/decrement_total_effect()
+	procstart = null
+	src.procstart = null
 	total_effects--
 	if(autocleanup && total_effects <= 0)
 		qdel(src)

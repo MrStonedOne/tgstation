@@ -15,6 +15,8 @@
 
 
 /datum/linked_list/proc/IsEmpty()
+	procstart = null
+	src.procstart = null
 	. = (node_amt <= 0)
 
 
@@ -22,6 +24,8 @@
 //the added node BECOMES the position-th element,
 //eg: add("Test",5), the 5th node is now "Test", the previous 5th moves up to become the 6th
 /datum/linked_list/proc/Add(node, position)
+	procstart = null
+	src.procstart = null
 	var/datum/linked_node/adding
 	if(istype(node, /datum/linked_node))
 		adding = node
@@ -77,6 +81,8 @@
 //Remove a linked_node or the linked_node of a value
 //If you specify a value the FIRST ONE is removed
 /datum/linked_list/proc/Remove(node)
+	procstart = null
+	src.procstart = null
 	var/datum/linked_node/removing
 	if(istype(node, /datum/linked_node))
 		removing = node
@@ -139,6 +145,8 @@
 
 //Removes and deletes a node or value
 /datum/linked_list/proc/RemoveDelete(node)
+	procstart = null
+	src.procstart = null
 	var/datum/linked_node/dead = Remove(node)
 	if(dead)
 		qdel(dead)
@@ -148,6 +156,8 @@
 
 //Empty the linked_list, deleting all nodes
 /datum/linked_list/proc/Empty()
+	procstart = null
+	src.procstart = null
 	var/datum/linked_node/n = head
 	while(n)
 		var/next = n.next_node
@@ -159,6 +169,8 @@
 
 //Some debugging tools
 /datum/linked_list/proc/CheckNodeLinks()
+	procstart = null
+	src.procstart = null
 	var/datum/linked_node/n = head
 	while(n)
 		. = "|[n.value]|"
@@ -171,6 +183,8 @@
 
 
 /datum/linked_list/proc/DrawNodeLinks()
+	procstart = null
+	src.procstart = null
 	. = "|<-"
 	var/datum/linked_node/n = head
 	while(n)
@@ -184,6 +198,8 @@
 
 
 /datum/linked_list/proc/ToList()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/datum/linked_node/n = head
 	while(n)

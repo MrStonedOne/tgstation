@@ -35,15 +35,21 @@
 	loot = list(/obj/item/asteroid/fugu_gland{layer = ABOVE_MOB_LAYER})
 
 /mob/living/simple_animal/hostile/asteroid/fugu/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	E = new
 	E.Grant(src)
 
 /mob/living/simple_animal/hostile/asteroid/fugu/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(E)
 	return ..()
 
 /mob/living/simple_animal/hostile/asteroid/fugu/Life()
+	procstart = null
+	src.procstart = null
 	if(!wumbo)
 		inflate_cooldown = max((inflate_cooldown - 1), 0)
 	if(target && AIStatus == AI_ON)
@@ -51,11 +57,15 @@
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/fugu/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && wumbo)
 		return FALSE
 	. = ..()
 
 /mob/living/simple_animal/hostile/asteroid/fugu/Aggro()
+	procstart = null
+	src.procstart = null
 	..()
 	E.Activate()
 
@@ -68,6 +78,8 @@
 	button_icon_state = "expand"
 
 /datum/action/innate/fugu/expand/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/hostile/asteroid/fugu/F = owner
 	if(F.wumbo)
 		to_chat(F, "<span class='notice'>YOU'RE ALREADY WUMBO!</span>")
@@ -94,6 +106,8 @@
 	addtimer(CALLBACK(F, /mob/living/simple_animal/hostile/asteroid/fugu/proc/Deflate), 100)
 
 /mob/living/simple_animal/hostile/asteroid/fugu/proc/Deflate()
+	procstart = null
+	src.procstart = null
 	if(wumbo)
 		walk(src, 0)
 		wumbo = 0
@@ -112,6 +126,8 @@
 		speed = 0
 
 /mob/living/simple_animal/hostile/asteroid/fugu/death(gibbed)
+	procstart = null
+	src.procstart = null
 	Deflate()
 	..(gibbed)
 
@@ -126,6 +142,8 @@
 	var/list/banned_mobs
 
 /obj/item/asteroid/fugu_gland/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(proximity_flag && isanimal(target))
 		var/mob/living/simple_animal/A = target
 		if(A.buffed || (A.type in banned_mobs) || A.stat)

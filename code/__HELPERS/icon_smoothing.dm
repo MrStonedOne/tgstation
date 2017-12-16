@@ -55,6 +55,8 @@
 /turf/var/list/fixed_underlay = null
 
 /proc/calculate_adjacencies(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!A.loc)
 		return 0
 
@@ -110,6 +112,8 @@
 
 //do not use, use queue_smooth(atom)
 /proc/smooth_icon(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!A || !A.smooth)
 		return
 	A.smooth &= ~SMOOTH_QUEUED
@@ -126,6 +130,8 @@
 			cardinal_smooth(A, adjacencies)
 
 /atom/proc/diagonal_smooth(adjacencies)
+	procstart = null
+	src.procstart = null
 	switch(adjacencies)
 		if(N_NORTH|N_WEST)
 			replace_smooth_overlays("d-se","d-se-0")
@@ -154,6 +160,8 @@
 
 //only walls should have a need to handle underlays
 /turf/closed/wall/diagonal_smooth(adjacencies)
+	procstart = null
+	src.procstart = null
 	adjacencies = reverse_ndir(..())
 	if(adjacencies)
 		var/mutable_appearance/underlay_appearance = mutable_appearance(layer = TURF_LAYER)
@@ -185,6 +193,8 @@
 
 
 /proc/cardinal_smooth(atom/A, adjacencies)
+	procstart = null
+	src.procstart = null
 	//NW CORNER
 	var/nw = "1-i"
 	if((adjacencies & N_NORTH) && (adjacencies & N_WEST))
@@ -263,6 +273,8 @@
 		A.add_overlay(New)
 
 /proc/find_type_in_direction(atom/source, direction)
+	procstart = null
+	src.procstart = null
 	var/turf/target_turf = get_step(source, direction)
 	if(!target_turf)
 		return NULLTURF_BORDER
@@ -293,6 +305,8 @@
 
 //Icon smoothing helpers
 /proc/smooth_zlevel(var/zlevel, now = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/away_turfs = block(locate(1, 1, zlevel), locate(world.maxx, world.maxy, zlevel))
 	for(var/V in away_turfs)
 		var/turf/T = V
@@ -310,6 +324,8 @@
 					queue_smooth(A)
 
 /atom/proc/clear_smooth_overlays()
+	procstart = null
+	src.procstart = null
 	cut_overlay(top_left_corner)
 	top_left_corner = null
 	cut_overlay(top_right_corner)
@@ -320,6 +336,8 @@
 	bottom_left_corner = null
 
 /atom/proc/replace_smooth_overlays(nw, ne, sw, se)
+	procstart = null
+	src.procstart = null
 	clear_smooth_overlays()
 	var/list/O = list()
 	top_left_corner = nw
@@ -333,6 +351,8 @@
 	add_overlay(O)
 
 /proc/reverse_ndir(ndir)
+	procstart = null
+	src.procstart = null
 	switch(ndir)
 		if(N_NORTH)
 			return NORTH
@@ -371,6 +391,8 @@
 
 //SSicon_smooth
 /proc/queue_smooth_neighbors(atom/A)
+	procstart = null
+	src.procstart = null
 	for(var/V in orange(1,A))
 		var/atom/T = V
 		if(T.smooth)
@@ -378,6 +400,8 @@
 
 //SSicon_smooth
 /proc/queue_smooth(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!A.smooth || A.smooth & SMOOTH_QUEUED)
 		return
 

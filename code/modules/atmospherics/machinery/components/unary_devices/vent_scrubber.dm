@@ -31,6 +31,8 @@
 	pipe_state = "scrubber"
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!id_tag)
 		id_tag = assign_uid_vents()
@@ -40,6 +42,8 @@
 	icon_state = "scrub_map_on"
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Destroy()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	A.air_scrub_names -= id_tag
 	A.air_scrub_info -= id_tag
@@ -53,6 +57,8 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/auto_use_power()
+	procstart = null
+	src.procstart = null
 	if(!on || welded || !is_operational() || !powered(power_channel))
 		return FALSE
 
@@ -69,6 +75,8 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(showpipe)
 		add_overlay(getpipeimage(icon, "scrub_cap", initialize_directions))
@@ -90,11 +98,15 @@
 		icon_state = "scrub_purge"
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	radio_connection = SSradio.add_object(src, frequency, radio_filter_in)
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/broadcast_status()
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return FALSE
 
@@ -126,6 +138,8 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/atmosinit()
+	procstart = null
+	src.procstart = null
 	radio_filter_in = frequency==initial(frequency)?(RADIO_FROM_AIRALARM):null
 	radio_filter_out = frequency==initial(frequency)?(RADIO_TO_AIRALARM):null
 	if(frequency)
@@ -135,6 +149,8 @@
 	..()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(welded || !is_operational())
 		return FALSE
@@ -148,6 +164,8 @@
 	return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/scrub(var/turf/tile)
+	procstart = null
+	src.procstart = null
 	if(!istype(tile))
 		return FALSE
 
@@ -204,12 +222,16 @@
 //There is no easy way for an object to be notified of changes to atmos can pass flags
 //	So we check every machinery process (2 seconds)
 /obj/machinery/atmospherics/components/unary/vent_scrubber/process()
+	procstart = null
+	src.procstart = null
 	if(widenet)
 		check_turfs()
 
 //we populate a list of turfs with nonatmos-blocked cardinal turfs AND
 //	diagonal turfs that can share atmos with *both* of the cardinal turfs
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/check_turfs()
+	procstart = null
+	src.procstart = null
 	adjacent_turfs.Cut()
 	var/turf/T = get_turf(src)
 	if(istype(T))
@@ -217,6 +239,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!is_operational() || !signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 		return 0
 
@@ -251,10 +275,14 @@
 	return
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon_nopipes()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/weldingtool))
 		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0,user))
@@ -278,15 +306,21 @@
 		return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")
 		return FALSE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/can_crawl_through()
+	procstart = null
+	src.procstart = null
 	return !welded
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/attack_alien(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!welded || !(do_after(user, 20, target = src)))
 		return
 	user.visible_message("[user] furiously claws at [src]!", "You manage to clear away the stuff blocking the scrubber.", "You hear loud scraping noises.")

@@ -5,19 +5,27 @@
 	..(message)
 
 /mob/living/silicon/ai/compose_track_href(atom/movable/speaker, namepart)
+	procstart = null
+	src.procstart = null
 	var/mob/M = speaker.GetSource()
 	if(M)
 		return "<a href='?src=[REF(src)];track=[html_encode(namepart)]'>"
 	return ""
 
 /mob/living/silicon/ai/compose_job(atom/movable/speaker, message_langs, raw_message, radio_freq)
+	procstart = null
+	src.procstart = null
 	//Also includes the </a> for AI hrefs, for convenience.
 	return "[radio_freq ? " (" + speaker.GetJob() + ")" : ""]" + "[speaker.GetSource() ? "</a>" : ""]"
 
 /mob/living/silicon/ai/IsVocal()
+	procstart = null
+	src.procstart = null
 	return !CONFIG_GET(flag/silent_ai)
 
 /mob/living/silicon/ai/radio(message, message_mode, list/spans, language)
+	procstart = null
+	src.procstart = null
 	if(incapacitated())
 		return FALSE
 	if(!radio_enabled) //AI cannot speak if radio is disabled (via intellicard) or depowered.
@@ -26,6 +34,8 @@
 	..()
 
 /mob/living/silicon/ai/get_message_mode(message)
+	procstart = null
+	src.procstart = null
 	if(copytext(message, 1, 3) in list(":h", ":H", ".h", ".H", "#h", "#H"))
 		return MODE_HOLOPAD
 	else
@@ -35,6 +45,8 @@
 /mob/living/silicon/ai/proc/holopad_talk(message, language)
 
 
+	procstart = null
+	src.procstart = null
 	message = trim(message)
 
 	if (!message)
@@ -60,6 +72,8 @@
 #define VOX_DELAY 600
 /mob/living/silicon/ai/verb/announcement_help()
 
+	procstart = null
+	src.procstart = null
 	set name = "Announcement Help"
 	set desc = "Display a list of vocal words to announce to the crew."
 	set category = "AI Commands"
@@ -86,6 +100,8 @@
 
 
 /mob/living/silicon/ai/proc/announcement()
+	procstart = null
+	src.procstart = null
 	var/static/announcing_vox = 0 // Stores the time of the last announcement
 	if(announcing_vox > world.time)
 		to_chat(src, "<span class='notice'>Please wait [DisplayTimeText(announcing_vox - world.time)].</span>")
@@ -133,6 +149,8 @@
 
 /proc/play_vox_word(word, z_level, mob/only_listener)
 
+	procstart = null
+	src.procstart = null
 	word = lowertext(word)
 
 	if(GLOB.vox_sounds[word])
@@ -157,6 +175,8 @@
 #endif
 
 /mob/living/silicon/ai/could_speak_in_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(src))
 		// Ratvarian AIs can only speak Ratvarian
 		. = ispath(dt, /datum/language/ratvar)

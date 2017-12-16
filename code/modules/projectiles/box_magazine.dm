@@ -23,6 +23,8 @@
 	var/start_empty = 0
 
 /obj/item/ammo_box/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!start_empty)
 		for(var/i = 1, i <= max_ammo, i++)
@@ -30,6 +32,8 @@
 	update_icon()
 
 /obj/item/ammo_box/proc/get_round(keep = 0)
+	procstart = null
+	src.procstart = null
 	if (!stored_ammo.len)
 		return null
 	else
@@ -40,6 +44,8 @@
 		return b
 
 /obj/item/ammo_box/proc/give_round(obj/item/ammo_casing/R, replace_spent = 0)
+	procstart = null
+	src.procstart = null
 	// Boxes don't have a caliber type, magazines do. Not sure if it's intended or not, but if we fail to find a caliber, then we fall back to ammo_type.
 	if(!R || (caliber && R.caliber != caliber) || (!caliber && R.type != ammo_type))
 		return 0
@@ -63,9 +69,13 @@
 	return 0
 
 /obj/item/ammo_box/proc/can_load(mob/user)
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/item/ammo_box/attackby(obj/item/A, mob/user, params, silent = 0, replace_spent = 0)
+	procstart = null
+	src.procstart = null
 	var/num_loaded = 0
 	if(!can_load(user))
 		return
@@ -94,6 +104,8 @@
 	return num_loaded
 
 /obj/item/ammo_box/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_casing/A = get_round()
 	if(A)
 		user.put_in_hands(A)
@@ -102,6 +114,8 @@
 		update_icon()
 
 /obj/item/ammo_box/update_icon()
+	procstart = null
+	src.procstart = null
 	switch(multiple_sprites)
 		if(1)
 			icon_state = "[initial(icon_state)]-[stored_ammo.len]"
@@ -111,9 +125,13 @@
 
 //Behavior for magazines
 /obj/item/ammo_box/magazine/proc/ammo_count()
+	procstart = null
+	src.procstart = null
 	return stored_ammo.len
 
 /obj/item/ammo_box/magazine/proc/empty_magazine()
+	procstart = null
+	src.procstart = null
 	var/turf_mag = get_turf(src)
 	for(var/obj/item/ammo in stored_ammo)
 		ammo.forceMove(turf_mag)

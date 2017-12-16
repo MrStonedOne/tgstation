@@ -113,6 +113,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/action_buttons_screen_locs = list()
 
 /datum/preferences/New(client/C)
+	procstart = null
+	src.procstart = null
 	parent = C
 	custom_names["human"] = random_unique_name()
 	custom_names["ai"] = pick(GLOB.ai_names)
@@ -139,6 +141,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return
 
 /datum/preferences/proc/ShowChoices(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user || !user.client)
 		return
 	update_preview_icon()
@@ -493,6 +497,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	popup.open(0)
 
 /datum/preferences/proc/SetChoices(mob/user, limit = 17, list/splitJobs = list("Chief Engineer"), widthPerColumn = 295, height = 620)
+	procstart = null
+	src.procstart = null
 	if(!SSjob)
 		return
 
@@ -619,6 +625,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return
 
 /datum/preferences/proc/SetJobPreferenceLevel(datum/job/job, level)
+	procstart = null
+	src.procstart = null
 	if (!job)
 		return 0
 
@@ -677,6 +685,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return 0
 
 /datum/preferences/proc/UpdateJobPreference(mob/user, role, desiredLvl)
+	procstart = null
+	src.procstart = null
 	if(!SSjob || SSjob.occupations.len <= 0)
 		return
 	var/datum/job/job = SSjob.GetJob(role)
@@ -707,6 +717,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /datum/preferences/proc/ResetJobs()
 
+	procstart = null
+	src.procstart = null
 	job_civilian_high = 0
 	job_civilian_med = 0
 	job_civilian_low = 0
@@ -721,6 +733,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 
 /datum/preferences/proc/GetJobDepartment(datum/job/job, level)
+	procstart = null
+	src.procstart = null
 	if(!job || !level)
 		return 0
 	switch(job.department_flag)
@@ -751,6 +765,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return 0
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["jobbancheck"])
 		var/job = sanitizeSQL(href_list["jobbancheck"])
 		var/sql_ckey = sanitizeSQL(user.ckey)
@@ -1259,6 +1275,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return 1
 
 /datum/preferences/proc/copy_to(mob/living/carbon/human/character, icon_updates = 1)
+	procstart = null
+	src.procstart = null
 	if(be_random_name)
 		real_name = pref_species.random_name(gender)
 

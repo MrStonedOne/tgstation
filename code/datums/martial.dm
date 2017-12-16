@@ -12,15 +12,23 @@
 	var/allow_temp_override = TRUE //if this martial art can be overridden by temporary martial arts
 
 /datum/martial_art/proc/disarm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/martial_art/proc/harm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/martial_art/proc/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/martial_art/proc/add_to_streak(element,mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(D != current_target)
 		current_target = D
 		streak = ""
@@ -32,6 +40,8 @@
 
 /datum/martial_art/proc/basic_hit(mob/living/carbon/human/A,mob/living/carbon/human/D)
 
+	procstart = null
+	src.procstart = null
 	var/damage = rand(A.dna.species.punchdamagelow, A.dna.species.punchdamagehigh)
 
 	var/atk_verb = A.dna.species.attack_verb
@@ -76,6 +86,8 @@
 	return 1
 
 /datum/martial_art/proc/teach(mob/living/carbon/human/H,make_temporary=0)
+	procstart = null
+	src.procstart = null
 	if(H.mind.martial_art)
 		if(make_temporary)
 			if(!H.mind.martial_art.allow_temp_override)
@@ -91,6 +103,8 @@
 	return TRUE
 
 /datum/martial_art/proc/store(datum/martial_art/M,mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	M.on_remove(H)
 	if(M.base) //Checks if M is temporary, if so it will not be stored.
 		base = M.base
@@ -98,6 +112,8 @@
 		base = M
 
 /datum/martial_art/proc/remove(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.mind.martial_art != src)
 		return
 	on_remove(H)
@@ -108,6 +124,8 @@
 		X.teach(H)
 
 /datum/martial_art/proc/on_remove(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(help_verb)
 		H.verbs -= help_verb
 	return

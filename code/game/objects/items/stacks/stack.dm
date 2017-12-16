@@ -24,16 +24,22 @@
 	//NOTE: When adding grind_results, the amounts should be for an INDIVIDUAL ITEM - these amounts will be multiplied by the stack size in on_grind()
 
 /obj/item/stack/on_grind()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to grind_results.len) //This should only call if it's ground, so no need to check if grind_results exists
 		grind_results[grind_results[i]] *= amount //Gets the key at position i, then the reagent amount of that key, then multiplies it by stack size
 
 /obj/item/stack/grind_requirements()
+	procstart = null
+	src.procstart = null
 	if(is_cyborg)
 		to_chat(usr, "<span class='danger'>[src] is electronically synthesized in your chassis and can't be ground up!</span>")
 		return
 	return TRUE
 
 /obj/item/stack/Initialize(mapload, new_amount=null , merge = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_amount)
 		amount = new_amount
@@ -47,6 +53,8 @@
 	update_icon()
 
 /obj/item/stack/proc/update_weight()
+	procstart = null
+	src.procstart = null
 	if(amount <= (max_amount * (1/3)))
 		w_class = Clamp(full_w_class-2, WEIGHT_CLASS_TINY, full_w_class)
 	else if (amount <= (max_amount * (2/3)))
@@ -55,6 +63,8 @@
 		w_class = full_w_class
 
 /obj/item/stack/update_icon()
+	procstart = null
+	src.procstart = null
 	if(novariants)
 		return ..()
 	if(amount <= (max_amount * (1/3)))
@@ -67,11 +77,15 @@
 
 
 /obj/item/stack/Destroy()
+	procstart = null
+	src.procstart = null
 	if (usr && usr.machine==src)
 		usr << browse(null, "window=stack")
 	. = ..()
 
 /obj/item/stack/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (is_cyborg)
 		if(singular_name)
@@ -91,15 +105,21 @@
 	to_chat(user, "<span class='notice'>Alt-click to take a custom amount.</span>")
 
 /obj/item/stack/proc/get_amount()
+	procstart = null
+	src.procstart = null
 	if(is_cyborg)
 		. = round(source.energy / cost)
 	else
 		. = (amount)
 
 /obj/item/stack/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/item/stack/interact(mob/user, recipes_sublist)
+	procstart = null
+	src.procstart = null
 	if (!recipes)
 		return
 	if (!src || get_amount() <= 0)
@@ -155,6 +175,8 @@
 	onclose(user, "stack")
 
 /obj/item/stack/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if (usr.restrained() || usr.stat || usr.get_active_held_item() != src)
 		return
@@ -217,6 +239,8 @@
 		//BubbleWrap END
 
 /obj/item/stack/proc/building_checks(datum/stack_recipe/R, multiplier)
+	procstart = null
+	src.procstart = null
 	if (get_amount() < R.req_amount*multiplier)
 		if (R.req_amount*multiplier>1)
 			to_chat(usr, "<span class='warning'>You haven't got enough [src] to build \the [R.req_amount*multiplier] [R.title]\s!</span>")
@@ -248,6 +272,8 @@
 	return 1
 
 /obj/item/stack/proc/zero_amount()
+	procstart = null
+	src.procstart = null
 	if(is_cyborg)
 		return source.energy < cost
 	if(amount < 1)
@@ -256,6 +282,8 @@
 	return 0
 
 /obj/item/stack/proc/add(amount)
+	procstart = null
+	src.procstart = null
 	if (is_cyborg)
 		source.add_charge(amount * cost)
 	else
@@ -279,16 +307,22 @@
 	return transfer
 
 /obj/item/stack/Crossed(obj/o)
+	procstart = null
+	src.procstart = null
 	if(istype(o, merge_type) && !o.throwing)
 		merge(o)
 	. = ..()
 
 /obj/item/stack/hitby(atom/movable/AM, skip, hitpush)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, merge_type))
 		merge(AM)
 	. = ..()
 
 /obj/item/stack/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if (user.get_inactive_held_item() == src)
 		if(zero_amount())
 			return
@@ -297,6 +331,8 @@
 		..()
 
 /obj/item/stack/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user.canUseTopic(src))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
 		return
@@ -318,6 +354,8 @@
 			to_chat(user, "<span class='notice'>You take [stackmaterial] sheets out of the stack</span>")
 
 /obj/item/stack/proc/change_stack(mob/user,amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/F = new type(user, amount, FALSE)
 	. = F
 	F.copy_evidences(src)
@@ -329,6 +367,8 @@
 
 
 /obj/item/stack/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, merge_type))
 		var/obj/item/stack/S = W
 		if(merge(S))
@@ -337,6 +377,8 @@
 		. = ..()
 
 /obj/item/stack/proc/copy_evidences(obj/item/stack/from as obj)
+	procstart = null
+	src.procstart = null
 	blood_DNA = from.blood_DNA
 	fingerprints  = from.fingerprints
 	fingerprintshidden  = from.fingerprintshidden
@@ -344,6 +386,8 @@
 	//TODO bloody overlay
 
 /obj/item/stack/microwave_act(obj/machinery/microwave/M)
+	procstart = null
+	src.procstart = null
 	if(M && M.dirty < 100)
 		M.dirty += amount
 
@@ -362,6 +406,8 @@
 	var/window_checks = FALSE
 
 /datum/stack_recipe/New(title, result_type, req_amount = 1, res_amount = 1, max_res_amount = 1, time = 0, one_per_turf = FALSE, on_floor = FALSE, window_checks = FALSE)
+	procstart = null
+	src.procstart = null
 	src.title = title
 	src.result_type = result_type
 	src.req_amount = req_amount
@@ -380,5 +426,7 @@
 	var/list/recipes
 
 /datum/stack_recipe_list/New(title, recipes)
+	procstart = null
+	src.procstart = null
 	src.title = title
 	src.recipes = recipes

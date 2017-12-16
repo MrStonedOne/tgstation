@@ -23,6 +23,8 @@
 
 
 /datum/game_mode/traitor/internal_affairs/post_setup()
+	procstart = null
+	src.procstart = null
 	var/i = 0
 	for(var/datum/mind/traitor in pre_traitors)
 		i++
@@ -34,6 +36,8 @@
 
 /datum/game_mode/traitor/internal_affairs/add_latejoin_traitor(datum/mind/character)
 
+	procstart = null
+	src.procstart = null
 	check_potential_agents()
 
 	// As soon as we get 3 or 4 extra latejoin traitors, make them traitors and kill each other.
@@ -63,6 +67,8 @@
 
 /datum/game_mode/traitor/internal_affairs/proc/check_potential_agents()
 
+	procstart = null
+	src.procstart = null
 	for(var/M in late_joining_list)
 		if(istype(M, /datum/mind))
 			var/datum/mind/agent_mind = M
@@ -77,5 +83,7 @@
 
 
 /datum/game_mode/traitor/internal_affairs/generate_report()
+	procstart = null
+	src.procstart = null
 	return "Nanotrasen denies any accusations of placing internal affairs agents onboard your station to eliminate inconvenient employees.  Any further accusations against CentCom for such \
 			actions will be met with a conversation with an official internal affairs agent."

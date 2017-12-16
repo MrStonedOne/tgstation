@@ -14,6 +14,8 @@
 	process_dead = TRUE
 
 /datum/disease/magnitis/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(2)

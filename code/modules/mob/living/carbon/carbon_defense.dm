@@ -1,5 +1,7 @@
 
 /mob/living/carbon/get_eye_protection()
+	procstart = null
+	src.procstart = null
 	var/number = ..()
 
 	if(istype(src.head, /obj/item/clothing/head))			//are they wearing something on their head
@@ -23,6 +25,8 @@
 	return number
 
 /mob/living/carbon/get_ear_protection()
+	procstart = null
+	src.procstart = null
 	var/number = ..()
 	if(ears && (ears.flags_2 & BANG_PROTECT_2))
 		number += 1
@@ -36,10 +40,14 @@
 	return number
 
 /mob/living/carbon/is_mouth_covered(head_only = 0, mask_only = 0)
+	procstart = null
+	src.procstart = null
 	if( (!mask_only && head && (head.flags_cover & HEADCOVERSMOUTH)) || (!head_only && wear_mask && (wear_mask.flags_cover & MASKCOVERSMOUTH)) )
 		return TRUE
 
 /mob/living/carbon/is_eyes_covered(check_glasses = 1, check_head = 1, check_mask = 1)
+	procstart = null
+	src.procstart = null
 	if(check_glasses && glasses && (glasses.flags_cover & GLASSESCOVERSEYES))
 		return TRUE
 	if(check_head && head && (head.flags_cover & HEADCOVERSEYES))
@@ -48,11 +56,15 @@
 		return TRUE
 
 /mob/living/carbon/check_projectile_dismemberment(obj/item/projectile/P, def_zone)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/affecting = get_bodypart(def_zone)
 	if(affecting && affecting.dismemberable && affecting.get_damage() >= (affecting.max_damage - P.dismemberment))
 		affecting.dismember(P.damtype)
 
 /mob/living/carbon/hitby(atom/movable/AM, skipcatch, hitpush = TRUE, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!skipcatch)	//ugly, but easy
 		if(in_throw_mode && !get_active_held_item())	//empty active hand and we're in throw mode
 			if(canmove && !restrained())
@@ -68,6 +80,8 @@
 
 
 /mob/living/carbon/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/affecting
 	if(user == src)
 		affecting = get_bodypart(check_zone(user.zone_selected)) //we're self-mutilating! yay!
@@ -106,10 +120,14 @@
 		return TRUE //successful attack
 
 /mob/living/carbon/attack_drone(mob/living/simple_animal/drone/user)
+	procstart = null
+	src.procstart = null
 	return //so we don't call the carbon's attack_hand().
 
 /mob/living/carbon/attack_hand(mob/living/carbon/human/user)
 
+	procstart = null
+	src.procstart = null
 	for(var/thing in viruses)
 		var/datum/disease/D = thing
 		if(D.spread_flags & VIRUS_SPREAD_CONTACT_SKIN)
@@ -130,6 +148,8 @@
 
 /mob/living/carbon/attack_paw(mob/living/carbon/monkey/M)
 
+	procstart = null
+	src.procstart = null
 	if(can_inject(M, TRUE))
 		for(var/thing in viruses)
 			var/datum/disease/D = thing
@@ -153,6 +173,8 @@
 
 
 /mob/living/carbon/attack_slime(mob/living/simple_animal/slime/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful slime attack
 		if(M.powerlevel > 0)
 			var/stunprob = M.powerlevel * 7 + 10  // 17 at level 1, 80 at level 10
@@ -175,6 +197,8 @@
 		return 1
 
 /mob/living/carbon/proc/dismembering_strike(mob/living/attacker, dam_zone)
+	procstart = null
+	src.procstart = null
 	if(!attacker.limb_destroyer)
 		return dam_zone
 	var/obj/item/bodypart/affecting
@@ -198,6 +222,8 @@
 
 
 /mob/living/carbon/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if (stat == DEAD)
 		return
 	else
@@ -205,12 +231,16 @@
 		adjustBruteLoss(10)
 
 /mob/living/carbon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	for(var/X in internal_organs)
 		var/obj/item/organ/O = X
 		O.emp_act(severity)
 	..()
 
 /mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, override = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
+	procstart = null
+	src.procstart = null
 	if(tesla_shock && (flags_2 & TESLA_IGNORE_2))
 		return FALSE
 	shock_damage *= siemens_coeff
@@ -244,6 +274,8 @@
 		return shock_damage
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	if(on_fire)
 		to_chat(M, "<span class='warning'>You can't put them out with just your bare hands!</span>")
 		return
@@ -271,6 +303,8 @@
 
 
 /mob/living/carbon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/damage = intensity - get_eye_protection()
@@ -318,6 +352,8 @@
 
 
 /mob/living/carbon/soundbang_act(intensity = 1, stun_pwr = 20, damage_pwr = 5, deafen_pwr = 15)
+	procstart = null
+	src.procstart = null
 	var/ear_safety = get_ear_protection()
 	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 	var/effect_amount = intensity - ear_safety
@@ -343,6 +379,8 @@
 
 
 /mob/living/carbon/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)
+	procstart = null
+	src.procstart = null
 	if(damage_type != BRUTE && damage_type != BURN)
 		return
 	damage_amount *= 0.5 //0.5 multiplier for balance reason, we don't want clothes to be too easily destroyed
@@ -358,6 +396,8 @@
 			hit_clothes.take_damage(damage_amount, damage_type, damage_flag, 0)
 
 /mob/living/carbon/can_hear()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/obj/item/organ/ears/ears = getorganslot(ORGAN_SLOT_EARS)
 	if(istype(ears) && !ears.deaf)

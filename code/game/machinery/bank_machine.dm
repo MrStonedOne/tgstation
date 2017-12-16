@@ -10,6 +10,8 @@
 	var/minimum_time_between_warnings = 400
 
 /obj/machinery/computer/bank_machine/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio = new(src)
 	radio.subspace_transmission = TRUE
@@ -17,10 +19,14 @@
 	radio.recalculateChannels()
 
 /obj/machinery/computer/bank_machine/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(radio)
 	. = ..()
 
 /obj/machinery/computer/bank_machine/attackby(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	var/value = 0
 	if(istype(I, /obj/item/stack/spacecash))
 		var/obj/item/stack/spacecash/C = I
@@ -34,6 +40,8 @@
 
 
 /obj/machinery/computer/bank_machine/process()
+	procstart = null
+	src.procstart = null
 	..()
 	if(siphoning)
 		if (stat & (BROKEN|NOPOWER))
@@ -53,9 +61,13 @@
 				next_warning = world.time + minimum_time_between_warnings
 
 /obj/machinery/computer/bank_machine/get_spans()
+	procstart = null
+	src.procstart = null
 	. = ..() | SPAN_ROBOT
 
 /obj/machinery/computer/bank_machine/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	src.add_fingerprint(usr)
@@ -74,6 +86,8 @@
 	popup.open()
 
 /obj/machinery/computer/bank_machine/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(href_list["siphon"])

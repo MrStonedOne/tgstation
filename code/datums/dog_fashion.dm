@@ -14,10 +14,14 @@
 	var/obj_color
 
 /datum/dog_fashion/New(mob/M)
+	procstart = null
+	src.procstart = null
 	name = replacetext(name, "REAL_NAME", M.real_name)
 	desc = replacetext(desc, "NAME", name)
 
 /datum/dog_fashion/proc/apply(mob/living/simple_animal/pet/dog/D)
+	procstart = null
+	src.procstart = null
 	if(name)
 		D.name = name
 	if(desc)
@@ -32,6 +36,8 @@
 		D.speak_emote = speak_emote
 
 /datum/dog_fashion/proc/get_overlay(var/dir)
+	procstart = null
+	src.procstart = null
 	if(icon_file && obj_icon_state)
 		var/image/corgI = image(icon_file, obj_icon_state, dir = dir)
 		corgI.alpha = obj_alpha
@@ -95,6 +101,8 @@
 	speak = list("Arrrrgh!!","Grrrrrr!")
 
 /datum/dog_fashion/head/pirate/New(mob/M)
+	procstart = null
+	src.procstart = null
 	..()
 	name = "[pick("Ol'","Scurvy","Black","Rum","Gammy","Bloody","Gangrene","Death","Long-John")] [pick("kibble","leg","beard","tooth","poop-deck","Threepwood","Le Chuck","corsair","Silver","Crusoe")]"
 
@@ -104,6 +112,8 @@
 	emote_see = list("contemplates the failings of the capitalist economic model.", "ponders the pros and cons of vanguardism.")
 
 /datum/dog_fashion/head/ushanka/New(mob/M)
+	procstart = null
+	src.procstart = null
 	..()
 	name = "[pick("Comrade","Commissar","Glorious Leader")] [M.real_name]"
 
@@ -154,6 +164,8 @@
 	desc = "You must respect Elder Dogname"
 
 /datum/dog_fashion/head/sombrero/New(mob/M)
+	procstart = null
+	src.procstart = null
 	..()
 	desc = "You must respect Elder [M.real_name]."
 

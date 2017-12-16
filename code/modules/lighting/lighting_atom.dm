@@ -12,6 +12,8 @@
 // Nonesensical value for l_color default, so we can detect if it gets set to null.
 #define NONSENSICAL_VALUE -99999
 /atom/proc/set_light(var/l_range, var/l_power, var/l_color = NONSENSICAL_VALUE)
+	procstart = null
+	src.procstart = null
 	if(l_range > 0 && l_range < MINIMUM_USEFUL_LIGHT_RANGE)
 		l_range = MINIMUM_USEFUL_LIGHT_RANGE	//Brings the range up to 1.4, which is just barely brighter than the soft lighting that surrounds players.
 	if (l_power != null)
@@ -32,6 +34,8 @@
 // Will update the light (duh).
 // Creates or destroys it if needed, makes it update values, makes sure it's got the correct source turf...
 /atom/proc/update_light()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if (QDELETED(src))
 		return
@@ -51,6 +55,8 @@
 
 // If we have opacity, make sure to tell (potentially) affected light sources.
 /atom/movable/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	if (opacity && istype(T))
@@ -62,6 +68,8 @@
 // Should always be used to change the opacity of an atom.
 // It notifies (potentially) affected light sources so they can update (if needed).
 /atom/proc/set_opacity(var/new_opacity)
+	procstart = null
+	src.procstart = null
 	if (new_opacity == opacity)
 		return
 
@@ -81,6 +89,8 @@
 
 
 /atom/movable/Moved(atom/OldLoc, Dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/light_source/L
 	var/thing
@@ -89,6 +99,8 @@
 		L.source_atom.update_light()
 
 /atom/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch (var_name)
 		if ("light_range")
 			set_light(l_range=var_value)

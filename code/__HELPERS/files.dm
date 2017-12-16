@@ -1,9 +1,13 @@
 //Sends resource files to client cache
 /client/proc/getFiles()
+	procstart = null
+	src.procstart = null
 	for(var/file in args)
 		src << browse_rsc(file)
 
 /client/proc/browse_files(root="data/logs/", max_iterations=10, list/valid_extensions=list("txt","log","htm", "html"))
+	procstart = null
+	src.procstart = null
 	var/path = root
 
 	for(var/i=0, i<max_iterations, i++)
@@ -41,6 +45,8 @@
 
 	PLEASE USE RESPONSIBLY, Some log files can reach sizes of 4MB!	*/
 /client/proc/file_spam_check()
+	procstart = null
+	src.procstart = null
 	var/time_to_wait = GLOB.fileaccess_timer - world.time
 	if(time_to_wait > 0)
 		to_chat(src, "<font color='red'>Error: file_spam_check(): Spam. Please wait [DisplayTimeText(time_to_wait)].</font>")
@@ -50,6 +56,8 @@
 #undef FTPDELAY
 
 /proc/pathwalk(path)
+	procstart = null
+	src.procstart = null
 	var/list/jobs = list(path)
 	var/list/filenames = list()
 
@@ -65,4 +73,6 @@
 	return filenames
 
 /proc/pathflatten(path)
+	procstart = null
+	src.procstart = null
 	return replacetext(path, "/", "_")

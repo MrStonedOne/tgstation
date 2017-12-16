@@ -18,6 +18,8 @@
 	var/plant_count
 
 /datum/station_goal/dna_vault/New()
+	procstart = null
+	src.procstart = null
 	..()
 	animal_count = rand(15,20) //might be too few given ~15 roundstart stationside ones
 	human_count = rand(round(0.75 * SSticker.totalPlayersReady) , SSticker.totalPlayersReady) // 75%+ roundstart population.
@@ -25,6 +27,8 @@
 	plant_count = rand(round(0.5 * non_standard_plants),round(0.7 * non_standard_plants))
 
 /datum/station_goal/dna_vault/proc/non_standard_plants_count()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/T in subtypesof(/obj/item/seeds)) //put a cache if it's used anywhere else
 		var/obj/item/seeds/S = T
@@ -32,6 +36,8 @@
 			.++
 
 /datum/station_goal/dna_vault/get_report()
+	procstart = null
+	src.procstart = null
 	return {"Our long term prediction systems indicate a 99% chance of system-wide cataclysm in the near future.
 	 We need you to construct a DNA Vault aboard your station.
 
@@ -44,6 +50,8 @@
 
 
 /datum/station_goal/dna_vault/on_report()
+	procstart = null
+	src.procstart = null
 	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/misc/dna_vault]
 	P.special_enabled = TRUE
 
@@ -51,6 +59,8 @@
 	P.special_enabled = TRUE
 
 /datum/station_goal/dna_vault/check_completion()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	for(var/obj/machinery/dna_vault/V in GLOB.machines)
@@ -73,11 +83,15 @@
 	var/list/dna = list()
 
 /obj/item/device/dna_probe/proc/clear_data()
+	procstart = null
+	src.procstart = null
 	animals = list()
 	plants = list()
 	dna = list()
 
 /obj/item/device/dna_probe/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!proximity || !target)
 		return
@@ -144,6 +158,8 @@
 	var/list/obj/structure/fillers = list()
 
 /obj/machinery/dna_vault/Initialize()
+	procstart = null
+	src.procstart = null
 	//TODO: Replace this,bsa and gravgen with some big machinery datum
 	var/list/occupied = list()
 	for(var/direct in list(EAST,WEST,SOUTHEAST,SOUTHWEST))
@@ -165,6 +181,8 @@
 	. = ..()
 
 /obj/machinery/dna_vault/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/V in fillers)
 		var/obj/structure/filler/filler = V
 		filler.parent = null
@@ -173,6 +191,8 @@
 
 
 /obj/machinery/dna_vault/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.physical_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		roll_powers(user)
@@ -181,6 +201,8 @@
 
 
 /obj/machinery/dna_vault/proc/roll_powers(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user in power_lottery)
 		return
 	var/list/L = list()
@@ -210,6 +232,8 @@
 	return data
 
 /obj/machinery/dna_vault/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -218,11 +242,15 @@
 			. = TRUE
 
 /obj/machinery/dna_vault/proc/check_goal()
+	procstart = null
+	src.procstart = null
 	if(plants.len >= plants_max && animals.len >= animals_max && dna.len >= dna_max)
 		completed = TRUE
 
 
 /obj/machinery/dna_vault/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/dna_probe))
 		var/obj/item/device/dna_probe/P = I
 		var/uploaded = 0
@@ -246,6 +274,8 @@
 
 
 /obj/machinery/dna_vault/proc/upgrade(mob/living/carbon/human/H,upgrade_type)
+	procstart = null
+	src.procstart = null
 	if(!(upgrade_type in power_lottery[H]))
 		return
 	var/datum/species/S = H.dna.species

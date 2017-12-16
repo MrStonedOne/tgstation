@@ -7,6 +7,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/device/integrated_electronics/analyzer/afterattack(var/atom/A, var/mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/item/device/electronic_assembly))
 		var/saved = SScircuit.save_electronic_assembly(A)
 		if(saved)

@@ -24,6 +24,8 @@
 
 
 /datum/weather/acid_rain/weather_act(mob/living/L)
+	procstart = null
+	src.procstart = null
 	var/resist = L.getarmor(null, "acid")
 	if(prob(max(0,100-resist)))
 		L.acid_act(20,20)

@@ -16,10 +16,14 @@
 
 
 /obj/structure/disposalconstruct/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to rotate it clockwise.</span>")
 
 /obj/structure/disposalconstruct/New(loc, _pipe_type, _dir = SOUTH, flip = FALSE, obj/make_from)
+	procstart = null
+	src.procstart = null
 	..()
 	if(make_from)
 		pipe_type = make_from.type
@@ -39,12 +43,16 @@
 	update_icon()
 
 /obj/structure/disposalconstruct/Move()
+	procstart = null
+	src.procstart = null
 	var/old_dir = dir
 	..()
 	setDir(old_dir) //pipes changing direction when moved is just annoying and buggy
 
 // update iconstate and dpdir due to dir and type
 /obj/structure/disposalconstruct/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(pipe_type.icon_state)
 	if(is_pipe())
 		icon_state = "con[icon_state]"
@@ -66,10 +74,14 @@
 // hide called by levelupdate if turf intact status changes
 // change visibility status and force update of icon
 /obj/structure/disposalconstruct/hide(var/intact)
+	procstart = null
+	src.procstart = null
 	invisibility = (intact && level==1) ? INVISIBILITY_MAXIMUM: 0	// hide if floor is intact
 	update_icon()
 
 /obj/structure/disposalconstruct/proc/get_disposal_dir()
+	procstart = null
+	src.procstart = null
 	if(!is_pipe())
 		return NONE
 
@@ -93,6 +105,8 @@
 
 // flip and rotate verbs
 /obj/structure/disposalconstruct/verb/rotate()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate Pipe"
 	set category = "Object"
 	set src in view(1)
@@ -108,6 +122,8 @@
 	update_icon()
 
 /obj/structure/disposalconstruct/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!in_range(src, user))
 		return
@@ -115,6 +131,8 @@
 		rotate()
 
 /obj/structure/disposalconstruct/verb/flip()
+	procstart = null
+	src.procstart = null
 	set name = "Flip Pipe"
 	set category = "Object"
 	set src in view(1)
@@ -142,6 +160,8 @@
 // weldingtool: convert to real pipe
 
 /obj/structure/disposalconstruct/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/ispipe = is_pipe() // Indicates if we should change the level of this pipe
 
 	add_fingerprint(user)
@@ -209,10 +229,14 @@
 			return
 
 /obj/structure/disposalconstruct/proc/is_pipe()
+	procstart = null
+	src.procstart = null
 	return ispath(pipe_type, /obj/structure/disposalpipe)
 
 //helper proc that makes sure you can place the construct (i.e no dense objects stacking)
 /obj/structure/disposalconstruct/proc/can_place()
+	procstart = null
+	src.procstart = null
 	if(is_pipe())
 		return TRUE
 

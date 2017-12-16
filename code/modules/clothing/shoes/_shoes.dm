@@ -16,6 +16,8 @@
 	var/equipped_before_drop = FALSE
 
 /obj/item/clothing/shoes/worn_overlays(isinhands = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands)
 		var/bloody = 0
@@ -30,6 +32,8 @@
 			. += mutable_appearance('icons/effects/blood.dmi', "shoeblood")
 
 /obj/item/clothing/shoes/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(offset && slot_flags & slotdefine2slotbit(slot))
 		user.pixel_y += offset
@@ -38,22 +42,30 @@
 		equipped_before_drop = TRUE
 
 /obj/item/clothing/shoes/proc/restore_offsets(mob/user)
+	procstart = null
+	src.procstart = null
 	equipped_before_drop = FALSE
 	user.pixel_y -= offset
 	worn_y_dimension = world.icon_size
 
 /obj/item/clothing/shoes/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(offset && equipped_before_drop)
 		restore_offsets(user)
 	. = ..()
 
 /obj/item/clothing/shoes/update_clothes_damaged_state(damaging = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc
 		M.update_inv_shoes()
 
 /obj/item/clothing/shoes/clean_blood()
+	procstart = null
+	src.procstart = null
 	..()
 	bloody_shoes = list(BLOOD_STATE_HUMAN = 0,BLOOD_STATE_XENO = 0, BLOOD_STATE_OIL = 0, BLOOD_STATE_NOT_BLOODY = 0)
 	blood_state = BLOOD_STATE_NOT_BLOODY
@@ -62,4 +74,6 @@
 		M.update_inv_shoes()
 
 /obj/item/proc/negates_gravity()
+	procstart = null
+	src.procstart = null
 	return 0

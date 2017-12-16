@@ -23,6 +23,8 @@
 	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/xenoblood/xgibs/proc/streak(list/directions)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	var/direction = pick(directions)
 	for(var/i = 0, i < pick(1, 200; 2, 150; 3, 50), i++)
@@ -33,6 +35,8 @@
 			break
 
 /obj/effect/decal/cleanable/xenoblood/xgibs/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/decal/cleanable/xenoblood/xgibs/up

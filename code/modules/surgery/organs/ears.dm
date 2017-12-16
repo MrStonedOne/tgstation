@@ -21,6 +21,8 @@
 	var/damage_multiplier = 1
 
 /obj/item/organ/ears/on_life()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(owner))
 		return
 	var/mob/living/carbon/C = owner
@@ -37,6 +39,8 @@
 			deaf = max(deaf - 1, 0)
 
 /obj/item/organ/ears/proc/restoreEars()
+	procstart = null
+	src.procstart = null
 	deaf = 0
 	ear_damage = 0
 
@@ -46,10 +50,14 @@
 		deaf = 1
 
 /obj/item/organ/ears/proc/adjustEarDamage(ddmg, ddeaf)
+	procstart = null
+	src.procstart = null
 	ear_damage = max(ear_damage + (ddmg*damage_multiplier), 0)
 	deaf = max(deaf + (ddeaf*damage_multiplier), 0)
 
 /obj/item/organ/ears/proc/minimumDeafTicks(value)
+	procstart = null
+	src.procstart = null
 	deaf = max(deaf, value)
 
 /obj/item/organ/ears/invincible
@@ -59,6 +67,8 @@
 /mob/proc/restoreEars()
 
 /mob/living/carbon/restoreEars()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/ears/ears = getorgan(/obj/item/organ/ears)
 	if(ears)
 		ears.restoreEars()
@@ -66,6 +76,8 @@
 /mob/proc/adjustEarDamage()
 
 /mob/living/carbon/adjustEarDamage(ddmg, ddeaf)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/ears/ears = getorgan(/obj/item/organ/ears)
 	if(ears)
 		ears.adjustEarDamage(ddmg, ddeaf)
@@ -73,6 +85,8 @@
 /mob/proc/minimumDeafTicks()
 
 /mob/living/carbon/minimumDeafTicks(value)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/ears/ears = getorgan(/obj/item/organ/ears)
 	if(ears)
 		ears.minimumDeafTicks(value)
@@ -85,6 +99,8 @@
 	damage_multiplier = 2
 
 /obj/item/organ/ears/cat/Insert(mob/living/carbon/human/H, special = 0, drop_if_replaced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(H))
 		color = H.hair_color
@@ -93,6 +109,8 @@
 		H.update_body()
 
 /obj/item/organ/ears/cat/Remove(mob/living/carbon/human/H,  special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(H))
 		color = H.hair_color

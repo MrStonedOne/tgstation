@@ -67,9 +67,13 @@
 	grav_pull = 1
 
 /obj/singularity/academy/admin_investigate_setup()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/singularity/academy/process()
+	procstart = null
+	src.procstart = null
 	eat()
 	if(prob(1))
 		mezzer()
@@ -96,14 +100,20 @@
 	var/braindead_check = 0
 
 /obj/structure/academy_wizard_spawner/New()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/academy_wizard_spawner/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!broken)
 		STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/academy_wizard_spawner/process()
+	procstart = null
+	src.procstart = null
 	if(next_check < world.time)
 		if(!current_wizard)
 			for(var/mob/living/L in GLOB.player_list)
@@ -123,6 +133,8 @@
 		next_check = world.time + cooldown
 
 /obj/structure/academy_wizard_spawner/proc/give_control()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if(!current_wizard)
@@ -137,6 +149,8 @@
 		current_wizard.key = chosen.key
 
 /obj/structure/academy_wizard_spawner/proc/summon_wizard()
+	procstart = null
+	src.procstart = null
 	var/turf/T = src.loc
 	var/mob/living/carbon/human/wizbody = new(T)
 	wizbody.fully_replace_character_name(wizbody.real_name, "Academy Teacher")
@@ -149,6 +163,8 @@
 	give_control()
 
 /obj/structure/academy_wizard_spawner/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!broken)
 		broken = 1
 		visible_message("<span class='warning'>[src] breaks down!</span>")
@@ -176,6 +192,8 @@
 	reusable = 0
 
 /obj/item/dice/d20/fate/diceroll(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!used)
 		if(!ishuman(user) || !user.mind || (user.mind in SSticker.mode.wizards))
@@ -187,12 +205,16 @@
 			effect(user,result)
 
 /obj/item/dice/d20/fate/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user) || !user.mind || (user.mind in SSticker.mode.wizards))
 		to_chat(user, "<span class='warning'>You feel the magic of the dice is restricted to ordinary humans! You should leave it alone.</span>")
 		user.dropItemToGround(src)
 
 
 /obj/item/dice/d20/fate/proc/effect(var/mob/living/carbon/human/user,roll)
+	procstart = null
+	src.procstart = null
 	if(!reusable)
 		used = 1
 	visible_message("<span class='userdanger'>The die flare briefly.</span>")
@@ -326,6 +348,8 @@
 	action_icon_state = "summons"
 
 /obj/effect/proc_holder/spell/targeted/summonmob/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!target_mob)
 		return
 	var/turf/Start = get_turf(user)
@@ -342,11 +366,17 @@
 	color = rgb(0,0,255)
 
 /obj/structure/ladder/unbreakable/rune/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/ladder/unbreakable/rune/show_fluff_message(up,mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] activates \the [src].","<span class='notice'>You activate \the [src].</span>")
 
 /obj/structure/ladder/unbreakable/rune/use(mob/user, is_ghost=FALSE)
+	procstart = null
+	src.procstart = null
 	if(is_ghost || !(user.mind in SSticker.mode.wizards))
 		..()

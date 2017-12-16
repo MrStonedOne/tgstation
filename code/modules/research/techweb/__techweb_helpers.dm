@@ -1,5 +1,7 @@
 
 /proc/initialize_all_techweb_nodes(clearall = FALSE)
+	procstart = null
+	src.procstart = null
 	if(islist(SSresearch.techweb_nodes) && clearall)
 		QDEL_LIST(SSresearch.techweb_nodes)
 	if(islist(SSresearch.techweb_nodes_starting && clearall))
@@ -24,6 +26,8 @@
 	verify_techweb_nodes()		//Verify nodes and designs have been crosslinked properly.
 
 /proc/initialize_all_techweb_designs(clearall = FALSE)
+	procstart = null
+	src.procstart = null
 	if(islist(SSresearch.techweb_designs) && clearall)
 		QDEL_LIST(SSresearch.techweb_designs)
 	var/list/returned = list()
@@ -44,37 +48,53 @@
 	verify_techweb_designs()
 
 /proc/count_unique_techweb_nodes()
+	procstart = null
+	src.procstart = null
 	var/static/list/L = typesof(/datum/techweb_node)
 	return L.len
 
 /proc/count_unique_techweb_designs()
+	procstart = null
+	src.procstart = null
 	var/static/list/L = typesof(/datum/design)
 	return L.len
 
 /proc/get_techweb_node_by_id(id)
+	procstart = null
+	src.procstart = null
 	if(SSresearch.techweb_nodes[id])
 		return SSresearch.techweb_nodes[id]
 
 /proc/get_techweb_design_by_id(id)
+	procstart = null
+	src.procstart = null
 	if(SSresearch.techweb_designs[id])
 		return SSresearch.techweb_designs[id]
 
 /proc/research_node_id_error(id)
+	procstart = null
+	src.procstart = null
 	if(SSresearch.invalid_node_ids[id])
 		SSresearch.invalid_node_ids[id]++
 	else
 		SSresearch.invalid_node_ids[id] = 1
 
 /proc/design_id_error(id)
+	procstart = null
+	src.procstart = null
 	if(SSresearch.invalid_design_ids[id])
 		SSresearch.invalid_design_ids[id]++
 	else
 		SSresearch.invalid_design_ids[id] = 1
 
 /proc/node_boost_error(id, message)
+	procstart = null
+	src.procstart = null
 	SSresearch.invalid_node_boost[id] = message
 
 /proc/verify_techweb_nodes()
+	procstart = null
+	src.procstart = null
 	for(var/n in SSresearch.techweb_nodes)
 		var/datum/techweb_node/N = SSresearch.techweb_nodes[n]
 		if(!istype(N))
@@ -122,6 +142,8 @@
 		CHECK_TICK
 
 /proc/verify_techweb_designs()
+	procstart = null
+	src.procstart = null
 	for(var/d in SSresearch.techweb_designs)
 		var/datum/design/D = SSresearch.techweb_designs[d]
 		if(!istype(D))
@@ -130,6 +152,8 @@
 		CHECK_TICK
 
 /proc/calculate_techweb_nodes()
+	procstart = null
+	src.procstart = null
 	for(var/design_id in SSresearch.techweb_designs)
 		var/datum/design/D = SSresearch.techweb_designs[design_id]
 		D.unlocked_by.Cut()
@@ -150,6 +174,8 @@
 	generate_techweb_unlock_linking()
 
 /proc/generate_techweb_unlock_linking()
+	procstart = null
+	src.procstart = null
 	for(var/node_id in SSresearch.techweb_nodes)						//Clear all unlock links to avoid duplication.
 		var/datum/techweb_node/node = SSresearch.techweb_nodes[node_id]
 		node.unlocks = list()
@@ -160,6 +186,8 @@
 			prereq_node.unlocks[node.id] = node
 
 /proc/calculate_techweb_boost_list(clearall = FALSE)
+	procstart = null
+	src.procstart = null
 	if(clearall)
 		SSresearch.techweb_boost_items = list()
 	for(var/node_id in SSresearch.techweb_nodes)
@@ -174,10 +202,14 @@
 		CHECK_TICK
 
 /proc/techweb_item_boost_check(obj/item/I)			//Returns an associative list of techweb node datums with values of the boost it gives.	var/list/returned = list()
+	procstart = null
+	src.procstart = null
 	if(SSresearch.techweb_boost_items[I.type])
 		return SSresearch.techweb_boost_items[I.type]		//It should already be formatted in node datum = value.
 
 /proc/techweb_item_point_check(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(SSresearch.techweb_point_items[I.type])
 		return SSresearch.techweb_point_items[I.type]
 	return 0

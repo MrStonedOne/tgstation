@@ -17,6 +17,8 @@
 	var/wiz_age = WIZARD_AGE_MIN /* Wizards by nature cannot be too young. */
 
 /datum/antagonist/wizard/on_gain()
+	procstart = null
+	src.procstart = null
 	register()
 	if(give_objectives)
 		create_objectives()
@@ -28,12 +30,18 @@
 		rename_wizard()
 
 /datum/antagonist/wizard/proc/register()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.wizards |= owner
 
 /datum/antagonist/wizard/proc/unregister()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.wizards -= src
 
 /datum/antagonist/wizard/create_team(datum/objective_team/wizard/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		return
 	if(!istype(new_team))
@@ -41,6 +49,8 @@
 	wiz_team = new_team
 
 /datum/antagonist/wizard/get_team()
+	procstart = null
+	src.procstart = null
 	return wiz_team
 
 /datum/objective_team/wizard
@@ -48,12 +58,16 @@
 	var/datum/antagonist/wizard/master_wizard
 
 /datum/antagonist/wizard/proc/create_wiz_team()
+	procstart = null
+	src.procstart = null
 	wiz_team = new(owner)
 	wiz_team.name = "[owner.current.real_name] team"
 	wiz_team.master_wizard = src
 	update_wiz_icons_added(owner.current)
 
 /datum/antagonist/wizard/proc/send_to_lair()
+	procstart = null
+	src.procstart = null
 	if(!owner || !owner.current)
 		return
 	if(!GLOB.wizardstart.len)
@@ -62,6 +76,8 @@
 	owner.current.forceMove(pick(GLOB.wizardstart))
 
 /datum/antagonist/wizard/proc/create_objectives()
+	procstart = null
+	src.procstart = null
 	switch(rand(1,100))
 		if(1 to 30)
 			var/datum/objective/assassinate/kill_objective = new
@@ -111,6 +127,8 @@
 		owner.objectives += O
 
 /datum/antagonist/wizard/on_removal()
+	procstart = null
+	src.procstart = null
 	unregister()
 	for(var/objective in objectives)
 		owner.objectives -= objective
@@ -118,6 +136,8 @@
 	return ..()
 
 /datum/antagonist/wizard/proc/equip_wizard()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	var/mob/living/carbon/human/H = owner.current
@@ -132,6 +152,8 @@
 	H.equipOutfit(outfit_type)
 
 /datum/antagonist/wizard/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='boldannounce'>You are the Space Wizard!</span>")
 	to_chat(owner, "<B>The Space Wizards Federation has given you the following tasks:</B>")
 	owner.announce_objectives()
@@ -141,9 +163,13 @@
 	to_chat(owner,"<B>Remember:</B> do not forget to prepare your spells.")
 
 /datum/antagonist/wizard/farewell()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='userdanger'>You have been brainwashed! You are no longer a wizard!</span>")
 
 /datum/antagonist/wizard/proc/rename_wizard()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/wizard_name_first = pick(GLOB.wizard_first)
@@ -158,11 +184,15 @@
 	wiz_mob.fully_replace_character_name(wiz_mob.real_name, newname)
 
 /datum/antagonist/wizard/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = mob_override || owner.current
 	update_wiz_icons_added(M, wiz_team ? TRUE : FALSE) //Don't bother showing the icon if you're solo wizard
 	M.faction |= "wizard"
 
 /datum/antagonist/wizard/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = mob_override || owner.current
 	update_wiz_icons_removed(M)
 	M.faction -= "wizard"
@@ -176,16 +206,24 @@
 	wiz_age = APPRENTICE_AGE_MIN
 
 /datum/antagonist/wizard/apprentice/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<B>You are [master.current.real_name]'s apprentice! You are bound by magic contract to follow their orders and help them in accomplishing their goals.")
 	owner.announce_objectives()
 
 /datum/antagonist/wizard/apprentice/register()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.apprentices |= owner
 
 /datum/antagonist/wizard/apprentice/unregister()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.apprentices -= owner
 
 /datum/antagonist/wizard/apprentice/equip_wizard()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!owner)
 		return
@@ -212,6 +250,8 @@
 			to_chat(owner, "<B>Your service has not gone unrewarded, however. Studying under [master.current.real_name], you have learned stealthy, robeless spells. You are able to cast knock and mindswap.")
 
 /datum/antagonist/wizard/apprentice/create_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/protect/new_objective = new /datum/objective/protect
 	new_objective.owner = owner
 	new_objective.target = master
@@ -226,10 +266,14 @@
 	move_to_lair = FALSE
 
 /datum/antagonist/wizard/apprentice/imposter/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<B>You are an imposter! Trick and confuse the crew to misdirect malice from your handsome original!</B>")
 	owner.announce_objectives()
 
 /datum/antagonist/wizard/apprentice/imposter/equip_wizard()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/master_mob = master.current
 	var/mob/living/carbon/human/H = owner.current
 	if(!istype(master_mob) || !istype(H))
@@ -253,11 +297,15 @@
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/ethereal_jaunt(null))
 
 /datum/antagonist/wizard/proc/update_wiz_icons_added(mob/living/wiz,join = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/wizhud = GLOB.huds[ANTAG_HUD_WIZ]
 	wizhud.join_hud(wiz)
 	set_antag_hud(wiz, hud_version)
 
 /datum/antagonist/wizard/proc/update_wiz_icons_removed(mob/living/wiz)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/wizhud = GLOB.huds[ANTAG_HUD_WIZ]
 	wizhud.leave_hud(wiz)
 	set_antag_hud(wiz, null)
@@ -268,6 +316,8 @@
 	outfit_type = /datum/outfit/wizard/academy
 
 /datum/antagonist/wizard/academy/equip_wizard()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/ethereal_jaunt)
@@ -282,6 +332,8 @@
 	Implant.implant(M)
 
 /datum/antagonist/wizard/academy/create_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/new_objective = new("Protect Wizard Academy from the intruders")
 	new_objective.owner = owner
 	owner.objectives += new_objective
@@ -289,6 +341,8 @@
 
 //Solo wizard report
 /datum/antagonist/wizard/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	parts += printplayer(owner)
@@ -319,6 +373,8 @@
 
 //Wizard with apprentices report
 /datum/objective_team/wizard/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	parts += "<span class='header'>Wizards/witches of [master_wizard.owner.name] team were:</span>"

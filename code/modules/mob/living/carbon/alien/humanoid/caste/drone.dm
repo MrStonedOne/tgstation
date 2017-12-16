@@ -7,17 +7,23 @@
 
 
 /mob/living/carbon/alien/humanoid/drone/Initialize()
+	procstart = null
+	src.procstart = null
 	AddAbility(new/obj/effect/proc_holder/alien/evolve(null))
 	. = ..()
 
 
 /mob/living/carbon/alien/humanoid/drone/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	internal_organs += new /obj/item/organ/alien/plasmavessel/large
 	internal_organs += new /obj/item/organ/alien/resinspinner
 	internal_organs += new /obj/item/organ/alien/acid
 	..()
 
 /mob/living/carbon/alien/humanoid/drone/movement_delay()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /obj/effect/proc_holder/alien/evolve
@@ -28,6 +34,8 @@
 	action_icon_state = "alien_evolve_drone"
 
 /obj/effect/proc_holder/alien/evolve/fire(mob/living/carbon/alien/humanoid/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/alien/hivenode/node = user.getorgan(/obj/item/organ/alien/hivenode)
 	if(!node) //Players are Murphy's Law. We may not expect there to ever be a living xeno with no hivenode, but they _WILL_ make it happen.
 		to_chat(user, "<span class='danger'>Without the hivemind, you can't possibly hold the responsibility of leadership!</span>")

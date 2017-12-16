@@ -48,6 +48,8 @@
 
 /proc/power_restore()
 
+	procstart = null
+	src.procstart = null
 	priority_announce("Power has been restored to [station_name()]. We apologize for the inconvenience.", "Power Systems Nominal", 'sound/ai/poweron.ogg')
 	for(var/obj/machinery/power/apc/C in GLOB.machines)
 		if(C.cell && (C.z in GLOB.station_z_levels))
@@ -70,6 +72,8 @@
 
 /proc/power_restore_quick()
 
+	procstart = null
+	src.procstart = null
 	priority_announce("All SMESs on [station_name()] have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", 'sound/ai/poweron.ogg')
 	for(var/obj/machinery/power/smes/S in GLOB.machines)
 		if(!(S.z in GLOB.station_z_levels))

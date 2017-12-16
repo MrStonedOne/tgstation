@@ -22,6 +22,8 @@
 
 
 /obj/item/wirecutters/New(loc, var/param_color = null)
+	procstart = null
+	src.procstart = null
 	..()
 	if(random_color)
 		if(!param_color)
@@ -29,6 +31,8 @@
 		icon_state = "cutters_[param_color]"
 
 /obj/item/wirecutters/attack(mob/living/carbon/C, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(C) && C.handcuffed && istype(C.handcuffed, /obj/item/restraints/handcuffs/cable))
 		user.visible_message("<span class='notice'>[user] cuts [C]'s restraints with [src]!</span>")
 		qdel(C.handcuffed)
@@ -41,6 +45,8 @@
 		..()
 
 /obj/item/wirecutters/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is cutting at [user.p_their()] arteries with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(loc, usesound, 50, 1, -1)
 	return (BRUTELOSS)
@@ -77,6 +83,8 @@
 	random_color = FALSE
 
 /obj/item/wirecutters/power/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is wrapping \the [src] around [user.p_their()] neck. It looks like [user.p_theyre()] trying to rip [user.p_their()] head off!</span>")
 	playsound(loc, 'sound/items/jaws_cut.ogg', 50, 1, -1)
 	if(iscarbon(user))
@@ -88,6 +96,8 @@
 	return (BRUTELOSS)
 
 /obj/item/wirecutters/power/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(user), 'sound/items/change_jaws.ogg', 50, 1)
 	var/obj/item/crowbar/power/pryjaws = new /obj/item/crowbar/power
 	to_chat(user, "<span class='notice'>You attach the pry jaws to [src].</span>")

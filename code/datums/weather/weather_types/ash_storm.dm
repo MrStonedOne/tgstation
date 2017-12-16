@@ -29,6 +29,8 @@
 	var/datum/looping_sound/weak_inside_ashstorm/sound_wi = new(list(), FALSE, TRUE)
 
 /datum/weather/ash_storm/telegraph()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/inside_areas = list()
 	var/list/outside_areas = list()
@@ -50,6 +52,8 @@
 	sound_wi.start()
 
 /datum/weather/ash_storm/start()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sound_wo.stop()
 	sound_wi.stop()
@@ -58,6 +62,8 @@
 	sound_ai.start()
 
 /datum/weather/ash_storm/wind_down()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sound_ao.stop()
 	sound_ai.stop()
@@ -66,11 +72,15 @@
 	sound_wi.start()
 
 /datum/weather/ash_storm/end()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sound_wo.stop()
 	sound_wi.stop()
 
 /datum/weather/ash_storm/proc/is_ash_immune(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(ismecha(L.loc)) //Mechs are immune
 		return TRUE
 	if(ishuman(L)) //Are you immune?
@@ -83,6 +93,8 @@
 	return FALSE //RIP you
 
 /datum/weather/ash_storm/weather_act(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(is_ash_immune(L))
 		return
 	L.adjustFireLoss(4)

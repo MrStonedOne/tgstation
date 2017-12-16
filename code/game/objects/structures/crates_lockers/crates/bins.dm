@@ -9,10 +9,14 @@
 	delivery_icon = null
 
 /obj/structure/closet/crate/bin/New()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/structure/closet/crate/bin/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	cut_overlays()
 	if(contents.len == 0)
@@ -23,6 +27,8 @@
 		add_overlay("largebino")
 
 /obj/structure/closet/crate/bin/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/storage/bag/trash))
 		var/obj/item/storage/bag/trash/T = W
 		to_chat(user, "<span class='notice'>You fill the bag.</span>")
@@ -38,6 +44,8 @@
 		return ..()
 
 /obj/structure/closet/crate/bin/proc/do_animate()
+	procstart = null
+	src.procstart = null
 	playsound(loc, open_sound, 15, 1, -3)
 	flick("animate_largebins", src)
 	spawn(13)

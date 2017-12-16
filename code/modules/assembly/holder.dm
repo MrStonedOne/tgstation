@@ -15,10 +15,14 @@
 	var/obj/item/device/assembly/a_right = null
 
 /obj/item/device/assembly_holder/IsAssemblyHolder()
+	procstart = null
+	src.procstart = null
 	return 1
 
 
 /obj/item/device/assembly_holder/proc/assemble(obj/item/device/assembly/A, obj/item/device/assembly/A2, mob/user)
+	procstart = null
+	src.procstart = null
 	attach(A,user)
 	attach(A2,user)
 	name = "[A.name]-[A2.name] assembly"
@@ -26,6 +30,8 @@
 	SSblackbox.record_feedback("tally", "assembly_made", 1, "[initial(A.name)]-[initial(A2.name)]")
 
 /obj/item/device/assembly_holder/proc/attach(obj/item/device/assembly/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!A.remove_item_from_storage(src))
 		if(user)
 			user.transferItemToLoc(A, src)
@@ -39,6 +45,8 @@
 		a_right = A
 
 /obj/item/device/assembly_holder/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(a_left)
 		add_overlay("[a_left.icon_state]_left")
@@ -56,18 +64,24 @@
 		master.update_icon()
 
 /obj/item/device/assembly_holder/Crossed(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(a_left)
 		a_left.Crossed(AM)
 	if(a_right)
 		a_right.Crossed(AM)
 
 /obj/item/device/assembly_holder/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(a_left)
 		a_left.on_found(finder)
 	if(a_right)
 		a_right.on_found(finder)
 
 /obj/item/device/assembly_holder/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(a_left && a_right)
 		a_left.holder_movement()
@@ -81,6 +95,8 @@
 	return
 
 /obj/item/device/assembly_holder/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver))
 		var/turf/T = get_turf(src)
 		if(!T)
@@ -96,6 +112,8 @@
 		..()
 
 /obj/item/device/assembly_holder/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	src.add_fingerprint(user)
 	if(!a_left || !a_right)
 		to_chat(user, "<span class='danger'>Assembly part missing!</span>")
@@ -113,6 +131,8 @@
 
 
 /obj/item/device/assembly_holder/proc/process_activation(obj/D, normal = 1, special = 1)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		return 0
 	if((normal) && (a_right) && (a_left))

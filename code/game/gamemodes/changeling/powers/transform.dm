@@ -11,6 +11,8 @@
 	flags_1 = NODROP_1
 
 /obj/item/clothing/glasses/changeling/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && user.mind && user.mind.has_antag_datum(/datum/antagonist/changeling))
 		to_chat(user, "<span class='notice'>You reabsorb [src] into your body.</span>")
 		qdel(src)
@@ -22,6 +24,8 @@
 	flags_1 = NODROP_1
 
 /obj/item/clothing/under/changeling/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && user.mind && user.mind.has_antag_datum(/datum/antagonist/changeling))
 		to_chat(user, "<span class='notice'>You reabsorb [src] into your body.</span>")
 		qdel(src)
@@ -34,6 +38,8 @@
 	allowed = list(/obj/item/changeling)
 
 /obj/item/clothing/suit/changeling/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && user.mind && user.mind.has_antag_datum(/datum/antagonist/changeling))
 		to_chat(user, "<span class='notice'>You reabsorb [src] into your body.</span>")
 		qdel(src)
@@ -45,6 +51,8 @@
 	flags_1 = NODROP_1
 
 /obj/item/clothing/head/changeling/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && user.mind && user.mind.has_antag_datum(/datum/antagonist/changeling))
 		to_chat(user, "<span class='notice'>You reabsorb [src] into your body.</span>")
 		qdel(src)
@@ -56,6 +64,8 @@
 	flags_1 = NODROP_1
 
 /obj/item/clothing/shoes/changeling/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && user.mind && user.mind.has_antag_datum(/datum/antagonist/changeling))
 		to_chat(user, "<span class='notice'>You reabsorb [src] into your body.</span>")
 		qdel(src)
@@ -67,6 +77,8 @@
 	flags_1 = NODROP_1
 
 /obj/item/clothing/gloves/changeling/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && user.mind && user.mind.has_antag_datum(/datum/antagonist/changeling))
 		to_chat(user, "<span class='notice'>You reabsorb [src] into your body.</span>")
 		qdel(src)
@@ -78,6 +90,8 @@
 	flags_1 = NODROP_1
 
 /obj/item/clothing/mask/changeling/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && user.mind && user.mind.has_antag_datum(/datum/antagonist/changeling))
 		to_chat(user, "<span class='notice'>You reabsorb [src] into your body.</span>")
 		qdel(src)
@@ -91,6 +105,8 @@
 	allowed = list(/obj/item/changeling)
 
 /obj/item/changeling/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && user.mind && user.mind.has_antag_datum(/datum/antagonist/changeling))
 		to_chat(user, "<span class='notice'>You reabsorb [src] into your body.</span>")
 		qdel(src)
@@ -99,6 +115,8 @@
 
 //Change our DNA to that of somebody we've absorbed.
 /obj/effect/proc_holder/changeling/transform/sting_action(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	var/datum/changelingprofile/chosen_prof = changeling.select_dna("Select the target DNA: ", "Target DNA")
 
@@ -109,6 +127,8 @@
 	return TRUE
 
 /datum/antagonist/changeling/proc/select_dna(var/prompt, var/title)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/user = owner.current
 	if(!istype(user))
 		return

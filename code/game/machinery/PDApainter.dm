@@ -11,6 +11,8 @@
 
 
 /obj/machinery/pdapainter/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	if(stat & BROKEN)
@@ -28,6 +30,8 @@
 	return
 
 /obj/machinery/pdapainter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/blocked = list(
 		/obj/item/device/pda/ai/pai,
@@ -45,24 +49,34 @@
 		src.colorlist += D
 
 /obj/machinery/pdapainter/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(storedpda)
 	return ..()
 
 /obj/machinery/pdapainter/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	if(storedpda)
 		storedpda.forceMove(loc)
 		storedpda = null
 
 /obj/machinery/pdapainter/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	if(storedpda)
 		storedpda.ex_act(severity, target)
 
 /obj/machinery/pdapainter/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == storedpda)
 		storedpda = null
 		update_icon()
 
 /obj/machinery/pdapainter/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, O))
 		power_change()
 		return
@@ -99,12 +113,16 @@
 		return ..()
 
 /obj/machinery/pdapainter/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(!(stat & BROKEN))
 			stat |= BROKEN
 			update_icon()
 
 /obj/machinery/pdapainter/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		add_fingerprint(user)
 
@@ -126,6 +144,8 @@
 
 
 /obj/machinery/pdapainter/verb/ejectpda()
+	procstart = null
+	src.procstart = null
 	set name = "Eject PDA"
 	set category = "Object"
 	set src in oview(1)
@@ -142,5 +162,7 @@
 
 
 /obj/machinery/pdapainter/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()

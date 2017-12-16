@@ -14,12 +14,16 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/list/objectives = list()
 
 /datum/antagonist/New(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	GLOB.antagonists += src
 	typecache_datum_blacklist = typecacheof(typecache_datum_blacklist)
 	if(new_owner)
 		owner = new_owner
 
 /datum/antagonist/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.antagonists -= src
 	if(owner)
 		LAZYREMOVE(owner.antag_datums, src)
@@ -27,6 +31,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 	return ..()
 
 /datum/antagonist/proc/can_be_owned(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	var/datum/mind/tested = new_owner || owner
 	if(tested.has_antag_datum(type))
@@ -37,23 +43,33 @@ GLOBAL_LIST_EMPTY(antagonists)
 			return FALSE
 
 /datum/antagonist/proc/on_body_transfer(mob/living/old_body, mob/living/new_body)
+	procstart = null
+	src.procstart = null
 	remove_innate_effects(old_body)
 	apply_innate_effects(new_body)
 
 //This handles the application of antag huds/special abilities
 /datum/antagonist/proc/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	return
 
 //This handles the removal of antag huds/special abilities
 /datum/antagonist/proc/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	return
 
 //Assign default team and creates one for one of a kind team antagonists
 /datum/antagonist/proc/create_team(datum/objective_team/team)
+	procstart = null
+	src.procstart = null
 	return
 
 //Proc called when the datum is given to a mind.
 /datum/antagonist/proc/on_gain()
+	procstart = null
+	src.procstart = null
 	if(owner && owner.current)
 		if(!silent)
 			greet()
@@ -62,11 +78,15 @@ GLOBAL_LIST_EMPTY(antagonists)
 			replace_banned_player()
 
 /datum/antagonist/proc/is_banned(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!M)
 		return FALSE
 	. = (jobban_isbanned(M,"Syndicate") || (job_rank && jobban_isbanned(M,job_rank)))
 
 /datum/antagonist/proc/replace_banned_player()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/list/mob/dead/observer/candidates = pollCandidatesForMob("Do you want to play as a [name]?", "[name]", null, job_rank, 50, owner.current)
@@ -79,6 +99,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 		owner.current.key = theghost.key
 
 /datum/antagonist/proc/on_removal()
+	procstart = null
+	src.procstart = null
 	remove_innate_effects()
 	if(owner)
 		LAZYREMOVE(owner.antag_datums, src)
@@ -90,17 +112,25 @@ GLOBAL_LIST_EMPTY(antagonists)
 	qdel(src)
 
 /datum/antagonist/proc/greet()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/antagonist/proc/farewell()
+	procstart = null
+	src.procstart = null
 	return
 
 //Returns the team antagonist belongs to if any.
 /datum/antagonist/proc/get_team()
+	procstart = null
+	src.procstart = null
 	return
 
 //Individual roundend report
 /datum/antagonist/proc/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/report = list()
 
 	if(!owner)
@@ -125,14 +155,20 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 //Displayed at the start of roundend_category section, default to roundend_category header
 /datum/antagonist/proc/roundend_report_header()
+	procstart = null
+	src.procstart = null
 	return 	"<span class='header'>The [roundend_category] were:</span><br>"
 
 //Displayed at the end of roundend_category section
 /datum/antagonist/proc/roundend_report_footer()
+	procstart = null
+	src.procstart = null
 	return
 
 //Should probably be on ticker or job ss ?
 /proc/get_antagonists(antag_type,specific = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/antagonist/A in GLOB.antagonists)
 		if(!specific && istype(A,antag_type) || specific && A.type == antag_type)
@@ -145,6 +181,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 /datum/antagonist/auto_custom
 
 /datum/antagonist/auto_custom/on_gain()
+	procstart = null
+	src.procstart = null
 	..()
 	name = owner.special_role
 	//Add all objectives not already owned by other datums to this one.

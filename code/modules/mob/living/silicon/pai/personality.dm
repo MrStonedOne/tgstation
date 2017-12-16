@@ -8,9 +8,13 @@
 */
 
 /datum/paiCandidate/proc/savefile_path(mob/user)
+	procstart = null
+	src.procstart = null
 	return "data/player_saves/[copytext(user.ckey, 1, 2)]/[user.ckey]/pai.sav"
 
 /datum/paiCandidate/proc/savefile_save(mob/user)
+	procstart = null
+	src.procstart = null
 	if(IsGuestKey(user.key))
 		return 0
 
@@ -32,6 +36,8 @@
 // returns 0 if savefile did not exist
 
 /datum/paiCandidate/proc/savefile_load(mob/user, silent = 1)
+	procstart = null
+	src.procstart = null
 	if (IsGuestKey(user.key))
 		return 0
 

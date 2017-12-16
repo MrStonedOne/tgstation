@@ -1,6 +1,8 @@
 
 // A collection of pre-set uplinks, for admin spawns.
 /obj/item/device/radio/uplink/Initialize(mapload, _owner, _tc_amount = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "radio"
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
@@ -8,15 +10,21 @@
 	AddComponent(/datum/component/uplink, _owner, FALSE, TRUE, null, _tc_amount)
 
 /obj/item/device/radio/uplink/nuclear/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GET_COMPONENT(hidden_uplink, /datum/component/uplink)
 	hidden_uplink.set_gamemode(/datum/game_mode/nuclear)
 
 /obj/item/device/multitool/uplink/Initialize(mapload, _owner, _tc_amount = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/uplink, _owner, FALSE, TRUE, null, _tc_amount)
 
 /obj/item/pen/uplink/Initialize(mapload, _owner, _tc_amount = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/uplink)
 	traitor_unlock_degrees = 360
@@ -26,6 +34,8 @@
 	desc = "A dusty looking radio."
 
 /obj/item/device/radio/uplink/old/Initialize(mapload, _owner, _tc_amount = 10)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GET_COMPONENT(hidden_uplink, /datum/component/uplink)
 	hidden_uplink.name = "dusty radio"

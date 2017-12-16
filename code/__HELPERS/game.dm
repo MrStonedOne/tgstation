@@ -9,12 +9,16 @@
 #define CULT_POLL_WAIT 2400
 
 /proc/get_area(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isarea(A))
 		return A
 	var/turf/T = get_turf(A)
 	return T ? T.loc : null
 
 /proc/get_area_name(atom/X)
+	procstart = null
+	src.procstart = null
 	var/area/Y = get_area(X)
 	return Y.name
 
@@ -25,6 +29,8 @@
 	return 0
 
 /proc/get_areas_in_range(dist=0, atom/center=usr)
+	procstart = null
+	src.procstart = null
 	if(!dist)
 		var/turf/T = get_turf(center)
 		return T ? list(T.loc) : list()
@@ -39,6 +45,8 @@
 	return areas
 
 /proc/get_adjacent_areas(atom/center)
+	procstart = null
+	src.procstart = null
 	. = list(get_area(get_ranged_target_turf(center, NORTH, 1)),
 			get_area(get_ranged_target_turf(center, SOUTH, 1)),
 			get_area(get_ranged_target_turf(center, EAST, 1)),
@@ -46,11 +54,15 @@
 	listclearnulls(.)
 
 /proc/get_open_turf_in_dir(atom/center, dir)
+	procstart = null
+	src.procstart = null
 	var/turf/open/T = get_ranged_target_turf(center, dir, 1)
 	if(istype(T))
 		return T
 
 /proc/get_adjacent_open_turfs(atom/center)
+	procstart = null
+	src.procstart = null
 	. = list(get_open_turf_in_dir(center, NORTH),
 			get_open_turf_in_dir(center, SOUTH),
 			get_open_turf_in_dir(center, EAST),
@@ -58,6 +70,8 @@
 	listclearnulls(.)
 
 /proc/get_adjacent_open_areas(atom/center)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/adjacent_turfs = get_adjacent_open_turfs(center)
 	for(var/I in adjacent_turfs)
@@ -67,6 +81,8 @@
 
 /proc/get_hear(range, atom/source)
 
+	procstart = null
+	src.procstart = null
 	var/lum = source.luminosity
 	source.luminosity = 6
 
@@ -76,6 +92,8 @@
 	return heard
 
 /proc/alone_in_area(area/the_area, mob/must_be_alone, check_type = /mob/living/carbon)
+	procstart = null
+	src.procstart = null
 	var/area/our_area = get_area(the_area)
 	for(var/C in GLOB.alive_mob_list)
 		if(!istype(C, check_type))
@@ -89,10 +107,14 @@
 //We used to use linear regression to approximate the answer, but Mloc realized this was actually faster.
 //And lo and behold, it is, and it's more accurate to boot.
 /proc/cheap_hypotenuse(Ax,Ay,Bx,By)
+	procstart = null
+	src.procstart = null
 	return sqrt(abs(Ax - Bx)**2 + abs(Ay - By)**2) //A squared + B squared = C squared
 
 /proc/circlerange(center=usr,radius=3)
 
+	procstart = null
+	src.procstart = null
 	var/turf/centerturf = get_turf(center)
 	var/list/turfs = new/list()
 	var/rsq = radius * (radius+0.5)
@@ -108,6 +130,8 @@
 
 /proc/circleview(center=usr,radius=3)
 
+	procstart = null
+	src.procstart = null
 	var/turf/centerturf = get_turf(center)
 	var/list/atoms = new/list()
 	var/rsq = radius * (radius+0.5)
@@ -122,6 +146,8 @@
 	return atoms
 
 /proc/get_dist_euclidian(atom/Loc1 as turf|mob|obj,atom/Loc2 as turf|mob|obj)
+	procstart = null
+	src.procstart = null
 	var/dx = Loc1.x - Loc2.x
 	var/dy = Loc1.y - Loc2.y
 
@@ -131,6 +157,8 @@
 
 /proc/circlerangeturfs(center=usr,radius=3)
 
+	procstart = null
+	src.procstart = null
 	var/turf/centerturf = get_turf(center)
 	var/list/turfs = new/list()
 	var/rsq = radius * (radius+0.5)
@@ -160,6 +188,8 @@
 //The other proc was left intact because morgue trays use it.
 //Sped this up again for real this time
 /proc/recursive_hear_check(O)
+	procstart = null
+	src.procstart = null
 	var/list/processing_list = list(O)
 	. = list()
 	while(processing_list.len)
@@ -173,6 +203,8 @@
 //No need for a recursive limit either
 /proc/recursive_mob_check(atom/O,client_check=1,sight_check=1,include_radio=1)
 
+	procstart = null
+	src.procstart = null
 	var/list/processing_list = list(O)
 	var/list/processed_list = list()
 	var/list/found_mobs = list()
@@ -212,6 +244,8 @@
 
 
 /proc/get_hearers_in_view(R, atom/source)
+	procstart = null
+	src.procstart = null
 	// Returns a list of hearers in view(R) from source (ignoring luminosity). Used in saycode.
 	var/turf/T = get_turf(source)
 	. = list()
@@ -240,6 +274,8 @@
 
 /proc/get_mobs_in_radio_ranges(list/obj/item/device/radio/radios)
 
+	procstart = null
+	src.procstart = null
 	set background = BACKGROUND_ENABLED
 
 	. = list()
@@ -252,6 +288,8 @@
 #define SIGN(X) ((X<0)?-1:1)
 
 /proc/inLineOfSight(X1,Y1,X2,Y2,Z=1,PX1=16.5,PY1=16.5,PX2=16.5,PY2=16.5)
+	procstart = null
+	src.procstart = null
 	var/turf/T
 	if(X1==X2)
 		if(Y1==Y2)
@@ -284,6 +322,8 @@
 
 
 /proc/isInSight(atom/A, atom/B)
+	procstart = null
+	src.procstart = null
 	var/turf/Aturf = get_turf(A)
 	var/turf/Bturf = get_turf(B)
 
@@ -314,12 +354,16 @@
 
 
 /proc/try_move_adjacent(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(AM)
 	for(var/direction in GLOB.cardinals)
 		if(AM.Move(get_step(T, direction)))
 			break
 
 /proc/get_mob_by_key(key)
+	procstart = null
+	src.procstart = null
 	for(var/i in GLOB.player_list)
 		var/mob/M = i
 		if(M.ckey == lowertext(key))
@@ -327,6 +371,8 @@
 	return null
 
 /proc/considered_alive(datum/mind/M, enforce_human = TRUE)
+	procstart = null
+	src.procstart = null
 	if(M && M.current)
 		if(enforce_human)
 			var/mob/living/carbon/human/H
@@ -338,9 +384,13 @@
 	return FALSE
 
 /proc/considered_afk(datum/mind/M)
+	procstart = null
+	src.procstart = null
 	return !M || !M.current || !M.current.client || M.current.client.is_afk()
 
 /proc/ScreenText(obj/O, maptext="", screen_loc="CENTER-7,CENTER-7", maptext_height=480, maptext_width=480)
+	procstart = null
+	src.procstart = null
 	if(!isobj(O))
 		O = new /obj/screen/text()
 	O.maptext = maptext
@@ -350,10 +400,14 @@
 	return O
 
 /proc/remove_images_from_clients(image/I, list/show_to)
+	procstart = null
+	src.procstart = null
 	for(var/client/C in show_to)
 		C.images -= I
 
 /proc/flick_overlay(image/I, list/show_to, duration)
+	procstart = null
+	src.procstart = null
 	for(var/client/C in show_to)
 		C.images += I
 	addtimer(CALLBACK(GLOBAL_PROC, /.proc/remove_images_from_clients, I, show_to), duration)
@@ -367,6 +421,8 @@
 	flick_overlay(I, viewing, duration)
 
 /proc/get_active_player_count(var/alive_check = 0, var/afk_check = 0, var/human_check = 0)
+	procstart = null
+	src.procstart = null
 	// Get active players who are playing in the round
 	var/active_players = 0
 	for(var/i = 1; i <= GLOB.player_list.len; i++)
@@ -410,6 +466,8 @@
 
 /proc/projectile_trajectory(src_x, src_y, rotation, angle, power)
 
+	procstart = null
+	src.procstart = null
 	// returns the destination (Vx,y) that a projectile shot at [src_x], [src_y], with an angle of [angle],
 	// rotated at [rotation] and with the power of [power]
 	// Thanks to VistaPOWA for this function
@@ -426,6 +484,8 @@
 	return new /datum/projectile_data(src_x, src_y, time, distance, power_x, power_y, dest_x, dest_y)
 
 /proc/showCandidatePollWindow(mob/M, poll_time, Question, list/candidates, ignore_category, time_passed, flashwindow = TRUE)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 
 	SEND_SOUND(M, 'sound/misc/notice2.ogg') //Alerting them to their consideration
@@ -454,6 +514,8 @@
 			candidates -= M
 
 /proc/pollGhostCandidates(Question, jobbanType, datum/game_mode/gametypeCheck, be_special_flag = 0, poll_time = 300, ignore_category = null, flashwindow = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/candidates = list()
 
 	for(var/mob/dead/observer/G in GLOB.player_list)
@@ -462,6 +524,8 @@
 	return pollCandidates(Question, jobbanType, gametypeCheck, be_special_flag, poll_time, ignore_category, flashwindow, candidates)
 
 /proc/pollCandidates(Question, jobbanType, datum/game_mode/gametypeCheck, be_special_flag = 0, poll_time = 300, ignore_category = null, flashwindow = TRUE, list/group = null)
+	procstart = null
+	src.procstart = null
 	var/time_passed = world.time
 	if (!Question)
 		Question = "Would you like to be a special role?"
@@ -493,12 +557,16 @@
 	return result
 
 /proc/pollCandidatesForMob(Question, jobbanType, datum/game_mode/gametypeCheck, be_special_flag = 0, poll_time = 300, mob/M, ignore_category = null)
+	procstart = null
+	src.procstart = null
 	var/list/L = pollGhostCandidates(Question, jobbanType, gametypeCheck, be_special_flag, poll_time, ignore_category)
 	if(!M || QDELETED(M) || !M.loc)
 		return list()
 	return L
 
 /proc/pollCandidatesForMobs(Question, jobbanType, datum/game_mode/gametypeCheck, be_special_flag = 0, poll_time = 300, list/mobs, ignore_category = null)
+	procstart = null
+	src.procstart = null
 	var/list/L = pollGhostCandidates(Question, jobbanType, gametypeCheck, be_special_flag, poll_time, ignore_category)
 	var/i=1
 	for(var/v in mobs)
@@ -526,11 +594,15 @@
 	return new_character
 
 /proc/send_to_playing_players(thing) //sends a whatever to all playing players; use instead of to_chat(world, where needed)
+	procstart = null
+	src.procstart = null
 	for(var/M in GLOB.player_list)
 		if(M && !isnewplayer(M))
 			to_chat(M, thing)
 
 /proc/window_flash(client/C, ignorepref = FALSE)
+	procstart = null
+	src.procstart = null
 	if(ismob(C))
 		var/mob/M = C
 		if(M.client)
@@ -540,6 +612,8 @@
 	winset(C, "mainwindow", "flash=5")
 
 /proc/AnnounceArrival(var/mob/living/carbon/human/character, var/rank)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.IsRoundInProgress() || !character)
 		return
 	var/area/A = get_area(character)
@@ -556,15 +630,23 @@
 	announcer.announce("ARRIVAL", character.real_name, rank, list()) //make the list empty to make it announce it in common
 
 /proc/GetRedPart(const/hexa)
+	procstart = null
+	src.procstart = null
 	return hex2num(copytext(hexa, 2, 4))
 
 /proc/GetGreenPart(const/hexa)
+	procstart = null
+	src.procstart = null
 	return hex2num(copytext(hexa, 4, 6))
 
 /proc/GetBluePart(const/hexa)
+	procstart = null
+	src.procstart = null
 	return hex2num(copytext(hexa, 6, 8))
 
 /proc/lavaland_equipment_pressure_check(turf/T)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!istype(T))
 		return

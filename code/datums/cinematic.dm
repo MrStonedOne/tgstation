@@ -4,6 +4,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 // Watcher can be world,mob, or a list of mobs
 // Blocks until sequence is done.
 /proc/Cinematic(id,watcher,datum/callback/special_callback)
+	procstart = null
+	src.procstart = null
 	var/datum/cinematic/playing
 	for(var/V in subtypesof(/datum/cinematic))
 		var/datum/cinematic/C = V
@@ -36,10 +38,14 @@ GLOBAL_LIST_EMPTY(cinematics)
 	var/cleanup_time = 300 //How long for the final screen to remain
 
 /datum/cinematic/New()
+	procstart = null
+	src.procstart = null
 	GLOB.cinematics += src
 	screen = new(src)
 
 /datum/cinematic/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.cinematics -= src
 	QDEL_NULL(screen)
 	for(var/mob/M in locked)
@@ -47,6 +53,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 	return ..()
 
 /datum/cinematic/proc/play(watchers)
+	procstart = null
+	src.procstart = null
 	//Check if you can actually play it (stop mob cinematics for global ones) and create screen objects
 	for(var/A in GLOB.cinematics)
 		var/datum/cinematic/C = A
@@ -84,6 +92,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 
 //Sound helper
 /datum/cinematic/proc/cinematic_sound(s)
+	procstart = null
+	src.procstart = null
 	if(is_global)
 		SEND_SOUND(world,s)
 	else
@@ -92,17 +102,23 @@ GLOBAL_LIST_EMPTY(cinematics)
 
 //Fire up special callback for actual effects synchronized with animation (eg real nuke explosion happens midway)
 /datum/cinematic/proc/special()
+	procstart = null
+	src.procstart = null
 	if(special_callback)
 		special_callback.Invoke()
 
 //Actual cinematic goes in here
 /datum/cinematic/proc/content()
+	procstart = null
+	src.procstart = null
 	sleep(50)
 
 /datum/cinematic/nuke_win
 	id = CINEMATIC_NUKE_WIN
 
 /datum/cinematic/nuke_win/content()
+	procstart = null
+	src.procstart = null
 	flick("intro_nuke",screen)
 	sleep(35)
 	flick("station_explode_fade_red",screen)
@@ -114,6 +130,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 	id = CINEMATIC_NUKE_MISS
 
 /datum/cinematic/nuke_miss/content()
+	procstart = null
+	src.procstart = null
 	flick("intro_nuke",screen)
 	sleep(35)
 	cinematic_sound(sound('sound/effects/explosion_distant.ogg'))
@@ -126,6 +144,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 	id = CINEMATIC_SELFDESTRUCT
 
 /datum/cinematic/nuke_selfdestruct/content()
+	procstart = null
+	src.procstart = null
 	flick("intro_nuke",screen)
 	sleep(35)
 	flick("station_explode_fade_red", screen)
@@ -137,6 +157,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 	id = CINEMATIC_SELFDESTRUCT_MISS
 
 /datum/cinematic/nuke_selfdestruct_miss/content()
+	procstart = null
+	src.procstart = null
 	flick("intro_nuke",screen)
 	sleep(35)
 	cinematic_sound(sound('sound/effects/explosion_distant.ogg'))
@@ -147,6 +169,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 	id = CINEMATIC_MALF
 
 /datum/cinematic/malf/content()
+	procstart = null
+	src.procstart = null
 	flick("intro_malf",screen)
 	sleep(76)
 	flick("station_explode_fade_red",screen)
@@ -158,6 +182,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 	id = CINEMATIC_CULT
 
 /datum/cinematic/cult/content()
+	procstart = null
+	src.procstart = null
 	screen.icon_state = null
 	flick("intro_cult",screen)
 	sleep(25)
@@ -174,6 +200,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 	id = CINEMATIC_ANNIHILATION
 
 /datum/cinematic/nuke_annihilation/content()
+	procstart = null
+	src.procstart = null
 	flick("intro_nuke",screen)
 	sleep(35)
 	flick("station_explode_fade_red",screen)
@@ -186,6 +214,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 	cleanup_time = 100
 
 /datum/cinematic/fake/content()
+	procstart = null
+	src.procstart = null
 	flick("intro_nuke",screen)
 	sleep(35)
 	cinematic_sound(sound('sound/items/bikehorn.ogg'))
@@ -197,6 +227,8 @@ GLOBAL_LIST_EMPTY(cinematics)
 	cleanup_time = 100
 
 /datum/cinematic/no_core/content()
+	procstart = null
+	src.procstart = null
 	flick("intro_nuke",screen)
 	sleep(35)
 	flick("station_intact",screen)
@@ -208,16 +240,22 @@ GLOBAL_LIST_EMPTY(cinematics)
 	cleanup_time = 0
 
 /datum/cinematic/nuke_far/content()
+	procstart = null
+	src.procstart = null
 	cinematic_sound(sound('sound/effects/explosion_distant.ogg'))
 	special()
 
 /* Intended usage.
 Nuke.Explosion()
+	procstart = null
+	src.procstart = null
 	-> Cinematic(NUKE_BOOM,world)
 	-> ActualExplosion()
 	-> Mode.OnExplosion()
 
 
 Narsie()
+	procstart = null
+	src.procstart = null
 	-> Cinematic(CULT,world)
 */

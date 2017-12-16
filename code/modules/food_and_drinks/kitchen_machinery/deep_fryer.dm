@@ -50,6 +50,8 @@ God bless America.
 	var/datum/looping_sound/deep_fryer/fry_loop
 
 /obj/machinery/deepfryer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(50)
 	reagents.add_reagent("cooking_oil", 25)
@@ -60,6 +62,8 @@ God bless America.
 	fry_loop = new(list(src), FALSE)
 
 /obj/machinery/deepfryer/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/oil_efficiency
 	for(var/obj/item/stock_parts/micro_laser/M in component_parts)
 		oil_efficiency += M.rating
@@ -67,11 +71,15 @@ God bless America.
 	fry_speed = oil_efficiency
 
 /obj/machinery/deepfryer/examine()
+	procstart = null
+	src.procstart = null
 	..()
 	if(frying)
 		to_chat(usr, "You can make out \a [frying] in the oil.")
 
 /obj/machinery/deepfryer/attackby(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/reagent_containers/pill))
 		if(!reagents.total_volume)
 			to_chat(user, "<span class='warning'>There's nothing to dissolve [I] in!</span>")
@@ -102,6 +110,8 @@ God bless America.
 			fry_loop.start()
 
 /obj/machinery/deepfryer/process()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/reagent/consumable/cooking_oil/C = reagents.has_reagent("cooking_oil")
 	if(!C)
@@ -120,9 +130,13 @@ God bless America.
 
 
 /obj/machinery/deepfryer/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/deepfryer/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(frying)
 		if(frying.loc == src)
 			to_chat(user, "<span class='notice'>You eject [frying] from [src].</span>")

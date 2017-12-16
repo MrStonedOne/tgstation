@@ -17,11 +17,15 @@
 	refined_type = null
 
 /obj/item/ore/bluespace_crystal/New()
+	procstart = null
+	src.procstart = null
 	..()
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)
 
 /obj/item/ore/bluespace_crystal/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='warning'>[user] crushes [src]!</span>", "<span class='danger'>You crush [src]!</span>")
 	new /obj/effect/particle_effect/sparks(loc)
 	playsound(src.loc, "sparks", 50, 1)
@@ -29,9 +33,13 @@
 	qdel(src)
 
 /obj/item/ore/bluespace_crystal/proc/blink_mob(mob/living/L)
+	procstart = null
+	src.procstart = null
 	do_teleport(L, get_turf(L), blink_range, asoundin = 'sound/effects/phasein.ogg')
 
 /obj/item/ore/bluespace_crystal/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..()) // not caught in mid-air
 		visible_message("<span class='notice'>[src] fizzles and disappears upon impact!</span>")
 		var/turf/T = get_turf(hit_atom)
@@ -67,6 +75,8 @@
 	to_chat(user, "<span class='warning'>You cannot crush the polycrystal in-hand, try breaking one off.</span>")
 
 /obj/item/stack/sheet/bluespace_crystal/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.get_inactive_held_item() == src)
 		if(zero_amount())
 			return

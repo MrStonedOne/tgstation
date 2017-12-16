@@ -10,6 +10,8 @@
 	var/stored_data
 
 /obj/machinery/computer/mecha/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	user.set_machine(src)
@@ -39,6 +41,8 @@
 	return
 
 /obj/machinery/computer/mecha/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/datum/topic_input/afilter = new /datum/topic_input(href,href_list)
@@ -70,6 +74,8 @@
 	var/ai_beacon = FALSE //If this beacon allows for AI control. Exists to avoid using istype() on checking.
 
 /obj/item/mecha_parts/mecha_tracking/proc/get_mecha_info()
+	procstart = null
+	src.procstart = null
 	if(!in_mecha())
 		return 0
 	var/obj/mecha/M = src.loc
@@ -88,9 +94,13 @@
 	return answer
 
 /obj/item/mecha_parts/mecha_tracking/emp_act()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/item/mecha_parts/mecha_tracking/Destroy()
+	procstart = null
+	src.procstart = null
 	if(ismecha(loc))
 		var/obj/mecha/M = loc
 		if(src in M.trackers)
@@ -98,17 +108,23 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_tracking/proc/in_mecha()
+	procstart = null
+	src.procstart = null
 	if(ismecha(loc))
 		return loc
 	return 0
 
 /obj/item/mecha_parts/mecha_tracking/proc/shock()
+	procstart = null
+	src.procstart = null
 	var/obj/mecha/M = in_mecha()
 	if(M)
 		M.emp_act(EMP_LIGHT)
 	qdel(src)
 
 /obj/item/mecha_parts/mecha_tracking/proc/get_mecha_log()
+	procstart = null
+	src.procstart = null
 	if(!ismecha(loc))
 		return 0
 	var/obj/mecha/M = src.loc
@@ -125,6 +141,8 @@
 	name = "exosuit tracking beacons"
 
 /obj/item/storage/box/mechabeacons/New()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/mecha_parts/mecha_tracking(src)
 	new /obj/item/mecha_parts/mecha_tracking(src)

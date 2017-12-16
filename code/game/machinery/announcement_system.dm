@@ -28,12 +28,16 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	var/errorlight = "Error_Red"
 
 /obj/machinery/announcement_system/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.announcement_systems += src
 	radio = new /obj/item/device/radio/headset/ai(src)
 	update_icon()
 
 /obj/machinery/announcement_system/update_icon()
+	procstart = null
+	src.procstart = null
 	if(is_operational())
 		icon_state = (panel_open ? "AAS_On_Open" : "AAS_On")
 	else
@@ -51,15 +55,21 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		add_overlay(errorlight)
 
 /obj/machinery/announcement_system/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(radio)
 	GLOB.announcement_systems -= src //"OH GOD WHY ARE THERE 100,000 LISTED ANNOUNCEMENT SYSTEMS?!!"
 	return ..()
 
 /obj/machinery/announcement_system/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/announcement_system/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/screwdriver))
 		playsound(src.loc, P.usesound, 50, 1)
 		panel_open = !panel_open
@@ -80,6 +90,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	return str
 
 /obj/machinery/announcement_system/proc/announce(message_type, user, rank, list/channels)
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		return
 
@@ -101,6 +113,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 //config stuff
 
 /obj/machinery/announcement_system/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		visible_message("<span class='warning'>[src] buzzes.</span>", "<span class='italics'>You hear a faint buzz.</span>")
 		playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, 1)
@@ -115,6 +129,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	popup.open()
 
 /obj/machinery/announcement_system/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		visible_message("<span class='warning'>[src] buzzes.</span>", "<span class='italics'>You hear a faint buzz.</span>")
 		playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, 1)
@@ -144,9 +160,13 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	interact(usr)
 
 /obj/machinery/announcement_system/attack_robot(mob/living/silicon/user)
+	procstart = null
+	src.procstart = null
 	. = attack_ai(user)
 
 /obj/machinery/announcement_system/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!issilicon(user) && !IsAdminGhost(user))
 		return
 	if(stat & BROKEN)
@@ -162,11 +182,15 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 	newhead = pick("OV#RL()D: \[UNKNOWN??\] DET*#CT)D!", "ER)#R - B*@ TEXT F*O(ND!", "AAS.exe is not responding. NanoOS is searching for a solution to the problem.")
 
 /obj/machinery/announcement_system/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!(stat & (NOPOWER|BROKEN)))
 		act_up()
 	..(severity)
 
 /obj/machinery/announcement_system/emag_act()
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE

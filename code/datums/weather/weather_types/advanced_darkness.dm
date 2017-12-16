@@ -17,6 +17,8 @@
 	target_z = ZLEVEL_STATION_PRIMARY
 
 /datum/weather/advanced_darkness/update_areas()
+	procstart = null
+	src.procstart = null
 	for(var/V in impacted_areas)
 		var/area/A = V
 		if(stage == MAIN_STAGE)

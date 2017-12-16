@@ -23,24 +23,34 @@
 	CanAtmosPass = ATMOS_PASS_DENSITY
 
 /obj/structure/mineral_door/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initial_state = icon_state
 	air_update_turf(TRUE)
 
 /obj/structure/mineral_door/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/rad_insulation, RAD_MEDIUM_INSULATION)
 
 /obj/structure/mineral_door/Destroy()
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	air_update_turf(1)
 	return ..()
 
 /obj/structure/mineral_door/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
 
 /obj/structure/mineral_door/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!state)
 		return TryToSwitchState(AM)
@@ -53,17 +63,25 @@
 			return TryToSwitchState(user)
 
 /obj/structure/mineral_door/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return TryToSwitchState(user)
 
 /obj/structure/mineral_door/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	return TryToSwitchState(user)
 
 /obj/structure/mineral_door/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover, /obj/effect/beam))
 		return !opacity
 	return !density
 
 /obj/structure/mineral_door/proc/TryToSwitchState(atom/user)
+	procstart = null
+	src.procstart = null
 	if(isSwitchingStates)
 		return
 	if(isliving(user))
@@ -81,12 +99,16 @@
 		SwitchState()
 
 /obj/structure/mineral_door/proc/SwitchState()
+	procstart = null
+	src.procstart = null
 	if(state)
 		Close()
 	else
 		Open()
 
 /obj/structure/mineral_door/proc/Open()
+	procstart = null
+	src.procstart = null
 	isSwitchingStates = 1
 	playsound(src, openSound, 100, 1)
 	set_opacity(FALSE)
@@ -102,6 +124,8 @@
 		addtimer(CALLBACK(src, .proc/Close), close_delay)
 
 /obj/structure/mineral_door/proc/Close()
+	procstart = null
+	src.procstart = null
 	if(isSwitchingStates || state != 1)
 		return
 	var/turf/T = get_turf(src)
@@ -119,12 +143,16 @@
 	isSwitchingStates = 0
 
 /obj/structure/mineral_door/update_icon()
+	procstart = null
+	src.procstart = null
 	if(state)
 		icon_state = "[initial_state]open"
 	else
 		icon_state = initial_state
 
 /obj/structure/mineral_door/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pickaxe))
 		var/obj/item/pickaxe/digTool = W
 		to_chat(user, "<span class='notice'>You start digging the [name]...</span>")
@@ -137,6 +165,8 @@
 		return ..()
 
 /obj/structure/mineral_door/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(disassembled)
 		new sheetType(T, sheetAmount)
@@ -155,6 +185,8 @@
 	max_integrity = 300
 
 /obj/structure/mineral_door/silver/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/rad_insulation, RAD_HEAVY_INSULATION)
 
 /obj/structure/mineral_door/gold
@@ -163,6 +195,8 @@
 	sheetType = /obj/item/stack/sheet/mineral/gold
 
 /obj/structure/mineral_door/gold/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/rad_insulation, RAD_HEAVY_INSULATION)
 
 /obj/structure/mineral_door/uranium
@@ -173,6 +207,8 @@
 	light_range = 2
 
 /obj/structure/mineral_door/uranium/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/mineral_door/sandstone
@@ -185,9 +221,13 @@
 	opacity = FALSE
 
 /obj/structure/mineral_door/transparent/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/rad_insulation, RAD_VERY_LIGHT_INSULATION)
 
 /obj/structure/mineral_door/transparent/Close()
+	procstart = null
+	src.procstart = null
 	..()
 	set_opacity(FALSE)
 
@@ -197,9 +237,13 @@
 	sheetType = /obj/item/stack/sheet/mineral/plasma
 
 /obj/structure/mineral_door/transparent/plasma/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/mineral_door/transparent/plasma/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.is_hot())
 		var/turf/T = get_turf(src)
 		message_admins("Plasma mineral door ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(T)]",0,1)
@@ -209,10 +253,14 @@
 		return ..()
 
 /obj/structure/mineral_door/transparent/plasma/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		TemperatureAct()
 
 /obj/structure/mineral_door/transparent/plasma/proc/TemperatureAct()
+	procstart = null
+	src.procstart = null
 	atmos_spawn_air("plasma=500;TEMP=1000")
 	deconstruct(FALSE)
 
@@ -223,6 +271,8 @@
 	max_integrity = 1000
 
 /obj/structure/mineral_door/transparent/diamond/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/rad_insulation, RAD_EXTREME_INSULATION)
 
 /obj/structure/mineral_door/wood
@@ -235,6 +285,8 @@
 	max_integrity = 200
 
 /obj/structure/mineral_door/wood/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/rad_insulation, RAD_VERY_LIGHT_INSULATION)
 
 /obj/structure/mineral_door/paperframe
@@ -248,12 +300,18 @@
 	max_integrity = 20
 
 /obj/structure/mineral_door/paperframe/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	queue_smooth_neighbors(src)
 
 /obj/structure/mineral_door/paperframe/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/mineral_door/paperframe/Destroy()
+	procstart = null
+	src.procstart = null
 	queue_smooth_neighbors(src)
 	return ..()

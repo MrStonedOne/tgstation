@@ -22,11 +22,15 @@
 	var/force_bonus = 0
 
 /obj/item/his_grace/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
 	GLOB.poi_list += src
 
 /obj/item/his_grace/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	GLOB.poi_list -= src
 	for(var/mob/living/L in src)
@@ -34,10 +38,14 @@
 	return ..()
 
 /obj/item/his_grace/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!awakened)
 		INVOKE_ASYNC(src, .proc/awaken, user)
 
 /obj/item/his_grace/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(awakened && M.stat)
 		consume(M)
 	else
@@ -47,6 +55,8 @@
 	return
 
 /obj/item/his_grace/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(awakened)
 		switch(bloodthirst)
@@ -71,6 +81,8 @@
 		user.visible_message("<span class='warning'>[user] scrambles out of [src]!</span>", "<span class='notice'>You climb out of [src]!</span>")
 
 /obj/item/his_grace/process()
+	procstart = null
+	src.procstart = null
 	if(!bloodthirst)
 		drowse()
 		return
@@ -162,6 +174,8 @@
 	update_stats()
 
 /obj/item/his_grace/proc/adjust_bloodthirst(amt)
+	procstart = null
+	src.procstart = null
 	prev_bloodthirst = bloodthirst
 	if(prev_bloodthirst < HIS_GRACE_CONSUME_OWNER)
 		bloodthirst = Clamp(bloodthirst + amt, HIS_GRACE_SATIATED, HIS_GRACE_CONSUME_OWNER)
@@ -170,6 +184,8 @@
 	update_stats()
 
 /obj/item/his_grace/proc/update_stats()
+	procstart = null
+	src.procstart = null
 	flags_1 &= ~NODROP_1
 	var/mob/living/master = get_atom_on_turf(src, /mob/living)
 	switch(bloodthirst)

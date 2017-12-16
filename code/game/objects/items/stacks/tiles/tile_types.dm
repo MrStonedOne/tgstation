@@ -14,12 +14,16 @@
 	novariants = TRUE
 
 /obj/item/stack/tile/Initialize(mapload, amount)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-3, 3)
 	pixel_y = rand(-3, 3) //randomize a little
 
 /obj/item/stack/tile/attackby(obj/item/W, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if (istype(W, /obj/item/weldingtool))
 		var/obj/item/weldingtool/WT = W
 

@@ -40,6 +40,8 @@ Notes:
 
 
 /datum/tooltip/New(client/C)
+	procstart = null
+	src.procstart = null
 	if (C)
 		owner = C
 		owner << browse(file2text('code/modules/tooltip/tooltip.html'), "window=[control]")
@@ -48,6 +50,8 @@ Notes:
 
 
 /datum/tooltip/proc/show(atom/movable/thing, params = null, title = null, content = null, theme = "default", special = "none")
+	procstart = null
+	src.procstart = null
 	if (!thing || !params || (!title && !content) || !owner || !isnum(world.icon_size))
 		return 0
 	if (!init)
@@ -85,6 +89,8 @@ Notes:
 
 
 /datum/tooltip/proc/hide()
+	procstart = null
+	src.procstart = null
 	if (queueHide)
 		addtimer(CALLBACK(src, .proc/do_hide), 1)
 	else
@@ -95,6 +101,8 @@ Notes:
 	return TRUE
 
 /datum/tooltip/proc/do_hide()
+	procstart = null
+	src.procstart = null
 	winshow(owner, control, FALSE)
 
 /* TG SPECIFIC CODE */
@@ -104,6 +112,8 @@ Notes:
 //Theme is a CSS class in tooltip.html, by default this wrapper chooses a CSS class based on the user's UI_style (Midnight, Plasmafire, Retro, etc)
 //Includes sanity.checks
 /proc/openToolTip(mob/user = null, atom/movable/tip_src = null, params = null,title = "",content = "",theme = "")
+	procstart = null
+	src.procstart = null
 	if(istype(user))
 		if(user.client && user.client.tooltips)
 			if(!theme && user.client.prefs && user.client.prefs.UI_style)
@@ -116,6 +126,8 @@ Notes:
 //Arbitrarily close a user's tooltip
 //Includes sanity checks.
 /proc/closeToolTip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(user))
 		if(user.client && user.client.tooltips)
 			user.client.tooltips.hide()

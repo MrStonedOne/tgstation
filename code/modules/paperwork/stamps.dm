@@ -14,6 +14,8 @@
 	attack_verb = list("stamped")
 
 /obj/item/stamp/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] stamps 'VOID' on [user.p_their()] forehead, then promptly falls over, dead.</span>")
 	return (OXYLOSS)
 
@@ -68,6 +70,8 @@
 	item_color = "clown"
 
 /obj/item/stamp/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 // Syndicate stamp to forge documents.
@@ -79,6 +83,8 @@
 	var/list/stamp_names
 
 /obj/item/stamp/chameleon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stamp_types = typesof(/obj/item/stamp) - type // Get all stamp types except our own
 
@@ -91,14 +97,20 @@
 	stamp_names = sortList(stamp_names)
 
 /obj/item/stamp/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	change_to(pick(stamp_types))
 
 /obj/item/stamp/chameleon/proc/change_to(obj/item/stamp/stamp_type)
+	procstart = null
+	src.procstart = null
 	name = initial(stamp_type.name)
 	icon_state = initial(stamp_type.icon_state)
 	item_color = initial(stamp_type.item_color)
 
 /obj/item/stamp/chameleon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/input_stamp = input(user, "Choose a stamp to disguise as.",
 		"Choose a stamp.") as null|anything in stamp_names
 

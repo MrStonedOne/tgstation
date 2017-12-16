@@ -15,18 +15,24 @@
 	var/tables_required = 2
 
 /obj/machinery/power/emitter/energycannon/magical/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(50))
 		desc = "Oh no, not again."
 	update_icon()
 
 /obj/machinery/power/emitter/energycannon/magical/update_icon()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = icon_state_on
 	else
 		icon_state = initial(icon_state)
 
 /obj/machinery/power/emitter/energycannon/magical/process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active_tables.len >= tables_required)
 		if(!active)
@@ -42,15 +48,23 @@
 
 
 /obj/machinery/power/emitter/energycannon/magical/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/emitter/energycannon/magical/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/emitter/energycannon/magical/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/emitter/energycannon/magical/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/table/abductor/wabbajack
@@ -64,14 +78,20 @@
 	flags_1 = NODECONSTRUCT_1
 
 /obj/structure/table/abductor/wabbajack/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/table/abductor/wabbajack/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/structure/table/abductor/wabbajack/process()
+	procstart = null
+	src.procstart = null
 	var/area = orange(4, src)
 	if(!our_statue)
 		for(var/obj/machinery/power/emitter/energycannon/magical/M in area)
@@ -123,6 +143,8 @@
 		our_statue.active_tables -= src
 
 /obj/structure/table/abductor/wabbajack/proc/sleeper_dreams(mob/living/sleeper)
+	procstart = null
+	src.procstart = null
 	if(sleeper in sleepers)
 		to_chat(sleeper, "<span class='revennotice'>While you slumber, you have the strangest dream, like you can see yourself from the outside.</span>")
 		sleeper.ghostize(TRUE)
@@ -149,6 +171,8 @@
 	initial_language_holder = /datum/language_holder/universal
 
 /mob/living/simple_animal/drone/snowflake/bardrone/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	access_card.access |= ACCESS_CENT_BAR
 
@@ -164,6 +188,8 @@
 	initial_language_holder = /datum/language_holder/universal
 
 /mob/living/simple_animal/hostile/alien/maid/barmaid/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	access_card = new /obj/item/card/id(src)
 	var/datum/job/captain/C = new /datum/job/captain
@@ -172,6 +198,8 @@
 	access_card.flags_1 |= NODROP_1
 
 /mob/living/simple_animal/hostile/alien/maid/barmaid/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(access_card)
 	. = ..()
 
@@ -186,6 +214,8 @@
 	var/boot_dir = 1
 
 /obj/structure/table/wood/bar/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM) && !is_barstaff(AM))
 		// No climbing on the bar please
 		var/mob/living/M = AM
@@ -197,6 +227,8 @@
 		. = ..()
 
 /obj/structure/table/wood/bar/proc/is_barstaff(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -215,6 +247,8 @@
 	var/static/list/check_times = list()
 
 /obj/effect/forcefield/luxury_shuttle/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(mover in approved_passengers)
 		return TRUE
 
@@ -226,6 +260,8 @@
 
 #define LUXURY_MESSAGE_COOLDOWN 100
 /obj/effect/forcefield/luxury_shuttle/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!isliving(AM))
 		return ..()
 
@@ -275,4 +311,6 @@
 	pixel_y = -32
 
 /obj/effect/decal/hammerandsickle/shuttleRotate(rotation)
+	procstart = null
+	src.procstart = null
 	setDir(angle2dir(rotation+dir2angle(dir))) // No parentcall, rest of the rotate code breaks the pixel offset.

@@ -16,6 +16,8 @@
 	var/alarm_z = list(ZLEVEL_STATION_PRIMARY,ZLEVEL_LAVALAND)
 
 /datum/computer_file/program/alarm_monitor/process_tick()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(has_alert)
@@ -30,6 +32,8 @@
 	return 1
 
 /datum/computer_file/program/alarm_monitor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 
 	data["alarms"] = list()
@@ -41,6 +45,8 @@
 	return data
 
 /datum/computer_file/program/alarm_monitor/proc/triggerAlarm(class, area/A, O, obj/source)
+	procstart = null
+	src.procstart = null
 	if(!(source.z in alarm_z))
 		return
 
@@ -68,6 +74,8 @@
 
 
 /datum/computer_file/program/alarm_monitor/proc/cancelAlarm(class, area/A, obj/origin)
+	procstart = null
+	src.procstart = null
 	var/list/L = alarms[class]
 	var/cleared = 0
 	for (var/I in L)
@@ -84,6 +92,8 @@
 	return !cleared
 
 /datum/computer_file/program/alarm_monitor/proc/update_alarm_display()
+	procstart = null
+	src.procstart = null
 	has_alert = FALSE
 	for(var/cat in alarms)
 		var/list/L = alarms[cat]
@@ -91,9 +101,13 @@
 			has_alert = TRUE
 
 /datum/computer_file/program/alarm_monitor/run_program(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..(user)
 	GLOB.alarmdisplay += src
 
 /datum/computer_file/program/alarm_monitor/kill_program(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	GLOB.alarmdisplay -= src
 	..()

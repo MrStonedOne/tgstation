@@ -26,6 +26,8 @@
 	//Placeholder for effect that trigger on eating that aren't tied to reagents.
 
 /obj/item/reagent_containers/food/snacks/add_initial_reagents()
+	procstart = null
+	src.procstart = null
 	if(tastes && tastes.len)
 		if(list_reagents)
 			for(var/rid in list_reagents)
@@ -38,6 +40,8 @@
 		..()
 
 /obj/item/reagent_containers/food/snacks/proc/On_Consume()
+	procstart = null
+	src.procstart = null
 	if(!usr)
 		return
 	if(!reagents.total_volume)
@@ -47,10 +51,14 @@
 
 
 /obj/item/reagent_containers/food/snacks/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/item/reagent_containers/food/snacks/attack(mob/M, mob/user, def_zone)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	if(!eatverb)
@@ -119,10 +127,14 @@
 
 
 /obj/item/reagent_containers/food/snacks/afterattack(obj/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/item/reagent_containers/food/snacks/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(bitecount == 0)
 		return
@@ -135,6 +147,8 @@
 
 
 /obj/item/reagent_containers/food/snacks/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/storage))
 		..() // -> item/attackby()
 		return 0
@@ -162,6 +176,8 @@
 
 //Called when you finish tablecrafting a snack.
 /obj/item/reagent_containers/food/snacks/CheckParts(list/parts_list, datum/crafting_recipe/food/R)
+	procstart = null
+	src.procstart = null
 	..()
 	reagents.clear_reagents()
 	for(var/obj/item/reagent_containers/RC in contents)
@@ -184,6 +200,8 @@
 				reagents.add_reagent(r_id, amount)
 
 /obj/item/reagent_containers/food/snacks/proc/slice(accuracy, obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if((slices_num <= 0 || !slices_num) || !slice_path) //is the food sliceable?
 		return FALSE
 
@@ -217,6 +235,8 @@
 	return TRUE
 
 /obj/item/reagent_containers/food/snacks/proc/initialize_slice(obj/item/reagent_containers/food/snacks/slice, reagents_per_slice)
+	procstart = null
+	src.procstart = null
 	slice.create_reagents(slice.volume)
 	reagents.trans_to(slice,reagents_per_slice)
 	if(name != initial(name))
@@ -225,6 +245,8 @@
 		slice.desc = "[desc]"
 
 /obj/item/reagent_containers/food/snacks/proc/generate_trash(atom/location)
+	procstart = null
+	src.procstart = null
 	if(trash)
 		if(ispath(trash, /obj/item))
 			. = new trash(location)
@@ -238,6 +260,8 @@
 			return
 
 /obj/item/reagent_containers/food/snacks/proc/update_overlays(obj/item/reagent_containers/food/snacks/S)
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	var/mutable_appearance/filling = mutable_appearance(icon, "[initial(icon_state)]_filling")
 	if(S.filling_color == "#FFFFFF")
@@ -249,6 +273,8 @@
 
 // initialize_cooked_food() is called when microwaving the food
 /obj/item/reagent_containers/food/snacks/proc/initialize_cooked_food(obj/item/reagent_containers/food/snacks/S, cooking_efficiency = 1)
+	procstart = null
+	src.procstart = null
 	S.create_reagents(S.volume)
 	if(reagents)
 		reagents.trans_to(S, reagents.total_volume)
@@ -261,6 +287,8 @@
 				S.reagents.add_reagent(r_id, amount)
 
 /obj/item/reagent_containers/food/snacks/microwave_act(obj/machinery/microwave/M)
+	procstart = null
+	src.procstart = null
 	if(cooked_type)
 		var/obj/item/reagent_containers/food/snacks/S = new cooked_type(get_turf(src))
 		if(M)
@@ -275,12 +303,16 @@
 	qdel(src)
 
 /obj/item/reagent_containers/food/snacks/Destroy()
+	procstart = null
+	src.procstart = null
 	if(contents)
 		for(var/atom/movable/something in contents)
 			something.forceMove(drop_location())
 	return ..()
 
 /obj/item/reagent_containers/food/snacks/attack_animal(mob/M)
+	procstart = null
+	src.procstart = null
 	if(isanimal(M))
 		if(iscorgi(M))
 			var/mob/living/L = M
@@ -333,6 +365,8 @@
 	var/stored_item = 0
 
 /obj/item/reagent_containers/food/snacks/store/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(W.w_class <= WEIGHT_CLASS_SMALL & !istype(W, /obj/item/reagent_containers/food/snacks)) //can't slip snacks inside, they're used for custom foods.
 		if(W.is_sharp())
@@ -352,6 +386,8 @@
 		return 1 // no afterattack here
 
 /obj/item/reagent_containers/food/snacks/MouseDrop(atom/over)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/obj/structure/table/TB = locate(/obj/structure/table) in T
 	if(TB)

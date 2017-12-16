@@ -11,6 +11,8 @@
 	var/datum/proximity_monitor/advanced/parent = null
 
 /obj/effect/abstract/proximity_checker/advanced/Initialize(mapload, _monitor)
+	procstart = null
+	src.procstart = null
 	if(_monitor)
 		parent = _monitor
 	return ..()
@@ -24,21 +26,29 @@
 	desc = "Get off my turf!"
 
 /obj/effect/abstract/proximity_checker/advanced/field_turf/CanPass(atom/movable/AM, turf/target)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.field_turf_canpass(AM, src, target)
 	return TRUE
 
 /obj/effect/abstract/proximity_checker/advanced/field_turf/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.field_turf_crossed(AM, src)
 	return TRUE
 
 /obj/effect/abstract/proximity_checker/advanced/field_turf/Uncross(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.field_turf_uncross(AM, src)
 	return TRUE
 
 /obj/effect/abstract/proximity_checker/advanced/field_turf/Uncrossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.field_turf_uncrossed(AM, src)
 	return TRUE
@@ -48,21 +58,29 @@
 	desc = "Edgy description here."
 
 /obj/effect/abstract/proximity_checker/advanced/field_edge/CanPass(atom/movable/AM, turf/target)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.field_edge_canpass(AM, src, target)
 	return TRUE
 
 /obj/effect/abstract/proximity_checker/advanced/field_edge/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.field_edge_crossed(AM, src)
 	return TRUE
 
 /obj/effect/abstract/proximity_checker/advanced/field_edge/Uncross(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.field_edge_uncross(AM, src)
 	return TRUE
 
 /obj/effect/abstract/proximity_checker/advanced/field_edge/Uncrossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(parent)
 		return parent.field_edge_uncrossed(AM, src)
 	return TRUE

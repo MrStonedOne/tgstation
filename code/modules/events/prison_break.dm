@@ -18,6 +18,8 @@
 
 
 /datum/round_event/grey_tide/setup()
+	procstart = null
+	src.procstart = null
 	announceWhen = rand(50, 60)
 	endWhen = rand(20, 30)
 	severity = rand(1,3)
@@ -29,6 +31,8 @@
 
 
 /datum/round_event/grey_tide/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(areasToOpen && areasToOpen.len > 0)
 		priority_announce("Gr3y.T1d3 virus detected in [station_name()] door subroutines. Severity level of [severity]. Recommend station AI involvement.", "Security Alert")
 	else
@@ -37,11 +41,15 @@
 
 
 /datum/round_event/grey_tide/start()
+	procstart = null
+	src.procstart = null
 	for(var/area/A in areasToOpen)
 		for(var/obj/machinery/light/L in A)
 			L.flicker(10)
 
 /datum/round_event/grey_tide/end()
+	procstart = null
+	src.procstart = null
 	for(var/area/A in areasToOpen)
 		for(var/obj/O in A)
 			if(istype(O, /obj/machinery/power/apc))

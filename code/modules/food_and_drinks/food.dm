@@ -10,12 +10,16 @@
 	var/last_check_time
 
 /obj/item/reagent_containers/food/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		pixel_x = rand(-5, 5)
 		pixel_y = rand(-5, 5)
 
 /obj/item/reagent_containers/food/proc/checkLiked(var/fraction, mob/M)
+	procstart = null
+	src.procstart = null
 	if(last_check_time + 50 < world.time)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M

@@ -9,10 +9,14 @@
 
 
 /obj/structure/mopbucket/New()
+	procstart = null
+	src.procstart = null
 	create_reagents(100)
 	..()
 
 /obj/structure/mopbucket/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/mop))
 		if(reagents.total_volume < 1)
 			to_chat(user, "[src] is out of water!</span>")

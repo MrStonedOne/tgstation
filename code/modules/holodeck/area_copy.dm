@@ -2,6 +2,8 @@
 GLOBAL_LIST_INIT(duplicate_forbidden_vars,list("tag","area","type","loc","locs","vars", "parent","parent_type", "verbs","ckey","key","power_supply","contents","reagents","stat","x","y","z","group","atmos_adjacent_turfs"))
 
 /proc/DuplicateObject(atom/original, perfectcopy = TRUE, sameloc = FALSE, atom/newloc = null, nerf = FALSE, holoitem=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!original)
 		return null
 	var/atom/O
@@ -41,6 +43,8 @@ GLOBAL_LIST_INIT(duplicate_forbidden_vars,list("tag","area","type","loc","locs",
 
 
 /area/proc/copy_contents_to(var/area/A , var/platingRequired = 0, var/nerf_weapons = 0 )
+	procstart = null
+	src.procstart = null
 	//Takes: Area. Optional: If it should copy to areas that don't have plating
 	//Returns: Nothing.
 	//Notes: Attempts to move the contents of one area to another area.

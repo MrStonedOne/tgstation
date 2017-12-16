@@ -5,12 +5,16 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 /mob
 	var/datum/hSB/sandbox = null
 /mob/proc/CanBuild()
+	procstart = null
+	src.procstart = null
 	sandbox = new/datum/hSB
 	sandbox.owner = src.ckey
 	if(src.client.holder)
 		sandbox.admin = 1
 	verbs += new/mob/proc/sandbox_panel
 /mob/proc/sandbox_panel()
+	procstart = null
+	src.procstart = null
 	set name = "Sandbox Panel"
 	if(sandbox)
 		sandbox.update()
@@ -32,6 +36,8 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 		/obj/item/borg/sight, /obj/item/borg/stun, /obj/item/robot_module)
 
 /datum/hSB/proc/update()
+	procstart = null
+	src.procstart = null
 	var/global/list/hrefs = list(
 			"Space Gear",
 			"Suit Up (Space Travel Gear)"		= "hsbsuit",
@@ -101,6 +107,8 @@ GLOBAL_VAR_INIT(hsboxspawn, TRUE)
 	usr << browse(hsbinfo, "window=hsbpanel")
 
 /datum/hSB/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!usr || !src || !(src.owner == usr.ckey))
 		if(usr)
 			usr << browse(null,"window=sandbox")

@@ -12,32 +12,44 @@ SUBSYSTEM_DEF(overlays)
 	var/list/overlay_icon_cache
 
 /datum/controller/subsystem/overlays/PreInit()
+	procstart = null
+	src.procstart = null
 	overlay_icon_state_caches = list()
 	overlay_icon_cache = list()
 	queue = list()
 	stats = list()
 
 /datum/controller/subsystem/overlays/Initialize()
+	procstart = null
+	src.procstart = null
 	initialized = TRUE
 	fire(mc_check = FALSE)
 	..()
 
 
 /datum/controller/subsystem/overlays/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("Ov:[length(queue)]")
 
 
 /datum/controller/subsystem/overlays/Shutdown()
+	procstart = null
+	src.procstart = null
 	text2file(render_stats(stats), "[GLOB.log_directory]/overlay.log")
 
 
 /datum/controller/subsystem/overlays/Recover()
+	procstart = null
+	src.procstart = null
 	overlay_icon_state_caches = SSoverlays.overlay_icon_state_caches
 	overlay_icon_cache = SSoverlays.overlay_icon_cache
 	queue = SSoverlays.queue
 
 
 /datum/controller/subsystem/overlays/fire(resumed = FALSE, mc_check = TRUE)
+	procstart = null
+	src.procstart = null
 	var/list/queue = src.queue
 	var/static/count = 0
 	if (count)
@@ -64,6 +76,8 @@ SUBSYSTEM_DEF(overlays)
 		count = 0
 
 /proc/iconstate2appearance(icon, iconstate)
+	procstart = null
+	src.procstart = null
 	var/static/image/stringbro = new()
 	var/list/icon_states_cache = SSoverlays.overlay_icon_state_caches
 	var/list/cached_icon = icon_states_cache[icon]
@@ -81,6 +95,8 @@ SUBSYSTEM_DEF(overlays)
 	return cached_appearance
 
 /proc/icon2appearance(icon)
+	procstart = null
+	src.procstart = null
 	var/static/image/iconbro = new()
 	var/list/icon_cache = SSoverlays.overlay_icon_cache
 	. = icon_cache[icon]
@@ -90,6 +106,8 @@ SUBSYSTEM_DEF(overlays)
 		icon_cache[icon] = .
 
 /atom/proc/build_appearance_list(old_overlays)
+	procstart = null
+	src.procstart = null
 	var/static/image/appearance_bro = new()
 	var/list/new_overlays = list()
 	if (!islist(old_overlays))
@@ -116,6 +134,8 @@ SUBSYSTEM_DEF(overlays)
 #define NOT_QUEUED_ALREADY (!(flags_1 & OVERLAY_QUEUED_1))
 #define QUEUE_FOR_COMPILE flags_1 |= OVERLAY_QUEUED_1; SSoverlays.queue += src;
 /atom/proc/cut_overlays(priority = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/cached_overlays = our_overlays
 	var/list/cached_priority = priority_overlays
 
@@ -133,6 +153,8 @@ SUBSYSTEM_DEF(overlays)
 		QUEUE_FOR_COMPILE
 
 /atom/proc/cut_overlay(list/overlays, priority)
+	procstart = null
+	src.procstart = null
 	if(!overlays)
 		return
 
@@ -151,6 +173,8 @@ SUBSYSTEM_DEF(overlays)
 		QUEUE_FOR_COMPILE
 
 /atom/proc/add_overlay(list/overlays, priority = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!overlays)
 		return
 
@@ -197,15 +221,23 @@ SUBSYSTEM_DEF(overlays)
 
 //TODO: Better solution for these?
 /image/proc/add_overlay(x)
+	procstart = null
+	src.procstart = null
 	overlays += x
 
 /image/proc/cut_overlay(x)
+	procstart = null
+	src.procstart = null
 	overlays -= x
 
 /image/proc/cut_overlays(x)
+	procstart = null
+	src.procstart = null
 	overlays.Cut()
 
 /image/proc/copy_overlays(atom/other, cut_old)
+	procstart = null
+	src.procstart = null
 	if(!other)
 		if(cut_old)
 			cut_overlays()

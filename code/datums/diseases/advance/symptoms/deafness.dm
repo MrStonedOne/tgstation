@@ -32,6 +32,8 @@ Bonus
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
 /datum/symptom/deafness/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4)
@@ -40,6 +42,8 @@ Bonus
 		power = 2
 
 /datum/symptom/deafness/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob

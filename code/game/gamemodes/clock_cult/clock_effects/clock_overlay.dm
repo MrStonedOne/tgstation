@@ -4,21 +4,33 @@
 	var/atom/linked
 
 /obj/effect/clockwork/overlay/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(linked)
 		linked.examine(user)
 
 /obj/effect/clockwork/overlay/ex_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/effect/clockwork/overlay/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 /obj/effect/clockwork/overlay/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/overlay/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/overlay/Destroy()
+	procstart = null
+	src.procstart = null
 	if(linked)
 		linked = null
 	. = ..()
@@ -32,11 +44,15 @@
 	layer = CLOSED_TURF_LAYER
 
 /obj/effect/clockwork/overlay/wall/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	queue_smooth_neighbors(src)
 	addtimer(CALLBACK(GLOBAL_PROC, .proc/queue_smooth, src), 1)
 
 /obj/effect/clockwork/overlay/wall/Destroy()
+	procstart = null
+	src.procstart = null
 	queue_smooth_neighbors(src)
 	return ..()
 

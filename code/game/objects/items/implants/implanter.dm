@@ -15,6 +15,8 @@
 
 
 /obj/item/implanter/update_icon()
+	procstart = null
+	src.procstart = null
 	if(imp)
 		icon_state = "implanter1"
 	else
@@ -22,6 +24,8 @@
 
 
 /obj/item/implanter/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 	if(user && imp)
@@ -42,6 +46,8 @@
 					to_chat(user, "<span class='warning'>[src] fails to implant [M].</span>")
 
 /obj/item/implanter/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pen))
 		var/t = stripped_input(user, "What would you like the label to be?", name, null)
 		if(user.get_active_held_item() != W)
@@ -56,6 +62,8 @@
 		return ..()
 
 /obj/item/implanter/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(imp_type)
 		imp = new imp_type(src)

@@ -28,6 +28,8 @@
 
 	//these objects are indestructible
 /obj/docking_port/Destroy(force)
+	procstart = null
+	src.procstart = null
 	// unless you assert that you know what you're doing. Horrible things
 	// may result.
 	if(force)
@@ -37,17 +39,27 @@
 		return QDEL_HINT_LETMELIVE
 
 /obj/docking_port/take_damage()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/docking_port/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 /obj/docking_port/singularity_act()
+	procstart = null
+	src.procstart = null
 	return 0
 /obj/docking_port/shuttleRotate()
+	procstart = null
+	src.procstart = null
 	return //we don't rotate with shuttles via this code.
 
 //returns a list(x0,y0, x1,y1) where points 0 and 1 are bounding corners of the projected rectangle
 /obj/docking_port/proc/return_coords(_x, _y, _dir)
+	procstart = null
+	src.procstart = null
 	if(_dir == null)
 		_dir = dir
 	if(_x == null)
@@ -78,6 +90,8 @@
 
 //returns turfs within our projected rectangle in no particular order
 /obj/docking_port/proc/return_turfs()
+	procstart = null
+	src.procstart = null
 	var/list/L = return_coords()
 	var/turf/T0 = locate(L[1],L[2],z)
 	var/turf/T1 = locate(L[3],L[4],z)
@@ -86,6 +100,8 @@
 //returns turfs within our projected rectangle in a specific order.
 //this ensures that turfs are copied over in the same order, regardless of any rotation
 /obj/docking_port/proc/return_ordered_turfs(_x, _y, _z, _dir)
+	procstart = null
+	src.procstart = null
 	var/cos = 1
 	var/sin = 0
 	switch(_dir)
@@ -114,6 +130,8 @@
 #ifdef DOCKING_PORT_HIGHLIGHT
 //Debug proc used to highlight bounding area
 /obj/docking_port/proc/highlight(_color)
+	procstart = null
+	src.procstart = null
 	var/list/L = return_coords()
 	var/turf/T0 = locate(L[1],L[2],z)
 	var/turf/T1 = locate(L[3],L[4],z)
@@ -130,14 +148,20 @@
 
 //return first-found touching dockingport
 /obj/docking_port/proc/get_docked()
+	procstart = null
+	src.procstart = null
 	return locate(/obj/docking_port/stationary) in loc
 
 /obj/docking_port/proc/getDockedId()
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/P = get_docked()
 	if(P)
 		return P.id
 
 /obj/docking_port/proc/is_in_shuttle_bounds(atom/A)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(A)
 	if(T.z != z)
 		return FALSE
@@ -168,6 +192,8 @@
 	var/last_dock_time
 
 /obj/docking_port/stationary/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.stationary += src
 	if(!id)
@@ -186,6 +212,8 @@
 
 //returns first-found touching shuttleport
 /obj/docking_port/stationary/get_docked()
+	procstart = null
+	src.procstart = null
 	. = locate(/obj/docking_port/mobile) in loc
 
 /obj/docking_port/stationary/transit
@@ -196,10 +224,14 @@
 	var/obj/docking_port/mobile/owner
 
 /obj/docking_port/stationary/transit/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.transit += src
 
 /obj/docking_port/stationary/transit/proc/dezone()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to assigned_turfs.len)
 		var/turf/T = assigned_turfs[i]
 		if(T.type == turf_type)
@@ -207,6 +239,8 @@
 			T.flags_1 |= UNUSED_TRANSIT_TURF_1
 
 /obj/docking_port/stationary/transit/Destroy(force=FALSE)
+	procstart = null
+	src.procstart = null
 	if(force)
 		if(get_docked())
 			log_world("A transit dock was destroyed while something was docked to it.")
@@ -262,9 +296,13 @@
 	var/list/hidden_turfs = list()
 
 /obj/docking_port/mobile/proc/register()
+	procstart = null
+	src.procstart = null
 	SSshuttle.mobile += src
 
 /obj/docking_port/mobile/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		SSshuttle.mobile -= src
 		destination = null
@@ -274,6 +312,8 @@
 	. = ..()
 
 /obj/docking_port/mobile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!timid)
 		register()
@@ -300,10 +340,14 @@
 
 //this is a hook for custom behaviour. Maybe at some point we could add checks to see if engines are intact
 /obj/docking_port/mobile/proc/canMove()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 //this is to check if this shuttle can physically dock at dock S
 /obj/docking_port/mobile/proc/canDock(obj/docking_port/stationary/S)
+	procstart = null
+	src.procstart = null
 	if(!istype(S))
 		return SHUTTLE_NOT_A_DOCKING_PORT
 
@@ -336,6 +380,8 @@
 	return SHUTTLE_CAN_DOCK
 
 /obj/docking_port/mobile/proc/check_dock(obj/docking_port/stationary/S)
+	procstart = null
+	src.procstart = null
 	var/status = canDock(S)
 	if(status == SHUTTLE_CAN_DOCK)
 		return TRUE
@@ -349,10 +395,14 @@
 		return FALSE
 
 /obj/docking_port/mobile/proc/transit_failure()
+	procstart = null
+	src.procstart = null
 	message_admins("Shuttle [src] repeatedly failed to create transit zone.")
 
 //call the shuttle to destination S
 /obj/docking_port/mobile/proc/request(obj/docking_port/stationary/S)
+	procstart = null
+	src.procstart = null
 	if(!check_dock(S))
 		testing("check_dock failed on request for [src]")
 		return
@@ -382,6 +432,8 @@
 
 //recall the shuttle to where it was previously
 /obj/docking_port/mobile/proc/cancel()
+	procstart = null
+	src.procstart = null
 	if(mode != SHUTTLE_CALL)
 		return
 
@@ -391,6 +443,8 @@
 	mode = SHUTTLE_RECALL
 
 /obj/docking_port/mobile/proc/enterTransit()
+	procstart = null
+	src.procstart = null
 	if((SSshuttle.lockdown && (z in GLOB.station_z_levels)) || !canMove())	//emp went off, no escape
 		mode = SHUTTLE_IDLE
 		return
@@ -409,6 +463,8 @@
 
 
 /obj/docking_port/mobile/proc/jumpToNullSpace()
+	procstart = null
+	src.procstart = null
 	// Destroys the docking port and the shuttle contents.
 	// Not in a fancy way, it just ceases.
 	var/obj/docking_port/stationary/current_dock = get_docked()
@@ -443,16 +499,22 @@
 	qdel(src, force=TRUE)
 
 /obj/docking_port/mobile/proc/create_ripples(obj/docking_port/stationary/S1, animate_time)
+	procstart = null
+	src.procstart = null
 	var/list/turfs = ripple_area(S1)
 	for(var/t in turfs)
 		ripples += new /obj/effect/temp_visual/ripple(t, animate_time)
 
 /obj/docking_port/mobile/proc/remove_ripples()
+	procstart = null
+	src.procstart = null
 	for(var/R in ripples)
 		qdel(R)
 	ripples.Cut()
 
 /obj/docking_port/mobile/proc/ripple_area(obj/docking_port/stationary/S1)
+	procstart = null
+	src.procstart = null
 	var/list/L0 = return_ordered_turfs(x, y, z, dir)
 	var/list/L1 = return_ordered_turfs(S1.x, S1.y, S1.z, S1.dir)
 
@@ -471,11 +533,15 @@
 	return ripple_turfs
 
 /obj/docking_port/mobile/proc/check_poddoors()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/poddoor/shuttledock/pod in GLOB.airlocks)
 		pod.check()
 
 //this is the main proc. It instantly moves our mobile port to stationary port new_dock
 /obj/docking_port/mobile/proc/dock(obj/docking_port/stationary/new_dock, movement_direction, force=FALSE)
+	procstart = null
+	src.procstart = null
 	// Crashing this ship with NO SURVIVORS
 
 	if(new_dock.get_docked() == src)
@@ -666,12 +732,18 @@
 	return DOCKING_SUCCESS
 
 /obj/docking_port/mobile/proc/findRoundstartDock()
+	procstart = null
+	src.procstart = null
 	return SSshuttle.getDock(roundstart_move)
 
 /obj/docking_port/mobile/proc/dockRoundstart()
+	procstart = null
+	src.procstart = null
 	. = dock_id(roundstart_move)
 
 /obj/docking_port/mobile/proc/dock_id(id)
+	procstart = null
+	src.procstart = null
 	var/port = SSshuttle.getDock(id)
 	if(port)
 		. = dock(port)
@@ -683,6 +755,8 @@
 
 //used by shuttle subsystem to check timers
 /obj/docking_port/mobile/proc/check()
+	procstart = null
+	src.procstart = null
 	check_effects()
 
 	if(mode == SHUTTLE_IGNITING)
@@ -723,6 +797,8 @@
 	destination = null
 
 /obj/docking_port/mobile/proc/check_effects()
+	procstart = null
+	src.procstart = null
 	if(!ripples.len)
 		if((mode == SHUTTLE_CALL) || (mode == SHUTTLE_RECALL))
 			var/tl = timeLeft(1)
@@ -737,6 +813,8 @@
 				parallax_slowdown()
 
 /obj/docking_port/mobile/proc/parallax_slowdown()
+	procstart = null
+	src.procstart = null
 	for(var/place in shuttle_areas)
 		var/area/shuttle/shuttle_area = place
 		shuttle_area.parallax_movedir = FALSE
@@ -753,16 +831,22 @@
 				AM.update_parallax_contents()
 
 /obj/docking_port/mobile/proc/check_transit_zone()
+	procstart = null
+	src.procstart = null
 	if(assigned_transit)
 		return TRANSIT_READY
 	else
 		SSshuttle.request_transit_dock(src)
 
 /obj/docking_port/mobile/proc/setTimer(wait)
+	procstart = null
+	src.procstart = null
 	timer = world.time + wait
 	last_timer_length = wait
 
 /obj/docking_port/mobile/proc/modTimer(multiple)
+	procstart = null
+	src.procstart = null
 	var/time_remaining = timer - world.time
 	if(time_remaining < 0 || !last_timer_length)
 		return
@@ -771,6 +855,8 @@
 	setTimer(time_remaining)
 
 /obj/docking_port/mobile/proc/invertTimer()
+	procstart = null
+	src.procstart = null
 	if(!last_timer_length)
 		return
 	var/time_remaining = timer - world.time
@@ -780,6 +866,8 @@
 
 //returns timeLeft
 /obj/docking_port/mobile/proc/timeLeft(divisor)
+	procstart = null
+	src.procstart = null
 	if(divisor <= 0)
 		divisor = 10
 
@@ -793,6 +881,8 @@
 
 // returns 3-letter mode string, used by status screens and mob status panel
 /obj/docking_port/mobile/proc/getModeStr()
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(SHUTTLE_IGNITING)
 			return "IGN"
@@ -810,6 +900,8 @@
 
 // returns 5-letter timer string, used by status screens and mob status panel
 /obj/docking_port/mobile/proc/getTimerStr()
+	procstart = null
+	src.procstart = null
 	if(mode == SHUTTLE_STRANDED)
 		return "--:--"
 
@@ -821,6 +913,8 @@
 
 
 /obj/docking_port/mobile/proc/getStatusText()
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/stationary/dockedAt = get_docked()
 	. = (dockedAt && dockedAt.name) ? dockedAt.name : "unknown"
 	if(istype(dockedAt, /obj/docking_port/stationary/transit))
@@ -834,6 +928,8 @@
 
 // attempts to locate /obj/machinery/computer/shuttle with matching ID inside the shuttle
 /obj/docking_port/mobile/proc/getControlConsole()
+	procstart = null
+	src.procstart = null
 	for(var/place in shuttle_areas)
 		var/area/shuttle/shuttle_area = place
 		for(var/obj/machinery/computer/shuttle/S in shuttle_area)
@@ -842,6 +938,8 @@
 	return null
 
 /obj/docking_port/mobile/proc/hyperspace_sound(phase, list/areas)
+	procstart = null
+	src.procstart = null
 	var/s
 	switch(phase)
 		if(HYPERSPACE_WARMUP)
@@ -859,6 +957,8 @@
 // Losing all initial engines should get you 2
 // Adding another set of engines at 0.5 time
 /obj/docking_port/mobile/proc/alter_engines(mod)
+	procstart = null
+	src.procstart = null
 	if(mod == 0)
 		return
 	var/old_coeff = engine_coeff
@@ -869,6 +969,8 @@
 		modTimer(delta_coeff)
 
 /obj/docking_port/mobile/proc/count_engines()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/thing in shuttle_areas)
 		var/area/shuttle/areaInstance = thing
@@ -880,6 +982,8 @@
 // Lose all initial engines to get to 2
 //For 0 engine shuttles like BYOS 5 engines to get to doublespeed
 /obj/docking_port/mobile/proc/get_engine_coeff(current,engine_mod)
+	procstart = null
+	src.procstart = null
 	var/new_value = max(0,current + engine_mod)
 	if(new_value == initial_engines)
 		return 1
@@ -898,6 +1002,8 @@
 
 
 /obj/docking_port/mobile/proc/in_flight()
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(SHUTTLE_CALL,SHUTTLE_RECALL)
 			return TRUE
@@ -907,6 +1013,8 @@
 			return FALSE // hmm
 
 /obj/docking_port/mobile/emergency/in_flight()
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(SHUTTLE_ESCAPE)
 			return TRUE
@@ -918,25 +1026,35 @@
 
 //Called when emergency shuttle leaves the station
 /obj/docking_port/mobile/proc/on_emergency_launch()
+	procstart = null
+	src.procstart = null
 	if(launch_status == UNLAUNCHED) //Pods will not launch from the mine/planet, and other ships won't launch unless we tell them to.
 		launch_status = ENDGAME_LAUNCHED
 		enterTransit()
 
 /obj/docking_port/mobile/emergency/on_emergency_launch()
+	procstart = null
+	src.procstart = null
 	return
 
 //Called when emergency shuttle docks at centcom
 /obj/docking_port/mobile/proc/on_emergency_dock()
+	procstart = null
+	src.procstart = null
 	//Mapping a new docking point for each ship mappers could potentially want docking with centcom would take up lots of space, just let them keep flying off into the sunset for their greentext
 	if(launch_status == ENDGAME_LAUNCHED)
 		launch_status = ENDGAME_TRANSIT
 
 /obj/docking_port/mobile/pod/on_emergency_dock()
+	procstart = null
+	src.procstart = null
 	if(launch_status == ENDGAME_LAUNCHED)
 		dock(SSshuttle.getDock("[id]_away")) //Escape pods dock at centcom
 		mode = SHUTTLE_ENDGAME
 
 /obj/docking_port/mobile/emergency/on_emergency_dock()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef DOCKING_PORT_HIGHLIGHT

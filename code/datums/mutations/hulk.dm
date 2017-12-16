@@ -9,6 +9,8 @@
 	health_req = 25
 
 /datum/mutation/human/hulk/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/status = CANSTUN | CANKNOCKDOWN | CANUNCONSCIOUS | CANPUSH
@@ -16,21 +18,29 @@
 	owner.update_body_parts()
 
 /datum/mutation/human/hulk/on_attack_hand(mob/living/carbon/human/owner, atom/target, proximity)
+	procstart = null
+	src.procstart = null
 	if(proximity) //no telekinetic hulk attack
 		return target.attack_hulk(owner)
 
 /datum/mutation/human/hulk/on_life(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(owner.health < 0)
 		on_losing(owner)
 		to_chat(owner, "<span class='danger'>You suddenly feel very weak.</span>")
 
 /datum/mutation/human/hulk/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.status_flags |= CANSTUN | CANKNOCKDOWN | CANUNCONSCIOUS | CANPUSH
 	owner.update_body_parts()
 
 /datum/mutation/human/hulk/say_mod(message)
+	procstart = null
+	src.procstart = null
 	if(message)
 		message = "[uppertext(replacetext(message, ".", "!"))]!!"
 	return message

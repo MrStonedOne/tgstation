@@ -6,15 +6,21 @@
 	var/in_progress = FALSE
 
 /obj/effect/proc_holder/slab/Destroy()
+	procstart = null
+	src.procstart = null
 	slab = null
 	return ..()
 
 /obj/effect/proc_holder/slab/remove_ranged_ability(msg)
+	procstart = null
+	src.procstart = null
 	..()
 	finished = TRUE
 	QDEL_IN(src, 6)
 
 /obj/effect/proc_holder/slab/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..() || in_progress)
 		return TRUE
 	if(ranged_ability_user.incapacitated() || !slab || !(slab in ranged_ability_user.held_items) || target == slab)
@@ -25,6 +31,8 @@
 /obj/effect/proc_holder/slab/hateful_manacles
 
 /obj/effect/proc_holder/slab/hateful_manacles/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 
@@ -70,6 +78,8 @@
 	flags_1 = DROPDEL_1
 
 /obj/item/restraints/handcuffs/clockwork/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='danger'>[user]'s [name] come apart at the seams!</span>", \
 	"<span class='userdanger'>Your [name] break apart as they're removed!</span>")
 	. = ..()
@@ -79,6 +89,8 @@
 	ranged_mousepointer = 'icons/effects/compromise_target.dmi'
 
 /obj/effect/proc_holder/slab/compromise/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 
@@ -139,6 +151,8 @@
 	ranged_mousepointer = 'icons/effects/volt_target.dmi'
 
 /obj/effect/proc_holder/slab/kindle/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 
@@ -174,10 +188,14 @@
 	log_override = TRUE
 
 /obj/item/projectile/kindle/Destroy()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>[src] flickers out!</span>")
 	. = ..()
 
 /obj/item/projectile/kindle/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/L = target
 		if(is_servant_of_ratvar(L) || L.stat || L.has_status_effect(STATUS_EFFECT_KINDLE))
@@ -206,6 +224,8 @@
 	ranged_mousepointer = 'icons/effects/vanguard_target.dmi'
 
 /obj/effect/proc_holder/slab/vanguard/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 
@@ -249,6 +269,8 @@
 	ranged_mousepointer = 'icons/effects/visor_reticule.dmi'
 
 /obj/effect/proc_holder/slab/judicial/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 

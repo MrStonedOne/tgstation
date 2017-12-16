@@ -47,29 +47,41 @@
 	var/datum/industry/industry = null
 
 /datum/stock/proc/addEvent(var/datum/stockEvent/E)
+	procstart = null
+	src.procstart = null
 	events |= E
 
 /datum/stock/proc/addArticle(var/datum/article/A)
+	procstart = null
+	src.procstart = null
 	if (!(A in articles))
 		articles.Insert(1, A)
 	A.ticks = world.time
 
 /datum/stock/proc/generateEvents()
+	procstart = null
+	src.procstart = null
 	var/list/types = typesof(/datum/stockEvent) - /datum/stockEvent
 	for (var/T in types)
 		generateEvent(T)
 
 /datum/stock/proc/generateEvent(var/T)
+	procstart = null
+	src.procstart = null
 	var/datum/stockEvent/E = new T(src)
 	addEvent(E)
 
 /datum/stock/proc/affectPublicOpinion(var/boost)
+	procstart = null
+	src.procstart = null
 	optimism += rand(0, 500) / 500 * boost
 	average_optimism += rand(0, 150) / 5000 * boost
 	speculation += rand(-1, 50) / 10 * boost
 	performance += rand(0, 150) / 100 * boost
 
 /datum/stock/proc/generateIndustry()
+	procstart = null
+	src.procstart = null
 	if (findtext(name, "Farms"))
 		industry = new /datum/industry/agriculture
 	else if (findtext(name, "Software") || findtext(name, "Programming")  || findtext(name, "IT Group") || findtext(name, "Electronics") || findtext(name, "Electric") || findtext(name, "Nanotechnology"))
@@ -88,6 +100,8 @@
 		products += industry.generateProductName(name)
 
 /datum/stock/proc/frc(amt)
+	procstart = null
+	src.procstart = null
 	var/shares = available_shares + outside_shareholders * average_shares
 	var/fr = amt / 100 / shares * fluctuational_coefficient * fluctuation_rate * max(-(current_trend / 100), 1)
 	if ((fr < 0 && speculation < 0) || (fr > 0 && speculation > 0))
@@ -97,6 +111,8 @@
 	return fr
 
 /datum/stock/proc/supplyGrowth(amt)
+	procstart = null
+	src.procstart = null
 	var/fr = frc(amt)
 	available_shares += amt
 	if (abs(fr) < 0.0001)
@@ -104,9 +120,13 @@
 	current_value -= fr * current_value
 
 /datum/stock/proc/supplyDrop(amt)
+	procstart = null
+	src.procstart = null
 	supplyGrowth(-amt)
 
 /datum/stock/proc/fluctuate()
+	procstart = null
+	src.procstart = null
 	var/change = rand(-100, 100) / 10 + optimism * rand(200) / 10
 	optimism -= (optimism - average_optimism) * (rand(10,80) / 1000)
 	var/shift_score = change + current_trend
@@ -165,6 +185,8 @@
 	current_trend += rand(-200, 200) / 100 + optimism * rand(200) / 10 + max(50 - abs(speculation), 0) / 50 * rand(0, 200) / 1000 * (-current_trend) + max(speculation - 50, 0) * rand(0, 200) / 1000 * speculation / 400
 
 /datum/stock/proc/unifyShares()
+	procstart = null
+	src.procstart = null
 	for (var/I in shareholders)
 		var/shr = shareholders[I]
 		if (shr % 2)
@@ -185,6 +207,8 @@
 	last_unification = world.time
 
 /datum/stock/process()
+	procstart = null
+	src.procstart = null
 	for (var/B in borrows)
 		var/datum/borrow/borrow = B
 		if (world.time > borrow.grace_expires)
@@ -227,6 +251,8 @@
 		fluctuate()
 
 /datum/stock/proc/generateBrokers()
+	procstart = null
+	src.procstart = null
 	if (borrow_brokers.len > 2)
 		return
 	if (!GLOB.stockExchange.stockBrokers.len)
@@ -244,6 +270,8 @@
 	borrow_brokers += B
 
 /datum/stock/proc/modifyAccount(whose, by, force=0)
+	procstart = null
+	src.procstart = null
 	if (SSshuttle.points)
 		if (by < 0 && SSshuttle.points + by < 0 && !force)
 			return 0
@@ -253,6 +281,8 @@
 	return 0
 
 /datum/stock/proc/borrow(var/datum/borrow/B, var/who)
+	procstart = null
+	src.procstart = null
 	if (B.lease_expires)
 		return 0
 	B.lease_expires = world.time + B.lease_time
@@ -278,6 +308,8 @@
 	return 1
 
 /datum/stock/proc/buyShares(var/who, var/howmany)
+	procstart = null
+	src.procstart = null
 	if (howmany <= 0)
 		return
 	howmany = round(howmany)
@@ -294,6 +326,8 @@
 	return 0
 
 /datum/stock/proc/sellShares(var/whose, var/howmany)
+	procstart = null
+	src.procstart = null
 	if (howmany < 0)
 		return
 	howmany = round(howmany)
@@ -309,4 +343,6 @@
 	return 0
 
 /datum/stock/proc/displayValues(var/mob/user)
+	procstart = null
+	src.procstart = null
 	user << browse(plotBarGraph(values, "[name] share value per share"), "window=stock_[name];size=450x450")

@@ -41,15 +41,21 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	var/emagged = FALSE
 
 /obj/docking_port/mobile/supply/register()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.supply = src
 
 /obj/docking_port/mobile/supply/canMove()
+	procstart = null
+	src.procstart = null
 	if(z in GLOB.station_z_levels)
 		return check_blacklist(shuttle_areas)
 	return ..()
 
 /obj/docking_port/mobile/supply/proc/check_blacklist(areaInstances)
+	procstart = null
+	src.procstart = null
 	for(var/place in areaInstances)
 		var/area/shuttle/shuttle_area = place
 		for(var/trf in shuttle_area)
@@ -60,11 +66,15 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	return TRUE
 
 /obj/docking_port/mobile/supply/request()
+	procstart = null
+	src.procstart = null
 	if(mode != SHUTTLE_IDLE)
 		return 2
 	return ..()
 
 /obj/docking_port/mobile/supply/dock()
+	procstart = null
+	src.procstart = null
 	if(getDockedId() == "supply_away") // Buy when we leave home.
 		buy()
 	. = ..() // Fly/enter transit.
@@ -74,6 +84,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 		sell()
 
 /obj/docking_port/mobile/supply/proc/buy()
+	procstart = null
+	src.procstart = null
 	if(!SSshuttle.shoppinglist.len)
 		return
 
@@ -108,6 +120,8 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	investigate_log("[purchases] orders in this shipment, worth [value] credits. [SSshuttle.points] credits left.", INVESTIGATE_CARGO)
 
 /obj/docking_port/mobile/supply/proc/sell()
+	procstart = null
+	src.procstart = null
 	var/presale_points = SSshuttle.points
 
 	if(!GLOB.exports_list.len) // No exports list? Generate it!

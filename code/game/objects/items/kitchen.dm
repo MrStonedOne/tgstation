@@ -30,6 +30,8 @@
 	var/datum/reagent/forkload //used to eat omelette
 
 /obj/item/kitchen/fork/attack(mob/living/carbon/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return ..()
 
@@ -69,6 +71,8 @@
 	var/bayonet = FALSE	//Can this be attached to a gun?
 
 /obj/item/kitchen/knife/attack(mob/living/carbon/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(user.zone_selected == "eyes")
 		if(user.disabilities & CLUMSY && prob(50))
 			M = user
@@ -77,6 +81,8 @@
 		return ..()
 
 /obj/item/kitchen/knife/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message(pick("<span class='suicide'>[user] is slitting [user.p_their()] wrists with the [src.name]! It looks like [user.p_theyre()] trying to commit suicide.</span>", \
 						"<span class='suicide'>[user] is slitting [user.p_their()] throat with the [src.name]! It looks like [user.p_theyre()] trying to commit suicide.</span>", \
 						"<span class='suicide'>[user] is slitting [user.p_their()] stomach open with the [src.name]! It looks like [user.p_theyre()] trying to commit seppuku.</span>"))

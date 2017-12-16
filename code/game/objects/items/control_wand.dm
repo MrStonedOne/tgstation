@@ -16,11 +16,15 @@
 	var/obj/item/card/id/ID
 
 /obj/item/door_remote/New()
+	procstart = null
+	src.procstart = null
 	..()
 	ID = new /obj/item/card/id
 	ID.access = get_region_accesses(region_access)
 
 /obj/item/door_remote/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(WAND_OPEN)
 			mode = WAND_BOLT
@@ -31,6 +35,8 @@
 	to_chat(user, "Now in mode: [mode].")
 
 /obj/item/door_remote/afterattack(obj/machinery/door/airlock/D, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(D))
 		return
 	if(!(D.hasPower()))

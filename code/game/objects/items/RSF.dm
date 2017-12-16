@@ -20,6 +20,8 @@ RSF
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/rsf/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>It currently holds [matter]/30 fabrication-units.</span>")
 
@@ -27,6 +29,8 @@ RSF
 	matter = 30
 
 /obj/item/rsf/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/rcd_ammo))
 		if((matter + 10) > 30)
 			to_chat(user, "The RSF can't hold any more matter.")
@@ -39,6 +43,8 @@ RSF
 		return ..()
 
 /obj/item/rsf/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
 	switch(mode)
 		if(1)
@@ -62,6 +68,8 @@ RSF
 	// Change mode
 
 /obj/item/rsf/afterattack(atom/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if (!(istype(A, /obj/structure/table) || isfloorturf(A)))
@@ -105,6 +113,8 @@ RSF
 			use_matter(10, user)
 
 /obj/item/rsf/proc/use_matter(charge, mob/user)
+	procstart = null
+	src.procstart = null
 	if (iscyborg(user))
 		var/mob/living/silicon/robot/R = user
 		R.cell.charge -= charge
@@ -126,13 +136,19 @@ RSF
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/cookiesynth/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>It currently holds [matter]/10 cookie-units.</span>")
 
 /obj/item/cookiesynth/attackby()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/cookiesynth/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	emagged = !emagged
 	if(emagged)
 		to_chat(user, "<span class='warning'>You short out [src]'s reagent safety checker!</span>")
@@ -141,6 +157,8 @@ RSF
 		toxin = 0
 
 /obj/item/cookiesynth/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/P = null
 	if(iscyborg(user))
 		P = user
@@ -155,10 +173,14 @@ RSF
 		to_chat(user, "Cookie Synthesizer Reset")
 
 /obj/item/cookiesynth/process()
+	procstart = null
+	src.procstart = null
 	if(matter < 10)
 		matter++
 
 /obj/item/cookiesynth/afterattack(atom/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(cooldown > world.time)
 		return
 	if(!proximity)

@@ -15,6 +15,8 @@
 // This should be overridden to remove all references pointing to the object being destroyed.
 // Return the appropriate QDEL_HINT; in most cases this is QDEL_HINT_QUEUE.
 /datum/proc/Destroy(force=FALSE, ...)
+	procstart = null
+	src.procstart = null
 	tag = null
 	weak_reference = null	//ensure prompt GCing of weakref.
 

@@ -10,12 +10,18 @@
 	startWhen = 50
 
 /datum/round_event/wizard/magicarp/setup()
+	procstart = null
+	src.procstart = null
 	startWhen = rand(40, 60)
 
 /datum/round_event/wizard/magicarp/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Unknown magical entities have been detected near [station_name()], please stand-by.", "Lifesign Alert")
 
 /datum/round_event/wizard/magicarp/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/landmark/carpspawn/C in GLOB.landmarks_list)
 		if(prob(5))
 			new /mob/living/simple_animal/hostile/carp/ranged/chaos(C.loc)
@@ -41,6 +47,8 @@
 	/obj/item/projectile/magic/spellblade, /obj/item/projectile/magic/arcane_barrage)
 	
 /mob/living/simple_animal/hostile/carp/ranged/Initialize()
+	procstart = null
+	src.procstart = null
 	projectiletype = pick(allowed_projectile_types)
 	. = ..()
 
@@ -52,5 +60,7 @@
 	health = 75
 
 /mob/living/simple_animal/hostile/carp/ranged/chaos/Shoot()
+	procstart = null
+	src.procstart = null
 	projectiletype = pick(allowed_projectile_types)
 	..()

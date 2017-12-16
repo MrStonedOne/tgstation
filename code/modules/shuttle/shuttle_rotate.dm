@@ -7,6 +7,8 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 /************************************Base proc************************************/
 
 /atom/proc/shuttleRotate(rotation, params=ROTATE_DIR|ROTATE_SMOOTH|ROTATE_OFFSET)
+	procstart = null
+	src.procstart = null
 	if(params & ROTATE_DIR)
 		//rotate our direction
 		setDir(angle2dir(rotation+dir2angle(dir)))
@@ -30,6 +32,8 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 /************************************Turf rotate procs************************************/
 
 /turf/closed/mineral/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	params &= ~ROTATE_OFFSET
 	return ..()
 
@@ -37,18 +41,24 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 
 //override to avoid rotating pixel_xy on mobs
 /mob/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	params = NONE
 	. = ..()
 	if(!buckled)
 		setDir(angle2dir(rotation+dir2angle(dir)))
 
 /mob/dead/observer/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /************************************Structure rotate procs************************************/
 
 /obj/structure/cable/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	params &= ~ROTATE_DIR
 	. = ..()
 	if(d1)
@@ -65,6 +75,8 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 
 //Fixes dpdir on shuttle rotation
 /obj/structure/disposalpipe/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/new_dpdir = 0
 	for(var/D in GLOB.cardinals)
@@ -73,16 +85,22 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 	dpdir = new_dpdir
 
 /obj/structure/table/wood/bar/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	boot_dir = angle2dir(rotation + dir2angle(boot_dir))
 
 /obj/structure/alien/weeds/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	params &= ~ROTATE_OFFSET
 	return ..()
 
 /************************************Machine rotate procs************************************/
 
 /obj/machinery/atmospherics/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	var/list/real_node_connect = getNodeConnects()
 	for(DEVICE_TYPE_LOOP)
 		real_node_connect[I] = angle2dir(rotation+dir2angle(real_node_connect[I]))
@@ -98,10 +116,14 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 
 //prevents shuttles attempting to rotate this since it messes up sprites
 /obj/machinery/gateway/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	params = NONE
 	return ..()
 
 //prevents shuttles attempting to rotate this since it messes up sprites
 /obj/machinery/gravity_generator/shuttleRotate(rotation, params)
+	procstart = null
+	src.procstart = null
 	params = NONE
 	return ..()

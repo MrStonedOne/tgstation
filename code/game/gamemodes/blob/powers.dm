@@ -8,6 +8,8 @@
 // Power verbs
 
 /mob/camera/blob/proc/place_blob_core(point_rate, placement_override , pop_override = FALSE)
+	procstart = null
+	src.procstart = null
 	if(placed && placement_override != -1)
 		return 1
 	if(!placement_override)
@@ -57,6 +59,8 @@
 	return 1
 
 /mob/camera/blob/verb/transport_core()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Jump to Core"
 	set desc = "Move your camera to your core."
@@ -64,6 +68,8 @@
 		forceMove(blob_core.drop_location())
 
 /mob/camera/blob/verb/jump_to_node()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Jump to Node"
 	set desc = "Move your camera to a selected node."
@@ -78,6 +84,8 @@
 			forceMove(chosen_node.loc)
 
 /mob/camera/blob/proc/createSpecial(price, blobType, nearEquals, needsNode, turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		T = get_turf(src)
 	var/obj/structure/blob/B = (locate(/obj/structure/blob) in T)
@@ -102,6 +110,8 @@
 	return N
 
 /mob/camera/blob/verb/toggle_node_req()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Toggle Node Requirement"
 	set desc = "Toggle requiring nodes to place resource and factory blobs."
@@ -112,33 +122,45 @@
 		to_chat(src, "<span class='warning'>You no longer require a nearby node or core to place factory and resource blobs.</span>")
 
 /mob/camera/blob/verb/create_shield_power()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Create Shield Blob (15)"
 	set desc = "Create a shield blob, which will block fire and is hard to kill."
 	create_shield()
 
 /mob/camera/blob/proc/create_shield(turf/T)
+	procstart = null
+	src.procstart = null
 	createSpecial(15, /obj/structure/blob/shield, 0, 0, T)
 
 /mob/camera/blob/verb/create_resource()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Create Resource Blob (40)"
 	set desc = "Create a resource tower which will generate resources for you."
 	createSpecial(40, /obj/structure/blob/resource, 4, 1)
 
 /mob/camera/blob/verb/create_node()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Create Node Blob (50)"
 	set desc = "Create a node, which will power nearby factory and resource blobs."
 	createSpecial(50, /obj/structure/blob/node, 5, 0)
 
 /mob/camera/blob/verb/create_factory()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Create Factory Blob (60)"
 	set desc = "Create a spore tower that will spawn spores to harass your enemies."
 	createSpecial(60, /obj/structure/blob/factory, 7, 1)
 
 /mob/camera/blob/verb/create_blobbernaut()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Create Blobbernaut (40)"
 	set desc = "Create a powerful blobbernaut which is mildly smart and will attack enemies."
@@ -185,6 +207,8 @@
 		add_points(40)
 
 /mob/camera/blob/verb/relocate_core()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Relocate Core (80)"
 	set desc = "Swaps the locations of your core and the selected node."
@@ -210,6 +234,8 @@
 	B.setDir(olddir)
 
 /mob/camera/blob/verb/revert()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Remove Blob"
 	set desc = "Removes a blob, giving you back some resources."
@@ -217,6 +243,8 @@
 	remove_blob(T)
 
 /mob/camera/blob/proc/remove_blob(turf/T)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/blob/B = locate() in T
 	if(!B)
 		to_chat(src, "<span class='warning'>There is no blob there!</span>")
@@ -233,6 +261,8 @@
 	qdel(B)
 
 /mob/camera/blob/verb/expand_blob_power()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Expand/Attack Blob (4)"
 	set desc = "Attempts to create a new blob in this tile. If the tile isn't clear, instead attacks it, damaging mobs and objects."
@@ -240,6 +270,8 @@
 	expand_blob(T)
 
 /mob/camera/blob/proc/expand_blob(turf/T)
+	procstart = null
+	src.procstart = null
 	if(world.time < last_attack)
 		return
 	var/list/possibleblobs = list()
@@ -291,6 +323,8 @@
 			last_attack = world.time + CLICK_CD_RAPID
 
 /mob/camera/blob/verb/rally_spores_power()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Rally Spores"
 	set desc = "Rally your spores to move to a target location."
@@ -298,6 +332,8 @@
 	rally_spores(T)
 
 /mob/camera/blob/proc/rally_spores(turf/T)
+	procstart = null
+	src.procstart = null
 	to_chat(src, "You rally your spores.")
 	var/list/surrounding_turfs = block(locate(T.x - 1, T.y - 1, T.z), locate(T.x + 1, T.y + 1, T.z))
 	if(!surrounding_turfs.len)
@@ -308,6 +344,8 @@
 			BS.Goto(pick(surrounding_turfs), BS.move_to_delay)
 
 /mob/camera/blob/verb/blob_broadcast()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Blob Broadcast"
 	set desc = "Speak with your blob spores and blobbernauts as your mouthpieces."
@@ -322,6 +360,8 @@
 			BM.say(speak_text)
 
 /mob/camera/blob/verb/chemical_reroll()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "Reactive Chemical Adaptation (40)"
 	set desc = "Replaces your chemical with a random, different one."
@@ -331,6 +371,8 @@
 			free_chem_rerolls--
 
 /mob/camera/blob/proc/set_chemical()
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/blob/BC = pick((subtypesof(/datum/reagent/blob) - blob_reagent_datum.type))
 	blob_reagent_datum = new BC
 	color = blob_reagent_datum.complementary_color
@@ -348,6 +390,8 @@
 		to_chat(src, "The <b><font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</b></font> reagent [blob_reagent_datum.effectdesc]")
 
 /mob/camera/blob/verb/blob_help()
+	procstart = null
+	src.procstart = null
 	set category = "Blob"
 	set name = "*Blob Help*"
 	set desc = "Help on how to blob."

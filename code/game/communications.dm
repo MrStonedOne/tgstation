@@ -65,6 +65,8 @@
 */
 GLOBAL_LIST_EMPTY(all_radios)
 /proc/add_radio(obj/item/radio, freq)
+	procstart = null
+	src.procstart = null
 	if(!freq || !radio)
 		return
 	if(!GLOB.all_radios["[freq]"])
@@ -75,6 +77,8 @@ GLOBAL_LIST_EMPTY(all_radios)
 	return freq
 
 /proc/remove_radio(obj/item/radio, freq)
+	procstart = null
+	src.procstart = null
 	if(!freq || !radio)
 		return
 	if(!GLOB.all_radios["[freq]"])
@@ -83,6 +87,8 @@ GLOBAL_LIST_EMPTY(all_radios)
 	GLOB.all_radios["[freq]"] -= radio
 
 /proc/remove_radio_all(obj/item/radio)
+	procstart = null
+	src.procstart = null
 	for(var/freq in GLOB.all_radios)
 		GLOB.all_radios["[freq]"] -= radio
 
@@ -127,11 +133,15 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 	var/list/list/obj/devices = list()
 
 /datum/radio_frequency/New(freq)
+	procstart = null
+	src.procstart = null
 	frequency = freq
 
 //If range > 0, only post to devices on the same z_level and within range
 //Use range = -1, to restrain to the same z_level without limiting range
 /datum/radio_frequency/proc/post_signal(obj/source as obj|null, datum/signal/signal, filter = null as text|null, range = null as num|null)
+	procstart = null
+	src.procstart = null
 	// Ensure the signal's data is fully filled
 	signal.source = source
 	signal.frequency = frequency
@@ -166,6 +176,8 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 			device.receive_signal(signal)
 
 /datum/radio_frequency/proc/add_listener(obj/device, filter as text|null)
+	procstart = null
+	src.procstart = null
 	if (!filter)
 		filter = "_default"
 
@@ -176,6 +188,8 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 
 
 /datum/radio_frequency/proc/remove_listener(obj/device)
+	procstart = null
+	src.procstart = null
 	for(var/devices_filter in devices)
 		var/list/devices_line = devices[devices_filter]
 		if(!devices_line)
@@ -186,6 +200,8 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 
 
 /obj/proc/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/signal
@@ -195,5 +211,7 @@ GLOBAL_LIST_INIT(reverseradiochannels, list(
 	var/data
 
 /datum/signal/New(data, transmission_method = TRANSMISSION_RADIO)
+	procstart = null
+	src.procstart = null
 	src.data = data || list()
 	src.transmission_method = transmission_method

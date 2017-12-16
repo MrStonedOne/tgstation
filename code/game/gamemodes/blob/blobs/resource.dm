@@ -8,18 +8,26 @@
 	var/resource_delay = 0
 
 /obj/structure/blob/resource/scannerreport()
+	procstart = null
+	src.procstart = null
 	return "Gradually supplies the blob with resources, increasing the rate of expansion."
 
 /obj/structure/blob/resource/creation_action()
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		overmind.resource_blobs += src
 
 /obj/structure/blob/resource/Destroy()
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		overmind.resource_blobs -= src
 	return ..()
 
 /obj/structure/blob/resource/Be_Pulsed()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(resource_delay > world.time)
 		return

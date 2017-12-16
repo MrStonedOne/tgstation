@@ -1,6 +1,8 @@
 //This proc allows download of past server logs saved within the data/logs/ folder.
 //It works similarly to show-server-log.
 /client/proc/getserverlog()
+	procstart = null
+	src.procstart = null
 	set name = ".getserverlog"
 	set desc = "Fetch logfiles from data/logs"
 	set category = null
@@ -32,6 +34,8 @@
 
 //Shows today's server log
 /datum/admins/proc/view_txt_log()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Show Server Log"
 	set desc = "Shows server log for this round."
@@ -54,6 +58,8 @@
 
 //Shows today's attack log
 /datum/admins/proc/view_atk_log()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Show Server Attack Log"
 	set desc = "Shows server attack log for this round."

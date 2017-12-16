@@ -30,6 +30,8 @@
 
 // Removes all traces of old order and allows you to begin configuration from scratch.
 /obj/machinery/lapvend/proc/reset_order()
+	procstart = null
+	src.procstart = null
 	state = 0
 	devtype = 0
 	if(fabricated_laptop)
@@ -48,6 +50,8 @@
 
 // Recalculates the price and optionally even fabricates the device.
 /obj/machinery/lapvend/proc/fabricate_and_recalc_price(fabricate = 0)
+	procstart = null
+	src.procstart = null
 	total_price = 0
 	if(devtype == 1) 		// Laptop, generally cheaper to make it accessible for most station roles
 		var/obj/item/computer_hardware/battery/battery_module = null
@@ -168,6 +172,8 @@
 
 
 /obj/machinery/lapvend/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -223,9 +229,13 @@
 	return 0
 
 /obj/machinery/lapvend/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 /obj/machinery/lapvend/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN | NOPOWER | MAINT))
 		if(ui)
 			ui.close()
@@ -241,6 +251,8 @@
 
 
 /obj/machinery/lapvend/attackby(obj/item/I as obj, mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/stack/spacecash))
 		var/obj/item/stack/spacecash/c = I
 
@@ -256,6 +268,8 @@
 
 // Simplified payment processing, returns 1 on success.
 /obj/machinery/lapvend/proc/process_payment()
+	procstart = null
+	src.procstart = null
 	if(total_price > credits)
 		say("Insufficient credits.")
 		return 0
@@ -264,6 +278,8 @@
 
 /obj/machinery/lapvend/ui_data(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["state"] = state
 	if(state == 1)
@@ -283,6 +299,8 @@
 
 
 /obj/machinery/lapvend/proc/try_purchase()
+	procstart = null
+	src.procstart = null
 	// Awaiting payment state
 	if(state == 2)
 		if(process_payment())

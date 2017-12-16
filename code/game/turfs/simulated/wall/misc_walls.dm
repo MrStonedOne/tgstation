@@ -10,13 +10,19 @@
 	girder_type = /obj/structure/girder/cult
 
 /turf/closed/wall/mineral/cult/Initialize()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/cult/turf(src)
 	. = ..()
 
 /turf/closed/wall/mineral/cult/devastate_wall()
+	procstart = null
+	src.procstart = null
 	new sheet_type(get_turf(src), sheet_amount)
 
 /turf/closed/wall/mineral/cult/Exited(atom/movable/AM, atom/newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(AM, /mob/living/simple_animal/hostile/construct/harvester)) //harvesters can go through cult walls, dragging something with
 		var/mob/living/simple_animal/hostile/construct/harvester/H = AM
@@ -27,6 +33,8 @@
 			H.start_pulling(stored_pulling, TRUE)
 
 /turf/closed/wall/mineral/cult/ratvar_act()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(src, /turf/closed/wall/mineral/cult)) //if we haven't changed type
 		var/previouscolor = color
@@ -39,10 +47,14 @@
 	desc = "A cold stone wall engraved with indecipherable symbols. Studying them causes your head to pound."
 
 /turf/closed/wall/mineral/cult/artificer/break_wall()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/cult/turf(get_turf(src))
 	return null //excuse me we want no runed metal here
 
 /turf/closed/wall/mineral/cult/artificer/devastate_wall()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/cult/turf(get_turf(src))
 
 //Clockwork wall: Causes nearby tinkerer's caches to generate components.
@@ -60,6 +72,8 @@
 	var/obj/effect/clockwork/overlay/wall/realappearence
 
 /turf/closed/wall/clockwork/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/ratvar/wall(src)
 	new /obj/effect/temp_visual/ratvar/beam(src)
@@ -67,17 +81,23 @@
 	realappearence.linked = src
 
 /turf/closed/wall/clockwork/Destroy()
+	procstart = null
+	src.procstart = null
 	if(realappearence)
 		qdel(realappearence)
 		realappearence = null
 	return ..()
 
 /turf/closed/wall/clockwork/ReplaceWithLattice()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/obj/structure/lattice/L in src)
 		L.ratvar_act()
 
 /turf/closed/wall/clockwork/narsie_act()
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(src, /turf/closed/wall/clockwork)) //if we haven't changed type
 		var/previouscolor = color
@@ -86,6 +106,8 @@
 		addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 8)
 
 /turf/closed/wall/clockwork/dismantle_wall(devastated=0, explode=0)
+	procstart = null
+	src.procstart = null
 	if(devastated)
 		devastate_wall()
 		ChangeTurf(/turf/open/floor/plating)
@@ -104,6 +126,8 @@
 			O.forceMove(src)
 
 /turf/closed/wall/clockwork/devastate_wall()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 2)
 		new/obj/item/clockwork/alloy_shards/large(src)
 	for(var/i in 1 to 2)
@@ -112,6 +136,8 @@
 		new/obj/item/clockwork/alloy_shards/small(src)
 
 /turf/closed/wall/clockwork/attack_hulk(mob/living/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(heated)
 		to_chat(user, "<span class='userdanger'>The wall is searing hot to the touch!</span>")
@@ -119,12 +145,16 @@
 		playsound(src, 'sound/machines/fryer/deep_fryer_emerge.ogg', 50, TRUE)
 
 /turf/closed/wall/clockwork/mech_melee_attack(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	..()
 	if(heated)
 		to_chat(M.occupant, "<span class='userdanger'>The wall's intense heat completely reflects your [M.name]'s attack!</span>")
 		M.take_damage(20, BURN)
 
 /turf/closed/wall/clockwork/proc/turn_up_the_heat()
+	procstart = null
+	src.procstart = null
 	if(!heated)
 		name = "superheated [name]"
 		visible_message("<span class='warning'>[src] sizzles with heat!</span>")

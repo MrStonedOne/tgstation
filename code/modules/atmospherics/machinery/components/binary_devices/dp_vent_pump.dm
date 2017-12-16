@@ -37,6 +37,8 @@ Acts like a normal vent, but has an input AND output.
 	icon_state = "dpvent_map_on"
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	return ..()
 
@@ -48,6 +50,8 @@ Acts like a normal vent, but has an input AND output.
 	icon_state = "dpvent_map_on"
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/high_volume/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/gas_mixture/air1 = AIR1
 	var/datum/gas_mixture/air2 = AIR2
@@ -55,6 +59,8 @@ Acts like a normal vent, but has an input AND output.
 	air2.volume = 1000
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(showpipe)
 		add_overlay(getpipeimage('icons/obj/atmospherics/components/unary_devices.dmi', "dpvent_cap"))
@@ -69,6 +75,8 @@ Acts like a normal vent, but has an input AND output.
 		icon_state = "vent_in"
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!on)
@@ -128,12 +136,16 @@ Acts like a normal vent, but has an input AND output.
 	//Radio remote control
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
 		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/proc/broadcast_status()
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return
 
@@ -151,12 +163,16 @@ Acts like a normal vent, but has an input AND output.
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/atmosinit()
+	procstart = null
+	src.procstart = null
 	..()
 	if(frequency)
 		set_frequency(frequency)
 	broadcast_status()
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 

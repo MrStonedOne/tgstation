@@ -1,5 +1,7 @@
 
 /datum/admins/proc/create_mob(mob/user)
+	procstart = null
+	src.procstart = null
 	var/static/create_mob_html
 	if (!create_mob_html)
 		var/mobjs = null
@@ -11,6 +13,8 @@
 	user << browse(create_panel_helper(create_mob_html), "window=create_mob;size=425x475")
 
 /proc/randomize_human(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.gender = pick(MALE, FEMALE)
 	H.real_name = random_unique_name(H.gender)
 	H.name = H.real_name

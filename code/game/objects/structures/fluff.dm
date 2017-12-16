@@ -11,6 +11,8 @@
 	var/deconstructible = TRUE
 
 /obj/structure/fluff/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench) && deconstructible)
 		user.visible_message("<span class='notice'>[user] starts disassembling [src]...</span>", "<span class='notice'>You start disassembling [src]...</span>")
 		playsound(user, I.usesound, 50, 1)
@@ -105,6 +107,8 @@
 	icon_state = "driverseat"
 
 /obj/structure/fluff/bus/passable/seat/driver/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/carhorn.ogg', 50, 1)
 
 /obj/structure/fluff/paper

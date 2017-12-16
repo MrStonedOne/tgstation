@@ -17,37 +17,51 @@
 	var/obj/screen/alert/instealthalert
 
 /mob/living/simple_animal/hostile/guardian/assassin/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stealthcooldown = 0
 
 /mob/living/simple_animal/hostile/guardian/assassin/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	updatestealthalert()
 	if(loc == summoner && toggle)
 		ToggleMode(0)
 
 /mob/living/simple_animal/hostile/guardian/assassin/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		if(stealthcooldown >= world.time)
 			stat(null, "Stealth Cooldown Remaining: [DisplayTimeText(stealthcooldown - world.time)]")
 
 /mob/living/simple_animal/hostile/guardian/assassin/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(toggle && (isliving(target) || istype(target, /obj/structure/window) || istype(target, /obj/structure/grille)))
 			ToggleMode(1)
 
 /mob/living/simple_animal/hostile/guardian/assassin/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. > 0 && toggle)
 		ToggleMode(1)
 
 /mob/living/simple_animal/hostile/guardian/assassin/Recall()
+	procstart = null
+	src.procstart = null
 	if(..() && toggle)
 		ToggleMode(0)
 
 /mob/living/simple_animal/hostile/guardian/assassin/ToggleMode(forced = 0)
+	procstart = null
+	src.procstart = null
 	if(toggle)
 		melee_damage_lower = initial(melee_damage_lower)
 		melee_damage_upper = initial(melee_damage_upper)
@@ -82,6 +96,8 @@
 		to_chat(src, "<span class='danger'><B>You cannot yet enter stealth, wait another [DisplayTimeText(stealthcooldown - world.time)]!</span></B>")
 
 /mob/living/simple_animal/hostile/guardian/assassin/proc/updatestealthalert()
+	procstart = null
+	src.procstart = null
 	if(stealthcooldown <= world.time)
 		if(toggle)
 			if(!instealthalert)

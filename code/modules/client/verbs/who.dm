@@ -57,6 +57,8 @@
 	to_chat(src, msg)
 
 /client/verb/adminwho()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Adminwho"
 

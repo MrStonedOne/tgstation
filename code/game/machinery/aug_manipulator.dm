@@ -12,6 +12,8 @@
 	var/static/list/style_list_icons = list("standard" = 'icons/mob/augmentation/augments.dmi', "engineer" = 'icons/mob/augmentation/augments_engineer.dmi', "security" = 'icons/mob/augmentation/augments_security.dmi', "mining" = 'icons/mob/augmentation/augments_mining.dmi')
 
 /obj/machinery/aug_manipulator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to eject the limb.</span>")
 
@@ -20,6 +22,8 @@
     return ..()
 
 /obj/machinery/aug_manipulator/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	if(stat & BROKEN)
@@ -35,24 +39,34 @@
 		icon_state = "[initial_icon_state]-off"
 
 /obj/machinery/aug_manipulator/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(storedpart)
 	return ..()
 
 /obj/machinery/aug_manipulator/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	if(storedpart)
 		storedpart.forceMove(loc)
 		storedpart = null
 
 /obj/machinery/aug_manipulator/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	if(storedpart)
 		storedpart.ex_act(severity, target)
 
 /obj/machinery/aug_manipulator/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == storedpart)
 		storedpart = null
 		update_icon()
 
 /obj/machinery/aug_manipulator/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, O))
 		power_change()
 		return
@@ -95,12 +109,16 @@
 		return ..()
 
 /obj/machinery/aug_manipulator/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(!(stat & BROKEN))
 			stat |= BROKEN
 			update_icon()
 
 /obj/machinery/aug_manipulator/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		add_fingerprint(user)
 
@@ -119,6 +137,8 @@
 			to_chat(user, "<span class='notice'>\The [src] is empty.</span>")
 
 /obj/machinery/aug_manipulator/proc/eject_part(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(storedpart)
 		storedpart.forceMove(get_turf(src))
 		storedpart = null
@@ -127,6 +147,8 @@
 		to_chat(user, "<span class='notice'>[src] is empty.</span>")
 
 /obj/machinery/aug_manipulator/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!user.canUseTopic(src))
 		return
@@ -134,5 +156,7 @@
 		eject_part(user)
 
 /obj/machinery/aug_manipulator/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()

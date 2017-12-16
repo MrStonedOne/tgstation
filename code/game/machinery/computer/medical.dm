@@ -26,6 +26,8 @@
 	icon_keyboard = "syndie_key"
 
 /obj/machinery/computer/med_data/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/card/id) && !scan)
 		if(!user.transferItemToLoc(O, src))
 			return
@@ -35,6 +37,8 @@
 		return ..()
 
 /obj/machinery/computer/med_data/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/dat
@@ -195,6 +199,8 @@
 	return
 
 /obj/machinery/computer/med_data/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -555,6 +561,8 @@
 	return
 
 /obj/machinery/computer/med_data/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!(stat & (BROKEN|NOPOWER)))
 		for(var/datum/data/record/R in GLOB.data_core.medical)
 			if(prob(10/severity))
@@ -582,6 +590,8 @@
 	..()
 
 /obj/machinery/computer/med_data/proc/canUseMedicalRecordsConsole(mob/user, message = 1, record1, record2)
+	procstart = null
+	src.procstart = null
 	if(user)
 		if(message)
 			if(authenticated)

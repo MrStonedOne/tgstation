@@ -21,16 +21,22 @@
 	var/list/extra_vars
 
 /datum/html_interface_client/New(client/client)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.client = client
 
 /datum/html_interface_client/proc/putExtraVar(key, value)
+	procstart = null
+	src.procstart = null
 	if (!src.extra_vars)
 		src.extra_vars = new/list()
 	src.extra_vars[key] = value
 
 /datum/html_interface_client/proc/removeExtraVar(key)
+	procstart = null
+	src.procstart = null
 	if (src.extra_vars)
 		. = src.extra_vars[key]
 
@@ -42,5 +48,7 @@
 	return .
 
 /datum/html_interface_client/proc/getExtraVar(key)
+	procstart = null
+	src.procstart = null
 	if (src.extra_vars)
 		return src.extra_vars[key]

@@ -19,6 +19,8 @@
 
 
 /obj/machinery/power/singularity_beacon/proc/Activate(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(surplus() < 1500)
 		if(user)
 			to_chat(user, "<span class='notice'>The connected wire doesn't have enough current.</span>")
@@ -33,6 +35,8 @@
 
 
 /obj/machinery/power/singularity_beacon/proc/Deactivate(mob/user = null)
+	procstart = null
+	src.procstart = null
 	for(var/obj/singularity/singulo in GLOB.singularities)
 		if(singulo.target == src)
 			singulo.target = null
@@ -43,10 +47,14 @@
 
 
 /obj/machinery/power/singularity_beacon/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/machinery/power/singularity_beacon/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		return active ? Deactivate(user) : Activate(user)
 	else
@@ -55,6 +63,8 @@
 
 
 /obj/machinery/power/singularity_beacon/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver))
 		if(active)
 			to_chat(user, "<span class='warning'>You need to deactivate the beacon first!</span>")
@@ -76,12 +86,16 @@
 		return ..()
 
 /obj/machinery/power/singularity_beacon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(active)
 		Deactivate()
 	return ..()
 
 //stealth direct power usage
 /obj/machinery/power/singularity_beacon/process()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 
@@ -114,6 +128,8 @@
 
 
 /obj/item/device/sbeacondrop/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		to_chat(user, "<span class='notice'>Locked In.</span>")
 		new droptype( user.loc )

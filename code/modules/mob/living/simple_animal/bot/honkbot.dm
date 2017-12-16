@@ -37,6 +37,8 @@
 	var/weaponscheck = TRUE
 
 /mob/living/simple_animal/bot/honkbot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "honkbot[on]"
 	auto_patrol = TRUE
@@ -51,21 +53,29 @@
 	icon_state = "honkbot[on]"
 
 /mob/living/simple_animal/bot/honkbot/proc/sensor_blink()
+	procstart = null
+	src.procstart = null
 	icon_state = "honkbot-c"
 	addtimer(CALLBACK(src, .proc/blink_end), 5)
 
 //honkbots react with sounds.
 /mob/living/simple_animal/bot/honkbot/proc/react_ping()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/ping.ogg', 50, 1, -1) //the first sound upon creation!
 	spam_flag = TRUE
 	sensor_blink()
 	addtimer(CALLBACK(src, .proc/spam_flag_false), 18) // calibrates before starting the honk
 
 /mob/living/simple_animal/bot/honkbot/proc/react_buzz()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/machines/buzz-sigh.ogg', 50, 1, -1)
 	sensor_blink()
 
 /mob/living/simple_animal/bot/honkbot/bot_reset()
+	procstart = null
+	src.procstart = null
 	..()
 	target = null
 	oldtarget_name = null
@@ -76,11 +86,15 @@
 
 /mob/living/simple_animal/bot/honkbot/set_custom_texts()
 
+	procstart = null
+	src.procstart = null
 	text_hack = "You overload [name]'s sound control system"
 	text_dehack = "You reboot [name] and restore the sound control system."
 	text_dehack_fail = "[name] refuses to accept your authority!"
 
 /mob/living/simple_animal/bot/honkbot/get_controls(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += hack(user)
 	dat += showpai(user)
@@ -99,6 +113,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 	return	dat
 
 /mob/living/simple_animal/bot/honkbot/proc/judgement_criteria()
+	procstart = null
+	src.procstart = null
 	var/final = NONE
 	if(check_records)
 		final = final|JUDGE_RECORDCHECK
@@ -107,6 +123,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 	return final
 
 /mob/living/simple_animal/bot/honkbot/proc/retaliate(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/judgement_criteria = judgement_criteria()
 	threatlevel = H.assess_threat(judgement_criteria)
 	threatlevel += 6
@@ -115,6 +133,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 		mode = BOT_HUNT
 
 /mob/living/simple_animal/bot/honkbot/attack_hand(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.a_intent == "harm")
 		retaliate(H)
 		addtimer(CALLBACK(src, .proc/react_buzz), 5)
@@ -122,6 +142,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 
 
 /mob/living/simple_animal/bot/honkbot/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/weldingtool) && user.a_intent != INTENT_HARM).
 		return
 	if(!istype(W, /obj/item/screwdriver) && (W.force) && (!target) && (W.damtype != STAMINA) ) // Check for welding tool to fix #2432.
@@ -130,6 +152,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 	..()
 
 /mob/living/simple_animal/bot/honkbot/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(emagged == 2)
 		if(user)
@@ -140,11 +164,15 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 		icon_state = "honkbot[on]"
 
 /mob/living/simple_animal/bot/honkbot/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if((istype(Proj,/obj/item/projectile/beam)) || (istype(Proj,/obj/item/projectile/bullet) && (Proj.damage_type == BURN))||(Proj.damage_type == BRUTE) && (!Proj.nodamage && Proj.damage < health))
 		retaliate(Proj.firer)
 	..()
 
 /mob/living/simple_animal/bot/honkbot/UnarmedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	if(iscarbon(A))
@@ -160,6 +188,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 
 
 /mob/living/simple_animal/bot/honkbot/hitby(atom/movable/AM, skipcatch = 0, hitpush = 1, blocked = 0)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/item))
 		playsound(src, honksound, 50, 1, -1)
 		var/obj/item/I = AM
@@ -223,6 +253,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 
 
 /mob/living/simple_animal/bot/honkbot/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -278,6 +310,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 	return
 
 /mob/living/simple_animal/bot/honkbot/proc/back_to_idle()
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	mode = BOT_IDLE
 	target = null
@@ -286,12 +320,16 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 	INVOKE_ASYNC(src, .proc/handle_automated_action) //responds quickly
 
 /mob/living/simple_animal/bot/honkbot/proc/back_to_hunt()
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	frustration = 0
 	mode = BOT_HUNT
 	INVOKE_ASYNC(src, .proc/handle_automated_action) // responds quickly
 
 /mob/living/simple_animal/bot/honkbot/proc/look_for_perp()
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	for (var/mob/living/carbon/C in view(7,src))
 		if((C.stat) || (C.handcuffed))
@@ -326,6 +364,8 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 
 /mob/living/simple_animal/bot/honkbot/explode()
 
+	procstart = null
+	src.procstart = null
 	walk_to(src,0)
 	visible_message("<span class='boldannounce'>[src] blows apart!</span>")
 	var/atom/Tsec = drop_location()
@@ -343,12 +383,16 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 	..()
 
 /mob/living/simple_animal/bot/honkbot/attack_alien(var/mob/living/carbon/alien/user as mob)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isalien(target))
 		target = user
 		mode = BOT_HUNT
 
 /mob/living/simple_animal/bot/honkbot/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(ismob(AM) && (on)) //only if its online
 		if(prob(30)) //you're far more likely to trip on a honkbot
 			var/mob/living/carbon/C = AM

@@ -3,18 +3,24 @@
 	name = "string pin"
 
 /datum/integrated_io/string/ask_for_pin_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_data = stripped_input(user, "Please type in a string.","[src] string writing", no_trim = TRUE)
 	if(holder.check_interactivity(user) )
 		to_chat(user, "<span class='notice'>You input [new_data ? "[new_data]" : "NULL"] into the pin.</span>")
 		write_data_to_pin(new_data)
 
 /datum/integrated_io/string/write_data_to_pin(var/new_data)
+	procstart = null
+	src.procstart = null
 	if(isnull(new_data) || istext(new_data))
 		data = new_data
 		holder.on_data_written()
 
 // This makes the text go "from this" to "#G&*!HD$%L"
 /datum/integrated_io/string/scramble()
+	procstart = null
+	src.procstart = null
 	if(!is_valid())
 		return
 	var/list/options = list("!","@","#","$","%","^","&","*","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
@@ -24,4 +30,6 @@
 	push_data()
 
 /datum/integrated_io/string/display_pin_type()
+	procstart = null
+	src.procstart = null
 	return IC_FORMAT_STRING

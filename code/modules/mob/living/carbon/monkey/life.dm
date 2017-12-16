@@ -4,6 +4,8 @@
 
 
 /mob/living/carbon/monkey/Life()
+	procstart = null
+	src.procstart = null
 	set invisibility = 0
 	set background = BACKGROUND_ENABLED
 
@@ -23,6 +25,8 @@
 				walk_to(src,0)
 
 /mob/living/carbon/monkey/handle_mutations_and_radiation()
+	procstart = null
+	src.procstart = null
 	if(radiation)
 		if(radiation > RAD_MOB_KNOCKDOWN && prob(RAD_MOB_KNOCKDOWN_PROB))
 			if(!IsKnockdown())
@@ -44,6 +48,8 @@
 	return ..()
 
 /mob/living/carbon/monkey/handle_breath_temperature(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	if(abs(310.15 - breath.temperature) > 50)
 		switch(breath.temperature)
 			if(-INFINITY to 120)
@@ -60,6 +66,8 @@
 				adjustFireLoss(8)
 
 /mob/living/carbon/monkey/handle_environment(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	if(!environment)
 		return
 
@@ -128,15 +136,21 @@
 	return
 
 /mob/living/carbon/monkey/handle_random_events()
+	procstart = null
+	src.procstart = null
 	if (prob(1) && prob(2))
 		emote("scratch")
 
 /mob/living/carbon/monkey/has_smoke_protection()
+	procstart = null
+	src.procstart = null
 	if(wear_mask)
 		if(wear_mask.flags_1 & BLOCK_GAS_SMOKE_EFFECT_1)
 			return 1
 
 /mob/living/carbon/monkey/handle_fire()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on_fire)
 

@@ -9,6 +9,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 
 
 /client/proc/vv_get_class(var/var_value)
+	procstart = null
+	src.procstart = null
 	if(isnull(var_value))
 		. = VV_NULL
 
@@ -53,6 +55,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 		. = VV_NULL
 
 /client/proc/vv_get_value(class, default_class, current_value, list/restricted_classes, list/extra_classes, list/classes)
+	procstart = null
+	src.procstart = null
 	. = list("class" = class, "value" = null)
 	if (!class)
 		if (!classes)
@@ -245,6 +249,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 			.["type"] = /list
 
 /client/proc/vv_parse_text(O, new_var)
+	procstart = null
+	src.procstart = null
 	if(O && findtext(new_var,"\["))
 		var/process_vars = alert(usr,"\[] detected in string, process as variables?","Process Variables?","Yes","No")
 		if(process_vars == "Yes")
@@ -255,6 +261,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 //TRUE = Yes subtypes
 //NULL = User cancelled at the prompt or invalid type given
 /client/proc/vv_subtype_prompt(var/type)
+	procstart = null
+	src.procstart = null
 	if (!ispath(type))
 		return
 	var/list/subtypes = subtypesof(type)
@@ -270,6 +278,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 				return
 
 /client/proc/vv_reference_list(type, subtypes)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/types = list(type)
 	if (subtypes)
@@ -318,6 +328,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 
 
 /client/proc/mod_list_add(list/L, atom/O, original_name, objectvar)
+	procstart = null
+	src.procstart = null
 	var/list/LL = vv_get_value(restricted_classes = list(VV_RESTORE_DEFAULT))
 	var/class = LL["class"]
 	if (!class)
@@ -346,6 +358,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 	message_admins("[key_name_admin(src)] modified [original_name]'s [objectvar]: ADDED=[var_value]")
 
 /client/proc/mod_list(list/L, atom/O, original_name, objectvar, index, autodetect_class = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_VAREDIT))
 		return
 	if(!istype(L, /list))
@@ -503,6 +517,8 @@ GLOBAL_PROTECT(VVpixelmovement)
 	message_admins("[key_name_admin(src)] modified [original_name]'s varlist [objectvar]: [original_var]=[new_var]")
 
 /client/proc/modify_variables(atom/O, param_var_name = null, autodetect_class = 0)
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_VAREDIT))
 		return
 

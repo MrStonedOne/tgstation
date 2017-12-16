@@ -19,6 +19,8 @@
 	max_ammo = 10
 
 /obj/item/ammo_box/magazine/m10mm/rifle/update_icon()
+	procstart = null
+	src.procstart = null
 	if(ammo_count())
 		icon_state = "75-8"
 	else
@@ -51,6 +53,8 @@
 	max_ammo = 8
 
 /obj/item/ammo_box/magazine/m45/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "45-[ammo_count() ? "8" : "0"]"
 
@@ -62,6 +66,8 @@
 	max_ammo = 20
 
 /obj/item/ammo_box/magazine/wt550m9/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "46x30mmt-[round(ammo_count(),4)]"
 
@@ -71,6 +77,8 @@
 	ammo_type = /obj/item/ammo_casing/c46x30mm/ap
 
 /obj/item/ammo_box/magazine/wt550m9/wtap/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "46x30mmtA-[round(ammo_count(),4)]"
 
@@ -80,6 +88,8 @@
 	ammo_type = /obj/item/ammo_casing/c46x30mm/inc
 
 /obj/item/ammo_box/magazine/wt550m9/wtic/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "46x30mmtI-[round(ammo_count(),4)]"
 
@@ -91,6 +101,8 @@
 	max_ammo = 32
 
 /obj/item/ammo_box/magazine/uzim9mm/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "uzi9mm-[round(ammo_count(),4)]"
 
@@ -102,6 +114,8 @@
 	max_ammo = 21
 
 /obj/item/ammo_box/magazine/smgm9mm/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "smg9mm-[ammo_count() ? "42" : "0"]"
 
@@ -121,6 +135,8 @@
 	max_ammo = 15
 
 /obj/item/ammo_box/magazine/pistolm9mm/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "9x19p-[ammo_count() ? "8" : "0"]"
 
@@ -132,6 +148,8 @@
 	max_ammo = 24
 
 /obj/item/ammo_box/magazine/smgm45/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "c20r45-[round(ammo_count(),2)]"
 
@@ -175,6 +193,8 @@
 	max_ammo = 8
 
 /obj/item/ammo_box/magazine/m12g/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "[initial(icon_state)]-[Ceiling(ammo_count(0)/8)*8]"
 
@@ -214,6 +234,8 @@
 	caliber = ".50"
 
 /obj/item/ammo_box/magazine/sniper_rounds/update_icon()
+	procstart = null
+	src.procstart = null
 	if(ammo_count())
 		icon_state = "[initial(icon_state)]-ammo"
 	else
@@ -255,6 +277,8 @@
 	ammo_type = /obj/item/ammo_casing/mm195x129/incen
 
 /obj/item/ammo_box/magazine/mm195x129/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "a762-[round(ammo_count(),10)]"
 
@@ -275,6 +299,8 @@
 	max_ammo = 20
 
 /obj/item/ammo_box/magazine/toy/smg/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(ammo_count())
 		icon_state = "smg9mm-42"
@@ -300,6 +326,8 @@
 	max_ammo = 20
 
 /obj/item/ammo_box/magazine/toy/smgm45/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "c20r45-[round(ammo_count(),2)]"
 
@@ -313,6 +341,8 @@
 	max_ammo = 50
 
 /obj/item/ammo_box/magazine/toy/m762/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "a762-[round(ammo_count(),10)]"
 
@@ -333,6 +363,8 @@
  	max_ammo = 20
 
 /obj/item/ammo_box/magazine/recharge/update_icon()
+	procstart = null
+	src.procstart = null
 	desc = "[initial(desc)] It has [stored_ammo.len] shot\s left."
 	icon_state = "oldrifle-[round(ammo_count(),4)]"
 

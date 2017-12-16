@@ -12,6 +12,8 @@
 	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/robot_debris/proc/streak(list/directions)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	var/direction = pick(directions)
 	for (var/i = 0, i < pick(1, 200; 2, 150; 3, 50), i++)
@@ -27,6 +29,8 @@
 			break
 
 /obj/effect/decal/cleanable/robot_debris/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/decal/cleanable/robot_debris/limb
@@ -48,6 +52,8 @@
 	bloodiness = MAX_SHOE_BLOODINESS
 
 /obj/effect/decal/cleanable/oil/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("oil", 30)
 

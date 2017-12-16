@@ -12,6 +12,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/shoes/magboots/verb/toggle()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Magboots"
 	set category = "Object"
 	set src in usr
@@ -21,6 +23,8 @@
 
 
 /obj/item/clothing/shoes/magboots/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(src.magpulse)
 		src.flags_1 &= ~NOSLIP_1
 		src.slowdown = SHOES_SLOWDOWN
@@ -37,9 +41,13 @@
 		A.UpdateButtonIcon()
 
 /obj/item/clothing/shoes/magboots/negates_gravity()
+	procstart = null
+	src.procstart = null
 	return flags_1 & NOSLIP_1
 
 /obj/item/clothing/shoes/magboots/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "Its mag-pulse traction system appears to be [magpulse ? "enabled" : "disabled"].")
 

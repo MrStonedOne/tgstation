@@ -6,6 +6,8 @@
 	earliest_start = 0
 
 /datum/round_event/wizard/imposter/start()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/M in SSticker.mode.wizards)
 		if(!ishuman(M.current))
 			continue

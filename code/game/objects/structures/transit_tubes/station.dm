@@ -23,17 +23,25 @@
 	var/const/CLOSE_DURATION = 6
 
 /obj/structure/transit_tube/station/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/transit_tube/station/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/transit_tube/station/should_stop_pod(pod, from_dir)
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/structure/transit_tube/station/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!pod_moving && open_status == STATION_TUBE_OPEN && ismob(AM) && AM.dir == boarding_dir)
 		for(var/obj/structure/transit_tube_pod/pod in loc)
 			if(!pod.moving)
@@ -44,6 +52,8 @@
 
 //pod insertion
 /obj/structure/transit_tube/station/MouseDrop_T(obj/structure/c_transit_tube_pod/R, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.canmove || user.stat || user.restrained())
 		return
 	if (!istype(R) || get_dist(user, src) > 1 || get_dist(src,R) > 1)
@@ -59,6 +69,8 @@
 
 
 /obj/structure/transit_tube/station/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!pod_moving)
 		if(user.pulling && user.a_intent == INTENT_GRAB && isliving(user.pulling))
 			if(open_status == STATION_TUBE_OPEN)
@@ -94,6 +106,8 @@
 
 
 /obj/structure/transit_tube/station/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/crowbar))
 		for(var/obj/structure/transit_tube_pod/P in loc)
 			P.deconstruct(FALSE, user)
@@ -101,6 +115,8 @@
 		return ..()
 
 /obj/structure/transit_tube/station/proc/open_animation()
+	procstart = null
+	src.procstart = null
 	if(open_status == STATION_TUBE_CLOSED)
 		icon_state = "opening_[base_icon]"
 		open_status = STATION_TUBE_OPENING
@@ -111,6 +127,8 @@
 
 
 /obj/structure/transit_tube/station/proc/close_animation()
+	procstart = null
+	src.procstart = null
 	if(open_status == STATION_TUBE_OPEN)
 		icon_state = "closing_[base_icon]"
 		open_status = STATION_TUBE_CLOSING
@@ -121,6 +139,8 @@
 
 
 /obj/structure/transit_tube/station/proc/launch_pod()
+	procstart = null
+	src.procstart = null
 	if(launch_cooldown >= world.time)
 		return
 	for(var/obj/structure/transit_tube_pod/pod in loc)
@@ -135,10 +155,14 @@
 	return 0
 
 /obj/structure/transit_tube/station/process()
+	procstart = null
+	src.procstart = null
 	if(!pod_moving)
 		launch_pod()
 
 /obj/structure/transit_tube/station/pod_stopped(obj/structure/transit_tube_pod/pod, from_dir)
+	procstart = null
+	src.procstart = null
 	pod_moving = 1
 	spawn(5)
 		if(reverse_launch)
@@ -155,6 +179,8 @@
 			air_update_turf()
 
 /obj/structure/transit_tube/station/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(EAST, WEST)
@@ -173,6 +199,8 @@
 	tube_construction = /obj/structure/c_transit_tube/station/flipped
 
 /obj/structure/transit_tube/station/flipped/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	..()
 	boarding_dir = dir
 
@@ -185,6 +213,8 @@
 	base_icon = "terminus0"
 
 /obj/structure/transit_tube/station/reverse/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(EAST)
@@ -202,6 +232,8 @@
 	tube_construction = /obj/structure/c_transit_tube/station/reverse/flipped
 
 /obj/structure/transit_tube/station/reverse/flipped/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	..()
 	boarding_dir = dir
 

@@ -27,6 +27,8 @@
 	foodtype = FRUIT
 
 /obj/item/reagent_containers/food/snacks/grown/banana/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is aiming [src] at [user.p_them()]self! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(loc, 'sound/items/bikehorn.ogg', 50, 1, -1)
 	sleep(25)
@@ -54,6 +56,8 @@
 	throw_range = 7
 
 /obj/item/grown/bananapeel/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is deliberately slipping on [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(loc, 'sound/misc/slip.ogg', 50, 1, -1)
 	return (BRUTELOSS)
@@ -121,5 +125,7 @@
 	desc = "A synthetic banana peel."
 
 /obj/item/grown/bananapeel/specialpeel/Initialize(AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 40)

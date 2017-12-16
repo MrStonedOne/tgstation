@@ -104,6 +104,8 @@
 	storage_type = /obj/item/tank/internals/emergency_oxygen/double
 
 /obj/machinery/suit_storage_unit/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires = new /datum/wires/suit_storage_unit(src)
 	if(suit_type)
@@ -117,6 +119,8 @@
 	update_icon()
 
 /obj/machinery/suit_storage_unit/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(suit)
 	QDEL_NULL(helmet)
 	QDEL_NULL(mask)
@@ -124,6 +128,8 @@
 	return ..()
 
 /obj/machinery/suit_storage_unit/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	if(uv)
@@ -148,6 +154,8 @@
 		add_overlay("human")
 
 /obj/machinery/suit_storage_unit/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!is_operational() && state_open)
 		open_machine()
@@ -155,6 +163,8 @@
 	update_icon()
 
 /obj/machinery/suit_storage_unit/proc/dump_contents()
+	procstart = null
+	src.procstart = null
 	dropContents()
 	helmet = null
 	suit = null
@@ -163,6 +173,8 @@
 	occupant = null
 
 /obj/machinery/suit_storage_unit/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		open_machine()
 		dump_contents()
@@ -170,6 +182,8 @@
 	qdel(src)
 
 /obj/machinery/suit_storage_unit/MouseDrop_T(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || user.lying || !Adjacent(user) || !Adjacent(A) || !isliving(A))
 		return
 	var/mob/living/target = A
@@ -199,6 +213,8 @@
 		add_fingerprint(user)
 
 /obj/machinery/suit_storage_unit/proc/cook()
+	procstart = null
+	src.procstart = null
 	if(uv_cycles)
 		uv_cycles--
 		uv = TRUE
@@ -246,6 +262,8 @@
 			dump_contents()
 
 /obj/machinery/suit_storage_unit/proc/shock(mob/user, prb)
+	procstart = null
+	src.procstart = null
 	if(!prob(prb))
 		var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
 		s.set_up(5, 1, src)
@@ -254,6 +272,8 @@
 			return 1
 
 /obj/machinery/suit_storage_unit/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		if(message_cooldown <= world.time)
 			message_cooldown = world.time + 50
@@ -263,6 +283,8 @@
 	dump_contents()
 
 /obj/machinery/suit_storage_unit/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		open_machine()
 		dump_contents()
@@ -290,12 +312,16 @@
 		dump_contents()
 
 /obj/machinery/suit_storage_unit/proc/resist_open(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!state_open && occupant && (user in src) && user.stat == 0) // Check they're still here.
 		visible_message("<span class='notice'>You see [user] bursts out of [src]!</span>", \
 			"<span class='notice'>You escape the cramped confines of [src]!</span>")
 		open_machine()
 
 /obj/machinery/suit_storage_unit/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(state_open && is_operational())
 		if(istype(I, /obj/item/clothing/suit/space))
 			if(suit)
@@ -349,6 +375,8 @@
 		ui.open()
 
 /obj/machinery/suit_storage_unit/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["locked"] = locked
 	data["open"] = state_open
@@ -368,6 +396,8 @@
 	return data
 
 /obj/machinery/suit_storage_unit/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..() || uv)
 		return
 	switch(action)

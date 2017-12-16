@@ -4,6 +4,8 @@ GLOBAL_PROTECT(Banlist)
 
 
 /proc/CheckBan(ckey, id, address)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.Banlist)		// if Banlist cannot be located for some reason
 		LoadBans()		// try to load the bans
 		if(!GLOB.Banlist)	// uh oh, can't find bans!
@@ -62,6 +64,8 @@ GLOBAL_PROTECT(Banlist)
 
 /proc/LoadBans()
 
+	procstart = null
+	src.procstart = null
 	GLOB.Banlist = new("data/banlist.bdb")
 	log_admin("Loading Banlist")
 
@@ -79,6 +83,8 @@ GLOBAL_PROTECT(Banlist)
 	return 1
 
 /proc/ClearTempbans()
+	procstart = null
+	src.procstart = null
 	UpdateTime()
 
 	GLOB.Banlist.cd = "/base"
@@ -100,6 +106,8 @@ GLOBAL_PROTECT(Banlist)
 
 /proc/AddBan(ckey, computerid, reason, bannedby, temp, minutes, address)
 
+	procstart = null
+	src.procstart = null
 	var/bantimestamp
 
 	if (temp)
@@ -128,6 +136,8 @@ GLOBAL_PROTECT(Banlist)
 	return 1
 
 /proc/RemoveBan(foldername)
+	procstart = null
+	src.procstart = null
 	var/key
 	var/id
 
@@ -157,6 +167,8 @@ GLOBAL_PROTECT(Banlist)
 	return 1
 
 /proc/GetExp(minutes as num)
+	procstart = null
+	src.procstart = null
 	UpdateTime()
 	var/exp = minutes - GLOB.CMinutes
 	if (exp <= 0)
@@ -172,6 +184,8 @@ GLOBAL_PROTECT(Banlist)
 		return timeleftstring
 
 /datum/admins/proc/unbanpanel()
+	procstart = null
+	src.procstart = null
 	var/count = 0
 	var/dat
 	GLOB.Banlist.cd = "/base"
@@ -202,6 +216,8 @@ GLOBAL_PROTECT(Banlist)
 
 /proc/CreateBans()
 
+	procstart = null
+	src.procstart = null
 	UpdateTime()
 
 	var/i
@@ -230,6 +246,8 @@ GLOBAL_PROTECT(Banlist)
 	GLOB.Banlist.cd = "/base"
 
 /proc/ClearAllBans()
+	procstart = null
+	src.procstart = null
 	GLOB.Banlist.cd = "/base"
 	for (var/A in GLOB.Banlist.dir)
 		RemoveBan(A)

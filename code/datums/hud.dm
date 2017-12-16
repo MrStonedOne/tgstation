@@ -32,9 +32,13 @@ GLOBAL_LIST_INIT(huds, list(
 	var/list/hud_icons = list() //these will be the indexes for the atom's hud_list
 
 /datum/atom_hud/New()
+	procstart = null
+	src.procstart = null
 	GLOB.all_huds += src
 
 /datum/atom_hud/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/v in hudusers)
 		remove_hud_from(v)
 	for(var/v in hudatoms)
@@ -43,6 +47,8 @@ GLOBAL_LIST_INIT(huds, list(
 	return ..()
 
 /datum/atom_hud/proc/remove_hud_from(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!M || !hudusers[M])
 		return
 	if (!--hudusers[M])
@@ -51,6 +57,8 @@ GLOBAL_LIST_INIT(huds, list(
 			remove_from_single_hud(M, A)
 
 /datum/atom_hud/proc/remove_from_hud(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!A)
 		return FALSE
 	for(var/mob/M in hudusers)
@@ -65,6 +73,8 @@ GLOBAL_LIST_INIT(huds, list(
 		M.client.images -= A.hud_list[i]
 
 /datum/atom_hud/proc/add_hud_to(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!M)
 		return
 	if (!hudusers[M])
@@ -75,6 +85,8 @@ GLOBAL_LIST_INIT(huds, list(
 		hudusers[M]++
 
 /datum/atom_hud/proc/add_to_hud(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!A)
 		return FALSE
 	hudatoms |= A
@@ -91,16 +103,24 @@ GLOBAL_LIST_INIT(huds, list(
 
 //MOB PROCS
 /mob/proc/reload_huds()
+	procstart = null
+	src.procstart = null
 	for(var/datum/atom_hud/hud in GLOB.all_huds)
 		if(hud && hud.hudusers[src])
 			for(var/atom/A in hud.hudatoms)
 				hud.add_to_single_hud(src, A)
 
 /mob/dead/new_player/reload_huds()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/add_click_catcher()
+	procstart = null
+	src.procstart = null
 	client.screen += client.void
 
 /mob/dead/new_player/add_click_catcher()
+	procstart = null
+	src.procstart = null
 	return

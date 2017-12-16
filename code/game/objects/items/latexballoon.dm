@@ -12,6 +12,8 @@
 	var/datum/gas_mixture/air_contents = null
 
 /obj/item/latexballon/proc/blow(obj/item/tank/tank, mob/user)
+	procstart = null
+	src.procstart = null
 	if (icon_state == "latexballon_bursted")
 		return
 	icon_state = "latexballon_blow"
@@ -21,6 +23,8 @@
 	air_contents = tank.remove_air_volume(3)
 
 /obj/item/latexballon/proc/burst()
+	procstart = null
+	src.procstart = null
 	if (!air_contents || icon_state != "latexballon_blow")
 		return
 	playsound(src, 'sound/weapons/gunshot.ogg', 100, 1)
@@ -32,6 +36,8 @@
 	loc.assume_air(air_contents)
 
 /obj/item/latexballon/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	burst()
 	switch(severity)
 		if (1)
@@ -41,13 +47,19 @@
 				qdel(src)
 
 /obj/item/latexballon/bullet_act()
+	procstart = null
+	src.procstart = null
 	burst()
 
 /obj/item/latexballon/temperature_expose(datum/gas_mixture/air, temperature, volume)
+	procstart = null
+	src.procstart = null
 	if(temperature > T0C+100)
 		burst()
 
 /obj/item/latexballon/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/tank))
 		var/obj/item/tank/T = W
 		blow(T, user)

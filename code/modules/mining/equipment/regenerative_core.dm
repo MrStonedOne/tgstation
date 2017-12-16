@@ -7,6 +7,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/hivelordstabilizer/afterattack(obj/item/organ/M, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/regenerative_core/C = M
 	if(!istype(C, /obj/item/organ/regenerative_core))
 		to_chat(user, "<span class='warning'>The stabilizer only works on certain types of monster organs, generally regenerative in nature.</span>")
@@ -29,14 +31,20 @@
 	var/preserved = 0
 
 /obj/item/organ/regenerative_core/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/inert_check), 2400)
 
 /obj/item/organ/regenerative_core/proc/inert_check()
+	procstart = null
+	src.procstart = null
 	if(!preserved)
 		go_inert()
 
 /obj/item/organ/regenerative_core/proc/preserved(implanted = 0)
+	procstart = null
+	src.procstart = null
 	inert = FALSE
 	preserved = TRUE
 	update_icon()
@@ -47,6 +55,8 @@
 		SSblackbox.record_feedback("nested tally", "hivelord_core", 1, list("[type]", "stabilizer"))
 
 /obj/item/organ/regenerative_core/proc/go_inert()
+	procstart = null
+	src.procstart = null
 	inert = TRUE
 	name = "decayed regenerative core"
 	desc = "All that remains of a hivelord. It has decayed, and is completely useless."
@@ -54,6 +64,8 @@
 	update_icon()
 
 /obj/item/organ/regenerative_core/ui_action_click()
+	procstart = null
+	src.procstart = null
 	if(inert)
 		to_chat(owner, "<span class='notice'>[src] breaks down as it tries to activate.</span>")
 	else
@@ -61,11 +73,15 @@
 	qdel(src)
 
 /obj/item/organ/regenerative_core/on_life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(owner.health < HEALTH_THRESHOLD_CRIT)
 		ui_action_click()
 
 /obj/item/organ/regenerative_core/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(proximity_flag && ishuman(target))
 		var/mob/living/carbon/human/H = target
 		if(inert)
@@ -86,18 +102,24 @@
 	..()
 
 /obj/item/organ/regenerative_core/Insert(mob/living/carbon/M, special = 0, drop_if_replaced = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!preserved && !inert)
 		preserved(TRUE)
 		owner.visible_message("<span class='notice'>[src] stabilizes as it's inserted.</span>")
 
 /obj/item/organ/regenerative_core/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	if(!inert && !special)
 		owner.visible_message("<span class='notice'>[src] rapidly decays as it's removed.</span>")
 		go_inert()
 	return ..()
 
 /obj/item/organ/regenerative_core/prepare_eat()
+	procstart = null
+	src.procstart = null
 	return null
 
 /*************************Legion core********************/
@@ -106,10 +128,14 @@
 	icon_state = "legion_soul"
 
 /obj/item/organ/regenerative_core/legion/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/organ/regenerative_core/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = inert ? "legion_soul_inert" : "legion_soul"
 	cut_overlays()
 	if(!inert && !preserved)
@@ -119,9 +145,13 @@
 		A.UpdateButtonIcon()
 
 /obj/item/organ/regenerative_core/legion/go_inert()
+	procstart = null
+	src.procstart = null
 	..()
 	desc = "[src] has become inert. It has decayed, and is completely useless."
 
 /obj/item/organ/regenerative_core/legion/preserved(implanted = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	desc = "[src] has been stabilized. It is preserved, allowing you to use it to heal completely without danger of decay."

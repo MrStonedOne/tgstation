@@ -7,10 +7,14 @@
 	var/turf/teleport_target
 
 /obj/machinery/abductor/pad/proc/Warp(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!target.buckled)
 		target.forceMove(get_turf(src))
 
 /obj/machinery/abductor/pad/proc/Send()
+	procstart = null
+	src.procstart = null
 	if(teleport_target == null)
 		teleport_target = GLOB.teleportlocs[pick(GLOB.teleportlocs)]
 	flick("alien-pad", src)
@@ -21,26 +25,36 @@
 		target.Stun(60)
 
 /obj/machinery/abductor/pad/proc/Retrieve(mob/living/target)
+	procstart = null
+	src.procstart = null
 	flick("alien-pad", src)
 	new /obj/effect/temp_visual/dir_setting/ninja(get_turf(target), target.dir)
 	Warp(target)
 
 /obj/machinery/abductor/pad/proc/doMobToLoc(place, atom/movable/target)
+	procstart = null
+	src.procstart = null
 	flick("alien-pad", src)
 	target.forceMove(place)
 	new /obj/effect/temp_visual/dir_setting/ninja(get_turf(target), target.dir)
 
 /obj/machinery/abductor/pad/proc/MobToLoc(place,mob/living/target)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/teleport_abductor(place)
 	addtimer(CALLBACK(src, .proc/doMobToLoc, place, target), 80)
 
 /obj/machinery/abductor/pad/proc/doPadToLoc(place)
+	procstart = null
+	src.procstart = null
 	flick("alien-pad", src)
 	for(var/mob/living/target in get_turf(src))
 		target.forceMove(place)
 		new /obj/effect/temp_visual/dir_setting/ninja(get_turf(target), target.dir)
 
 /obj/machinery/abductor/pad/proc/PadToLoc(place)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/teleport_abductor(place)
 	addtimer(CALLBACK(src, .proc/doPadToLoc, place), 80)
 
@@ -51,6 +65,8 @@
 	duration = 80
 
 /obj/effect/temp_visual/teleport_abductor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/effect_system/spark_spread/S = new
 	S.set_up(10,0,loc)

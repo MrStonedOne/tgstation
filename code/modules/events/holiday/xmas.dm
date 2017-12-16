@@ -6,6 +6,8 @@
 	weight = 20
 
 /datum/round_event/treevenge/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/flora/tree/pine/xmas in world)
 		var/mob/living/simple_animal/hostile/tree/evil_tree = new /mob/living/simple_animal/hostile/tree(xmas.loc)
 		evil_tree.icon_state = xmas.icon_state
@@ -24,6 +26,8 @@
 	earliest_start = 0
 
 /datum/round_event/presents/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/flora/tree/pine/xmas in world)
 		if(!(xmas.z in GLOB.station_z_levels))
 			continue
@@ -36,6 +40,8 @@
 		Monitor.icon_state = "entertainment_xmas"
 
 /datum/round_event/presents/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Ho Ho Ho, Merry Xmas!", "Unknown Transmission")
 
 
@@ -47,6 +53,8 @@
 	var/cracked = 0
 
 /obj/item/toy/xmas_cracker/attack(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if( !cracked && ishuman(target) && (target.stat == CONSCIOUS) && !target.get_active_held_item() )
 		target.visible_message("[user] and [target] pop \an [src]! *pop*", "<span class='notice'>You pull \an [src] with [target]! *pop*</span>", "<span class='italics'>You hear a pop.</span>")
 		var/obj/item/paper/Joke = new /obj/item/paper(user.loc)
@@ -85,6 +93,8 @@
 	var/tree = /obj/structure/flora/tree/pine/xmas
 
 /obj/effect/landmark/xmastree/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	if(FESTIVE_SEASON in SSevents.holidays)
 		new tree(get_turf(src))
@@ -106,9 +116,13 @@
 	var/mob/living/carbon/human/santa //who is our santa?
 
 /datum/round_event/santa/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Santa is coming to town!", "Unknown Transmission")
 
 /datum/round_event/santa/start()
+	procstart = null
+	src.procstart = null
 	var/list/candidates = pollGhostCandidates("Santa is coming to town! Do you want to be santa?", poll_time=150)
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/Z = pick(candidates)

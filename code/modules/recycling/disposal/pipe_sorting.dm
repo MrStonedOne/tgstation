@@ -7,6 +7,8 @@
 	initialize_dirs = DISP_DIR_RIGHT | DISP_DIR_FLIP
 
 /obj/structure/disposalpipe/sorting/nextdir(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	var/sortdir = dpdir & ~(dir | turn(dir, 180))
 	if(H.dir != sortdir)		// probably came from the negdir
 		if(check_sorting(H))	// if destination matches filtered type...
@@ -17,6 +19,8 @@
 
 // Sorting check, to be overridden in subtypes
 /obj/structure/disposalpipe/sorting/proc/check_sorting(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 
@@ -36,6 +40,8 @@
 	initialize_dirs = DISP_DIR_LEFT | DISP_DIR_FLIP
 
 /obj/structure/disposalpipe/sorting/mail/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Generate a list of soring tags.
 	if(sortType)
@@ -49,6 +55,8 @@
 					sortTypes |= n
 
 /obj/structure/disposalpipe/sorting/mail/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(sortTypes.len)
 		to_chat(user, "It is tagged with the following tags:")
@@ -59,6 +67,8 @@
 
 
 /obj/structure/disposalpipe/sorting/mail/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/destTagger))
 		var/obj/item/device/destTagger/O = I
 
@@ -74,6 +84,8 @@
 		return ..()
 
 /obj/structure/disposalpipe/sorting/mail/check_sorting(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return (H.destinationTag in sortTypes)
 
 
@@ -86,6 +98,8 @@
 	initialize_dirs = DISP_DIR_RIGHT | DISP_DIR_FLIP
 
 /obj/structure/disposalpipe/sorting/wrap/check_sorting(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return H.tomail
 
 /obj/structure/disposalpipe/sorting/wrap/flip

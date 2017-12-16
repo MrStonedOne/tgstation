@@ -16,6 +16,8 @@
 
 //Adding canvases
 /obj/structure/easel/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/canvas))
 		var/obj/item/canvas/C = I
 		user.dropItemToGround(C)
@@ -29,6 +31,8 @@
 
 //Stick to the easel like glue
 /obj/structure/easel/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	. = ..()
 	if(painting && painting.loc == T) //Only move if it's near us.
@@ -69,6 +73,8 @@ GLOBAL_LIST_INIT(globalBlankCanvases, new(AMT_OF_CANVASES))
 
 //Find the right size blank canvas
 /obj/item/canvas/proc/getGlobalBackup()
+	procstart = null
+	src.procstart = null
 	. = null
 	if(GLOB.globalBlankCanvases[whichGlobalBackup])
 		. = GLOB.globalBlankCanvases[whichGlobalBackup]
@@ -81,6 +87,8 @@ GLOBAL_LIST_INIT(globalBlankCanvases, new(AMT_OF_CANVASES))
 
 //One pixel increments
 /obj/item/canvas/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	//Click info
 	var/list/click_params = params2list(params)
 	var/pixX = text2num(click_params["icon-x"])
@@ -115,6 +123,8 @@ GLOBAL_LIST_INIT(globalBlankCanvases, new(AMT_OF_CANVASES))
 
 //Clean the whole canvas
 /obj/item/canvas/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	var/icon/blank = getGlobalBackup()

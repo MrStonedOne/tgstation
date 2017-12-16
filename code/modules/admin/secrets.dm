@@ -90,6 +90,8 @@
 
 
 /datum/admins/proc/Secrets_topic(item,href_list)
+	procstart = null
+	src.procstart = null
 	var/datum/round_event/E
 	var/ok = 0
 	switch(item)

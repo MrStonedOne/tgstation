@@ -6,6 +6,8 @@
 	icon_state = "leap_off"
 
 /obj/screen/alien/leap/Click()
+	procstart = null
+	src.procstart = null
 	if(isalienhunter(usr))
 		var/mob/living/carbon/alien/humanoid/hunter/AH = usr
 		AH.toggle_leap()
@@ -29,6 +31,8 @@
 	ui_style_icon = 'icons/mob/screen_alien.dmi'
 
 /datum/hud/alien/New(mob/living/carbon/alien/humanoid/owner, ui_style = 'icons/mob/screen_alien.dmi')
+	procstart = null
+	src.procstart = null
 	..()
 
 	var/obj/screen/using
@@ -111,6 +115,8 @@
 			inv.update_icon()
 
 /datum/hud/alien/persistent_inventory_update()
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	var/mob/living/carbon/alien/humanoid/H = mymob
@@ -124,5 +130,7 @@
 			H.client.screen -= I
 
 /mob/living/carbon/alien/humanoid/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/alien(src)

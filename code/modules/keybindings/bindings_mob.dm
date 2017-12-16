@@ -3,6 +3,8 @@
 // Or we can have NPC's send actual keypresses and detect that by seeing no client
 
 /mob/key_down(_key, client/user)
+	procstart = null
+	src.procstart = null
 	switch(_key)
 		if("Delete", "H")
 			if(!pulling)
@@ -72,6 +74,8 @@
 	return ..()
 
 /mob/key_up(_key, client/user)
+	procstart = null
+	src.procstart = null
 	switch(_key)
 		if("Alt")
 			toggle_move_intent()

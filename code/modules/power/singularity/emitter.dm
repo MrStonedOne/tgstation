@@ -49,6 +49,8 @@
 	use_power = FALSE
 
 /obj/machinery/power/emitter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RefreshParts()
 	wires = new /datum/wires/emitter(src)
@@ -60,6 +62,8 @@
 	sparks.set_up(5, TRUE, src)
 
 /obj/machinery/power/emitter/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/max_firedelay = 120
 	var/firedelay = 120
 	var/min_firedelay = 24
@@ -76,6 +80,8 @@
 	active_power_usage = power_usage
 
 /obj/machinery/power/emitter/verb/rotate()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate"
 	set category = "Object"
 	set src in oview(1)
@@ -89,6 +95,8 @@
 	return 1
 
 /obj/machinery/power/emitter/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -99,6 +107,8 @@
 		rotate()
 
 /obj/machinery/power/emitter/Destroy()
+	procstart = null
+	src.procstart = null
 	if(SSticker.IsRoundInProgress())
 		var/turf/T = get_turf(src)
 		message_admins("Emitter deleted at [ADMIN_COORDJMP(T)]",0,1)
@@ -108,6 +118,8 @@
 	return ..()
 
 /obj/machinery/power/emitter/update_icon()
+	procstart = null
+	src.procstart = null
 	if (active && powernet && avail(active_power_usage))
 		icon_state = icon_state_on
 	else
@@ -115,6 +127,8 @@
 
 
 /obj/machinery/power/emitter/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	src.add_fingerprint(user)
 	if(state == 2)
 		if(!powernet)
@@ -141,6 +155,8 @@
 		return 1
 
 /obj/machinery/power/emitter/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	if(ismegafauna(M) && anchored)
 		state = 0
 		anchored = FALSE
@@ -156,6 +172,8 @@
 
 
 /obj/machinery/power/emitter/process()
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN))
 		return
 	if(src.state != 2 || (!powernet && active_power_usage))
@@ -183,11 +201,15 @@
 		fire_beam()
 
 /obj/machinery/power/emitter/proc/check_delay()
+	procstart = null
+	src.procstart = null
 	if((src.last_shot + src.fire_delay) <= world.time)
 		return TRUE
 	return FALSE
 
 /obj/machinery/power/emitter/proc/fire_beam_pulse()
+	procstart = null
+	src.procstart = null
 	if(!check_delay())
 		return FALSE
 	if(state != 2)
@@ -197,6 +219,8 @@
 		fire_beam()
 
 /obj/machinery/power/emitter/proc/fire_beam(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/projectile/P = new projectile_type(get_turf(src))
 	playsound(get_turf(src), projectile_sound, 50, 1)
 	if(prob(35))
@@ -220,6 +244,8 @@
 	return P
 
 /obj/machinery/power/emitter/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(state == EM_WELDED)
 		if(!silent)
 			to_chat(user, "<span class='warning'>[src] is welded to the floor!</span>")
@@ -227,6 +253,8 @@
 	return ..()
 
 /obj/machinery/power/emitter/default_unfasten_wrench(mob/user, obj/item/wrench/W, time = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_UNFASTEN)
 		if(anchored)
@@ -235,6 +263,8 @@
 			state = EM_UNSECURED
 
 /obj/machinery/power/emitter/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench))
 		if(active)
 			to_chat(user, "<span class='warning'>Turn \the [src] off first!</span>")
@@ -305,6 +335,8 @@
 	return ..()
 
 /obj/machinery/power/emitter/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	locked = FALSE
@@ -326,6 +358,8 @@
 //BUCKLE HOOKS
 
 /obj/machinery/power/emitter/prototype/unbuckle_mob(mob/living/buckled_mob,force = 0)
+	procstart = null
+	src.procstart = null
 	playsound(src,'sound/mecha/mechmove01.ogg', 50, 1)
 	manual = FALSE
 	for(var/obj/item/I in buckled_mob.held_items)
@@ -340,6 +374,8 @@
 	. = ..()
 
 /obj/machinery/power/emitter/prototype/user_buckle_mob(mob/living/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated() || !istype(user))
 		return
 	for(var/atom/movable/A in get_turf(src))
@@ -363,6 +399,8 @@
 
 
 /datum/action/innate/protoemitter/Grant(mob/living/carbon/L, obj/machinery/power/emitter/prototype/proto)
+	procstart = null
+	src.procstart = null
 	PE = proto
 	U = L
 	. = ..()
@@ -373,6 +411,8 @@
 	button_icon_state = "mech_zoom_on"
 
 /datum/action/innate/protoemitter/firing/Activate()
+	procstart = null
+	src.procstart = null
 	if(PE.manual)
 		playsound(PE,'sound/mecha/mechmove01.ogg', 50, 1)
 		PE.manual = FALSE
@@ -411,6 +451,8 @@
 	var/delay = 0
 
 /obj/item/turret_control/afterattack(atom/targeted_atom, mob/user, proxflag, clickparams)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/machinery/power/emitter/E = user.buckled
 	E.setDir(get_dir(E,targeted_atom))

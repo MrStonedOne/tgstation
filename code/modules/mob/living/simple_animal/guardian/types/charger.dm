@@ -15,6 +15,8 @@
 	var/obj/screen/alert/chargealert
 
 /mob/living/simple_animal/hostile/guardian/charger/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ranged_cooldown <= world.time)
 		if(!chargealert)
@@ -24,6 +26,8 @@
 		chargealert = null
 
 /mob/living/simple_animal/hostile/guardian/charger/OpenFire(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		visible_message("<span class='danger'><b>[src]</b> [ranged_message] at [A]!</span>")
 		ranged_cooldown = world.time + ranged_cooldown_time
@@ -32,22 +36,32 @@
 		Shoot(A)
 
 /mob/living/simple_animal/hostile/guardian/charger/Shoot(atom/targeted_atom)
+	procstart = null
+	src.procstart = null
 	charging = 1
 	throw_at(targeted_atom, range, 1, src, 0, callback = CALLBACK(src, .proc/charging_end))
 
 /mob/living/simple_animal/hostile/guardian/charger/proc/charging_end()
+	procstart = null
+	src.procstart = null
 	charging = 0
 
 /mob/living/simple_animal/hostile/guardian/charger/Move()
+	procstart = null
+	src.procstart = null
 	if(charging)
 		new /obj/effect/temp_visual/decoy/fading(loc,src)
 	. = ..()
 
 /mob/living/simple_animal/hostile/guardian/charger/snapback()
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		..()
 
 /mob/living/simple_animal/hostile/guardian/charger/throw_impact(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		return ..()
 

@@ -35,6 +35,8 @@ Bonus
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
 /datum/symptom/fire/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_rate"] >= 4)
@@ -47,6 +49,8 @@ Bonus
 		infective = TRUE
 
 /datum/symptom/fire/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -66,6 +70,8 @@ Bonus
 			M.emote("scream")
 
 /datum/symptom/fire/proc/Firestacks_stage_4(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	M.adjust_fire_stacks(1 * power)
 	M.adjustFireLoss(3 * power)
 	if(infective)
@@ -73,6 +79,8 @@ Bonus
 	return 1
 
 /datum/symptom/fire/proc/Firestacks_stage_5(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	M.adjust_fire_stacks(3 * power)
 	M.adjustFireLoss(5 * power)
 	if(infective)
@@ -117,6 +125,8 @@ Bonus
 					  <b>Transmission 8:</b> Additionally synthesizes chlorine trifluoride and napalm inside the host."
 
 /datum/symptom/alkali/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["resistance"] >= 9) //intense but sporadic effect
@@ -129,6 +139,8 @@ Bonus
 		chems = TRUE
 
 /datum/symptom/alkali/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -152,6 +164,8 @@ Bonus
 				Alkali_fire_stage_5(M, A)
 
 /datum/symptom/alkali/proc/Alkali_fire_stage_4(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_stacks = 6 * power
 	M.adjust_fire_stacks(get_stacks)
 	M.adjustFireLoss(get_stacks/2)
@@ -160,6 +174,8 @@ Bonus
 	return 1
 
 /datum/symptom/alkali/proc/Alkali_fire_stage_5(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_stacks = 8 * power
 	M.adjust_fire_stacks(get_stacks)
 	M.adjustFireLoss(get_stacks)

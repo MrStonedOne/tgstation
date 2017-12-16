@@ -18,6 +18,8 @@
 	var/obj/effect/countdown/anomaly/countdown
 
 /obj/effect/anomaly/Initialize(mapload, new_lifespan)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.poi_list |= src
 	START_PROCESSING(SSobj, src)
@@ -40,6 +42,8 @@
 	countdown.start()
 
 /obj/effect/anomaly/process()
+	procstart = null
+	src.procstart = null
 	anomalyEffect()
 	if(death_time < world.time)
 		if(loc)
@@ -47,23 +51,33 @@
 		qdel(src)
 
 /obj/effect/anomaly/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list.Remove(src)
 	STOP_PROCESSING(SSobj, src)
 	qdel(countdown)
 	return ..()
 
 /obj/effect/anomaly/proc/anomalyEffect()
+	procstart = null
+	src.procstart = null
 	if(prob(movechance))
 		step(src,pick(GLOB.alldirs))
 
 /obj/effect/anomaly/proc/detonate()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/anomaly/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity == 1)
 		qdel(src)
 
 /obj/effect/anomaly/proc/anomalyNeutralize()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/particle_effect/smoke/bad(loc)
 
 	for(var/atom/movable/O in src)
@@ -73,6 +87,8 @@
 
 
 /obj/effect/anomaly/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/analyzer))
 		to_chat(user, "<span class='notice'>Analyzing... [src]'s unstable field is fluctuating along frequency [format_frequency(aSignal.frequency)], code [aSignal.code].</span>")
 
@@ -85,9 +101,13 @@
 	var/boing = 0
 
 /obj/effect/anomaly/grav/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/effect/anomaly/grav/anomalyEffect()
+	procstart = null
+	src.procstart = null
 	..()
 	boing = 1
 	for(var/obj/O in orange(4, src))
@@ -104,15 +124,23 @@
 				O.throw_at(target, 5, 10)
 
 /obj/effect/anomaly/grav/Crossed(mob/A)
+	procstart = null
+	src.procstart = null
 	gravShock(A)
 
 /obj/effect/anomaly/grav/Collide(mob/A)
+	procstart = null
+	src.procstart = null
 	gravShock(A)
 
 /obj/effect/anomaly/grav/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	gravShock(AM)
 
 /obj/effect/anomaly/grav/proc/gravShock(mob/living/A)
+	procstart = null
+	src.procstart = null
 	if(boing && isliving(A) && !A.stat)
 		A.Knockdown(40)
 		var/atom/target = get_edge_target_turf(A, get_dir(src, get_step_away(A, src)))
@@ -130,24 +158,36 @@
 	var/explosive = TRUE
 
 /obj/effect/anomaly/flux/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/effect/anomaly/flux/anomalyEffect()
+	procstart = null
+	src.procstart = null
 	..()
 	canshock = 1
 	for(var/mob/living/M in range(0, src))
 		mobShock(M)
 
 /obj/effect/anomaly/flux/Crossed(mob/living/M)
+	procstart = null
+	src.procstart = null
 	mobShock(M)
 
 /obj/effect/anomaly/flux/Collide(mob/living/M)
+	procstart = null
+	src.procstart = null
 	mobShock(M)
 
 /obj/effect/anomaly/flux/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	mobShock(AM)
 
 /obj/effect/anomaly/flux/proc/mobShock(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(canshock && istype(M))
 		canshock = 0 //Just so you don't instakill yourself if you slam into the anomaly five times in a second.
 		if(iscarbon(M))
@@ -163,6 +203,8 @@
 		"<span class='italics'>You hear a heavy electrical crack.</span>")
 
 /obj/effect/anomaly/flux/detonate()
+	procstart = null
+	src.procstart = null
 	if(explosive)
 		explosion(src, 1, 4, 16, 18) //Low devastation, but hits a lot of stuff.
 	else
@@ -178,18 +220,26 @@
 	density = TRUE
 
 /obj/effect/anomaly/bluespace/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/effect/anomaly/bluespace/anomalyEffect()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/mob/living/M in range(1,src))
 		do_teleport(M, locate(M.x, M.y, M.z), 4)
 
 /obj/effect/anomaly/bluespace/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		do_teleport(AM, locate(AM.x, AM.y, AM.z), 8)
 
 /obj/effect/anomaly/bluespace/detonate()
+	procstart = null
+	src.procstart = null
 	var/turf/T = safepick(get_area_turfs(impact_area))
 	if(T)
 			// Calculate new position (searches through beacons in world)
@@ -251,9 +301,13 @@
 	var/ticks = 0
 
 /obj/effect/anomaly/pyro/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/effect/anomaly/pyro/anomalyEffect()
+	procstart = null
+	src.procstart = null
 	..()
 	ticks++
 	if(ticks < 5)
@@ -265,9 +319,13 @@
 		T.atmos_spawn_air("o2=5;plasma=5;TEMP=1000")
 
 /obj/effect/anomaly/pyro/detonate()
+	procstart = null
+	src.procstart = null
 	INVOKE_ASYNC(src, .proc/makepyroslime)
 
 /obj/effect/anomaly/pyro/proc/makepyroslime()
+	procstart = null
+	src.procstart = null
 	var/turf/open/T = get_turf(src)
 	if(istype(T))
 		T.atmos_spawn_air("o2=500;plasma=500;TEMP=1000") //Make it hot and burny for the new slime
@@ -286,9 +344,13 @@
 	desc = "That's a nice station you have there. It'd be a shame if something happened to it."
 
 /obj/effect/anomaly/bhole/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/effect/anomaly/bhole/anomalyEffect()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isturf(loc)) //blackhole cannot be contained inside anything. Weird stuff might happen
 		qdel(src)
@@ -308,6 +370,8 @@
 			O.ex_act(EXPLODE_HEAVY)
 
 /obj/effect/anomaly/bhole/proc/grav(r, ex_act_force, pull_chance, turf_removal_chance)
+	procstart = null
+	src.procstart = null
 	for(var/t = -r, t < r, t++)
 		affect_coord(x+t, y-r, ex_act_force, pull_chance, turf_removal_chance)
 		affect_coord(x-t, y+r, ex_act_force, pull_chance, turf_removal_chance)
@@ -315,6 +379,8 @@
 		affect_coord(x-r, y-t, ex_act_force, pull_chance, turf_removal_chance)
 
 /obj/effect/anomaly/bhole/proc/affect_coord(x, y, ex_act_force, pull_chance, turf_removal_chance)
+	procstart = null
+	src.procstart = null
 	//Get turf at coordinate
 	var/turf/T = locate(x, y, z)
 	if(isnull(T))

@@ -78,12 +78,16 @@
 	foodtype = VEGETABLES
 
 /obj/item/reagent_containers/food/snacks/grown/ghost_chili/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if( ismob(loc) )
 		held_mob = loc
 		START_PROCESSING(SSobj, src)
 
 /obj/item/reagent_containers/food/snacks/grown/ghost_chili/process()
+	procstart = null
+	src.procstart = null
 	if(held_mob && loc == held_mob)
 		if(held_mob.is_holding(src))
 			if(istype(held_mob) && held_mob.gloves)

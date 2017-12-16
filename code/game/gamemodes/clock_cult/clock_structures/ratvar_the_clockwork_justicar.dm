@@ -18,6 +18,8 @@
 	dangerous_possession = TRUE
 
 /obj/structure/destructible/clockwork/massive/ratvar/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.ratvar_awakens++
 	for(var/obj/O in GLOB.all_clockwork_objects)
@@ -33,6 +35,8 @@
 	INVOKE_ASYNC(SSshuttle.emergency, /obj/docking_port/mobile/emergency.proc/request, null, 10, null, FALSE, 0)
 
 /obj/structure/destructible/clockwork/massive/ratvar/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.ratvar_awakens--
 	for(var/obj/O in GLOB.all_clockwork_objects)
 		O.ratvar_act()
@@ -40,6 +44,8 @@
 	return ..()
 
 /obj/structure/destructible/clockwork/massive/ratvar/attack_ghost(mob/dead/observer/O)
+	procstart = null
+	src.procstart = null
 	var/alertresult = alert(O, "Embrace the Justiciar's light? You can no longer be cloned!",,"Yes", "No")
 	if(alertresult == "No" || QDELETED(O) || !istype(O) || !O.key)
 		return FALSE
@@ -48,15 +54,21 @@
 	R.key = O.key
 
 /obj/structure/destructible/clockwork/massive/ratvar/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(A)
 	if(T == loc)
 		T = get_step(T, dir) //please don't run into a window like a bird, ratvar
 	forceMove(T)
 
 /obj/structure/destructible/clockwork/massive/ratvar/Process_Spacemove()
+	procstart = null
+	src.procstart = null
 	return clashing
 
 /obj/structure/destructible/clockwork/massive/ratvar/process()
+	procstart = null
+	src.procstart = null
 	if(clashing) //I'm a bit occupied right now, thanks
 		return
 	for(var/I in circlerangeturfs(src, convert_range))
@@ -97,6 +109,8 @@
 	step(src, dir_to_step_in)
 
 /obj/structure/destructible/clockwork/massive/ratvar/proc/clash()
+	procstart = null
+	src.procstart = null
 	if(clashing || prey != GLOB.cult_narsie)
 		return
 	clashing = TRUE
@@ -108,6 +122,8 @@
 
 //Put me in Reebe, will you? Ratvar has found and is going to do a hecking murder on Nar-Sie
 /obj/structure/destructible/clockwork/massive/ratvar/proc/clash_of_the_titans(obj/singularity/narsie/narsie)
+	procstart = null
+	src.procstart = null
 	var/winner = "Undeclared"
 	var/base_victory_chance = 1
 	while(src && narsie)

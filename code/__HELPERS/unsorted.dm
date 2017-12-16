@@ -7,6 +7,8 @@
 //Inverts the colour of an HTML string
 /proc/invertHTML(HTMLstring)
 
+	procstart = null
+	src.procstart = null
 	if (!( istext(HTMLstring) ))
 		CRASH("Given non-text argument!")
 		return
@@ -174,6 +176,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 //Returns whether or not a player is a guest using their ckey as an input
 /proc/IsGuestKey(key)
+	procstart = null
+	src.procstart = null
 	if (findtext(key, "Guest-", 1, 7) != 1) //was findtextEx
 		return 0
 
@@ -187,6 +191,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 //Generalised helper proc for letting mobs rename themselves. Used to be clname() and ainame()
 /mob/proc/rename_self(role, client/C)
+	procstart = null
+	src.procstart = null
 	if(!C)
 		C = client
 	var/oldname = real_name
@@ -228,10 +234,14 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 //Picks a string of symbols to display as the law number for hacked or ion laws
 /proc/ionnum()
+	procstart = null
+	src.procstart = null
 	return "[pick("!","@","#","$","%","^","&")][pick("!","@","#","$","%","^","&","*")][pick("!","@","#","$","%","^","&","*")][pick("!","@","#","$","%","^","&","*")]"
 
 //Returns a list of unslaved cyborgs
 /proc/active_free_borgs()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/mob/living/silicon/robot/R in GLOB.alive_mob_list)
 		if(R.connected_ai || R.shell)
@@ -244,6 +254,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 //Returns a list of AI's
 /proc/active_ais(check_mind=0)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/mob/living/silicon/ai/A in GLOB.alive_mob_list)
 		if(A.stat == DEAD)
@@ -258,6 +270,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 //Find an active ai with the least borgs. VERBOSE PROCNAME HUH!
 /proc/select_active_ai_with_fewest_borgs()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/selected
 	var/list/active = active_ais()
 	for(var/mob/living/silicon/ai/A in active)
@@ -267,6 +281,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return selected
 
 /proc/select_active_free_borg(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/borgs = active_free_borgs()
 	if(borgs.len)
 		if(user)
@@ -276,6 +292,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return .
 
 /proc/select_active_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/ais = active_ais()
 	if(ais.len)
 		if(user)
@@ -286,6 +304,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 //Returns a list of all items of interest with their name
 /proc/getpois(mobs_only=0,skip_mindless=0)
+	procstart = null
+	src.procstart = null
 	var/list/mobs = sortmobs()
 	var/list/namecounts = list()
 	var/list/pois = list()
@@ -315,6 +335,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return pois
 //Orders mobs by type then by name
 /proc/sortmobs()
+	procstart = null
+	src.procstart = null
 	var/list/moblist = list()
 	var/list/sortmob = sortNames(GLOB.mob_list)
 	for(var/mob/living/silicon/ai/M in sortmob)
@@ -347,16 +369,22 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 //E = MC^2
 /proc/convert2energy(M)
+	procstart = null
+	src.procstart = null
 	var/E = M*(SPEED_OF_LIGHT_SQ)
 	return E
 
 //M = E/C^2
 /proc/convert2mass(E)
+	procstart = null
+	src.procstart = null
 	var/M = E/(SPEED_OF_LIGHT_SQ)
 	return M
 
 // Format a power value in W, kW, MW, or GW.
 /proc/DisplayPower(powerused)
+	procstart = null
+	src.procstart = null
 	if(powerused < 1000) //Less than a kW
 		return "[powerused] W"
 	else if(powerused < 1000000) //Less than a MW
@@ -367,6 +395,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 // Format an energy value in J, kJ, MJ, or GJ. 1W = 1J/s.
 /proc/DisplayEnergy(units)
+	procstart = null
+	src.procstart = null
 	// APCs process every (SSmachines.wait * 0.1) seconds, and turn 1 W of
 	// excess power into GLOB.CELLRATE energy units when charging cells.
 	// With the current configuration of wait=20 and CELLRATE=0.002, this
@@ -381,6 +411,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return "[round(units * 0.000000001, 0.0001)] GJ"
 
 /proc/key_name(whom, include_link = null, include_name = 1)
+	procstart = null
+	src.procstart = null
 	var/mob/M
 	var/client/C
 	var/key
@@ -438,9 +470,13 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return .
 
 /proc/key_name_admin(whom, include_name = 1)
+	procstart = null
+	src.procstart = null
 	return key_name(whom, 1, include_name)
 
 /proc/get_mob_by_ckey(key)
+	procstart = null
+	src.procstart = null
 	if(!key)
 		return
 	var/list/mobs = sortmobs()
@@ -452,6 +488,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 //For example, using this on a disk, which is in a bag, on a mob, will return the mob because it's on the turf.
 //Optional arg 'type' to stop once it reaches a specific type instead of a turf.
 /proc/get_atom_on_turf(atom/movable/M, stop_type)
+	procstart = null
+	src.procstart = null
 	var/atom/loc = M
 	while(loc && loc.loc && !isturf(loc.loc))
 		loc = loc.loc
@@ -462,6 +500,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 // returns the turf located at the map edge in the specified direction relative to A
 // used for mass driver
 /proc/get_edge_target_turf(atom/A, direction)
+	procstart = null
+	src.procstart = null
 	var/turf/target = locate(A.x, A.y, A.z)
 	if(!A || !target)
 		return 0
@@ -489,6 +529,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 // used for disposal system
 /proc/get_ranged_target_turf(atom/A, direction, range)
 
+	procstart = null
+	src.procstart = null
 	var/x = A.x
 	var/y = A.y
 	if(direction & NORTH)
@@ -506,11 +548,15 @@ Turf and target are separate in case you want to teleport some distance from a t
 // returns turf relative to A offset in dx and dy tiles
 // bound to map limits
 /proc/get_offset_target_turf(atom/A, dx, dy)
+	procstart = null
+	src.procstart = null
 	var/x = min(world.maxx, max(1, A.x + dx))
 	var/y = min(world.maxy, max(1, A.y + dy))
 	return locate(x,y,A.z)
 
 /proc/arctan(x)
+	procstart = null
+	src.procstart = null
 	var/y=arcsin(x/sqrt(1+x*x))
 	return y
 
@@ -519,6 +565,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 */
 
 /atom/proc/GetAllContents()
+	procstart = null
+	src.procstart = null
 	var/list/processing_list = list(src)
 	var/list/assembled = list()
 	while(processing_list.len)
@@ -531,6 +579,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return assembled
 
 /atom/proc/GetAllContentsIgnoring(list/ignore_typecache)
+	procstart = null
+	src.procstart = null
 	if(!ignore_typecache)
 		return GetAllContents()
 	var/list/processing = list(src)
@@ -565,6 +615,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return 1
 
 /proc/is_blocked_turf(turf/T, exclude_mobs)
+	procstart = null
+	src.procstart = null
 	if(T.density)
 		return 1
 	for(var/i in T)
@@ -583,6 +635,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return 0
 
 /proc/get_step_towards2(atom/ref , atom/trg)
+	procstart = null
+	src.procstart = null
 	var/base_dir = get_dir(ref, get_step_towards(ref,trg))
 	var/turf/temp = get_step_towards(ref,trg)
 
@@ -616,6 +670,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 //Takes: Anything that could possibly have variables and a varname to check.
 //Returns: 1 if found, 0 if not.
 /proc/hasvar(datum/A, varname)
+	procstart = null
+	src.procstart = null
 	if(A.vars.Find(lowertext(varname)))
 		return 1
 	else
@@ -623,6 +679,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 
 //Repopulates sortedAreas list
 /proc/repopulate_sorted_areas()
+	procstart = null
+	src.procstart = null
 	GLOB.sortedAreas = list()
 
 	for(var/area/A in world)
@@ -631,12 +689,16 @@ Turf and target are separate in case you want to teleport some distance from a t
 	sortTim(GLOB.sortedAreas, /proc/cmp_name_asc)
 
 /area/proc/addSorted()
+	procstart = null
+	src.procstart = null
 	GLOB.sortedAreas.Add(src)
 	sortTim(GLOB.sortedAreas, /proc/cmp_name_asc)
 
 //Takes: Area type as a text string from a variable.
 //Returns: Instance for the area in the world.
 /proc/get_area_instance_from_text(areatext)
+	procstart = null
+	src.procstart = null
 	var/areainstance = null
 	if(istext(areatext))
 		areatext = text2path(areatext)
@@ -649,6 +711,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 //Takes: Area type as text string or as typepath OR an instance of the area.
 //Returns: A list of all areas of that type in the world.
 /proc/get_areas(areatype, subtypes=TRUE)
+	procstart = null
+	src.procstart = null
 	if(istext(areatype))
 		areatype = text2path(areatype)
 	else if(isarea(areatype))
@@ -674,6 +738,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 //Takes: Area type as text string or as typepath OR an instance of the area.
 //Returns: A list of all turfs in areas of that type of that type in the world.
 /proc/get_area_turfs(areatype, target_z = 0, subtypes=FALSE)
+	procstart = null
+	src.procstart = null
 	if(istext(areatype))
 		areatype = text2path(areatype)
 	else if(isarea(areatype))
@@ -703,15 +769,21 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return turfs
 
 /proc/get_cardinal_dir(atom/A, atom/B)
+	procstart = null
+	src.procstart = null
 	var/dx = abs(B.x - A.x)
 	var/dy = abs(B.y - A.y)
 	return get_dir(A, B) & (rand() * (dx+dy) < dy ? 3 : 12)
 
 //chances are 1:value. anyprob(1) will always return true
 /proc/anyprob(value)
+	procstart = null
+	src.procstart = null
 	return (rand(1,value)==value)
 
 /proc/view_or_range(distance = world.view , center = usr , type)
+	procstart = null
+	src.procstart = null
 	switch(type)
 		if("view")
 			. = view(distance,center)
@@ -720,6 +792,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return
 
 /proc/oview_or_orange(distance = world.view , center = usr , type)
+	procstart = null
+	src.procstart = null
 	switch(type)
 		if("view")
 			. = oview(distance,center)
@@ -728,6 +802,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 	return
 
 /proc/parse_zone(zone)
+	procstart = null
+	src.procstart = null
 	if(zone == "r_hand")
 		return "right hand"
 	else if (zone == "l_hand")
@@ -763,6 +839,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 */
 
 /proc/get_turf_pixel(atom/AM)
+	procstart = null
+	src.procstart = null
 	if(!istype(AM))
 		return
 
@@ -799,6 +877,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 //centered = 1 counts from turf center to turf center
 //of course mathematically this is just adding world.icon_size on again
 /proc/getPixelDistance(atom/A, atom/B, centered = 1)
+	procstart = null
+	src.procstart = null
 	if(!istype(A)||!istype(B))
 		return 0
 	. = bounds_dist(A, B) + sqrt((((A.pixel_x+B.pixel_x)**2) + ((A.pixel_y+B.pixel_y)**2)))
@@ -806,6 +886,8 @@ Turf and target are separate in case you want to teleport some distance from a t
 		. += world.icon_size
 
 /proc/get(atom/loc, type)
+	procstart = null
+	src.procstart = null
 	while(loc)
 		if(istype(loc, type))
 			return loc
@@ -820,6 +902,8 @@ GLOBAL_LIST_INIT(can_embed_types, typecacheof(list(
 	/obj/item/pipe)))
 
 /proc/can_embed(obj/item/W)
+	procstart = null
+	src.procstart = null
 	if(W.is_sharp())
 		return 1
 	if(is_pointed(W))
@@ -852,6 +936,8 @@ GLOBAL_LIST_INIT(WALLITEMS_INVERSE, typecacheof(list(
 
 
 /proc/gotwallitem(loc, dir, var/check_external = 0)
+	procstart = null
+	src.procstart = null
 	var/locdir = get_step(loc, dir)
 	for(var/obj/O in loc)
 		if(is_type_in_typecache(O, GLOB.WALLITEMS) && check_external != 2)
@@ -882,9 +968,13 @@ GLOBAL_LIST_INIT(WALLITEMS_INVERSE, typecacheof(list(
 	return 0
 
 /proc/format_text(text)
+	procstart = null
+	src.procstart = null
 	return replacetext(replacetext(text,"\proper ",""),"\improper ","")
 
 /obj/proc/atmosanalyzer_scan(datum/gas_mixture/air_contents, mob/user, obj/target = src)
+	procstart = null
+	src.procstart = null
 	var/obj/icon = target
 	user.visible_message("[user] has used the analyzer on [icon2html(icon, viewers(src))] [target].", "<span class='notice'>You use the analyzer on [icon2html(icon, user)] [target].</span>")
 	var/pressure = air_contents.return_pressure()
@@ -907,6 +997,8 @@ GLOBAL_LIST_INIT(WALLITEMS_INVERSE, typecacheof(list(
 	return
 
 /proc/check_target_facings(mob/living/initator, mob/living/target)
+	procstart = null
+	src.procstart = null
 	/*This can be used to add additional effects on interactions between mobs depending on how the mobs are facing each other, such as adding a crit damage to blows to the back of a guy's head.
 	Given how click code currently works (Nov '13), the initiating mob will be facing the target mob most of the time
 	That said, this proc should not be used if the change facing proc of the click code is overriden at the same time*/
@@ -921,6 +1013,8 @@ GLOBAL_LIST_INIT(WALLITEMS_INVERSE, typecacheof(list(
 		return FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR
 
 /proc/random_step(atom/movable/AM, steps, chance)
+	procstart = null
+	src.procstart = null
 	var/initial_chance = chance
 	while(steps > 0)
 		if(prob(chance))
@@ -929,6 +1023,8 @@ GLOBAL_LIST_INIT(WALLITEMS_INVERSE, typecacheof(list(
 		steps--
 
 /proc/living_player_count()
+	procstart = null
+	src.procstart = null
 	var/living_player_count = 0
 	for(var/mob in GLOB.player_list)
 		if(mob in GLOB.alive_mob_list)
@@ -947,6 +1043,8 @@ GLOBAL_LIST_INIT(WALLITEMS_INVERSE, typecacheof(list(
 			return "white"
 
 /proc/params2turf(scr_loc, turf/origin)
+	procstart = null
+	src.procstart = null
 	if(!scr_loc)
 		return null
 	var/tX = splittext(scr_loc, ",")
@@ -960,6 +1058,8 @@ GLOBAL_LIST_INIT(WALLITEMS_INVERSE, typecacheof(list(
 	return locate(tX, tY, tZ)
 
 /proc/screen_loc2turf(text, turf/origin)
+	procstart = null
+	src.procstart = null
 	if(!text)
 		return null
 	var/tZ = splittext(text, ",")
@@ -973,6 +1073,8 @@ GLOBAL_LIST_INIT(WALLITEMS_INVERSE, typecacheof(list(
 	return locate(tX, tY, tZ)
 
 /proc/IsValidSrc(datum/D)
+	procstart = null
+	src.procstart = null
 	if(istype(D))
 		return !QDELETED(D)
 	return 0
@@ -981,6 +1083,8 @@ GLOBAL_LIST_INIT(WALLITEMS_INVERSE, typecacheof(list(
 //To the opposite dir of the dir returned by get_dir(B,A)
 //If one of them is a match, then A is facing B
 /proc/is_A_facing_B(atom/A,atom/B)
+	procstart = null
+	src.procstart = null
 	if(!istype(A) || !istype(B))
 		return 0
 	if(isliving(A))
@@ -1027,6 +1131,8 @@ B --><-- A
 // eg2: center_image(I, 96,96)
 
 /proc/center_image(var/image/I, x_dimension = 0, y_dimension = 0)
+	procstart = null
+	src.procstart = null
 	if(!I)
 		return
 
@@ -1055,6 +1161,8 @@ B --><-- A
 
 //ultra range (no limitations on distance, faster than range for distances > 8); including areas drastically decreases performance
 /proc/urange(dist=0, atom/center=usr, orange=0, areas=0)
+	procstart = null
+	src.procstart = null
 	if(!dist)
 		if(!orange)
 			return list(center)
@@ -1074,6 +1182,8 @@ B --><-- A
 
 //similar function to range(), but with no limitations on the distance; will search spiralling outwards from the center
 /proc/spiral_range(dist=0, center=usr, orange=0)
+	procstart = null
+	src.procstart = null
 	if(!dist)
 		if(!orange)
 			return list(center)
@@ -1132,6 +1242,8 @@ B --><-- A
 
 //similar function to RANGE_TURFS(), but will search spiralling outwards from the center (like the above, but only turfs)
 /proc/spiral_range_turfs(dist=0, center=usr, orange=0, list/outlist = list(), tick_checked)
+	procstart = null
+	src.procstart = null
 	outlist.Cut()
 	if(!dist)
 		outlist += center
@@ -1185,6 +1297,8 @@ B --><-- A
 	return L
 
 /atom/proc/contains(var/atom/A)
+	procstart = null
+	src.procstart = null
 	if(!A)
 		return 0
 	for(var/atom/location = A.loc, location, location = location.loc)
@@ -1192,6 +1306,8 @@ B --><-- A
 			return 1
 
 /proc/flick_overlay_static(O, atom/A, duration)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	if(!A || !O)
 		return
@@ -1200,6 +1316,8 @@ B --><-- A
 	A.cut_overlay(O)
 
 /proc/get_areas_in_z(zlevel)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/validarea = FALSE
 	for(var/V in GLOB.sortedAreas)
@@ -1213,6 +1331,8 @@ B --><-- A
 			. += A
 
 /proc/get_closest_atom(type, list, source)
+	procstart = null
+	src.procstart = null
 	var/closest_atom
 	var/closest_distance
 	for(var/A in list)
@@ -1230,6 +1350,8 @@ B --><-- A
 
 
 proc/pick_closest_path(value, list/matches = get_fancy_list_of_atom_types())
+	procstart = null
+	src.procstart = null
 	if (value == FALSE) //nothing should be calling us with a number, so this is safe
 		value = input("Enter type to find (blank for all, cancel to cancel)", "Search for type") as null|text
 		if (isnull(value))
@@ -1253,9 +1375,13 @@ proc/pick_closest_path(value, list/matches = get_fancy_list_of_atom_types())
 
 //gives us the stack trace from CRASH() without ending the current proc.
 /proc/stack_trace(msg)
+	procstart = null
+	src.procstart = null
 	CRASH(msg)
 
 /datum/proc/stack_trace(msg)
+	procstart = null
+	src.procstart = null
 	CRASH(msg)
 
 //Key thing that stops lag. Cornerstone of performance in ss13, Just sitting here, in unsorted.dm.
@@ -1266,6 +1392,8 @@ proc/pick_closest_path(value, list/matches = get_fancy_list_of_atom_types())
 
 //returns the number of ticks slept
 /proc/stoplag(initial_delay)
+	procstart = null
+	src.procstart = null
 	if (!Master || !(Master.current_runlevel & RUNLEVELS_DEFAULT))
 		sleep(world.tick_lag)
 		return 1
@@ -1282,6 +1410,8 @@ proc/pick_closest_path(value, list/matches = get_fancy_list_of_atom_types())
 #undef DELTA_CALC
 
 /proc/flash_color(mob_or_client, flash_color="#960000", flash_time=20)
+	procstart = null
+	src.procstart = null
 	var/client/C
 	if(ismob(mob_or_client))
 		var/mob/M = mob_or_client
@@ -1314,6 +1444,8 @@ proc/pick_closest_path(value, list/matches = get_fancy_list_of_atom_types())
 
 
 /proc/random_nukecode()
+	procstart = null
+	src.procstart = null
 	var/val = rand(0, 99999)
 	var/str = "[val]"
 	while(length(str) < 5)
@@ -1321,6 +1453,8 @@ proc/pick_closest_path(value, list/matches = get_fancy_list_of_atom_types())
 	. = str
 
 /atom/proc/Shake(pixelshiftx = 15, pixelshifty = 15, duration = 250)
+	procstart = null
+	src.procstart = null
 	var/initialpixelx = pixel_x
 	var/initialpixely = pixel_y
 	var/shiftx = rand(-pixelshiftx,pixelshiftx)
@@ -1330,6 +1464,8 @@ proc/pick_closest_path(value, list/matches = get_fancy_list_of_atom_types())
 	pixel_y = initialpixely
 
 /proc/weightclass2text(var/w_class)
+	procstart = null
+	src.procstart = null
 	switch(w_class)
 		if(WEIGHT_CLASS_TINY)
 			. = "tiny"
@@ -1350,6 +1486,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 //Version of view() which ignores darkness, because BYOND doesn't have it (I actually suggested it but it was tagged redundant, BUT HEARERS IS A T- /rant).
 /proc/dview(var/range = world.view, var/center, var/invis_flags = 0)
+	procstart = null
+	src.procstart = null
 	if(!center)
 		return
 
@@ -1372,6 +1510,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 	return
 
 /mob/dview/Destroy(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ready_to_die)
 		stack_trace("ALRIGHT WHICH FUCKER TRIED TO DELETE *MY* DVIEW?")
 
@@ -1392,6 +1532,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 //can a window be here, or is there a window blocking it?
 /proc/valid_window_location(turf/T, dir_to_check)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		return FALSE
 	for(var/obj/O in T)
@@ -1410,9 +1552,13 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 #define UNTIL(X) while(!(X)) stoplag()
 
 /proc/pass()
+	procstart = null
+	src.procstart = null
 	return
 
 /proc/get_mob_or_brainmob(occupant)
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_occupant
 
 	if(isliving(occupant))
@@ -1432,17 +1578,23 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 //counts the number of bits in Byond's 16-bit width field
 //in constant time and memory!
 /proc/BitCount(bitfield)
+	procstart = null
+	src.procstart = null
 	var/temp = bitfield - ((bitfield>>1)&46811) - ((bitfield>>2)&37449) //0133333 and 0111111 respectively
 	temp = ((temp + (temp>>3))&29127) % 63	//070707
 	return temp
 
 //checks if a turf is in the planet z list.
 /proc/turf_z_is_planet(turf/T)
+	procstart = null
+	src.procstart = null
 	return GLOB.z_is_planet["[T.z]"]
 
 
 //same as do_mob except for movables and it allows both to drift and doesn't draw progressbar
 /proc/do_atom(atom/movable/user , atom/movable/target, time = 30, uninterruptible = 0,datum/callback/extra_checks = null)
+	procstart = null
+	src.procstart = null
 	if(!user || !target)
 		return TRUE
 	var/user_loc = user.loc
@@ -1483,6 +1635,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 //guids are not on their own suitable for access or security tokens, as most of their bits are predictable.
 //	(But may make a nice salt to one)
 /proc/GUID()
+	procstart = null
+	src.procstart = null
 	var/const/GUID_VERSION = "b"
 	var/const/GUID_VARIANT = "d"
 	var/node_id = copytext(md5("[rand()*rand(1,9999999)][world.name][world.hub][world.hub_password][world.internet_address][world.address][world.contents.len][world.status][world.port][rand()*rand(1,9999999)]"), 1, 13)
@@ -1501,6 +1655,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 // If it ever becomes necesary to get a more performant REF(), this lies here in wait
 // #define REF(thing) (thing && istype(thing, /datum) && thing:use_tag && thing:tag ? "[thing:tag]" : "\ref[thing]")
 /proc/REF(input)
+	procstart = null
+	src.procstart = null
 	if(istype(input, /datum))
 		var/datum/thing = input
 		if(thing.use_tag)
@@ -1513,6 +1669,8 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 //Returns a list of all servants of Ratvar and observers.
 /proc/servants_and_ghosts()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/V in GLOB.player_list)
 		if(is_servant_of_ratvar(V) || isobserver(V))

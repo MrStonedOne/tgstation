@@ -44,6 +44,8 @@
 	quickbind_desc = "Creates an Ocular Warden, which will automatically attack nearby unrestrained non-Servants that can see it."
 
 /datum/clockwork_scripture/create_object/ocular_warden/check_special_requirements()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/destructible/clockwork/ocular_warden/W in range(OCULAR_WARDEN_EXCLUSION_RANGE, invoker))
 		to_chat(invoker, "<span class='neovgre'>You sense another ocular warden too near this location. Placing another this close would cause them to fight.</span>" )
 		return FALSE
@@ -108,12 +110,16 @@
 	quickbind_desc = "Permanently binds clockwork armor and a Ratvarian spear to you."
 
 /datum/clockwork_scripture/clockwork_arnaments/check_special_requirements()
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/innate/clockwork_arnaments/F in invoker.actions)
 		to_chat(invoker, "<span class='warning'>You have already bound a Ratvarian spear to yourself!</span>")
 		return FALSE
 	return invoker.can_hold_items()
 
 /datum/clockwork_scripture/clockwork_arnaments/scripture_effects()
+	procstart = null
+	src.procstart = null
 	invoker.visible_message("<span class='warning'>A shimmer of yellow light infuses [invoker]!</span>", \
 	"<span class='brass'>You bind clockwork equipment to yourself. Use Clockwork Arnaments and Call Spear to summon them.</span>")
 	var/datum/action/innate/call_weapon/ratvarian_spear/S = new()
@@ -143,6 +149,8 @@
 	/obj/item/clothing/shoes/magboots)) //replace this only if ratvar is up
 
 /datum/action/innate/clockwork_arnaments/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(owner))
 		qdel(src)
 		return
@@ -151,6 +159,8 @@
 	return ..()
 
 /datum/action/innate/clockwork_arnaments/Activate()
+	procstart = null
+	src.procstart = null
 	var/do_message = 0
 	var/obj/item/I = owner.get_item_by_slot(slot_wear_suit)
 	if(remove_item_if_better(I, owner))
@@ -173,6 +183,8 @@
 	return TRUE
 
 /datum/action/innate/clockwork_arnaments/proc/remove_item_if_better(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!I)
 		return TRUE
 	if(is_type_in_typecache(I, ratvarian_armor_typecache))
@@ -207,6 +219,8 @@
 	quickbind_desc = "Allows you to create a one-way Spatial Gateway to a living Servant or Clockwork Obelisk."
 
 /datum/clockwork_scripture/spatial_gateway/check_special_requirements()
+	procstart = null
+	src.procstart = null
 	if(!isturf(invoker.loc))
 		to_chat(invoker, "<span class='warning'>You must not be inside an object to use this scripture!</span>")
 		return FALSE
@@ -223,6 +237,8 @@
 	return TRUE
 
 /datum/clockwork_scripture/spatial_gateway/scripture_effects()
+	procstart = null
+	src.procstart = null
 	var/portal_uses = 0
 	var/duration = 0
 	for(var/mob/living/L in range(1, invoker))

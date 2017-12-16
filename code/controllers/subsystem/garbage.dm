@@ -26,6 +26,8 @@ SUBSYSTEM_DEF(garbage)
 
 
 /datum/controller/subsystem/garbage/PreInit()
+	procstart = null
+	src.procstart = null
 	queues = new(GC_QUEUE_COUNT)
 	pass_counts = new(GC_QUEUE_COUNT)
 	fail_counts = new(GC_QUEUE_COUNT)
@@ -35,6 +37,8 @@ SUBSYSTEM_DEF(garbage)
 		fail_counts[i] = 0
 
 /datum/controller/subsystem/garbage/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	var/list/counts = list()
 	for (var/list/L in queues)
 		counts += length(L)
@@ -55,6 +59,8 @@ SUBSYSTEM_DEF(garbage)
 	..(msg)
 
 /datum/controller/subsystem/garbage/Shutdown()
+	procstart = null
+	src.procstart = null
 	//Adds the del() log to the qdel log file
 	var/list/dellog = list()
 
@@ -79,6 +85,8 @@ SUBSYSTEM_DEF(garbage)
 	log_qdel(dellog.Join("\n"))
 
 /datum/controller/subsystem/garbage/fire()
+	procstart = null
+	src.procstart = null
 	//the fact that this resets its processing each fire (rather then resume where it left off) is intentional.
 	var/queue = GC_QUEUE_PREQUEUE
 
@@ -100,6 +108,8 @@ SUBSYSTEM_DEF(garbage)
 //If you see this proc high on the profile, what you are really seeing is the garbage collection/soft delete overhead in byond.
 //Don't attempt to optimize, not worth the effort.
 /datum/controller/subsystem/garbage/proc/HandlePreQueue()
+	procstart = null
+	src.procstart = null
 	var/list/tobequeued = queues[GC_QUEUE_PREQUEUE]
 	var/static/count = 0
 	if (count)
@@ -117,6 +127,8 @@ SUBSYSTEM_DEF(garbage)
 		count = 0
 
 /datum/controller/subsystem/garbage/proc/HandleQueue(level = GC_QUEUE_CHECK)
+	procstart = null
+	src.procstart = null
 	if (level == GC_QUEUE_CHECK)
 		delslasttick = 0
 		gcedlasttick = 0
@@ -181,11 +193,15 @@ SUBSYSTEM_DEF(garbage)
 		count = 0
 
 /datum/controller/subsystem/garbage/proc/PreQueue(datum/D)
+	procstart = null
+	src.procstart = null
 	if (D.gc_destroyed == GC_CURRENTLY_BEING_QDELETED)
 		queues[GC_QUEUE_PREQUEUE] += D
 		D.gc_destroyed = GC_QUEUED_FOR_QUEUING
 
 /datum/controller/subsystem/garbage/proc/Queue(datum/D, level = GC_QUEUE_CHECK)
+	procstart = null
+	src.procstart = null
 	if (isnull(D))
 		return
 	if (D.gc_destroyed == GC_QUEUED_FOR_HARD_DEL)
@@ -205,6 +221,8 @@ SUBSYSTEM_DEF(garbage)
 
 //this is mainly to separate things profile wise.
 /datum/controller/subsystem/garbage/proc/HardDelete(datum/D)
+	procstart = null
+	src.procstart = null
 	var/time = world.timeofday
 	var/tick = TICK_USAGE
 	var/ticktime = world.time
@@ -236,11 +254,15 @@ SUBSYSTEM_DEF(garbage)
 		postpone(time)
 
 /datum/controller/subsystem/garbage/proc/HardQueue(datum/D)
+	procstart = null
+	src.procstart = null
 	if (D.gc_destroyed == GC_CURRENTLY_BEING_QDELETED)
 		queues[GC_QUEUE_PREQUEUE] += D
 		D.gc_destroyed = GC_QUEUED_FOR_HARD_DEL
 
 /datum/controller/subsystem/garbage/Recover()
+	procstart = null
+	src.procstart = null
 	if (istype(SSgarbage.queues))
 		for (var/i in 1 to SSgarbage.queues.len)
 			queues[i] |= SSgarbage.queues[i]
@@ -258,12 +280,16 @@ SUBSYSTEM_DEF(garbage)
 	var/slept_destroy = 0	//Number of times it's slept in its destroy
 
 /datum/qdel_item/New(mytype)
+	procstart = null
+	src.procstart = null
 	name = "[mytype]"
 
 
 // Should be treated as a replacement for the 'del' keyword.
 // Datums passed to this will be given a chance to clean up references to allow the GC to collect them.
 /proc/qdel(datum/D, force=FALSE, ...)
+	procstart = null
+	src.procstart = null
 	if(!istype(D))
 		del(D)
 		return
@@ -330,6 +356,8 @@ SUBSYSTEM_DEF(garbage)
 #ifdef TESTING
 
 /datum/verb/find_refs()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Find References"
 	set background = 1
@@ -338,6 +366,8 @@ SUBSYSTEM_DEF(garbage)
 	find_references(FALSE)
 
 /datum/proc/find_references(skip_alert)
+	procstart = null
+	src.procstart = null
 	running_find_references = type
 	if(usr && usr.client)
 		if(usr.client.running_find_references)
@@ -383,6 +413,8 @@ SUBSYSTEM_DEF(garbage)
 	SSgarbage.next_fire = world.time + world.tick_lag
 
 /datum/verb/qdel_then_find_references()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "qdel() then Find References"
 	set background = 1
@@ -393,6 +425,8 @@ SUBSYSTEM_DEF(garbage)
 		find_references(TRUE)
 
 /datum/proc/DoSearchVar(X, Xname, recursive_limit = 64)
+	procstart = null
+	src.procstart = null
 	if(usr && usr.client && !usr.client.running_find_references)
 		return
 	if (!recursive_limit)

@@ -20,10 +20,14 @@
 	spillable = FALSE
 
 /obj/item/reagent_containers/glass/rag/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is smothering [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (OXYLOSS)
 
 /obj/item/reagent_containers/glass/rag/afterattack(atom/A as obj|turf|area, mob/user,proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(iscarbon(A) && A.reagents && reagents.total_volume)

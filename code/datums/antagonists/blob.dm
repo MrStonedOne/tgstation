@@ -8,6 +8,8 @@
 	var/point_rate_human_blob = 2
 
 /datum/antagonist/blob/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/basic_report = ..()
 	//Display max blobpoints for blebs that lost
 	if(isovermind(owner.current)) //embarrasing if not
@@ -18,20 +20,28 @@
 	return basic_report
 
 /datum/antagonist/blob/greet()
+	procstart = null
+	src.procstart = null
 	if(!isovermind(owner.current))
 		to_chat(owner,"<span class='userdanger'>You feel bloated.</span>")
 
 /datum/antagonist/blob/on_gain()
+	procstart = null
+	src.procstart = null
 	create_objectives()
 	. = ..()
 
 /datum/antagonist/blob/proc/create_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/blob_takeover/main = new
 	main.owner = owner
 	objectives += main
 	owner.objectives |= objectives
 
 /datum/antagonist/blob/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	if(!isovermind(owner.current))
 		if(!pop_action)
 			pop_action = new
@@ -48,6 +58,8 @@
 	button_icon_state = "blob"
 
 /datum/action/innate/blobpop/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/old_body = owner
 	var/datum/antagonist/blob/blobtag = owner.mind.has_antag_datum(/datum/antagonist/blob)
 	if(!blobtag)

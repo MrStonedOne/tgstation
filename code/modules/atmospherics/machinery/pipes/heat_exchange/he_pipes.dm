@@ -10,22 +10,32 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/New()
+	procstart = null
+	src.procstart = null
 	..()
 	add_atom_colour("#404040", FIXED_COLOUR_PRIORITY)
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/can_be_node(obj/machinery/atmospherics/pipe/heat_exchanging/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return 0
 	if(target.initialize_directions_he & get_dir(target,src))
 		return 1
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/hide()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/GetInitDirections()
+	procstart = null
+	src.procstart = null
 	return ..() | initialize_directions_he
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/process_atmos()
+	procstart = null
+	src.procstart = null
 	var/environment_temperature = 0
 	var/datum/gas_mixture/pipe_air = return_air()
 
@@ -59,6 +69,8 @@
 
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/process()
+	procstart = null
+	src.procstart = null
 	if(!parent)
 		return //machines subsystem fires before atmos is initialized so this prevents race condition runtimes
 

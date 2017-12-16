@@ -10,6 +10,8 @@
 	actions_types = list()
 
 /obj/item/gun/ballistic/automatic/pistol/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "[initial(icon_state)][chambered ? "" : "-e"][suppressed ? "-suppressed" : ""]"
 	return
@@ -31,6 +33,8 @@
 	can_suppress = FALSE
 
 /obj/item/gun/ballistic/automatic/pistol/deagle/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(magazine)
 		cut_overlays()
@@ -66,6 +70,8 @@
 	icon_state = "flatgun"
 
 /obj/item/gun/ballistic/automatic/pistol/stickman/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>As you try to pick up [src], it slips out of your grip..</span>")
 	if(prob(50))
 		to_chat(user, "<span class='notice'>..and vanishes from your vision! Where the hell did it go?</span>")

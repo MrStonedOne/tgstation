@@ -27,10 +27,14 @@
 	del_on_death = TRUE
 
 /mob/living/simple_animal/pet/gondola/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	CreateGondola()
 
 /mob/living/simple_animal/pet/gondola/proc/CreateGondola()
+	procstart = null
+	src.procstart = null
 	icon_state = null
 	icon_living = null
 	var/height = GONDOLA_HEIGHT
@@ -57,6 +61,8 @@
 	return FALSE
 
 /mob/living/simple_animal/pet/gondola/emote()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef GONDOLA_HEIGHT

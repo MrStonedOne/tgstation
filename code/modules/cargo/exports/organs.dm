@@ -3,6 +3,8 @@
 
 // Alien organs
 /datum/export/organ/alien/get_cost(O, contr = 0, emag = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(emag) // Syndicate really wants some new bio-weapons.
 		. *= 2
@@ -37,6 +39,8 @@
 	export_types = list(/obj/item/organ/alien/plasmavessel)
 
 /datum/export/organ/alien/plasmavessel/get_cost(obj/item/organ/alien/plasmavessel/P)
+	procstart = null
+	src.procstart = null
 	return ..() + (P.max_plasma * 2) + (P.plasma_rate * 20)
 
 
@@ -70,6 +74,8 @@
 	export_types = list(/obj/item/organ/regenerative_core)
 
 /datum/export/organ/alien/plasmavessel/get_cost(obj/item/organ/regenerative_core/C)
+	procstart = null
+	src.procstart = null
 	if(C.inert)
 		return ..() / 3
 	if(C.preserved)
@@ -118,6 +124,8 @@
 	export_types = list(/obj/item/organ/appendix)
 
 /datum/export/organ/human/appendix/get_cost(obj/item/organ/appendix/O)
+	procstart = null
+	src.procstart = null
 	if(O.inflamed)
 		return 0
 	return ..()

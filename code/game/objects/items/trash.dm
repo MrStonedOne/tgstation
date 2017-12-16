@@ -69,6 +69,8 @@
 	grind_results = list("aluminum" = 10)
 
 /obj/item/trash/attack(mob/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/trash/coal
@@ -79,6 +81,8 @@
 	grind_results = list("carbon" = 20)
 
 /obj/item/trash/coal/burn()
+	procstart = null
+	src.procstart = null
 	visible_message("[src] fuses into a diamond! Someone wasn't so naughty after all...")
 	new /obj/item/ore/diamond(loc)
 	qdel(src)

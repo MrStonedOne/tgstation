@@ -7,6 +7,8 @@
 	export_types = list(/obj/item/paper/fluff/jobs/cargo/manifest)
 
 /datum/export/manifest_correct/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -24,6 +26,8 @@
 	export_types = list(/obj/item/paper/fluff/jobs/cargo/manifest)
 
 /datum/export/manifest_error_denied/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -33,6 +37,8 @@
 	return FALSE
 
 /datum/export/manifest_error_denied/get_cost(obj/O)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/fluff/jobs/cargo/manifest/M = O
 	return ..() + M.order_cost
 
@@ -44,6 +50,8 @@
 	export_types = list(/obj/item/paper/fluff/jobs/cargo/manifest)
 
 /datum/export/manifest_error/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -53,6 +61,8 @@
 	return FALSE
 
 /datum/export/manifest_error/get_cost(obj/O)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/fluff/jobs/cargo/manifest/M = O
 	return -M.order_cost
 
@@ -65,6 +75,8 @@
 	export_types = list(/obj/item/paper/fluff/jobs/cargo/manifest)
 
 /datum/export/manifest_correct_denied/applies_to(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -74,5 +86,7 @@
 	return FALSE
 
 /datum/export/manifest_correct_denied/get_cost(obj/O)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/fluff/jobs/cargo/manifest/M = O
 	return ..() - M.order_cost

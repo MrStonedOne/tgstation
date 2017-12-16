@@ -20,6 +20,8 @@
 
 
 /obj/item/melee/powerfist/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!in_range(user, src))
 		to_chat(user, "<span class='notice'>You'll need to get closer to see any more.</span>")
@@ -29,6 +31,8 @@
 
 
 /obj/item/melee/powerfist/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/tank/internals))
 		if(!tank)
 			var/obj/item/tank/internals/IT = W
@@ -52,6 +56,8 @@
 
 
 /obj/item/melee/powerfist/proc/updateTank(obj/item/tank/internals/thetank, removing = 0, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(removing)
 		if(!tank)
 			to_chat(user, "<span class='notice'>\The [src] currently has no tank attached to it.</span>")
@@ -71,6 +77,8 @@
 
 
 /obj/item/melee/powerfist/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!tank)
 		to_chat(user, "<span class='warning'>\The [src] can't operate without a source of gas!</span>")
 		return

@@ -67,6 +67,8 @@
 	armored = TRUE
 
 /mob/living/simple_animal/hostile/bear/update_icons()
+	procstart = null
+	src.procstart = null
 	..()
 	if(armored)
 		add_overlay("armor_bear")
@@ -79,6 +81,8 @@
 	icon_state = "bear_armor_upgrade"
 
 /obj/item/bear_armor/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /mob/living/simple_animal/hostile/bear) && proximity_flag)
 		var/mob/living/simple_animal/hostile/bear/A = target
 		if(A.armored)

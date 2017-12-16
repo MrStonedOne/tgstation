@@ -12,21 +12,29 @@
 	var/obj/mecha/working/ripley/cargo_holder
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/can_attach(obj/mecha/working/ripley/M as obj)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(M))
 			return 1
 	return 0
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/attach(obj/mecha/M as obj)
+	procstart = null
+	src.procstart = null
 	..()
 	cargo_holder = M
 	return
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/detach(atom/moveto = null)
+	procstart = null
+	src.procstart = null
 	..()
 	cargo_holder = null
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/action(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	if(!cargo_holder)
@@ -79,6 +87,8 @@
 	energy_drain = 0
 
 /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/kill/action(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	if(!cargo_holder)
@@ -128,6 +138,8 @@
 	range = MELEE|RANGED
 
 /obj/item/mecha_parts/mecha_equipment/extinguisher/New()
+	procstart = null
+	src.procstart = null
 	create_reagents(1000)
 	reagents.add_reagent("water", 1000)
 	..()
@@ -177,9 +189,13 @@
 		return 1
 
 /obj/item/mecha_parts/mecha_equipment/extinguisher/get_equip_info()
+	procstart = null
+	src.procstart = null
 	return "[..()] \[[src.reagents.total_volume]\]"
 
 /obj/item/mecha_parts/mecha_equipment/extinguisher/can_attach(obj/mecha/working/M as obj)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(M))
 			return 1
@@ -198,6 +214,8 @@
 	var/mode = 0 //0 - deconstruct, 1 - wall or floor, 2 - airlock.
 
 /obj/item/mecha_parts/mecha_equipment/rcd/New()
+	procstart = null
+	src.procstart = null
 	GLOB.rcd_list += src
 	..()
 
@@ -206,6 +224,8 @@
  	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/rcd/action(atom/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /turf/open/space/transit))//>implying these are ever made -Sieve
 		return
 
@@ -265,9 +285,13 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/rcd/do_after_cooldown(var/atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /obj/item/mecha_parts/mecha_equipment/rcd/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["mode"])
 		mode = text2num(href_list["mode"])
@@ -284,6 +308,8 @@
 	return
 
 /obj/item/mecha_parts/mecha_equipment/rcd/get_equip_info()
+	procstart = null
+	src.procstart = null
 	return "[..()] \[<a href='?src=[REF(src)];mode=0'>D</a>|<a href='?src=[REF(src)];mode=1'>C</a>|<a href='?src=[REF(src)];mode=2'>A</a>\]"
 
 
@@ -300,31 +326,43 @@
 	var/max_cable = 1000
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/New()
+	procstart = null
+	src.procstart = null
 	cable = new(src)
 	cable.amount = 0
 	..()
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/can_attach(obj/mecha/working/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(M))
 			return 1
 	return 0
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/attach()
+	procstart = null
+	src.procstart = null
 	..()
 	event = chassis.events.addEvent("onMove", CALLBACK(src, .proc/layCable))
 	return
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/detach()
+	procstart = null
+	src.procstart = null
 	chassis.events.clearEvent("onMove",event)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/Destroy()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		chassis.events.clearEvent("onMove",event)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/action(var/obj/item/stack/cable_coil/target)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	if(istype(target) && target.amount)
@@ -346,6 +384,8 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["toggle"])
 		set_ready_state(!equip_ready)
@@ -365,12 +405,16 @@
 	return
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/get_equip_info()
+	procstart = null
+	src.procstart = null
 	var/output = ..()
 	if(output)
 		return "[output] \[Cable: [cable ? cable.amount : 0] m\][(cable && cable.amount) ? "- <a href='?src=[REF(src)];toggle=1'>[!equip_ready?"Dea":"A"]ctivate</a>|<a href='?src=[REF(src)];cut=1'>Cut</a>" : null]"
 	return
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/proc/use_cable(amount)
+	procstart = null
+	src.procstart = null
 	if(!cable || cable.amount<1)
 		set_ready_state(1)
 		occupant_message("Cable depleted, [src] deactivated.")
@@ -384,9 +428,13 @@
 	return 1
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/proc/reset()
+	procstart = null
+	src.procstart = null
 	last_piece = null
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/proc/dismantleFloor(var/turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(isfloorturf(new_turf))
 		var/turf/open/floor/T = new_turf
 		if(!isplatingturf(T))
@@ -396,6 +444,8 @@
 	return !new_turf.intact
 
 /obj/item/mecha_parts/mecha_equipment/cable_layer/proc/layCable(var/turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(equip_ready || !istype(new_turf) || !dismantleFloor(new_turf))
 		return reset()
 	var/fdirn = turn(chassis.dir,180)

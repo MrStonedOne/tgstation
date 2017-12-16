@@ -13,6 +13,8 @@
 	speed_process = TRUE
 
 /obj/machinery/mineral/processing_unit_console/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	machine = locate(/obj/machinery/mineral/processing_unit, get_step(src, machinedir))
 	if (machine)
@@ -22,6 +24,8 @@
 
 /obj/machinery/mineral/processing_unit_console/attack_hand(mob/user)
 
+	procstart = null
+	src.procstart = null
 	if(!machine)
 		return
 
@@ -32,6 +36,8 @@
 	popup.open()
 
 /obj/machinery/mineral/processing_unit_console/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -52,6 +58,8 @@
 	return
 
 /obj/machinery/mineral/processing_unit_console/Destroy()
+	procstart = null
+	src.procstart = null
 	machine = null
 	return ..()
 
@@ -72,21 +80,29 @@
 	var/datum/techweb/stored_research
 
 /obj/machinery/mineral/processing_unit/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, 1)
 	AddComponent(/datum/component/material_container, list(MAT_METAL, MAT_GLASS, MAT_SILVER, MAT_GOLD, MAT_DIAMOND, MAT_PLASMA, MAT_URANIUM, MAT_BANANIUM, MAT_TITANIUM, MAT_BLUESPACE), INFINITY)
 	stored_research = new /datum/techweb/specialized/autounlocking/smelter
 
 /obj/machinery/mineral/processing_unit/Destroy()
+	procstart = null
+	src.procstart = null
 	CONSOLE = null
 	QDEL_NULL(stored_research)
 	return ..()
 
 /obj/machinery/mineral/processing_unit/HasProximity(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/item/ore) && AM.loc == get_step(src, input_dir))
 		process_ore(AM)
 
 /obj/machinery/mineral/processing_unit/proc/process_ore(obj/item/ore/O)
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(materials, /datum/component/material_container)
 	var/material_amount = materials.get_item_material_amount(O)
 	if(!materials.has_space(material_amount))
@@ -98,6 +114,8 @@
 			CONSOLE.updateUsrDialog()
 
 /obj/machinery/mineral/processing_unit/proc/get_machine_data()
+	procstart = null
+	src.procstart = null
 	var/dat = "<b>Smelter control console</b><br><br>"
 	GET_COMPONENT(materials, /datum/component/material_container)
 	for(var/mat_id in materials.materials)
@@ -132,6 +150,8 @@
 	return dat
 
 /obj/machinery/mineral/processing_unit/process()
+	procstart = null
+	src.procstart = null
 	if (on)
 		if(selected_material)
 			smelt_ore()
@@ -144,6 +164,8 @@
 			CONSOLE.updateUsrDialog()
 
 /obj/machinery/mineral/processing_unit/proc/smelt_ore()
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(materials, /datum/component/material_container)
 	var/datum/material/mat = materials.materials[selected_material]
 	if(mat)
@@ -156,6 +178,8 @@
 
 
 /obj/machinery/mineral/processing_unit/proc/smelt_alloy()
+	procstart = null
+	src.procstart = null
 	var/datum/design/alloy = stored_research.isDesignResearchedID(selected_alloy) //check if it's a valid design
 	if(!alloy)
 		on = FALSE
@@ -173,6 +197,8 @@
 	generate_mineral(alloy.build_path)
 
 /obj/machinery/mineral/processing_unit/proc/can_smelt(datum/design/D)
+	procstart = null
+	src.procstart = null
 	if(D.make_reagents.len)
 		return FALSE
 
@@ -192,10 +218,14 @@
 	return build_amount
 
 /obj/machinery/mineral/processing_unit/proc/generate_mineral(P)
+	procstart = null
+	src.procstart = null
 	var/O = new P(src)
 	unload_mineral(O)
 
 /obj/machinery/mineral/processing_unit/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(materials, /datum/component/material_container)
 	materials.retrieve_all()
 	..()

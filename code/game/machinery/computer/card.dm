@@ -46,11 +46,15 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	light_color = LIGHT_COLOR_BLUE
 
 /obj/machinery/computer/card/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(scan || modify)
 		to_chat(user, "<span class='notice'>Alt-click to eject the ID card.</span>")
 
 /obj/machinery/computer/card/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	change_position_cooldown = CONFIG_GET(number/id_console_jobslot_delay)
 
@@ -79,6 +83,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 		return ..()
 
 /obj/machinery/computer/card/Destroy()
+	procstart = null
+	src.procstart = null
 	if(scan)
 		qdel(scan)
 		scan = null
@@ -88,6 +94,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	return ..()
 
 /obj/machinery/computer/card/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	..()
 	if(A == scan)
 		scan = null
@@ -97,6 +105,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 		updateUsrDialog()
 
 /obj/machinery/computer/card/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	if(scan)
 		scan.forceMove(drop_location())
 		scan = null
@@ -106,11 +116,15 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 //Check if you can't open a new position for a certain job
 /obj/machinery/computer/card/proc/job_blacklisted(jobtitle)
+	procstart = null
+	src.procstart = null
 	return (jobtitle in blacklisted)
 
 
 //Logic check for Topic() if you can open the job
 /obj/machinery/computer/card/proc/can_open_job(datum/job/job)
+	procstart = null
+	src.procstart = null
 	if(job)
 		if(!job_blacklisted(job.title))
 			if((job.total_positions <= GLOB.player_list.len * (max_relative_positions / 100)))
@@ -123,6 +137,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 //Logic check for Topic() if you can close the job
 /obj/machinery/computer/card/proc/can_close_job(datum/job/job)
+	procstart = null
+	src.procstart = null
 	if(job)
 		if(!job_blacklisted(job.title))
 			if(job.total_positions > job.current_positions)
@@ -134,6 +150,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	return 0
 
 /obj/machinery/computer/card/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -350,6 +368,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 
 
 /obj/machinery/computer/card/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -528,6 +548,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	return
 
 /obj/machinery/computer/card/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.canUseTopic(src))
 		if(scan)
 			eject_id_scan(user)
@@ -535,6 +557,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 			eject_id_modify(user)
 
 /obj/machinery/computer/card/proc/eject_id_scan(mob/user)
+	procstart = null
+	src.procstart = null
 	if(scan)
 		scan.forceMove(drop_location())
 		if(!issilicon(user) && Adjacent(user))
@@ -554,6 +578,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	updateUsrDialog()
 
 /obj/machinery/computer/card/proc/eject_id_modify(mob/user)
+	procstart = null
+	src.procstart = null
 	if(modify)
 		GLOB.data_core.manifest_modify(modify.registered_name, modify.assignment)
 		modify.update_label()
@@ -577,6 +603,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	updateUsrDialog()
 
 /obj/machinery/computer/card/proc/get_subordinates(rank)
+	procstart = null
+	src.procstart = null
 	for(var/datum/job/job in SSjob.occupations)
 		if(rank in job.department_head)
 			head_subordinates += job.title
@@ -593,6 +621,8 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	circuit = /obj/item/circuitboard/computer/card/minor
 
 /obj/machinery/computer/card/minor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuitboard/computer/card/minor/typed_circuit = circuit
 	if(target_dept)

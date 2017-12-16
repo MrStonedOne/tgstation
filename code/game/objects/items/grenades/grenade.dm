@@ -18,12 +18,16 @@
 	var/display_timer = 1
 
 /obj/item/grenade/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		prime()
 	if(!QDELETED(src))
 		qdel(src)
 
 /obj/item/grenade/proc/clown_check(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(user.disabilities & CLUMSY && prob(50))
 		to_chat(user, "<span class='warning'>Huh? How does this thing work?</span>")
 		preprime(user, 5, FALSE)
@@ -32,6 +36,8 @@
 
 
 /obj/item/grenade/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(display_timer)
 		if(det_time > 1)
@@ -41,11 +47,15 @@
 
 
 /obj/item/grenade/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(clown_check(user))
 			preprime(user)
 
 /obj/item/grenade/proc/log_grenade(mob/user, turf/T)
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(T)
 	var/message = "[ADMIN_LOOKUPFLW(user)]) has primed \a [src] for detonation at [ADMIN_COORDJMP(T)]"
 	GLOB.bombers += message
@@ -53,6 +63,8 @@
 	log_game("[key_name(user)] has primed \a [src] for detonation at [A.name] [COORD(T)].")
 
 /obj/item/grenade/proc/preprime(mob/user, delayoverride, msg = TRUE, volume = 60)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	log_grenade(user, T) //Inbuilt admin procs already handle null users
 	if(user)
@@ -70,12 +82,16 @@
 /obj/item/grenade/proc/prime()
 
 /obj/item/grenade/proc/update_mob()
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		var/mob/M = loc
 		M.dropItemToGround(src)
 
 
 /obj/item/grenade/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver))
 		switch(det_time)
 			if ("1")
@@ -95,13 +111,19 @@
 		return ..()
 
 /obj/item/grenade/attack_hand()
+	procstart = null
+	src.procstart = null
 	walk(src, null, null)
 	..()
 
 /obj/item/grenade/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/item/grenade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	var/obj/item/projectile/P = hitby
 	if(damage && attack_type == PROJECTILE_ATTACK && P.damage_type != STAMINA && prob(15))
 		owner.visible_message("<span class='danger'>[attack_text] hits [owner]'s [src], setting it off! What a shot!</span>")

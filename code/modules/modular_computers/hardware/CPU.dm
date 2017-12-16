@@ -13,6 +13,8 @@
 	device_type = MC_CPU
 
 /obj/item/computer_hardware/processor_unit/on_remove(obj/item/device/modular_computer/MC, mob/user)
+	procstart = null
+	src.procstart = null
 	MC.shutdown_computer()
 
 /obj/item/computer_hardware/processor_unit/small

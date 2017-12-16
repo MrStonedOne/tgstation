@@ -41,6 +41,8 @@
 	light_color = LIGHT_COLOR_BLUE
 
 /obj/machinery/computer/scan_consolenew/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(I, /obj/item/disk/data)) //INSERT SOME DISKETTES
 		if (!src.diskette)
 			if (!user.transferItemToLoc(I,src))
@@ -53,6 +55,8 @@
 		return ..()
 
 /obj/machinery/computer/scan_consolenew/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/direction in GLOB.cardinals)
 		connected = locate(/obj/machinery/dna_scannernew, get_step(src, direction))
@@ -61,11 +65,15 @@
 	injectorready = world.time + INJECTOR_TIMEOUT
 
 /obj/machinery/computer/scan_consolenew/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	ShowInterface(user)
 
 /obj/machinery/computer/scan_consolenew/proc/ShowInterface(mob/user, last_change)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	var/datum/browser/popup = new(user, "scannernew", "DNA Modifier Console", 800, 630) // Set up the popup browser window
@@ -309,6 +317,8 @@
 
 
 /obj/machinery/computer/scan_consolenew/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!isturf(usr.loc))
@@ -510,6 +520,8 @@
 	ShowInterface(usr,last_change)
 
 /obj/machinery/computer/scan_consolenew/proc/scramble(input,rs,rd)
+	procstart = null
+	src.procstart = null
 	var/length = length(input)
 	var/ran = gaussian(0, rs*RADIATION_STRENGTH_MULTIPLIER)
 	if(ran == 0)
@@ -521,9 +533,13 @@
 	return num2hex(Wrap(hex2num(input)+ran, 0, 16**length), length)
 
 /obj/machinery/computer/scan_consolenew/proc/randomize_radiation_accuracy(position_we_were_supposed_to_hit, radduration, number_of_blocks)
+	procstart = null
+	src.procstart = null
 	return Wrap(round(position_we_were_supposed_to_hit + gaussian(0, RADIATION_ACCURACY_MULTIPLIER/radduration), 1), 1, number_of_blocks+1)
 
 /obj/machinery/computer/scan_consolenew/proc/get_viable_occupant()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/viable_occupant = null
 	if(connected)
 		viable_occupant = connected.occupant
@@ -532,6 +548,8 @@
 	return viable_occupant
 
 /obj/machinery/computer/scan_consolenew/proc/apply_buffer(action,buffer_num)
+	procstart = null
+	src.procstart = null
 	buffer_num = Clamp(buffer_num, 1, NUMBER_OF_BUFFERS)
 	var/list/buffer_slot = buffer[buffer_num]
 	var/mob/living/carbon/viable_occupant = get_viable_occupant()
@@ -566,6 +584,8 @@
 					viable_occupant.dna.blood_type = buffer_slot["blood_type"]
 
 /obj/machinery/computer/scan_consolenew/proc/on_scanner_close()
+	procstart = null
+	src.procstart = null
 	to_chat(connected.occupant, "<span class='notice'>[src] activates!</span>")
 	if(delayed_action)
 		apply_buffer(delayed_action["action"],delayed_action["buffer"])

@@ -12,6 +12,8 @@
 	tamperproof = 90
 
 /obj/structure/closet/crate/secure/loot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/digits = list("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
 	code = ""
@@ -153,6 +155,8 @@
 			new /obj/item/clothing/head/bearpelt(src)
 
 /obj/structure/closet/crate/secure/loot/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		to_chat(user, "<span class='notice'>The crate is locked with a Deca-code lock.</span>")
 		var/input = input(usr, "Enter [codelen] digits. All digits must be unique.", "Deca-Code Lock", "") as text
@@ -182,11 +186,15 @@
 		return ..()
 
 /obj/structure/closet/crate/secure/loot/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.canUseTopic(src))
 		return
 	attack_hand(user) //this helps you not blow up so easily by overriding unlocking which results in an immediate boom.
 
 /obj/structure/closet/crate/secure/loot/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		if(istype(W, /obj/item/card/emag))
 			boom(user)
@@ -218,10 +226,14 @@
 	return ..()
 
 /obj/structure/closet/crate/secure/loot/togglelock(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		boom(user)
 	else
 		..()
 
 /obj/structure/closet/crate/secure/loot/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	boom()

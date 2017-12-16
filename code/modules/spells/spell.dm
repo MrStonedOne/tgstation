@@ -15,36 +15,54 @@
 	var/action_background_icon_state = "bg_spell"
 
 /obj/effect/proc_holder/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_action)
 		action = new(src)
 
 /obj/effect/proc_holder/proc/on_gain(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/proc/on_lose(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/proc/fire(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/effect/proc_holder/proc/get_panel_text()
+	procstart = null
+	src.procstart = null
 	return ""
 
 GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for the badmin verb for now
 
 /obj/effect/proc_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	if(ranged_ability_user)
 		remove_ranged_ability()
 	return ..()
 
 /obj/effect/proc_holder/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/proc/InterceptClickOn(mob/living/caller, params, atom/A)
+	procstart = null
+	src.procstart = null
 	if(caller.ranged_ability != src || ranged_ability_user != caller) //I'm not actually sure how these would trigger, but, uh, safety, I guess?
 		to_chat(caller, "<span class='warning'><b>[caller.ranged_ability.name]</b> has been disabled.</span>")
 		caller.ranged_ability.remove_ranged_ability()
@@ -57,6 +75,8 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	return FALSE
 
 /obj/effect/proc_holder/proc/add_ranged_ability(mob/living/user, msg, forced)
+	procstart = null
+	src.procstart = null
 	if(!user || !user.client)
 		return
 	if(user.ranged_ability && user.ranged_ability != src)
@@ -75,14 +95,20 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	update_icon()
 
 /obj/effect/proc_holder/proc/add_mousepointer(client/C)
+	procstart = null
+	src.procstart = null
 	if(C && ranged_mousepointer && C.mouse_pointer_icon == initial(C.mouse_pointer_icon))
 		C.mouse_pointer_icon = ranged_mousepointer
 
 /obj/effect/proc_holder/proc/remove_mousepointer(client/C)
+	procstart = null
+	src.procstart = null
 	if(C && ranged_mousepointer && C.mouse_pointer_icon == ranged_mousepointer)
 		C.mouse_pointer_icon = initial(C.mouse_pointer_icon)
 
 /obj/effect/proc_holder/proc/remove_ranged_ability(msg)
+	procstart = null
+	src.procstart = null
 	if(!ranged_ability_user || !ranged_ability_user.client || (ranged_ability_user.ranged_ability && ranged_ability_user.ranged_ability != src)) //To avoid removing the wrong ability
 		return
 	ranged_ability_user.ranged_ability = null
@@ -251,9 +277,13 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 			user.visible_message(invocation, invocation_emote_self) //same style as in mob/living/emote.dm
 
 /obj/effect/proc_holder/spell/proc/playMagSound()
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(usr), sound,50,1)
 
 /obj/effect/proc_holder/spell/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	action = new(src)
 	START_PROCESSING(SSfastprocess, src)
@@ -262,11 +292,15 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	charge_counter = charge_max
 
 /obj/effect/proc_holder/spell/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	qdel(action)
 	return ..()
 
 /obj/effect/proc_holder/spell/Click()
+	procstart = null
+	src.procstart = null
 	if(cast_check())
 		choose_targets()
 	return 1
@@ -275,12 +309,18 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	return
 
 /obj/effect/proc_holder/spell/proc/can_target(mob/living/target)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/effect/proc_holder/spell/proc/start_recharge()
+	procstart = null
+	src.procstart = null
 	recharging = TRUE
 
 /obj/effect/proc_holder/spell/process()
+	procstart = null
+	src.procstart = null
 	if(recharging && charge_type == "recharge" && (charge_counter < charge_max))
 		charge_counter += 2	//processes 5 times per second instead of 10.
 		if(charge_counter >= charge_max)
@@ -306,6 +346,8 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 		action.UpdateButtonIcon()
 
 /obj/effect/proc_holder/spell/proc/before_cast(list/targets)
+	procstart = null
+	src.procstart = null
 	if(overlay)
 		for(var/atom/target in targets)
 			var/location
@@ -321,6 +363,8 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 			QDEL_IN(spell, overlay_lifespan)
 
 /obj/effect/proc_holder/spell/proc/after_cast(list/targets)
+	procstart = null
+	src.procstart = null
 	for(var/atom/target in targets)
 		var/location
 		if(isliving(target))
@@ -347,9 +391,13 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 
 
 /obj/effect/proc_holder/spell/proc/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/spell/proc/critfail(list/targets)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/spell/proc/revert_cast(mob/user = usr) //resets recharge or readds a charge
@@ -396,6 +444,8 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	var/inner_radius = -1 //for all your ring spell needs
 
 /obj/effect/proc_holder/spell/targeted/choose_targets(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	var/list/targets = list()
 
 	switch(max_targets)
@@ -464,6 +514,8 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	perform(targets,user=user)
 
 /obj/effect/proc_holder/spell/aoe_turf/choose_targets(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	var/list/targets = list()
 
 	for(var/turf/target in view_or_range(range,user,selection_type))
@@ -479,14 +531,20 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	perform(targets,user=user)
 
 /obj/effect/proc_holder/spell/proc/updateButtonIcon()
+	procstart = null
+	src.procstart = null
 	action.UpdateButtonIcon()
 
 /obj/effect/proc_holder/spell/proc/can_be_cast_by(mob/caster)
+	procstart = null
+	src.procstart = null
 	if((human_req || clothes_req) && !ishuman(caster))
 		return 0
 	return 1
 
 /obj/effect/proc_holder/spell/targeted/proc/los_check(mob/A,mob/B)
+	procstart = null
+	src.procstart = null
 	//Checks for obstacles from A to B
 	var/obj/dummy = new(A.loc)
 	dummy.pass_flags |= PASSTABLE
@@ -499,6 +557,8 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	return 1
 
 /obj/effect/proc_holder/spell/proc/can_cast(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(((!user.mind) || !(src in user.mind.spell_list)) && !(src in user.mob_spell_list))
 		return 0
 
@@ -524,6 +584,8 @@ GLOBAL_LIST_INIT(spells, typesof(/obj/effect/proc_holder/spell)) //needed for th
 	range = -1 //Duh
 
 /obj/effect/proc_holder/spell/self/choose_targets(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		revert_cast()
 		return

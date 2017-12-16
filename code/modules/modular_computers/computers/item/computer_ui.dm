@@ -1,5 +1,7 @@
 // Operates TGUI
 /obj/item/device/modular_computer/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	if(!enabled)
 		if(ui)
 			ui.close()
@@ -40,6 +42,8 @@
 
 
 /obj/item/device/modular_computer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 	data["programs"] = list()
 	var/obj/item/computer_hardware/hard_drive/hard_drive = all_components[MC_HDD]
@@ -58,6 +62,8 @@
 
 // Handles user's GUI input
 /obj/item/device/modular_computer/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/obj/item/computer_hardware/hard_drive/hard_drive = all_components[MC_HDD]
@@ -156,6 +162,8 @@
 			return
 
 /obj/item/device/modular_computer/ui_host()
+	procstart = null
+	src.procstart = null
 	if(physical)
 		return physical
 	return src

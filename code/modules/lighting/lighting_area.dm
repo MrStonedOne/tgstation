@@ -3,6 +3,8 @@
 	var/dynamic_lighting = DYNAMIC_LIGHTING_ENABLED
 
 /area/proc/set_dynamic_lighting(var/new_dynamic_lighting = DYNAMIC_LIGHTING_ENABLED)
+	procstart = null
+	src.procstart = null
 	if (new_dynamic_lighting == dynamic_lighting)
 		return FALSE
 
@@ -23,6 +25,8 @@
 	return TRUE
 
 /area/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if("dynamic_lighting")
 			set_dynamic_lighting(var_value)

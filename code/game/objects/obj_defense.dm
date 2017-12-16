@@ -1,6 +1,8 @@
 
 //the essential proc to call when an obj must receive damage of any kind.
 /obj/proc/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(sound_effect)
 		play_attack_sound(damage_amount, damage_type, damage_flag)
 	if(!(resistance_flags & INDESTRUCTIBLE) && obj_integrity > 0)
@@ -20,6 +22,8 @@
 
 //returns the damage value of the attack after processing the obj's various armor protections
 /obj/proc/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 		if(BURN)
@@ -32,6 +36,8 @@
 
 //the sound played when the obj is damaged.
 /obj/proc/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -42,6 +48,8 @@
 			playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/hitby(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	var/tforce = 0
 	if(ismob(AM))
@@ -52,6 +60,8 @@
 	take_damage(tforce, BRUTE, "melee", 1, get_dir(src, AM))
 
 /obj/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & INDESTRUCTIBLE)
 		return
 	..() //contents explosion
@@ -69,15 +79,21 @@
 			take_damage(rand(10, 90), BRUTE, "bomb", 0)
 
 /obj/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(src, P.hitsound, 50, 1)
 	visible_message("<span class='danger'>[src] is hit by \a [P]!</span>", null, null, COMBAT_MESSAGE_RANGE)
 	take_damage(P.damage, P.damage_type, P.flag, 0, turn(P.dir, 180))
 
 /obj/proc/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 150 //the damage hulks do on punches to this object, is affected by melee armor
 
 /obj/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		..(user, 1)
 		visible_message("<span class='danger'>[user] smashes [src]!</span>", null, null, COMBAT_MESSAGE_RANGE)
@@ -91,6 +107,8 @@
 	return 0
 
 /obj/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		var/turf/T = loc
 		if(T.intact && level == 1) //the blob doesn't destroy thing below the floor
@@ -103,10 +121,14 @@
 	return take_damage(damage_amount, damage_type, damage_flag, sound_effect, get_dir(src, user))
 
 /obj/attack_alien(mob/living/carbon/alien/humanoid/user)
+	procstart = null
+	src.procstart = null
 	if(attack_generic(user, 60, BRUTE, "melee", 0))
 		playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
 
 /obj/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	if(!M.melee_damage_upper && !M.obj_damage)
 		M.emote("custom", message = "[M.friendly] [src].")
 		return 0
@@ -122,11 +144,15 @@
 			playsound(src, 'sound/effects/meteorimpact.ogg', 100, 1)
 
 /obj/attack_slime(mob/living/simple_animal/slime/user)
+	procstart = null
+	src.procstart = null
 	if(!user.is_adult)
 		return
 	attack_generic(user, rand(10, 15), "melee", 1)
 
 /obj/mech_melee_attack(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	M.do_attack_animation(src)
 	var/play_soundeffect = 0
 	var/mech_damtype = M.damtype
@@ -148,6 +174,8 @@
 	return take_damage(M.force*3, mech_damtype, "melee", play_soundeffect, get_dir(src, M)) // multiplied by 3 so we can hit objs hard but not be overpowered against mobs.
 
 /obj/singularity_act()
+	procstart = null
+	src.procstart = null
 	ex_act(EXPLODE_DEVASTATE)
 	if(src && !QDELETED(src))
 		qdel(src)
@@ -160,6 +188,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 //the obj's reaction when touched by acid
 /obj/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	if(!(resistance_flags & UNACIDABLE) && acid_volume)
 
 		if(!acid_level)
@@ -172,6 +202,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 //the proc called by the acid subsystem to process the acid that's on the obj
 /obj/proc/acid_processing()
+	procstart = null
+	src.procstart = null
 	. = 1
 	if(!(resistance_flags & ACID_PROOF))
 		for(var/armour_value in armor)
@@ -187,12 +219,16 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 //called when the obj is destroyed by acid.
 /obj/proc/acid_melt()
+	procstart = null
+	src.procstart = null
 	SSacid.processing -= src
 	deconstruct(FALSE)
 
 //// FIRE
 
 /obj/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		var/turf/T = loc
 		if(T.intact && level == 1) //fire can't damage things hidden below the floor.
@@ -207,11 +243,15 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 //called when the obj is destroyed by fire
 /obj/proc/burn()
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & ON_FIRE)
 		SSfire_burning.processing -= src
 	deconstruct(FALSE)
 
 /obj/proc/extinguish()
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & ON_FIRE)
 		resistance_flags &= ~ON_FIRE
 		cut_overlay(GLOB.fire_overlay, TRUE)
@@ -220,24 +260,34 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 
 /obj/proc/tesla_act(var/power)
+	procstart = null
+	src.procstart = null
 	being_shocked = TRUE
 	var/power_bounced = power / 2
 	tesla_zap(src, 3, power_bounced)
 	addtimer(CALLBACK(src, .proc/reset_shocked), 10)
 
 /obj/proc/reset_shocked()
+	procstart = null
+	src.procstart = null
 	being_shocked = FALSE
 
 //the obj is deconstructed into pieces, whether through careful disassembly or when destroyed.
 /obj/proc/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 //what happens when the obj's health is below integrity_failure level.
 /obj/proc/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	return
 
 //what happens when the obj's integrity reaches zero.
 /obj/proc/obj_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "acid")
 		acid_melt()
 	else if(damage_flag == "fire")
@@ -248,6 +298,8 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 //changes max_integrity while retaining current health percentage
 //returns TRUE if the obj broke, FALSE otherwise
 /obj/proc/modify_max_integrity(new_max, can_break = TRUE, damage_type = BRUTE, new_failure_integrity = null)
+	procstart = null
+	src.procstart = null
 	var/current_integrity = obj_integrity
 	var/current_max = max_integrity
 
@@ -268,4 +320,6 @@ GLOBAL_DATUM_INIT(acid_overlay, /mutable_appearance, mutable_appearance('icons/e
 
 //returns how much the object blocks an explosion
 /obj/proc/GetExplosionBlock()
+	procstart = null
+	src.procstart = null
 	CRASH("Unimplemented GetExplosionBlock()")

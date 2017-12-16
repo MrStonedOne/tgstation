@@ -6,6 +6,8 @@
 	var/ignore_if_not_on_turf	//don't check turfs in range if the host's loc isn't a turf
 
 /datum/proximity_monitor/New(atom/_host, range, _ignore_if_not_on_turf = TRUE)
+	procstart = null
+	src.procstart = null
 	host = _host
 	last_host_loc = _host.loc
 	ignore_if_not_on_turf = _ignore_if_not_on_turf
@@ -13,12 +15,16 @@
 	SetRange(range)
 
 /datum/proximity_monitor/Destroy()
+	procstart = null
+	src.procstart = null
 	host = null
 	last_host_loc = null
 	QDEL_LIST(checkers)
 	return ..()
 
 /datum/proximity_monitor/proc/HandleMove()
+	procstart = null
+	src.procstart = null
 	var/atom/_host = host
 	var/atom/new_host_loc = _host.loc
 	if(last_host_loc != new_host_loc)
@@ -30,6 +36,8 @@
 			_host.HasProximity(host)	//if we are processing, we're guaranteed to be a movable
 
 /datum/proximity_monitor/proc/SetRange(range, force_rebuild = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!force_rebuild && range == current_range)
 		return FALSE
 	. = TRUE
@@ -80,6 +88,8 @@
 	var/datum/proximity_monitor/monitor
 
 /obj/effect/abstract/proximity_checker/Initialize(mapload, datum/proximity_monitor/_monitor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(_monitor)
 		monitor = _monitor
@@ -88,9 +98,13 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/effect/abstract/proximity_checker/Destroy()
+	procstart = null
+	src.procstart = null
 	monitor = null
 	return ..()
 
 /obj/effect/abstract/proximity_checker/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	monitor.host.HasProximity(AM)

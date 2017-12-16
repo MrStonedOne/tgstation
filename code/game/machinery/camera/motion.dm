@@ -6,6 +6,8 @@
 	var/alarm_delay = 30 // Don't forget, there's another 3 seconds in queueAlarm()
 
 /obj/machinery/camera/process()
+	procstart = null
+	src.procstart = null
 	// motion camera event loop
 	if(!isMotion())
 		. = PROCESS_KILL
@@ -22,11 +24,15 @@
 				lostTargetRef(targetref)
 
 /obj/machinery/camera/proc/getTargetList()
+	procstart = null
+	src.procstart = null
 	if(area_motion)
 		return area_motion.motionTargets
 	return localMotionTargets
 
 /obj/machinery/camera/proc/newTarget(mob/target)
+	procstart = null
+	src.procstart = null
 	if(isAI(target))
 		return FALSE
 	if (detectTime == 0)
@@ -36,6 +42,8 @@
 	return TRUE
 
 /obj/machinery/camera/Destroy()
+	procstart = null
+	src.procstart = null
 	var/area/ai_monitored/A = get_area(src)
 	localMotionTargets = null
 	if(istype(A))
@@ -43,12 +51,16 @@
 	return ..()
 
 /obj/machinery/camera/proc/lostTargetRef(datum/weakref/R)
+	procstart = null
+	src.procstart = null
 	var/list/targets = getTargetList()
 	targets -= R
 	if (targets.len == 0)
 		cancelAlarm()
 
 /obj/machinery/camera/proc/cancelAlarm()
+	procstart = null
+	src.procstart = null
 	if (detectTime == -1)
 		for (var/i in GLOB.silicon_mobs)
 			var/mob/living/silicon/aiPlayer = i
@@ -58,6 +70,8 @@
 	return TRUE
 
 /obj/machinery/camera/proc/triggerAlarm()
+	procstart = null
+	src.procstart = null
 	if (!detectTime)
 		return FALSE
 	for (var/mob/living/silicon/aiPlayer in GLOB.player_list)
@@ -67,6 +81,8 @@
 	return TRUE
 
 /obj/machinery/camera/HasProximity(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	// Motion cameras outside of an "ai monitored" area will use this to detect stuff.
 	if (!area_motion)
 		if(isliving(AM))

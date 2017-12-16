@@ -15,16 +15,22 @@
 	var/hasmob = FALSE			// contains a mob
 
 /obj/structure/disposalholder/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION)
 
 /obj/structure/disposalholder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(gas)
 	active = FALSE
 	return ..()
 
 // initialize a holder from the contents of a disposal unit
 /obj/structure/disposalholder/proc/init(obj/machinery/disposal/D)
+	procstart = null
+	src.procstart = null
 	gas = D.air_contents// transfer gas resv. into holder object
 
 	//Check for any living mobs trigger hasmob.
@@ -57,6 +63,8 @@
 // start the movement process
 // argument is the disposal unit the holder started in
 /obj/structure/disposalholder/proc/start(obj/machinery/disposal/D)
+	procstart = null
+	src.procstart = null
 	if(!D.trunk)
 		D.expel(src)	// no trunk connected, so expel immediately
 		return
@@ -67,6 +75,8 @@
 
 // movement process, persists while holder is moving through pipes
 /obj/structure/disposalholder/proc/move()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/obj/structure/disposalpipe/last
 	while(active)
@@ -82,10 +92,14 @@
 
 // find the turf which should contain the next pipe
 /obj/structure/disposalholder/proc/nextloc()
+	procstart = null
+	src.procstart = null
 	return get_step(src, dir)
 
 // find a matching pipe on a turf
 /obj/structure/disposalholder/proc/findpipe(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		return null
 
@@ -99,6 +113,8 @@
 // merge two holder objects
 // used when a holder meets a stuck holder
 /obj/structure/disposalholder/proc/merge(obj/structure/disposalholder/other)
+	procstart = null
+	src.procstart = null
 	for(var/A in other)
 		var/atom/movable/AM = A
 		AM.forceMove(src)		// move everything in other holder to this one
@@ -110,6 +126,8 @@
 
 // called when player tries to move while in a pipe
 /obj/structure/disposalholder/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated())
 		return
 	for(var/mob/M in range(5, get_turf(src)))
@@ -118,11 +136,17 @@
 
 // called to vent all gas in holder to a location
 /obj/structure/disposalholder/proc/vent_gas(turf/T)
+	procstart = null
+	src.procstart = null
 	T.assume_air(gas)
 	T.air_update_turf()
 
 /obj/structure/disposalholder/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/structure/disposalholder/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return

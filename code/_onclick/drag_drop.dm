@@ -6,6 +6,8 @@
 	almost anything into a trash can.
 */
 /atom/MouseDrop(atom/over, src_location, over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	if(!usr || !over)
 		return
 	if(over == src)
@@ -18,4 +20,6 @@
 
 // recieve a mousedrop
 /atom/proc/MouseDrop_T(atom/dropping, mob/user)
+	procstart = null
+	src.procstart = null
 	return

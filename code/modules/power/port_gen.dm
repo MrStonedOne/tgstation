@@ -18,10 +18,14 @@
 	var/datum/looping_sound/generator/soundloop
 
 /obj/machinery/power/port_gen/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(list(src), active)
 
 /obj/machinery/power/port_gen/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	return ..()
 
@@ -32,15 +36,23 @@
 	return
 
 /obj/machinery/power/port_gen/proc/DropFuel()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/port_gen/proc/handleInactive()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/power/port_gen/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[base_icon]_[active]"
 
 /obj/machinery/power/port_gen/process()
+	procstart = null
+	src.procstart = null
 	if(active && HasFuel() && !crit_fail && anchored && powernet)
 		add_avail(power_gen * power_output)
 		UseFuel()
@@ -54,12 +66,16 @@
 		soundloop.stop()
 
 /obj/machinery/power/port_gen/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!anchored)
 		return
 
 /obj/machinery/power/port_gen/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "It is[!active?"n't":""] running.")
 
@@ -75,21 +91,29 @@
 	var/current_heat = 0
 
 /obj/machinery/power/port_gen/pacman/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(anchored)
 		connect_to_network()
 
 /obj/machinery/power/port_gen/pacman/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/sheet = new sheet_path(null)
 	sheet_name = sheet.name
 
 /obj/machinery/power/port_gen/pacman/Destroy()
+	procstart = null
+	src.procstart = null
 	DropFuel()
 	return ..()
 
 /obj/machinery/power/port_gen/pacman/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/temp_rating = 0
 	var/consumption_coeff = 0
 	for(var/obj/item/stock_parts/SP in component_parts)
@@ -103,17 +127,23 @@
 	consumption = consumption_coeff
 
 /obj/machinery/power/port_gen/pacman/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>The generator has [sheets] units of [sheet_name] fuel left, producing [power_gen] per cycle.</span>")
 	if(crit_fail)
 		to_chat(user, "<span class='danger'>The generator seems to have broken down.</span>")
 
 /obj/machinery/power/port_gen/pacman/HasFuel()
+	procstart = null
+	src.procstart = null
 	if(sheets >= 1 / (time_per_sheet / power_output) - sheet_left)
 		return 1
 	return 0
 
 /obj/machinery/power/port_gen/pacman/DropFuel()
+	procstart = null
+	src.procstart = null
 	if(sheets)
 		var/fail_safe = FALSE
 		while(sheets > 0 && fail_safe < 100)
@@ -124,6 +154,8 @@
 			sheets -= amount
 
 /obj/machinery/power/port_gen/pacman/UseFuel()
+	procstart = null
+	src.procstart = null
 	var/needed_sheets = 1 / (time_per_sheet * consumption / power_output)
 	var/temp = min(needed_sheets, sheet_left)
 	needed_sheets -= temp
@@ -156,14 +188,20 @@
 
 /obj/machinery/power/port_gen/pacman/handleInactive()
 
+	procstart = null
+	src.procstart = null
 	if (current_heat > 0)
 		current_heat = max(current_heat - 2, 0)
 		src.updateDialog()
 
 /obj/machinery/power/port_gen/pacman/proc/overheat()
+	procstart = null
+	src.procstart = null
 	explosion(src.loc, 2, 5, 2, -1)
 
 /obj/machinery/power/port_gen/pacman/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, sheet_path))
 		var/obj/item/stack/addstack = O
 		var/amount = min((max_sheets - sheets), addstack.amount)
@@ -206,12 +244,16 @@
 	return ..()
 
 /obj/machinery/power/port_gen/pacman/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
 	emp_act(EMP_HEAVY)
 
 /obj/machinery/power/port_gen/pacman/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (!anchored)
 		return
@@ -219,12 +261,18 @@
 	interact(user)
 
 /obj/machinery/power/port_gen/pacman/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/machinery/power/port_gen/pacman/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/machinery/power/port_gen/pacman/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if (get_dist(src, user) > 1 )
 		if(!isAI(user))
 			user.unset_machine()
@@ -249,6 +297,8 @@
 	onclose(user, "port_gen")
 
 /obj/machinery/power/port_gen/pacman/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -290,6 +340,8 @@
 	time_per_sheet = 85
 
 /obj/machinery/power/port_gen/pacman/super/overheat()
+	procstart = null
+	src.procstart = null
 	explosion(src.loc, 3, 3, 3, -1)
 
 /obj/machinery/power/port_gen/pacman/mrs
@@ -302,4 +354,6 @@
 	time_per_sheet = 80
 
 /obj/machinery/power/port_gen/pacman/mrs/overheat()
+	procstart = null
+	src.procstart = null
 	explosion(src.loc, 4, 4, 4, -1)

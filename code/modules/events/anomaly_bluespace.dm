@@ -10,10 +10,14 @@
 
 
 /datum/round_event/anomaly/anomaly_bluespace/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Unstable bluespace anomaly detected on long range scanners. Expected location: [impact_area.name].", "Anomaly Alert")
 
 
 /datum/round_event/anomaly/anomaly_bluespace/start()
+	procstart = null
+	src.procstart = null
 	var/turf/T = safepick(get_area_turfs(impact_area))
 	if(T)
 		newAnomaly = new /obj/effect/anomaly/bluespace(T)

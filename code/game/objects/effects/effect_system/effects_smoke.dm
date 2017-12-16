@@ -19,6 +19,8 @@
 
 
 /obj/effect/particle_effect/smoke/proc/fade_out(frames = 16)
+	procstart = null
+	src.procstart = null
 	if(alpha == 0) //Handle already transparent case
 		return
 	if(frames == 0)
@@ -31,21 +33,29 @@
 		stoplag()
 
 /obj/effect/particle_effect/smoke/New()
+	procstart = null
+	src.procstart = null
 	..()
 	create_reagents(500)
 	START_PROCESSING(SSobj, src)
 
 
 /obj/effect/particle_effect/smoke/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/effect/particle_effect/smoke/proc/kill_smoke()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	INVOKE_ASYNC(src, .proc/fade_out)
 	QDEL_IN(src, 10)
 
 /obj/effect/particle_effect/smoke/process()
+	procstart = null
+	src.procstart = null
 	lifetime--
 	if(lifetime < 1)
 		kill_smoke()
@@ -55,6 +65,8 @@
 	return 1
 
 /obj/effect/particle_effect/smoke/proc/smoke_mob(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(!istype(C))
 		return 0
 	if(lifetime<1)
@@ -68,10 +80,14 @@
 	return 1
 
 /obj/effect/particle_effect/smoke/proc/remove_smoke_delay(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(C)
 		C.smoke_delay = 0
 
 /obj/effect/particle_effect/smoke/proc/spread_smoke()
+	procstart = null
+	src.procstart = null
 	var/turf/t_loc = get_turf(src)
 	if(!t_loc)
 		return
@@ -104,6 +120,8 @@
 	effect_type = /obj/effect/particle_effect/smoke
 
 /datum/effect_system/smoke_spread/set_up(radius = 5, loca)
+	procstart = null
+	src.procstart = null
 	if(isturf(loca))
 		location = loca
 	else
@@ -111,6 +129,8 @@
 	amount = radius
 
 /datum/effect_system/smoke_spread/start()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		location = get_turf(holder)
 	var/obj/effect/particle_effect/smoke/S = new effect_type(location)
@@ -127,6 +147,8 @@
 	lifetime = 8
 
 /obj/effect/particle_effect/smoke/bad/smoke_mob(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		M.drop_all_held_items()
 		M.adjustOxyLoss(1)
@@ -134,6 +156,8 @@
 		return 1
 
 /obj/effect/particle_effect/smoke/bad/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover, /obj/item/projectile/beam))
 		var/obj/item/projectile/beam/B = mover
 		B.damage = (B.damage/2)
@@ -158,6 +182,8 @@
 	var/blast = 0
 
 /datum/effect_system/smoke_spread/freezing/proc/Chilled(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isopenturf(A))
 		var/turf/open/T = A
 		if(T.air)
@@ -184,10 +210,14 @@
 			Item.extinguish()
 
 /datum/effect_system/smoke_spread/freezing/set_up(radius = 5, loca, blasting = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	blast = blasting
 
 /datum/effect_system/smoke_spread/freezing/start()
+	procstart = null
+	src.procstart = null
 	if(blast)
 		for(var/turf/T in RANGE_TURFS(2, location))
 			Chilled(T)
@@ -204,6 +234,8 @@
 	lifetime = 10
 
 /obj/effect/particle_effect/smoke/sleeping/smoke_mob(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		M.Sleeping(200)
 		M.emote("cough")
@@ -221,6 +253,8 @@
 
 
 /obj/effect/particle_effect/smoke/chem/process()
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/turf/T = get_turf(src)
 		var/fraction = 1/initial(lifetime)
@@ -235,6 +269,8 @@
 		return 1
 
 /obj/effect/particle_effect/smoke/chem/smoke_mob(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	if(lifetime<1)
 		return 0
 	if(!istype(M))
@@ -254,6 +290,8 @@
 	effect_type = /obj/effect/particle_effect/smoke/chem
 
 /datum/effect_system/smoke_spread/chem/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chemholder = new /obj()
 	var/datum/reagents/R = new/datum/reagents(500)
@@ -261,11 +299,15 @@
 	R.my_atom = chemholder
 
 /datum/effect_system/smoke_spread/chem/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(chemholder)
 	chemholder = null
 	return ..()
 
 /datum/effect_system/smoke_spread/chem/set_up(datum/reagents/carry = null, radius = 1, loca, silent = 0)
+	procstart = null
+	src.procstart = null
 	if(isturf(loca))
 		location = loca
 	else
@@ -297,6 +339,8 @@
 
 
 /datum/effect_system/smoke_spread/chem/start()
+	procstart = null
+	src.procstart = null
 	var/mixcolor = mix_color_from_reagents(chemholder.reagents.reagent_list)
 	if(holder)
 		location = get_turf(holder)

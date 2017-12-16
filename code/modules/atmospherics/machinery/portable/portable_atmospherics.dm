@@ -15,6 +15,8 @@
 	var/maximum_pressure = 90 * ONE_ATMOSPHERE
 
 /obj/machinery/portable_atmospherics/New()
+	procstart = null
+	src.procstart = null
 	..()
 	SSair.atmos_machinery += src
 
@@ -25,6 +27,8 @@
 	return 1
 
 /obj/machinery/portable_atmospherics/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.atmos_machinery -= src
 
 	disconnect()
@@ -34,15 +38,21 @@
 	return ..()
 
 /obj/machinery/portable_atmospherics/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!connected_port) // Pipe network handles reactions if connected.
 		air_contents.react()
 	else
 		update_icon()
 
 /obj/machinery/portable_atmospherics/return_air()
+	procstart = null
+	src.procstart = null
 	return air_contents
 
 /obj/machinery/portable_atmospherics/proc/connect(obj/machinery/atmospherics/components/unary/portables_connector/new_port)
+	procstart = null
+	src.procstart = null
 	//Make sure not already connected to something else
 	if(connected_port || !new_port || new_port.connected_device)
 		return FALSE
@@ -63,11 +73,15 @@
 	return TRUE
 
 /obj/machinery/portable_atmospherics/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		disconnect()
 
 /obj/machinery/portable_atmospherics/proc/disconnect()
+	procstart = null
+	src.procstart = null
 	if(!connected_port)
 		return FALSE
 	anchored = FALSE
@@ -76,9 +90,13 @@
 	return TRUE
 
 /obj/machinery/portable_atmospherics/portableConnectorReturnAir()
+	procstart = null
+	src.procstart = null
 	return air_contents
 
 /obj/machinery/portable_atmospherics/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/tank))
 		if(!(stat & BROKEN))
 			var/obj/item/tank/T = W
@@ -117,6 +135,8 @@
 		return ..()
 
 /obj/machinery/portable_atmospherics/attacked_by(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(I.force < 10 && !(stat & BROKEN))
 		take_damage(0)
 	else

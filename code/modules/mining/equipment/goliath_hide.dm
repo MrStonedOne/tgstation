@@ -17,6 +17,8 @@
 	/obj/item/clothing/suit/hooded/explorer))
 
 /obj/item/stack/sheet/animalhide/goliath_hide/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(!proximity_flag)
 		return
 	if(is_type_in_typecache(target, goliath_platable_armor_typecache))

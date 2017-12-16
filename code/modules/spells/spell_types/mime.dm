@@ -17,6 +17,8 @@
 	action_background_icon_state = "bg_mime"
 
 /obj/effect/proc_holder/spell/aoe_turf/conjure/mime_wall/Click()
+	procstart = null
+	src.procstart = null
 	if(usr && usr.mind)
 		if(!usr.mind.miming)
 			to_chat(usr, "<span class='notice'>You must dedicate yourself to silence first.</span>")
@@ -42,6 +44,8 @@
 	action_background_icon_state = "bg_mime"
 
 /obj/effect/proc_holder/spell/targeted/mime/speak/Click()
+	procstart = null
+	src.procstart = null
 	if(!usr)
 		return
 	if(!ishuman(usr))
@@ -54,6 +58,8 @@
 	..()
 
 /obj/effect/proc_holder/spell/targeted/mime/speak/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/H in targets)
 		H.mind.miming=!H.mind.miming
 		if(H.mind.miming)
@@ -79,6 +85,8 @@
 	action_background_icon_state = "bg_mime"
 
 /obj/effect/proc_holder/spell/targeted/forcewall/mime/Click()
+	procstart = null
+	src.procstart = null
 	if(usr && usr.mind)
 		if(!usr.mind.miming)
 			to_chat(usr, "<span class='notice'>You must dedicate yourself to silence first.</span>")
@@ -111,6 +119,8 @@
 
 
 /obj/effect/proc_holder/spell/aimed/finger_guns/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/owner = usr
 	if(owner.incapacitated())
 		to_chat(owner, "<span class='warning'>You can't properly point your fingers while incapacitated.</span>")

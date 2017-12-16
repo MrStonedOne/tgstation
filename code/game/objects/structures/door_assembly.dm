@@ -21,6 +21,8 @@
 	var/material_amt = 4
 
 /obj/structure/door_assembly/New()
+	procstart = null
+	src.procstart = null
 	update_icon()
 	update_name()
 	..()
@@ -263,6 +265,8 @@
 	glass_type = /obj/machinery/door/airlock/wood/glass
 
 /obj/structure/door_assembly/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(state)
 		if(AIRLOCK_ASSEMBLY_NEEDS_WIRES)
@@ -284,6 +288,8 @@
 		to_chat(user, "<span class='notice'>There is a small <i>paper</i> placard on the assembly.</span>")
 
 /obj/structure/door_assembly/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pen))
 		var/t = stripped_input(user, "Enter the name for the door.", name, created_name,MAX_NAME_LEN)
 		if(!t)
@@ -504,6 +510,8 @@
 	update_icon()
 
 /obj/structure/door_assembly/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(!glass)
 		add_overlay(get_airlock_overlay("fill_construction", icon))
@@ -512,6 +520,8 @@
 	add_overlay(get_airlock_overlay("panel_c[state+1]", overlays_file))
 
 /obj/structure/door_assembly/proc/update_name()
+	procstart = null
+	src.procstart = null
 	name = ""
 	switch(state)
 		if(AIRLOCK_ASSEMBLY_NEEDS_WIRES)
@@ -524,6 +534,8 @@
 	name += "[heat_proof_finished ? "heat-proofed " : ""][glass ? "window " : ""][base_name] assembly"
 
 /obj/structure/door_assembly/proc/transfer_assembly_vars(obj/structure/door_assembly/source, obj/structure/door_assembly/target, previous = FALSE)
+	procstart = null
+	src.procstart = null
 	target.glass = source.glass
 	target.heat_proof_finished = source.heat_proof_finished
 	target.created_name = source.created_name
@@ -539,6 +551,8 @@
 	qdel(source)
 
 /obj/structure/door_assembly/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/turf/T = get_turf(src)
 		if(!disassembled)

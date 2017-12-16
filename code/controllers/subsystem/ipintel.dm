@@ -9,6 +9,8 @@ SUBSYSTEM_DEF(ipintel)
 	var/list/cache = list()
 
 /datum/controller/subsystem/ipintel/Initialize(timeofday, zlevel)
+	procstart = null
+	src.procstart = null
 	enabled = 1
 	. = ..()
 

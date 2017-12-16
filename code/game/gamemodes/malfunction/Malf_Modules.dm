@@ -28,6 +28,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	var/cooldown_period //If applicable, the time in deciseconds we have to wait before using any more modules
 
 /datum/action/innate/ai/Grant(mob/living/L)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isAI(owner))
 		WARNING("AI action [name] attempted to grant itself to non-AI mob [L.real_name] ([L.key])!")
@@ -36,11 +38,15 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 		owner_AI = owner
 
 /datum/action/innate/ai/IsAvailable()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner_AI && owner_AI.malf_cooldown > world.time)
 		return
 
 /datum/action/innate/ai/Trigger()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(auto_use_uses)
 		adjust_uses(-1)
@@ -48,6 +54,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 		owner_AI.malf_cooldown = world.time + cooldown_period
 
 /datum/action/innate/ai/proc/adjust_uses(amt, silent)
+	procstart = null
+	src.procstart = null
 	uses += amt
 	if(!silent && uses)
 		to_chat(owner, "<span class='notice'>[name] now has <b>[uses]</b> use[uses > 1 ? "s" : ""] remaining.</span>")
@@ -64,6 +72,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	var/linked_ability_type //The path of our linked ability
 
 /datum/action/innate/ai/ranged/New()
+	procstart = null
+	src.procstart = null
 	if(!linked_ability_type)
 		WARNING("Ranged AI action [name] attempted to spawn without a linked ability!")
 		qdel(src) //uh oh!
@@ -73,6 +83,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	..()
 
 /datum/action/innate/ai/ranged/adjust_uses(amt, silent)
+	procstart = null
+	src.procstart = null
 	uses += amt
 	if(!silent && uses)
 		to_chat(owner, "<span class='notice'>[name] now has <b>[uses]</b> use[uses > 1 ? "s" : ""] remaining.</span>")
@@ -83,10 +95,14 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 		QDEL_IN(src, 100) //let any active timers on us finish up
 
 /datum/action/innate/ai/ranged/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(linked_ability)
 	return ..()
 
 /datum/action/innate/ai/ranged/Activate()
+	procstart = null
+	src.procstart = null
 	linked_ability.toggle(owner)
 	return TRUE
 
@@ -97,10 +113,14 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	var/datum/action/innate/ai/ranged/attached_action
 
 /obj/effect/proc_holder/ranged_ai/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(attached_action)
 	return ..()
 
 /obj/effect/proc_holder/ranged_ai/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		remove_ranged_ability(disable_text)
 	else
@@ -114,6 +134,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	var/list/possible_modules
 
 /datum/module_picker/New()
+	procstart = null
+	src.procstart = null
 	possible_modules = list()
 	for(var/type in typesof(/datum/AI_Module))
 		var/datum/AI_Module/AM = new type
@@ -127,6 +149,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 				qdel(A)
 
 /datum/module_picker/proc/use(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/dat = list()
 	dat += "<B>Select use of processing time: (currently #[processing_time] left.)</B><BR>"
 	dat += "<HR>"
@@ -144,6 +168,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	popup.open()
 
 /datum/module_picker/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!isAI(usr))
@@ -232,6 +258,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	auto_use_uses = FALSE
 
 /datum/action/innate/ai/nuke_station/Activate()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(owner)
 	if(!istype(T) || !(T.z in GLOB.station_z_levels))
 		to_chat(owner, "<span class='warning'>You cannot activate the doomsday device while off-station!</span>")
@@ -242,6 +270,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	set_us_up_the_bomb(owner)
 
 /datum/action/innate/ai/nuke_station/proc/set_us_up_the_bomb(mob/living/owner)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	to_chat(owner, "<span class='small boldannounce'>run -o -a 'selfdestruct'</span>")
 	sleep(5)
@@ -328,10 +358,14 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	var/next_announce
 
 /obj/machinery/doomsday_device/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	countdown = new(src)
 
 /obj/machinery/doomsday_device/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(countdown)
 	STOP_PROCESSING(SSfastprocess, src)
 	SSshuttle.clearHostileEnvironment(src)
@@ -343,6 +377,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	return ..()
 
 /obj/machinery/doomsday_device/proc/start()
+	procstart = null
+	src.procstart = null
 	detonation_timer = world.time + DEFAULT_DOOMSDAY_TIMER
 	next_announce = world.time + DOOMSDAY_ANNOUNCE_INTERVAL
 	timing = TRUE
@@ -352,9 +388,13 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	SSmapping.add_nuke_threat(src) //This causes all blue "circuit" tiles on the map to change to animated red icon state.
 
 /obj/machinery/doomsday_device/proc/seconds_remaining()
+	procstart = null
+	src.procstart = null
 	. = max(0, (round((detonation_timer - world.time) / 10)))
 
 /obj/machinery/doomsday_device/process()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T || !(T.z in GLOB.station_z_levels))
 		minor_announce("DOOMSDAY DEVICE OUT OF STATION RANGE, ABORTING", "ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4", TRUE)
@@ -373,6 +413,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 		next_announce += DOOMSDAY_ANNOUNCE_INTERVAL
 
 /obj/machinery/doomsday_device/proc/detonate()
+	procstart = null
+	src.procstart = null
 	sound_to_playing_players('sound/machines/alarm.ogg')
 	sleep(100)
 	for(var/i in GLOB.mob_living_list)
@@ -399,6 +441,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	unlock_sound = 'sound/items/rped.ogg'
 
 /datum/AI_Module/large/upgrade_turrets/upgrade(mob/living/silicon/AI/AI)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/porta_turret/ai/turret in GLOB.machines)
 		turret.obj_integrity += 30
 		turret.lethal_projectile = /obj/item/projectile/beam/laser/heavylaser //Once you see it, you will know what it means to FEAR.
@@ -424,6 +468,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	uses = 1
 
 /datum/action/innate/ai/lockdown/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/D in GLOB.airlocks)
 		if(!(D.z in GLOB.station_z_levels))
 			continue
@@ -460,6 +506,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	cooldown_period = 100
 
 /datum/action/innate/ai/destroy_rcds/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/I in GLOB.rcd_list)
 		if(!istype(I, /obj/item/construction/rcd/borg)) //Ensures that cyborg RCDs are spared.
 			var/obj/item/construction/rcd/RCD = I
@@ -480,6 +528,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	unlock_sound = 'sound/mecha/nominal.ogg'
 
 /datum/AI_Module/large/mecha_domination/upgrade(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	AI.can_dominate_mechs = TRUE //Yep. This is all it does. Honk!
 
 
@@ -502,6 +552,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	uses = 1
 
 /datum/action/innate/ai/break_fire_alarms/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/firealarm/F in GLOB.machines)
 		if(!(F.z in GLOB.station_z_levels))
 			continue
@@ -529,6 +581,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	uses = 1
 
 /datum/action/innate/ai/break_air_alarms/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/airalarm/AA in GLOB.machines)
 		if(!(AA.z in GLOB.station_z_levels))
 			continue
@@ -555,6 +609,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	linked_ability_type = /obj/effect/proc_holder/ranged_ai/overload_machine
 
 /datum/action/innate/ai/ranged/overload_machine/proc/detonate_machine(obj/machinery/M)
+	procstart = null
+	src.procstart = null
 	if(M && !QDELETED(M))
 		explosion(get_turf(M), 0, 2, 3, 0)
 		if(M) //to check if the explosion killed it before we try to delete it
@@ -567,6 +623,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	disable_text = "<span class='notice'>You release your hold on the powernet.</span>"
 
 /obj/effect/proc_holder/ranged_ai/overload_machine/InterceptClickOn(mob/living/caller, params, obj/machinery/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(ranged_ability_user.incapacitated())
@@ -604,6 +662,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	linked_ability_type = /obj/effect/proc_holder/ranged_ai/override_machine
 
 /datum/action/innate/ai/ranged/override_machine/proc/animate_machine(obj/machinery/M)
+	procstart = null
+	src.procstart = null
 	if(M && !QDELETED(M))
 		new/mob/living/simple_animal/hostile/mimic/copy/machine(get_turf(M), M, owner, 1)
 
@@ -614,6 +674,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	disable_text = "<span class='notice'>You release your hold on the powernet.</span>"
 
 /obj/effect/proc_holder/ranged_ai/override_machine/InterceptClickOn(mob/living/caller, params, obj/machinery/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(ranged_ability_user.incapacitated())
@@ -653,12 +715,16 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	var/list/turfOverlays
 
 /datum/action/innate/ai/place_transformer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		var/image/I = image("icon"='icons/turf/overlays.dmi')
 		LAZYADD(turfOverlays, I)
 
 /datum/action/innate/ai/place_transformer/Activate()
+	procstart = null
+	src.procstart = null
 	if(!owner_AI.can_place_transformer(src))
 		return
 	active = TRUE
@@ -676,10 +742,14 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	adjust_uses(-1)
 
 /mob/living/silicon/ai/proc/remove_transformer_image(client/C, image/I, turf/T)
+	procstart = null
+	src.procstart = null
 	if(C && I.loc == T)
 		C.images -= I
 
 /mob/living/silicon/ai/proc/can_place_transformer(datum/action/innate/ai/place_transformer/action)
+	procstart = null
+	src.procstart = null
 	if(!eyeobj || !isturf(loc) || incapacitated() || !action)
 		return
 	var/turf/middle = get_turf(eyeobj)
@@ -725,6 +795,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	uses = 3
 
 /datum/action/innate/ai/blackout/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/power/apc/apc in GLOB.apcs_list)
 		if(prob(30 * apc.overload))
 			apc.overload_lighting()
@@ -752,6 +824,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	uses = 1
 
 /datum/action/innate/ai/emergency_lights/Activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/light/L in GLOB.machines)
 		if(L.z in GLOB.station_z_levels)
 			L.no_emergency = TRUE
@@ -781,11 +855,15 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	cooldown_period = 30
 
 /datum/action/innate/ai/reactivate_cameras/New()
+	procstart = null
+	src.procstart = null
 	..()
 	desc = "[desc] There are 30 reactivations remaining."
 	button.desc = desc
 
 /datum/action/innate/ai/reactivate_cameras/Activate()
+	procstart = null
+	src.procstart = null
 	var/fixed_cameras = 0
 	for(var/V in GLOB.cameranet.cameras)
 		if(!uses)
@@ -816,6 +894,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	unlock_sound = 'sound/items/rped.ogg'
 
 /datum/AI_Module/large/upgrade_cameras/upgrade(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	AI.see_override = SEE_INVISIBLE_MINIMUM //Night-vision, without which X-ray would be very limited in power.
 	AI.update_sight()
 
@@ -851,6 +931,8 @@ GLOBAL_LIST_INIT(blacklisted_malf_machines, typecacheof(list(
 	unlock_sound = 'sound/items/rped.ogg'
 
 /datum/AI_Module/large/eavesdrop/upgrade(mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	if(AI.eyeobj)
 		AI.eyeobj.relay_speech = TRUE
 

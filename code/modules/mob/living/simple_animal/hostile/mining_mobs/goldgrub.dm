@@ -33,6 +33,8 @@
 	var/will_burrow = TRUE
 
 /mob/living/simple_animal/hostile/asteroid/goldgrub/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/i = rand(1,3)
 	while(i)
@@ -40,6 +42,8 @@
 		i--
 
 /mob/living/simple_animal/hostile/asteroid/goldgrub/GiveTarget(new_target)
+	procstart = null
+	src.procstart = null
 	target = new_target
 	if(target != null)
 		if(istype(target, /obj/item/ore) && loot.len < 10)
@@ -53,12 +57,16 @@
 				addtimer(CALLBACK(src, .proc/Burrow), chase_time)
 
 /mob/living/simple_animal/hostile/asteroid/goldgrub/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/ore))
 		EatOre(target)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/asteroid/goldgrub/proc/EatOre(atom/targeted_ore)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/ore/O in targeted_ore.loc)
 		if(loot.len < 10)
 			loot += O.type
@@ -71,9 +79,13 @@
 		qdel(src)
 
 /mob/living/simple_animal/hostile/asteroid/goldgrub/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>The [P.name] was repelled by [src.name]'s girth!</span>")
 	return
 
 /mob/living/simple_animal/hostile/asteroid/goldgrub/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	idle_vision_range = 9
 	. = ..()

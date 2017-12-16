@@ -31,10 +31,14 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 
 /mob/living/simple_animal/pet/cat/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	verbs += /mob/living/proc/lay_down
 
 /mob/living/simple_animal/pet/cat/update_canmove()
+	procstart = null
+	src.procstart = null
 	..()
 	if(client && stat != DEAD)
 		if (resting)
@@ -86,6 +90,8 @@
 	var/memory_saved = FALSE
 
 /mob/living/simple_animal/pet/cat/Runtime/Initialize()
+	procstart = null
+	src.procstart = null
 	if(prob(5))
 		icon_state = "original"
 		icon_living = "original"
@@ -94,6 +100,8 @@
 	. = ..()
 
 /mob/living/simple_animal/pet/cat/Runtime/Life()
+	procstart = null
+	src.procstart = null
 	if(!cats_deployed && SSticker.current_state >= GAME_STATE_SETTING_UP)
 		Deploy_The_Cats()
 	if(!stat && SSticker.current_state == GAME_STATE_FINISHED && !memory_saved)
@@ -102,17 +110,23 @@
 	..()
 
 /mob/living/simple_animal/pet/cat/Runtime/make_babies()
+	procstart = null
+	src.procstart = null
 	var/mob/baby = ..()
 	if(baby)
 		children += baby
 		return baby
 
 /mob/living/simple_animal/pet/cat/Runtime/death()
+	procstart = null
+	src.procstart = null
 	if(!memory_saved)
 		Write_Memory(TRUE)
 	..()
 
 /mob/living/simple_animal/pet/cat/Runtime/proc/Read_Memory()
+	procstart = null
+	src.procstart = null
 	if(fexists("data/npc_saves/Runtime.sav")) //legacy compatability to convert old format to new
 		var/savefile/S = new /savefile("data/npc_saves/Runtime.sav")
 		S["family"] >> family
@@ -127,6 +141,8 @@
 		family = list()
 
 /mob/living/simple_animal/pet/cat/Runtime/proc/Write_Memory(dead)
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/npc_saves/Runtime.json")
 	var/list/file_data = list()
 	family = list()
@@ -143,6 +159,8 @@
 	WRITE_FILE(json_file, json_encode(file_data))
 
 /mob/living/simple_animal/pet/cat/Runtime/proc/Deploy_The_Cats()
+	procstart = null
+	src.procstart = null
 	cats_deployed = 1
 	for(var/cat_type in family)
 		if(family[cat_type] > 0)
@@ -155,6 +173,8 @@
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/simple_animal/pet/cat/Life()
+	procstart = null
+	src.procstart = null
 	if(!stat && !buckled && !client)
 		if(prob(1))
 			emote("me", 1, pick("stretches out for a belly rub.", "wags its tail.", "lies down."))
@@ -214,6 +234,8 @@
 				walk_to(src,movement_target,0,3)
 
 /mob/living/simple_animal/pet/cat/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(M.a_intent)
 		if("help")
@@ -222,6 +244,8 @@
 			wuv(-1, M)
 
 /mob/living/simple_animal/pet/cat/proc/wuv(change, mob/M)
+	procstart = null
+	src.procstart = null
 	if(change)
 		if(change > 0)
 			if(M && stat != DEAD)
@@ -249,6 +273,8 @@
 	death_sound = "bodyfall"
 
 /mob/living/simple_animal/pet/cat/cak/CheckParts(list/parts)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/organ/brain/B = locate(/obj/item/organ/brain) in contents
 	if(!B || !B.brainmob || !B.brainmob.mind)
@@ -263,6 +289,8 @@
 		name = new_name
 
 /mob/living/simple_animal/pet/cat/cak/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat)
 		return
@@ -277,6 +305,8 @@
 			D.filling_color = "#FF69B4"
 
 /mob/living/simple_animal/pet/cat/cak/attack_hand(mob/living/L)
+	procstart = null
+	src.procstart = null
 	..()
 	if(L.a_intent == INTENT_HARM && L.reagents && !stat)
 		L.reagents.add_reagent("nutriment", 0.4)

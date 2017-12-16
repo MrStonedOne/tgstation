@@ -41,6 +41,8 @@ GLOBAL_LIST_INIT(default_macros, list(
 	))
 
 /client/proc/set_macros()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	winset(src, null, "reset=true")

@@ -9,21 +9,29 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/evidencebag/afterattack(obj/item/I, mob/user,proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || loc == I)
 		return
 	evidencebagEquip(I, user)
 
 /obj/item/evidencebag/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(evidencebagEquip(I, user))
 		return 1
 
 /obj/item/evidencebag/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	w_class = initial(w_class)
 	icon_state = initial(icon_state)
 	desc = initial(desc)
 
 /obj/item/evidencebag/proc/evidencebagEquip(obj/item/I, mob/user)	
+	procstart = null
+	src.procstart = null
 	if(!istype(I) || I.anchored == 1)
 		return
 
@@ -65,6 +73,8 @@
 	return 1
 
 /obj/item/evidencebag/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(contents.len)
 		var/obj/item/I = contents[1]
 		user.visible_message("[user] takes [I] out of [src].", "<span class='notice'>You take [I] out of [src].</span>",\
@@ -85,6 +95,8 @@
 	desc = "A box claiming to contain evidence bags."
 
 /obj/item/storage/box/evidence/New()
+	procstart = null
+	src.procstart = null
 	new /obj/item/evidencebag(src)
 	new /obj/item/evidencebag(src)
 	new /obj/item/evidencebag(src)

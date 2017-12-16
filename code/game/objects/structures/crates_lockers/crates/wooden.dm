@@ -10,6 +10,8 @@
 	desc = "It has the words \"Clown + Mime\" written underneath of it with marker."
 
 /obj/structure/closet/crate/wooden/toy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new	/obj/item/device/megaphone/clown(src)
 	new	/obj/item/reagent_containers/food/drinks/soda_cans/canned_laughter(src)

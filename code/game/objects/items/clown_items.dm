@@ -26,6 +26,8 @@
 	force_string = "robust... against germs"
 
 /obj/item/soap/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 80)
 
@@ -49,12 +51,16 @@
 	cleanspeed = 10 //much faster than mop so it is useful for traitors who want to clean crime scenes
 
 /obj/item/soap/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.say(";FFFFFFFFFFFFFFFFUUUUUUUDGE!!")
 	user.visible_message("<span class='suicide'>[user] lifts [src] to their mouth and gnaws on it furiously, producing a thick froth! [user.p_they(TRUE)]'ll never get that BB gun now!</span>")
 	new /obj/effect/particle_effect/foam(loc)
 	return (TOXLOSS)
 
 /obj/item/soap/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || !check_allowed_items(target))
 		return
 	//I couldn't feasibly  fix the overlay bugs caused by cleaning items we are wearing.
@@ -111,10 +117,14 @@
 	attack_verb = list("HONKED")
 
 /obj/item/bikehorn/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/squeak, list('sound/items/bikehorn.ogg'=1), 50)
 
 /obj/item/bikehorn/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] solemnly points the horn at [user.p_their()] temple! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(src, 'sound/items/bikehorn.ogg', 50, 1)
 	return (BRUTELOSS)
@@ -126,6 +136,8 @@
 	icon_state = "air_horn"
 
 /obj/item/bikehorn/airhorn/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/squeak, list('sound/items/airhorn2.ogg'=1), 50)
 
@@ -138,16 +150,22 @@
 	var/flip_cooldown = 0
 
 /obj/item/bikehorn/golden/attack()
+	procstart = null
+	src.procstart = null
 	if(flip_cooldown < world.time)
 		flip_mobs()
 	return ..()
 
 /obj/item/bikehorn/golden/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(flip_cooldown < world.time)
 		flip_mobs()
 	..()
 
 /obj/item/bikehorn/golden/proc/flip_mobs(mob/living/carbon/M, mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	for(M in ohearers(7, T))
 		if(ishuman(M) && M.can_hear())

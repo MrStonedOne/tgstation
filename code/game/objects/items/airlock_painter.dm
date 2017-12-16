@@ -15,12 +15,16 @@
 	var/obj/item/device/toner/ink = null
 
 /obj/item/airlock_painter/New()
+	procstart = null
+	src.procstart = null
 	..()
 	ink = new /obj/item/device/toner(src)
 
 //This proc doesn't just check if the painter can be used, but also uses it.
 //Only call this if you are certain that the painter will be used right after this check!
 /obj/item/airlock_painter/proc/use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(can_use(user))
 		ink.charges--
 		playsound(src.loc, 'sound/effects/spray2.ogg', 50, 1)
@@ -32,6 +36,8 @@
 //Call this if you don't want the painter to be used right after this check, for example
 //because you're expecting user input.
 /obj/item/airlock_painter/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ink)
 		to_chat(user, "<span class='notice'>There is no toner cartridge installed in [src]!</span>")
 		return 0
@@ -42,6 +48,8 @@
 		return 1
 
 /obj/item/airlock_painter/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/lungs/L = user.getorganslot(ORGAN_SLOT_LUNGS)
 
 	if(can_use(user) && L)
@@ -89,6 +97,8 @@
 
 
 /obj/item/airlock_painter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ink)
 		to_chat(user, "<span class='notice'>It doesn't have a toner cartridge installed.</span>")
@@ -104,6 +114,8 @@
 
 
 /obj/item/airlock_painter/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/toner))
 		if(ink)
 			to_chat(user, "<span class='notice'>[src] already contains \a [ink].</span>")
@@ -117,6 +129,8 @@
 		return ..()
 
 /obj/item/airlock_painter/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ink)
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
 		ink.forceMove(user.drop_location())

@@ -8,11 +8,15 @@
 	device_type = MC_CELL
 
 /obj/item/computer_hardware/battery/New(loc, battery_type = null)
+	procstart = null
+	src.procstart = null
 	if(battery_type)
 		battery = new battery_type(src)
 	..()
 
 /obj/item/computer_hardware/battery/try_insert(obj/item/I, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return FALSE
 
@@ -37,6 +41,8 @@
 
 
 /obj/item/computer_hardware/battery/try_eject(slot=0, mob/living/user = null, forced = 0)
+	procstart = null
+	src.procstart = null
 	if(!battery)
 		to_chat(user, "<span class='warning'>There is no power cell connected to \the [src].</span>")
 		return FALSE

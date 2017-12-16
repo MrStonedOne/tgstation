@@ -17,17 +17,25 @@
 	var/datum/hud/hud = null // A reference to the owner HUD, if any.
 
 /obj/screen/take_damage()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/screen/Destroy()
+	procstart = null
+	src.procstart = null
 	master = null
 	hud = null
 	return ..()
 
 /obj/screen/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/screen/orbit()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/screen/text
@@ -44,6 +52,8 @@
 	name = "swap hand"
 
 /obj/screen/swap_hand/Click()
+	procstart = null
+	src.procstart = null
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	if(world.time <= usr.next_move)
@@ -64,6 +74,8 @@
 	screen_loc = ui_crafting
 
 /obj/screen/craft/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = usr
 	if(isobserver(usr))
 		return
@@ -76,6 +88,8 @@
 	screen_loc = ui_building
 
 /obj/screen/area_creator/Click()
+	procstart = null
+	src.procstart = null
 	if(usr.incapacitated())
 		return 1
 	var/area/A = get_area(usr)
@@ -91,6 +105,8 @@
 	screen_loc = ui_language_menu
 
 /obj/screen/language_menu/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/M = usr
 	var/datum/language_holder/H = M.get_language_holder()
 	H.open_language_menu(usr)
@@ -103,6 +119,8 @@
 	plane = HUD_PLANE
 
 /obj/screen/inventory/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	if(world.time <= usr.next_move)
@@ -123,6 +141,8 @@
 	return 1
 
 /obj/screen/inventory/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!icon_empty)
 		icon_empty = icon_state
 
@@ -138,6 +158,8 @@
 	var/held_index = 0
 
 /obj/screen/inventory/hand/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!handcuff_overlay)
@@ -161,6 +183,8 @@
 
 
 /obj/screen/inventory/hand/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	// At this point in client Click() code we have passed the 1/10 sec check and little else
 	// We don't even know if it's a middle click
 	if(world.time <= usr.next_move)
@@ -182,6 +206,8 @@
 	name = "close"
 
 /obj/screen/close/Click()
+	procstart = null
+	src.procstart = null
 	if(istype(master, /obj/item/storage))
 		var/obj/item/storage/S = master
 		S.close(usr)
@@ -196,6 +222,8 @@
 	plane = HUD_PLANE
 
 /obj/screen/drop/Click()
+	procstart = null
+	src.procstart = null
 	if(usr.stat == CONSCIOUS)
 		usr.dropItemToGround(usr.get_active_held_item())
 
@@ -205,9 +233,13 @@
 	screen_loc = ui_acti
 
 /obj/screen/act_intent/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	usr.a_intent_change(INTENT_HOTKEY_RIGHT)
 
 /obj/screen/act_intent/segmented/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(usr.client.prefs.toggles & INTENT_STYLE)
 		var/_x = text2num(params2list(params)["icon-x"])
 		var/_y = text2num(params2list(params)["icon-y"])
@@ -240,6 +272,8 @@
 	screen_loc = ui_internal
 
 /obj/screen/internals/Click()
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(usr))
 		return
 	var/mob/living/carbon/C = usr
@@ -300,9 +334,13 @@
 	icon_state = "running"
 
 /obj/screen/mov_intent/Click()
+	procstart = null
+	src.procstart = null
 	toggle(usr)
 
 /obj/screen/mov_intent/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isobserver(user))
 		return
 	switch(user.m_intent)
@@ -320,11 +358,15 @@
 	icon_state = "pull"
 
 /obj/screen/pull/Click()
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr))
 		return
 	usr.stop_pulling()
 
 /obj/screen/pull/update_icon(mob/mymob)
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	if(mymob.pulling)
@@ -340,6 +382,8 @@
 	plane = HUD_PLANE
 
 /obj/screen/resist/Click()
+	procstart = null
+	src.procstart = null
 	if(isliving(usr))
 		var/mob/living/L = usr
 		L.resist()
@@ -348,6 +392,8 @@
 	name = "storage"
 
 /obj/screen/storage/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(world.time <= usr.next_move)
 		return 1
 	if(usr.stat || usr.IsUnconscious() || usr.IsKnockdown() || usr.IsStun())
@@ -366,6 +412,8 @@
 	icon_state = "act_throw_off"
 
 /obj/screen/throw_catch/Click()
+	procstart = null
+	src.procstart = null
 	if(iscarbon(usr))
 		var/mob/living/carbon/C = usr
 		C.toggle_throw_mode()
@@ -377,6 +425,8 @@
 	var/selecting = "chest"
 
 /obj/screen/zone_sel/Click(location, control,params)
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr))
 		return
 
@@ -431,6 +481,8 @@
 	return set_selected_zone(choice, usr)
 
 /obj/screen/zone_sel/proc/set_selected_zone(choice, mob/user)
+	procstart = null
+	src.procstart = null
 	if(isobserver(user))
 		return
 
@@ -440,6 +492,8 @@
 	return 1
 
 /obj/screen/zone_sel/update_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	add_overlay(mutable_appearance('icons/mob/screen_gen.dmi', "[selecting]"))
 	user.zone_selected = selecting
@@ -448,6 +502,8 @@
 	icon = 'icons/mob/screen_alien.dmi'
 
 /obj/screen/zone_sel/alien/update_icon(mob/user)
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	add_overlay(mutable_appearance('icons/mob/screen_alien.dmi', "[selecting]"))
 	user.zone_selected = selecting
@@ -566,6 +622,8 @@
 	..()
 
 /obj/screen/splash/proc/Fade(out, qdel_after = TRUE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(out)
@@ -577,6 +635,8 @@
 		QDEL_IN(src, 30)
 
 /obj/screen/splash/Destroy()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		holder.screen -= src
 		holder = null

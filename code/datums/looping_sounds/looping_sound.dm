@@ -29,6 +29,8 @@
 	var/direct
 
 /datum/looping_sound/New(list/_output_atoms=list(), start_immediately=FALSE, _direct=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!mid_sounds)
 		WARNING("A looping sound datum was created without sounds to play.")
 		return
@@ -40,11 +42,15 @@
 		start()
 
 /datum/looping_sound/Destroy()
+	procstart = null
+	src.procstart = null
 	stop()
 	output_atoms = null
 	return ..()
 
 /datum/looping_sound/proc/start(atom/add_thing)
+	procstart = null
+	src.procstart = null
 	if(add_thing)
 		output_atoms |= add_thing
 	if(!muted)
@@ -53,6 +59,8 @@
 	on_start()
 
 /datum/looping_sound/proc/stop(atom/remove_thing)
+	procstart = null
+	src.procstart = null
 	if(remove_thing)
 		output_atoms -= remove_thing
 	if(muted)
@@ -60,6 +68,8 @@
 	muted = TRUE
 
 /datum/looping_sound/proc/sound_loop(looped=0)
+	procstart = null
+	src.procstart = null
 	if(muted || (max_loops && looped > max_loops))
 		on_stop(looped)
 		return
@@ -68,6 +78,8 @@
 	addtimer(CALLBACK(src, .proc/sound_loop, ++looped), mid_length)
 
 /datum/looping_sound/proc/play(soundfile)
+	procstart = null
+	src.procstart = null
 	var/list/atoms_cache = output_atoms
 	var/sound/S = sound(soundfile)
 	if(direct)
@@ -81,6 +93,8 @@
 			playsound(thing, S, volume)
 
 /datum/looping_sound/proc/get_sound(looped, _mid_sounds)
+	procstart = null
+	src.procstart = null
 	if(!_mid_sounds)
 		. = mid_sounds
 	else
@@ -89,6 +103,8 @@
 		. = pickweight(.)
 
 /datum/looping_sound/proc/on_start()
+	procstart = null
+	src.procstart = null
 	var/start_wait = 0
 	if(start_sound)
 		play(start_sound)
@@ -96,5 +112,7 @@
 	addtimer(CALLBACK(src, .proc/sound_loop), start_wait)
 
 /datum/looping_sound/proc/on_stop(looped)
+	procstart = null
+	src.procstart = null
 	if(end_sound)
 		play(end_sound)

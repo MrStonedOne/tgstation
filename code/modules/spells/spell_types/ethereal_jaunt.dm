@@ -23,6 +23,8 @@
 		INVOKE_ASYNC(src, .proc/do_jaunt, target)
 
 /obj/effect/proc_holder/spell/targeted/ethereal_jaunt/proc/do_jaunt(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.notransform = 1
 	var/turf/mobloc = get_turf(target)
 	var/obj/effect/dummy/spell_jaunt/holder = new /obj/effect/dummy/spell_jaunt(mobloc)
@@ -57,6 +59,8 @@
 		target.canmove = 1
 
 /obj/effect/proc_holder/spell/targeted/ethereal_jaunt/proc/jaunt_steam(mobloc)
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/steam_spread/steam = new /datum/effect_system/steam_spread()
 	steam.set_up(10, 0, mobloc)
 	steam.start()
@@ -74,12 +78,16 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/effect/dummy/spell_jaunt/Destroy()
+	procstart = null
+	src.procstart = null
 	// Eject contents if deleted somehow
 	for(var/atom/movable/AM in src)
 		AM.forceMove(get_turf(src))
 	return ..()
 
 /obj/effect/dummy/spell_jaunt/relaymove(var/mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if ((movedelay > world.time) || reappearing || !direction)
 		return
 	var/turf/newLoc = get_step(src,direction)
@@ -91,6 +99,10 @@
 	movedelay = world.time + movespeed
 
 /obj/effect/dummy/spell_jaunt/ex_act(blah)
+	procstart = null
+	src.procstart = null
 	return
 /obj/effect/dummy/spell_jaunt/bullet_act(blah)
+	procstart = null
+	src.procstart = null
 	return

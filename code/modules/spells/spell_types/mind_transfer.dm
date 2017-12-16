@@ -21,6 +21,8 @@ Make sure spells that are removed from spell_list are actually removed and delet
 Also, you never added distance checking after target is selected. I've went ahead and did that.
 */
 /obj/effect/proc_holder/spell/targeted/mind_transfer/cast(list/targets, mob/living/user = usr, distanceoverride)
+	procstart = null
+	src.procstart = null
 	if(!targets.len)
 		to_chat(user, "<span class='warning'>No mind found!</span>")
 		return

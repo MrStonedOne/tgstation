@@ -7,6 +7,8 @@
 
 /datum/round_event/wizard/deprevolt/start()
 
+	procstart = null
+	src.procstart = null
 	var/list/tidecolor
 	var/list/jobs_to_revolt	= 	list()
 	var/nation

@@ -29,6 +29,8 @@
 	default_priority = 10
 
 /datum/language/narsie/New()
+	procstart = null
+	src.procstart = null
 	for(var/syllable in base_syllables) //we only do this once, since there's only ever a single one of each language datum.
 		for(var/target_syllable in base_syllables)
 			if(syllable != target_syllable) //don't combine with yourself

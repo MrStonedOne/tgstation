@@ -15,6 +15,8 @@
 	pipe_state = "heunary"
 
 /obj/machinery/atmospherics/components/unary/heat_exchanger/update_icon()
+	procstart = null
+	src.procstart = null
 	if(NODE1)
 		icon_state = "he_intact"
 		var/obj/machinery/atmospherics/node = NODE1
@@ -23,6 +25,8 @@
 		icon_state = "he_exposed"
 
 /obj/machinery/atmospherics/components/unary/heat_exchanger/atmosinit()
+	procstart = null
+	src.procstart = null
 	if(!partner)
 		var/partner_connect = turn(dir,180)
 
@@ -35,6 +39,8 @@
 	..()
 
 /obj/machinery/atmospherics/components/unary/heat_exchanger/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!partner || SSair.times_fired <= update_cycle)
 		return

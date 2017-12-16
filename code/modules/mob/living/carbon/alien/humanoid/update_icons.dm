@@ -1,5 +1,7 @@
 
 /mob/living/carbon/alien/humanoid/update_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	for(var/I in overlays_standing)
 		add_overlay(I)
@@ -47,6 +49,8 @@
 	update_inv_handcuffed()
 
 /mob/living/carbon/alien/humanoid/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	if(!..())
 	//	update_icons() //Handled in update_transform(), leaving this here as a reminder
 		update_transform()
@@ -58,6 +62,8 @@
 	update_icons()
 
 /mob/living/carbon/alien/humanoid/update_inv_handcuffed()
+	procstart = null
+	src.procstart = null
 	remove_overlay(HANDCUFF_LAYER)
 	var/cuff_icon = "aliencuff"
 	var/dmi_file = 'icons/mob/alien.dmi'
@@ -72,6 +78,8 @@
 
 //Royals have bigger sprites, so inhand things must be handled differently.
 /mob/living/carbon/alien/humanoid/royal/update_inv_hands()
+	procstart = null
+	src.procstart = null
 	..()
 	remove_overlay(HANDS_LAYER)
 	var/list/hands = list()

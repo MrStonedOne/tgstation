@@ -6,6 +6,8 @@
 	flags_1 = NONE
 
 /turf/open/floor/holofloor/attackby(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return // HOLOFLOOR DOES NOT GIVE A FUCK
 
 /turf/open/floor/holofloor/plating
@@ -43,6 +45,8 @@
 	icon_state = "asteroid0"
 
 /turf/open/floor/holofloor/asteroid/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "asteroid[rand(0, 12)]"
 	. = ..()
 
@@ -51,6 +55,8 @@
 	icon_state = "basalt0"
 
 /turf/open/floor/holofloor/basalt/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(15))
 		icon_state = "basalt[rand(0, 12)]"
@@ -62,6 +68,8 @@
 	icon_state = "0"
 
 /turf/open/floor/holofloor/space/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = SPACE_ICON_STATE // so realistic
 	. = ..()
 
@@ -71,10 +79,14 @@
 	icon_state = "speedspace_ns_1"
 
 /turf/open/floor/holofloor/hyperspace/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "speedspace_ns_[(x + 5*y + (y%2+1)*7)%15+1]"
 	. = ..()
 
 /turf/open/floor/holofloor/hyperspace/ns/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "speedspace_ns_[(x + 5*y + (y%2+1)*7)%15+1]"
 
@@ -89,10 +101,14 @@
 	canSmoothWith = null
 
 /turf/open/floor/holofloor/carpet/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/update_icon), 1)
 
 /turf/open/floor/holofloor/carpet/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	if(intact)

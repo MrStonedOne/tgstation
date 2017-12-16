@@ -17,6 +17,8 @@
 	var/recalculating = FALSE
 
 /datum/beam/New(beam_origin,beam_target,beam_icon='icons/effects/beam.dmi',beam_icon_state="b_beam",time=50,maxdistance=10,btype = /obj/effect/ebeam,beam_sleep_time=3)
+	procstart = null
+	src.procstart = null
 	origin = beam_origin
 	origin_oldloc =	get_turf(origin)
 	target = beam_target
@@ -33,10 +35,14 @@
 		addtimer(CALLBACK(src,.proc/End), time)
 
 /datum/beam/proc/Start()
+	procstart = null
+	src.procstart = null
 	Draw()
 	recalculate_in(sleep_time)
 
 /datum/beam/proc/recalculate()
+	procstart = null
+	src.procstart = null
 	if(recalculating)
 		recalculate_in(sleep_time)
 		return
@@ -56,20 +62,28 @@
 		End()
 
 /datum/beam/proc/afterDraw()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/beam/proc/recalculate_in(time)
+	procstart = null
+	src.procstart = null
 	if(timing_id)
 		deltimer(timing_id)
 	timing_id = addtimer(CALLBACK(src, .proc/recalculate), time, TIMER_STOPPABLE)
 
 /datum/beam/proc/after_calculate()
+	procstart = null
+	src.procstart = null
 	if((sleep_time == null) || finished)	//Does not automatically recalculate.
 		return
 	if(isnull(timing_id))
 		timing_id = addtimer(CALLBACK(src, .proc/recalculate), sleep_time, TIMER_STOPPABLE)
 
 /datum/beam/proc/End(destroy_self = TRUE)
+	procstart = null
+	src.procstart = null
 	finished = TRUE
 	if(!isnull(timing_id))
 		deltimer(timing_id)
@@ -77,17 +91,23 @@
 		qdel(src)
 
 /datum/beam/proc/Reset()
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/ebeam/B in elements)
 		qdel(B)
 	elements.Cut()
 
 /datum/beam/Destroy()
+	procstart = null
+	src.procstart = null
 	Reset()
 	target = null
 	origin = null
 	return ..()
 
 /datum/beam/proc/Draw()
+	procstart = null
+	src.procstart = null
 	var/Angle = round(Get_Angle(origin,target))
 	var/matrix/rot_matrix = matrix()
 	rot_matrix.Turn(Angle)
@@ -147,15 +167,23 @@
 	var/datum/beam/owner
 
 /obj/effect/ebeam/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	return ..()
 
 /obj/effect/ebeam/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 /obj/effect/ebeam/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/Beam(atom/BeamTarget,icon_state="b_beam",icon='icons/effects/beam.dmi',time=50, maxdistance=10,beam_type=/obj/effect/ebeam,beam_sleep_time = 3)
+	procstart = null
+	src.procstart = null
 	var/datum/beam/newbeam = new(src,BeamTarget,icon,icon_state,time,maxdistance,beam_type,beam_sleep_time)
 	INVOKE_ASYNC(newbeam, /datum/beam/.proc/Start)
 	return newbeam

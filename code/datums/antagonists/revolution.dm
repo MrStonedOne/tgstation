@@ -9,6 +9,8 @@
 	var/datum/objective_team/revolution/rev_team
 
 /datum/antagonist/rev/can_be_owned(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_owner.assigned_role in GLOB.command_positions)
 		return FALSE
@@ -16,34 +18,50 @@
 		return FALSE
 
 /datum/antagonist/rev/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = mob_override || owner.current
 	update_rev_icons_added(M)
 
 /datum/antagonist/rev/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = mob_override || owner.current
 	update_rev_icons_removed(M)
 
 /datum/antagonist/rev/proc/equip_rev()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/antagonist/rev/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /datum/antagonist/rev/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_objectives()
 	equip_rev()
 	owner.current.log_message("<font color='red'>Has been converted to the revolution!</font>", INDIVIDUAL_ATTACK_LOG)
 
 /datum/antagonist/rev/on_removal()
+	procstart = null
+	src.procstart = null
 	remove_objectives()
 	. = ..()
 
 /datum/antagonist/rev/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='danger'><FONT size = 3> You are now a revolutionary! Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them kill the heads to win the revolution!</FONT></span>")
 	owner.announce_objectives()
 
 /datum/antagonist/rev/create_team(datum/objective_team/revolution/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		//For now only one revolution at a time
 		for(var/datum/antagonist/rev/head/H in GLOB.antagonists)
@@ -59,16 +77,24 @@
 	rev_team = new_team
 
 /datum/antagonist/rev/get_team()
+	procstart = null
+	src.procstart = null
 	return rev_team
 
 /datum/antagonist/rev/proc/create_objectives()
+	procstart = null
+	src.procstart = null
 	owner.objectives |= rev_team.objectives
 
 /datum/antagonist/rev/proc/remove_objectives()
+	procstart = null
+	src.procstart = null
 	owner.objectives -= rev_team.objectives
 
 //Bump up to head_rev
 /datum/antagonist/rev/proc/promote()
+	procstart = null
+	src.procstart = null
 	var/old_team = rev_team
 	var/datum/mind/old_owner = owner
 	silent = TRUE
@@ -88,16 +114,22 @@
 	var/give_hud = TRUE
 
 /datum/antagonist/rev/proc/update_rev_icons_added(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/revhud = GLOB.huds[ANTAG_HUD_REV]
 	revhud.join_hud(M)
 	set_antag_hud(M,hud_type)
 
 /datum/antagonist/rev/proc/update_rev_icons_removed(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/revhud = GLOB.huds[ANTAG_HUD_REV]
 	revhud.leave_hud(M)
 	set_antag_hud(M, null)
 
 /datum/antagonist/rev/proc/can_be_converted(mob/living/candidate)
+	procstart = null
+	src.procstart = null
 	if(!candidate.mind)
 		return FALSE
 	if(!can_be_owned(candidate.mind))
@@ -110,6 +142,8 @@
 	return TRUE
 
 /datum/antagonist/rev/proc/add_revolutionary(datum/mind/rev_mind,stun = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!can_be_converted(rev_mind.current))
 		return FALSE
 	if(stun)
@@ -123,6 +157,8 @@
 	return TRUE
 
 /datum/antagonist/rev/head/proc/demote()
+	procstart = null
+	src.procstart = null
 	var/datum/mind/old_owner = owner
 	var/old_team = rev_team
 	silent = TRUE
@@ -134,6 +170,8 @@
 	to_chat(old_owner, "<span class='userdanger'>Revolution has been disappointed of your leader traits! You are a regular revolutionary now!</span>")
 				
 /datum/antagonist/rev/farewell()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner.current))
 		owner.current.visible_message("[owner.current] looks like they just remembered their real allegiance!")
 		to_chat(owner, "<span class='userdanger'><FONT size = 3>You are no longer a brainwashed revolutionary! Your memory is hazy from the time you were a rebel...the only thing you remember is the name of the one who brainwashed you...</FONT></span>")
@@ -142,6 +180,8 @@
 		to_chat(owner, "<span class='userdanger'><FONT size = 3>The frame's firmware detects and deletes your neural reprogramming! You remember nothing but the name of the one who flashed you.</FONT></span>")
 
 /datum/antagonist/rev/proc/remove_revolutionary(borged, deconverter)
+	procstart = null
+	src.procstart = null
 	log_attack("[owner.current] (Key: [key_name(owner.current)]) has been deconverted from the revolution by [deconverter] (Key: [key_name(deconverter)])!")
 	if(borged)
 		message_admins("[ADMIN_LOOKUPFLW(owner.current)] has been borged while being a [name]")
@@ -152,11 +192,15 @@
 	owner.remove_antag_datum(type)
 
 /datum/antagonist/rev/head/remove_revolutionary(borged,deconverter)
+	procstart = null
+	src.procstart = null
 	if(!borged)
 		return
 	. = ..()
 
 /datum/antagonist/rev/head/equip_rev()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner.current
 	if(!istype(H))
 		return
@@ -188,6 +232,8 @@
 	var/max_headrevs = 3
 
 /datum/objective_team/revolution/proc/update_objectives(initial = FALSE)
+	procstart = null
+	src.procstart = null
 	var/untracked_heads = SSjob.get_all_heads()
 	for(var/datum/objective/mutiny/O in objectives)
 		untracked_heads -= O.target
@@ -203,12 +249,16 @@
 	addtimer(CALLBACK(src,.proc/update_objectives),HEAD_UPDATE_PERIOD,TIMER_UNIQUE)
 
 /datum/objective_team/revolution/proc/head_revolutionaries()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/datum/mind/M in members)
 		if(M.has_antag_datum(/datum/antagonist/rev/head))
 			. += M
 
 /datum/objective_team/revolution/proc/update_heads()
+	procstart = null
+	src.procstart = null
 	if(SSticker.HasRoundStarted())
 		var/list/datum/mind/head_revolutionaries = head_revolutionaries()
 		var/list/datum/mind/heads = SSjob.get_all_heads()
@@ -230,6 +280,8 @@
 
 
 /datum/objective_team/revolution/roundend_report()
+	procstart = null
+	src.procstart = null
 	if(!members.len)
 		return
 

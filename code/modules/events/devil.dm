@@ -9,11 +9,15 @@
 	fakeable = FALSE
 
 /datum/round_event/ghost_role/devil/kill()
+	procstart = null
+	src.procstart = null
 	if(!success_spawn && control)
 		control.occurrences--
 	return ..()
 
 /datum/round_event/ghost_role/devil/spawn_role()
+	procstart = null
+	src.procstart = null
 	//selecting a spawn_loc
 	if(!SSjob.latejoin_trackers.len)
 		return MAP_ERROR
@@ -43,6 +47,8 @@
 
 
 /proc/create_event_devil(spawn_loc)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/new_devil = new(spawn_loc)
 	if(!spawn_loc)
 		SSjob.SendToLateJoin(new_devil)
@@ -52,6 +58,8 @@
 	return new_devil
 
 /proc/create_devil_mind(key)
+	procstart = null
+	src.procstart = null
 	var/datum/mind/Mind = new /datum/mind(key)
 	Mind.assigned_role = "devil"
 	Mind.special_role = "devil"

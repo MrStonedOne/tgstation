@@ -18,19 +18,27 @@
 
 
 /obj/effect/proc_holder/changeling/proc/on_purchase(mob/user, is_respec)
+	procstart = null
+	src.procstart = null
 	if(!is_respec)
 		SSblackbox.record_feedback("tally", "changeling_power_purchase", 1, name)
 
 /obj/effect/proc_holder/changeling/proc/on_refund(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/changeling/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/user = usr
 	if(!user || !user.mind || !user.mind.has_antag_datum(/datum/antagonist/changeling))
 		return
 	try_to_sting(user)
 
 /obj/effect/proc_holder/changeling/proc/try_to_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(!can_sting(user, target))
 		return
 	var/datum/antagonist/changeling/c = user.mind.has_antag_datum(/datum/antagonist/changeling)
@@ -40,13 +48,19 @@
 		c.chem_charges -= chemical_cost
 
 /obj/effect/proc_holder/changeling/proc/sting_action(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/effect/proc_holder/changeling/proc/sting_feedback(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	return 0
 
 //Fairly important to remember to return 1 on success >.<
 /obj/effect/proc_holder/changeling/proc/can_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user) && !ismonkey(user)) //typecast everything from mob to carbon from this point onwards
 		return 0
 	if(req_human && !ishuman(user))
@@ -69,6 +83,8 @@
 
 //used in /mob/Stat()
 /obj/effect/proc_holder/changeling/proc/can_be_used_by(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user || QDELETED(user))
 		return 0
 	if(!ishuman(user) && !ismonkey(user))

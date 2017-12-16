@@ -8,6 +8,8 @@ SUBSYSTEM_DEF(minimap)
 	var/list/z_levels = list(ZLEVEL_STATION_PRIMARY)
 
 /datum/controller/subsystem/minimap/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	var/hash = md5(SSmapping.config.GetFullMapPath())
 	if(CONFIG_GET(flag/generate_minimaps))
 		if(hash == trim(file2text(hash_path())))
@@ -46,22 +48,30 @@ SUBSYSTEM_DEF(minimap)
 
 
 /datum/controller/subsystem/minimap/proc/hash_path(backup)
+	procstart = null
+	src.procstart = null
 	if(backup)
 		return "icons/minimaps/[SSmapping.config.map_name].md5"
 	else
 		return "data/minimaps/[SSmapping.config.map_name].md5"
 
 /datum/controller/subsystem/minimap/proc/map_path(z,backup)
+	procstart = null
+	src.procstart = null
 	if(backup)
 		return "icons/minimaps/[SSmapping.config.map_name]_[z].png"
 	else
 		return "data/minimaps/[SSmapping.config.map_name]_[z].png"
 
 /datum/controller/subsystem/minimap/proc/send(client/client)
+	procstart = null
+	src.procstart = null
 	for(var/z in z_levels)
 		send_asset(client, "minimap_[z].png")
 
 /datum/controller/subsystem/minimap/proc/generate(z = 1, x1 = 1, y1 = 1, x2 = world.maxx, y2 = world.maxy)
+	procstart = null
+	src.procstart = null
 	// Load the background.
 	var/icon/minimap = new /icon('icons/minimap.dmi')
 	// Scale it up to our target size.
@@ -77,6 +87,8 @@ SUBSYSTEM_DEF(minimap)
 	fcopy(final, map_path(z))
 
 /datum/controller/subsystem/minimap/proc/generate_tile(turf/tile, icon/minimap)
+	procstart = null
+	src.procstart = null
 	var/icon/tile_icon
 	var/obj/obj
 	var/list/obj_icons

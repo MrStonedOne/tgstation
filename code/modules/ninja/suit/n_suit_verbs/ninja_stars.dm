@@ -2,6 +2,8 @@
 
 //Creates a throwing star
 /obj/item/clothing/suit/space/space_ninja/proc/ninjastar()
+	procstart = null
+	src.procstart = null
 	if(!ninjacost(10))
 		var/mob/living/carbon/human/H = affecting
 		var/obj/item/throwing_star/ninja/N = new(H)

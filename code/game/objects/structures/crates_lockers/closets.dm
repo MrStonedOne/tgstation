@@ -37,6 +37,8 @@
 
 
 /obj/structure/closet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if(mapload && !opened)		// if closed, any item at the crate's loc is put in the contents
 		addtimer(CALLBACK(src, .proc/take_contents), 0)
 	. = ..()
@@ -45,13 +47,19 @@
 
 //USE THIS TO FILL IT, NOT INITIALIZE OR NEW
 /obj/structure/closet/proc/PopulateContents()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/Destroy()
+	procstart = null
+	src.procstart = null
 	dump_contents()
 	return ..()
 
 /obj/structure/closet/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(!opened)
 		layer = OBJ_LAYER
@@ -75,6 +83,8 @@
 			add_overlay("[icon_state]_open")
 
 /obj/structure/closet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(welded)
 		to_chat(user, "<span class='notice'>It's welded shut.</span>")
@@ -86,11 +96,15 @@
 		to_chat(user, "<span class='notice'>Alt-click to [locked ? "unlock" : "lock"].</span>")
 
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(wall_mounted)
 		return 1
 	return !density
 
 /obj/structure/closet/proc/can_open(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(welded || locked)
 		return 0
 	var/turf/T = get_turf(src)
@@ -102,6 +116,8 @@
 	return 1
 
 /obj/structure/closet/proc/can_close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	for(var/obj/structure/closet/closet in T)
 		if(closet != src && !closet.wall_mounted)
@@ -114,6 +130,8 @@
 	return 1
 
 /obj/structure/closet/proc/dump_contents()
+	procstart = null
+	src.procstart = null
 	var/atom/L = drop_location()
 	for(var/atom/movable/AM in src)
 		AM.forceMove(L)
@@ -123,12 +141,16 @@
 		throwing.finalize(FALSE)
 
 /obj/structure/closet/proc/take_contents()
+	procstart = null
+	src.procstart = null
 	var/atom/L = drop_location()
 	for(var/atom/movable/AM in L)
 		if(AM != src && insert(AM) == -1) // limit reached
 			break
 
 /obj/structure/closet/proc/open(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(opened || !can_open(user))
 		return
 	playsound(loc, open_sound, 15, 1, -3)
@@ -141,6 +163,8 @@
 	return 1
 
 /obj/structure/closet/proc/insert(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(contents.len >= storage_capacity)
 		return -1
 
@@ -180,6 +204,8 @@
 	return 1
 
 /obj/structure/closet/proc/close(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!opened || !can_close(user))
 		return 0
 	take_contents()
@@ -191,21 +217,29 @@
 	return 1
 
 /obj/structure/closet/proc/toggle(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		return close(user)
 	else
 		return open(user)
 
 /obj/structure/closet/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(ispath(material_drop) && material_drop_amount && !(flags_1 & NODECONSTRUCT_1))
 		new material_drop(loc, material_drop_amount)
 	qdel(src)
 
 /obj/structure/closet/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!broken && !(flags_1 & NODECONSTRUCT_1))
 		bust_open()
 
 /obj/structure/closet/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(user in src)
 		return
 	if(opened)
@@ -262,6 +296,8 @@
 		return ..()
 
 /obj/structure/closet/MouseDrop_T(atom/movable/O, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(O) || O.anchored || istype(O, /obj/screen))
 		return
 	if(!istype(user) || user.incapacitated() || user.lying)
@@ -301,6 +337,8 @@
 	return 1
 
 /obj/structure/closet/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || !isturf(loc) || !isliving(user))
 		return
 	if(locked)
@@ -311,6 +349,8 @@
 	container_resist()
 
 /obj/structure/closet/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.lying && get_dist(src, user) > 0)
 		return
@@ -320,17 +360,25 @@
 		return
 
 /obj/structure/closet/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/structure/closet/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.Adjacent(src))
 		return attack_hand(user)
 
 // tk grab then use on self
 /obj/structure/closet/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/structure/closet/verb/verb_toggleopen()
+	procstart = null
+	src.procstart = null
 	set src in oview(1)
 	set category = "Object"
 	set name = "Toggle Open"
@@ -347,12 +395,16 @@
 // and due to an oversight in turf/Enter() were going through walls.  That
 // should be independently resolved, but this is also an interesting twist.
 /obj/structure/closet/Exit(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	open()
 	if(AM.loc == src)
 		return 0
 	return 1
 
 /obj/structure/closet/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(opened)
 		return
 	if(ismovableatom(loc))
@@ -383,12 +435,16 @@
 			to_chat(user, "<span class='warning'>You fail to break out of [src]!</span>")
 
 /obj/structure/closet/proc/bust_open()
+	procstart = null
+	src.procstart = null
 	welded = FALSE //applies to all lockers
 	locked = FALSE //applies to critter crates and secure lockers only
 	broken = 1 //applies to secure lockers only
 	open()
 
 /obj/structure/closet/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!user.canUseTopic(src, be_close=TRUE) || !isturf(loc))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -399,6 +455,8 @@
 		togglelock(user)
 
 /obj/structure/closet/proc/togglelock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(secure && !broken)
 		if(allowed(user))
 			if(iscarbon(user))
@@ -413,6 +471,8 @@
 		to_chat(user, "<span class='warning'>\The [src] is broken!</span>")
 
 /obj/structure/closet/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(secure && !broken)
 		user.visible_message("<span class='warning'>Sparks fly from [src]!</span>",
 						"<span class='warning'>You scramble [src]'s lock, breaking it open!</span>",
@@ -423,10 +483,14 @@
 		update_icon()
 
 /obj/structure/closet/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat == DEAD || !(user.sight & (SEEOBJS|SEEMOBS)))
 		user.overlay_fullscreen("remote_view", /obj/screen/fullscreen/impaired, 1)
 
 /obj/structure/closet/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in src)
 		O.emp_act(severity)
 	if(secure && !broken)
@@ -443,17 +507,25 @@
 
 
 /obj/structure/closet/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	for(var/atom/A in contents)
 		A.ex_act(severity, target)
 		CHECK_TICK
 
 /obj/structure/closet/singularity_act()
+	procstart = null
+	src.procstart = null
 	dump_contents()
 	..()
 
 /obj/structure/closet/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
 /obj/structure/closet/return_temperature()
+	procstart = null
+	src.procstart = null
 	return

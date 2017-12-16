@@ -855,6 +855,8 @@
 
 //HELPERS
 /proc/total_techweb_exports()
+	procstart = null
+	src.procstart = null
 	var/list/datum/techweb_node/processing = list()
 	for(var/i in subtypesof(/datum/techweb_node))
 		processing += new i
@@ -864,6 +866,8 @@
 		. += TN.export_price
 
 /proc/total_techweb_points()
+	procstart = null
+	src.procstart = null
 	var/list/datum/techweb_node/processing = list()
 	for(var/i in subtypesof(/datum/techweb_node))
 		processing += new i

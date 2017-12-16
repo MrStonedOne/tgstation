@@ -113,6 +113,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 
 
 /datum/antagonist/devil/New()
+	procstart = null
+	src.procstart = null
 	..()
 	truename = randomDevilName()
 	ban = randomdevilban()
@@ -123,6 +125,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 
 
 /proc/devilInfo(name)
+	procstart = null
+	src.procstart = null
 	if(GLOB.allDevils[lowertext(name)])
 		return GLOB.allDevils[lowertext(name)]
 	else
@@ -131,6 +135,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 		return devil
 
 /proc/randomDevilName()
+	procstart = null
+	src.procstart = null
 	var/name = ""
 	if(prob(65))
 		if(prob(35))
@@ -146,18 +152,28 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	return name
 
 /proc/randomdevilobligation()
+	procstart = null
+	src.procstart = null
 	return pick(OBLIGATION_FOOD, OBLIGATION_FIDDLE, OBLIGATION_DANCEOFF, OBLIGATION_GREET, OBLIGATION_PRESENCEKNOWN, OBLIGATION_SAYNAME, OBLIGATION_ANNOUNCEKILL, OBLIGATION_ANSWERTONAME)
 
 /proc/randomdevilban()
+	procstart = null
+	src.procstart = null
 	return pick(BAN_HURTWOMAN, BAN_CHAPEL, BAN_HURTPRIEST, BAN_AVOIDWATER, BAN_STRIKEUNCONSCIOUS, BAN_HURTLIZARD, BAN_HURTANIMAL)
 
 /proc/randomdevilbane()
+	procstart = null
+	src.procstart = null
 	return pick(BANE_SALT, BANE_LIGHT, BANE_IRON, BANE_WHITECLOTHES, BANE_SILVER, BANE_HARVEST, BANE_TOOLBOX)
 
 /proc/randomdevilbanish()
+	procstart = null
+	src.procstart = null
 	return pick(BANISH_WATER, BANISH_COFFIN, BANISH_FORMALDYHIDE, BANISH_RUNES, BANISH_CANDLES, BANISH_DESTRUCTION, BANISH_FUNERAL_GARB)
 
 /datum/antagonist/devil/proc/add_soul(datum/mind/soul)
+	procstart = null
+	src.procstart = null
 	if(soulsOwned.Find(soul))
 		return
 	soulsOwned += soul
@@ -176,12 +192,16 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 			increase_arch_devil()
 
 /datum/antagonist/devil/proc/remove_soul(datum/mind/soul)
+	procstart = null
+	src.procstart = null
 	if(soulsOwned.Remove(soul))
 		check_regression()
 		to_chat(owner.current, "<span class='warning'>You feel as though a soul has slipped from your grasp.</span>")
 		update_hud()
 
 /datum/antagonist/devil/proc/check_regression()
+	procstart = null
+	src.procstart = null
 	if(form == ARCH_DEVIL)
 		return //arch devil can't regress
 	//Yes, fallthrough behavior is intended, so I can't use a switch statement.
@@ -194,6 +214,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 		to_chat(owner.current, "<span class='warning'>As punishment for your failures, all of your powers except contract creation have been revoked.</span>")
 
 /datum/antagonist/devil/proc/regress_humanoid()
+	procstart = null
+	src.procstart = null
 	to_chat(owner.current, "<span class='warning'>Your powers weaken, have more contracts be signed to regain power.</span>")
 	if(ishuman(owner.current))
 		var/mob/living/carbon/human/H = owner.current
@@ -205,6 +227,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	form = BASIC_DEVIL
 
 /datum/antagonist/devil/proc/regress_blood_lizard()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/true_devil/D = owner.current
 	to_chat(D, "<span class='warning'>Your powers weaken, have more contracts be signed to regain power.</span>")
 	D.oldform.forceMove(D.drop_location())
@@ -216,6 +240,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 
 
 /datum/antagonist/devil/proc/increase_blood_lizard()
+	procstart = null
+	src.procstart = null
 	to_chat(owner.current, "<span class='warning'>You feel as though your humanoid form is about to shed.  You will soon turn into a blood lizard.</span>")
 	sleep(50)
 	if(ishuman(owner.current))
@@ -234,6 +260,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 
 
 /datum/antagonist/devil/proc/increase_true_devil()
+	procstart = null
+	src.procstart = null
 	to_chat(owner.current, "<span class='warning'>You feel as though your current form is about to shed.  You will soon turn into a true devil.</span>")
 	sleep(50)
 	var/mob/living/carbon/true_devil/A = new /mob/living/carbon/true_devil(owner.current.loc)
@@ -247,6 +275,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	update_hud()
 
 /datum/antagonist/devil/proc/increase_arch_devil()
+	procstart = null
+	src.procstart = null
 	if(!ascendable)
 		return
 	var/mob/living/carbon/true_devil/D = owner.current
@@ -297,12 +327,16 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	form = ARCH_DEVIL
 
 /datum/antagonist/devil/proc/remove_spells()
+	procstart = null
+	src.procstart = null
 	for(var/X in owner.spell_list)
 		var/obj/effect/proc_holder/spell/S = X
 		if(is_type_in_typecache(S, devil_spells))
 			owner.RemoveSpell(S)
 
 /datum/antagonist/devil/proc/give_summon_contract()
+	procstart = null
+	src.procstart = null
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/summon_contract(null))
 	if(obligation == OBLIGATION_FIDDLE)
 		owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/violin(null))
@@ -310,6 +344,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 		owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/summon_dancefloor(null))
 
 /datum/antagonist/devil/proc/give_appropriate_spells()
+	procstart = null
+	src.procstart = null
 	remove_spells()
 	give_summon_contract()
 	if(SOULVALUE >= ARCH_THRESHOLD && ascendable)
@@ -322,25 +358,35 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 		give_base_spells()
 
 /datum/antagonist/devil/proc/give_base_spells()
+	procstart = null
+	src.procstart = null
 	owner.AddSpell(new /obj/effect/proc_holder/spell/aimed/fireball/hellish(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/summon_pitchfork(null))
 
 /datum/antagonist/devil/proc/give_blood_spells()
+	procstart = null
+	src.procstart = null
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/summon_pitchfork(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/aimed/fireball/hellish(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/infernal_jaunt(null))
 
 /datum/antagonist/devil/proc/give_true_spells()
+	procstart = null
+	src.procstart = null
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/summon_pitchfork/greater(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/aimed/fireball/hellish(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/infernal_jaunt(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/sintouch(null))
 
 /datum/antagonist/devil/proc/give_arch_spells()
+	procstart = null
+	src.procstart = null
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/summon_pitchfork/ascended(null))
 	owner.AddSpell(new /obj/effect/proc_holder/spell/targeted/sintouch/ascended(null))
 
 /datum/antagonist/devil/proc/beginResurrectionCheck(mob/living/body)
+	procstart = null
+	src.procstart = null
 	if(SOULVALUE>0)
 		to_chat(owner.current, "<span class='userdanger'>Your body has been damaged to the point that you may no longer use it.  At the cost of some of your power, you will return to life soon.  Remain in your body.</span>")
 		sleep(DEVILRESURRECTTIME)
@@ -361,6 +407,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 		to_chat(owner.current, "<span class='userdanger'>Your hellish powers are too weak to resurrect yourself.</span>")
 
 /datum/antagonist/devil/proc/check_banishment(mob/living/body)
+	procstart = null
+	src.procstart = null
 	switch(banish)
 		if(BANISH_WATER)
 			if(iscarbon(body))
@@ -405,6 +453,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 				return 0
 
 /datum/antagonist/devil/proc/hellish_resurrection(mob/living/body)
+	procstart = null
+	src.procstart = null
 	message_admins("[owner.name] (true name is: [truename]) is resurrecting using hellish energy.</a>")
 	if(SOULVALUE < ARCH_THRESHOLD || !ascendable) // once ascended, arch devils do not go down in power by any means.
 		reviveNumber += LOSS_PER_DEATH
@@ -424,6 +474,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	check_regression()
 
 /datum/antagonist/devil/proc/create_new_body()
+	procstart = null
+	src.procstart = null
 	if(GLOB.blobstart.len > 0)
 		var/turf/targetturf = get_turf(pick(GLOB.blobstart))
 		var/mob/currentMob = owner.current
@@ -462,12 +514,16 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 
 
 /datum/antagonist/devil/proc/update_hud()
+	procstart = null
+	src.procstart = null
 	if(iscarbon(owner.current))
 		var/mob/living/C = owner.current
 		if(C.hud_used && C.hud_used.devilsouldisplay)
 			C.hud_used.devilsouldisplay.update_counter(SOULVALUE)
 
 /datum/antagonist/devil/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner.current, "<span class='warning'><b>You remember your link to the infernal.  You are [truename], an agent of hell, a devil.  And you were sent to the plane of creation for a reason.  A greater purpose.  Convince the crew to sin, and embroiden Hell's grasp.</b></span>")
 	to_chat(owner.current, "<span class='warning'><b>However, your infernal form is not without weaknesses.</b></span>")
 	to_chat(owner.current, "You may not use violence to coerce someone into selling their soul.")
@@ -480,6 +536,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	.=..()
 
 /datum/antagonist/devil/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.store_memory("Your devilic true name is [truename]<br>[GLOB.lawlorify[LAW][ban]]<br>You may not use violence to coerce someone into selling their soul.<br>You may not directly and knowingly physically harm a devil, other than yourself.<br>[GLOB.lawlorify[LAW][bane]]<br>[GLOB.lawlorify[LAW][obligation]]<br>[GLOB.lawlorify[LAW][banish]]<br>")
 	if(issilicon(owner.current))
 		var/mob/living/silicon/robot_devil = owner.current
@@ -493,16 +551,22 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	.=..()
 
 /datum/antagonist/devil/on_removal()
+	procstart = null
+	src.procstart = null
 	to_chat(owner.current, "<span class='userdanger'>Your infernal link has been severed! You are no longer a devil!</span>")
 	.=..()
 
 /datum/antagonist/devil/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	give_appropriate_spells()
 	owner.current.grant_all_languages(TRUE)
 	update_hud()
 	.=..()
 
 /datum/antagonist/devil/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	for(var/X in owner.spell_list)
 		var/obj/effect/proc_holder/spell/S = X
 		if(is_type_in_typecache(S, devil_spells))
@@ -510,6 +574,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	.=..()
 
 /datum/antagonist/devil/proc/printdevilinfo()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	parts += "The devil's true name is: [truename]"
 	parts += "The devil's bans were:"
@@ -520,6 +586,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	return parts.Join("<br>")
 
 /datum/antagonist/devil/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	parts += printplayer(owner)
 	parts += printdevilinfo()
@@ -527,6 +595,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	return parts.Join("<br>")
 
 /datum/antagonist/devil/roundend_report_footer()
+	procstart = null
+	src.procstart = null
 	//sintouched go here for now as a hack , TODO proper antag datum for these
 	var/list/parts = list()
 	if(SSticker.mode.sintouched.len)
@@ -548,6 +618,8 @@ GLOBAL_LIST_INIT(devil_suffix, list(" the Red", " the Soulless", " the Master", 
 	var/ascendable
 
 /datum/fakeDevil/New(name = randomDevilName())
+	procstart = null
+	src.procstart = null
 	truename = name
 	bane = randomdevilbane()
 	obligation = randomdevilobligation()

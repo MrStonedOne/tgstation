@@ -29,11 +29,15 @@
 	foodtype = GRAIN | DAIRY | SUGAR
 
 /obj/item/reagent_containers/food/snacks/pie/cream/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //if we're not being caught
 		splat(hit_atom)
 
 /obj/item/reagent_containers/food/snacks/pie/cream/proc/splat(atom/movable/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(isliving(loc)) //someone caught us!
 		return
 	var/turf/T = get_turf(hit_atom)
@@ -113,6 +117,8 @@
 
 
 /obj/item/reagent_containers/food/snacks/pie/plump_pie/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/fey = prob(10)
 	if(fey)

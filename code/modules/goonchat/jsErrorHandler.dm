@@ -21,6 +21,8 @@
 	)
 
 /datum/debugFileOutput/proc/error(fileName, message, client/C)
+	procstart = null
+	src.procstart = null
 	if (!fileName || !message)
 		return 0
 
@@ -37,6 +39,8 @@
 	return 1
 
 /datum/debugFileOutput/proc/clear(fileName)
+	procstart = null
+	src.procstart = null
 	if (!fileName)
 		return 0
 
@@ -50,6 +54,8 @@
 	return 1
 
 /datum/debugFileOutput/proc/clearAll()
+	procstart = null
+	src.procstart = null
 	var/list/deleted = new()
 	for (var/fileName in src.validFiles)
 		if (fexists("[src.directory]/[fileName].[src.ext]"))
@@ -62,6 +68,8 @@
 GLOBAL_DATUM_INIT(debugFileOutput, /datum/debugFileOutput, new)
 
 /client/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if (href_list["action"] && href_list["action"] == "debugFileOutput" && href_list["file"] && href_list["message"])
@@ -70,6 +78,8 @@ GLOBAL_DATUM_INIT(debugFileOutput, /datum/debugFileOutput, new)
 		GLOB.debugFileOutput.error(file, message, src)
 
 /client/proc/deleteJsLogFile(fileName as text)
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Delete JS Logfile"
 	set desc = "Delete a logfile for JS error reporting. Be sure you want to do this!"
@@ -85,6 +95,8 @@ GLOBAL_DATUM_INIT(debugFileOutput, /datum/debugFileOutput, new)
 	message_admins("[key_name_admin(usr)] deleted the '[fileName]' JS logfile")
 
 /client/proc/deleteAllJsLogFiles()
+	procstart = null
+	src.procstart = null
 	set category = null
 	set name = "Delete All JS Logfiles"
 	set desc = "Delete all logfiles for JS error reporting. Be extra sure you want to do this!"

@@ -4,6 +4,8 @@
 //Note that this proc does NOT do MMI related stuff!
 /mob/proc/change_mob_type(new_type = null, turf/location = null, new_name = null as text, delete_old_mob = 0 as num)
 
+	procstart = null
+	src.procstart = null
 	if(isnewplayer(src))
 		to_chat(usr, "<span class='danger'>Cannot convert players who have not entered yet.</span>")
 		return

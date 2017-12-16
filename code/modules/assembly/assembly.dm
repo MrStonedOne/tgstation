@@ -33,10 +33,14 @@
 	return
 
 /obj/item/device/assembly/proc/describe()									// Called by grenades to describe the state of the trigger (time left, etc)
+	procstart = null
+	src.procstart = null
 	return "The trigger assembly looks broken!"
 
 
 /obj/item/device/assembly/proc/is_secured(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!secured)
 		to_chat(user, "<span class='warning'>The [name] is unsecured!</span>")
 		return FALSE
@@ -45,6 +49,8 @@
 
 //Called when another assembly acts on this one, var/radio will determine where it came from for wire calcs
 /obj/item/device/assembly/proc/pulsed(radio = 0)
+	procstart = null
+	src.procstart = null
 	if(wire_type & WIRE_RECEIVE)
 		INVOKE_ASYNC(src, .proc/activate)
 	if(radio && (wire_type & WIRE_RADIO_RECEIVE))
@@ -54,6 +60,8 @@
 
 //Called when this device attempts to act on another device, var/radio determines if it was sent via radio or direct
 /obj/item/device/assembly/proc/pulse(radio = 0)
+	procstart = null
+	src.procstart = null
 	if(connected && wire_type)
 		connected.pulse_assembly(src)
 		return TRUE
@@ -66,6 +74,8 @@
 
 // What the device does when turned on
 /obj/item/device/assembly/proc/activate()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || !secured || (next_activate > world.time))
 		return FALSE
 	next_activate = world.time + 30
@@ -73,12 +83,16 @@
 
 
 /obj/item/device/assembly/proc/toggle_secure()
+	procstart = null
+	src.procstart = null
 	secured = !secured
 	update_icon()
 	return secured
 
 
 /obj/item/device/assembly/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(isassembly(W))
 		var/obj/item/device/assembly/A = W
 		if((!A.secured) && (!secured))
@@ -98,6 +112,8 @@
 
 
 /obj/item/device/assembly/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(secured)
 		to_chat(user, "\The [src] is secured and ready to be used.")
@@ -106,6 +122,8 @@
 
 
 /obj/item/device/assembly/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return FALSE
 	user.set_machine(src)
@@ -113,5 +131,7 @@
 	return TRUE
 
 /obj/item/device/assembly/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	return //HTML MENU FOR WIRES GOES HERE
 

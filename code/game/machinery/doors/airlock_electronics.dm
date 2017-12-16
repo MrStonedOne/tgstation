@@ -6,6 +6,8 @@
 	var/one_access = 0
 
 /obj/item/electronics/airlock/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Has a neat <i>selection menu</i> for modifying airlock access levels.</span>")
 
@@ -17,6 +19,8 @@
 		ui.open()
 
 /obj/item/electronics/airlock/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/regions = list()
 
@@ -38,6 +42,8 @@
 	return data
 
 /obj/item/electronics/airlock/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)

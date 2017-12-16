@@ -4,6 +4,8 @@
 #define POWER_RESTORATION_APC_FOUND 3
 
 /mob/living/silicon/ai/Life()
+	procstart = null
+	src.procstart = null
 	if (stat == DEAD)
 		return
 	else //I'm not removing that shitton of tabs, unneeded as they are. -- Urist
@@ -47,6 +49,8 @@
 			ai_lose_power()
 
 /mob/living/silicon/ai/proc/lacks_power()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/area/A = get_area(src)
 	switch(requires_power)
@@ -60,6 +64,8 @@
 			return !T || !A || (!istype(T, /turf/open/floor/clockwork) && (!A.power_equip || isspaceturf(T)) && !is_type_in_list(loc, list(/obj/item, /obj/mecha)))
 
 /mob/living/silicon/ai/updatehealth()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	health = maxHealth - getOxyLoss() - getToxLoss() - getBruteLoss() - getFireLoss()
@@ -68,6 +74,8 @@
 	disconnect_shell()
 
 /mob/living/silicon/ai/update_stat()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
@@ -80,6 +88,8 @@
 	diag_hud_set_status()
 
 /mob/living/silicon/ai/update_sight()
+	procstart = null
+	src.procstart = null
 	see_invisible = initial(see_invisible)
 	see_in_dark = initial(see_in_dark)
 	sight = initial(sight)
@@ -95,6 +105,8 @@
 
 
 /mob/living/silicon/ai/proc/start_RestorePowerRoutine()
+	procstart = null
+	src.procstart = null
 	to_chat(src, "Backup battery online. Scanners, camera, and radio interface offline. Beginning fault-detection.")
 	sleep(50)
 	var/turf/T = get_turf(src)
@@ -158,6 +170,8 @@
 		theAPC = null
 
 /mob/living/silicon/ai/proc/ai_restore_power()
+	procstart = null
+	src.procstart = null
 	if(aiRestorePowerRoutine)
 		if(aiRestorePowerRoutine == POWER_RESTORATION_APC_FOUND)
 			to_chat(src, "Alert cancelled. Power has been restored.")
@@ -168,6 +182,8 @@
 		update_sight()
 
 /mob/living/silicon/ai/proc/ai_lose_power()
+	procstart = null
+	src.procstart = null
 	disconnect_shell()
 	aiRestorePowerRoutine = POWER_RESTORATION_START
 	blind_eyes(1)

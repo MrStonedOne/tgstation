@@ -36,4 +36,6 @@
 
 //we don't want the silly text overlay!
 /obj/item/paper/pamphlet/update_icon()
+	procstart = null
+	src.procstart = null
 	return

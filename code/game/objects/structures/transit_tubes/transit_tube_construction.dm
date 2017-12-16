@@ -15,13 +15,19 @@
 	var/base_icon
 
 /obj/structure/c_transit_tube/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to rotate it clockwise.</span>")
 
 /obj/structure/c_transit_tube/proc/tube_rotate()
+	procstart = null
+	src.procstart = null
 	setDir(turn(dir, -90))
 
 /obj/structure/c_transit_tube/proc/tube_flip()
+	procstart = null
+	src.procstart = null
 	if(flipped_build_type)
 		flipped = !flipped
 		var/cur_flip = initial(flipped) ? !flipped : flipped
@@ -35,6 +41,8 @@
 
 // disposals-style flip and rotate verbs
 /obj/structure/c_transit_tube/verb/rotate()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate Tube"
 	set category = "Object"
 	set src in view(1)
@@ -45,6 +53,8 @@
 	tube_rotate()
 
 /obj/structure/c_transit_tube/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -54,6 +64,8 @@
 	tube_rotate()
 
 /obj/structure/c_transit_tube/verb/flip()
+	procstart = null
+	src.procstart = null
 	set name = "Flip"
 	set category = "Object"
 	set src in view(1)
@@ -64,6 +76,8 @@
 
 
 /obj/structure/c_transit_tube/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench))
 		to_chat(user, "<span class='notice'>You start attaching the [name]...</span>")
 		add_fingerprint(user)

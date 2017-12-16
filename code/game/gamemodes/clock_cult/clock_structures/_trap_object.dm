@@ -6,16 +6,22 @@
 	var/list/wired_to
 
 /obj/structure/destructible/clockwork/trap/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wired_to = list()
 
 /obj/structure/destructible/clockwork/trap/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/V in wired_to)
 		var/obj/structure/destructible/clockwork/trap/T = V
 		T.wired_to -= src
 	return ..()
 
 /obj/structure/destructible/clockwork/trap/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		to_chat(user, "It's wired to:")
@@ -28,6 +34,8 @@
 				to_chat(user, "[O] ([distance == 0 ? "same tile" : "[distance] tiles [dir2text(get_dir(src, O))]"])")
 
 /obj/structure/destructible/clockwork/trap/wrench_act(mob/living/user, obj/item/wrench)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		return ..()
 	to_chat(user, "<span class='notice'>You break down the delicate components of [src] into brass.</span>")
@@ -37,6 +45,8 @@
 	return TRUE
 
 /obj/structure/destructible/clockwork/trap/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/clockwork/slab) && is_servant_of_ratvar(user))
 		var/obj/item/clockwork/slab/F = I
 		if(!F.linking)
@@ -57,6 +67,8 @@
 	..()
 
 /obj/structure/destructible/clockwork/trap/wirecutter_act(mob/living/user, obj/item/wirecutters)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		return
 	if(!wired_to.len)
@@ -80,6 +92,8 @@
 	density = FALSE
 
 /obj/structure/destructible/clockwork/trap/trigger/activate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/destructible/clockwork/trap/T in wired_to)
 		if(istype(T, /obj/structure/destructible/clockwork/trap/trigger)) //Triggers don't go off multiple times
 			continue

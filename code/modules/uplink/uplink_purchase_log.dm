@@ -7,6 +7,8 @@ GLOBAL_LIST(uplink_purchase_logs_by_key)	//assoc key = /datum/uplink_purchase_lo
 	var/total_spent = 0
 
 /datum/uplink_purchase_log/New(_owner, datum/component/uplink/_parent)
+	procstart = null
+	src.procstart = null
 	owner = _owner
 	parent = _parent
 	LAZYINITLIST(GLOB.uplink_purchase_logs_by_key)
@@ -18,11 +20,15 @@ GLOBAL_LIST(uplink_purchase_logs_by_key)	//assoc key = /datum/uplink_purchase_lo
 	purchase_log = list()
 
 /datum/uplink_purchase_log/Destroy()
+	procstart = null
+	src.procstart = null
 	purchase_log = null
 	parent = null
 	return ..()
 
 /datum/uplink_purchase_log/proc/MergeWithAndDel(datum/uplink_purchase_log/other)
+	procstart = null
+	src.procstart = null
 	if(!istype(other))
 		return
 	. = owner == other.owner
@@ -38,15 +44,21 @@ GLOBAL_LIST(uplink_purchase_logs_by_key)	//assoc key = /datum/uplink_purchase_lo
 	qdel(other)
 
 /datum/uplink_purchase_log/proc/TotalTelecrystalsSpent()
+	procstart = null
+	src.procstart = null
 	. = total_spent
 
 /datum/uplink_purchase_log/proc/generate_render(show_key = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/path in purchase_log)
 		var/datum/uplink_purchase_entry/UPE = purchase_log[path]
 		. += "<big>\[[UPE.icon_b64][show_key?"([owner])":""]\]</big>"
 
 /datum/uplink_purchase_log/proc/LogPurchase(atom/A, cost)
+	procstart = null
+	src.procstart = null
 	var/datum/uplink_purchase_entry/UPE
 	if(purchase_log[A.type])
 		UPE = purchase_log[A.type]

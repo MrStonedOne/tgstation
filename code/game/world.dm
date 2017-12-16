@@ -5,6 +5,8 @@ GLOBAL_VAR(restart_counter)
 GLOBAL_PROTECT(security_mode)
 
 /world/New()
+	procstart = null
+	src.procstart = null
 	log_world("World loaded at [time_stamp()]")
 
 	SetupExternalRSC()
@@ -51,6 +53,8 @@ GLOBAL_PROTECT(security_mode)
 #endif
 
 /world/proc/CheckSchemaVersion()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/sql_enabled))
 		if(SSdbcore.Connect())
 			log_world("Database connection established.")
@@ -71,6 +75,8 @@ GLOBAL_PROTECT(security_mode)
 			log_world("Your server failed to establish a connection with the database.")
 
 /world/proc/SetRoundID()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/sql_enabled))
 		if(SSdbcore.Connect())
 			var/datum/DBQuery/query_round_start = SSdbcore.NewQuery("INSERT INTO [format_table_name("round")] (start_datetime, server_ip, server_port) VALUES (Now(), INET_ATON(IF('[world.internet_address]' LIKE '', '0', '[world.internet_address]')), '[world.port]')")
@@ -81,6 +87,8 @@ GLOBAL_PROTECT(security_mode)
 				GLOB.round_id = query_round_last_id.item[1]
 
 /world/proc/SetupLogs()
+	procstart = null
+	src.procstart = null
 	GLOB.log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM/DD")]/round-"
 	if(GLOB.round_id)
 		GLOB.log_directory += "[GLOB.round_id]"
@@ -108,6 +116,8 @@ GLOBAL_PROTECT(security_mode)
 		log_game("Round ID: [GLOB.round_id]")
 
 /world/proc/CheckSecurityMode()
+	procstart = null
+	src.procstart = null
 	//try to write to data
 	if(!text2file("The world is running at least safe mode", "data/server_security_check.lock"))
 		GLOB.security_mode = SECURITY_ULTRASAFE
@@ -123,6 +133,8 @@ GLOBAL_PROTECT(security_mode)
 
 /world/Topic(T, addr, master, key)
 
+	procstart = null
+	src.procstart = null
 	SERVER_TOOLS_ON_TOPIC	//redirect to server tools if necessary
 
 	var/static/list/topic_handlers = TopicHandlers()
@@ -144,6 +156,8 @@ GLOBAL_PROTECT(security_mode)
 	return handler.TryRun(input)
 
 /world/proc/AnnouncePR(announcement, list/payload)
+	procstart = null
+	src.procstart = null
 	var/static/list/PRcounts = list()	//PR id -> number of times announced this round
 	var/id = "[payload["pull_request"]["id"]]"
 	if(!PRcounts[id])
@@ -158,6 +172,8 @@ GLOBAL_PROTECT(security_mode)
 		C.AnnouncePR(final_composed)
 
 /world/Reboot(reason = 0, fast_track = FALSE)
+	procstart = null
+	src.procstart = null
 	SERVER_TOOLS_ON_REBOOT
 	if (reason || fast_track) //special reboot, do none of the normal stuff
 		if (usr)
@@ -192,10 +208,14 @@ GLOBAL_PROTECT(security_mode)
 	..()
 
 /world/proc/load_motd()
+	procstart = null
+	src.procstart = null
 	GLOB.join_motd = file2text("config/motd.txt") + "<br>" + GLOB.revdata.GetTestMergeInfo()
 
 /world/proc/update_status()
 
+	procstart = null
+	src.procstart = null
 	var/list/features = list()
 
 	if(GLOB.master_mode)
@@ -243,6 +263,8 @@ GLOBAL_PROTECT(security_mode)
 	status = s
 
 /world/proc/update_hub_visibility(new_visibility)
+	procstart = null
+	src.procstart = null
 	if(new_visibility == GLOB.hub_visibility)
 		return
 	GLOB.hub_visibility = new_visibility

@@ -38,6 +38,8 @@
 	var/static/mutable_appearance/cap_dead
 
 /mob/living/simple_animal/hostile/mushroom/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(health >= maxHealth)
 		to_chat(user, "<span class='info'>It looks healthy.</span>")
@@ -45,6 +47,8 @@
 		to_chat(user, "<span class='info'>It looks like it's been roughed up.</span>")
 
 /mob/living/simple_animal/hostile/mushroom/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!stat)//Mushrooms slowly regenerate if conscious, for people who want to save them from being eaten
 		adjustBruteLoss(-2)
@@ -88,9 +92,13 @@
 	. = ..()
 
 /mob/living/simple_animal/hostile/mushroom/proc/stop_retreat()
+	procstart = null
+	src.procstart = null
 	retreat_distance = null
 
 /mob/living/simple_animal/hostile/mushroom/attack_animal(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(istype(L, /mob/living/simple_animal/hostile/mushroom) && stat == DEAD)
 		var/mob/living/simple_animal/hostile/mushroom/M = L
 		if(faint_ticker < 2)
@@ -109,16 +117,22 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/mushroom/revive(full_heal = 0, admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		icon_state = "mushroom_color"
 		UpdateMushroomCap()
 		. = 1
 
 /mob/living/simple_animal/hostile/mushroom/death(gibbed)
+	procstart = null
+	src.procstart = null
 	..(gibbed)
 	UpdateMushroomCap()
 
 /mob/living/simple_animal/hostile/mushroom/proc/UpdateMushroomCap()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	cap_living.color = cap_color
 	cap_dead.color = cap_color
@@ -128,6 +142,8 @@
 		add_overlay(cap_living)
 
 /mob/living/simple_animal/hostile/mushroom/proc/Recover()
+	procstart = null
+	src.procstart = null
 	visible_message("[src] slowly begins to recover.")
 	faint_ticker = 0
 	revive(full_heal = 1)
@@ -136,9 +152,13 @@
 	addtimer(CALLBACK(src, .proc/recovery_recharge), 300)
 
 /mob/living/simple_animal/hostile/mushroom/proc/recovery_recharge()
+	procstart = null
+	src.procstart = null
 	recovery_cooldown = 0
 
 /mob/living/simple_animal/hostile/mushroom/proc/LevelUp(level_gain)
+	procstart = null
+	src.procstart = null
 	if(powerlevel <= 9)
 		powerlevel += level_gain
 		if(prob(25))
@@ -149,11 +169,15 @@
 	adjustBruteLoss(-maxHealth) //They'll always heal, even if they don't gain a level, in case you want to keep this shroom around instead of harvesting it
 
 /mob/living/simple_animal/hostile/mushroom/proc/Bruise()
+	procstart = null
+	src.procstart = null
 	if(!bruised && !stat)
 		src.visible_message("The [src.name] was bruised!")
 		bruised = 1
 
 /mob/living/simple_animal/hostile/mushroom/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/reagent_containers/food/snacks/grown/mushroom))
 		if(stat == DEAD && !recovery_cooldown)
 			Recover()
@@ -166,11 +190,15 @@
 	..()
 
 /mob/living/simple_animal/hostile/mushroom/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	..()
 	if(M.a_intent == INTENT_HARM)
 		Bruise()
 
 /mob/living/simple_animal/hostile/mushroom/hitby(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(AM, /obj/item))
 		var/obj/item/T = AM
@@ -178,10 +206,14 @@
 			Bruise()
 
 /mob/living/simple_animal/hostile/mushroom/bullet_act()
+	procstart = null
+	src.procstart = null
 	..()
 	Bruise()
 
 /mob/living/simple_animal/hostile/mushroom/harvest()
+	procstart = null
+	src.procstart = null
 	var/counter
 	for(counter=0, counter<=powerlevel, counter++)
 		var/obj/item/reagent_containers/food/snacks/hugemushroomslice/S = new /obj/item/reagent_containers/food/snacks/hugemushroomslice(src.loc)

@@ -41,14 +41,20 @@
 	var/probability = FALSE //Percent chance to happen if there are other possible weathers on the z-level
 
 /datum/weather/New()
+	procstart = null
+	src.procstart = null
 	..()
 	SSweather.existing_weather += src
 
 /datum/weather/Destroy()
+	procstart = null
+	src.procstart = null
 	SSweather.existing_weather -= src
 	..()
 
 /datum/weather/proc/telegraph()
+	procstart = null
+	src.procstart = null
 	if(stage == STARTUP_STAGE)
 		return
 	stage = STARTUP_STAGE
@@ -73,6 +79,8 @@
 	addtimer(CALLBACK(src, .proc/start), telegraph_duration)
 
 /datum/weather/proc/start()
+	procstart = null
+	src.procstart = null
 	if(stage >= MAIN_STAGE)
 		return
 	stage = MAIN_STAGE
@@ -88,6 +96,8 @@
 	addtimer(CALLBACK(src, .proc/wind_down), weather_duration)
 
 /datum/weather/proc/wind_down()
+	procstart = null
+	src.procstart = null
 	if(stage >= WIND_DOWN_STAGE)
 		return
 	stage = WIND_DOWN_STAGE
@@ -103,6 +113,8 @@
 	addtimer(CALLBACK(src, .proc/end), end_duration)
 
 /datum/weather/proc/end()
+	procstart = null
+	src.procstart = null
 	if(stage == END_STAGE)
 		return 1
 	stage = END_STAGE
@@ -122,6 +134,8 @@
 	return
 
 /datum/weather/proc/update_areas()
+	procstart = null
+	src.procstart = null
 	for(var/V in impacted_areas)
 		var/area/N = V
 		N.layer = overlay_layer

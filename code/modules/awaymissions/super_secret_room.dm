@@ -10,6 +10,8 @@
 	var/list/shenanigans = list()
 
 /obj/structure/speaking_tile/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/json_file = file("data/npc_saves/Poly.json")
 	if(!fexists(json_file))
@@ -20,6 +22,8 @@
 #define TIMEWASTE_MEDAL "Overextended The Joke"
 
 /obj/structure/speaking_tile/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user) || speaking)
 		return
 	speaking = TRUE
@@ -92,6 +96,8 @@
 	times_spoken_to++
 #undef TIMEWASTE_MEDAL
 /obj/structure/speaking_tile/proc/SpeakPeace(list/statements)
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to statements.len)
 		say("<span class='deadsay'>[statements[i]]</span>")
 		if(i != statements.len)
@@ -106,11 +112,15 @@
 	materials = list(MAT_GLASS = 500)
 
 /obj/item/rupee/New()
+	procstart = null
+	src.procstart = null
 	var/newcolor = color2hex(pick(10;"green", 5;"blue", 3;"red", 1;"purple"))
 	add_atom_colour(newcolor, FIXED_COLOUR_PRIORITY)
 	..()
 
 /obj/item/rupee/Crossed(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 	if(M.put_in_hands(src))
@@ -120,6 +130,8 @@
 	..()
 
 /obj/item/rupee/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(loc), 'sound/misc/server-ready.ogg', 50, 1, -1)
 	..()
 

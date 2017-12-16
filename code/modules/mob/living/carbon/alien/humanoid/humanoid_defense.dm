@@ -1,11 +1,15 @@
 
 /mob/living/carbon/alien/humanoid/grabbedby(mob/living/carbon/user, supress_message = 0)
+	procstart = null
+	src.procstart = null
 	if(user == src && pulling && grab_state >= GRAB_AGGRESSIVE && !pulling.anchored && iscarbon(pulling))
 		devour_mob(pulling, devour_time = 60)
 	else
 		..()
 
 /mob/living/carbon/alien/humanoid/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		..(user, 1)
 		adjustBruteLoss(15)
@@ -21,6 +25,8 @@
 		return 1
 
 /mob/living/carbon/alien/humanoid/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		switch(M.a_intent)
 			if ("harm")
@@ -63,6 +69,8 @@
 
 
 /mob/living/carbon/alien/humanoid/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect, end_pixel_y)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && !visual_effect_icon)
 		visual_effect_icon = ATTACK_EFFECT_CLAW
 	..()

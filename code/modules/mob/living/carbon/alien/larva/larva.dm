@@ -20,30 +20,42 @@
 //This is fine right now, if we're adding organ specific damage this needs to be updated
 /mob/living/carbon/alien/larva/Initialize()
 
+	procstart = null
+	src.procstart = null
 	AddAbility(new/obj/effect/proc_holder/alien/hide(null))
 	AddAbility(new/obj/effect/proc_holder/alien/larva_evolve(null))
 	. = ..()
 
 /mob/living/carbon/alien/larva/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	internal_organs += new /obj/item/organ/alien/plasmavessel/small/tiny
 	..()
 
 //This needs to be fixed
 /mob/living/carbon/alien/larva/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		stat(null, "Progress: [amount_grown]/[max_grown]")
 
 /mob/living/carbon/alien/larva/adjustPlasma(amount)
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD && amount > 0)
 		amount_grown = min(amount_grown + 1, max_grown)
 	..(amount)
 
 //can't equip anything
 /mob/living/carbon/alien/larva/attack_ui(slot_id)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/alien/larva/restrained(ignore_grab)
+	procstart = null
+	src.procstart = null
 	. = 0
 
 // new damage icon system
@@ -51,18 +63,28 @@
 
 
 /mob/living/carbon/alien/larva/show_inv(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/alien/larva/toggle_throw_mode()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/alien/larva/start_pulling()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/alien/larva/stripPanelUnequip(obj/item/what, mob/who)
+	procstart = null
+	src.procstart = null
 	to_chat(src, "<span class='warning'>You don't have the dexterity to do this!</span>")
 	return
 
 /mob/living/carbon/alien/larva/stripPanelEquip(obj/item/what, mob/who)
+	procstart = null
+	src.procstart = null
 	to_chat(src, "<span class='warning'>You don't have the dexterity to do this!</span>")
 	return

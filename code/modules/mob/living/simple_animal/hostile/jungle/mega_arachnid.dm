@@ -24,6 +24,8 @@
 	alpha = 50
 
 /mob/living/simple_animal/hostile/jungle/mega_arachnid/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target && ranged_cooldown > world.time && iscarbon(target))
 		var/mob/living/carbon/C = target
@@ -38,10 +40,14 @@
 
 
 /mob/living/simple_animal/hostile/jungle/mega_arachnid/Aggro()
+	procstart = null
+	src.procstart = null
 	..()
 	alpha = 255
 
 /mob/living/simple_animal/hostile/jungle/mega_arachnid/LoseAggro()
+	procstart = null
+	src.procstart = null
 	..()
 	alpha = 50
 
@@ -52,6 +58,8 @@
 	icon_state = "tentacle_end"
 
 /obj/item/projectile/mega_arachnid/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target) && blocked < 100)
 		var/obj/item/restraints/legcuffs/beartrap/mega_arachnid/B = new /obj/item/restraints/legcuffs/beartrap/mega_arachnid(get_turf(target))
 		B.Crossed(target)

@@ -20,15 +20,21 @@
 	var/used = 0
 
 /obj/item/dnainjector/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/item/dnainjector/proc/prepare()
+	procstart = null
+	src.procstart = null
 	for(var/mut_key in add_mutations_static)
 		add_mutations.Add(GLOB.mutations_list[mut_key])
 	for(var/mut_key in remove_mutations_static)
 		remove_mutations.Add(GLOB.mutations_list[mut_key])
 
 /obj/item/dnainjector/proc/inject(mob/living/carbon/M, mob/user)
+	procstart = null
+	src.procstart = null
 	prepare()
 
 	if(M.has_dna() && !(RADIMMUNE in M.dna.species.species_traits) && !(M.disabilities & NOCLONE))
@@ -55,6 +61,8 @@
 	return FALSE
 
 /obj/item/dnainjector/attack(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
@@ -308,6 +316,8 @@
 	var/duration = 600
 
 /obj/item/dnainjector/timed/inject(mob/living/carbon/M, mob/user)
+	procstart = null
+	src.procstart = null
 	prepare()
 	if(M.stat == DEAD)	//prevents dead people from having their DNA changed
 		to_chat(user, "<span class='notice'>You can't modify [M]'s DNA while [M.p_theyre()] dead.</span>")

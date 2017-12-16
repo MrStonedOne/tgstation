@@ -16,6 +16,8 @@
 	var/field_distance_limit = 7
 
 /obj/item/device/forcefield/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(!check_allowed_items(target, 1))
 		return
 	if(istype(target, /obj/structure/projected_forcefield))
@@ -40,26 +42,36 @@
 	user.changeNext_move(CLICK_CD_MELEE)
 
 /obj/item/device/forcefield/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(current_fields))
 		to_chat(user, "<span class='notice'>You deactivate [src], disabling all active forcefields.</span>")
 		for(var/obj/structure/projected_forcefield/F in current_fields)
 			qdel(F)
 
 /obj/item/device/forcefield/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/percent_charge = round((shield_integrity/max_shield_integrity)*100)
 	to_chat(user, "<span class='notice'>It is currently sustaining [LAZYLEN(current_fields)]/[max_fields] fields, and it's [percent_charge]% charged.</span>")
 
 /obj/item/device/forcefield/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	current_fields = list()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/device/forcefield/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/device/forcefield/process()
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(current_fields))
 		shield_integrity = min(shield_integrity + 4, max_shield_integrity)
 	else
@@ -83,10 +95,14 @@
 	var/obj/item/device/forcefield/generator
 
 /obj/structure/projected_forcefield/Initialize(mapload, obj/item/device/forcefield/origin)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generator = origin
 
 /obj/structure/projected_forcefield/Destroy()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>[src] flickers and disappears!</span>")
 	playsound(src,'sound/weapons/resonator_blast.ogg',25,1)
 	generator.current_fields -= src
@@ -94,14 +110,20 @@
 	return ..()
 
 /obj/structure/projected_forcefield/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
 	return !density
 
 /obj/structure/projected_forcefield/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/weapons/egloves.ogg', 80, 1)
 
 /obj/structure/projected_forcefield/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(sound_effect)
 		play_attack_sound(damage_amount, damage_type, damage_flag)
 	generator.shield_integrity = max(generator.shield_integrity - damage_amount, 0)

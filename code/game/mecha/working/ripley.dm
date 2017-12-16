@@ -17,12 +17,16 @@
 	var/hides = 0
 
 /obj/mecha/working/ripley/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		collect_ore()
 	update_pressure()
 
 /obj/mecha/working/ripley/proc/collect_ore()
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/item/mecha_parts/mecha_equipment/hydraulic_clamp) in equipment)
 		var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in cargo
 		if(ore_box)
@@ -31,6 +35,8 @@
 					ore.forceMove(ore_box)
 
 /obj/mecha/working/ripley/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/i=1, i <= hides, i++)
 		new /obj/item/stack/sheet/animalhide/goliath_hide(loc) //If a goliath-plated ripley gets killed, all the plates drop
 	for(var/atom/movable/A in cargo)
@@ -40,14 +46,20 @@
 	return ..()
 
 /obj/mecha/working/ripley/go_out()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/mecha/working/ripley/moved_inside(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/mecha/working/ripley/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if (hides)
 		cut_overlays()
@@ -81,6 +93,8 @@
 	step_energy_drain = 0
 
 /obj/mecha/working/ripley/deathripley/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/hydraulic_clamp/kill
 	ME.attach(src)
@@ -92,6 +106,8 @@
 	obj_integrity = 75 //Low starting health
 
 /obj/mecha/working/ripley/mining/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell)
 		cell.charge = Floor(cell.charge * 0.25) //Starts at very low charge
@@ -120,11 +136,15 @@
 	scanner.attach(src)
 
 /obj/mecha/working/ripley/Exit(atom/movable/O)
+	procstart = null
+	src.procstart = null
 	if(O in cargo)
 		return 0
 	return ..()
 
 /obj/mecha/working/ripley/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["drop_from_cargo"])
 		var/obj/O = locate(href_list["drop_from_cargo"])
@@ -137,6 +157,8 @@
 
 
 /obj/mecha/working/ripley/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	for(var/X in cargo)
 		var/obj/O = X
 		if(prob(30/severity))
@@ -145,6 +167,8 @@
 	. = ..()
 
 /obj/mecha/working/ripley/get_stats_part()
+	procstart = null
+	src.procstart = null
 	var/output = ..()
 	output += "<b>Cargo Compartment Contents:</b><div style=\"margin-left: 15px;\">"
 	if(cargo.len)
@@ -156,6 +180,8 @@
 	return output
 
 /obj/mecha/working/ripley/proc/update_pressure()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(loc)
 
 	if(lavaland_equipment_pressure_check(T))
@@ -168,6 +194,8 @@
 			drill.equip_cooldown = initial(drill.equip_cooldown)
 
 /obj/mecha/working/ripley/relay_container_resist(mob/living/user, obj/O)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>You lean on the back of [O] and start pushing so it falls out of [src].</span>")
 	if(do_after(user, 300, target = O))
 		if(!user || user.stat != CONSCIOUS || user.loc != src || O.loc != src )

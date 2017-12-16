@@ -18,6 +18,8 @@
 	var/sensor_pressure = null
 
 /datum/computer/file/embedded_program/airlock_controller/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	var/receive_tag = signal.data["tag"]
 	if(!receive_tag)
 		return
@@ -47,6 +49,8 @@
 					target_state = AIRLOCK_STATE_INOPEN
 
 /datum/computer/file/embedded_program/airlock_controller/receive_user_command(command)
+	procstart = null
+	src.procstart = null
 	switch(command)
 		if("cycle_closed")
 			target_state = AIRLOCK_STATE_CLOSED
@@ -58,6 +62,8 @@
 			target_state = AIRLOCK_STATE_CLOSED
 
 /datum/computer/file/embedded_program/airlock_controller/process()
+	procstart = null
+	src.procstart = null
 	var/process_again = 1
 	while(process_again)
 		process_again = 0
@@ -212,6 +218,8 @@
 	var/sanitize_external
 
 /obj/machinery/embedded_controller/radio/airlock_controller/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		return
@@ -229,6 +237,8 @@
 	program = new_prog
 
 /obj/machinery/embedded_controller/radio/airlock_controller/update_icon()
+	procstart = null
+	src.procstart = null
 	if(on && program)
 		if(program.memory["processing"])
 			icon_state = "airlock_control_process"
@@ -239,6 +249,8 @@
 
 
 /obj/machinery/embedded_controller/radio/airlock_controller/return_text()
+	procstart = null
+	src.procstart = null
 	var/state_options = null
 
 	var/state = 0

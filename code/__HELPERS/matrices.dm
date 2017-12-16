@@ -3,6 +3,8 @@
 	Turn(.) //BYOND handles cases such as -270, 360, 540 etc. DOES NOT HANDLE 180 TURNS WELL, THEY TWEEN AND LOOK LIKE SHIT
 
 /atom/proc/SpinAnimation(speed = 10, loops = -1, clockwise = 1, segments = 3)
+	procstart = null
+	src.procstart = null
 	if(!segments)
 		return
 	var/segment = 360/segments
@@ -26,6 +28,8 @@
 
 //Dumps the matrix data in format a-f
 /matrix/proc/tolist()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += a
 	. += b
@@ -41,6 +45,8 @@
   c f 1
 */
 /matrix/proc/togrid()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += a
 	. += d
@@ -54,16 +60,24 @@
 
 //The X pixel offset of this matrix
 /matrix/proc/get_x_shift()
+	procstart = null
+	src.procstart = null
 	. = c
 
 //The Y pixel offset of this matrix
 /matrix/proc/get_y_shift()
+	procstart = null
+	src.procstart = null
 	. = f
 
 /matrix/proc/get_x_skew()
+	procstart = null
+	src.procstart = null
 	. = b
 
 /matrix/proc/get_y_skew()
+	procstart = null
+	src.procstart = null
 	. = d
 
 //Skews a matrix in a particular direction
@@ -72,6 +86,8 @@
 //As Rotation is defined as a scale+skew, these procs will break any existing rotation
 //Unless the result is multiplied against the current matrix
 /matrix/proc/set_skew(x = 0, y = 0)
+	procstart = null
+	src.procstart = null
 	b = x
 	d = y
 
@@ -93,16 +109,22 @@ list(0.393,0.349,0.272,0, 0.769,0.686,0.534,0, 0.189,0.168,0.131,0, 0,0,0,1, 0,0
 
 //Does nothing
 /proc/color_matrix_identity()
+	procstart = null
+	src.procstart = null
 	return list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, 0,0,0,0)
 
 //Adds/subtracts overall lightness
 //0 is identity, 1 makes everything white, -1 makes everything black
 /proc/color_matrix_lightness(power)
+	procstart = null
+	src.procstart = null
 	return list(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1, power,power,power,0)
 
 //Changes distance hues have from grey while maintaining the overall lightness. Greys are unaffected.
 //1 is identity, 0 is greyscale, >1 oversaturates colors
 /proc/color_matrix_saturation(value)
+	procstart = null
+	src.procstart = null
 	var/inv = 1 - value
 	var/R = round(LUMA_R * inv, 0.001)
 	var/G = round(LUMA_G * inv, 0.001)
@@ -113,12 +135,16 @@ list(0.393,0.349,0.272,0, 0.769,0.686,0.534,0, 0.189,0.168,0.131,0, 0,0,0,1, 0,0
 //Changes distance colors have from rgb(127,127,127) grey
 //1 is identity. 0 makes everything grey >1 blows out colors and greys
 /proc/color_matrix_contrast(value)
+	procstart = null
+	src.procstart = null
 	var/add = (1 - value) / 2
 	return list(value,0,0,0, 0,value,0,0, 0,0,value,0, 0,0,0,1, add,add,add,0)
 
 //Moves all colors angle degrees around the color wheel while maintaining intensity of the color and not affecting greys
 //0 is identity, 120 moves reds to greens, 240 moves reds to blues
 /proc/color_matrix_rotate_hue(angle)
+	procstart = null
+	src.procstart = null
 	var/sin = sin(angle)
 	var/cos = cos(angle)
 	var/cos_inv_third = 0.333*(1-cos)
@@ -133,20 +159,28 @@ round(cos_inv_third+sqrt3_sin, 0.001), round(cos_inv_third-sqrt3_sin, 0.001), ro
 //These next three rotate values about one axis only
 //x is the red axis, y is the green axis, z is the blue axis.
 /proc/color_matrix_rotate_x(angle)
+	procstart = null
+	src.procstart = null
 	var/sinval = round(sin(angle), 0.001); var/cosval = round(cos(angle), 0.001)
 	return list(1,0,0,0, 0,cosval,sinval,0, 0,-sinval,cosval,0, 0,0,0,1, 0,0,0,0)
 
 /proc/color_matrix_rotate_y(angle)
+	procstart = null
+	src.procstart = null
 	var/sinval = round(sin(angle), 0.001); var/cosval = round(cos(angle), 0.001)
 	return list(cosval,0,-sinval,0, 0,1,0,0, sinval,0,cosval,0, 0,0,0,1, 0,0,0,0)
 
 /proc/color_matrix_rotate_z(angle)
+	procstart = null
+	src.procstart = null
 	var/sinval = round(sin(angle), 0.001); var/cosval = round(cos(angle), 0.001)
 	return list(cosval,sinval,0,0, -sinval,cosval,0,0, 0,0,1,0, 0,0,0,1, 0,0,0,0)
 
 
 //Returns a matrix addition of A with B
 /proc/color_matrix_add(list/A, list/B)
+	procstart = null
+	src.procstart = null
 	if(!istype(A) || !istype(B))
 		return color_matrix_identity()
 	if(A.len != 20 || B.len != 20)
@@ -159,6 +193,8 @@ round(cos_inv_third+sqrt3_sin, 0.001), round(cos_inv_third-sqrt3_sin, 0.001), ro
 
 //Returns a matrix multiplication of A with B
 /proc/color_matrix_multiply(list/A, list/B)
+	procstart = null
+	src.procstart = null
 	if(!istype(A) || !istype(B))
 		return color_matrix_identity()
 	if(A.len != 20 || B.len != 20)

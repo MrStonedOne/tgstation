@@ -9,6 +9,8 @@
 	var/martyr_compatible = 0			//If the objective is compatible with martyr objective, i.e. if you can still do it while dead.
 
 /datum/objective/New(var/text)
+	procstart = null
+	src.procstart = null
 	if(text)
 		explanation_text = text
 
@@ -18,6 +20,8 @@
 		. += owner
 
 /datum/objective/proc/considered_escaped(datum/mind/M)
+	procstart = null
+	src.procstart = null
 	if(!considered_alive(M))
 		return FALSE
 	if(SSticker.force_ending || SSticker.mode.station_was_nuked) // Just let them win.
@@ -30,9 +34,13 @@
 	return location.onCentCom() || location.onSyndieBase()
 
 /datum/objective/proc/check_completion()
+	procstart = null
+	src.procstart = null
 	return completed
 
 /datum/objective/proc/is_unique_objective(possible_target)
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
 		for(var/datum/objective/O in M.objectives)
@@ -41,9 +49,13 @@
 	return TRUE
 
 /datum/objective/proc/get_target()
+	procstart = null
+	src.procstart = null
 	return target
 
 /datum/objective/proc/get_crewmember_minds()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/V in GLOB.data_core.locked)
 		var/datum/data/record/R = V
@@ -52,6 +64,8 @@
 			. += M
 
 /datum/objective/proc/find_target()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	var/list/possible_targets = list()
 	var/try_target_late_joiners = FALSE
@@ -99,10 +113,14 @@
 	update_explanation_text()
 
 /datum/objective/proc/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(team_explanation_text && LAZYLEN(get_owners()) > 1)
 		explanation_text = team_explanation_text
 
 /datum/objective/proc/give_special_equipment(special_equipment)
+	procstart = null
+	src.procstart = null
 	var/datum/mind/receiver = pick(get_owners())
 	if(receiver && receiver.current)
 		if(ishuman(receiver.current))
@@ -117,15 +135,21 @@
 	martyr_compatible = 1
 
 /datum/objective/assassinate/find_target_by_role(role, role_type=0, invert=0)
+	procstart = null
+	src.procstart = null
 	if(!invert)
 		target_role_type = role_type
 	..()
 	return target
 
 /datum/objective/assassinate/check_completion()
+	procstart = null
+	src.procstart = null
 	return !considered_alive(target) || considered_afk(target)
 
 /datum/objective/assassinate/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target && target.current)
 		explanation_text = "Assassinate [target.name], the [!target_role_type ? target.assigned_role : target.special_role]."
@@ -136,6 +160,8 @@
 	var/stolen = 0 		//Have we already eliminated this target?
 
 /datum/objective/assassinate/internal/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target && !target.current)
 		explanation_text = "Assassinate [target.name], who was obliterated"
@@ -145,18 +171,24 @@
 	martyr_compatible = 1
 
 /datum/objective/mutiny/find_target_by_role(role, role_type=0,invert=0)
+	procstart = null
+	src.procstart = null
 	if(!invert)
 		target_role_type = role_type
 	..()
 	return target
 
 /datum/objective/mutiny/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!target || !considered_alive(target) || considered_afk(target))
 		return TRUE
 	var/turf/T = get_turf(target.current)
 	return T && !(T.z in GLOB.station_z_levels)
 
 /datum/objective/mutiny/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target && target.current)
 		explanation_text = "Assassinate or exile [target.name], the [!target_role_type ? target.assigned_role : target.special_role]."
@@ -168,15 +200,21 @@
 	martyr_compatible = 1
 
 /datum/objective/maroon/find_target_by_role(role, role_type=0, invert=0)
+	procstart = null
+	src.procstart = null
 	if(!invert)
 		target_role_type = role_type
 	..()
 	return target
 
 /datum/objective/maroon/check_completion()
+	procstart = null
+	src.procstart = null
 	return !target || !considered_alive(target) || (!target.current.onCentCom() && !target.current.onSyndieBase())
 
 /datum/objective/maroon/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target && target.current)
 		explanation_text = "Prevent [target.name], the [!target_role_type ? target.assigned_role : target.special_role], from escaping alive."
 	else
@@ -186,12 +224,16 @@
 	var/target_role_type=0
 
 /datum/objective/debrain/find_target_by_role(role, role_type=0, invert=0)
+	procstart = null
+	src.procstart = null
 	if(!invert)
 		target_role_type = role_type
 	..()
 	return target
 
 /datum/objective/debrain/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!target)//If it's a free objective.
 		return TRUE
 	if(!target.current || !isbrain(target.current))
@@ -207,6 +249,8 @@
 	return FALSE
 
 /datum/objective/debrain/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target && target.current)
 		explanation_text = "Steal the brain of [target.name], the [!target_role_type ? target.assigned_role : target.special_role]."
@@ -218,15 +262,21 @@
 	martyr_compatible = 1
 
 /datum/objective/protect/find_target_by_role(role, role_type=0, invert=0)
+	procstart = null
+	src.procstart = null
 	if(!invert)
 		target_role_type = role_type
 	..()
 	return target
 
 /datum/objective/protect/check_completion()
+	procstart = null
+	src.procstart = null
 	return !target || considered_alive(target)
 
 /datum/objective/protect/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target && target.current)
 		explanation_text = "Protect [target.name], the [!target_role_type ? target.assigned_role : target.special_role]."
@@ -252,6 +302,8 @@
 	martyr_compatible = 1
 
 /datum/objective/block/check_completion()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return TRUE
 	for(var/mob/living/player in GLOB.player_list)
@@ -265,6 +317,8 @@
 	martyr_compatible = 1
 
 /datum/objective/purge/check_completion()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return TRUE
 	for(var/mob/living/player in GLOB.player_list)
@@ -279,6 +333,8 @@
 	martyr_compatible = 0
 
 /datum/objective/robot_army/check_completion()
+	procstart = null
+	src.procstart = null
 	var/counter = 0
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
@@ -295,6 +351,8 @@
 	team_explanation_text = "Have all members of your team escape on a shuttle or pod alive, without being in custody."
 
 /datum/objective/escape/check_completion()
+	procstart = null
+	src.procstart = null
 	// Require all owners escape safely.
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
@@ -307,10 +365,14 @@
 	var/target_missing_id
 
 /datum/objective/escape/escape_with_identity/find_target()
+	procstart = null
+	src.procstart = null
 	target = ..()
 	update_explanation_text()
 
 /datum/objective/escape/escape_with_identity/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target && target.current)
 		target_real_name = target.current.real_name
 		explanation_text = "Escape on the shuttle or an escape pod with the identity of [target_real_name], the [target.assigned_role]"
@@ -327,6 +389,8 @@
 		explanation_text = "Free Objective."
 
 /datum/objective/escape/escape_with_identity/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!target || !target_real_name)
 		return TRUE
 	var/list/datum/mind/owners = get_owners()
@@ -342,6 +406,8 @@
 	explanation_text = "Stay alive until the end."
 
 /datum/objective/survive/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
 		if(!considered_alive(M))
@@ -351,6 +417,8 @@
 /datum/objective/survive/exist //Like survive, but works for silicons and zombies and such.
 
 /datum/objective/survive/exist/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
 		if(!considered_alive(M, FALSE))
@@ -361,6 +429,8 @@
 	explanation_text = "Die a glorious death."
 
 /datum/objective/martyr/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/M in owners)
 		if(considered_alive(M))
@@ -372,6 +442,8 @@
 	martyr_compatible = 1
 
 /datum/objective/nuclear/check_completion()
+	procstart = null
+	src.procstart = null
 	if(SSticker && SSticker.mode && SSticker.mode.station_was_nuked)
 		return TRUE
 	return FALSE
@@ -383,15 +455,21 @@ GLOBAL_LIST_EMPTY(possible_items)
 	martyr_compatible = 0
 
 /datum/objective/steal/get_target()
+	procstart = null
+	src.procstart = null
 	return steal_target
 
 /datum/objective/steal/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!GLOB.possible_items.len)//Only need to fill the list when it's needed.
 		for(var/I in subtypesof(/datum/objective_item/steal))
 			new I
 
 /datum/objective/steal/find_target()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	var/approved_targets = list()
 	check_items:
@@ -405,6 +483,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	return set_target(safepick(approved_targets))
 
 /datum/objective/steal/proc/set_target(datum/objective_item/item)
+	procstart = null
+	src.procstart = null
 	if(item)
 		targetinfo = item
 		steal_target = targetinfo.targetitem
@@ -437,6 +517,8 @@ GLOBAL_LIST_EMPTY(possible_items)
 	return steal_target
 
 /datum/objective/steal/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	if(!steal_target)
 		return TRUE
@@ -463,18 +545,24 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 /datum/objective/steal/special //ninjas are so special they get their own subtype good for them
 
 /datum/objective/steal/special/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!GLOB.possible_items_special.len)
 		for(var/I in subtypesof(/datum/objective_item/special) + subtypesof(/datum/objective_item/stack))
 			new I
 
 /datum/objective/steal/special/find_target()
+	procstart = null
+	src.procstart = null
 	return set_target(pick(GLOB.possible_items_special))
 
 /datum/objective/steal/exchange
 	martyr_compatible = 0
 
 /datum/objective/steal/exchange/proc/set_faction(faction,otheragent)
+	procstart = null
+	src.procstart = null
 	target = otheragent
 	if(faction == "red")
 		targetinfo = new/datum/objective_item/unique/docs_blue
@@ -485,6 +573,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 
 /datum/objective/steal/exchange/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target && target.current)
 		explanation_text = "Acquire [targetinfo.name] held by [target.name], the [target.assigned_role] and syndicate agent"
@@ -495,6 +585,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 /datum/objective/steal/exchange/backstab
 
 /datum/objective/steal/exchange/backstab/set_faction(faction)
+	procstart = null
+	src.procstart = null
 	if(faction == "red")
 		targetinfo = new/datum/objective_item/unique/docs_red
 	else if(faction == "blue")
@@ -506,11 +598,15 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 /datum/objective/download
 
 /datum/objective/download/proc/gen_amount_goal()
+	procstart = null
+	src.procstart = null
 	target_amount = rand(20,40)
 	explanation_text = "Download [target_amount] research node\s."
 	return target_amount
 
 /datum/objective/download/check_completion()
+	procstart = null
+	src.procstart = null
 	var/datum/techweb/checking = new
 	var/list/datum/mind/owners = get_owners()
 	for(var/datum/mind/owner in owners)
@@ -529,6 +625,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 /datum/objective/capture
 
 /datum/objective/capture/proc/gen_amount_goal()
+		procstart = null
+		src.procstart = null
 		target_amount = rand(5,10)
 		explanation_text = "Capture [target_amount] lifeform\s with an energy net. Live, rare specimens are worth more."
 		return target_amount
@@ -565,6 +663,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 /datum/objective/absorb
 
 /datum/objective/absorb/proc/gen_amount_goal(lowbound = 4, highbound = 6)
+	procstart = null
+	src.procstart = null
 	target_amount = rand (lowbound,highbound)
 	var/n_p = 1 //autowin
 	var/list/datum/mind/owners = get_owners()
@@ -582,6 +682,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 	return target_amount
 
 /datum/objective/absorb/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	var/absorbedcount = 0
 	for(var/datum/mind/M in owners)
@@ -599,6 +701,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 	martyr_compatible = 1
 
 /datum/objective/destroy/find_target()
+	procstart = null
+	src.procstart = null
 	var/list/possible_targets = active_ais(1)
 	var/mob/living/silicon/ai/target_ai = pick(possible_targets)
 	target = target_ai.mind
@@ -606,11 +710,15 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 	return target
 
 /datum/objective/destroy/check_completion()
+	procstart = null
+	src.procstart = null
 	if(target && target.current)
 		return target.current.stat == DEAD || target.current.z > 6 || !target.current.ckey //Borgs/brains/AIs count as dead for traitor objectives.
 	return TRUE
 
 /datum/objective/destroy/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(target && target.current)
 		explanation_text = "Destroy [target.name], the experimental AI."
@@ -625,6 +733,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 	var/list/wanted_items = list(/obj/item)
 
 /datum/objective/steal_five_of_type/New()
+	procstart = null
+	src.procstart = null
 	..()
 	wanted_items = typecacheof(wanted_items)
 
@@ -637,6 +747,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 	wanted_items = list(/obj/item/spellbook, /obj/item/gun/magic, /obj/item/clothing/suit/space/hardsuit/wizard, /obj/item/scrying, /obj/item/antag_spawner/contract, /obj/item/device/necromantic_stone)
 
 /datum/objective/steal_five_of_type/check_completion()
+	procstart = null
+	src.procstart = null
 	var/list/datum/mind/owners = get_owners()
 	var/stolen_count = 0
 	for(var/datum/mind/M in owners)
@@ -672,6 +784,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 
 /datum/objective/changeling_team_objective/impersonate_department/proc/get_department_staff()
+	procstart = null
+	src.procstart = null
 	department_minds = list()
 	department_real_names = list()
 
@@ -709,6 +823,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 
 /datum/objective/changeling_team_objective/impersonate_department/proc/get_heads()
+	procstart = null
+	src.procstart = null
 	department_minds = list()
 	department_real_names = list()
 
@@ -738,6 +854,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 
 /datum/objective/changeling_team_objective/impersonate_department/New(var/text)
+	procstart = null
+	src.procstart = null
 	..()
 	if(command_staff_only)
 		get_heads()
@@ -748,6 +866,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 
 /datum/objective/changeling_team_objective/impersonate_department/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!department_real_names.len || !department_minds.len)
 		explanation_text = "Free Objective"
@@ -774,6 +894,8 @@ GLOBAL_LIST_EMPTY(possible_items_special)
 
 
 /datum/objective/changeling_team_objective/impersonate_department/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!department_real_names.len || !department_minds.len)
 		return TRUE //Something fucked up, give them a win
 

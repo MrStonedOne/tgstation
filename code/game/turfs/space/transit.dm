@@ -6,6 +6,8 @@
 	explosion_block = INFINITY
 
 /turf/open/space/transit/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underlay_appearance.icon_state = "speedspace_ns_[get_transit_state(asking_turf)]"
 	underlay_appearance.transform = turn(matrix(), get_transit_angle(asking_turf))
@@ -26,11 +28,15 @@
 	dir = EAST
 
 /turf/open/space/transit/Entered(atom/movable/AM, atom/OldLoc)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!locate(/obj/structure/lattice) in src)
 		throw_atom(AM)
 
 /turf/open/space/transit/proc/throw_atom(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!AM || istype(AM, /obj/docking_port))
 		return
@@ -70,20 +76,28 @@
 
 
 /turf/open/space/transit/CanBuildHere()
+	procstart = null
+	src.procstart = null
 	return SSshuttle.is_in_shuttle_bounds(src)
 
 
 /turf/open/space/transit/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 	for(var/atom/movable/AM in src)
 		throw_atom(AM)
 
 /turf/open/space/transit/proc/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "speedspace_ns_[get_transit_state(src)]"
 	transform = turn(matrix(), get_transit_angle(src))
 
 /proc/get_transit_state(turf/T)
+	procstart = null
+	src.procstart = null
 	var/p = 9
 	. = 1
 	switch(T.dir)
@@ -101,6 +115,8 @@
 			. = ((p*T.x+T.y) % 15) + 1
 
 /proc/get_transit_angle(turf/T)
+	procstart = null
+	src.procstart = null
 	. = 0
 	switch(T.dir)
 		if(NORTH)

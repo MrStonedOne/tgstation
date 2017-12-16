@@ -36,6 +36,8 @@
 
 //Start of a breath chain, calls breathe()
 /mob/living/carbon/handle_breathing(times_fired)
+	procstart = null
+	src.procstart = null
 	if((times_fired % 4) == 2 || failed_last_breath)
 		breathe() //Breathe per 4 ticks, unless suffocating
 	else
@@ -45,6 +47,8 @@
 
 //Second link in a breath chain, calls check_breath()
 /mob/living/carbon/proc/breathe()
+	procstart = null
+	src.procstart = null
 	if(reagents.has_reagent("lexorin"))
 		return
 	if(istype(loc, /obj/machinery/atmospherics/components/unary/cryo_cell))
@@ -99,11 +103,15 @@
 		air_update_turf()
 
 /mob/living/carbon/proc/has_smoke_protection()
+	procstart = null
+	src.procstart = null
 	return 0
 
 
 //Third link in a breath chain, calls handle_breath_temperature()
 /mob/living/carbon/proc/check_breath(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	if((status_flags & GODMODE))
 		return
 
@@ -221,9 +229,13 @@
 
 //Fourth and final link in a breath chain
 /mob/living/carbon/proc/handle_breath_temperature(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/proc/get_breath_from_internal(volume_needed)
+	procstart = null
+	src.procstart = null
 	if(internal)
 		if(internal.loc != src)
 			internal = null
@@ -238,14 +250,20 @@
 				return FALSE //to differentiate between no internals and active, but empty internals
 
 /mob/living/carbon/proc/handle_blood()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/proc/handle_organs()
+	procstart = null
+	src.procstart = null
 	for(var/V in internal_organs)
 		var/obj/item/organ/O = V
 		O.on_life()
 
 /mob/living/carbon/handle_diseases()
+	procstart = null
+	src.procstart = null
 	for(var/thing in viruses)
 		var/datum/disease/D = thing
 		if(prob(D.infectivity))
@@ -256,6 +274,8 @@
 
 //todo generalize this and move hud out
 /mob/living/carbon/proc/handle_changeling()
+	procstart = null
+	src.procstart = null
 	if(mind && hud_used && hud_used.lingchemdisplay)
 		var/datum/antagonist/changeling/changeling = mind.has_antag_datum(/datum/antagonist/changeling)
 		if(changeling)
@@ -267,6 +287,8 @@
 
 
 /mob/living/carbon/handle_mutations_and_radiation()
+	procstart = null
+	src.procstart = null
 	if(dna && dna.temporary_mutations.len)
 		var/datum/mutation/human/HM
 		for(var/mut in dna.temporary_mutations)
@@ -300,6 +322,8 @@
 		adjustToxLoss(log(radiation-RAD_MOB_SAFE)*RAD_TOX_COEFFICIENT)
 
 /mob/living/carbon/handle_stomach()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	for(var/mob/living/M in stomach_contents)
 		if(M.loc != src)
@@ -318,6 +342,8 @@
 
 //this updates all special effects: stun, sleeping, knockdown, druggy, stuttering, etc..
 /mob/living/carbon/handle_status_effects()
+	procstart = null
+	src.procstart = null
 	..()
 	if(staminaloss)
 		adjustStaminaLoss(-3)
@@ -390,6 +416,8 @@
 
 //used in human and monkey handle_environment()
 /mob/living/carbon/proc/natural_bodytemperature_stabilization()
+	procstart = null
+	src.procstart = null
 	var/body_temperature_difference = 310.15 - bodytemperature
 	switch(bodytemperature)
 		if(-INFINITY to 260.15) //260.15 is 310.15 - 50, the temperature where you start to feel effects.
@@ -406,6 +434,8 @@
 /////////
 
 /mob/living/carbon/proc/handle_liver()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
 	if((!dna && !liver) || (NOLIVER in dna.species.species_traits))
 		return
@@ -419,21 +449,29 @@
 		liver_failure()
 
 /mob/living/carbon/proc/undergoing_liver_failure()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
 	if(liver && liver.failing)
 		return TRUE
 
 /mob/living/carbon/proc/return_liver_damage()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
 	if(liver)
 		return liver.damage
 
 /mob/living/carbon/proc/applyLiverDamage(var/d)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/liver/L = getorganslot(ORGAN_SLOT_LIVER)
 	if(L)
 		L.damage += d
 
 /mob/living/carbon/proc/liver_failure()
+	procstart = null
+	src.procstart = null
 	if(reagents.get_reagent_amount("corazone"))//corazone is processed here an not in the liver because a failing liver can't metabolize reagents
 		reagents.remove_reagent("corazone", 0.4) //corazone slowly deletes itself.
 		return
@@ -447,6 +485,8 @@
 ////////////////
 
 /mob/living/carbon/proc/handle_brain_damage()
+	procstart = null
+	src.procstart = null
 	for(var/T in get_traumas())
 		var/datum/brain_trauma/BT = T
 		BT.on_life()

@@ -4,9 +4,13 @@
 	data = list()
 
 /datum/integrated_io/lists/ask_for_pin_data(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /datum/integrated_io/lists/proc/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/my_list = data
 	var/t = "<h2>[src]</h2><br>"
 	t += "List length: [my_list.len]<br>"
@@ -24,18 +28,24 @@
 	user << browse(t, "window=list_pin_[REF(src)];size=500x400")
 
 /datum/integrated_io/lists/proc/add_to_list(mob/user, var/new_entry)
+	procstart = null
+	src.procstart = null
 	if(!new_entry && user)
 		new_entry = ask_for_data_type(user)
 	if(is_valid(new_entry))
 		Add(new_entry)
 
 /datum/integrated_io/lists/proc/Add(var/new_entry)
+	procstart = null
+	src.procstart = null
 	var/list/my_list = data
 	if(my_list.len > IC_MAX_LIST_LENGTH)
 		my_list.Cut(Start=1,End=2)
 	my_list.Add(new_entry)
 
 /datum/integrated_io/lists/proc/remove_from_list_by_position(mob/user, var/position)
+	procstart = null
+	src.procstart = null
 	var/list/my_list = data
 	if(!my_list.len)
 		to_chat(user, "<span class='warning'>The list is empty, there's nothing to remove.</span>")
@@ -47,6 +57,8 @@
 		my_list.Remove(target_entry)
 
 /datum/integrated_io/lists/proc/remove_from_list(mob/user, var/target_entry)
+	procstart = null
+	src.procstart = null
 	var/list/my_list = data
 	if(!my_list.len)
 		to_chat(user, "<span class='warning'>The list is empty, there's nothing to remove.</span>")
@@ -57,6 +69,8 @@
 		my_list.Remove(target_entry)
 
 /datum/integrated_io/lists/proc/edit_in_list(mob/user, var/target_entry)
+	procstart = null
+	src.procstart = null
 	var/list/my_list = data
 	if(!my_list.len)
 		to_chat(user, "<span class='warning'>The list is empty, there's nothing to modify.</span>")
@@ -69,6 +83,8 @@
 			target_entry = edited_entry
 
 /datum/integrated_io/lists/proc/edit_in_list_by_position(mob/user, var/position)
+	procstart = null
+	src.procstart = null
 	var/list/my_list = data
 	if(!my_list.len)
 		to_chat(user, "<span class='warning'>The list is empty, there's nothing to modify.</span>")
@@ -82,6 +98,8 @@
 			target_entry = edited_entry
 
 /datum/integrated_io/lists/proc/swap_inside_list(mob/user, var/first_target, var/second_target)
+	procstart = null
+	src.procstart = null
 	var/list/my_list = data
 	if(my_list.len <= 1)
 		to_chat(user, "<span class='warning'>The list is empty, or too small to do any meaningful swapping.</span>")
@@ -99,15 +117,21 @@
 			my_list.Swap(first_pos, second_pos)
 
 /datum/integrated_io/lists/proc/clear_list(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/my_list = data
 	my_list.Cut()
 
 /datum/integrated_io/lists/scramble()
+	procstart = null
+	src.procstart = null
 	var/list/my_list = data
 	my_list = shuffle(my_list)
 	push_data()
 
 /datum/integrated_io/lists/write_data_to_pin(var/new_data)
+	procstart = null
+	src.procstart = null
 	if(islist(new_data))
 		var/list/new_list = new_data
 		data = new_list.Copy(max(1,new_list.len - IC_MAX_LIST_LENGTH+1),0)
@@ -118,9 +142,13 @@
 		holder.on_data_written()
 
 /datum/integrated_io/lists/display_pin_type()
+	procstart = null
+	src.procstart = null
 	return IC_FORMAT_LIST
 
 /datum/integrated_io/lists/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!holder.check_interactivity(usr))
 		return
 	if(..())

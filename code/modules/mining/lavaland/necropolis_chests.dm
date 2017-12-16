@@ -11,6 +11,8 @@
 	desc = "It's watching you suspiciously."
 
 /obj/structure/closet/crate/necropolis/tendril/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/loot = rand(1,27)
 	switch(loot)
 		if(1)
@@ -85,6 +87,8 @@
 	var/modkit_design = /datum/design/unique_modkit
 
 /obj/item/disk/design_disk/modkit_disc/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blueprints[1] = new modkit_design
 
@@ -152,6 +156,8 @@
 	var/obj/effect/wisp/wisp
 
 /obj/item/device/wisp_lantern/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!wisp)
 		to_chat(user, "<span class='warning'>The wisp has gone missing!</span>")
 		return
@@ -178,10 +184,14 @@
 		SSblackbox.record_feedback("tally", "wisp_lantern", 1, "Returned")
 
 /obj/item/device/wisp_lantern/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wisp = new(src)
 
 /obj/item/device/wisp_lantern/Destroy()
+	procstart = null
+	src.procstart = null
 	if(wisp)
 		if(wisp.loc == src)
 			qdel(wisp)
@@ -208,6 +218,8 @@
 	var/teleporting = FALSE
 
 /obj/item/device/warp_cube/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!linked)
 		to_chat(user, "[src] fizzles uselessly.")
 		return
@@ -247,6 +259,8 @@
 	teleport_color = "#FD3F48"
 
 /obj/item/device/warp_cube/red/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!linked)
 		var/obj/item/device/warp_cube/blue = new(src.loc)
@@ -257,6 +271,8 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/warp_cube/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 //Meat Hook
@@ -293,12 +309,16 @@
 	var/chain
 
 /obj/item/projectile/hook/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(firer)
 		chain = firer.Beam(src, icon_state = "chain", time = INFINITY, maxdistance = INFINITY)
 	..()
 	//TODO: root the firer until the chain returns
 
 /obj/item/projectile/hook/on_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismovableatom(target))
 		var/atom/movable/A = target
@@ -310,6 +330,8 @@
 		//TODO: needs a callback to delete the chain
 
 /obj/item/projectile/hook/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(chain)
 	return ..()
 
@@ -327,12 +349,16 @@
 	name = "Immortality"
 
 /obj/item/device/immortality_talisman/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		. = ..()
 	else
 		return QDEL_HINT_LETMELIVE
 
 /obj/item/device/immortality_talisman/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown < world.time)
 		SSblackbox.record_feedback("amount", "immortality_talisman_uses", 1)
 		cooldown = world.time + 600
@@ -347,6 +373,8 @@
 		addtimer(CALLBACK(src, .proc/return_to_reality, user, Z), 100)
 
 /obj/item/device/immortality_talisman/proc/return_to_reality(mob/user, obj/effect/immortality_talisman/Z)
+	procstart = null
+	src.procstart = null
 	user.status_flags &= ~GODMODE
 	user.notransform = 0
 	user.forceMove(get_turf(Z))
@@ -360,15 +388,23 @@
 	var/can_destroy = FALSE
 
 /obj/effect/immortality_talisman/attackby()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/immortality_talisman/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/immortality_talisman/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/immortality_talisman/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!can_destroy && !force)
 		return QDEL_HINT_LETMELIVE
 	else
@@ -402,6 +438,8 @@
 	desc = "Somehow, it's in two places at once."
 
 /obj/item/device/shared_storage/red/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!bag)
 		var/obj/item/storage/backpack/shared/S = new(src)
@@ -412,12 +450,16 @@
 
 
 /obj/item/device/shared_storage/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(bag)
 		bag.forceMove(user)
 		bag.attackby(W, user, params)
 
 
 /obj/item/device/shared_storage/attack_hand(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(user))
 		return
 	if(loc == user && user.back && user.back == src)
@@ -429,6 +471,8 @@
 
 
 /obj/item/device/shared_storage/MouseDrop(atom/over_object)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(usr) || isdrone(usr))
 		var/mob/M = usr
 
@@ -461,6 +505,8 @@
 	w_class = 2
 
 /obj/item/book_of_babel/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "You flip through the pages of the book, quickly and conveniently learning every language in existence. Somewhat less conveniently, the aging book crumbles to dust in the process. Whoops.")
 	user.grant_all_languages(omnitongue=TRUE)
 	new /obj/effect/decal/cleanable/ash(get_turf(user))
@@ -478,6 +524,8 @@
 	can_buckle = TRUE
 
 /obj/vehicle/ridden/lavaboat/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
 	D.keytype = /obj/item/oar
@@ -519,6 +567,8 @@
 	icon_state = "ship_bottle"
 
 /obj/item/ship_in_a_bottle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "You're not sure how they get the ships in these things, but you're pretty sure you know how to get it out.")
 	playsound(user.loc, 'sound/effects/glassbr1.ogg', 100, 1)
 	new /obj/vehicle/ridden/lavaboat/dragon(get_turf(src))
@@ -530,6 +580,8 @@
 	icon_state = "dragon_boat"
 
 /obj/vehicle/ridden/lavaboat/dragon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
 	D.vehicle_move_delay = 1
@@ -547,6 +599,8 @@
 	list_reagents = list("flightpotion" = 5)
 
 /obj/item/reagent_containers/glass/bottle/potion/update_icon()
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume)
 		icon_state = "potionflask"
 	else
@@ -560,6 +614,8 @@
 	color = "#FFEBEB"
 
 /datum/reagent/flightpotion/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message = 1)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M) && M.stat != DEAD)
 		if(!ishumanbasic(M) || reac_volume < 5) // implying xenohumans are holy
 			if(method == INGEST && show_message)
@@ -581,6 +637,8 @@
 	icon_state = "ladder00"
 
 /obj/item/jacobs_ladder/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/ladder_x = T.x
 	var/ladder_y = T.y
@@ -629,18 +687,24 @@
 	var/swiping = FALSE
 
 /obj/item/melee/transforming/cleaving_saw/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>It is [active ? "open, and will cleave enemies in a wide arc":"closed, and can be used for rapid consecutive attacks that cause beastly enemies to bleed"].<br>\
 	Both modes will build up existing bleed effects, doing a burst of high damage if the bleed is built up high enough.<br>\
 	Transforming it immediately after an attack causes the next attack to come out faster.</span>")
 
 /obj/item/melee/transforming/cleaving_saw/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is [active ? "closing [src] on [user.p_their()] neck" : "opening [src] into [user.p_their()] chest"]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	transform_cooldown = 0
 	transform_weapon(user, TRUE)
 	return BRUTELOSS
 
 /obj/item/melee/transforming/cleaving_saw/transform_weapon(mob/living/user, supress_message_text)
+	procstart = null
+	src.procstart = null
 	if(transform_cooldown > world.time)
 		return FALSE
 	. = ..()
@@ -649,6 +713,8 @@
 		user.changeNext_move(CLICK_CD_MELEE * 0.25)
 
 /obj/item/melee/transforming/cleaving_saw/transform_messages(mob/living/user, supress_message_text)
+	procstart = null
+	src.procstart = null
 	if(!supress_message_text)
 		if(active)
 			to_chat(user, "<span class='notice'>You open [src]. It will now cleave enemies in a wide arc.</span>")
@@ -657,16 +723,22 @@
 	playsound(user, 'sound/magic/clockwork/fellowship_armory.ogg', 35, TRUE, frequency = 90000 - (active * 30000))
 
 /obj/item/melee/transforming/cleaving_saw/clumsy_transform_effect(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.disabilities & CLUMSY && prob(50))
 		to_chat(user, "<span class='warning'>You accidentally cut yourself with [src], like a doofus!</span>")
 		user.take_bodypart_damage(10)
 
 /obj/item/melee/transforming/cleaving_saw/melee_attack_chain(mob/user, atom/target, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!active)
 		user.changeNext_move(CLICK_CD_MELEE * 0.5) //when closed, it attacks very rapidly
 
 /obj/item/melee/transforming/cleaving_saw/nemesis_effects(mob/living/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/saw_bleed/B = target.has_status_effect(STATUS_EFFECT_SAWBLEED)
 	if(!B)
 		if(!active) //This isn't in the above if-check so that the else doesn't care about active
@@ -675,6 +747,8 @@
 		B.add_bleed(B.bleed_buildup)
 
 /obj/item/melee/transforming/cleaving_saw/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!active || swiping || !target.density || get_turf(target) == get_turf(user))
 		if(!active)
 			faction_bonus_force = 0
@@ -699,6 +773,8 @@
 	name = "dragon chest"
 
 /obj/structure/closet/crate/necropolis/dragon/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/loot = rand(1,4)
 	switch(loot)
 		if(1)
@@ -715,6 +791,8 @@
 	name = "firey dragon chest"
 
 /obj/structure/closet/crate/necropolis/dragon/crusher/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/crusher_trophy/tail_spike(src)
 
@@ -736,12 +814,16 @@
 	var/list/mob/dead/observer/spirits
 
 /obj/item/melee/ghost_sword/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spirits = list()
 	START_PROCESSING(SSobj, src)
 	GLOB.poi_list |= src
 
 /obj/item/melee/ghost_sword/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/observer/G in spirits)
 		G.invisibility = GLOB.observer_default_invisibility
 	spirits.Cut()
@@ -750,6 +832,8 @@
 	. = ..()
 
 /obj/item/melee/ghost_sword/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(summon_cooldown > world.time)
 		to_chat(user, "You just recently called out for aid. You don't want to annoy the spirits.")
 		return
@@ -762,15 +846,21 @@
 	summon_cooldown = world.time + 600
 
 /obj/item/melee/ghost_sword/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["orbit"])
 		var/mob/dead/observer/ghost = usr
 		if(istype(ghost))
 			ghost.ManualFollow(src)
 
 /obj/item/melee/ghost_sword/process()
+	procstart = null
+	src.procstart = null
 	ghost_check()
 
 /obj/item/melee/ghost_sword/proc/ghost_check()
+	procstart = null
+	src.procstart = null
 	var/ghost_counter = 0
 	var/turf/T = get_turf(src)
 	var/list/contents = T.GetAllContents()
@@ -797,6 +887,8 @@
 	return ghost_counter
 
 /obj/item/melee/ghost_sword/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	force = 0
 	var/ghost_counter = ghost_check()
 
@@ -805,6 +897,8 @@
 	..()
 
 /obj/item/melee/ghost_sword/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	var/ghost_counter = ghost_check()
 	final_block_chance += Clamp((ghost_counter * 5), 0, 75)
 	owner.visible_message("<span class='danger'>[owner] is protected by a ring of [ghost_counter] ghosts!</span>")
@@ -819,6 +913,8 @@
 	icon_state = "vial"
 
 /obj/item/dragons_blood/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 
@@ -890,6 +986,8 @@
 	var/static/list/banned_turfs = typecacheof(list(/turf/open/space/transit, /turf/closed))
 
 /obj/item/lava_staff/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	procstart = null
+	src.procstart = null
 	..()
 	if(timer > world.time)
 		return
@@ -935,6 +1033,8 @@
 	name = "bubblegum chest"
 
 /obj/structure/closet/crate/necropolis/bubblegum/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/space/hostile_environment(src)
 	new /obj/item/clothing/head/helmet/space/hostile_environment(src)
 	var/loot = rand(1,3)
@@ -950,6 +1050,8 @@
 	name = "bloody bubblegum chest"
 
 /obj/structure/closet/crate/necropolis/bubblegum/crusher/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/crusher_trophy/demon_claws(src)
 
@@ -960,6 +1062,8 @@
 	icon_state = "vial"
 
 /obj/item/mayhem/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/H in range(7,user))
 		var/obj/effect/mine/pickup/bloodbath/B = new(H)
 		INVOKE_ASYNC(B, /obj/effect/mine/pickup/bloodbath/.proc/mineEffect, H)
@@ -976,6 +1080,8 @@
 	var/used = FALSE
 
 /obj/item/blood_contract/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(used)
 		return
 	used = TRUE
@@ -1017,6 +1123,8 @@
 	name = "colossus chest"
 
 /obj/structure/closet/crate/necropolis/colossus/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/list/choices = subtypesof(/obj/machinery/anomalous_crystal)
 	var/random_crystal = pick(choices)
 	new random_crystal(src)
@@ -1026,6 +1134,8 @@
 	name = "angelic colossus chest"
 
 /obj/structure/closet/crate/necropolis/colossus/crusher/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/crusher_trophy/blaster_tubes(src)
 
@@ -1057,10 +1167,14 @@
 	var/friendly_fire_check = FALSE //if the blasts we make will consider our faction against the faction of hit targets
 
 /obj/item/hierophant_club/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='hierophant_warning'>The[beacon ? " beacon is not currently":"re is a beacon"] attached.</span>")
 
 /obj/item/hierophant_club/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	say("Xverwpsgexmrk...")
 	user.visible_message("<span class='suicide'>[user] holds [src] into the air! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	new/obj/effect/temp_visual/hierophant/telegraph(get_turf(user))
@@ -1076,6 +1190,8 @@
 	qdel(user)
 
 /obj/item/hierophant_club/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/T = get_turf(target)
 	if(!T || timer > world.time)
@@ -1119,6 +1235,8 @@
 		blast_range -= round(health_percent * 10) //one additional range for each missing 10% of health
 
 /obj/item/hierophant_club/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "hierophant_club[timer <= world.time ? "_ready":""][(beacon && !QDELETED(beacon)) ? "":"_beacon"]"
 	item_state = icon_state
 	if(ismob(loc))
@@ -1127,11 +1245,15 @@
 		M.update_inv_back()
 
 /obj/item/hierophant_club/proc/prepare_icon_update()
+	procstart = null
+	src.procstart = null
 	update_icon()
 	sleep(timer - world.time)
 	update_icon()
 
 /obj/item/hierophant_club/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/toggle_unfriendly_fire)) //toggle friendly fire...
 		friendly_fire_check = !friendly_fire_check
 		to_chat(user, "<span class='warning'>You toggle friendly fire [friendly_fire_check ? "off":"on"]!</span>")
@@ -1237,6 +1359,8 @@
 		user.update_action_buttons_icon()
 
 /obj/item/hierophant_club/proc/teleport_mob(turf/source, mob/M, turf/target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/turf_to_teleport_to = get_step(target, get_dir(source, M)) //get position relative to caster
 	if(!turf_to_teleport_to || is_blocked_turf(turf_to_teleport_to, TRUE))
 		return

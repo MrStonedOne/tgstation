@@ -36,6 +36,8 @@
 	var/strength = null
 
 /obj/structure/particle_accelerator/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	switch(construction_state)
@@ -49,6 +51,8 @@
 	to_chat(user, "<span class='notice'>Alt-click to rotate it clockwise.</span>")
 
 /obj/structure/particle_accelerator/Destroy()
+	procstart = null
+	src.procstart = null
 	construction_state = PA_CONSTRUCTION_UNSECURED
 	if(master)
 		master.connected_parts -= src
@@ -57,6 +61,8 @@
 	return ..()
 
 /obj/structure/particle_accelerator/verb/rotate()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate Clockwise"
 	set category = "Object"
 	set src in oview(1)
@@ -70,6 +76,8 @@
 	return 1
 
 /obj/structure/particle_accelerator/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -80,6 +88,8 @@
 		rotate()
 
 /obj/structure/particle_accelerator/verb/rotateccw()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate Counter Clockwise"
 	set category = "Object"
 	set src in oview(1)
@@ -93,6 +103,8 @@
 	return 1
 
 /obj/structure/particle_accelerator/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/did_something = FALSE
 
 	switch(construction_state)
@@ -147,11 +159,15 @@
 
 
 /obj/structure/particle_accelerator/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal (loc, 5)
 	qdel(src)
 
 /obj/structure/particle_accelerator/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(master && master.active)
 		master.toggle_power()
@@ -159,6 +175,8 @@
 
 
 /obj/structure/particle_accelerator/update_icon()
+	procstart = null
+	src.procstart = null
 	switch(construction_state)
 		if(PA_CONSTRUCTION_UNSECURED,PA_CONSTRUCTION_UNWIRED)
 			icon_state="[reference]"
@@ -171,10 +189,14 @@
 				icon_state="[reference]c"
 
 /obj/structure/particle_accelerator/proc/update_state()
+	procstart = null
+	src.procstart = null
 	if(master)
 		master.update_state()
 
 /obj/structure/particle_accelerator/proc/connect_master(obj/O)
+	procstart = null
+	src.procstart = null
 	if(O.dir == dir)
 		master = O
 		return 1

@@ -16,15 +16,21 @@
 	light_color = LIGHT_COLOR_RED
 
 /obj/machinery/computer/gulag_teleporter_computer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	scan_machinery()
 
 /obj/machinery/computer/gulag_teleporter_computer/Destroy()
+	procstart = null
+	src.procstart = null
 	if(id)
 		id.forceMove(get_turf(src))
 	return ..()
 
 /obj/machinery/computer/gulag_teleporter_computer/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/card/id/prisoner))
 		if(!id)
 			if (!user.transferItemToLoc(W,src))
@@ -44,6 +50,8 @@
 		ui.open()
 
 /obj/machinery/computer/gulag_teleporter_computer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/list/prisoner_list = list()
@@ -80,6 +88,8 @@
 	return data
 
 /obj/machinery/computer/gulag_teleporter_computer/ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!allowed(usr))
@@ -123,10 +133,14 @@
 			addtimer(CALLBACK(src, .proc/teleport, usr), 5)
 
 /obj/machinery/computer/gulag_teleporter_computer/proc/scan_machinery()
+	procstart = null
+	src.procstart = null
 	teleporter = findteleporter()
 	beacon = findbeacon()
 
 /obj/machinery/computer/gulag_teleporter_computer/proc/findteleporter()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/gulag_teleporter/teleporterf = null
 
 	for(var/direction in GLOB.cardinals)
@@ -135,9 +149,13 @@
 			return teleporterf
 
 /obj/machinery/computer/gulag_teleporter_computer/proc/findbeacon()
+	procstart = null
+	src.procstart = null
 	return locate(/obj/structure/gulag_beacon)
 
 /obj/machinery/computer/gulag_teleporter_computer/proc/teleport(mob/user)
+	procstart = null
+	src.procstart = null
 	log_game("[user]([user.ckey] teleported [prisoner]([prisoner.ckey]) to the Labor Camp ([beacon.x], [beacon.y], [beacon.z]) for [id.goal] points.")
 	teleporter.handle_prisoner(id, temporary_record)
 	playsound(loc, 'sound/weapons/emitter.ogg', 50, 1)

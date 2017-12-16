@@ -27,6 +27,8 @@
 	var/icon_state = "popcorn"
 
 /datum/language/proc/display_icon(atom/movable/hearer)
+	procstart = null
+	src.procstart = null
 	var/understands = hearer.has_language(src.type)
 	if(flags & LANGUAGE_HIDE_ICON_IF_UNDERSTOOD && understands)
 		return FALSE
@@ -35,9 +37,13 @@
 	return TRUE
 
 /datum/language/proc/get_icon()
+	procstart = null
+	src.procstart = null
 	return "[icon2html(icon, world, icon_state)]"
 
 /datum/language/proc/get_random_name(gender, name_count=2, syllable_count=4, syllable_divisor=2)
+	procstart = null
+	src.procstart = null
 	if(!syllables || !syllables.len)
 		if(gender==FEMALE)
 			return capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
@@ -57,6 +63,8 @@
 	return "[trim(full_name)]"
 
 /datum/language/proc/check_cache(input)
+	procstart = null
+	src.procstart = null
 	var/lookup = scramble_cache[input]
 	if(lookup)
 		scramble_cache -= input
@@ -64,6 +72,8 @@
 	. = lookup
 
 /datum/language/proc/add_to_cache(input, scrambled_text)
+	procstart = null
+	src.procstart = null
 	// Add it to cache, cutting old entries if the list is too long
 	scramble_cache[input] = scrambled_text
 	if(scramble_cache.len > SCRAMBLE_CACHE_LEN)
@@ -71,6 +81,8 @@
 
 /datum/language/proc/scramble(input)
 
+	procstart = null
+	src.procstart = null
 	if(!syllables || !syllables.len)
 		return stars(input)
 
@@ -109,6 +121,8 @@
 	return scrambled_text
 
 /datum/language/proc/get_spoken_verb(msg_end)
+	procstart = null
+	src.procstart = null
 	switch(msg_end)
 		if("!")
 			return exclaim_verb

@@ -3,6 +3,8 @@
 	randomize = TRUE
 
 /datum/wires/syndicatebomb/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_BOOM, WIRE_UNBOLT,
 		WIRE_ACTIVATE, WIRE_DELAY, WIRE_PROCEED
@@ -10,11 +12,15 @@
 	..()
 
 /datum/wires/syndicatebomb/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/P = holder
 	if(P.open_panel)
 		return TRUE
 
 /datum/wires/syndicatebomb/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/B = holder
 	switch(wire)
 		if(WIRE_BOOM)
@@ -55,6 +61,8 @@
 				B.delayedlittle = TRUE
 
 /datum/wires/syndicatebomb/on_cut(wire, mend)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/B = holder
 	switch(wire)
 		if(WIRE_BOOM)
@@ -85,6 +93,8 @@
 				B.update_icon()
 
 /datum/wires/syndicatebomb/proc/tell_admins(obj/machinery/syndicatebomb/B)
+	procstart = null
+	src.procstart = null
 	if(istype(B, /obj/machinery/syndicatebomb/training))
 		return
 	var/turf/T = get_turf(B)

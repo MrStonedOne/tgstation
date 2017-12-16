@@ -9,13 +9,19 @@
 	allow_persistence_save = FALSE
 
 /datum/game_mode/sandbox/pre_setup()
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in GLOB.player_list)
 		M.CanBuild()
 	return 1
 
 /datum/game_mode/sandbox/post_setup()
+	procstart = null
+	src.procstart = null
 	..()
 	SSshuttle.registerHostileEnvironment(src)
 
 /datum/game_mode/sandbox/generate_report()
+	procstart = null
+	src.procstart = null
 	return "Sensors indicate that crewmembers have been all given psychic powers from which they can manifest various objects.<br><br>This can only end poorly."

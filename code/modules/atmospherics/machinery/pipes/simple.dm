@@ -20,6 +20,8 @@ The regular pipe you see everywhere, including bent ones.
 	pipe_state = "simple"
 
 /obj/machinery/atmospherics/pipe/simple/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	normalize_cardinal_directions()
 	if(dir in GLOB.diagonals)
 		initialize_directions = dir

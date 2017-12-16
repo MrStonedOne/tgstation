@@ -10,6 +10,8 @@
 	light_color = LIGHT_COLOR_PINK
 
 /obj/machinery/computer/aifixer/attackby(obj/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(occupier && istype(I, /obj/item/screwdriver))
 		if(stat & (NOPOWER|BROKEN))
 			to_chat(user, "<span class='warning'>The screws on [name]'s screen won't budge.</span>")
@@ -19,12 +21,16 @@
 		return ..()
 
 /obj/machinery/computer/aifixer/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/computer/aifixer/interact(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 
 	if (src.occupier)
@@ -72,6 +78,8 @@
 	return
 
 /obj/machinery/computer/aifixer/proc/Fix()
+	procstart = null
+	src.procstart = null
 	use_power(1000)
 	occupier.adjustOxyLoss(-1, 0)
 	occupier.adjustFireLoss(-1, 0)
@@ -84,6 +92,8 @@
 	return occupier.health < 100
 
 /obj/machinery/computer/aifixer/process()
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(active)
 			active = Fix()
@@ -91,6 +101,8 @@
 		update_icon()
 
 /obj/machinery/computer/aifixer/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(href_list["fix"])
@@ -100,6 +112,8 @@
 		add_fingerprint(usr)
 
 /obj/machinery/computer/aifixer/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & (NOPOWER|BROKEN))
 		return
@@ -116,6 +130,8 @@
 			add_overlay("ai-fixer-empty")
 
 /obj/machinery/computer/aifixer/transfer_ai(interaction, mob/user, mob/living/silicon/ai/AI, obj/item/device/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	//Downloading AI from card to terminal.

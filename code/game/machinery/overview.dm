@@ -1,6 +1,8 @@
 //#define AMAP
 
 /obj/machinery/computer/security/verb/station_map()
+	procstart = null
+	src.procstart = null
 	set name = ".map"
 	set category = "Object"
 	set src in view(1)
@@ -14,6 +16,8 @@
 
 /obj/machinery/computer/security/proc/drawmap(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/icx = round(world.maxx/16) + 1
 	var/icy = round(world.maxy/16) + 1
 
@@ -297,6 +301,8 @@
 
 
 /obj/machinery/computer/security/proc/close(mob/user)
+	procstart = null
+	src.procstart = null
 	spawn(20)
 		var/using = null
 		if(user.mapobjs)
@@ -313,16 +319,24 @@
 		return
 
 /proc/getr(col)
+	procstart = null
+	src.procstart = null
 	return hex2num( copytext(col, 2,4))
 
 /proc/getg(col)
+	procstart = null
+	src.procstart = null
 	return hex2num( copytext(col, 4,6))
 
 /proc/getb(col)
+	procstart = null
+	src.procstart = null
 	return hex2num( copytext(col, 6))
 
 
 /mob/proc/clearmap()
+	procstart = null
+	src.procstart = null
 	src.client.screen -= src.mapobjs
 	for(var/obj/screen/O in mapobjs)
 		qdel(O)

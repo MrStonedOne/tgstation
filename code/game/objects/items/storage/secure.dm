@@ -28,10 +28,14 @@
 	desc = "This shouldn't exist. If it does, create an issue report."
 
 /obj/item/storage/secure/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, text("The service panel is currently <b>[open ? "unscrewed" : "screwed shut"]</b>."))
 
 /obj/item/storage/secure/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		if (istype(W, /obj/item/screwdriver))
 			if (do_after(user, 20*W.toolspeed, target = user))
@@ -61,6 +65,8 @@
 	return ..()
 
 /obj/item/storage/secure/MouseDrop(over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	if (locked)
 		src.add_fingerprint(usr)
 		to_chat(usr, "<span class='warning'>It's locked!</span>")
@@ -68,6 +74,8 @@
 	..()
 
 /obj/item/storage/secure/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = text("<TT><B>[]</B><BR>\n\nLock Status: []",src, (src.locked ? "LOCKED" : "UNLOCKED"))
 	var/message = "Code"
@@ -82,6 +90,8 @@
 	user << browse(dat, "window=caselock;size=300x280")
 
 /obj/item/storage/secure/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if ((usr.stat || usr.restrained()) || (get_dist(src, usr) > 1))
 		return
@@ -115,12 +125,16 @@
 	return
 
 /obj/item/storage/secure/storage_contents_dump_act(obj/item/storage/src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		to_chat(user, "<span class='warning'>It's locked!</span>")
 		return null
 	return ..()
 
 /obj/item/storage/secure/can_be_inserted(obj/item/W, stop_messages = 0)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return 0
 	return ..()
@@ -147,10 +161,14 @@
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
 
 /obj/item/storage/secure/briefcase/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/paper(src)
 	new /obj/item/pen(src)
 
 /obj/item/storage/secure/briefcase/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if ((src.loc == user) && (src.locked == 1))
 		to_chat(usr, "<span class='warning'>[src] is locked and cannot be opened!</span>")
 		add_fingerprint(user)
@@ -162,6 +180,8 @@
 	force = 15
 
 /obj/item/storage/secure/briefcase/syndie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i = 0, i < storage_slots - 2, i++)
 		new /obj/item/stack/spacecash/c1000(src)
@@ -187,10 +207,14 @@
 	cant_hold = list(/obj/item/storage/secure/briefcase)
 
 /obj/item/storage/secure/safe/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/paper(src)
 	new /obj/item/pen(src)
 
 /obj/item/storage/secure/safe/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_self(user)
 
 /obj/item/storage/secure/safe/HoS

@@ -13,6 +13,8 @@
 
 
 /obj/item/clothing/gloves/worn_overlays(isinhands = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands)
 		if(damaged_clothes)
@@ -21,6 +23,8 @@
 			. += mutable_appearance('icons/effects/blood.dmi', "bloodyhands")
 
 /obj/item/clothing/gloves/update_clothes_damaged_state(damaging = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc
@@ -28,4 +32,6 @@
 
 // Called just before an attack_hand(), in mob/UnarmedAttack()
 /obj/item/clothing/gloves/proc/Touch(atom/A, proximity)
+	procstart = null
+	src.procstart = null
 	return 0 // return 1 to cancel attack_hand()

@@ -16,9 +16,13 @@
 	var/infinite = FALSE
 
 /obj/item/reagent_containers/hypospray/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/item/reagent_containers/hypospray/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume)
 		to_chat(user, "<span class='warning'>[src] is empty!</span>")
 		return
@@ -93,6 +97,8 @@
 	list_reagents = list("epinephrine" = 10)
 
 /obj/item/reagent_containers/hypospray/medipen/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume)
 		to_chat(user, "<span class='warning'>[src] is empty!</span>")
 		return
@@ -104,6 +110,8 @@
 	addtimer(CALLBACK(src, .proc/cyborg_recharge, user), 80)
 
 /obj/item/reagent_containers/hypospray/medipen/proc/cyborg_recharge(mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(!reagents.total_volume && iscyborg(user))
 		var/mob/living/silicon/robot/R = user
 		if(R.cell.use(100))
@@ -111,12 +119,16 @@
 			update_icon()
 
 /obj/item/reagent_containers/hypospray/medipen/update_icon()
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume > 0)
 		icon_state = initial(icon_state)
 	else
 		icon_state = "[initial(icon_state)]0"
 
 /obj/item/reagent_containers/hypospray/medipen/examine()
+	procstart = null
+	src.procstart = null
 	..()
 	if(reagents && reagents.reagent_list.len)
 		to_chat(usr, "<span class='notice'>It is currently loaded.</span>")

@@ -17,6 +17,8 @@
 	power_draw_per_use = 2
 
 /obj/item/integrated_circuit/time/delay/do_work()
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, .proc/activate_pin, 2), delay)
 
 /obj/item/integrated_circuit/time/delay/five_sec
@@ -60,6 +62,8 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/time/delay/custom/do_work()
+	procstart = null
+	src.procstart = null
 	var/delay_input = get_pin_data(IC_INPUT, 1)
 	if(delay_input && isnum(delay_input) )
 		var/new_delay = Clamp(delay_input ,1 ,36000) //An hour.
@@ -81,11 +85,15 @@
 	power_draw_per_use = 4
 
 /obj/item/integrated_circuit/time/ticker/Destroy()
+	procstart = null
+	src.procstart = null
 	if(is_running)
 		STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/item/integrated_circuit/time/ticker/on_data_written()
+	procstart = null
+	src.procstart = null
 	var/do_tick = get_pin_data(IC_INPUT, 1)
 	if(do_tick && !is_running)
 		is_running = TRUE
@@ -95,6 +103,8 @@
 
 
 /obj/item/integrated_circuit/time/ticker/proc/tick()
+	procstart = null
+	src.procstart = null
 	if(is_running)
 		addtimer(CALLBACK(src, .proc/tick), delay)
 		if(world.time > next_fire)
@@ -136,6 +146,8 @@
 	power_draw_per_use = 4
 
 /obj/item/integrated_circuit/time/clock/do_work()
+	procstart = null
+	src.procstart = null
 	var/wtime = world.time
 	set_pin_data(IC_OUTPUT, 1, time2text(wtime, "hh:mm:ss") )
 	set_pin_data(IC_OUTPUT, 2, text2num(time2text(wtime, "hh") ) )

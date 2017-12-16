@@ -21,6 +21,8 @@
 	desc = "It's a storage unit for Russian standard-issue surplus."
 
 /obj/structure/closet/gimmick/russian/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 5)
 		new /obj/item/clothing/head/ushanka(src)
@@ -32,6 +34,8 @@
 	desc = "It's a storage unit for Tacticool gear."
 
 /obj/structure/closet/gimmick/tacticool/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/glasses/eyepatch(src)
 	new /obj/item/clothing/glasses/sunglasses(src)
@@ -59,6 +63,8 @@
 	icon_door = "red"
 
 /obj/structure/closet/thunderdome/tdred/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/suit/armor/tdome/red(src)
@@ -78,6 +84,8 @@
 	icon_door = "green"
 
 /obj/structure/closet/thunderdome/tdgreen/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/suit/armor/tdome/green(src)
@@ -97,6 +105,8 @@
 	icon_state = "syndicate"
 
 /obj/structure/closet/malf/suits/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/tank/jetpack/void(src)
 	new /obj/item/clothing/mask/breath(src)

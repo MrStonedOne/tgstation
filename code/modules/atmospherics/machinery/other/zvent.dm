@@ -11,15 +11,21 @@
 	var/volume_rate = 800
 
 /obj/machinery/zvent/New()
+	procstart = null
+	src.procstart = null
 	..()
 	SSair.atmos_machinery += src
 
 /obj/machinery/zvent/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.atmos_machinery -= src
 	return ..()
 
 /obj/machinery/zvent/process_atmos()
 
+	procstart = null
+	src.procstart = null
 	//all this object does, is make its turf share air with the ones above and below it, if they have a vent too.
 	if(isturf(loc)) //if we're not on a valid turf, forget it
 		for (var/new_z in list(-1,1))  //change this list if a fancier system of z-levels gets implemented

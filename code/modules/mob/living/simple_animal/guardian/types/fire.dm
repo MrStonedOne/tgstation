@@ -13,29 +13,41 @@
 	carp_fluff_string = "<span class='holoparasite'>CARP CARP CARP! You caught one! OH GOD, EVERYTHING'S ON FIRE. Except you and the fish.</span>"
 
 /mob/living/simple_animal/hostile/guardian/fire/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(summoner)
 		summoner.ExtinguishMob()
 		summoner.adjust_fire_stacks(-20)
 
 /mob/living/simple_animal/hostile/guardian/fire/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && ishuman(target) && target != summoner)
 		new /datum/hallucination/delusion(target,TRUE,"custom",200,0, icon_state,icon)
 
 /mob/living/simple_animal/hostile/guardian/fire/Crossed(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	..()
 	collision_ignite(AM)
 
 /mob/living/simple_animal/hostile/guardian/fire/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	collision_ignite(AM)
 
 /mob/living/simple_animal/hostile/guardian/fire/Collide(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	..()
 	collision_ignite(AM)
 
 /mob/living/simple_animal/hostile/guardian/fire/proc/collision_ignite(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		var/mob/living/M = AM
 		if(!hasmatchingsummoner(M) && M != summoner && M.fire_stacks < 7)

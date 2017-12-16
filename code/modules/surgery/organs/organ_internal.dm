@@ -14,6 +14,8 @@
 
 
 /obj/item/organ/proc/Insert(mob/living/carbon/M, special = 0, drop_if_replaced = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(M) || owner == M)
 		return
 
@@ -35,6 +37,8 @@
 
 //Special is for instant replacement like autosurgeons
 /obj/item/organ/proc/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	owner = null
 	if(M)
 		M.internal_organs -= src
@@ -48,18 +52,26 @@
 
 
 /obj/item/organ/proc/on_find(mob/living/finder)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/organ/proc/on_life()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/organ/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(status == ORGAN_ROBOTIC && crit_fail)
 		to_chat(user, "<span class='warning'>[src] seems to be broken!</span>")
 
 
 /obj/item/organ/proc/prepare_eat()
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/food/snacks/organ/S = new
 	S.name = name
 	S.desc = desc
@@ -78,6 +90,8 @@
 
 
 /obj/item/organ/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		// The special flag is important, because otherwise mobs can die
 		// while undergoing transformation into different mobs.
@@ -85,6 +99,8 @@
 	return ..()
 
 /obj/item/organ/attack(mob/living/carbon/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(M == user && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(status == ORGAN_ORGANIC)
@@ -97,15 +113,21 @@
 		..()
 
 /obj/item/organ/item_action_slot_check(slot,mob/user)
+	procstart = null
+	src.procstart = null
 	return //so we don't grant the organ's action to mobs who pick up the organ.
 
 //Looking for brains?
 //Try code/modules/mob/living/carbon/brain/brain_item.dm
 
 /mob/living/proc/regenerate_organs()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/carbon/regenerate_organs()
+	procstart = null
+	src.procstart = null
 	var/breathes = TRUE
 	var/blooded = TRUE
 	if(dna && dna.species)

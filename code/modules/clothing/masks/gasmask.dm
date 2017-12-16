@@ -29,6 +29,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/mask/gas/welding/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	weldingvisortoggle(user)
 
 
@@ -60,6 +62,8 @@
 	dog_fashion = /datum/dog_fashion/head/clown
 
 /obj/item/clothing/mask/gas/clown_hat/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || user.incapacitated())
 		return
 
@@ -101,6 +105,8 @@
 
 
 /obj/item/clothing/mask/gas/mime/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || user.incapacitated())
 		return
 
@@ -176,6 +182,8 @@
 
 obj/item/clothing/mask/gas/tiki_mask/ui_action_click(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/mob/M = usr
 	var/list/options = list()
 	options["Original Tiki"] = "tiki_eyebrow"

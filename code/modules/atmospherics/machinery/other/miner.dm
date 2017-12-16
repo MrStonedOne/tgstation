@@ -30,15 +30,21 @@
 	active_power_usage = 2000
 
 /obj/machinery/atmospherics/miner/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_active(active)				//Force overlay update.
 
 /obj/machinery/atmospherics/miner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(broken)
 		to_chat(user, "Its debug output is printing \"[broken_message]\".")
 
 /obj/machinery/atmospherics/miner/proc/check_operation()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return FALSE
 	var/turf/T = get_turf(src)
@@ -70,16 +76,22 @@
 	return TRUE
 
 /obj/machinery/atmospherics/miner/proc/set_active(setting)
+	procstart = null
+	src.procstart = null
 	if(active != setting)
 		active = setting
 		update_icon()
 
 /obj/machinery/atmospherics/miner/proc/set_broken(setting)
+	procstart = null
+	src.procstart = null
 	if(broken != setting)
 		broken = setting
 		update_icon()
 
 /obj/machinery/atmospherics/miner/proc/update_power()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		active_power_usage = idle_power_usage
 	var/turf/T = get_turf(src)
@@ -98,6 +110,8 @@
 			active_power_usage = (spawn_mol * power_draw_dynamic_mol_coeff) + (P * power_draw_dynamic_kpa_coeff)
 
 /obj/machinery/atmospherics/miner/proc/do_use_power(amount)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(T && istype(T))
 		var/obj/structure/cable/C = T.get_cable_node() //check if we have a node cable on the machine turf, the first found is picked
@@ -110,6 +124,8 @@
 	return FALSE
 
 /obj/machinery/atmospherics/miner/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(broken)
 		add_overlay("broken")
@@ -119,6 +135,8 @@
 		add_overlay(on_overlay)
 
 /obj/machinery/atmospherics/miner/process()
+	procstart = null
+	src.procstart = null
 	update_power()
 	check_operation()
 	if(active && !broken)
@@ -128,6 +146,8 @@
 			mine_gas()
 
 /obj/machinery/atmospherics/miner/proc/mine_gas()
+	procstart = null
+	src.procstart = null
 	var/turf/open/O = get_turf(src)
 	if(!isopenturf(O))
 		return FALSE
@@ -139,6 +159,8 @@
 	SSair.add_to_active(O)
 
 /obj/machinery/atmospherics/miner/attack_ai(mob/living/silicon/user)
+	procstart = null
+	src.procstart = null
 	if(broken)
 		to_chat(user, "[src] seems to be broken. Its debug interface outputs: [broken_message]")
 	..()

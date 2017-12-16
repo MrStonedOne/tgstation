@@ -36,6 +36,8 @@ BONUS
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
 /datum/symptom/cough/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4)
@@ -50,6 +52,8 @@ BONUS
 		symptom_delay_max = 10
 
 /datum/symptom/cough/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

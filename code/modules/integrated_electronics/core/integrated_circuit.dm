@@ -29,12 +29,16 @@ a creative player the means to solve many problems.  Circuits are held inside an
 */
 
 /obj/item/integrated_circuit/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 	external_examine(user)
 	. = ..()
 
 // This should be used when someone is examining while the case is opened.
 /obj/item/integrated_circuit/proc/internal_examine(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "This board has [inputs.len] input pin\s, [outputs.len] output pin\s and [activators.len] activation pin\s.")
 	for(var/k in 1 to inputs.len)
 		var/datum/integrated_io/I = inputs[k]
@@ -53,18 +57,26 @@ a creative player the means to solve many problems.  Circuits are held inside an
 
 // This should be used when someone is examining from an 'outside' perspective, e.g. reading a screen or LED.
 /obj/item/integrated_circuit/proc/external_examine(mob/user)
+	procstart = null
+	src.procstart = null
 	any_examine(user)
 
 /obj/item/integrated_circuit/proc/any_examine(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/integrated_circuit/proc/check_interactivity(mob/user)
+	procstart = null
+	src.procstart = null
 	if(assembly)
 		return assembly.check_interactivity(user)
 	else
 		return user.canUseTopic(src,be_close = TRUE)
 
 /obj/item/integrated_circuit/Initialize()
+	procstart = null
+	src.procstart = null
 	displayed_name = name
 	setup_io(inputs, /datum/integrated_io, inputs_default, IC_INPUT)
 	setup_io(outputs, /datum/integrated_io, outputs_default, IC_OUTPUT)
@@ -76,12 +88,16 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	return
 
 /obj/item/integrated_circuit/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(inputs)
 	QDEL_LIST(outputs)
 	QDEL_LIST(activators)
 	. = ..()
 
 /obj/item/integrated_circuit/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	for(var/k in 1 to inputs.len)
 		var/datum/integrated_io/I = inputs[k]
 		I.scramble()
@@ -94,6 +110,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 
 
 /obj/item/integrated_circuit/verb/rename_component()
+	procstart = null
+	src.procstart = null
 	set name = "Rename Circuit"
 	set category = "Object"
 	set desc = "Rename your circuit, useful to stay organized."
@@ -110,6 +128,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		displayed_name = input
 
 /obj/item/integrated_circuit/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!check_interactivity(user))
 		return
 
@@ -220,6 +240,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	onclose(user, "assembly-[REF(src.assembly)]")
 
 /obj/item/integrated_circuit/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!check_interactivity(usr))
 		return
 	if(..())
@@ -266,25 +288,35 @@ a creative player the means to solve many problems.  Circuits are held inside an
 			interact(usr) // To refresh the UI.
 
 /obj/item/integrated_circuit/proc/push_data()
+	procstart = null
+	src.procstart = null
 	for(var/k in 1 to outputs.len)
 		var/datum/integrated_io/O = outputs[k]
 		O.push_data()
 
 /obj/item/integrated_circuit/proc/pull_data()
+	procstart = null
+	src.procstart = null
 	for(var/k in 1 to inputs.len)
 		var/datum/integrated_io/I = inputs[k]
 		I.push_data()
 
 /obj/item/integrated_circuit/proc/draw_idle_power()
+	procstart = null
+	src.procstart = null
 	if(assembly)
 		return assembly.draw_power(power_draw_idle)
 
 // Override this for special behaviour when there's no power left.
 /obj/item/integrated_circuit/proc/power_fail()
+	procstart = null
+	src.procstart = null
 	return
 
 // Returns true if there's enough power to work().
 /obj/item/integrated_circuit/proc/check_power()
+	procstart = null
+	src.procstart = null
 	if(!assembly)
 		return FALSE // Not in an assembly, therefore no power.
 	if(assembly.draw_power(power_draw_per_use))
@@ -292,6 +324,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	return FALSE // Not enough power.
 
 /obj/item/integrated_circuit/proc/check_then_do_work(var/ignore_power = FALSE)
+	procstart = null
+	src.procstart = null
 	if(world.time < next_use) 	// All intergrated circuits have an internal cooldown, to protect from spam.
 		return
 	if(power_draw_per_use && !ignore_power)
@@ -302,9 +336,13 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	do_work()
 
 /obj/item/integrated_circuit/proc/do_work()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/integrated_circuit/proc/disconnect_all()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/I
 
 	for(var/i in inputs)
@@ -320,11 +358,15 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		I.disconnect_all()
 
 /obj/item/integrated_circuit/proc/ext_moved(oldLoc, dir)
+	procstart = null
+	src.procstart = null
 	return
 
 
 // Returns the object that is supposed to be used in attack messages, location checks, etc.
 /obj/item/integrated_circuit/proc/get_object()
+	procstart = null
+	src.procstart = null
 	// If the component is located in an assembly, let assembly determine it.
 	if(assembly)
 		return assembly.get_object()
@@ -335,6 +377,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 // Returns the location to be used for dropping items.
 // Same as the regular drop_location(), but with proc being run on assembly if there is any.
 /obj/item/integrated_circuit/drop_location()
+	procstart = null
+	src.procstart = null
 	// If the component is located in an assembly, let the assembly figure that one out.
 	if(assembly)
 		return assembly.drop_location()
@@ -344,6 +388,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 
 // Checks if the target object is reachable. Useful for various manipulators and manipulator-like objects.
 /obj/item/integrated_circuit/proc/check_target(atom/target, exclude_contents = FALSE, exclude_components = FALSE, exclude_self = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 

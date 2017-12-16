@@ -33,10 +33,14 @@
 	loot = list(/obj/item/stack/sheet/animalhide/goliath_hide)
 
 /mob/living/simple_animal/hostile/asteroid/goliath/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handle_preattack()
 
 /mob/living/simple_animal/hostile/asteroid/goliath/proc/handle_preattack()
+	procstart = null
+	src.procstart = null
 	if(ranged_cooldown <= world.time + ranged_cooldown_time*0.25 && !pre_attack)
 		pre_attack++
 	if(!pre_attack || stat || AIStatus == AI_IDLE)
@@ -44,15 +48,21 @@
 	icon_state = pre_attack_icon
 
 /mob/living/simple_animal/hostile/asteroid/goliath/revive(full_heal = 0, admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		anchored = TRUE
 		. = 1
 
 /mob/living/simple_animal/hostile/asteroid/goliath/death(gibbed)
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	..(gibbed)
 
 /mob/living/simple_animal/hostile/asteroid/goliath/OpenFire()
+	procstart = null
+	src.procstart = null
 	var/tturf = get_turf(target)
 	if(!isturf(tturf))
 		return
@@ -64,11 +74,15 @@
 		pre_attack = 0
 
 /mob/living/simple_animal/hostile/asteroid/goliath/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	ranged_cooldown -= 10
 	handle_preattack()
 	. = ..()
 
 /mob/living/simple_animal/hostile/asteroid/goliath/Aggro()
+	procstart = null
+	src.procstart = null
 	vision_range = aggro_vision_range
 	handle_preattack()
 	if(icon_state != icon_aggro)
@@ -92,6 +106,8 @@
 	robust_searching = 1
 
 /mob/living/simple_animal/hostile/asteroid/goliath/beast/random/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		new /mob/living/simple_animal/hostile/asteroid/goliath/beast/ancient(loc)
@@ -118,6 +134,8 @@
 	var/tentacle_recheck_cooldown = 100
 
 /mob/living/simple_animal/hostile/asteroid/goliath/beast/ancient/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(loc))
 		if(!LAZYLEN(cached_tentacle_turfs) || loc != last_location || tentacle_recheck_cooldown <= world.time)
@@ -145,6 +163,8 @@
 	var/mob/living/spawner
 
 /obj/effect/temp_visual/goliath_tentacle/Initialize(mapload, mob/living/new_spawner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/effect/temp_visual/goliath_tentacle/T in loc)
 		if(T != src)
@@ -158,6 +178,8 @@
 	timerid = addtimer(CALLBACK(src, .proc/tripanim), 7, TIMER_STOPPABLE)
 
 /obj/effect/temp_visual/goliath_tentacle/original/Initialize(mapload, new_spawner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/directions = GLOB.cardinals.Copy()
 	for(var/i in 1 to 3)
@@ -167,11 +189,15 @@
 			new /obj/effect/temp_visual/goliath_tentacle(T, spawner)
 
 /obj/effect/temp_visual/goliath_tentacle/proc/tripanim()
+	procstart = null
+	src.procstart = null
 	icon_state = "Goliath_tentacle_wiggle"
 	deltimer(timerid)
 	timerid = addtimer(CALLBACK(src, .proc/trip), 3, TIMER_STOPPABLE)
 
 /obj/effect/temp_visual/goliath_tentacle/proc/trip()
+	procstart = null
+	src.procstart = null
 	var/latched = FALSE
 	for(var/mob/living/L in loc)
 		if((!QDELETED(spawner) && spawner.faction_check_mob(L)) || L.stat == DEAD)
@@ -187,6 +213,8 @@
 		timerid = addtimer(CALLBACK(src, .proc/retract), 10, TIMER_STOPPABLE)
 
 /obj/effect/temp_visual/goliath_tentacle/proc/retract()
+	procstart = null
+	src.procstart = null
 	icon_state = "Goliath_tentacle_retract"
 	deltimer(timerid)
 	timerid = QDEL_IN(src, 7)

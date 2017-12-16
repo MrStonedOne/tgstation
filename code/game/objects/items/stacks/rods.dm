@@ -23,12 +23,16 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	novariants = TRUE
 
 /obj/item/stack/rods/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	recipes = GLOB.rod_recipes
 	update_icon()
 
 /obj/item/stack/rods/update_icon()
+	procstart = null
+	src.procstart = null
 	var/amount = get_amount()
 	if((amount <= 5) && (amount > 0))
 		icon_state = "rods-[amount]"
@@ -36,6 +40,8 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 		icon_state = "rods"
 
 /obj/item/stack/rods/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(W, /obj/item/weldingtool))
 		var/obj/item/weldingtool/WT = W
 
@@ -73,6 +79,8 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	cost = 250
 
 /obj/item/stack/rods/cyborg/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/stack/rods/ten

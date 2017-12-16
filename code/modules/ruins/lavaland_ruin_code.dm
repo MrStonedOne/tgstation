@@ -25,6 +25,8 @@
 	max_blueprints = 1
 
 /obj/item/disk/design_disk/golem_shell/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/design/golem_shell/G = new
 	blueprints[1] = G
@@ -48,6 +50,8 @@
 	w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/golem_shell/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	var/static/list/golem_shell_species_types = list(
 		/obj/item/stack/sheet/metal	                = /datum/species/golem,
@@ -117,6 +121,8 @@
 	implants = list(/obj/item/implant/weapons_auth)
 
 /datum/outfit/lavaland_syndicate/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.faction |= "syndicate"
 
 /obj/effect/mob_spawn/human/lavaland_syndicate/comms

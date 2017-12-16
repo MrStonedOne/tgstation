@@ -12,11 +12,15 @@
 	level_max = 0
 
 /obj/effect/proc_holder/spell/spacetime_dist/can_cast(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(ready)
 		return ..()
 	return FALSE
 
 /obj/effect/proc_holder/spell/spacetime_dist/choose_targets(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	var/list/turfs = spiral_range_turfs(range, user)
 	if(!turfs.len)
 		revert_cast()
@@ -35,9 +39,13 @@
 	perform(turf_steps,user=user)
 
 /obj/effect/proc_holder/spell/spacetime_dist/after_cast(list/targets)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, .proc/clean_turfs), duration)
 
 /obj/effect/proc_holder/spell/spacetime_dist/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	effects = list()
 	for(var/V in targets)
 		var/turf/T0 = V
@@ -53,6 +61,8 @@
 		effects += STD1
 
 /obj/effect/proc_holder/spell/spacetime_dist/proc/clean_turfs()
+	procstart = null
+	src.procstart = null
 	for(var/effect in effects)
 		qdel(effect)
 	effects.Cut()
@@ -74,23 +84,33 @@
 	var/walks_left = 50 //prevents the game from hanging in extreme cases (such as minigun fire)
 
 /obj/effect/cross_action/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/cross_action/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/cross_action/spacetime_dist/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sound = "sound/guitar/[safepick(GLOB.guitar_notes)]"
 	dir = pick(GLOB.cardinals)
 
 /obj/effect/cross_action/spacetime_dist/proc/walk_link(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(linked_dist && walks_left > 0)
 		flick("purplesparkles", src)
 		linked_dist.get_walker(AM)
 		walks_left--
 
 /obj/effect/cross_action/spacetime_dist/proc/get_walker(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	busy = TRUE
 	flick("purplesparkles", src)
 	AM.forceMove(get_turf(src))
@@ -98,22 +118,32 @@
 	busy = FALSE
 
 /obj/effect/cross_action/spacetime_dist/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!busy)
 		walk_link(AM)
 
 /obj/effect/cross_action/spacetime_dist/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(user.temporarilyRemoveItemFromInventory(W))
 		walk_link(W)
 	else
 		walk_link(user)
 
 /obj/effect/cross_action/spacetime_dist/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	walk_link(user)
 
 /obj/effect/cross_action/spacetime_dist/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	walk_link(user)
 
 /obj/effect/cross_action/spacetime_dist/Destroy()
+	procstart = null
+	src.procstart = null
 	busy = TRUE
 	linked_dist = null
 	return ..()

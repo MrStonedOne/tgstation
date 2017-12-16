@@ -21,6 +21,8 @@
 		. += SOFTCRIT_ADD_SLOWDOWN
 
 /mob/living/carbon/slip(knockdown_amount, obj/O, lube)
+	procstart = null
+	src.procstart = null
 	if(movement_type & FLYING)
 		return 0
 	if(!(lube&SLIDE_ICE))
@@ -29,6 +31,8 @@
 
 
 /mob/living/carbon/Process_Spacemove(movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	if(!isturf(loc))
@@ -48,6 +52,8 @@
 		return 1
 
 /mob/living/carbon/Move(NewLoc, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && mob_has_gravity()) //floating is easy
 		if(dna && dna.species && (NOHUNGER in dna.species.species_traits))
@@ -58,11 +64,15 @@
 				nutrition -= HUNGER_FACTOR/10
 
 /mob/living/carbon/Moved(oldLoc, Dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/O in internal_organs)
 		O.on_mob_move(dir, src, oldLoc)
 
 /mob/living/carbon/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/O in internal_organs)
 		O.on_mob_turn(newdir, src)

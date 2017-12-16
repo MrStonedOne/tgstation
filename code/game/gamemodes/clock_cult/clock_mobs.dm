@@ -23,13 +23,19 @@
 	var/empower_string = "<span class='heavy_brass'>You have nothing to empower, yell at the coders!</span>" //Shown to the mob when the herald beacon activates
 
 /mob/living/simple_animal/hostile/clockwork/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_values()
 
 /mob/living/simple_animal/hostile/clockwork/get_spans()
+	procstart = null
+	src.procstart = null
 	return ..() | SPAN_ROBOT
 
 /mob/living/simple_animal/hostile/clockwork/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	add_servant_of_ratvar(src, TRUE)
 	to_chat(src, playstyle_string)
@@ -37,12 +43,18 @@
 		to_chat(src, empower_string)
 
 /mob/living/simple_animal/hostile/clockwork/ratvar_act()
+	procstart = null
+	src.procstart = null
 	fully_heal(TRUE)
 
 /mob/living/simple_animal/hostile/clockwork/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
+	procstart = null
+	src.procstart = null
 	return 0 //ouch, my metal-unlikely-to-be-damaged-by-electricity-body
 
 /mob/living/simple_animal/hostile/clockwork/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/t_He = p_they(TRUE)
 	var/t_s = p_s()
 	var/msg = "<span class='brass'>*---------*\nThis is [icon2html(src, user)] \a <b>[src]</b>!\n"

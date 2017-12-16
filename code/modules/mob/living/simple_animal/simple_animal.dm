@@ -90,6 +90,8 @@
 	var/tame = 0
 
 /mob/living/simple_animal/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.simple_animals[AIStatus] += src
 	handcrafting = new()
@@ -101,14 +103,20 @@
 		stack_trace("Simple animal being instantiated in nullspace")
 
 /mob/living/simple_animal/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.simple_animals[AIStatus] -= src
 	return ..()
 
 /mob/living/simple_animal/updatehealth()
+	procstart = null
+	src.procstart = null
 	..()
 	health = Clamp(health, 0, maxHealth)
 
 /mob/living/simple_animal/update_stat()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
@@ -120,15 +128,21 @@
 
 
 /mob/living/simple_animal/handle_status_effects()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stuttering)
 		stuttering = 0
 
 /mob/living/simple_animal/proc/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	return
 
 /mob/living/simple_animal/proc/handle_automated_movement()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!stop_automated_movement && wander)
 		if((isturf(src.loc) || allow_movement_on_non_turfs) && !resting && !buckled && canmove)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
@@ -142,6 +156,8 @@
 			return 1
 
 /mob/living/simple_animal/proc/handle_automated_speech(var/override)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(speak_chance)
 		if(prob(speak_chance) || override)
@@ -178,6 +194,8 @@
 
 
 /mob/living/simple_animal/proc/environment_is_safe(datum/gas_mixture/environment, check_temp = FALSE)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 
 	if(pulledby && pulledby.grab_state >= GRAB_KILL && atmos_requirements["min_oxy"])
@@ -223,6 +241,8 @@
 
 
 /mob/living/simple_animal/handle_environment(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	var/atom/A = src.loc
 	if(isturf(A))
 		var/areatemp = get_temperature(environment)
@@ -237,10 +257,14 @@
 	handle_temperature_damage()
 
 /mob/living/simple_animal/proc/handle_temperature_damage()
+	procstart = null
+	src.procstart = null
 	if((bodytemperature < minbodytemp) || (bodytemperature > maxbodytemp))
 		adjustHealth(unsuitable_atmos_damage)
 
 /mob/living/simple_animal/gib()
+	procstart = null
+	src.procstart = null
 	if(butcher_results)
 		for(var/path in butcher_results)
 			for(var/i = 1; i <= butcher_results[path];i++)
@@ -248,15 +272,21 @@
 	..()
 
 /mob/living/simple_animal/gib_animation()
+	procstart = null
+	src.procstart = null
 	if(icon_gib)
 		new /obj/effect/temp_visual/gib_animation/animal(loc, icon_gib)
 
 /mob/living/simple_animal/say_mod(input, message_mode)
+	procstart = null
+	src.procstart = null
 	if(speak_emote && speak_emote.len)
 		verb_say = pick(speak_emote)
 	. = ..()
 
 /mob/living/simple_animal/emote(act, m_type=1, message = null)
+	procstart = null
+	src.procstart = null
 	if(stat)
 		return
 	if(act == "scream")
@@ -267,6 +297,8 @@
 
 
 /mob/living/simple_animal/movement_delay()
+	procstart = null
+	src.procstart = null
 	var/static/config_animal_delay
 	if(isnull(config_animal_delay))
 		config_animal_delay = CONFIG_GET(number/animal_delay)
@@ -274,12 +306,16 @@
 	return ..() + speed + config_animal_delay
 
 /mob/living/simple_animal/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		stat(null, "Health: [round((health / maxHealth) * 100)]%")
 		return 1
 
 /mob/living/simple_animal/death(gibbed)
+	procstart = null
+	src.procstart = null
 	movement_type &= ~FLYING
 	if(nest)
 		nest.spawned_mobs -= src
@@ -308,6 +344,8 @@
 		..()
 
 /mob/living/simple_animal/proc/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	if(see_invisible < the_target.invisibility)
 		return 0
 	if (isliving(the_target))
@@ -321,15 +359,23 @@
 	return 1
 
 /mob/living/simple_animal/handle_fire()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/IgniteMob()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/simple_animal/ExtinguishMob()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/revive(full_heal = 0, admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	if(..()) //successfully ressuscitated from death
 		icon = initial(icon)
 		icon_state = icon_living
@@ -366,6 +412,8 @@
 			return new childspawn(target)
 
 /mob/living/simple_animal/canUseTopic(atom/movable/M, be_close = 0, no_dextery = 0)
+	procstart = null
+	src.procstart = null
 	if(incapacitated())
 		return 0
 	if(no_dextery || dextrous)
@@ -377,18 +425,24 @@
 	return 1
 
 /mob/living/simple_animal/stripPanelUnequip(obj/item/what, mob/who, where)
+	procstart = null
+	src.procstart = null
 	if(!canUseTopic(who, TRUE))
 		return
 	else
 		..()
 
 /mob/living/simple_animal/stripPanelEquip(obj/item/what, mob/who, where)
+	procstart = null
+	src.procstart = null
 	if(!canUseTopic(who, TRUE))
 		return
 	else
 		..()
 
 /mob/living/simple_animal/update_canmove(value_otherwise = TRUE)
+	procstart = null
+	src.procstart = null
 	if(IsUnconscious() || IsStun() || IsKnockdown() || stat || resting)
 		drop_all_held_items()
 		canmove = FALSE
@@ -401,6 +455,8 @@
 	return canmove
 
 /mob/living/simple_animal/update_transform()
+	procstart = null
+	src.procstart = null
 	var/matrix/ntransform = matrix(transform) //aka transform.Copy()
 	var/changed = 0
 
@@ -415,6 +471,8 @@
 
 
 /mob/living/simple_animal/Destroy()
+	procstart = null
+	src.procstart = null
 	if(nest)
 		nest.spawned_mobs -= src
 	nest = null
@@ -426,6 +484,8 @@
 	toggle_ai(AI_OFF) // To prevent any weirdness.
 
 /mob/living/simple_animal/update_sight()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	if(stat == DEAD)
@@ -445,19 +505,29 @@
 	sync_lighting_plane_alpha()
 
 /mob/living/simple_animal/get_idcard()
+	procstart = null
+	src.procstart = null
 	return access_card
 
 /mob/living/simple_animal/OpenCraftingMenu()
+	procstart = null
+	src.procstart = null
 	if(dextrous)
 		handcrafting.ui_interact(src)
 
 /mob/living/simple_animal/can_hold_items()
+	procstart = null
+	src.procstart = null
 	return dextrous
 
 /mob/living/simple_animal/IsAdvancedToolUser()
+	procstart = null
+	src.procstart = null
 	return dextrous
 
 /mob/living/simple_animal/activate_hand(selhand)
+	procstart = null
+	src.procstart = null
 	if(!dextrous)
 		return ..()
 	if(!selhand)
@@ -474,6 +544,8 @@
 		mode()
 
 /mob/living/simple_animal/swap_hand(hand_index)
+	procstart = null
+	src.procstart = null
 	if(!dextrous)
 		return ..()
 	if(!hand_index)
@@ -497,10 +569,14 @@
 			H.update_icon()
 
 /mob/living/simple_animal/put_in_hands(obj/item/I)
+	procstart = null
+	src.procstart = null
 	..()
 	update_inv_hands()
 
 /mob/living/simple_animal/update_inv_hands()
+	procstart = null
+	src.procstart = null
 	if(client && hud_used && hud_used.hud_version != HUD_STYLE_NOHUD)
 		var/obj/item/l_hand = get_item_for_held_index(1)
 		var/obj/item/r_hand = get_item_for_held_index(2)
@@ -518,6 +594,8 @@
 //ANIMAL RIDING
 
 /mob/living/simple_animal/user_buckle_mob(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(riding_datum, /datum/component/riding)
 	if(riding_datum)
 		if(user.incapacitated())
@@ -529,15 +607,21 @@
 		return ..()
 
 /mob/living/simple_animal/relaymove(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(riding_datum, /datum/component/riding)
 	if(tame && riding_datum)
 		riding_datum.handle_ride(user, direction)
 
 /mob/living/simple_animal/buckle_mob(mob/living/buckled_mob, force = 0, check_loc = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	LoadComponent(/datum/component/riding)
 
 /mob/living/simple_animal/proc/toggle_ai(togglestatus)
+	procstart = null
+	src.procstart = null
 	if (AIStatus != togglestatus)
 		if (togglestatus > 0 && togglestatus < 4)
 			GLOB.simple_animals[AIStatus] -= src
@@ -547,10 +631,14 @@
 			stack_trace("Something attempted to set simple animals AI to an invalid state: [togglestatus]")
 
 /mob/living/simple_animal/proc/consider_wakeup()
+	procstart = null
+	src.procstart = null
 	if (pulledby || shouldwakeup)
 		toggle_ai(AI_ON)
 
 /mob/living/simple_animal/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ckey && !stat)//Not unconscious
 		if(AIStatus == AI_IDLE)

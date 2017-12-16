@@ -12,11 +12,15 @@
 	var/starting_organ
 
 /obj/item/device/autosurgeon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(starting_organ)
 		insert_organ(new starting_organ(src))
 
 /obj/item/device/autosurgeon/proc/insert_organ(var/obj/item/I)
+	procstart = null
+	src.procstart = null
 	storedorgan = I
 	I.forceMove(src)
 	name = "[initial(name)] ([storedorgan.name])"
@@ -39,9 +43,13 @@
 		desc = "[initial(desc)] Looks like it's been used up."
 
 /obj/item/device/autosurgeon/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return //stops TK fuckery
 
 /obj/item/device/autosurgeon/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, organ_type))
 		if(storedorgan)
 			to_chat(user, "<span class='notice'>[src] already has an implant stored.</span>")

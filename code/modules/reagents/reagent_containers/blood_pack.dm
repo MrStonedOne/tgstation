@@ -8,12 +8,16 @@
 	var/labelled = 0
 
 /obj/item/reagent_containers/blood/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(blood_type != null)
 		reagents.add_reagent("blood", 200, list("donor"=null,"viruses"=null,"blood_DNA"=null,"blood_type"=blood_type,"resistances"=null,"trace_chem"=null))
 		update_icon()
 
 /obj/item/reagent_containers/blood/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		var/datum/reagent/blood/B = reagents.has_reagent("blood")
 		if(B && B.data && B.data["blood_type"])
@@ -24,6 +28,8 @@
 	update_icon()
 
 /obj/item/reagent_containers/blood/proc/update_pack_name()
+	procstart = null
+	src.procstart = null
 	if(!labelled)
 		if(blood_type)
 			name = "blood pack - [blood_type]"
@@ -31,6 +37,8 @@
 			name = "blood pack"
 
 /obj/item/reagent_containers/blood/update_icon()
+	procstart = null
+	src.procstart = null
 	var/percent = round((reagents.total_volume / volume) * 100)
 	switch(percent)
 		if(0 to 9)
@@ -44,6 +52,8 @@
 	icon_state = "random_bloodpack"
 
 /obj/item/reagent_containers/blood/random/Initialize()
+	procstart = null
+	src.procstart = null
 	blood_type = pick("A+", "A-", "B+", "B-", "O+", "O-", "L")
 	. = ..()
 
@@ -76,6 +86,8 @@
 	icon_state = "empty"
 
 /obj/item/reagent_containers/blood/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(I, /obj/item/pen) || istype(I, /obj/item/toy/crayon))
 
 		var/t = stripped_input(user, "What would you like to label the blood pack?", name, null, 53)

@@ -38,11 +38,15 @@
 	var/dynamic_fhair_suffix = ""//mask > head for facial hair
 
 /obj/item/clothing/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(ispath(pockets))
 		pockets = new pockets(src)
 
 /obj/item/clothing/MouseDrop(atom/over_object)
+	procstart = null
+	src.procstart = null
 	var/mob/M = usr
 
 	if(pockets && over_object == M)
@@ -57,11 +61,15 @@
 			add_fingerprint(usr)
 
 /obj/item/clothing/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	if(pockets)
 		pockets.close_all()
 	return ..()
 
 /obj/item/clothing/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(pockets && pockets.priority && ismob(loc))
 		//If we already have the pockets open, close them.
 		if (user.s_active == pockets)
@@ -76,6 +84,8 @@
 		return ..()
 
 /obj/item/clothing/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(damaged_clothes && istype(W, /obj/item/stack/sheet/cloth))
 		var/obj/item/stack/sheet/cloth/C = W
 		C.use(1)
@@ -90,6 +100,8 @@
 	return ..()
 
 /obj/item/clothing/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(pockets && pockets.quickdraw && pockets.contents.len && !user.incapacitated())
 		var/obj/item/I = pockets.contents[1]
 		if(!I)
@@ -106,6 +118,8 @@
 
 
 /obj/item/clothing/Destroy()
+	procstart = null
+	src.procstart = null
 	if(pockets)
 		qdel(pockets)
 		pockets = null
@@ -114,6 +128,8 @@
 
 
 /obj/item/clothing/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istype(user))
 		return
@@ -126,6 +142,8 @@
 
 
 /obj/item/clothing/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(slot_flags & slotdefine2slotbit(slot)) //Was equipped to a valid slot for this item?
@@ -136,6 +154,8 @@
 
 
 /obj/item/clothing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(damaged_clothes)
 		to_chat(user,  "<span class='warning'>It looks damaged!</span>")
@@ -155,6 +175,8 @@
 		to_chat(user, how_cool_are_your_threads.Join())
 
 /obj/item/clothing/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!damaged_clothes)
 		update_clothes_damaged_state(TRUE)
 	if(ismob(loc)) //It's not important enough to warrant a message if nobody's wearing it
@@ -162,6 +184,8 @@
 		M.visible_message("<span class='warning'>[M]'s [name] starts to fall apart!", "<span class='warning'>Your [name] starts to fall apart!</span>")
 
 /obj/item/clothing/proc/update_clothes_damaged_state(damaging = TRUE)
+	procstart = null
+	src.procstart = null
 	var/index = "[REF(initial(icon))]-[initial(icon_state)]"
 	var/static/list/damaged_clothes_icons = list()
 	if(damaging)
@@ -190,6 +214,8 @@ BLIND     // can't see anything
 */
 
 /proc/generate_female_clothing(index,t_color,icon,type)
+	procstart = null
+	src.procstart = null
 	var/icon/female_clothing_icon	= icon("icon"=icon, "icon_state"=t_color)
 	var/icon/female_s				= icon("icon"='icons/mob/uniform.dmi', "icon_state"="[(type == FEMALE_UNIFORM_FULL) ? "female_full" : "female_top"]")
 	female_clothing_icon.Blend(female_s, ICON_MULTIPLY)
@@ -197,6 +223,8 @@ BLIND     // can't see anything
 	GLOB.female_clothing_icons[index] = female_clothing_icon
 
 /obj/item/clothing/under/verb/toggle()
+	procstart = null
+	src.procstart = null
 	set name = "Adjust Suit Sensors"
 	set category = "Object"
 	set src in usr
@@ -241,6 +269,8 @@ BLIND     // can't see anything
 	..()
 
 /obj/item/clothing/under/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -254,12 +284,16 @@ BLIND     // can't see anything
 			rolldown()
 
 /obj/item/clothing/under/verb/jumpsuit_adjust()
+	procstart = null
+	src.procstart = null
 	set name = "Adjust Jumpsuit Style"
 	set category = null
 	set src in usr
 	rolldown()
 
 /obj/item/clothing/under/proc/rolldown()
+	procstart = null
+	src.procstart = null
 	if(!can_use(usr))
 		return
 	if(!can_adjust)
@@ -275,6 +309,8 @@ BLIND     // can't see anything
 		H.update_body()
 
 /obj/item/clothing/under/proc/toggle_jumpsuit_adjust()
+	procstart = null
+	src.procstart = null
 	if(adjusted == DIGITIGRADE_STYLE)
 		return
 	adjusted = !adjusted
@@ -318,6 +354,8 @@ BLIND     // can't see anything
 
 
 /obj/item/clothing/proc/can_use(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user && ismob(user))
 		if(!user.incapacitated())
 			return 1
@@ -325,6 +363,8 @@ BLIND     // can't see anything
 
 
 /obj/item/clothing/obj_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "bomb" || damage_flag == "melee")
 		var/turf/T = get_turf(src)
 		spawn(1) //so the shred survives potential turf change from the explosion.

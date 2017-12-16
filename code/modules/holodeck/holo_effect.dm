@@ -10,17 +10,25 @@
 	invisibility = INVISIBILITY_ABSTRACT
 
 /obj/effect/holodeck_effect/proc/activate(var/obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/holodeck_effect/proc/deactivate(var/obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return
 
 // Called by the holodeck computer as long as the program is running
 /obj/effect/holodeck_effect/proc/tick(var/obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/holodeck_effect/proc/safety(var/active)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -31,12 +39,16 @@
 	var/obj/item/toy/cards/deck/D
 
 /obj/effect/holodeck_effect/cards/activate(var/obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	D = new(loc)
 	safety(!HC.emagged)
 	D.holo = HC
 	return D
 
 /obj/effect/holodeck_effect/cards/safety(active)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		return
 	if(active)
@@ -56,6 +68,8 @@
 
 
 /obj/effect/holodeck_effect/sparks/activate(var/obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(T)
 		var/datum/effect_system/spark_spread/s = new
@@ -71,6 +85,8 @@
 	var/mob/mob = null
 
 /obj/effect/holodeck_effect/mobspawner/activate(var/obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	if(islist(mobtype))
 		mobtype = pick(mobtype)
 	mob = new mobtype(loc)
@@ -81,6 +97,8 @@
 	return mob
 
 /obj/effect/holodeck_effect/mobspawner/deactivate(var/obj/machinery/computer/holodeck/HC)
+	procstart = null
+	src.procstart = null
 	if(mob)
 		HC.derez(mob)
 	qdel(src)

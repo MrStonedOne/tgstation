@@ -1,15 +1,21 @@
 #define ION_FILE "ion_laws.json"
 
 /proc/lizard_name(gender)
+	procstart = null
+	src.procstart = null
 	if(gender == MALE)
 		return "[pick(GLOB.lizard_names_male)]-[pick(GLOB.lizard_names_male)]"
 	else
 		return "[pick(GLOB.lizard_names_female)]-[pick(GLOB.lizard_names_female)]"
 
 /proc/plasmaman_name()
+	procstart = null
+	src.procstart = null
 	return "[pick(GLOB.plasmaman_names)] \Roman[rand(1,99)]"
 
 /proc/church_name()
+	procstart = null
+	src.procstart = null
 	var/static/church_name
 	if (church_name)
 		return church_name
@@ -28,6 +34,8 @@
 
 GLOBAL_VAR(command_name)
 /proc/command_name()
+	procstart = null
+	src.procstart = null
 	if (GLOB.command_name)
 		return GLOB.command_name
 
@@ -38,11 +46,15 @@ GLOBAL_VAR(command_name)
 
 /proc/change_command_name(name)
 
+	procstart = null
+	src.procstart = null
 	GLOB.command_name = name
 
 	return name
 
 /proc/religion_name()
+	procstart = null
+	src.procstart = null
 	var/static/religion_name
 	if (religion_name)
 		return religion_name
@@ -55,6 +67,8 @@ GLOBAL_VAR(command_name)
 	return capitalize(name)
 
 /proc/station_name()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.station_name)
 		var/newname
 		var/config_station_name = CONFIG_GET(string/stationname)
@@ -68,6 +82,8 @@ GLOBAL_VAR(command_name)
 	return GLOB.station_name
 
 /proc/set_station_name(newname)
+	procstart = null
+	src.procstart = null
 	GLOB.station_name = newname
 
 	var/config_server_name = CONFIG_GET(string/servername)
@@ -78,6 +94,8 @@ GLOBAL_VAR(command_name)
 
 
 /proc/new_station_name()
+	procstart = null
+	src.procstart = null
 	var/random = rand(1,5)
 	var/name = ""
 	var/new_station_name = ""
@@ -121,6 +139,8 @@ GLOBAL_VAR(command_name)
 	return new_station_name
 
 /proc/syndicate_name()
+	procstart = null
+	src.procstart = null
 	var/name = ""
 
 	// Prefix

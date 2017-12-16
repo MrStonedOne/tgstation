@@ -3,6 +3,8 @@
 
 
 /datum/hud/devil/New(mob/owner, ui_style = 'icons/mob/screen_midnight.dmi')
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/screen/using
 
@@ -47,6 +49,8 @@
 
 
 /datum/hud/devil/persistent_inventory_update()
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	var/mob/living/carbon/true_devil/D = mymob
@@ -61,5 +65,7 @@
 			D.client.screen -= I
 
 /mob/living/carbon/true_devil/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/devil(src, ui_style2icon(client.prefs.UI_style))

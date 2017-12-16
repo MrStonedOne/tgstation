@@ -17,14 +17,20 @@
 	var/flame_expiry_timer
 
 /obj/structure/fireplace/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/fireplace/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/structure/fireplace/proc/try_light(obj/item/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(lit)
 		to_chat(user, "<span class='warning'>It's already lit!</span>")
 		return FALSE
@@ -38,6 +44,8 @@
 		return TRUE
 
 /obj/structure/fireplace/attackby(obj/item/T, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(T, /obj/item/stack/sheet/mineral/wood))
 		var/obj/item/stack/sheet/mineral/wood/wood = T
 		var/space_remaining = MAXIMUM_BURN_TIMER - burn_time_remaining()
@@ -70,6 +78,8 @@
 		. = ..()
 
 /obj/structure/fireplace/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(lit)
 		switch(burn_time_remaining())
@@ -86,6 +96,8 @@
 		add_overlay("fireplace_glow")
 
 /obj/structure/fireplace/proc/adjust_light()
+	procstart = null
+	src.procstart = null
 	if(!lit)
 		set_light(0)
 		return
@@ -103,6 +115,8 @@
 			set_light(6)
 
 /obj/structure/fireplace/process()
+	procstart = null
+	src.procstart = null
 	if(!lit)
 		return
 	if(world.time > flame_expiry_timer)
@@ -116,6 +130,8 @@
 	adjust_light()
 
 /obj/structure/fireplace/extinguish()
+	procstart = null
+	src.procstart = null
 	if(lit)
 		var/fuel = burn_time_remaining()
 		flame_expiry_timer = 0
@@ -124,6 +140,8 @@
 	. = ..()
 
 /obj/structure/fireplace/proc/adjust_fuel_timer(amount)
+	procstart = null
+	src.procstart = null
 	if(lit)
 		flame_expiry_timer += amount
 		if(burn_time_remaining() < MAXIMUM_BURN_TIMER)
@@ -132,12 +150,16 @@
 		fuel_added = Clamp(fuel_added + amount, 0, MAXIMUM_BURN_TIMER)
 
 /obj/structure/fireplace/proc/burn_time_remaining()
+	procstart = null
+	src.procstart = null
 	if(lit)
 		return max(0, flame_expiry_timer - world.time)
 	else
 		return max(0, fuel_added)
 
 /obj/structure/fireplace/proc/ignite()
+	procstart = null
+	src.procstart = null
 	lit = TRUE
 	desc = "A large stone brick fireplace, warm and cozy."
 	flame_expiry_timer = world.time + fuel_added
@@ -146,6 +168,8 @@
 	adjust_light()
 
 /obj/structure/fireplace/proc/put_out()
+	procstart = null
+	src.procstart = null
 	lit = FALSE
 	update_icon()
 	adjust_light()

@@ -18,17 +18,23 @@
 	var/creation_type = /obj/singularity
 
 /obj/machinery/the_singularitygen/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_GRAB && user_buckle_mob(user.pulling, user, check_loc = 0))
 		return
 	..()
 
 /obj/machinery/the_singularitygen/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench))
 		default_unfasten_wrench(user, W, 0)
 	else
 		return ..()
 
 /obj/machinery/the_singularitygen/process()
+	procstart = null
+	src.procstart = null
 	if(energy > 0)
 		if(energy >= 200)
 			var/turf/T = get_turf(src)

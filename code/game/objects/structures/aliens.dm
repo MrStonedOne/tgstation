@@ -12,6 +12,8 @@
 	max_integrity = 100
 
 /obj/structure/alien/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee")
 		switch(damage_type)
 			if(BRUTE)
@@ -21,6 +23,8 @@
 	. = ..()
 
 /obj/structure/alien/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -42,6 +46,8 @@
 	icon_state = "gelmound"
 
 /obj/structure/alien/gelpod/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new/obj/effect/mob_spawn/human/corpse/damaged(get_turf(src))
 	qdel(src)
@@ -65,10 +71,14 @@
 
 
 /obj/structure/alien/resin/New(location)
+	procstart = null
+	src.procstart = null
 	..()
 	air_update_turf(1)
 
 /obj/structure/alien/resin/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
@@ -82,6 +92,8 @@
 	canSmoothWith = list(/obj/structure/alien/resin/wall, /obj/structure/alien/resin/membrane)
 
 /obj/structure/alien/resin/wall/BlockSuperconductivity()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/structure/alien/resin/membrane
@@ -95,10 +107,14 @@
 	canSmoothWith = list(/obj/structure/alien/resin/wall, /obj/structure/alien/resin/membrane)
 
 /obj/structure/alien/resin/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 
 /obj/structure/alien/resin/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	return !density
 
 
@@ -125,6 +141,8 @@
 	var/static/list/blacklisted_turfs
 
 /obj/structure/alien/weeds/Initialize()
+	procstart = null
+	src.procstart = null
 	pixel_x = -4
 	pixel_y = -4 //so the sprites line up right in the map editor
 	. = ..()
@@ -147,6 +165,8 @@
 				icon = 'icons/obj/smooth_structures/alien/weeds3.dmi'
 
 /obj/structure/alien/weeds/proc/expand()
+	procstart = null
+	src.procstart = null
 	var/turf/U = get_turf(src)
 	if(is_type_in_typecache(U, blacklisted_turfs))
 		qdel(src)
@@ -163,6 +183,8 @@
 	return TRUE
 
 /obj/structure/alien/weeds/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		take_damage(5, BURN, 0, 0)
 
@@ -177,6 +199,8 @@
 	var/node_range = NODERANGE
 
 /obj/structure/alien/weeds/node/Initialize()
+	procstart = null
+	src.procstart = null
 	icon = 'icons/obj/smooth_structures/alien/weednode.dmi'
 	. = ..()
 	set_light(lon_range)
@@ -186,10 +210,14 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/alien/weeds/node/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/alien/weeds/node/process()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/alien/weeds/W in range(node_range, src))
 		if(W.last_expand <= world.time)
 			if(W.expand())
@@ -223,6 +251,8 @@
 	var/obj/item/clothing/mask/facehugger/child
 
 /obj/structure/alien/egg/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 	if(status == GROWING || status == GROWN)
@@ -234,6 +264,8 @@
 		obj_integrity = integrity_failure
 
 /obj/structure/alien/egg/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(status)
 		if(GROWING)
@@ -244,12 +276,18 @@
 			icon_state = "[base_icon]_hatched"
 
 /obj/structure/alien/egg/attack_paw(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = attack_hand(user)
 
 /obj/structure/alien/egg/attack_alien(mob/living/carbon/alien/user)
+	procstart = null
+	src.procstart = null
 	. = attack_hand(user)
 
 /obj/structure/alien/egg/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.getorgan(/obj/item/organ/alien/plasmavessel))
 		switch(status)
 			if(BURST)
@@ -270,12 +308,16 @@
 
 
 /obj/structure/alien/egg/proc/Grow()
+	procstart = null
+	src.procstart = null
 	status = GROWN
 	update_icon()
 	proximity_monitor.SetRange(1)
 
 //drops and kills the hugger if any is remaining
 /obj/structure/alien/egg/proc/Burst(kill = TRUE)
+	procstart = null
+	src.procstart = null
 	if(status == GROWN || status == GROWING)
 		proximity_monitor.SetRange(0)
 		status = BURST
@@ -284,6 +326,8 @@
 		addtimer(CALLBACK(src, .proc/finish_bursting, kill), 15)
 
 /obj/structure/alien/egg/proc/finish_bursting(kill = TRUE)
+	procstart = null
+	src.procstart = null
 	if(child)
 		child.forceMove(get_turf(src))
 		// TECHNICALLY you could put non-facehuggers in the child var
@@ -297,16 +341,22 @@
 						break
 
 /obj/structure/alien/egg/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(status != BURST)
 			Burst(kill=TRUE)
 
 /obj/structure/alien/egg/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 500)
 		take_damage(5, BURN, 0, 0)
 
 
 /obj/structure/alien/egg/HasProximity(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(status == GROWN)
 		if(!CanHug(AM))
 			return

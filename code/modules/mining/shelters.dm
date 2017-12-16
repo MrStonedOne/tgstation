@@ -7,6 +7,8 @@
 	var/banned_objects
 
 /datum/map_template/shelter/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	blacklisted_turfs = typecacheof(/turf/closed)
 	whitelisted_turfs = list()
@@ -14,6 +16,8 @@
 	banned_objects = list()
 
 /datum/map_template/shelter/proc/check_deploy(turf/deploy_location)
+	procstart = null
+	src.procstart = null
 	var/affected = get_affected_turfs(deploy_location, centered=TRUE)
 	for(var/turf/T in affected)
 		var/area/A = get_area(T)
@@ -40,6 +44,8 @@
 	mappath = "_maps/templates/shelter_1.dmm"
 
 /datum/map_template/shelter/alpha/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	whitelisted_turfs = typecacheof(/turf/closed/mineral)
 	banned_objects = typecacheof(/obj/structure/stone_tile)
@@ -55,6 +61,8 @@
 	mappath = "_maps/templates/shelter_2.dmm"
 
 /datum/map_template/shelter/beta/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	whitelisted_turfs = typecacheof(/turf/closed/mineral)
 	banned_objects = typecacheof(/obj/structure/stone_tile)

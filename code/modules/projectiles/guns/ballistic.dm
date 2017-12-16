@@ -9,6 +9,8 @@
 	var/casing_ejector = TRUE //whether the gun ejects the chambered casing
 
 /obj/item/gun/ballistic/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!spawnwithmagazine)
 		update_icon()
@@ -19,6 +21,8 @@
 	update_icon()
 
 /obj/item/gun/ballistic/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_skin)
 		icon_state = "[unique_reskin[current_skin]][suppressed ? "-suppressed" : ""][sawn_state ? "-sawn" : ""]"
@@ -27,6 +31,8 @@
 
 
 /obj/item/gun/ballistic/process_chamber(empty_chamber = 1)
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_casing/AC = chambered //Find chambered round
 	if(istype(AC)) //there's a chambered round
 		if(casing_ejector)
@@ -39,6 +45,8 @@
 
 
 /obj/item/gun/ballistic/proc/chamber_round()
+	procstart = null
+	src.procstart = null
 	if (chambered || !magazine)
 		return
 	else if (magazine.ammo_count())
@@ -46,11 +54,15 @@
 		chambered.forceMove(src)
 
 /obj/item/gun/ballistic/can_shoot()
+	procstart = null
+	src.procstart = null
 	if(!magazine || !magazine.ammo_count(0))
 		return 0
 	return 1
 
 /obj/item/gun/ballistic/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if (istype(A, /obj/item/ammo_box/magazine))
 		var/obj/item/ammo_box/magazine/AM = A
@@ -89,6 +101,8 @@
 	return 0
 
 /obj/item/gun/ballistic/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user)
 		if(suppressed && can_unsuppress)
 			var/obj/item/suppressor/S = suppressed
@@ -105,6 +119,8 @@
 	..()
 
 /obj/item/gun/ballistic/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_casing/AC = chambered //Find chambered round
 	if(magazine)
 		magazine.forceMove(drop_location())
@@ -124,10 +140,14 @@
 
 
 /obj/item/gun/ballistic/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "It has [get_ammo()] round\s remaining.")
 
 /obj/item/gun/ballistic/proc/get_ammo(countchambered = 1)
+	procstart = null
+	src.procstart = null
 	var/boolets = 0 //mature var names for mature people
 	if (chambered && countchambered)
 		boolets++
@@ -138,6 +158,8 @@
 #define BRAINS_BLOWN_THROW_RANGE 3
 #define BRAINS_BLOWN_THROW_SPEED 1
 /obj/item/gun/ballistic/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/B = user.getorganslot(ORGAN_SLOT_BRAIN)
 	if (B && chambered && chambered.BB && can_trigger_gun(user) && !chambered.BB.nodamage)
 		user.visible_message("<span class='suicide'>[user] is putting the barrel of [src] in [user.p_their()] mouth.  It looks like [user.p_theyre()] trying to commit suicide!</span>")
@@ -170,6 +192,8 @@
 
 
 /obj/item/gun/ballistic/proc/sawoff(mob/user)
+	procstart = null
+	src.procstart = null
 	if(sawn_state == SAWN_OFF)
 		to_chat(user, "<span class='warning'>\The [src] is already shortened!</span>")
 		return
@@ -197,6 +221,8 @@
 
 // Sawing guns related proc
 /obj/item/gun/ballistic/proc/blow_up(mob/user)
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/obj/item/ammo_casing/AC in magazine.stored_ammo)
 		if(AC.BB)

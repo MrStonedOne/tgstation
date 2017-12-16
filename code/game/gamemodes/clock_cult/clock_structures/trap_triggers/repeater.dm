@@ -7,6 +7,8 @@
 	icon_state = "repeater"
 
 /obj/structure/destructible/clockwork/trap/trigger/repeater/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		return
 	if(!isprocessing)
@@ -19,9 +21,13 @@
 		icon_state = initial(icon_state)
 
 /obj/structure/destructible/clockwork/trap/trigger/repeater/process()
+	procstart = null
+	src.procstart = null
 	activate()
 	playsound(src, 'sound/items/screwdriver2.ogg', 25, FALSE)
 
 /obj/structure/destructible/clockwork/trap/trigger/repeater/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()

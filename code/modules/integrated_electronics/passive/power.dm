@@ -6,6 +6,8 @@
 	category_text = "Power - Passive"
 
 /obj/item/integrated_circuit/passive/power/proc/make_energy()
+	procstart = null
+	src.procstart = null
 	return
 
 // For calculators.
@@ -19,6 +21,8 @@
 	var/max_power = 30
 
 /obj/item/integrated_circuit/passive/power/solar_cell/make_energy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/light_amount = T ? T.get_lumcount() : 0
 	var/adjusted_power = max(max_power * light_amount, 0)
@@ -37,6 +41,8 @@
 	var/is_charge = FALSE
 
 /obj/item/integrated_circuit/passive/power/starter/make_energy()
+	procstart = null
+	src.procstart = null
 	if(assembly.battery)
 		if(assembly.battery.charge)
 			if(!is_charge)
@@ -62,6 +68,8 @@
 
 
 /obj/item/integrated_circuit/passive/power/relay/make_energy()
+	procstart = null
+	src.procstart = null
 	if(!assembly)
 		return
 	var/area/A = get_area(src)
@@ -100,19 +108,27 @@
 	var/list/fuel = list("plasma" = 10000, "welding_fuel" = 3000, "carbon" = 2000, "ethanol" = 2000, "nutriment" = 1600, "blood" = 1000)
 
 /obj/item/integrated_circuit/passive/power/chemical_cell/New()
+	procstart = null
+	src.procstart = null
 	..()
 	create_reagents(volume)
 
 /obj/item/integrated_circuit/passive/power/chemical_cell/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 2, WEAKREF(src))
 	push_data()
 	..()
 
 /obj/item/integrated_circuit/passive/power/chemical_cell/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 1, reagents.total_volume)
 	push_data()
 
 /obj/item/integrated_circuit/passive/power/chemical_cell/make_energy()
+	procstart = null
+	src.procstart = null
 	if(assembly)
 		if(assembly.battery)
 			for(var/I in fuel)

@@ -15,6 +15,8 @@
 	layer = OBJ_LAYER
 
 /obj/structure/chair/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>It's held together by a couple of <b>bolts</b>.</span>")
 	if(!has_buckled_mobs())
@@ -23,37 +25,53 @@
 		to_chat(user, "<span class='notice'>Alt-click to rotate.</span>")
 
 /obj/structure/chair/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!anchored)	//why would you put these on the shuttle?
 		addtimer(CALLBACK(src, .proc/RemoveFromLatejoin), 0)
 
 /obj/structure/chair/Destroy()
+	procstart = null
+	src.procstart = null
 	RemoveFromLatejoin()
 	return ..()
 
 /obj/structure/chair/proc/RemoveFromLatejoin()
+	procstart = null
+	src.procstart = null
 	SSjob.latejoin_trackers -= src	//These may be here due to the arrivals shuttle
 
 /obj/structure/chair/deconstruct()
+	procstart = null
+	src.procstart = null
 	// If we have materials, and don't have the NOCONSTRUCT flag
 	if(buildstacktype && (!(flags_1 & NODECONSTRUCT_1)))
 		new buildstacktype(loc,buildstackamount)
 	..()
 
 /obj/structure/chair/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/structure/chair/narsie_act()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/chair/wood/W = new/obj/structure/chair/wood(get_turf(src))
 	W.setDir(dir)
 	qdel(src)
 
 /obj/structure/chair/ratvar_act()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/chair/brass/B = new(get_turf(src))
 	B.setDir(dir)
 	qdel(src)
 
 /obj/structure/chair/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench) && !(flags_1&NODECONSTRUCT_1))
 		playsound(src.loc, W.usesound, 50, 1)
 		deconstruct()
@@ -72,12 +90,16 @@
 		return ..()
 
 /obj/structure/chair/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored || has_buckled_mobs())
 		..()
 	else
 		rotate()
 
 /obj/structure/chair/proc/handle_rotation(direction)
+	procstart = null
+	src.procstart = null
 	handle_layer()
 	if(has_buckled_mobs())
 		for(var/m in buckled_mobs)
@@ -85,27 +107,39 @@
 			buckled_mob.setDir(direction)
 
 /obj/structure/chair/proc/handle_layer()
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs() && dir == NORTH)
 		layer = ABOVE_MOB_LAYER
 	else
 		layer = OBJ_LAYER
 
 /obj/structure/chair/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handle_layer()
 
 /obj/structure/chair/post_unbuckle_mob()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handle_layer()
 
 /obj/structure/chair/proc/spin()
+	procstart = null
+	src.procstart = null
 	setDir(turn(dir, -90))
 
 /obj/structure/chair/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	..()
 	handle_rotation(newdir)
 
 /obj/structure/chair/verb/rotate()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate Chair"
 	set category = "Object"
 	set src in oview(1)
@@ -120,6 +154,8 @@
 		spin()
 
 /obj/structure/chair/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -141,6 +177,8 @@
 	item_chair = /obj/item/chair/wood
 
 /obj/structure/chair/wood/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/chair/wood/normal //Kept for map compatibility
@@ -162,25 +200,35 @@
 	item_chair = null
 
 /obj/structure/chair/comfy/Initialize()
+	procstart = null
+	src.procstart = null
 	armrest = mutable_appearance('icons/obj/chairs.dmi', "comfychair_armrest")
 	armrest.layer = ABOVE_MOB_LAYER
 	return ..()
 
 /obj/structure/chair/comfy/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(armrest)
 	return ..()
 
 /obj/structure/chair/comfy/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_armrest()
 
 /obj/structure/chair/comfy/proc/update_armrest()
+	procstart = null
+	src.procstart = null
 	if(has_buckled_mobs())
 		add_overlay(armrest)
 	else
 		cut_overlay(armrest)
 
 /obj/structure/chair/comfy/post_unbuckle_mob()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_armrest()
 
@@ -206,6 +254,8 @@
 
 
 /obj/structure/chair/office/Moved()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_gravity())
 		playsound(src, 'sound/effects/roll.ogg', 100, 1)
@@ -227,9 +277,13 @@
 	item_chair = /obj/item/chair/stool
 
 /obj/structure/chair/stool/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/chair/MouseDrop(over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(over_object == usr && Adjacent(usr))
 		if(!item_chair || !usr.can_hold_items() || has_buckled_mobs() || src.flags_1 & NODECONSTRUCT_1)
@@ -267,14 +321,20 @@
 	var/obj/structure/chair/origin_type = /obj/structure/chair
 
 /obj/item/chair/narsie_act()
+	procstart = null
+	src.procstart = null
 	var/obj/item/chair/wood/W = new/obj/item/chair/wood(get_turf(src))
 	W.setDir(dir)
 	qdel(src)
 
 /obj/item/chair/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	plant(user)
 
 /obj/item/chair/proc/plant(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/A in get_turf(loc))
 		if(istype(A, /obj/structure/chair))
 			to_chat(user, "<span class='danger'>There is already a chair here.</span>")
@@ -289,6 +349,8 @@
 	qdel(src)
 
 /obj/item/chair/proc/smash(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/stack_type = initial(origin_type.buildstacktype)
 	if(!stack_type)
 		return
@@ -303,12 +365,16 @@
 
 
 /obj/item/chair/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(attack_type == UNARMED_ATTACK && prob(hit_reaction_chance))
 		owner.visible_message("<span class='danger'>[owner] fends off [attack_text] with [src]!</span>")
 		return 1
 	return 0
 
 /obj/item/chair/afterattack(atom/target, mob/living/carbon/user, proximity)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!proximity)
 		return
@@ -335,6 +401,8 @@
 	origin_type = /obj/structure/chair/stool/bar
 
 /obj/item/chair/stool/narsie_act()
+	procstart = null
+	src.procstart = null
 	return //sturdy enough to ignore a god
 
 /obj/item/chair/wood
@@ -349,6 +417,8 @@
 	break_chance = 50
 
 /obj/item/chair/wood/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/chair/wood/wings
@@ -371,17 +441,25 @@
 	item_chair = null
 
 /obj/structure/chair/brass/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	. = ..()
 
 /obj/structure/chair/brass/process()
+	procstart = null
+	src.procstart = null
 	spin()
 	playsound(src, 'sound/effects/servostep.ogg', 50, FALSE)
 
 /obj/structure/chair/brass/ratvar_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/chair/brass/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.canUseTopic(src, be_close = TRUE))
 		return
 	if(!isprocessing)

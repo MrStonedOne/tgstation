@@ -78,6 +78,8 @@
 	return 1
 
 /proc/attempt_cancel_surgery(datum/surgery/S, obj/item/I, mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	var/selected_zone = user.zone_selected
 	if(S.status == 1)
 		M.surgeries -= S
@@ -99,6 +101,8 @@
 			to_chat(user, "<span class='warning'>You need to hold a [is_robotic ? "screwdriver" : "cautery"] in your inactive hand to stop [M]'s surgery!</span>")
 
 /proc/get_location_modifier(mob/M)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(M)
 	if(locate(/obj/structure/table/optable, T))
 		return 1
@@ -111,6 +115,8 @@
 
 
 /proc/get_location_accessible(mob/M, location)
+	procstart = null
+	src.procstart = null
 	var/covered_locations = 0	//based on body_parts_covered
 	var/face_covered = 0	//based on flags_inv
 	var/eyesmouth_covered = 0	//based on flags_cover

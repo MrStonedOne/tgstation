@@ -8,6 +8,8 @@
 	can_buckle = 1
 
 /obj/structure/sacrificealtar/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!has_buckled_mobs())
 		return
@@ -29,6 +31,8 @@
 	var/last_process = 0
 
 /obj/structure/healingfountain/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(last_process + time_between_uses > world.time)
 		to_chat(user, "<span class='notice'>The fountain appears to be empty.</span>")
 		return
@@ -40,6 +44,8 @@
 
 
 /obj/structure/healingfountain/proc/update_icons()
+	procstart = null
+	src.procstart = null
 	if(last_process + time_between_uses > world.time)
 		icon_state = "fountain"
 	else

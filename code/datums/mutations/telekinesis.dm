@@ -8,11 +8,17 @@
 	limb_req = "head"
 
 /datum/mutation/human/telekinesis/New()
+	procstart = null
+	src.procstart = null
 	..()
 	visual_indicators |= mutable_appearance('icons/effects/genetics.dmi', "telekinesishead", -MUTATIONS_LAYER)
 
 /datum/mutation/human/telekinesis/get_visual_indicator(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	return visual_indicators[1]
 
 /datum/mutation/human/telekinesis/on_ranged_attack(mob/living/carbon/human/owner, atom/target)
+	procstart = null
+	src.procstart = null
 	target.attack_tk(owner)

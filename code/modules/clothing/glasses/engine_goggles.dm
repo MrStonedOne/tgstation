@@ -21,15 +21,21 @@
 	var/range = 1
 
 /obj/item/clothing/glasses/meson/engine/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	update_icon()
 
 /obj/item/clothing/glasses/meson/engine/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/clothing/glasses/meson/engine/proc/toggle_mode(mob/user, voluntary)
+	procstart = null
+	src.procstart = null
 	mode = modes[mode]
 	to_chat(user, "<span class='[voluntary ? "notice":"warning"]'>[voluntary ? "You turn the goggles":"The goggles turn"] [mode ? "to [mode] mode":"off"][voluntary ? ".":"!"]</span>")
 
@@ -55,9 +61,13 @@
 		A.UpdateButtonIcon()
 
 /obj/item/clothing/glasses/meson/engine/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_mode(user, TRUE)
 
 /obj/item/clothing/glasses/meson/engine/process()
+	procstart = null
+	src.procstart = null
 	if(mode == MODE_MESON)
 		var/turf/T = get_turf(src)
 		if(T && T.z == ZLEVEL_MINING)
@@ -75,6 +85,8 @@
 		show_rads()
 
 /obj/item/clothing/glasses/meson/engine/proc/scan()
+	procstart = null
+	src.procstart = null
 	for(var/turf/T in range(range, loc))
 		for(var/obj/O in T.contents)
 			if(O.level != 1)
@@ -84,6 +96,8 @@
 				flick_sonar(O)
 
 /obj/item/clothing/glasses/meson/engine/proc/flick_sonar(obj/pipe)
+	procstart = null
+	src.procstart = null
 	var/mob/M = loc
 	var/image/I = new(loc = get_turf(pipe))
 	var/mutable_appearance/MA = new(pipe)
@@ -92,6 +106,8 @@
 	flick_overlay(I, list(M.client), 8)
 
 /obj/item/clothing/glasses/meson/engine/proc/show_rads()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = loc
 	var/list/rad_places = list()
 	for(var/datum/component/radioactive/thing in SSradiation.processing)
@@ -117,10 +133,14 @@
 		flick_overlay(pic, list(user.client), 8)
 
 /obj/item/clothing/glasses/meson/engine/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "trayson-[mode]"
 	update_mob()
 
 /obj/item/clothing/glasses/meson/engine/proc/update_mob()
+	procstart = null
+	src.procstart = null
 	item_state = icon_state
 	if(isliving(loc))
 		var/mob/living/user = loc

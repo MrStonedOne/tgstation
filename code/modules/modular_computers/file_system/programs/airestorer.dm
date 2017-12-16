@@ -16,6 +16,8 @@
 
 /datum/computer_file/program/aidiag/proc/get_ai(cardcheck)
 
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/ai_slot/ai_slot
 
 	if(computer)
@@ -33,6 +35,8 @@
 	return null
 
 /datum/computer_file/program/aidiag/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 
@@ -53,6 +57,8 @@
 					return TRUE
 
 /datum/computer_file/program/aidiag/process_tick()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!restoring)	//Put the check here so we don't check for an ai all the time
 		return
@@ -89,6 +95,8 @@
 
 
 /datum/computer_file/program/aidiag/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 	var/mob/living/silicon/ai/AI
 	// A shortcut for getting the AI stored inside the computer. The program already does necessary checks.
@@ -117,5 +125,7 @@
 	return data
 
 /datum/computer_file/program/aidiag/kill_program(forced)
+	procstart = null
+	src.procstart = null
 	restoring = FALSE
 	return ..(forced)

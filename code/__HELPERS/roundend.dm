@@ -36,6 +36,8 @@
 	gather_antag_success_rate()
 
 /datum/controller/subsystem/ticker/proc/gather_antag_success_rate()
+	procstart = null
+	src.procstart = null
 	var/team_gid = 1
 	var/list/team_ids = list()
 
@@ -64,6 +66,8 @@
 		SSblackbox.record_feedback("associative", "antagonists", 1, antag_info)
 
 /datum/controller/subsystem/ticker/proc/gather_newscaster()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("[GLOB.log_directory]/newscaster.json")
 	var/list/file_data = list()
 	var/pos = 1
@@ -85,6 +89,8 @@
 	WRITE_FILE(json_file, json_encode(file_data))
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	to_chat(world, "<BR><BR><BR><FONT size=3><B>The round has ended.</B></FONT>")
@@ -146,6 +152,8 @@
 	standard_reboot()
 
 /datum/controller/subsystem/ticker/proc/standard_reboot()
+	procstart = null
+	src.procstart = null
 	if(ready_for_reboot)
 		if(mode.station_was_nuked)
 			Reboot("Station destroyed by Nuclear Device.", "nuke")
@@ -156,6 +164,8 @@
 
 //Common part of the report
 /datum/controller/subsystem/ticker/proc/build_roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	//Gamemode specific things. Should be empty most of the time.
@@ -183,6 +193,8 @@
 
 
 /datum/controller/subsystem/ticker/proc/survivor_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	var/station_evacuated = EMERGENCY_ESCAPED_OR_ENDGAMED
 	var/num_survivors = 0
@@ -221,6 +233,8 @@
 	return parts.Join("<br>")
 
 /datum/controller/subsystem/ticker/proc/show_roundend_report(client/C,common_report)
+	procstart = null
+	src.procstart = null
 	var/list/report_parts = list()
 
 	report_parts += personal_report(C)
@@ -236,6 +250,8 @@
 	roundend_report.open(0)
 
 /datum/controller/subsystem/ticker/proc/personal_report(client/C)
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	var/mob/M = C.mob
 	if(M.mind && !isnewplayer(M))
@@ -267,6 +283,8 @@
 	return parts.Join()
 
 /datum/controller/subsystem/ticker/proc/display_report()
+	procstart = null
+	src.procstart = null
 	GLOB.common_report = build_roundend_report()
 	for(var/client/C in GLOB.clients)
 		show_roundend_report(C,GLOB.common_report)
@@ -274,6 +292,8 @@
 		CHECK_TICK
 
 /datum/controller/subsystem/ticker/proc/law_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	//Silicon laws report
 	for (var/i in GLOB.ai_list)
@@ -306,6 +326,8 @@
 		return ""
 
 /datum/controller/subsystem/ticker/proc/goal_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	if(mode.station_goals.len)
 		for(var/V in mode.station_goals)
@@ -314,6 +336,8 @@
 		return "<div class='panel stationborder'><ul>[parts.Join()]</ul></div>"
 
 /datum/controller/subsystem/ticker/proc/medal_report()
+	procstart = null
+	src.procstart = null
 	if(GLOB.commendations.len)
 		var/list/parts = list()
 		parts += "<span class='header'>Medal Commendations:</span>"
@@ -323,6 +347,8 @@
 	return ""
 
 /datum/controller/subsystem/ticker/proc/antag_report()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 	var/list/all_teams = list()
 	var/list/all_antagonists = list()
@@ -365,10 +391,14 @@
 	return result.Join()
 
 /proc/cmp_antag_category(datum/antagonist/A,datum/antagonist/B)
+	procstart = null
+	src.procstart = null
 	return sorttext(B.roundend_category,A.roundend_category)
 
 
 /datum/controller/subsystem/ticker/proc/give_show_report_button(client/C)
+	procstart = null
+	src.procstart = null
 	var/datum/action/report/R = new
 	C.player_details.player_actions += R
 	R.Grant(C.mob)
@@ -379,13 +409,19 @@
 	button_icon_state = "vote"
 
 /datum/action/report/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner && GLOB.common_report && SSticker.current_state == GAME_STATE_FINISHED)
 		SSticker.show_roundend_report(owner.client,GLOB.common_report)
 
 /datum/action/report/IsAvailable()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /datum/action/report/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	if(usr != owner)
 		return
 	if(href_list["report"])
@@ -394,6 +430,8 @@
 
 
 /proc/printplayer(datum/mind/ply, fleecheck)
+	procstart = null
+	src.procstart = null
 	var/text = "<b>[ply.key]</b> was <b>[ply.name]</b> the <b>[ply.assigned_role]</b> and"
 	if(ply.current)
 		if(ply.current.stat == DEAD)
@@ -411,6 +449,8 @@
 	return text
 
 /proc/printplayerlist(list/players,fleecheck)
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	parts += "<ul class='playerlist'>"
@@ -421,6 +461,8 @@
 
 
 /proc/printobjectives(datum/mind/ply)
+	procstart = null
+	src.procstart = null
 	var/list/objective_parts = list()
 	var/count = 1
 	for(var/datum/objective/objective in ply.objectives)

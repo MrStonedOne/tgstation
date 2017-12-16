@@ -10,29 +10,43 @@
 	density = TRUE //This will prevent hostile mobs from pathing into chasms, while the canpass override will still let it function like an open turf
 
 /turf/open/chasm/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/chasm, null)
 
 /turf/open/chasm/proc/set_target(turf/target)
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(chasm_component, /datum/component/chasm)
 	chasm_component.target_turf = target
 
 /turf/open/chasm/proc/drop(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(chasm_component, /datum/component/chasm)
 	chasm_component.drop(AM)
 
 /turf/open/chasm/MakeSlippery(wet_setting = TURF_WET_WATER, min_wet_time = 0, wet_time_to_add = 0)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/chasm/MakeDry(wet_setting = TURF_WET_WATER)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/chasm/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "basalt"
 	return TRUE
 
 /turf/open/chasm/attackby(obj/item/C, mob/user, params, area/area_restriction)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(C, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = C
@@ -62,6 +76,8 @@
 			to_chat(user, "<span class='warning'>The plating is going to need some support! Place metal rods first.</span>")
 
 /turf/open/chasm/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	return 1
 
 
@@ -70,6 +86,8 @@
 	baseturf = /turf/open/chasm/straight_down
 
 /turf/open/chasm/straight_down/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_target(locate(x, y, z - 1))
 
@@ -92,6 +110,8 @@
 	baseturf = /turf/open/chasm/jungle
 
 /turf/open/chasm/jungle/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "dirt"
 	return TRUE
@@ -100,5 +120,7 @@
 	baseturf = /turf/open/chasm/jungle/straight_down
 
 /turf/open/chasm/jungle/straight_down/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_target(locate(x, y, z - 1))

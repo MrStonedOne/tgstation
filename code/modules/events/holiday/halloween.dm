@@ -7,6 +7,8 @@
 	earliest_start = 0
 
 /datum/round_event/spooky/start()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/mob/living/carbon/human/H in GLOB.carbon_list)
 		var/obj/item/storage/backpack/b = locate() in H.contents
@@ -20,6 +22,8 @@
 		qdel(Poly)
 
 /datum/round_event/spooky/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce(pick("RATTLE ME BONES!","THE RIDE NEVER ENDS!", "A SKELETON POPS OUT!", "SPOOKY SCARY SKELETONS!", "CREWMEMBERS BEWARE, YOU'RE IN FOR A SCARE!") , "THE CALL IS COMING FROM INSIDE THE HOUSE")
 
 //spooky foods (you can't actually make these when it's not halloween)
@@ -44,6 +48,8 @@
 	icon_state = "treatbag"
 
 /obj/item/storage/spooky/New()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/distrobuteinbag=0 to 5)
 		var/type = pick(/obj/item/reagent_containers/food/snacks/sugarcookie/spookyskull,

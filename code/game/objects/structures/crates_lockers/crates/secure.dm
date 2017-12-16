@@ -9,11 +9,15 @@
 	var/tamperproof = 0
 
 /obj/structure/closet/crate/secure/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" && damage_amount < 25)
 		return 0
 	. = ..()
 
 /obj/structure/closet/crate/secure/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(broken)
 		add_overlay("securecrateemag")
@@ -23,12 +27,16 @@
 		add_overlay("securecrateg")
 
 /obj/structure/closet/crate/secure/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+	procstart = null
+	src.procstart = null
 	if(prob(tamperproof))
 		boom()
 	..()
 
 
 /obj/structure/closet/crate/secure/proc/boom(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user)
 		to_chat(user, "<span class='danger'>The crate's anti-tamper system activates!</span>")
 		var/message = "[ADMIN_LOOKUPFLW(user)] has detonated [src.name]."

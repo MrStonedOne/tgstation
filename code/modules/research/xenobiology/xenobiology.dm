@@ -17,6 +17,8 @@
 	var/qdel_timer = null // deletion timer, for delayed reactions
 
 /obj/item/slime_extract/attackby(obj/item/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/slimepotion/enhancer))
 		if(Uses >= 5)
 			to_chat(user, "<span class='warning'>You cannot enhance this extract further!</span>")
@@ -27,10 +29,14 @@
 	..()
 
 /obj/item/slime_extract/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(100)
 
 /obj/item/slime_extract/on_grind()
+	procstart = null
+	src.procstart = null
 	if(Uses)
 		grind_results["slimejelly"] = 20
 
@@ -130,6 +136,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/slimepotion/afterattack(obj/item/reagent_containers/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	if (istype(target))
 		to_chat(user, "<span class='notice'>You cannot transfer [src] to [target]! It appears the potion must be given directly to a slime to absorb.</span>" )
 		return
@@ -141,6 +149,8 @@
 	icon_state = "potsilver"
 
 /obj/item/slimepotion/docility/attack(mob/living/simple_animal/slime/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isslime(M))
 		to_chat(user, "<span class='warning'>The potion only works on slimes!</span>")
 		return ..()
@@ -170,6 +180,8 @@
 	var/sentience_type = SENTIENCE_ORGANIC
 
 /obj/item/slimepotion/sentience/afterattack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(being_used || !ismob(M) || !user.Adjacent(M))
 		return
 	if(!isanimal(M) || M.ckey) //only works on animals that aren't player controlled
@@ -214,6 +226,8 @@
 	var/animal_type = SENTIENCE_ORGANIC
 
 /obj/item/slimepotion/transference/afterattack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(prompted || !ismob(M))
 		return
 	if(!isanimal(M) || M.ckey) //much like sentience, these will not work on something that is already player controlled
@@ -254,6 +268,8 @@
 	icon_state = "potred"
 
 /obj/item/slimepotion/steroid/attack(mob/living/simple_animal/slime/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isslime(M))//If target is not a slime.
 		to_chat(user, "<span class='warning'>The steroid only works on baby slimes!</span>")
 		return ..()
@@ -284,6 +300,8 @@
 	icon_state = "potcyan"
 
 /obj/item/slimepotion/stabilizer/attack(mob/living/simple_animal/slime/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isslime(M))
 		to_chat(user, "<span class='warning'>The stabilizer only works on slimes!</span>")
 		return ..()
@@ -305,6 +323,8 @@
 	icon_state = "potgreen"
 
 /obj/item/slimepotion/mutator/attack(mob/living/simple_animal/slime/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isslime(M))
 		to_chat(user, "<span class='warning'>The mutator only works on slimes!</span>")
 		return ..()
@@ -330,6 +350,8 @@
 	icon_state = "potyellow"
 
 /obj/item/slimepotion/speed/afterattack(obj/C, mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istype(C))
 		to_chat(user, "<span class='warning'>The potion can only be used on items or vehicles!</span>")
@@ -363,6 +385,8 @@
 	var/uses = 3
 
 /obj/item/slimepotion/fireproof/afterattack(obj/item/clothing/C, mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!uses)
 		qdel(src)
@@ -391,6 +415,8 @@
 	icon_state = "potlightpink"
 
 /obj/item/slimepotion/genderchange/attack(mob/living/L, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(L) || L.stat == DEAD)
 		to_chat(user, "<span class='warning'>The potion can only be used on living things!</span>")
 		return
@@ -511,6 +537,8 @@
 	color = "#2956B2"
 
 /obj/item/areaeditor/blueprints/slime/edit_area()
+	procstart = null
+	src.procstart = null
 	..()
 	var/area/A = get_area(src)
 	for(var/turf/T in A)

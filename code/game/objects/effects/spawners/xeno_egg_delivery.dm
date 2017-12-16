@@ -5,6 +5,8 @@
 	var/announcement_time = 1200
 
 /obj/effect/spawner/xeno_egg_delivery/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/T = get_turf(src)
 	var/area/A = get_area(T)

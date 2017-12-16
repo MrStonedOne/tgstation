@@ -23,17 +23,25 @@
 	var/emitter_range = SOUND_EMITTER_ZLEVEL //The range this emitter's sound is heard at; this isn't a number, but a string (see the defines above)
 
 /obj/effect/sound_emitter/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		return QDEL_HINT_LETMELIVE
 	. = ..()
 
 /obj/effect/sound_emitter/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/sound_emitter/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/sound_emitter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isobserver(user))
 		return
@@ -45,17 +53,23 @@
 		to_chat(user, "<b>Alt-click it to quickly activate it!</b>")
 
 /obj/effect/sound_emitter/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!check_rights_for(user.client, R_SOUNDS))
 		examine(user)
 		return
 	edit_emitter(user)
 
 /obj/effect/sound_emitter/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(check_rights_for(user.client, R_SOUNDS))
 		activate(user)
 		to_chat(user, "<span class='notice'>Sound emitter activated.</span>")
 
 /obj/effect/sound_emitter/proc/edit_emitter(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	dat += "<b>Label:</b> <a href='?src=\ref[src];edit_label=1'>[maptext ? maptext : "No label set!"]</a><br>"
 	dat += "<br>"
@@ -72,6 +86,8 @@
 	popup.open()
 
 /obj/effect/sound_emitter/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ismob(usr) || !usr.client || !check_rights_for(usr.client, R_SOUNDS))
 		return
@@ -123,6 +139,8 @@
 	edit_emitter(user) //Refresh the UI to see our changes
 
 /obj/effect/sound_emitter/proc/activate(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/hearing_mobs = list()
 	if(motus_operandi == SOUND_EMITTER_LOCAL)
 		playsound(src, sound_file, sound_volume, FALSE)

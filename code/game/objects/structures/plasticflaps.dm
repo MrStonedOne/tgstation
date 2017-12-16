@@ -10,6 +10,8 @@
 	var/state = PLASTIC_FLAPS_NORMAL
 
 /obj/structure/plasticflaps/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(state)
 		if(PLASTIC_FLAPS_NORMAL)
@@ -18,6 +20,8 @@
 			to_chat(user, "<span class='notice'>[src] are no longer <i>screwed</i> to the floor, and the flaps can be <b>cut</b> apart.</span>")
 
 /obj/structure/plasticflaps/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(W, /obj/item/screwdriver))
 		if(state == PLASTIC_FLAPS_NORMAL)
@@ -53,6 +57,8 @@
 		. = ..()
 
 /obj/structure/plasticflaps/CanAStarPass(ID, to_dir, caller)
+	procstart = null
+	src.procstart = null
 	if(isliving(caller))
 		if(isbot(caller))
 			return 1
@@ -64,6 +70,8 @@
 	return 1 //diseases, stings, etc can pass
 
 /obj/structure/plasticflaps/CanPass(atom/movable/A, turf/T)
+	procstart = null
+	src.procstart = null
 	if(istype(A) && (A.pass_flags & PASSGLASS))
 		return prob(60)
 
@@ -91,6 +99,8 @@
 	return ..()
 
 /obj/structure/plasticflaps/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/plastic/five(loc)
 	qdel(src)
@@ -101,10 +111,14 @@
 	CanAtmosPass = ATMOS_PASS_NO
 
 /obj/structure/plasticflaps/mining/New()
+	procstart = null
+	src.procstart = null
 	air_update_turf(1)
 	. = ..()
 
 /obj/structure/plasticflaps/mining/Destroy()
+	procstart = null
+	src.procstart = null
 	var/atom/oldloc = loc
 	. = ..()
 	if (oldloc)

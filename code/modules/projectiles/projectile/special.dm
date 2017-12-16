@@ -9,6 +9,8 @@
 
 
 /obj/item/projectile/ion/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	empulse(target, 1, 1)
 	return 1
@@ -17,6 +19,8 @@
 /obj/item/projectile/ion/weak
 
 /obj/item/projectile/ion/weak/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	empulse(target, 0, 0)
 	return 1
@@ -28,6 +32,8 @@
 	damage = 50
 
 /obj/item/projectile/bullet/gyro/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(target, -1, 0, 2)
 	return 1
@@ -42,6 +48,8 @@
 	dismemberment = 100
 
 /obj/item/projectile/bullet/a84mm/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(target, -1, 1, 3, 1, 0, flame_range = 4)
 
@@ -61,6 +69,8 @@
 	ricochets_max = 0 //it's a MISSILE
 
 /obj/item/projectile/bullet/srmrocket/on_hit(atom/target, blocked=0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isliving(target)) //if the target isn't alive, so is a wall or something
 		explosion(target, 0, 1, 2, 4)
@@ -99,6 +109,8 @@
 	flag = "bullet"
 
 /obj/item/projectile/meteor/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == firer)
 		forceMove(A.loc)
 		return
@@ -118,6 +130,8 @@
 	flag = "energy"
 
 /obj/item/projectile/energy/floramut/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target
@@ -139,6 +153,8 @@
 	name = "flayer ray"
 
 /obj/item/projectile/beam/mindflayer/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(target))
 		var/mob/living/carbon/human/M = target
@@ -158,13 +174,19 @@
 	color = "#FF6600"
 
 /obj/item/projectile/beam/wormhole/New(var/obj/item/ammo_casing/energy/wormhole/casing)
+	procstart = null
+	src.procstart = null
 	if(casing)
 		gun = casing.gun
 
 /obj/item/ammo_casing/energy/wormhole/New(var/obj/item/gun/energy/wormhole_projector/wh)
+	procstart = null
+	src.procstart = null
 	gun = wh
 
 /obj/item/projectile/beam/wormhole/on_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	if(ismob(target))
 		var/turf/portal_destination = pick(orange(6, src))
 		do_teleport(target, portal_destination)
@@ -186,6 +208,8 @@
 	var/mine_range = 3 //mines this many additional tiles of rock
 
 /obj/item/projectile/plasma/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!lavaland_equipment_pressure_check(get_turf(src)))
 		name = "weakened [name]"
@@ -193,6 +217,8 @@
 		pressure_decrease_active = TRUE
 
 /obj/item/projectile/plasma/on_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismineralturf(target))
 		var/turf/closed/mineral/M = target
@@ -235,12 +261,16 @@
 	var/list/thrown_items = list()
 
 /obj/item/projectile/gravityrepulse/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_casing/energy/gravityrepulse/C = loc
 	if(istype(C)) //Hard-coded maximum power so servers can't be crashed by trying to throw the entire Z level's items
 		power = min(C.gun.power, 15)
 
 /obj/item/projectile/gravityrepulse/on_hit()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	T = get_turf(src)
 	for(var/atom/movable/A in range(T, power))
@@ -266,12 +296,16 @@
 	var/list/thrown_items = list()
 
 /obj/item/projectile/gravityattract/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_casing/energy/gravityattract/C = loc
 	if(istype(C)) //Hard-coded maximum power so servers can't be crashed by trying to throw the entire Z level's items
 		power = min(C.gun.power, 15)
 
 /obj/item/projectile/gravityattract/on_hit()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	T = get_turf(src)
 	for(var/atom/movable/A in range(T, power))
@@ -296,12 +330,16 @@
 	var/list/thrown_items = list()
 
 /obj/item/projectile/gravitychaos/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_casing/energy/gravitychaos/C = loc
 	if(istype(C)) //Hard-coded maximum power so servers can't be crashed by trying to throw the entire Z level's items
 		power = min(C.gun.power, 15)
 
 /obj/item/projectile/gravitychaos/on_hit()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	T = get_turf(src)
 	for(var/atom/movable/A in range(T, power))
@@ -331,19 +369,27 @@
 	var/handedness = 0
 
 /obj/item/projectile/curse_hand/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handedness = prob(50)
 	update_icon()
 
 /obj/item/projectile/curse_hand/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[icon_state][handedness]"
 
 /obj/item/projectile/curse_hand/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(starting)
 		arm = starting.Beam(src, icon_state = "curse[handedness]", time = INFINITY, maxdistance = INFINITY, beam_type=/obj/effect/ebeam/curse_arm)
 	..()
 
 /obj/item/projectile/curse_hand/prehit(atom/target)
+	procstart = null
+	src.procstart = null
 	if(target == original)
 		forcedodge = FALSE
 	else if(!isturf(target))
@@ -351,6 +397,8 @@
 	return ..()
 
 /obj/item/projectile/curse_hand/Destroy()
+	procstart = null
+	src.procstart = null
 	if(arm)
 		arm.End()
 		arm = null
@@ -391,18 +439,24 @@
 	var/hit_duration_wall
 
 /obj/item/projectile/hallucination/fire()
+	procstart = null
+	src.procstart = null
 	..()
 	fake_icon = image('icons/obj/projectiles.dmi', src, hal_icon_state, ABOVE_MOB_LAYER)
 	if(hal_target.client)
 		hal_target.client.images += fake_icon
 
 /obj/item/projectile/hallucination/Destroy()
+	procstart = null
+	src.procstart = null
 	if(hal_target.client)
 		hal_target.client.images -= fake_icon
 	QDEL_NULL(fake_icon)
 	return ..()
 
 /obj/item/projectile/hallucination/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!ismob(A))
 		if(hal_hitsound_wall)
 			hal_target.playsound_local(loc, hal_hitsound_wall, 40, 1)
@@ -416,6 +470,8 @@
 	return TRUE
 
 /obj/item/projectile/hallucination/proc/target_on_hit(mob/M)
+	procstart = null
+	src.procstart = null
 	if(M == hal_target)
 		to_chat(hal_target, "<span class='userdanger'>[M] is hit by \a [src] in the chest!</span>")
 		hal_apply_effect()
@@ -430,6 +486,8 @@
 		spawn_hit(M, FALSE)
 
 /obj/item/projectile/hallucination/proc/spawn_blood(mob/M, set_dir)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	if(!hal_target.client)
 		return
@@ -472,10 +530,14 @@
 	addtimer(CALLBACK(src, .proc/cleanup_blood), 5)
 
 /obj/item/projectile/hallucination/proc/cleanup_blood(image/blood)
+	procstart = null
+	src.procstart = null
 	hal_target.client.images -= blood
 	qdel(blood)
 
 /obj/item/projectile/hallucination/proc/spawn_hit(atom/A, is_wall)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	if(!hal_target.client)
 		return
@@ -490,6 +552,8 @@
 
 
 /obj/item/projectile/hallucination/proc/hal_apply_effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/projectile/hallucination/bullet
@@ -504,6 +568,8 @@
 	hit_duration_wall = 5
 
 /obj/item/projectile/hallucination/bullet/hal_apply_effect()
+	procstart = null
+	src.procstart = null
 	hal_target.adjustStaminaLoss(60)
 
 /obj/item/projectile/hallucination/laser
@@ -520,6 +586,8 @@
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 
 /obj/item/projectile/hallucination/laser/hal_apply_effect()
+	procstart = null
+	src.procstart = null
 	hal_target.adjustStaminaLoss(20)
 	hal_target.blur_eyes(2)
 
@@ -535,6 +603,8 @@
 	hal_impact_effect_wall = null
 
 /obj/item/projectile/hallucination/taser/hal_apply_effect()
+	procstart = null
+	src.procstart = null
 	hal_target.Knockdown(100)
 	hal_target.stuttering += 20
 	if(hal_target.dna && hal_target.dna.check_mutation(HULK))
@@ -555,6 +625,8 @@
 	pass_flags = PASSTABLE | PASSGLASS | PASSGRILLE
 
 /obj/item/projectile/hallucination/disabler/hal_apply_effect()
+	procstart = null
+	src.procstart = null
 	hal_target.adjustStaminaLoss(25)
 
 /obj/item/projectile/hallucination/ebow
@@ -568,6 +640,8 @@
 	hal_impact_effect_wall = null
 
 /obj/item/projectile/hallucination/ebow/hal_apply_effect()
+	procstart = null
+	src.procstart = null
 	hal_target.Knockdown(100)
 	hal_target.stuttering += 5
 	hal_target.adjustStaminaLoss(8)
@@ -583,6 +657,8 @@
 	hal_impact_effect_wall = null
 
 /obj/item/projectile/hallucination/change/hal_apply_effect()
+	procstart = null
+	src.procstart = null
 	new /datum/hallucination/self_delusion(hal_target, TRUE, wabbajack = FALSE)
 
 /obj/item/projectile/hallucination/death
@@ -596,6 +672,8 @@
 	hal_impact_effect_wall = null
 
 /obj/item/projectile/hallucination/death/hal_apply_effect()
+	procstart = null
+	src.procstart = null
 	new /datum/hallucination/death(hal_target, TRUE)
 
 // Neurotoxin
@@ -608,6 +686,8 @@
 	knockdown = 100
 
 /obj/item/projectile/bullet/neurotoxin/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isalien(target))
 		knockdown = 0
 		nodamage = TRUE

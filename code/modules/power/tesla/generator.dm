@@ -6,5 +6,7 @@
 	creation_type = /obj/singularity/energy_ball
 
 /obj/machinery/the_singularitygen/tesla/tesla_act(power, explosive = FALSE)
+	procstart = null
+	src.procstart = null
 	if(explosive)
 		energy += power

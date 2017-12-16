@@ -5,4 +5,6 @@
 		..(msg)
 
 /mob/living/silicon/pai/binarycheck()
+	procstart = null
+	src.procstart = null
 	return 0

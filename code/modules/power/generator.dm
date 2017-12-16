@@ -19,6 +19,8 @@
 
 
 /obj/machinery/power/generator/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/atmospherics/components/binary/circulator/circpath = /obj/machinery/atmospherics/components/binary/circulator
 	cold_circ = locate(circpath) in get_step(src, cold_dir)
@@ -48,11 +50,15 @@
 	update_icon()
 
 /obj/machinery/power/generator/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.atmos_machinery -= src
 	return ..()
 
 /obj/machinery/power/generator/update_icon()
 
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		cut_overlays()
 	else
@@ -69,6 +75,8 @@
 
 /obj/machinery/power/generator/process_atmos()
 
+	procstart = null
+	src.procstart = null
 	if(!cold_circ || !hot_circ)
 		return
 
@@ -116,6 +124,8 @@
 	src.updateDialog()
 
 /obj/machinery/power/generator/process()
+	procstart = null
+	src.procstart = null
 	//Setting this number higher just makes the change in power output slower, it doesnt actualy reduce power output cause **math**
 	var/power_output = round(lastgen / 10)
 	add_avail(power_output)
@@ -124,12 +134,16 @@
 	..()
 
 /obj/machinery/power/generator/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		user << browse(null, "window=teg")
 		return
 	interact(user)
 
 /obj/machinery/power/generator/proc/get_menu(include_link = 1)
+	procstart = null
+	src.procstart = null
 	var/t = ""
 	if(!powernet)
 		t += "<span class='bad'>Unable to connect to the power network!</span>"
@@ -163,6 +177,8 @@
 
 /obj/machinery/power/generator/interact(mob/user)
 
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/datum/browser/popup = new(user, "teg", "Thermo-Electric Generator", 460, 300)
 	popup.set_content(get_menu())
@@ -172,6 +188,8 @@
 
 
 /obj/machinery/power/generator/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if( href_list["close"] )
@@ -182,5 +200,7 @@
 
 
 /obj/machinery/power/generator/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()

@@ -19,6 +19,8 @@
 	var/y_offset = 0
 
 /obj/machinery/launchpad/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/E = -1 //to make default parts have the base value
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		E += M.rating
@@ -26,6 +28,8 @@
 	range += E
 
 /obj/machinery/launchpad/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(stationary)
 		if(default_deconstruction_screwdriver(user, "lpad-idle-o", "lpad-idle", I))
 			return
@@ -46,6 +50,8 @@
 	return ..()
 
 /obj/machinery/launchpad/proc/isAvailable()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		return FALSE
 	if(panel_open)
@@ -53,6 +59,8 @@
 	return TRUE
 
 /obj/machinery/launchpad/proc/doteleport(mob/user, sending)
+	procstart = null
+	src.procstart = null
 	if(teleporting)
 		to_chat(user, "<span class='warning'>ERROR: Launchpad busy.</span>")
 		return
@@ -150,6 +158,8 @@
 	var/obj/item/briefcase_launchpad/briefcase
 
 /obj/machinery/launchpad/briefcase/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(loc, /obj/item/briefcase_launchpad))
 		briefcase = loc
@@ -158,15 +168,21 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/machinery/launchpad/briefcase/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(briefcase)
 	return ..()
 
 /obj/machinery/launchpad/briefcase/isAvailable()
+	procstart = null
+	src.procstart = null
 	if(closed)
 		return FALSE
 	return ..()
 
 /obj/machinery/launchpad/briefcase/MouseDrop(over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(over_object == usr && Adjacent(usr))
 		if(!briefcase || !usr.can_hold_items())
@@ -181,6 +197,8 @@
 			closed = TRUE
 
 /obj/machinery/launchpad/briefcase/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/launchpad_remote))
 		var/obj/item/device/launchpad_remote/L = I
 		L.pad = src
@@ -208,16 +226,22 @@
 	var/obj/machinery/launchpad/briefcase/pad
 
 /obj/item/briefcase_launchpad/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pad = new(src)
 
 /obj/item/briefcase_launchpad/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(pad))
 		qdel(pad)
 	pad = null
 	return ..()
 
 /obj/item/briefcase_launchpad/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isturf(user.loc)) //no setting up in a locker
 		return
 	add_fingerprint(user)
@@ -228,6 +252,8 @@
 		user.transferItemToLoc(src, pad, TRUE)
 
 /obj/item/briefcase_launchpad/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/launchpad_remote))
 		var/obj/item/device/launchpad_remote/L = I
 		L.pad = src.pad
@@ -246,6 +272,8 @@
 	var/obj/machinery/launchpad/briefcase/pad
 
 /obj/item/device/launchpad_remote/ui_interact(mob/user, ui_key = "launchpad_remote", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "launchpad_remote", "Briefcase Launchpad Remote", 550, 400, master_ui, state) //width, height
@@ -255,6 +283,8 @@
 	ui.set_autoupdate(TRUE)
 
 /obj/item/device/launchpad_remote/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["has_pad"] = pad ? TRUE : FALSE
 	if(pad)
@@ -270,6 +300,8 @@
 	return data
 
 /obj/item/device/launchpad_remote/proc/teleport(mob/user, obj/machinery/launchpad/pad)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(pad))
 		to_chat(user, "<span class='warning'>ERROR: Launchpad not responding. Check launchpad integrity.</span>")
 		return
@@ -279,6 +311,8 @@
 	pad.doteleport(user, sending)
 
 /obj/item/device/launchpad_remote/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)

@@ -33,11 +33,15 @@
 							)
 
 /obj/machinery/limbgrower/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(0)
 	stored_research = new /datum/techweb/specialized/autounlocking/limbgrower
 
 /obj/machinery/limbgrower/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		return
 
@@ -56,11 +60,15 @@
 	popup.open()
 
 /obj/machinery/limbgrower/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/reagent_containers/glass/G in component_parts)
 		reagents.trans_to(G, G.reagents.maximum_volume)
 	..()
 
 /obj/machinery/limbgrower/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (busy)
 		to_chat(user, "<span class=\"alert\">The Limb Grower is busy. Please wait for completion of previous operation.</span>")
 		return
@@ -79,6 +87,8 @@
 		return ..()
 
 /obj/machinery/limbgrower/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if (!busy)
@@ -117,6 +127,8 @@
 	return
 
 /obj/machinery/limbgrower/proc/build_item()
+	procstart = null
+	src.procstart = null
 	if(reagents.has_reagent("synthflesh", being_built.reagents_list["synthflesh"]*prod_coeff))	//sanity check, if this happens we are in big trouble
 		reagents.remove_reagent("synthflesh",being_built.reagents_list["synthflesh"]*prod_coeff)
 		var/buildpath = being_built.build_path
@@ -133,6 +145,8 @@
 	updateUsrDialog()
 
 /obj/machinery/limbgrower/proc/build_limb(buildpath)
+	procstart = null
+	src.procstart = null
 	//i need to create a body part manually using a set icon (otherwise it doesnt appear)
 	var/obj/item/bodypart/limb
 	limb = new buildpath(loc)
@@ -149,6 +163,8 @@
 	limb.update_icon_dropped()
 
 /obj/machinery/limbgrower/RefreshParts()
+	procstart = null
+	src.procstart = null
 	reagents.maximum_volume = 0
 	for(var/obj/item/reagent_containers/glass/G in component_parts)
 		reagents.maximum_volume += G.volume
@@ -159,6 +175,8 @@
 	prod_coeff = min(1,max(0,T)) // Coeff going 1 -> 0,8 -> 0,6 -> 0,4
 
 /obj/machinery/limbgrower/proc/main_win(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = "<div class='statusDisplay'><h3>Limb Grower Menu:</h3><br>"
 	dat += "<A href='?src=[REF(src)];menu=[LIMBGROWER_CHEMICAL_MENU]'>Chemical Storage</A>"
 	dat += materials_printout()
@@ -176,6 +194,8 @@
 	return dat
 
 /obj/machinery/limbgrower/proc/category_win(mob/user,selected_category)
+	procstart = null
+	src.procstart = null
 	var/dat = "<A href='?src=[REF(src)];menu=[LIMBGROWER_MAIN_MENU]'>Return to main menu</A>"
 	dat += "<div class='statusDisplay'><h3>Browsing [selected_category]:</h3><br>"
 	dat += materials_printout()
@@ -195,6 +215,8 @@
 
 
 /obj/machinery/limbgrower/proc/chemical_win(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = "<A href='?src=[REF(src)];menu=[LIMBGROWER_MAIN_MENU]'>Return to main menu</A>"
 	dat += "<div class='statusDisplay'><h3>Browsing Chemical Storage:</h3><br>"
 	dat += materials_printout()
@@ -207,19 +229,27 @@
 	return dat
 
 /obj/machinery/limbgrower/proc/materials_printout()
+	procstart = null
+	src.procstart = null
 	var/dat = "<b>Total amount:></b> [reagents.total_volume] / [reagents.maximum_volume] cm<sup>3</sup><br>"
 	return dat
 
 /obj/machinery/limbgrower/proc/can_build(datum/design/D)
+	procstart = null
+	src.procstart = null
 	return (reagents.has_reagent("synthflesh", D.reagents_list["synthflesh"]*prod_coeff)) //Return whether the machine has enough synthflesh to produce the design
 
 /obj/machinery/limbgrower/proc/get_design_cost(datum/design/D)
+	procstart = null
+	src.procstart = null
 	var/dat
 	if(D.reagents_list["synthflesh"])
 		dat += "[D.reagents_list["synthflesh"] * prod_coeff] Synthetic flesh "
 	return dat
 
 /obj/machinery/limbgrower/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	for(var/datum/design/D in SSresearch.techweb_designs)

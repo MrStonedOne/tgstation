@@ -11,6 +11,8 @@
 	force = 15
 
 /obj/item/mecha_parts/mecha_equipment/drill/action(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	if(isspaceturf(target))
@@ -38,9 +40,13 @@
 				target.ex_act(EXPLODE_HEAVY)
 
 /turf/proc/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/closed/wall/r_wall/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill)
+	procstart = null
+	src.procstart = null
 	if(istype(drill, /obj/item/mecha_parts/mecha_equipment/drill/diamonddrill))
 		if(drill.do_after_cooldown(src))//To slow down how fast mechs can drill through the station
 			drill.log_message("Drilled through [src]")
@@ -49,6 +55,8 @@
 		drill.occupant_message("<span class='danger'>[src] is too durable to drill through.</span>")
 
 /turf/closed/mineral/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill)
+	procstart = null
+	src.procstart = null
 	for(var/turf/closed/mineral/M in range(drill.chassis,1))
 		if(get_dir(drill.chassis,M)&drill.chassis.dir)
 			M.gets_drilled()
@@ -56,6 +64,8 @@
 	drill.move_ores()
 
 /turf/open/floor/plating/asteroid/drill_act(obj/item/mecha_parts/mecha_equipment/drill/drill)
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/floor/plating/asteroid/M in range(1, drill.chassis))
 		if(get_dir(drill.chassis,M)&drill.chassis.dir)
 			for(var/I in GetComponents(/datum/component/archaeology))
@@ -66,17 +76,23 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/drill/proc/move_ores()
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/item/mecha_parts/mecha_equipment/hydraulic_clamp) in chassis.equipment && istype(chassis, /obj/mecha/working/ripley))
 		var/obj/mecha/working/ripley/R = chassis //we could assume that it's a ripley because it has a clamp, but that's ~unsafe~ and ~bad practice~
 		R.collect_ore()
 
 /obj/item/mecha_parts/mecha_equipment/drill/can_attach(obj/mecha/M as obj)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(M, /obj/mecha/working) || istype(M, /obj/mecha/combat))
 			return 1
 	return 0
 
 /obj/item/mecha_parts/mecha_equipment/drill/proc/drill_mob(mob/living/target, mob/user, var/drill_damage=80)
+	procstart = null
+	src.procstart = null
 	target.visible_message("<span class='danger'>[chassis] drills [target] with [src].</span>", \
 						"<span class='userdanger'>[chassis] drills [target] with [src].</span>")
 	add_logs(user, target, "attacked", "[name]", "(INTENT: [uppertext(user.a_intent)]) (DAMTYPE: [uppertext(damtype)])")
@@ -111,10 +127,14 @@
 	var/scanning_time = 0
 
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/item/mecha_parts/mecha_equipment/mining_scanner/process()
+	procstart = null
+	src.procstart = null
 	if(!loc)
 		STOP_PROCESSING(SSfastprocess, src)
 		qdel(src)

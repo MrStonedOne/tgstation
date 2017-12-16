@@ -32,35 +32,53 @@
 	var/list/datum/mind/targets_stolen
 	
 /datum/antagonist/traitor/human/internal_affairs/proc/give_pinpointer()
+	procstart = null
+	src.procstart = null
 	if(owner && owner.current)
 		owner.current.apply_status_effect(/datum/status_effect/agent_pinpointer)
 	
 /datum/antagonist/traitor/human/internal_affairs/apply_innate_effects()
+	procstart = null
+	src.procstart = null
 	.=..() //in case the base is used in future
 	if(owner && owner.current)
 		give_pinpointer(owner.current)
 
 /datum/antagonist/traitor/human/internal_affairs/remove_innate_effects()
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(owner && owner.current)
 		owner.current.remove_status_effect(/datum/status_effect/agent_pinpointer)
 
 /datum/antagonist/traitor/human/internal_affairs/on_gain()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSprocessing, src)
 	.=..()
 /datum/antagonist/traitor/human/internal_affairs/on_removal()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing,src)
 	.=..()
 /datum/antagonist/traitor/human/internal_affairs/process()
+	procstart = null
+	src.procstart = null
 	iaa_process()
 
 /datum/antagonist/traitor/AI/internal_affairs/on_gain()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSprocessing, src)
 	.=..()
 /datum/antagonist/traitor/AI/internal_affairs/on_removal()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing,src)
 	.=..()
 /datum/antagonist/traitor/AI/internal_affairs/process()
+	procstart = null
+	src.procstart = null
 	iaa_process()
 
 /datum/status_effect/agent_pinpointer
@@ -99,6 +117,8 @@
 				linked_alert.icon_state = "pinonfar"
 
 /datum/status_effect/agent_pinpointer/proc/scan_for_target()
+	procstart = null
+	src.procstart = null
 	scan_target = null
 	if(owner)
 		if(owner.mind)
@@ -113,6 +133,8 @@
 					break
 
 /datum/status_effect/agent_pinpointer/tick()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		qdel(src)
 		return
@@ -121,9 +143,13 @@
 
 
 /proc/is_internal_objective(datum/objective/O)
+	procstart = null
+	src.procstart = null
 	return (istype(O, /datum/objective/assassinate/internal)||istype(O, /datum/objective/destroy/internal))
 
 /datum/antagonist/traitor/proc/replace_escape_objective()
+	procstart = null
+	src.procstart = null
 	if(!owner||!owner.objectives)
 		return
 	for (var/objective_ in owner.objectives)
@@ -136,6 +162,8 @@
 	add_objective(martyr_objective)
 
 /datum/antagonist/traitor/proc/reinstate_escape_objective()
+	procstart = null
+	src.procstart = null
 	if(!owner||!owner.objectives)
 		return
 	for (var/objective_ in owner.objectives)
@@ -144,18 +172,24 @@
 		remove_objective(objective_)
 
 /datum/antagonist/traitor/human/internal_affairs/reinstate_escape_objective()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/objective/escape/escape_objective = new
 	escape_objective.owner = owner
 	add_objective(escape_objective)
 
 /datum/antagonist/traitor/AI/internal_affairs/reinstate_escape_objective()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/objective/survive/survive_objective = new
 	survive_objective.owner = owner
 	add_objective(survive_objective)
 
 /datum/antagonist/traitor/proc/steal_targets(datum/mind/victim)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/traitor/human/internal_affairs/this = src //Should only use this if IAA
 	
 	if(!owner.current||owner.current.stat==DEAD) 
@@ -204,6 +238,8 @@
 		replace_escape_objective(owner)
 
 /datum/antagonist/traitor/proc/iaa_process()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/traitor/human/internal_affairs/this = src //Should only use this if IAA
 	if(owner&&owner.current&&owner.current.stat!=DEAD)
 		for(var/objective_ in owner.objectives)
@@ -232,6 +268,8 @@
 					objective.stolen = FALSE
 
 /datum/antagonist/traitor/proc/forge_iaa_objectives()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/traitor/human/internal_affairs/this = src //Should only use this if IAA
 	if(SSticker.mode.target_list.len && SSticker.mode.target_list[owner]) // Is a double agent
 
@@ -262,18 +300,24 @@
 	return
 
 /datum/antagonist/traitor/human/internal_affairs/forge_traitor_objectives()
+	procstart = null
+	src.procstart = null
 	forge_iaa_objectives()
 	var/datum/objective/escape/escape_objective = new
 	escape_objective.owner = owner
 	add_objective(escape_objective)
 
 /datum/antagonist/traitor/AI/internal_affairs/forge_traitor_objectives()
+	procstart = null
+	src.procstart = null
 	forge_iaa_objectives()
 	var/datum/objective/survive/survive_objective = new
 	survive_objective.owner = owner
 	add_objective(survive_objective)
 
 /datum/antagonist/traitor/proc/greet_iaa()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/traitor/human/internal_affairs/this = src //Should only use this if IAA
 	var/crime = pick("distribution of contraband" , "unauthorized erotic action on duty", "embezzlement", "piloting under the influence", "dereliction of duty", "syndicate collaboration", "mutiny", "multiple homicides", "corporate espionage", "recieving bribes", "malpractice", "worship of prohbited life forms", "possession of profane texts", "murder", "arson", "insulting their manager", "grand theft", "conspiracy", "attempting to unionize", "vandalism", "gross incompetence")
 
@@ -291,8 +335,12 @@
 	owner.announce_objectives()
 
 /datum/antagonist/traitor/AI/internal_affairs/greet()
+	procstart = null
+	src.procstart = null
 	greet_iaa()
 /datum/antagonist/traitor/human/internal_affairs/greet()
+	procstart = null
+	src.procstart = null
 	greet_iaa()
 
 

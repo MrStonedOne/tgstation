@@ -4,10 +4,14 @@
 	activated = 0
 
 /obj/item/implant/tracking/New()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.tracked_implants += src
 
 /obj/item/implant/tracking/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.tracked_implants -= src
 
@@ -18,6 +22,8 @@
 	imp_type = /obj/item/device/gps/mining/internal
 
 /obj/item/implant/tracking/get_data()
+	procstart = null
+	src.procstart = null
 	var/dat = {"<b>Implant Specifications:</b><BR>
 				<b>Name:</b> Tracking Beacon<BR>
 				<b>Life:</b> 10 minutes after death of host<BR>

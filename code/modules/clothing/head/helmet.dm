@@ -21,6 +21,8 @@
 	can_flashlight = 1
 
 /obj/item/clothing/head/helmet/sec/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(issignaler(I))
 		var/obj/item/device/assembly/signaler/S = I
 		if(F) //Has a flashlight. Player must remove it, else it will be lost forever.
@@ -73,6 +75,8 @@
 	dog_fashion = null
 
 /obj/item/clothing/head/helmet/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(can_toggle && !user.incapacitated())
 		if(world.time > cooldown + toggle_cooldown)
 			cooldown = world.time
@@ -207,6 +211,8 @@
 	flags_2 = NONE
 
 /obj/item/clothing/head/helmet/knight/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /obj/item/clothing/head/helmet/knight/blue
@@ -240,6 +246,8 @@
 //LightToggle
 
 /obj/item/clothing/head/helmet/update_icon()
+	procstart = null
+	src.procstart = null
 	var/state = "[initial(icon_state)]"
 	if(F)
 		if(F.on)
@@ -254,12 +262,16 @@
 		H.update_inv_head()
 
 /obj/item/clothing/head/helmet/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/toggle_helmet_flashlight))
 		toggle_helmlight()
 	else
 		..()
 
 /obj/item/clothing/head/helmet/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/flashlight/seclite))
 		var/obj/item/device/flashlight/seclite/S = I
 		if(can_flashlight)
@@ -296,6 +308,8 @@
 	return ..()
 
 /obj/item/clothing/head/helmet/proc/toggle_helmlight()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Helmetlight"
 	set category = "Object"
 	set desc = "Click to toggle your helmet's attached flashlight."
@@ -313,6 +327,8 @@
 	update_helmlight(user)
 
 /obj/item/clothing/head/helmet/proc/update_helmlight(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(F)
 		if(F.on)
 			set_light(F.brightness_on)

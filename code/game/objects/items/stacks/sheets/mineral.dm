@@ -23,6 +23,8 @@ Mineral Sheets
 	icon = 'icons/obj/mining.dmi'
 
 /obj/item/stack/sheet/mineral/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	pixel_x = rand(-4, 4)
 	pixel_y = rand(-4, 4)
 	. = ..()
@@ -50,6 +52,8 @@ GLOBAL_LIST_INIT(sandstone_recipes, list ( \
 	sheettype = "sandstone"
 
 /obj/item/stack/sheet/mineral/sandstone/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.sandstone_recipes
 	. = ..()
 
@@ -73,6 +77,8 @@ GLOBAL_LIST_INIT(sandbag_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/sandbags/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.sandbag_recipes
 	. = ..()
 
@@ -84,6 +90,8 @@ GLOBAL_LIST_INIT(sandbag_recipes, list ( \
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/emptysandbag/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/ore/glass))
 		to_chat(user, "<span class='notice'>You fill the sandbag.</span>")
 		var/obj/item/stack/sheet/mineral/sandbags/I = new /obj/item/stack/sheet/mineral/sandbags
@@ -113,6 +121,8 @@ GLOBAL_LIST_INIT(diamond_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/diamond/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.diamond_recipes
 	. = ..()
 
@@ -136,6 +146,8 @@ GLOBAL_LIST_INIT(uranium_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/uranium/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.uranium_recipes
 	. = ..()
 
@@ -159,10 +171,14 @@ GLOBAL_LIST_INIT(plasma_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/plasma/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.plasma_recipes
 	. = ..()
 
 /obj/item/stack/sheet/mineral/plasma/attackby(obj/item/W as obj, mob/user as mob, params)
+	procstart = null
+	src.procstart = null
 	if(W.is_hot() > 300)//If the temperature of the object is over 300, then ignite
 		var/turf/T = get_turf(src)
 		message_admins("Plasma sheets ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(T)]",0,1)
@@ -172,6 +188,8 @@ GLOBAL_LIST_INIT(plasma_recipes, list ( \
 		return ..()
 
 /obj/item/stack/sheet/mineral/plasma/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	atmos_spawn_air("plasma=[amount*10];TEMP=[exposed_temperature]")
 	qdel(src)
 
@@ -198,6 +216,8 @@ GLOBAL_LIST_INIT(gold_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/gold/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.gold_recipes
 	. = ..()
 
@@ -223,6 +243,8 @@ GLOBAL_LIST_INIT(silver_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/silver/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.silver_recipes
 	. = ..()
 
@@ -244,6 +266,8 @@ GLOBAL_LIST_INIT(clown_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/bananium/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.clown_recipes
 	. = ..()
 
@@ -267,6 +291,8 @@ GLOBAL_LIST_INIT(titanium_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/titanium/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.titanium_recipes
 	. = ..()
 
@@ -294,6 +320,8 @@ GLOBAL_LIST_INIT(plastitanium_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/plastitanium/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.plastitanium_recipes
 	. = ..()
 
@@ -316,6 +344,8 @@ GLOBAL_LIST_INIT(snow_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/snow/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.snow_recipes
 	. = ..()
 
@@ -343,6 +373,8 @@ GLOBAL_LIST_INIT(adamantine_recipes, list(
 	singular_name = "adamantine sheet"
 
 /obj/item/stack/sheet/mineral/adamantine/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.adamantine_recipes
 	. = ..()
 
@@ -375,5 +407,7 @@ GLOBAL_LIST_INIT(abductor_recipes, list ( \
 	))
 
 /obj/item/stack/sheet/mineral/abductor/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.abductor_recipes
 	. = ..()

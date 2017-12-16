@@ -120,12 +120,16 @@
 	filling_color = "#FF0000"
 
 /obj/item/reagent_containers/food/snacks/grown/tomato/killer/attack(mob/M, mob/user, def_zone)
+	procstart = null
+	src.procstart = null
 	if(awakening)
 		to_chat(user, "<span class='warning'>The tomato is twitching and shaking, preventing you from eating it.</span>")
 		return
 	..()
 
 /obj/item/reagent_containers/food/snacks/grown/tomato/killer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(awakening || isspaceturf(user.loc))
 		return
 	to_chat(user, "<span class='notice'>You begin to awaken the Killer Tomato...</span>")

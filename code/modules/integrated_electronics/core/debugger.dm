@@ -10,6 +10,8 @@
 	var/accepting_refs = FALSE
 
 /obj/item/device/integrated_electronics/debugger/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/type_to_use = input("Please choose a type to use.","[src] type setting") as null|anything in list("string","number","ref", "null")
 	if(!user.IsAdvancedToolUser())
 		return
@@ -37,6 +39,8 @@
 			to_chat(user, "<span class='notice'>You set \the [src]'s memory to absolutely nothing.</span>")
 
 /obj/item/device/integrated_electronics/debugger/afterattack(atom/target, mob/living/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(accepting_refs && proximity)
 		data_to_write = WEAKREF(target)
 		visible_message("<span class='notice'>[user] slides \a [src]'s over \the [target].</span>")
@@ -47,6 +51,8 @@
 		return ..()
 
 /obj/item/device/integrated_electronics/debugger/proc/write_data(var/datum/integrated_io/io, mob/user)
+	procstart = null
+	src.procstart = null
 	if(io.io_type == DATA_CHANNEL)
 		io.write_data_to_pin(data_to_write)
 		var/data_to_show = data_to_write

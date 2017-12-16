@@ -6,11 +6,15 @@
 	earliest_start = 0
 
 /datum/round_event_control/wizard/summonguns/New()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/no_summon_guns))
 		weight = 0
 	..()
 
 /datum/round_event/wizard/summonguns/start()
+	procstart = null
+	src.procstart = null
 	rightandwrong(0,,10)
 
 /datum/round_event_control/wizard/summonmagic //The Somewhat Less Classic
@@ -21,9 +25,13 @@
 	earliest_start = 0
 
 /datum/round_event_control/wizard/summonmagic/New()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/no_summon_magic))
 		weight = 0
 	..()
 
 /datum/round_event/wizard/summonmagic/start()
+	procstart = null
+	src.procstart = null
 	rightandwrong(1,,10)

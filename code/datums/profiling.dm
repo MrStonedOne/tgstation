@@ -7,6 +7,8 @@ GLOBAL_REAL_VAR(PROFILE_TIME)
 
 
 /proc/profile_show(user, sort = /proc/cmp_profile_avg_time_dsc)
+	procstart = null
+	src.procstart = null
 	sortTim(PROFILE_STORE, sort, TRUE)
 
 	var/list/lines = list()

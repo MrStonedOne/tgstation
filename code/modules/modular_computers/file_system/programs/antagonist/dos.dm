@@ -18,6 +18,8 @@
 	var/executed = 0
 
 /datum/computer_file/program/ntnet_dos/process_tick()
+	procstart = null
+	src.procstart = null
 	dos_speed = 0
 	switch(ntnet_status)
 		if(1)
@@ -34,6 +36,8 @@
 			error = "Connection to destination relay lost."
 
 /datum/computer_file/program/ntnet_dos/kill_program(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(target)
 		target.dos_sources.Remove(src)
 	target = null
@@ -42,6 +46,8 @@
 	..()
 
 /datum/computer_file/program/ntnet_dos/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	switch(action)
@@ -68,6 +74,8 @@
 			return 1
 
 /datum/computer_file/program/ntnet_dos/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!SSnetworks.station_network)
 		return
 

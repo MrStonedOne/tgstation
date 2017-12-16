@@ -31,6 +31,8 @@ Bonus
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
 /datum/symptom/sneeze/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["transmittable"] >= 9) //longer spread range
@@ -39,6 +41,8 @@ Bonus
 		suppress_warning = TRUE
 
 /datum/symptom/sneeze/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

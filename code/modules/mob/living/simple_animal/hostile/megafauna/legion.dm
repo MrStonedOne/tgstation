@@ -53,20 +53,28 @@ Difficulty: Medium
 	mouse_opacity = MOUSE_OPACITY_ICON
 
 /mob/living/simple_animal/hostile/megafauna/legion/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal = new/obj/item/device/gps/internal/legion(src)
 
 /mob/living/simple_animal/hostile/megafauna/legion/GiveTarget(new_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(target)
 		wander = TRUE
 
 /mob/living/simple_animal/hostile/megafauna/legion/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(GLOB.necropolis_gate)
 		GLOB.necropolis_gate.toggle_the_gate(null, TRUE) //very clever.
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/legion/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && ishuman(target))
 		var/mob/living/L = target
@@ -75,6 +83,8 @@ Difficulty: Medium
 			A.infest(L)
 
 /mob/living/simple_animal/hostile/megafauna/legion/OpenFire(the_target)
+	procstart = null
+	src.procstart = null
 	if(world.time >= ranged_cooldown && !charging)
 		if(prob(75))
 			var/mob/living/simple_animal/hostile/asteroid/hivelordbrood/legion/A = new(loc)
@@ -93,6 +103,8 @@ Difficulty: Medium
 			addtimer(CALLBACK(src, .proc/reset_charge), 50)
 
 /mob/living/simple_animal/hostile/megafauna/legion/proc/reset_charge()
+	procstart = null
+	src.procstart = null
 	ranged = 1
 	retreat_distance = 5
 	minimum_distance = 5
@@ -100,6 +112,8 @@ Difficulty: Medium
 	charging = 0
 
 /mob/living/simple_animal/hostile/megafauna/legion/death()
+	procstart = null
+	src.procstart = null
 	if(health > 0)
 		return
 	if(size > 1)
@@ -165,6 +179,8 @@ Difficulty: Medium
 	var/static/list/excluded_areas = list(/area/reebe/city_of_cogs)
 
 /obj/item/staff/storm/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(storm_cooldown > world.time)
 		to_chat(user, "<span class='warning'>The staff is still recharging!</span>")
 		return

@@ -24,6 +24,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/New()
+	procstart = null
+	src.procstart = null
 	..()
 	tumbler_1_pos = rand(0, 71)
 	tumbler_1_open = rand(0, 71)
@@ -33,6 +35,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!mapload)
@@ -47,6 +51,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/proc/check_unlocked(mob/user, canhear)
+	procstart = null
+	src.procstart = null
 	if(user && canhear)
 		if(tumbler_1_pos == tumbler_1_open)
 			to_chat(user, "<span class='italics'>You hear a [pick("tonk", "krunk", "plunk")] from [src].</span>")
@@ -60,6 +66,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/proc/decrement(num)
+	procstart = null
+	src.procstart = null
 	num -= 1
 	if(num < 0)
 		num = 71
@@ -67,6 +75,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/proc/increment(num)
+	procstart = null
+	src.procstart = null
 	num += 1
 	if(num > 71)
 		num = 0
@@ -74,6 +84,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/update_icon()
+	procstart = null
+	src.procstart = null
 	if(open)
 		icon_state = "[initial(icon_state)]-open"
 	else
@@ -81,6 +93,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = "<center>"
 	dat += "<a href='?src=[REF(src)];open=1'>[open ? "Close" : "Open"] [src]</a> | <a href='?src=[REF(src)];decrement=1'>-</a> [dial * 5] <a href='?src=[REF(src)];increment=1'>+</a>"
@@ -94,6 +108,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(usr))
 		return
 	var/mob/living/carbon/human/user = usr
@@ -156,6 +172,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(open)
 		. = 1 //no afterattack
 		if(I.w_class + space <= maxspace)
@@ -176,12 +194,18 @@ FLOOR SAFES
 
 
 /obj/structure/safe/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	updateUsrDialog()
 
 /obj/structure/safe/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/safe/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -195,6 +219,8 @@ FLOOR SAFES
 
 
 /obj/structure/safe/floor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		var/turf/T = loc
@@ -202,4 +228,6 @@ FLOOR SAFES
 
 
 /obj/structure/safe/floor/hide(var/intact)
+	procstart = null
+	src.procstart = null
 	invisibility = intact ? INVISIBILITY_MAXIMUM : 0

@@ -8,11 +8,15 @@
 	var/cooldown = 0//Door cooldowns
 
 /obj/item/device/assembly/control/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(id)
 		to_chat(user, "<span class='notice'>Its channel ID is '[id]'.</span>")
 
 /obj/item/device/assembly/control/activate()
+	procstart = null
+	src.procstart = null
 	cooldown = 1
 	var/openclose
 	for(var/obj/machinery/door/poddoor/M in GLOB.machines)
@@ -38,6 +42,8 @@
 	*/
 
 /obj/item/device/assembly/control/airlock/activate()
+	procstart = null
+	src.procstart = null
 	cooldown = 1
 	var/doors_need_closing = FALSE
 	var/list/obj/machinery/door/airlock/open_or_close = list()
@@ -75,6 +81,8 @@
 	desc = "A small electronic device able to control a mass driver."
 
 /obj/item/device/assembly/control/massdriver/activate()
+	procstart = null
+	src.procstart = null
 	cooldown = 1
 	for(var/obj/machinery/door/poddoor/M in GLOB.machines)
 		if (M.id == src.id)
@@ -101,6 +109,8 @@
 	desc = "A remote controller for a mounted igniter."
 
 /obj/item/device/assembly/control/igniter/activate()
+	procstart = null
+	src.procstart = null
 	cooldown = 1
 	for(var/obj/machinery/sparker/M in GLOB.machines)
 		if (M.id == src.id)
@@ -121,6 +131,8 @@
 	desc = "A remote controller for a mounted flasher."
 
 /obj/item/device/assembly/control/flasher/activate()
+	procstart = null
+	src.procstart = null
 	cooldown = 1
 	for(var/obj/machinery/flasher/M in GLOB.machines)
 		if(M.id == src.id)
@@ -135,6 +147,8 @@
 	desc = "An evil-looking remote controller for a crematorium."
 
 /obj/item/device/assembly/control/crematorium/activate()
+	procstart = null
+	src.procstart = null
 	cooldown = 1
 	for (var/obj/structure/bodycontainer/crematorium/C in GLOB.crematoriums)
 		if (C.id == id)

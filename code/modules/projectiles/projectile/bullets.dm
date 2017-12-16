@@ -13,6 +13,8 @@
 	var/fire_stacks = 4
 
 /obj/item/projectile/bullet/incendiary/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target
@@ -20,6 +22,8 @@
 		M.IgniteMob()
 
 /obj/item/projectile/bullet/incendiary/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/location = get_turf(src)
 	if(location)
@@ -142,6 +146,8 @@
 	damage = 60
 
 /obj/item/projectile/bullet/a40mm/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(target, -1, 0, 2, 1, 0, flame_range = 3)
 	return TRUE
@@ -158,6 +164,8 @@
 	var/breakthings = TRUE
 
 /obj/item/projectile/bullet/p50/on_hit(atom/target, blocked = 0)
+	procstart = null
+	src.procstart = null
 	if((blocked != 100) && (!ismob(target) && breakthings))
 		target.ex_act(rand(1,2))
 	return ..()
@@ -171,6 +179,8 @@
 	breakthings = FALSE
 
 /obj/item/projectile/bullet/p50/soporific/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if((blocked != 100) && isliving(target))
 		var/mob/living/L = target
 		L.Sleeping(400)
@@ -246,6 +256,8 @@
 	hitsound = 'sound/effects/meteorimpact.ogg'
 
 /obj/item/projectile/bullet/shotgun_meteorslug/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismovableatom(target))
 		var/atom/movable/M = target
@@ -253,6 +265,8 @@
 		M.throw_at(throw_target, 3, 2)
 
 /obj/item/projectile/bullet/shotgun_meteorslug/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SpinAnimation()
 
@@ -262,6 +276,8 @@
 	knockdown = 50
 
 /obj/item/projectile/bullet/shotgun_frag12/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(target, -1, 0, 1)
 	return TRUE
@@ -280,6 +296,8 @@
 	stamina = 25
 
 /obj/item/projectile/bullet/pellet/Range()
+	procstart = null
+	src.procstart = null
 	..()
 	if(damage > 0)
 		damage -= tile_dropoff
@@ -293,10 +311,14 @@
 	damage = 6
 
 /obj/item/projectile/bullet/pellet/shotgun_improvised/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	range = rand(1, 8)
 
 /obj/item/projectile/bullet/pellet/shotgun_improvised/on_range()
+	procstart = null
+	src.procstart = null
 	do_sparks(1, TRUE, src)
 	..()
 
@@ -342,6 +364,8 @@
 	range = 200
 
 /obj/item/projectile/bullet/honker/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SpinAnimation()
 
@@ -351,6 +375,8 @@
 	damage = 20
 
 /obj/item/projectile/bullet/mime/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target
@@ -365,11 +391,15 @@
 	var/piercing = FALSE
 
 /obj/item/projectile/bullet/dart/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(50)
 	reagents.set_reacting(FALSE)
 
 /obj/item/projectile/bullet/dart/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target
 		if(blocked != 100) // not completely blocked
@@ -389,6 +419,8 @@
 	return TRUE
 
 /obj/item/projectile/bullet/dart/metalfoam/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("aluminium", 15)
 	reagents.add_reagent("foaming_agent", 5)
@@ -409,6 +441,8 @@
 	hitsound_wall = "shatter"
 
 /obj/item/projectile/bullet/dnainjector/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target
 		if(blocked != 100)
@@ -423,6 +457,8 @@
 	return ..()
 
 /obj/item/projectile/bullet/dnainjector/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(injector)
 	return ..()
 

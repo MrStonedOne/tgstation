@@ -32,6 +32,8 @@
 	var/static/regex/alien_name_regex = new("alien (larva|sentinel|drone|hunter|praetorian|queen)( \\(\\d+\\))?")
 
 /mob/living/carbon/alien/Initialize()
+	procstart = null
+	src.procstart = null
 	verbs += /mob/living/proc/mob_sleep
 	verbs += /mob/living/proc/lay_down
 
@@ -42,6 +44,8 @@
 	. = ..()
 
 /mob/living/carbon/alien/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	internal_organs += new /obj/item/organ/brain/alien
 	internal_organs += new /obj/item/organ/alien/hivenode
 	internal_organs += new /obj/item/organ/tongue/alien
@@ -53,6 +57,8 @@
 	return -10
 
 /mob/living/carbon/alien/handle_environment(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	if(!environment)
 		return
 
@@ -90,15 +96,21 @@
 	return 0
 
 /mob/living/carbon/alien/IsAdvancedToolUser()
+	procstart = null
+	src.procstart = null
 	return has_fine_manipulation
 
 /mob/living/carbon/alien/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(statpanel("Status"))
 		stat(null, "Intent: [a_intent]")
 
 /mob/living/carbon/alien/getTrail()
+	procstart = null
+	src.procstart = null
 	if(getBruteLoss() < 200)
 		return pick (list("xltrails_1", "xltrails2"))
 	else
@@ -108,6 +120,8 @@ Proc: AddInfectionImages()
 Des: Gives the client of the alien an image on each infected mob.
 ----------------------------------------*/
 /mob/living/carbon/alien/proc/AddInfectionImages()
+	procstart = null
+	src.procstart = null
 	if (client)
 		for (var/i in GLOB.mob_living_list)
 			var/mob/living/L = i
@@ -124,6 +138,8 @@ Proc: RemoveInfectionImages()
 Des: Removes all infected images from the alien.
 ----------------------------------------*/
 /mob/living/carbon/alien/proc/RemoveInfectionImages()
+	procstart = null
+	src.procstart = null
 	if (client)
 		for(var/image/I in client.images)
 			if(dd_hasprefix_case(I.icon_state, "infected"))
@@ -131,12 +147,18 @@ Des: Removes all infected images from the alien.
 	return
 
 /mob/living/carbon/alien/canBeHandcuffed()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /mob/living/carbon/alien/get_standard_pixel_y_offset(lying = 0)
+	procstart = null
+	src.procstart = null
 	return initial(pixel_y)
 
 /mob/living/carbon/alien/proc/alien_evolve(mob/living/carbon/alien/new_xeno)
+	procstart = null
+	src.procstart = null
 	to_chat(src, "<span class='noticealien'>You begin to evolve!</span>")
 	visible_message("<span class='alertalien'>[src] begins to twist and contort!</span>")
 	new_xeno.setDir(dir)
@@ -154,4 +176,6 @@ Des: Removes all infected images from the alien.
 #undef HEAT_DAMAGE_LEVEL_3
 
 /mob/living/carbon/alien/can_hold_items()
+	procstart = null
+	src.procstart = null
 	return has_fine_manipulation

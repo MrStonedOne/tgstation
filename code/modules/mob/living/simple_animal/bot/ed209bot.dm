@@ -44,6 +44,8 @@
 
 
 /mob/living/simple_animal/bot/ed209/Initialize(mapload,created_name,created_lasercolor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(created_name)
 		name = created_name
@@ -72,15 +74,21 @@
 	secsensor.add_hud_to(src)
 
 /mob/living/simple_animal/bot/ed209/turn_on()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[lasercolor]ed209[on]"
 	mode = BOT_IDLE
 
 /mob/living/simple_animal/bot/ed209/turn_off()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "[lasercolor]ed209[on]"
 
 /mob/living/simple_animal/bot/ed209/bot_reset()
+	procstart = null
+	src.procstart = null
 	..()
 	target = null
 	oldtarget_name = null
@@ -90,11 +98,15 @@
 	set_weapon()
 
 /mob/living/simple_animal/bot/ed209/set_custom_texts()
+	procstart = null
+	src.procstart = null
 	text_hack = "You disable [name]'s combat inhibitor."
 	text_dehack = "You restore [name]'s combat inhibitor."
 	text_dehack_fail = "[name] ignores your attempts to restrict him!"
 
 /mob/living/simple_animal/bot/ed209/get_controls(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += hack(user)
 	dat += showpai(user)
@@ -127,6 +139,8 @@ Auto Patrol[]"},
 	return dat
 
 /mob/living/simple_animal/bot/ed209/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(lasercolor && ishuman(usr))
 		var/mob/living/carbon/human/H = usr
 		if((lasercolor == "b") && (istype(H.wear_suit, /obj/item/clothing/suit/redtag)))//Opposing team cannot operate it
@@ -154,6 +168,8 @@ Auto Patrol[]"},
 			update_controls()
 
 /mob/living/simple_animal/bot/ed209/proc/judgement_criteria()
+	procstart = null
+	src.procstart = null
 	var/final = FALSE
 	if(idcheck)
 		final = final|JUDGE_IDCHECK
@@ -168,6 +184,8 @@ Auto Patrol[]"},
 	return final
 
 /mob/living/simple_animal/bot/ed209/proc/retaliate(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/judgement_criteria = judgement_criteria()
 	threatlevel = H.assess_threat(judgement_criteria, weaponcheck=CALLBACK(src, .proc/check_for_weapons))
 	threatlevel += 6
@@ -176,11 +194,15 @@ Auto Patrol[]"},
 		mode = BOT_HUNT
 
 /mob/living/simple_animal/bot/ed209/attack_hand(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.a_intent == INTENT_HARM)
 		retaliate(H)
 	return ..()
 
 /mob/living/simple_animal/bot/ed209/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/weldingtool) && user.a_intent != INTENT_HARM) // Any intent but harm will heal, so we shouldn't get angry.
 		return
@@ -191,6 +213,8 @@ Auto Patrol[]"},
 				shootAt(user)
 
 /mob/living/simple_animal/bot/ed209/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(emagged == 2)
 		if(user)
@@ -202,6 +226,8 @@ Auto Patrol[]"},
 		set_weapon()
 
 /mob/living/simple_animal/bot/ed209/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(istype(Proj , /obj/item/projectile/beam/laser)||istype(Proj, /obj/item/projectile/bullet))
 		if((Proj.damage_type == BURN) || (Proj.damage_type == BRUTE))
 			if(!Proj.nodamage && Proj.damage < src.health)
@@ -209,6 +235,8 @@ Auto Patrol[]"},
 	..()
 
 /mob/living/simple_animal/bot/ed209/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -318,6 +346,8 @@ Auto Patrol[]"},
 	return
 
 /mob/living/simple_animal/bot/ed209/proc/back_to_idle()
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	mode = BOT_IDLE
 	target = null
@@ -326,6 +356,8 @@ Auto Patrol[]"},
 	INVOKE_ASYNC(src, .proc/handle_automated_action) //ensure bot quickly responds
 
 /mob/living/simple_animal/bot/ed209/proc/back_to_hunt()
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	frustration = 0
 	mode = BOT_HUNT
@@ -334,6 +366,8 @@ Auto Patrol[]"},
 // look for a criminal in view of the bot
 
 /mob/living/simple_animal/bot/ed209/proc/look_for_perp()
+	procstart = null
+	src.procstart = null
 	if(disabled)
 		return
 	anchored = FALSE
@@ -365,11 +399,15 @@ Auto Patrol[]"},
 			continue
 
 /mob/living/simple_animal/bot/ed209/proc/check_for_weapons(var/obj/item/slot_item)
+	procstart = null
+	src.procstart = null
 	if(slot_item && slot_item.needs_permit)
 		return 1
 	return 0
 
 /mob/living/simple_animal/bot/ed209/explode()
+	procstart = null
+	src.procstart = null
 	walk_to(src,0)
 	visible_message("<span class='boldannounce'>[src] blows apart!</span>")
 	var/atom/Tsec = drop_location()
@@ -430,6 +468,8 @@ Auto Patrol[]"},
 			projectile = /obj/item/projectile/beam/lasertag/redtag
 
 /mob/living/simple_animal/bot/ed209/proc/shootAt(mob/target)
+	procstart = null
+	src.procstart = null
 	if(lastfired && world.time - lastfired < shot_delay)
 		return
 	lastfired = world.time
@@ -449,6 +489,8 @@ Auto Patrol[]"},
 	A.fire()
 
 /mob/living/simple_animal/bot/ed209/attack_alien(mob/living/carbon/alien/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isalien(target))
 		target = user
@@ -457,6 +499,8 @@ Auto Patrol[]"},
 
 /mob/living/simple_animal/bot/ed209/emp_act(severity)
 
+	procstart = null
+	src.procstart = null
 	if(severity==2 && prob(70))
 		..(severity-1)
 	else
@@ -488,6 +532,8 @@ Auto Patrol[]"},
 
 
 /mob/living/simple_animal/bot/ed209/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(!disabled)
 		var/lasertag_check = 0
 		if((lasercolor == "b"))
@@ -516,6 +562,8 @@ Auto Patrol[]"},
 	lasercolor = "r"
 
 /mob/living/simple_animal/bot/ed209/UnarmedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	if(iscarbon(A))
@@ -528,11 +576,15 @@ Auto Patrol[]"},
 		..()
 
 /mob/living/simple_animal/bot/ed209/RangedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	shootAt(A)
 
 /mob/living/simple_animal/bot/ed209/proc/stun_attack(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/weapons/egloves.ogg', 50, 1, -1)
 	icon_state = "[lasercolor]ed209-c"
 	spawn(2)
@@ -552,6 +604,8 @@ Auto Patrol[]"},
 							"<span class='userdanger'>[src] has stunned you!</span>")
 
 /mob/living/simple_animal/bot/ed209/proc/cuff(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	mode = BOT_ARREST
 	playsound(loc, 'sound/weapons/cablecuff.ogg', 30, 1, -2)
 	C.visible_message("<span class='danger'>[src] is trying to put zipties on [C]!</span>",\

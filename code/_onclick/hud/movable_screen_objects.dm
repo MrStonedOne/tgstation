@@ -21,6 +21,8 @@
 
 
 /obj/screen/movable/MouseDrop(over_object, src_location, over_location, src_control, over_control, params)
+	procstart = null
+	src.procstart = null
 	if(locked) //no! I am locked! begone!
 		return
 	var/list/PM = params2list(params)
@@ -51,6 +53,8 @@
 
 //Debug procs
 /client/proc/test_movable_UI()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Spawn Movable UI Object"
 
@@ -70,6 +74,8 @@
 
 
 /client/proc/test_snap_UI()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Spawn Snap UI Object"
 

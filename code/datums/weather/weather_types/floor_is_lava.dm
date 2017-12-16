@@ -23,6 +23,8 @@
 	
 
 /datum/weather/floor_is_lava/weather_act(mob/living/L)
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/O in L.loc)			
 		if(O.density || (L in O.buckled_mobs && istype(O, /obj/structure/bed)))
 			return

@@ -40,6 +40,8 @@
 	var/updating = FALSE //portable camera camerachunk update
 
 /mob/living/silicon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.silicon_mobs += src
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
@@ -48,16 +50,24 @@
 	diag_hud_set_health()
 
 /mob/living/silicon/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION, TRUE, TRUE)
 
 /mob/living/silicon/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	return //we use a different hud
 
 /mob/living/silicon/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	return //we use a different hud
 
 /mob/living/silicon/Destroy()
+	procstart = null
+	src.procstart = null
 	radio = null
 	aicamera = null
 	QDEL_NULL(builtInCamera)
@@ -65,15 +75,23 @@
 	return ..()
 
 /mob/living/silicon/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/proc/cancelAlarm()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/proc/triggerAlarm()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/proc/queueAlarm(message, type, incoming = 1)
+	procstart = null
+	src.procstart = null
 	var/in_cooldown = (alarms_to_show.len > 0 || alarms_to_clear.len > 0)
 	if(incoming)
 		alarms_to_show += message
@@ -147,14 +165,20 @@
 				alarm_types_clear[key] = 0
 
 /mob/living/silicon/can_inject(mob/user, error_msg)
+	procstart = null
+	src.procstart = null
 	if(error_msg)
 		to_chat(user, "<span class='alert'>Their outer shell is too tough.</span>")
 	return 0
 
 /mob/living/silicon/IsAdvancedToolUser()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /proc/islinked(mob/living/silicon/robot/bot, mob/living/silicon/ai/ai)
+	procstart = null
+	src.procstart = null
 	if(!istype(bot) || !istype(ai))
 		return 0
 	if (bot.connected_ai == ai)
@@ -162,6 +186,8 @@
 	return 0
 
 /mob/living/silicon/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if (href_list["lawc"]) // Toggling whether or not a law gets stated by the State Laws verb --NeoFite
 		var/L = text2num(href_list["lawc"])
 		switch(lawcheck[L+1])
@@ -198,6 +224,8 @@
 
 /mob/living/silicon/proc/statelaws(force = 0)
 
+	procstart = null
+	src.procstart = null
 	//"radiomod" is inserted before a hardcoded message to change if and how it is handled by an internal radio.
 	src.say("[radiomod] Current Active Laws:")
 	//src.laws_sanity_check()
@@ -322,6 +350,8 @@
 // The src mob is trying to place an item on someone
 // But the src mob is a silicon!!  Disable.
 /mob/living/silicon/stripPanelEquip(obj/item/what, mob/who, slot)
+	procstart = null
+	src.procstart = null
 	return 0
 
 
@@ -329,6 +359,8 @@
 	return -10
 
 /mob/living/silicon/proc/remove_med_sec_hud()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/secsensor = GLOB.huds[sec_hud]
 	var/datum/atom_hud/medsensor = GLOB.huds[med_hud]
 	var/datum/atom_hud/diagsensor = GLOB.huds[d_hud]
@@ -337,18 +369,26 @@
 	diagsensor.remove_hud_from(src)
 
 /mob/living/silicon/proc/add_sec_hud()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/secsensor = GLOB.huds[sec_hud]
 	secsensor.add_hud_to(src)
 
 /mob/living/silicon/proc/add_med_hud()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/medsensor = GLOB.huds[med_hud]
 	medsensor.add_hud_to(src)
 
 /mob/living/silicon/proc/add_diag_hud()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/diagsensor = GLOB.huds[d_hud]
 	diagsensor.add_hud_to(src)
 
 /mob/living/silicon/proc/sensor_mode()
+	procstart = null
+	src.procstart = null
 	if(incapacitated())
 		return
 	var/sensor_type = input("Please select sensor type.", "Sensor Integration", null) in list("Security", "Medical","Diagnostic","Disable")
@@ -368,10 +408,14 @@
 
 
 /mob/living/silicon/proc/GetPhoto()
+	procstart = null
+	src.procstart = null
 	if (aicamera)
 		return aicamera.selectpicture(aicamera)
 
 /mob/living/silicon/update_transform()
+	procstart = null
+	src.procstart = null
 	var/matrix/ntransform = matrix(transform) //aka transform.Copy()
 	var/changed = 0
 	if(resize != RESIZE_DEFAULT_SIZE)
@@ -384,4 +428,6 @@
 	return ..()
 
 /mob/living/silicon/is_literate()
+	procstart = null
+	src.procstart = null
 	return 1

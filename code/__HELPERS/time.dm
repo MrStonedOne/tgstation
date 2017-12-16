@@ -1,18 +1,26 @@
 //Returns the world time in english
 /proc/worldtime2text()
+	procstart = null
+	src.procstart = null
 	return gameTimestamp("hh:mm:ss", world.time)
 
 /proc/time_stamp(format = "hh:mm:ss", show_ds)
+	procstart = null
+	src.procstart = null
 	var/time_string = time2text(world.timeofday, format)
 	return show_ds ? "[time_string]:[world.timeofday % 10]" : time_string
 
 /proc/gameTimestamp(format = "hh:mm:ss", wtime=null)
+	procstart = null
+	src.procstart = null
 	if(!wtime)
 		wtime = world.time
 	return time2text(wtime - GLOB.timezoneOffset + SSticker.gametime_offset - SSticker.round_start_time, format)
 
 /* Returns 1 if it is the selected month and day */
 /proc/isDay(month, day)
+	procstart = null
+	src.procstart = null
 	if(isnum(month) && isnum(day))
 		var/MM = text2num(time2text(world.timeofday, "MM")) // get the current month
 		var/DD = text2num(time2text(world.timeofday, "DD")) // get the current day
@@ -21,6 +29,8 @@
 
 //returns timestamp in a sql and ISO 8601 friendly format
 /proc/SQLtime(timevar)
+	procstart = null
+	src.procstart = null
 	if(!timevar)
 		timevar = world.realtime
 	return time2text(timevar, "YYYY-MM-DD hh:mm:ss")
@@ -29,11 +39,15 @@
 GLOBAL_VAR_INIT(midnight_rollovers, 0)
 GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 /proc/update_midnight_rollover()
+	procstart = null
+	src.procstart = null
 	if (world.timeofday < GLOB.rollovercheck_last_timeofday) //TIME IS GOING BACKWARDS!
 		return GLOB.midnight_rollovers++
 	return GLOB.midnight_rollovers
 
 /proc/weekdayofthemonth()
+	procstart = null
+	src.procstart = null
 	var/DD = text2num(time2text(world.timeofday, "DD")) 	// get the current day
 	switch(DD)
 		if(8 to 13)
@@ -50,6 +64,8 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 //Takes a value of time in deciseconds.
 //Returns a text value of that number in hours, minutes, or seconds.
 /proc/DisplayTimeText(time_value)
+	procstart = null
+	src.procstart = null
 	var/second = time_value*0.1
 	var/second_adjusted = null
 	var/second_rounded = FALSE

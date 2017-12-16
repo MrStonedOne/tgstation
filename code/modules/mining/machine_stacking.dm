@@ -12,6 +12,8 @@
 	speed_process = TRUE
 
 /obj/machinery/mineral/stacking_unit_console/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, machinedir))
 	if (machine)
@@ -21,6 +23,8 @@
 
 /obj/machinery/mineral/stacking_unit_console/attack_hand(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/sheet/s
 	var/dat
 
@@ -38,6 +42,8 @@
 	return
 
 /obj/machinery/mineral/stacking_unit_console/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -74,14 +80,20 @@
 	output_dir = WEST
 
 /obj/machinery/mineral/stacking_machine/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	proximity_monitor = new(src, 1)
 
 /obj/machinery/mineral/stacking_machine/HasProximity(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/item/stack/sheet) && AM.loc == get_step(src, input_dir))
 		process_sheet(AM)
 
 /obj/machinery/mineral/stacking_machine/proc/process_sheet(obj/item/stack/sheet/inp)
+	procstart = null
+	src.procstart = null
 	if(!(inp.type in stack_list)) //It's the first of this sheet added
 		var/obj/item/stack/sheet/s = new inp.type(src,0)
 		s.amount = 0

@@ -84,6 +84,8 @@
 	var/sync_validate = FALSE
 
 /datum/config_entry/number/fps/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		sync_validate = TRUE
@@ -102,6 +104,8 @@
 	..()
 
 /datum/config_entry/number/ticklag/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = text2num(str_val) > 0 && ..()
 	if(.)
 		sync_validate = TRUE
@@ -180,6 +184,8 @@
 	min_val = 0
 
 /datum/config_entry/number/inactivity_period/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		value *= 10 //documented as seconds in config.txt
@@ -189,6 +195,8 @@
 	min_val = 0
 
 /datum/config_entry/number/afk_period/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		value *= 10 //documented as seconds in config.txt
@@ -204,11 +212,15 @@
 /datum/config_entry/string/panic_server_name
 
 /datum/config_entry/string/panic_server_name/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	return str_val != "\[Put the name here\]" && ..()
 
 /datum/config_entry/string/panic_server_address	//Reconnect a player this linked server if this server isn't accepting new players
 
 /datum/config_entry/string/panic_server_address/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	return str_val != "byond://address:port" && ..()
 
 /datum/config_entry/string/invoke_youtubedl
@@ -272,6 +284,8 @@
 /datum/config_entry/string/ipintel_email
 
 /datum/config_entry/string/ipintel_email/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	return str_val != "ch@nge.me" && ..()
 
 /datum/config_entry/number/ipintel_rating_bad
@@ -369,6 +383,8 @@
 	abstract_type = /datum/config_entry/number/mc_tick_rate
 
 /datum/config_entry/number/mc_tick_rate/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (.)
 		Master.UpdateTickRate()
@@ -376,6 +392,8 @@
 /datum/config_entry/flag/resume_after_initializations
 
 /datum/config_entry/flag/resume_after_initializations/ValidateAndSet(str_val)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && Master.current_runlevel)
 		world.sleep_offline = !value

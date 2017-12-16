@@ -11,12 +11,16 @@
 	var/obj/machinery/modular_computer/machinery_computer = null
 
 /obj/item/device/modular_computer/processor/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(machinery_computer && (machinery_computer.cpu == src))
 		machinery_computer.cpu = null
 	machinery_computer = null
 
 /obj/item/device/modular_computer/processor/New(comp)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src) // Processed by its machine
 
 	if(!comp || !istype(comp, /obj/machinery/modular_computer))
@@ -37,9 +41,13 @@
 	base_idle_power_usage = machinery_computer.base_idle_power_usage
 
 /obj/item/device/modular_computer/processor/relay_qdel()
+	procstart = null
+	src.procstart = null
 	qdel(machinery_computer)
 
 /obj/item/device/modular_computer/processor/update_icon()
+	procstart = null
+	src.procstart = null
 	if(machinery_computer)
 		return machinery_computer.update_icon()
 
@@ -51,6 +59,8 @@
 //	return machinery_computer.canUseTopic(user, state)
 
 /obj/item/device/modular_computer/processor/shutdown_computer()
+	procstart = null
+	src.procstart = null
 	if(!machinery_computer)
 		return
 	..()
@@ -58,6 +68,8 @@
 	return
 
 /obj/item/device/modular_computer/processor/add_verb(path)
+	procstart = null
+	src.procstart = null
 	switch(path)
 		if(MC_CARD)
 			machinery_computer.verbs += /obj/machinery/modular_computer/proc/eject_id
@@ -67,6 +79,8 @@
 			machinery_computer.verbs += /obj/machinery/modular_computer/proc/eject_card
 
 /obj/item/device/modular_computer/processor/remove_verb(path)
+	procstart = null
+	src.procstart = null
 	switch(path)
 		if(MC_CARD)
 			machinery_computer.verbs -= /obj/machinery/modular_computer/proc/eject_id

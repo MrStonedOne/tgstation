@@ -37,10 +37,14 @@ Buildable meters
 	RPD_type = PIPE_ONEDIR
 
 /obj/item/pipe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to rotate it clockwise.</span>")
 
 /obj/item/pipe/Initialize(mapload, _pipe_type, _dir, obj/machinery/atmospherics/make_from)
+	procstart = null
+	src.procstart = null
 	if(make_from)
 		make_from_existing(make_from)
 	else
@@ -53,22 +57,30 @@ Buildable meters
 	return ..()
 
 /obj/item/pipe/proc/make_from_existing(obj/machinery/atmospherics/make_from)
+	procstart = null
+	src.procstart = null
 	setDir(make_from.dir)
 	pipename = make_from.name
 	add_atom_colour(make_from.color, FIXED_COLOUR_PRIORITY)
 	pipe_type = make_from.type
 
 /obj/item/pipe/trinary/flippable/make_from_existing(obj/machinery/atmospherics/components/trinary/make_from)
+	procstart = null
+	src.procstart = null
 	..()
 	if(make_from.flipped)
 		do_a_flip()
 
 /obj/item/pipe/dropped()
+	procstart = null
+	src.procstart = null
 	if(loc)
 		setPipingLayer(piping_layer)
 	return ..()
 
 /obj/item/pipe/proc/setPipingLayer(new_layer = PIPING_LAYER_DEFAULT)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/fakeA = pipe_type
 
 	if(initial(fakeA.pipe_flags) & PIPING_ALL_LAYER)
@@ -80,6 +92,8 @@ Buildable meters
 	layer = initial(layer) + ((piping_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_LCHANGE)
 
 /obj/item/pipe/proc/update()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/atmospherics/fakeA = pipe_type
 	name = "[initial(fakeA.name)] fitting"
 	icon_state = initial(fakeA.pipe_state)
@@ -87,6 +101,8 @@ Buildable meters
 // rotate the pipe item clockwise
 
 /obj/item/pipe/verb/rotate()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "Rotate Pipe"
 	set src in view(1)
@@ -98,6 +114,8 @@ Buildable meters
 	fixdir()
 
 /obj/item/pipe/verb/flip()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "Flip Pipe"
 	set src in view(1)
@@ -108,14 +126,20 @@ Buildable meters
 	do_a_flip()
 
 /obj/item/pipe/proc/do_a_flip()
+	procstart = null
+	src.procstart = null
 	setDir(turn(dir, -180))
 	fixdir()
 
 /obj/item/pipe/trinary/flippable/do_a_flip()
+	procstart = null
+	src.procstart = null
 	setDir(turn(dir, flipped ? 45 : -45))
 	flipped = !flipped
 
 /obj/item/pipe/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -126,28 +150,40 @@ Buildable meters
 		rotate()
 
 /obj/item/pipe/Move()
+	procstart = null
+	src.procstart = null
 	var/old_dir = dir
 	..()
 	setDir(old_dir) //pipes changing direction when moved is just annoying and buggy
 
 //Helper to clean up dir
 /obj/item/pipe/proc/fixdir()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/pipe/binary/fixdir()
+	procstart = null
+	src.procstart = null
 	if(dir == SOUTH)
 		setDir(NORTH)
 	else if(dir == WEST)
 		setDir(EAST)
 
 /obj/item/pipe/trinary/flippable/fixdir()
+	procstart = null
+	src.procstart = null
 	if(dir in GLOB.diagonals)
 		setDir(turn(dir, 45))
 
 /obj/item/pipe/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	return rotate()
 
 /obj/item/pipe/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (!istype(W, /obj/item/wrench))
 		return ..()
 	if (!isturf(loc))
@@ -182,6 +218,8 @@ Buildable meters
 	qdel(src)
 
 /obj/item/pipe/proc/build_pipe(obj/machinery/atmospherics/A)
+	procstart = null
+	src.procstart = null
 	A.setDir(dir)
 	A.SetInitDirections()
 
@@ -189,10 +227,14 @@ Buildable meters
 		A.name = pipename
 
 /obj/item/pipe/trinary/flippable/build_pipe(obj/machinery/atmospherics/components/trinary/T)
+	procstart = null
+	src.procstart = null
 	..()
 	T.flipped = flipped
 
 /obj/item/pipe/directional/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] shoves [src] in [user.p_their()] mouth and turns it on! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
@@ -214,6 +256,8 @@ Buildable meters
 	var/piping_layer = PIPING_LAYER_DEFAULT
 
 /obj/item/pipe_meter/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if (!istype(I, /obj/item/wrench))
@@ -232,11 +276,15 @@ Buildable meters
 	qdel(src)
 
 /obj/item/pipe_meter/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(loc)
 		setAttachLayer(piping_layer)
 
 /obj/item/pipe_meter/proc/setAttachLayer(new_layer = PIPING_LAYER_DEFAULT)
+	procstart = null
+	src.procstart = null
 	piping_layer = new_layer
 	pixel_x = (new_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_P_X
 	pixel_y = (new_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_P_Y

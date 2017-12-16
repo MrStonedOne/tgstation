@@ -12,10 +12,14 @@
 	light_color = LIGHT_COLOR_CYAN
 
 /obj/machinery/computer/atmos_alert/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(receive_frequency)
 
 /obj/machinery/computer/atmos_alert/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, receive_frequency)
 	return ..()
 
@@ -27,6 +31,8 @@
 		ui.open()
 
 /obj/machinery/computer/atmos_alert/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["priority"] = list()
@@ -39,6 +45,8 @@
 	return data
 
 /obj/machinery/computer/atmos_alert/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -55,11 +63,15 @@
 	update_icon()
 
 /obj/machinery/computer/atmos_alert/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, receive_frequency)
 	receive_frequency = new_frequency
 	radio_connection = SSradio.add_object(src, receive_frequency, RADIO_ATMOSIA)
 
 /obj/machinery/computer/atmos_alert/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal)
 		return
 
@@ -79,6 +91,8 @@
 	return
 
 /obj/machinery/computer/atmos_alert/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & (NOPOWER|BROKEN))
 		return

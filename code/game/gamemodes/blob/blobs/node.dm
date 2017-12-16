@@ -10,14 +10,20 @@
 
 
 /obj/structure/blob/node/Initialize()
+	procstart = null
+	src.procstart = null
 	GLOB.blob_nodes += src
 	START_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/structure/blob/node/scannerreport()
+	procstart = null
+	src.procstart = null
 	return "Gradually expands and sustains nearby blob spores and blobbernauts."
 
 /obj/structure/blob/node/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	color = null
 	var/mutable_appearance/blob_overlay = mutable_appearance('icons/mob/blob.dmi', "blob")
@@ -27,10 +33,14 @@
 	add_overlay(mutable_appearance('icons/mob/blob.dmi', "blob_node_overlay"))
 
 /obj/structure/blob/node/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.blob_nodes -= src
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/blob/node/Life()
+	procstart = null
+	src.procstart = null
 	Pulse_Area(overmind, 10, 3, 2)
 

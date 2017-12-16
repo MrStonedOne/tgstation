@@ -32,11 +32,15 @@
 	return ..(gibbed)
 
 /mob/living/simple_animal/slime/gib()
+	procstart = null
+	src.procstart = null
 	death(1)
 	qdel(src)
 
 
 /mob/living/simple_animal/slime/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/computer/camera_advanced/xenobio/X in GLOB.machines)
 		if(src in X.stored_slimes)
 			X.stored_slimes -= src

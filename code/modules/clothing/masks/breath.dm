@@ -15,9 +15,13 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/mask/breath/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjustmask(user)
 
 /obj/item/clothing/mask/breath/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!user.canUseTopic(src, be_close=TRUE))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -26,6 +30,8 @@
 		adjustmask(user)
 
 /obj/item/clothing/mask/breath/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click [src] to adjust it.</span>")
 

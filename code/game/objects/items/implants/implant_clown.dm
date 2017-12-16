@@ -3,6 +3,8 @@
 	activated = 0
 
 /obj/item/implant/sad_trombone/get_data()
+	procstart = null
+	src.procstart = null
 	var/dat = {"<b>Implant Specifications:</b><BR>
 				<b>Name:</b> Honk Co. Sad Trombone Implant<BR>
 				<b>Life:</b> Activates upon death.<BR>
@@ -10,6 +12,8 @@
 	return dat
 
 /obj/item/implant/sad_trombone/trigger(emote, mob/source)
+	procstart = null
+	src.procstart = null
 	if(emote == "deathgasp")
 		playsound(loc, 'sound/misc/sadtrombone.ogg', 50, 0)
 

@@ -1,6 +1,8 @@
 // Clients aren't datums so we have to define these procs indpendently.
 // These verbs are called for all key press and release events
 /client/verb/keyDown(_key as text)
+	procstart = null
+	src.procstart = null
 	set instant = TRUE
 	set hidden = TRUE
 
@@ -29,6 +31,8 @@
 		mob.focus.key_down(_key, src)
 
 /client/verb/keyUp(_key as text)
+	procstart = null
+	src.procstart = null
 	set instant = TRUE
 	set hidden = TRUE
 
@@ -44,6 +48,8 @@
 
 // Called every game tick
 /client/keyLoop()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		holder.keyLoop(src)
 	if(mob.focus)

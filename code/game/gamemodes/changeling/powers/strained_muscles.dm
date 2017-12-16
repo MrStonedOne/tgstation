@@ -12,6 +12,8 @@
 	active = 0 //Whether or not you are a hedgehog
 
 /obj/effect/proc_holder/changeling/strained_muscles/sting_action(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	active = !active
 	if(active)
 		to_chat(user, "<span class='notice'>Our muscles tense and strengthen.</span>")
@@ -28,6 +30,8 @@
 	return TRUE
 
 /obj/effect/proc_holder/changeling/strained_muscles/proc/muscle_loop(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	while(active)
 		user.status_flags |= GOTTAGOFAST
 		if(user.stat != CONSCIOUS || user.staminaloss >= 90)

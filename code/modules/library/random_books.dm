@@ -2,6 +2,8 @@
 	icon_state = "random_book"
 
 /obj/item/book/manual/random/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	var/static/banned_books = list(/obj/item/book/manual/random, /obj/item/book/manual/nuclear, /obj/item/book/manual/wiki)
 	var/newtype = pick(subtypesof(/obj/item/book/manual) - banned_books)
@@ -14,6 +16,8 @@
 	var/category = null
 
 /obj/item/book/random/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	create_random_books(amount, src.loc, TRUE, category)
 	return INITIALIZE_HINT_QDEL
@@ -29,6 +33,8 @@
 	state = 2
 
 /obj/structure/bookcase/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!book_count || !isnum(book_count))
 		update_icon()
@@ -38,6 +44,8 @@
 	update_icon()
 
 /proc/create_random_books(amount = 2, location, fail_loud = FALSE, category = null)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isnum(amount) || amount<1)
 		return
@@ -82,6 +90,8 @@
 	var/ref_book_prob = 20
 
 /obj/structure/bookcase/random/reference/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	while(book_count > 0 && prob(ref_book_prob))
 		book_count--

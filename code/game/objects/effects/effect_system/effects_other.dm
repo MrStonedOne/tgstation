@@ -17,21 +17,29 @@
 	var/nograv_required = FALSE
 
 /datum/effect_system/trail_follow/set_up(atom/atom)
+	procstart = null
+	src.procstart = null
 	attach(atom)
 	oldposition = get_turf(atom)
 
 /datum/effect_system/trail_follow/Destroy()
+	procstart = null
+	src.procstart = null
 	oldposition = null
 	stop()
 	return ..()
 
 /datum/effect_system/trail_follow/proc/stop()
+	procstart = null
+	src.procstart = null
 	oldposition = null
 	STOP_PROCESSING(SSfastprocess, src)
 	active = FALSE
 	return TRUE
 
 /datum/effect_system/trail_follow/start()
+	procstart = null
+	src.procstart = null
 	oldposition = get_turf(holder)
 	if(!check_conditions())
 		return FALSE
@@ -41,9 +49,13 @@
 	return TRUE
 
 /datum/effect_system/trail_follow/process()
+	procstart = null
+	src.procstart = null
 	generate_effect()
 
 /datum/effect_system/trail_follow/generate_effect()
+	procstart = null
+	src.procstart = null
 	if(!check_conditions())
 		return stop()
 	if(oldposition && !(oldposition == get_turf(holder)))
@@ -58,6 +70,8 @@
 	oldposition = get_turf(holder)
 
 /datum/effect_system/trail_follow/proc/check_conditions()
+	procstart = null
+	src.procstart = null
 	if(!get_turf(holder))
 		return FALSE
 	return TRUE
@@ -79,6 +93,8 @@
 	qdel_in_time = 20
 
 /datum/effect_system/trail_follow/proc/set_dir(obj/effect/particle_effect/ion_trails/I)
+	procstart = null
+	src.procstart = null
 	I.setDir(holder.dir)
 
 /datum/effect_system/trail_follow/ion/flight
@@ -88,6 +104,8 @@
 	auto_process = FALSE
 
 /datum/effect_system/trail_follow/ion/flight/set_dir(obj/effect/particle_effect/ion_trails/I)
+	procstart = null
+	src.procstart = null
 	if(istype(holder, /obj/item/device/flightpack))
 		var/obj/item/device/flightpack/F = holder
 		if(istype(F.wearer))
@@ -102,6 +120,8 @@
 	var/explosion_message = 1				//whether we show a message to mobs.
 
 /datum/effect_system/reagents_explosion/set_up(amt, loca, flash = 0, flash_fact = 0, message = 1)
+	procstart = null
+	src.procstart = null
 	amount = amt
 	explosion_message = message
 	if(isturf(loca))
@@ -113,6 +133,8 @@
 	flashing_factor = flash_fact
 
 /datum/effect_system/reagents_explosion/start()
+	procstart = null
+	src.procstart = null
 	if(explosion_message)
 		location.visible_message("<span class='danger'>The solution violently explodes!</span>", \
 								"<span class='italics'>You hear an explosion!</span>")

@@ -4,6 +4,8 @@
 	var/contamination_proof		// Can this object be contaminated?
 
 /datum/component/rad_insulation/Initialize(_amount=RAD_MEDIUM_INSULATION, _protects=TRUE, _contamination_proof=TRUE)
+	procstart = null
+	src.procstart = null
 	amount = _amount
 	protects = _protects
 	contamination_proof = _contamination_proof

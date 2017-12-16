@@ -15,27 +15,37 @@
 	var/datum/radio_frequency/radio_connection
 
 /obj/item/device/assembly/signaler/New()
+	procstart = null
+	src.procstart = null
 	..()
 	spawn(40)
 		set_frequency(frequency)
 
 
 /obj/item/device/assembly/signaler/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 	return ..()
 
 /obj/item/device/assembly/signaler/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())//cooldown processing
 		return FALSE
 	signal()
 	return TRUE
 
 /obj/item/device/assembly/signaler/update_icon()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		holder.update_icon()
 	return
 
 /obj/item/device/assembly/signaler/interact(mob/user, flag1)
+	procstart = null
+	src.procstart = null
 	if(is_secured(user))
 		var/t1 = "-------"
 		var/dat = {"
@@ -64,6 +74,8 @@ Code:
 
 
 /obj/item/device/assembly/signaler/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
@@ -93,6 +105,8 @@ Code:
 	return
 
 /obj/item/device/assembly/signaler/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(issignaler(W))
 		var/obj/item/device/assembly/signaler/signaler2 = W
 		if(secured && signaler2.secured)
@@ -102,6 +116,8 @@ Code:
 	..()
 
 /obj/item/device/assembly/signaler/proc/signal()
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return
 
@@ -117,6 +133,8 @@ Code:
 	return
 
 /obj/item/device/assembly/signaler/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal)
 		return 0
 	if(signal.data["code"] != code)
@@ -129,6 +147,8 @@ Code:
 
 
 /obj/item/device/assembly/signaler/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	radio_connection = SSradio.add_object(src, frequency, RADIO_SIGNALER)
@@ -141,16 +161,24 @@ Code:
 	var/on = FALSE
 
 /obj/item/device/assembly/signaler/reciever/proc/toggle_safety()
+	procstart = null
+	src.procstart = null
 	on = !on
 
 /obj/item/device/assembly/signaler/reciever/activate()
+	procstart = null
+	src.procstart = null
 	toggle_safety()
 	return 1
 
 /obj/item/device/assembly/signaler/reciever/describe()
+	procstart = null
+	src.procstart = null
 	return "The radio receiver is [on?"on":"off"]."
 
 /obj/item/device/assembly/signaler/reciever/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	return ..(signal)
@@ -166,6 +194,8 @@ Code:
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 
 /obj/item/device/assembly/signaler/anomaly/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal)
 		return 0
 	if(signal.data["code"] != code)
@@ -174,9 +204,13 @@ Code:
 		A.anomalyNeutralize()
 
 /obj/item/device/assembly/signaler/anomaly/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/device/assembly/signaler/cyborg
 
 /obj/item/device/assembly/signaler/cyborg/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return

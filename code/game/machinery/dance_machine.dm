@@ -31,12 +31,16 @@
 	var/GBP_required = 0
 
 /datum/track/New(name, path, length, beat)
+	procstart = null
+	src.procstart = null
 	song_name = name
 	song_path = path
 	song_length = length
 	song_beat = beat
 
 /obj/machinery/disco/proc/add_track(file, name, length, beat)
+	procstart = null
+	src.procstart = null
 	var/sound/S = file
 	if(!istype(S))
 		return
@@ -50,15 +54,21 @@
 	songs += T
 
 /obj/machinery/disco/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	selection = songs[1]
 
 
 /obj/machinery/disco/Destroy()
+	procstart = null
+	src.procstart = null
 	dance_over()
 	return ..()
 
 /obj/machinery/disco/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(istype(O, /obj/item/wrench))
 			if(!anchored && !isinspace())
@@ -72,6 +82,8 @@
 	return ..()
 
 /obj/machinery/disco/update_icon()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = "disco1"
 	else
@@ -80,6 +92,8 @@
 
 
 /obj/machinery/disco/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!anchored)
 		to_chat(user,"<span class='warning'>This device must be anchored by a wrench!</span>")
 		return
@@ -113,6 +127,8 @@
 
 
 /obj/machinery/disco/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	add_fingerprint(usr)
@@ -165,6 +181,8 @@
 			deejay('sound/ai/harmalarm.ogg')
 
 /obj/machinery/disco/proc/deejay(var/S)
+	procstart = null
+	src.procstart = null
 	if (QDELETED(src) || !active || charge < 5)
 		to_chat(usr, "<span class='warning'>The device is not able to play more DJ sounds at this time.</span>")
 		return
@@ -172,6 +190,8 @@
 	playsound(src, S,300,1)
 
 /obj/machinery/disco/proc/dance_setup()
+	procstart = null
+	src.procstart = null
 	stop = world.time + selection.song_length
 	var/turf/cen = get_turf(src)
 	FOR_DVIEW(var/turf/t, 3, get_turf(src),INVISIBILITY_LIGHTING)
@@ -235,11 +255,15 @@
 	FOR_DVIEW_END
 
 /obj/machinery/disco/proc/hierofunk()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 10)
 		spawn_atom_to_turf(/obj/effect/temp_visual/hierophant/telegraph/edge, src, 1, FALSE)
 		sleep(5)
 
 /obj/machinery/disco/proc/lights_spin()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 25)
 		if(QDELETED(src) || !active)
 			return
@@ -329,6 +353,8 @@
 			dance5(M)
 
 /obj/machinery/disco/proc/dance2(var/mob/living/M)
+	procstart = null
+	src.procstart = null
 	for(var/i = 1, i < 10, i++)
 		for(var/d in list(NORTH,SOUTH,EAST,WEST,EAST,SOUTH,NORTH,SOUTH,EAST,WEST,EAST,SOUTH))
 			M.setDir(d)
@@ -338,6 +364,8 @@
 		sleep(20)
 
 /obj/machinery/disco/proc/dance3(var/mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/matrix/initial_matrix = matrix(M.transform)
 	for (var/i in 1 to 75)
 		if (!M)
@@ -386,6 +414,8 @@
 
 
 /obj/machinery/disco/proc/dance4(var/mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/speed = rand(1,3)
 	set waitfor = 0
 	var/time = 30
@@ -397,6 +427,8 @@
 		 time--
 
 /obj/machinery/disco/proc/dance5(var/mob/living/M)
+	procstart = null
+	src.procstart = null
 	animate(M, transform = matrix(180, MATRIX_ROTATE), time = 1, loop = 0)
 	var/matrix/initial_matrix = matrix(M.transform)
 	for (var/i in 1 to 60)
@@ -434,10 +466,14 @@
 
 
 /mob/living/proc/lying_fix()
+	procstart = null
+	src.procstart = null
 	animate(src, transform = null, time = 1, loop = 0)
 	lying_prev = 0
 
 /obj/machinery/disco/proc/dance_over()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/device/flashlight/spotlight/SL in spotlights)
 		qdel(SL)
 	spotlights.Cut()
@@ -453,6 +489,8 @@
 
 
 /obj/machinery/disco/process()
+	procstart = null
+	src.procstart = null
 	if(charge<35)
 		charge += 1
 	if(world.time < stop && active)

@@ -23,6 +23,8 @@
 	var/contains_sample = 0
 
 /obj/item/seeds/replicapod/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/reagent_containers/syringe))
 		if(!contains_sample)
 			for(var/datum/reagent/blood/bloodSample in W.reagents.reagent_list)
@@ -45,6 +47,8 @@
 		return ..()
 
 /obj/item/seeds/replicapod/get_analyzer_text()
+	procstart = null
+	src.procstart = null
 	var/text = ..()
 	if(contains_sample)
 		text += "\n It contains a blood sample!"

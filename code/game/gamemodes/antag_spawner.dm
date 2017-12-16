@@ -5,9 +5,13 @@
 	var/used = 0
 
 /obj/item/antag_spawner/proc/spawn_antag(client/C, turf/T, kind = "", datum/mind/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/antag_spawner/proc/equip_antag(mob/target)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -20,6 +24,8 @@
 	icon_state ="scroll2"
 
 /obj/item/antag_spawner/contract/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat
 	if(used)
@@ -42,6 +48,8 @@
 	return
 
 /obj/item/antag_spawner/contract/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/carbon/human/H = usr
 
@@ -68,6 +76,8 @@
 				to_chat(H, "Unable to reach your apprentice! You can either attack the spellbook with the contract to refund your points, or wait and try again later.")
 
 /obj/item/antag_spawner/contract/spawn_antag(client/C, turf/T, kind ,datum/mind/user)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/particle_effect/smoke(T)
 	var/mob/living/carbon/human/M = new/mob/living/carbon/human(T)
 	C.prefs.copy_to(M)
@@ -102,6 +112,8 @@
 	var/borg_to_spawn
 
 /obj/item/antag_spawner/nuke_ops/proc/check_usability(mob/user)
+	procstart = null
+	src.procstart = null
 	if(used)
 		to_chat(user, "<span class='warning'>[src] is out of power!</span>")
 		return FALSE
@@ -115,6 +127,8 @@
 
 
 /obj/item/antag_spawner/nuke_ops/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(check_usability(user)))
 		return
 
@@ -132,6 +146,8 @@
 		to_chat(user, "<span class='warning'>Unable to connect to Syndicate command. Please wait and try again later or use the teleporter on your uplink to get your points refunded.</span>")
 
 /obj/item/antag_spawner/nuke_ops/spawn_antag(client/C, turf/T, kind, datum/mind/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/M = new/mob/living/carbon/human(T)
 	C.prefs.copy_to(M)
 	M.key = C.key
@@ -161,6 +177,8 @@
 	borg_to_spawn = "Medical"
 
 /obj/item/antag_spawner/nuke_ops/borg_tele/spawn_antag(client/C, turf/T, kind, datum/mind/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/R
 	var/datum/antagonist/nukeop/creator_op = user.has_antag_datum(/datum/antagonist/nukeop,TRUE)
 	if(!creator_op)
@@ -208,6 +226,8 @@
 
 
 /obj/item/antag_spawner/slaughter_demon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(user.z in GLOB.station_z_levels))
 		to_chat(user, "<span class='notice'>You should probably wait until you reach the station.</span>")
 		return
@@ -229,6 +249,8 @@
 
 
 /obj/item/antag_spawner/slaughter_demon/spawn_antag(client/C, turf/T, kind = "", datum/mind/user)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/dummy/slaughter/holder = new /obj/effect/dummy/slaughter(T)
 	var/mob/living/simple_animal/slaughter/S = new demon_type(holder)
 	S.holder = holder

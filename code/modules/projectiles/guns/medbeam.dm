@@ -17,23 +17,33 @@
 	weapon_weight = WEAPON_MEDIUM
 
 /obj/item/gun/medbeam/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/gun/medbeam/Destroy(mob/user)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	LoseTarget()
 	return ..()
 
 /obj/item/gun/medbeam/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	LoseTarget()
 
 /obj/item/gun/medbeam/equipped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	LoseTarget()
 
 /obj/item/gun/medbeam/proc/LoseTarget()
+	procstart = null
+	src.procstart = null
 	if(active)
 		qdel(current_beam)
 		current_beam = null
@@ -42,6 +52,8 @@
 	current_target = null
 
 /obj/item/gun/medbeam/process_fire(atom/target as mob|obj|turf, mob/living/user as mob|obj, message = 1, params, zone_override)
+	procstart = null
+	src.procstart = null
 	if(isliving(user))
 		add_fingerprint(user)
 
@@ -59,6 +71,8 @@
 
 /obj/item/gun/medbeam/process()
 
+	procstart = null
+	src.procstart = null
 	var/source = loc
 	if(!mounted && !isliving(source))
 		LoseTarget()
@@ -83,6 +97,8 @@
 		on_beam_tick(current_target)
 
 /obj/item/gun/medbeam/proc/los_check(atom/movable/user, mob/target)
+	procstart = null
+	src.procstart = null
 	var/turf/user_turf = user.loc
 	if(mounted)
 		user_turf = get_turf(user)
@@ -109,9 +125,13 @@
 	return 1
 
 /obj/item/gun/medbeam/proc/on_beam_hit(var/mob/living/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/medbeam/proc/on_beam_tick(var/mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target.health != target.maxHealth)
 		new /obj/effect/temp_visual/heal(get_turf(target), "#80F5FF")
 	target.adjustBruteLoss(-4)
@@ -119,6 +139,8 @@
 	return
 
 /obj/item/gun/medbeam/proc/on_beam_release(var/mob/living/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/ebeam/medical
@@ -129,5 +151,7 @@
 	mounted = 1
 
 /obj/item/gun/medbeam/mech/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src) //Mech mediguns do not process until installed, and are controlled by the holder obj

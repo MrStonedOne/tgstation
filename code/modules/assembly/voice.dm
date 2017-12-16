@@ -17,10 +17,14 @@
 								 "voice sensor")
 
 /obj/item/device/assembly/voice/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Use a multitool to swap between \"inclusive\", \"exclusive\", \"recognizer\", and \"voice sensor\" mode.</span>")
 
 /obj/item/device/assembly/voice/Hear(message, atom/movable/speaker, message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(speaker == src)
 		return
 
@@ -31,6 +35,8 @@
 			addtimer(CALLBACK(src, .proc/pulse, 0), 10)
 
 /obj/item/device/assembly/voice/proc/record_speech(atom/movable/speaker, raw_message, datum/language/message_language)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(1)
 			recorded = raw_message
@@ -49,6 +55,8 @@
 				addtimer(CALLBACK(src, .proc/pulse, 0), 10)
 
 /obj/item/device/assembly/voice/proc/check_activation(atom/movable/speaker, raw_message)
+	procstart = null
+	src.procstart = null
 	. = 0
 	switch(mode)
 		if(1)
@@ -65,6 +73,8 @@
 				. = 1
 
 /obj/item/device/assembly/voice/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		mode %= modes.len
 		mode++
@@ -75,17 +85,23 @@
 		return ..()
 
 /obj/item/device/assembly/voice/activate()
+	procstart = null
+	src.procstart = null
 	if(secured)
 		if(!holder)
 			listening = !listening
 			say("[listening ? "Now" : "No longer"] recording input.")
 
 /obj/item/device/assembly/voice/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return 0
 	activate()
 	return 1
 
 /obj/item/device/assembly/voice/toggle_secure()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	listening = 0

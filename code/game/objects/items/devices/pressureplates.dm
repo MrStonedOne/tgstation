@@ -21,6 +21,8 @@
 	var/trigger_delay = 10
 
 /obj/item/device/pressure_plate/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tile_overlay = image(icon = 'icons/turf/floors.dmi', icon_state = "pp_overlay")
 	if(roundstart_signaller)
@@ -31,6 +33,8 @@
 			hide(TRUE)
 
 /obj/item/device/pressure_plate/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!can_trigger || !active)
 		return
@@ -43,17 +47,23 @@
 	addtimer(CALLBACK(src, .proc/trigger), trigger_delay)
 
 /obj/item/device/pressure_plate/proc/trigger()
+	procstart = null
+	src.procstart = null
 	can_trigger = TRUE
 	if(istype(sigdev))
 		sigdev.signal()
 
 /obj/item/device/pressure_plate/attackby(obj/item/I, mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/assembly/signaler) && !istype(sigdev) && removable_signaller && L.transferItemToLoc(I, src))
 		sigdev = I
 		to_chat(L, "<span class='notice'>You attach [I] to [src]!</span>")
 	return ..()
 
 /obj/item/device/pressure_plate/attack_self(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(removable_signaller && istype(sigdev))
 		to_chat(L, "<span class='notice'>You remove [sigdev] from [src]</span>")
 		if(!L.put_in_hands(sigdev))
@@ -62,6 +72,8 @@
 	return ..()
 
 /obj/item/device/pressure_plate/hide(yes)
+	procstart = null
+	src.procstart = null
 	if(yes)
 		invisibility = INVISIBILITY_MAXIMUM
 		anchored = TRUE

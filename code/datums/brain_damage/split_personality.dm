@@ -13,15 +13,21 @@
 	var/mob/living/split_personality/owner_backseat
 
 /datum/brain_trauma/severe/split_personality/on_gain()
+	procstart = null
+	src.procstart = null
 	..()
 	make_backseats()
 	get_ghost()
 
 /datum/brain_trauma/severe/split_personality/proc/make_backseats()
+	procstart = null
+	src.procstart = null
 	stranger_backseat = new(owner, src)
 	owner_backseat = new(owner, src)
 
 /datum/brain_trauma/severe/split_personality/proc/get_ghost()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/list/mob/dead/observer/candidates = pollCandidatesForMob("Do you want to play as [owner]'s split personality?", null, null, null, 75, stranger_backseat)
 	if(LAZYLEN(candidates))
@@ -33,6 +39,8 @@
 		qdel(src)
 
 /datum/brain_trauma/severe/split_personality/on_life()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		if(current_controller != OWNER)
 			switch_personalities()
@@ -42,6 +50,8 @@
 	..()
 
 /datum/brain_trauma/severe/split_personality/on_lose()
+	procstart = null
+	src.procstart = null
 	if(current_controller != OWNER) //it would be funny to cure a guy only to be left with the other personality, but it seems too cruel
 		switch_personalities()
 	QDEL_NULL(stranger_backseat)
@@ -49,6 +59,8 @@
 	..()
 
 /datum/brain_trauma/severe/split_personality/proc/switch_personalities()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || owner.stat == DEAD || QDELETED(stranger_backseat) || QDELETED(owner_backseat))
 		return
 
@@ -111,6 +123,8 @@
 	var/datum/brain_trauma/severe/split_personality/trauma
 
 /mob/living/split_personality/Initialize(mapload, _trauma)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(loc))
 		body = loc
 		name = body.real_name
@@ -119,6 +133,8 @@
 	return ..()
 
 /mob/living/split_personality/Life()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(body))
 		qdel(src) //in case trauma deletion doesn't already do it
 
@@ -134,14 +150,20 @@
 	..()
 
 /mob/living/split_personality/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(src, "<span class='notice'>As a split personality, you cannot do anything but observe. However, you will eventually gain control of your body, switching places with the current personality.</span>")
 
 /mob/living/split_personality/say(message)
+	procstart = null
+	src.procstart = null
 	to_chat(src, "<span class='warning'>You cannot speak, your other self is controlling your body!</span>")
 	return FALSE
 
 /mob/living/split_personality/emote(message)
+	procstart = null
+	src.procstart = null
 	return
 
 ///////////////BRAINWASHING////////////////////
@@ -157,6 +179,8 @@
 	var/objective
 
 /datum/brain_trauma/severe/split_personality/brainwashing/New(obj/item/organ/brain/B, _permanent, _codeword, _objective)
+	procstart = null
+	src.procstart = null
 	..()
 	if(_codeword)
 		codeword = _codeword
@@ -169,16 +193,22 @@
 			| strings("ion_laws.json", "iondrinks"))
 
 /datum/brain_trauma/severe/split_personality/brainwashing/on_gain()
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/split_personality/traitor/traitor_backseat = stranger_backseat
 	traitor_backseat.codeword = codeword
 	traitor_backseat.objective = objective
 
 /datum/brain_trauma/severe/split_personality/brainwashing/make_backseats()
+	procstart = null
+	src.procstart = null
 	stranger_backseat = new /mob/living/split_personality/traitor(owner, src, codeword, objective)
 	owner_backseat = new(owner, src)
 
 /datum/brain_trauma/severe/split_personality/brainwashing/get_ghost()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/list/mob/dead/observer/candidates = pollCandidatesForMob("Do you want to play as [owner]'s brainwashed mind?", null, null, null, 75, stranger_backseat)
 	if(LAZYLEN(candidates))
@@ -188,9 +218,13 @@
 		qdel(src)
 
 /datum/brain_trauma/severe/split_personality/brainwashing/on_life()
+	procstart = null
+	src.procstart = null
 	return //no random switching
 
 /datum/brain_trauma/severe/split_personality/brainwashing/on_hear(message, speaker, message_language, raw_message, radio_freq)
+	procstart = null
+	src.procstart = null
 	if(owner.disabilities & DEAF || owner == speaker)
 		return message
 	if(findtext(message, codeword))
@@ -199,6 +233,8 @@
 	return message
 
 /datum/brain_trauma/severe/split_personality/brainwashing/on_say(message)
+	procstart = null
+	src.procstart = null
 	if(findtext(message, codeword))
 		return "" //oh hey did you want to tell people about the secret word to bring you back?
 	return message
@@ -210,6 +246,8 @@
 	var/codeword
 
 /mob/living/split_personality/traitor/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(src, "<span class='notice'>As a brainwashed personality, you cannot do anything yet but observe. However, you may gain control of your body if you hear the special codeword, switching places with the current personality.</span>")
 	to_chat(src, "<span class='notice'>Your activation codeword is: <b>[codeword]</b></span>")

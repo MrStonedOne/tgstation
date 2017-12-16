@@ -19,12 +19,16 @@
 	reference = "emitter_right"
 
 /obj/structure/particle_accelerator/particle_emitter/proc/set_delay(delay)
+	procstart = null
+	src.procstart = null
 	if(delay >= 0)
 		fire_delay = delay
 		return 1
 	return 0
 
 /obj/structure/particle_accelerator/particle_emitter/proc/emit_particle(strength = 0)
+	procstart = null
+	src.procstart = null
 	if((last_shot + fire_delay) <= world.time)
 		last_shot = world.time
 		var/turf/T = get_turf(src)

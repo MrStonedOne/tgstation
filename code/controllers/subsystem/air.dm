@@ -7,6 +7,8 @@
 #define SSAIR_SUPERCONDUCTIVITY 7
 
 SUBSYSTEM_DEF(air)
+	procstart = null
+	src.procstart = null
 	name = "Atmospherics"
 	init_order = INIT_ORDER_AIR
 	priority = FIRE_PRIORITY_AIR
@@ -43,6 +45,8 @@ SUBSYSTEM_DEF(air)
 	var/list/queued_for_activation
 
 /datum/controller/subsystem/air/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	msg += "C:{"
 	msg += "AT:[round(cost_turfs,1)]|"
 	msg += "EG:[round(cost_groups,1)]|"
@@ -63,6 +67,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	map_loading = FALSE
 	setup_allturfs()
 	setup_atmos_machinery()
@@ -72,6 +78,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	var/timer = TICK_USAGE_REAL
 
 	if(currentpart == SSAIR_PIPENETS || !resumed)
@@ -139,6 +147,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/proc/process_pipenets(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = networks.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -155,6 +165,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/proc/process_atmos_machinery(resumed = 0)
+	procstart = null
+	src.procstart = null
 	var/seconds = wait * 0.1
 	if (!resumed)
 		src.currentrun = atmos_machinery.Copy()
@@ -171,6 +183,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/proc/process_super_conductivity(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = active_super_conductivity.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -183,6 +197,8 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_hotspots(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = hotspots.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -199,6 +215,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/proc/process_high_pressure_delta(resumed = 0)
+	procstart = null
+	src.procstart = null
 	while (high_pressure_delta.len)
 		var/turf/open/T = high_pressure_delta[high_pressure_delta.len]
 		high_pressure_delta.len--
@@ -208,6 +226,8 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_active_turfs(resumed = 0)
+	procstart = null
+	src.procstart = null
 	//cache for sanic speed
 	var/fire_count = times_fired
 	if (!resumed)
@@ -223,6 +243,8 @@ SUBSYSTEM_DEF(air)
 			return
 
 /datum/controller/subsystem/air/proc/process_excited_groups(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = excited_groups.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -241,6 +263,8 @@ SUBSYSTEM_DEF(air)
 
 
 /datum/controller/subsystem/air/proc/remove_from_active(turf/open/T)
+	procstart = null
+	src.procstart = null
 	active_turfs -= T
 	if(currentpart == SSAIR_ACTIVETURFS)
 		currentrun -= T
@@ -253,6 +277,8 @@ SUBSYSTEM_DEF(air)
 			T.excited_group.garbage_collect()
 
 /datum/controller/subsystem/air/proc/add_to_active(turf/open/T, blockchanges = 1)
+	procstart = null
+	src.procstart = null
 	if(istype(T) && T.air)
 		#ifdef VISUALIZE_ACTIVE_TURFS
 		T.add_atom_colour("#00ff00", TEMPORARY_COLOUR_PRIORITY)
@@ -274,16 +300,22 @@ SUBSYSTEM_DEF(air)
 		T.requires_activation = TRUE
 
 /datum/controller/subsystem/air/StartLoadingMap()
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(queued_for_activation)
 	map_loading = TRUE
 
 /datum/controller/subsystem/air/StopLoadingMap()
+	procstart = null
+	src.procstart = null
 	map_loading = FALSE
 	for(var/T in queued_for_activation)
 		add_to_active(T)
 	queued_for_activation.Cut()
 
 /datum/controller/subsystem/air/proc/setup_allturfs()
+	procstart = null
+	src.procstart = null
 	var/list/turfs_to_init = block(locate(1, 1, 1), locate(world.maxx, world.maxy, world.maxz))
 	var/list/active_turfs = src.active_turfs
 	var/times_fired = ++src.times_fired
@@ -328,6 +360,8 @@ SUBSYSTEM_DEF(air)
 		warning(msg)
 
 /turf/open/proc/resolve_active_graph()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/datum/excited_group/EG = excited_group
 	if (blocks_air || !air)
@@ -351,9 +385,13 @@ SUBSYSTEM_DEF(air)
 			ET.excited = 1
 			. += ET
 /turf/open/space/resolve_active_graph()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /datum/controller/subsystem/air/proc/setup_atmos_machinery()
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/AM in atmos_machinery)
 		AM.atmosinit()
 		CHECK_TICK
@@ -362,11 +400,15 @@ SUBSYSTEM_DEF(air)
 //	all atmos machinery has to initalize before the first
 //	pipenet can be built.
 /datum/controller/subsystem/air/proc/setup_pipenets()
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/atmospherics/AM in atmos_machinery)
 		AM.build_network()
 		CHECK_TICK
 
 /datum/controller/subsystem/air/proc/setup_template_machinery(list/atmos_machines)
+	procstart = null
+	src.procstart = null
 	for(var/A in atmos_machines)
 		var/obj/machinery/atmospherics/AM = A
 		AM.atmosinit()
@@ -378,6 +420,8 @@ SUBSYSTEM_DEF(air)
 		CHECK_TICK
 
 /datum/controller/subsystem/air/proc/get_init_dirs(type, dir)
+	procstart = null
+	src.procstart = null
 	if(!pipe_init_dirs_cache[type])
 		pipe_init_dirs_cache[type] = list()
 

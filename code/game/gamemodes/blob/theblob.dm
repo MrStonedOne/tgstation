@@ -21,6 +21,8 @@
 	var/mob/camera/blob/overmind
 
 /obj/structure/blob/Initialize(mapload, owner_overmind)
+	procstart = null
+	src.procstart = null
 	overmind = owner_overmind
 	var/area/Ablob = get_area(loc)
 	if(Ablob.blob_allowed) //Is this area allowed for winning as blob?
@@ -37,6 +39,8 @@
 	return
 
 /obj/structure/blob/Destroy()
+	procstart = null
+	src.procstart = null
 	if(atmosblock)
 		atmosblock = FALSE
 		air_update_turf(1)
@@ -47,9 +51,13 @@
 	return ..()
 
 /obj/structure/blob/blob_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/blob/Adjacent(var/atom/neighbour)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/result = 0
@@ -64,17 +72,25 @@
 		. -= result - 1
 
 /obj/structure/blob/BlockSuperconductivity()
+	procstart = null
+	src.procstart = null
 	return atmosblock
 
 /obj/structure/blob/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSBLOB))
 		return 1
 	return 0
 
 /obj/structure/blob/CanAtmosPass(turf/T)
+	procstart = null
+	src.procstart = null
 	return !atmosblock
 
 /obj/structure/blob/CanAStarPass(ID, dir, caller)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(ismovableatom(caller))
 		var/atom/movable/mover = caller
@@ -87,12 +103,18 @@
 		remove_atom_colour(FIXED_COLOUR_PRIORITY)
 
 /obj/structure/blob/process()
+	procstart = null
+	src.procstart = null
 	Life()
 
 /obj/structure/blob/proc/Life()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/blob/proc/Pulse_Area(mob/camera/blob/pulsing_overmind, claim_range = 10, pulse_range = 3, expand_range = 2)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(pulsing_overmind))
 		pulsing_overmind = overmind
 	Be_Pulsed()
@@ -126,6 +148,8 @@
 			B.Be_Pulsed()
 
 /obj/structure/blob/proc/Be_Pulsed()
+	procstart = null
+	src.procstart = null
 	if(pulse_timestamp <= world.time)
 		ConsumeTile()
 		if(heal_timestamp <= world.time)
@@ -137,6 +161,8 @@
 	return 0 //oh no we failed
 
 /obj/structure/blob/proc/ConsumeTile()
+	procstart = null
+	src.procstart = null
 	for(var/atom/A in loc)
 		A.blob_act(src)
 	if(iswallturf(loc))
@@ -156,6 +182,8 @@
 	return O //just in case you want to do something to the animation.
 
 /obj/structure/blob/proc/expand(turf/T = null, controller = null, expand_reaction = 1)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		var/list/dirs = list(1,2,4,8)
 		for(var/i = 1 to 4)
@@ -203,6 +231,8 @@
 	return null
 
 /obj/structure/blob/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(severity > 0)
 		if(overmind)
 			overmind.blob_reagent_datum.emp_reaction(src, severity)
@@ -210,6 +240,8 @@
 			new /obj/effect/temp_visual/emp(get_turf(src))
 
 /obj/structure/blob/tesla_act(power)
+	procstart = null
+	src.procstart = null
 	..()
 	if(overmind)
 		if(overmind.blob_reagent_datum.tesla_reaction(src, power))
@@ -218,14 +250,20 @@
 		take_damage(power/400, BURN, "energy")
 
 /obj/structure/blob/extinguish()
+	procstart = null
+	src.procstart = null
 	..()
 	if(overmind)
 		overmind.blob_reagent_datum.extinguish_reaction(src)
 
 /obj/structure/blob/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 15
 
 /obj/structure/blob/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/analyzer))
 		user.changeNext_move(CLICK_CD_MELEE)
 		to_chat(user, "<b>The analyzer beeps once, then reports:</b><br>")
@@ -237,6 +275,8 @@
 		return ..()
 
 /obj/structure/blob/proc/chemeffectreport(mob/user)
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		to_chat(user, "<b>Material: <font color=\"[overmind.blob_reagent_datum.color]\">[overmind.blob_reagent_datum.name]</font><span class='notice'>.</span></b>")
 		to_chat(user, "<b>Material Effects:</b> <span class='notice'>[overmind.blob_reagent_datum.analyzerdescdamage]</span>")
@@ -245,16 +285,22 @@
 		to_chat(user, "<b>No Material Detected!</b><br>")
 
 /obj/structure/blob/proc/typereport(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<b>Blob Type:</b> <span class='notice'>[uppertext(initial(name))]</span>")
 	to_chat(user, "<b>Health:</b> <span class='notice'>[obj_integrity]/[max_integrity]</span>")
 	to_chat(user, "<b>Effects:</b> <span class='notice'>[scannerreport()]</span>")
 
 /obj/structure/blob/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	if("blob" in M.faction) //sorry, but you can't kill the blob as a blobbernaut
 		return
 	..()
 
 /obj/structure/blob/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -265,6 +311,8 @@
 			playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/structure/blob/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			damage_amount *= brute_resist
@@ -282,16 +330,22 @@
 	return damage_amount
 
 /obj/structure/blob/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && obj_integrity > 0)
 		update_icon()
 
 /obj/structure/blob/obj_destruction(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		overmind.blob_reagent_datum.death_reaction(src, damage_flag)
 	..()
 
 /obj/structure/blob/proc/change_to(type, controller)
+	procstart = null
+	src.procstart = null
 	if(!ispath(type))
 		throw EXCEPTION("change_to(): invalid type for blob")
 		return
@@ -303,6 +357,8 @@
 	return B
 
 /obj/structure/blob/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/atom_hud/hud_to_check = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	if(user.research_scanner || hud_to_check.hudusers[user])
@@ -316,9 +372,13 @@
 		to_chat(user, "It seems to be made of [get_chem_name()].")
 
 /obj/structure/blob/proc/scannerreport()
+	procstart = null
+	src.procstart = null
 	return "A generic blob. Looks like someone forgot to override this proc, adminhelp this."
 
 /obj/structure/blob/proc/get_chem_name()
+	procstart = null
+	src.procstart = null
 	if(overmind)
 		return overmind.blob_reagent_datum.name
 	return "an unknown variant"
@@ -333,11 +393,15 @@
 	brute_resist = 0.25
 
 /obj/structure/blob/normal/scannerreport()
+	procstart = null
+	src.procstart = null
 	if(obj_integrity <= 15)
 		return "Currently weak to brute damage."
 	return "N/A"
 
 /obj/structure/blob/normal/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(obj_integrity <= 15)
 		icon_state = "blob_damaged"

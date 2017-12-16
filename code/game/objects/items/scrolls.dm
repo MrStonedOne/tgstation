@@ -17,6 +17,8 @@
 
 
 /obj/item/teleportation_scroll/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = "<B>Teleportation Scroll:</B><BR>"
 	dat += "Number of uses: [src.uses]<BR>"
@@ -29,6 +31,8 @@
 	return
 
 /obj/item/teleportation_scroll/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if (usr.stat || usr.restrained() || src.loc != usr)
 		return
@@ -46,6 +50,8 @@
 
 /obj/item/teleportation_scroll/proc/teleportscroll(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/A
 
 	A = input(user, "Area to jump to", "BOOYEA", A) as null|anything in GLOB.teleportlocs

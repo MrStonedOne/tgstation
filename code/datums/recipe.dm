@@ -76,6 +76,8 @@
 
 //general version
 /datum/recipe/proc/make(obj/container)
+	procstart = null
+	src.procstart = null
 	var/obj/result_obj = new result(container)
 	for (var/obj/O in (container.contents-result_obj))
 		O.reagents.trans_to(result_obj, O.reagents.total_volume)
@@ -85,6 +87,8 @@
 
 // food-related
 /datum/recipe/proc/make_food(obj/container)
+	procstart = null
+	src.procstart = null
 	var/obj/result_obj = new result(container)
 	for (var/obj/O in (container.contents-result_obj))
 		if (O.reagents)
@@ -96,6 +100,8 @@
 	return result_obj
 
 /proc/select_recipe(list/datum/recipe/avaiable_recipes, obj/obj, exact = 1 as num)
+	procstart = null
+	src.procstart = null
 	if (!exact)
 		exact = -1
 	var/list/datum/recipe/possible_recipes = new

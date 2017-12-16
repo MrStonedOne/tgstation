@@ -9,9 +9,13 @@
 	var/piping_layer = PIPING_LAYER_DEFAULT
 
 /obj/machinery/pipedispenser/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/pipedispenser/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	var/dat = "PIPING LAYER: <A href='?src=[REF(src)];layer_down=1'>--</A><b>[piping_layer]</b><A href='?src=[REF(src)];layer_up=1'>++</A><BR>"
@@ -33,6 +37,8 @@
 	return
 
 /obj/machinery/pipedispenser/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	if(!anchored|| !usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
@@ -59,6 +65,8 @@
 	return
 
 /obj/machinery/pipedispenser/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if (istype(W, /obj/item/pipe) || istype(W, /obj/item/pipe_meter))
 		to_chat(usr, "<span class='notice'>You put [W] back into [src].</span>")
@@ -105,6 +113,8 @@
 
 //Allow you to drag-drop disposal pipes and transit tubes into it
 /obj/machinery/pipedispenser/disposal/MouseDrop_T(obj/structure/pipe, mob/usr)
+	procstart = null
+	src.procstart = null
 	if(!usr.canmove || usr.stat || usr.restrained())
 		return
 
@@ -120,6 +130,8 @@
 	qdel(pipe)
 
 /obj/machinery/pipedispenser/disposal/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -141,6 +153,8 @@
 
 
 /obj/machinery/pipedispenser/disposal/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	usr.set_machine(src)
@@ -175,6 +189,8 @@
 	anchored = TRUE
 
 /obj/machinery/pipedispenser/disposal/transit_tube/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -196,6 +212,8 @@
 
 
 /obj/machinery/pipedispenser/disposal/transit_tube/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	usr.set_machine(src)

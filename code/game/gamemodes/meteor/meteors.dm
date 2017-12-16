@@ -22,10 +22,14 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 ///////////////////////////////
 
 /proc/spawn_meteors(number = 10, list/meteortypes)
+	procstart = null
+	src.procstart = null
 	for(var/i = 0; i < number; i++)
 		spawn_meteor(meteortypes)
 
 /proc/spawn_meteor(list/meteortypes)
+	procstart = null
+	src.procstart = null
 	var/turf/pickedstart
 	var/turf/pickedgoal
 	var/max_i = 10//number of tries to spawn meteor.
@@ -43,6 +47,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	M.z_original = M.z
 
 /proc/spaceDebrisStartLoc(startSide, Z)
+	procstart = null
+	src.procstart = null
 	var/starty
 	var/startx
 	switch(startSide)
@@ -61,6 +67,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	. = locate(startx, starty, Z)
 
 /proc/spaceDebrisFinishLoc(startSide, Z)
+	procstart = null
+	src.procstart = null
 	var/endy
 	var/endx
 	switch(startSide)
@@ -103,6 +111,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	var/dropamt = 2
 
 /obj/effect/meteor/Move()
+	procstart = null
+	src.procstart = null
 	if(z != z_original || loc == dest)
 		qdel(src)
 		return FALSE
@@ -117,6 +127,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 			get_hit()
 
 /obj/effect/meteor/Destroy()
+	procstart = null
+	src.procstart = null
 	if (timerid)
 		deltimer(timerid)
 	GLOB.meteor_list -= src
@@ -125,6 +137,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	. = ..()
 
 /obj/effect/meteor/Initialize(mapload, target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.meteor_list += src
 	SSaugury.register_doom(src, threat)
@@ -133,12 +147,16 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	chase_target(target)
 
 /obj/effect/meteor/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A)
 		ram_turf(get_turf(A))
 		playsound(src.loc, meteorsound, 40, 1)
 		get_hit()
 
 /obj/effect/meteor/proc/ram_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	//first bust whatever is in the turf
 	for(var/atom/A in T)
 		if(A != src)
@@ -155,6 +173,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 //process getting 'hit' by colliding with a dense object
 //or randomly when ramming turfs
 /obj/effect/meteor/proc/get_hit()
+	procstart = null
+	src.procstart = null
 	hits--
 	if(hits <= 0)
 		make_debris()
@@ -162,11 +182,15 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 		qdel(src)
 
 /obj/effect/meteor/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 #define METEOR_MEDAL "Your Life Before Your Eyes"
 
 /obj/effect/meteor/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!admin_spawned && isliving(user))
 		UnlockMedal(METEOR_MEDAL,user.client)
 	..()
@@ -174,6 +198,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 #undef METEOR_MEDAL
 
 /obj/effect/meteor/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pickaxe))
 		make_debris()
 		qdel(src)
@@ -181,16 +207,22 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 		. = ..()
 
 /obj/effect/meteor/proc/make_debris()
+	procstart = null
+	src.procstart = null
 	for(var/throws = dropamt, throws > 0, throws--)
 		var/thing_to_spawn = pick(meteordrop)
 		new thing_to_spawn(get_turf(src))
 
 /obj/effect/meteor/proc/chase_target(atom/chasing, delay = 1)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(chasing)
 		walk_towards(src, chasing, delay)
 
 /obj/effect/meteor/proc/meteor_effect()
+	procstart = null
+	src.procstart = null
 	if(heavy)
 		var/sound/meteor_sound = sound(meteorsound)
 		var/random_frequency = get_rand_frequency()
@@ -227,6 +259,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	threat = 5
 
 /obj/effect/meteor/medium/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src.loc, 0, 1, 2, 3, 0)
 
@@ -240,6 +274,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	threat = 10
 
 /obj/effect/meteor/big/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src.loc, 1, 2, 3, 4, 0)
 
@@ -254,6 +290,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	threat = 20
 
 /obj/effect/meteor/flaming/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src.loc, 1, 2, 3, 4, 0, 0, 5)
 
@@ -267,6 +305,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 
 
 /obj/effect/meteor/irradiated/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src.loc, 0, 0, 4, 3, 0)
 	new /obj/effect/decal/cleanable/greenglow(get_turf(src))
@@ -285,6 +325,8 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	threat = 2
 
 /obj/effect/meteor/meaty/New()
+	procstart = null
+	src.procstart = null
 	for(var/path in meteordrop)
 		if(path == /obj/item/reagent_containers/food/snacks/meat/slab/human/mutant)
 			meteordrop -= path
@@ -297,15 +339,21 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	..()
 
 /obj/effect/meteor/meaty/make_debris()
+	procstart = null
+	src.procstart = null
 	..()
 	new meteorgibs(get_turf(src))
 
 
 /obj/effect/meteor/meaty/ram_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!isspaceturf(T))
 		new /obj/effect/decal/cleanable/blood(T)
 
 /obj/effect/meteor/meaty/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	A.ex_act(hitpwr)
 	get_hit()
 
@@ -316,10 +364,14 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	meteorgibs = /obj/effect/gibspawner/xeno
 
 /obj/effect/meteor/meaty/xeno/New()
+	procstart = null
+	src.procstart = null
 	meteordrop += subtypesof(/obj/item/organ/alien)
 	..()
 
 /obj/effect/meteor/meaty/xeno/ram_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!isspaceturf(T))
 		new /obj/effect/decal/cleanable/xenoblood(T)
 
@@ -336,15 +388,21 @@ GLOBAL_LIST_INIT(meteorsC, list(/obj/effect/meteor/dust)) //for space dust event
 	threat = 50
 
 /obj/effect/meteor/tunguska/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		new /obj/effect/temp_visual/revenant(get_turf(src))
 
 /obj/effect/meteor/tunguska/meteor_effect()
+	procstart = null
+	src.procstart = null
 	..()
 	explosion(src.loc, 5, 10, 15, 20, 0)
 
 /obj/effect/meteor/tunguska/Collide()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(20))
 		explosion(src.loc,2,4,6,8)
@@ -367,6 +425,8 @@ GLOBAL_LIST_INIT(meteorsSPOOKY, list(/obj/effect/meteor/pumpkin))
 	threat = 100
 
 /obj/effect/meteor/pumpkin/New()
+	procstart = null
+	src.procstart = null
 	..()
 	meteorsound = pick('sound/hallucinations/im_here1.ogg','sound/hallucinations/im_here2.ogg')
 //////////////////////////

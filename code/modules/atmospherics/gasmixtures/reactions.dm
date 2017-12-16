@@ -30,6 +30,8 @@
 /datum/controller/subsystem/air/var/list/gas_reactions //this is our singleton of all reactions
 
 /proc/init_gas_reactions()
+	procstart = null
+	src.procstart = null
 	var/list/reaction_types = list()
 	for(var/r in subtypesof(/datum/gas_reaction))
 		var/datum/gas_reaction/reaction = r
@@ -55,10 +57,14 @@
 	var/id = "r"
 
 /datum/gas_reaction/New()
+	procstart = null
+	src.procstart = null
 	init_reqs()
 
 /datum/gas_reaction/proc/init_reqs()
 /datum/gas_reaction/proc/react(datum/gas_mixture/air, atom/location)
+	procstart = null
+	src.procstart = null
 	return NO_REACTION
 
 /datum/gas_reaction/nobliumsupression
@@ -66,9 +72,13 @@
 	name = "Hyper-Noblium Reaction Supression"
 	id = "nobstop"
 /datum/gas_reaction/nobliumsupression/init_reqs()
+	procstart = null
+	src.procstart = null
 	min_requirements = list(/datum/gas/hypernoblium = REACTION_OPPRESSION_THRESHOLD)
 
 /datum/gas_reaction/nobliumsupression/react()
+	procstart = null
+	src.procstart = null
 	return STOP_REACTIONS
 
 //water vapor: puts out fires?
@@ -78,9 +88,13 @@
 	id = "vapor"
 
 /datum/gas_reaction/water_vapor/init_reqs()
+	procstart = null
+	src.procstart = null
 	min_requirements = list(/datum/gas/water_vapor = MOLES_GAS_VISIBLE)
 
 /datum/gas_reaction/water_vapor/react(datum/gas_mixture/air, turf/open/location)
+	procstart = null
+	src.procstart = null
 	. = NO_REACTION
 	if (air.temperature <= WATER_VAPOR_FREEZE)
 		if(location && location.freon_gas_act())
@@ -96,9 +110,13 @@
 	id = "fire"
 
 /datum/gas_reaction/fire/init_reqs()
+	procstart = null
+	src.procstart = null
 	min_requirements = list("TEMP" = FIRE_MINIMUM_TEMPERATURE_TO_EXIST) //doesn't include plasma reqs b/c of other, rarer, burning gases.
 
 /datum/gas_reaction/fire/react(datum/gas_mixture/air, turf/open/location)
+	procstart = null
+	src.procstart = null
 	var/energy_released = 0
 	var/old_heat_capacity = air.heat_capacity()
 	var/list/cached_gases = air.gases //this speeds things up because accessing datum vars is slow
@@ -190,6 +208,8 @@
 	id = "fusion"
 
 /datum/gas_reaction/fusion/init_reqs()
+	procstart = null
+	src.procstart = null
 	min_requirements = list(
 		"ENER" = PLASMA_BINDING_ENERGY * 10,
 		/datum/gas/plasma = MINIMUM_HEAT_CAPACITY,
@@ -197,6 +217,8 @@
 	)
 
 /datum/gas_reaction/fusion/react(datum/gas_mixture/air, turf/open/location)
+	procstart = null
+	src.procstart = null
 	var/list/cached_gases = air.gases
 	var/temperature = air.temperature
 
@@ -239,6 +261,8 @@
 	id = "nitrylformation"
 
 /datum/gas_reaction/nitrylformation/init_reqs()
+	procstart = null
+	src.procstart = null
 	min_requirements = list(
 		/datum/gas/oxygen = 20,
 		/datum/gas/nitrogen = 20,
@@ -247,6 +271,8 @@
 	)
 
 /datum/gas_reaction/nitrylformation/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/list/cached_gases = air.gases
 	var/temperature = air.temperature
 
@@ -271,6 +297,8 @@
 	id = "bzformation"
 
 /datum/gas_reaction/bzformation/init_reqs()
+	procstart = null
+	src.procstart = null
 	min_requirements = list(
 		/datum/gas/tritium = 10,
 		/datum/gas/plasma = 10
@@ -278,6 +306,8 @@
 
 
 /datum/gas_reaction/bzformation/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/list/cached_gases = air.gases
 	var/temperature = air.temperature
 	var/pressure = air.return_pressure()
@@ -303,6 +333,8 @@
 	name = "Stimulum formation"
 	id = "stimformation"
 /datum/gas_reaction/stimformation/init_reqs()
+	procstart = null
+	src.procstart = null
 	min_requirements = list(
 		/datum/gas/tritium = 30,
 		/datum/gas/plasma = 10,
@@ -311,6 +343,8 @@
 		"TEMP" = STIMULUM_HEAT_SCALE/2)
 
 /datum/gas_reaction/stimformation/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/list/cached_gases = air.gases
 
 	var/old_heat_capacity = air.heat_capacity()
@@ -336,12 +370,16 @@
 	id = "nobformation"
 
 /datum/gas_reaction/nobliumformation/init_reqs()
+	procstart = null
+	src.procstart = null
 	min_requirements = list(
 		/datum/gas/nitrogen = 10,
 		/datum/gas/tritium = 5,
 		"TEMP" = 5000000)
 
 /datum/gas_reaction/nobliumformation/react(datum/gas_mixture/air)
+	procstart = null
+	src.procstart = null
 	var/list/cached_gases = air.gases
 	air.assert_gases(/datum/gas/hypernoblium,/datum/gas/bz)
 	var/old_heat_capacity = air.heat_capacity()

@@ -13,6 +13,8 @@
 	id = /obj/item/card/id/gold
 
 /datum/outfit/santa/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 	H.fully_replace_character_name(H.real_name, "Santa Claus")

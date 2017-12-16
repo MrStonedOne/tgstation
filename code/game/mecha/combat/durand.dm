@@ -13,10 +13,14 @@
 	wreckage = /obj/structure/mecha_wreckage/durand
 
 /obj/mecha/combat/durand/GrantActions(mob/living/user, human_occupant = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	defense_action.Grant(user, src)
 
 /obj/mecha/combat/durand/RemoveActions(mob/living/user, human_occupant = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	defense_action.Remove(user)
 

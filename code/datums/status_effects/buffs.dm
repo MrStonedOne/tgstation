@@ -11,15 +11,21 @@
 	icon_state = "shadow_mend"
 
 /datum/status_effect/shadow_mend/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.visible_message("<span class='notice'>Violet light wraps around [owner]'s body!</span>", "<span class='notice'>Violet light wraps around your body!</span>")
 	playsound(owner, 'sound/magic/teleport_app.ogg', 50, 1)
 	return ..()
 
 /datum/status_effect/shadow_mend/tick()
+	procstart = null
+	src.procstart = null
 	owner.adjustBruteLoss(-15)
 	owner.adjustFireLoss(-15)
 
 /datum/status_effect/shadow_mend/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.visible_message("<span class='warning'>The violet light around [owner] glows black!</span>", "<span class='warning'>The tendrils around you cinch tightly and reap their toll...</span>")
 	playsound(owner, 'sound/magic/teleport_diss.ogg', 50, 1)
 	owner.apply_status_effect(STATUS_EFFECT_VOID_PRICE)
@@ -37,6 +43,8 @@
 	icon_state = "shadow_mend"
 
 /datum/status_effect/void_price/tick()
+	procstart = null
+	src.procstart = null
 	SEND_SOUND(owner, sound('sound/magic/summon_karp.ogg', volume = 25))
 	owner.adjustBruteLoss(3)
 
@@ -56,6 +64,8 @@
 	alerttooltipstyle = "clockcult"
 
 /obj/screen/alert/status_effect/vanguard/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	var/mob/living/L = usr
 	if(istype(L)) //this is probably more safety than actually needed
 		var/vanguard = L.stun_absorption["vanguard"]
@@ -65,11 +75,15 @@
 	..()
 
 /datum/status_effect/vanguard_shield/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(progbar)
 	progbar = null
 	return ..()
 
 /datum/status_effect/vanguard_shield/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.log_message("gained Vanguard stun immunity", INDIVIDUAL_ATTACK_LOG)
 	owner.add_stun_absorption("vanguard", INFINITY, 1, "'s yellow aura momentarily intensifies!", "Your ward absorbs the stun!", " radiating with a soft yellow light!")
 	owner.visible_message("<span class='warning'>[owner] begins to faintly glow!</span>", "<span class='brass'>You will absorb all stuns for the next twenty seconds.</span>")
@@ -81,9 +95,13 @@
 	return ..()
 
 /datum/status_effect/vanguard_shield/tick()
+	procstart = null
+	src.procstart = null
 	progbar.update(duration - world.time)
 
 /datum/status_effect/vanguard_shield/on_remove()
+	procstart = null
+	src.procstart = null
 	var/vanguard = owner.stun_absorption["vanguard"]
 	var/stuns_blocked = 0
 	if(vanguard)
@@ -120,6 +138,8 @@
 	alerttooltipstyle = "clockcult"
 
 /datum/status_effect/inathneqs_endowment/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.log_message("gained Inath-neq's invulnerability", INDIVIDUAL_ATTACK_LOG)
 	owner.visible_message("<span class='warning'>[owner] shines with azure light!</span>", "<span class='notice'>You feel Inath-neq's power flow through you! You're invincible!</span>")
 	var/oldcolor = owner.color
@@ -133,6 +153,8 @@
 	return ..()
 
 /datum/status_effect/inathneqs_endowment/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.log_message("lost Inath-neq's invulnerability", INDIVIDUAL_ATTACK_LOG)
 	owner.visible_message("<span class='warning'>The light around [owner] flickers and dissipates!</span>", "<span class='boldwarning'>You feel Inath-neq's power fade from your body!</span>")
 	owner.status_flags &= ~GODMODE
@@ -146,6 +168,8 @@
 	var/power_to_give = 0 //how much power is gained each tick
 
 /datum/status_effect/cyborg_power_regen/on_creation(mob/living/new_owner, new_power_per_tick)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && isnum(new_power_per_tick))
 		power_to_give = new_power_per_tick
@@ -156,6 +180,8 @@
 	icon_state = "power_regen"
 
 /datum/status_effect/cyborg_power_regen/tick()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/cyborg = owner
 	if(!istype(cyborg) || !cyborg.cell)
 		qdel(src)
@@ -177,6 +203,8 @@
 	alerttooltipstyle = "hisgrace"
 
 /obj/screen/alert/status_effect/his_grace/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	desc = initial(desc)
 	var/datum/status_effect/his_grace/HG = attached_effect
 	desc += "<br><font size=3><b>Current Bloodthirst: [HG.bloodlust]</b></font>\
@@ -185,11 +213,15 @@
 	..()
 
 /datum/status_effect/his_grace/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.log_message("gained His Grace's stun immunity", INDIVIDUAL_ATTACK_LOG)
 	owner.add_stun_absorption("hisgrace", INFINITY, 3, null, "His Grace protects you from the stun!")
 	return ..()
 
 /datum/status_effect/his_grace/tick()
+	procstart = null
+	src.procstart = null
 	bloodlust = 0
 	var/graces = 0
 	for(var/obj/item/his_grace/HG in owner.held_items)
@@ -209,6 +241,8 @@
 	owner.adjustCloneLoss(-grace_heal)
 
 /datum/status_effect/his_grace/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.log_message("lost His Grace's stun immunity", INDIVIDUAL_ATTACK_LOG)
 	if(islist(owner.stun_absorption) && owner.stun_absorption["hisgrace"])
 		owner.stun_absorption -= "hisgrace"
@@ -220,10 +254,14 @@
 	alert_type = /obj/screen/alert/status_effect/wish_granters_gift
 
 /datum/status_effect/wish_granters_gift/on_apply()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='notice'>Death is not your end! The Wish Granter's energy suffuses you, and you begin to rise...</span>")
 	return ..()
 
 /datum/status_effect/wish_granters_gift/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.revive(full_heal = 1, admin_revive = 1)
 	owner.visible_message("<span class='warning'>[owner] appears to wake from the dead, having healed all wounds!</span>", "<span class='notice'>You have regenerated.</span>")
 	owner.update_canmove()
@@ -241,6 +279,8 @@
 	var/alive = TRUE
 
 /datum/status_effect/cult_master/proc/deathrattle()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(GLOB.cult_narsie))
 		return //if nar-sie is alive, don't even worry about it
 	var/area/A = get_area(owner)
@@ -251,6 +291,8 @@
 			to_chat(M, "<span class='cultlarge'>The Cult's Master, [owner], has fallen in \the [A]!</span>")
 
 /datum/status_effect/cult_master/tick()
+	procstart = null
+	src.procstart = null
 	if(owner.stat != DEAD && !alive)
 		alive = TRUE
 		return
@@ -259,6 +301,8 @@
 		deathrattle()
 
 /datum/status_effect/cult_master/on_remove()
+	procstart = null
+	src.procstart = null
 	deathrattle()
 	. = ..()
 
@@ -281,6 +325,8 @@
 	icon_state = "blooddrunk"
 
 /datum/status_effect/blooddrunk/on_apply()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		owner.maxHealth *= 10
@@ -365,6 +411,8 @@
 	last_health = owner.health
 
 /datum/status_effect/blooddrunk/on_remove()
+	procstart = null
+	src.procstart = null
 	tick()
 	owner.maxHealth *= 0.1
 	owner.bruteloss *= 0.1
@@ -392,6 +440,8 @@
 
 
 /datum/status_effect/sword_spin/on_apply()
+	procstart = null
+	src.procstart = null
 	owner.visible_message("<span class='danger'>[owner] begins swinging the sword with inhuman strength!</span>")
 	var/oldcolor = owner.color
 	owner.color = "#ff0000"
@@ -404,6 +454,8 @@
 
 
 /datum/status_effect/sword_spin/tick()
+	procstart = null
+	src.procstart = null
 	playsound(owner, 'sound/weapons/fwoosh.wav', 75, 0)
 	var/obj/item/slashy
 	slashy = owner.get_active_held_item()
@@ -411,4 +463,6 @@
 		slashy.attack(M, owner)
 
 /datum/status_effect/sword_spin/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.visible_message("<span class='warning'>[owner]'s inhuman strength dissipates and the sword's runes grow cold!</span>")

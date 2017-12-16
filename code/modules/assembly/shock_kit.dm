@@ -9,11 +9,15 @@
 	flags_1 = CONDUCT_1
 
 /obj/item/assembly/shock_kit/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(part1)
 	qdel(part2)
 	return ..()
 
 /obj/item/assembly/shock_kit/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench))
 		part1.forceMove(drop_location())
 		part2.forceMove(drop_location())
@@ -27,12 +31,16 @@
 	return
 
 /obj/item/assembly/shock_kit/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	part1.attack_self(user)
 	part2.attack_self(user)
 	add_fingerprint(user)
 	return
 
 /obj/item/assembly/shock_kit/receive_signal()
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/structure/chair/e_chair))
 		var/obj/structure/chair/e_chair/C = loc
 		C.shock()

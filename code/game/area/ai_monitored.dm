@@ -5,6 +5,8 @@
 	var/list/datum/weakref/motionTargets = list()
 
 /area/ai_monitored/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		for (var/obj/machinery/camera/M in src)
@@ -15,6 +17,8 @@
 //Only need to use one camera
 
 /area/ai_monitored/Entered(atom/movable/O)
+	procstart = null
+	src.procstart = null
 	..()
 	if (ismob(O) && motioncameras.len)
 		for(var/X in motioncameras)
@@ -23,6 +27,8 @@
 			return
 
 /area/ai_monitored/Exited(atom/movable/O)
+	procstart = null
+	src.procstart = null
 	..()
 	if (ismob(O) && motioncameras.len)
 		for(var/X in motioncameras)

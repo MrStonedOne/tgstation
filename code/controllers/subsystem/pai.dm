@@ -9,6 +9,8 @@ SUBSYSTEM_DEF(pai)
 	var/list/pai_card_list = list()
 
 /datum/controller/subsystem/pai/Topic(href, href_list[])
+	procstart = null
+	src.procstart = null
 	if(href_list["download"])
 		var/datum/paiCandidate/candidate = locate(href_list["candidate"]) in candidates
 		var/obj/item/device/paicard/card = locate(href_list["device"]) in pai_card_list
@@ -79,6 +81,8 @@ SUBSYSTEM_DEF(pai)
 		recruitWindow(usr)
 
 /datum/controller/subsystem/pai/proc/recruitWindow(mob/M)
+	procstart = null
+	src.procstart = null
 	var/datum/paiCandidate/candidate
 	for(var/datum/paiCandidate/c in candidates)
 		if(c.key == M.key)
@@ -130,9 +134,13 @@ SUBSYSTEM_DEF(pai)
 	M << browse(dat, "window=paiRecruit")
 
 /datum/controller/subsystem/pai/proc/spam_again()
+	procstart = null
+	src.procstart = null
 	ghost_spam = FALSE
 
 /datum/controller/subsystem/pai/proc/check_ready(var/datum/paiCandidate/C)
+	procstart = null
+	src.procstart = null
 	if(!C.ready)
 		return FALSE
 	for(var/mob/dead/observer/O in GLOB.player_list)
@@ -141,6 +149,8 @@ SUBSYSTEM_DEF(pai)
 	return FALSE
 
 /datum/controller/subsystem/pai/proc/findPAI(obj/item/device/paicard/p, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ghost_spam)
 		ghost_spam = TRUE
 		for(var/mob/dead/observer/G in GLOB.player_list)

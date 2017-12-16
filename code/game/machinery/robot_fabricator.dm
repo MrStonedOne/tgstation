@@ -12,6 +12,8 @@
 	active_power_usage = 5000
 
 /obj/machinery/robotic_fabricator/attackby(obj/item/O, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(O, /obj/item/stack/sheet/metal))
 		if (metal_amount < 150000)
 			add_overlay("fab-load-metal")
@@ -22,6 +24,8 @@
 		return ..()
 
 /obj/machinery/robotic_fabricator/proc/FinishLoadingMetal(obj/item/stack/sheet/metal/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	cut_overlay("fab-load-metal")
 	if(QDELETED(M) || QDELETED(user))
 		return
@@ -35,15 +39,21 @@
 	updateDialog()
 
 /obj/machinery/robotic_fabricator/power_change()
+	procstart = null
+	src.procstart = null
 	if (powered())
 		stat &= ~NOPOWER
 	else
 		stat |= NOPOWER
 
 /obj/machinery/robotic_fabricator/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/robotic_fabricator/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	if (..())
 		return
@@ -72,6 +82,8 @@ Please wait until completion...</TT><BR>
 	return
 
 /obj/machinery/robotic_fabricator/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if (..())
 		return
 

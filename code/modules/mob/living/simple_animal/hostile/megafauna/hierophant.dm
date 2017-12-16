@@ -77,14 +77,20 @@ Difficulty: Hard
 	death_sound = 'sound/magic/repulse.ogg'
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal = new/obj/item/device/gps/internal/hierophant(src)
 	spawned_beacon = new(loc)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/spawn_crusher_loot()
+	procstart = null
+	src.procstart = null
 	new /obj/item/crusher_trophy/vortex_talisman(get_turf(spawned_beacon))
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && spawned_beacon && !QDELETED(spawned_beacon) && !client)
 		if(target || loc == spawned_beacon.loc)
@@ -103,6 +109,8 @@ Difficulty: Hard
 				visible_message("<span class='hierophant'>\"Vitemvw gsqtpixi. Stivexmsrep ijjmgmirgc gsqtvsqmwih.\"</span>")
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/death()
+	procstart = null
+	src.procstart = null
 	if(health > 0 || stat == DEAD)
 		return
 	else
@@ -115,10 +123,14 @@ Difficulty: Hard
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(spawned_beacon)
 	. = ..()
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/devour(mob/living/L)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/W in L)
 		if(!L.dropItemToGround(W))
 			qdel(W)
@@ -128,11 +140,15 @@ Difficulty: Hard
 	L.dust()
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(the_target, /mob/living/simple_animal/hostile/asteroid/hivelordbrood)) //ignore temporary targets in favor of more permanent targets
 		return FALSE
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/GiveTarget(new_target)
+	procstart = null
+	src.procstart = null
 	var/targets_the_same = (new_target == target)
 	. = ..()
 	if(. && target && !targets_the_same)
@@ -141,12 +157,16 @@ Difficulty: Hard
 			arena_trap(src)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(src && . > 0 && !blinking)
 		wander = TRUE
 		did_reset = FALSE
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(!blinking)
 		if(target && isliving(target))
 			var/mob/living/L = target
@@ -164,14 +184,20 @@ Difficulty: Hard
 			return ..()
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/DestroySurroundings()
+	procstart = null
+	src.procstart = null
 	if(!blinking)
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/Move()
+	procstart = null
+	src.procstart = null
 	if(!blinking)
 		. = ..()
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/Moved(oldLoc, movement_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!stat && .)
 		var/obj/effect/temp_visual/hierophant/squares/HS = new(oldLoc)
@@ -181,6 +207,8 @@ Difficulty: Hard
 			arena_trap(target)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/Goto(target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	wander = TRUE
 	if(!blinking)
 		..()
@@ -192,6 +220,8 @@ Difficulty: Hard
 	beam_range = initial(beam_range) + round(anger_modifier * 0.12)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/OpenFire()
+	procstart = null
+	src.procstart = null
 	calculate_rage()
 	if(blinking)
 		return
@@ -437,6 +467,8 @@ Difficulty: Hard
 		new /obj/effect/temp_visual/hierophant/blast(T, src, FALSE)
 
 /mob/living/simple_animal/hostile/megafauna/hierophant/AltClickOn(atom/A) //player control handler(don't give this to a player holy fuck)
+	procstart = null
+	src.procstart = null
 	if(!istype(A) || get_dist(A, src) <= 2)
 		return
 	blink(A)
@@ -448,6 +480,8 @@ Difficulty: Hard
 	var/mob/living/caster //who made this, anyway
 
 /obj/effect/temp_visual/hierophant/Initialize(mapload, new_caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_caster)
 		caster = new_caster
@@ -459,6 +493,8 @@ Difficulty: Hard
 	randomdir = FALSE
 
 /obj/effect/temp_visual/hierophant/squares/Initialize(mapload, new_caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismineralturf(loc))
 		var/turf/closed/mineral/M = loc
@@ -473,15 +509,21 @@ Difficulty: Hard
 	smooth = SMOOTH_TRUE
 
 /obj/effect/temp_visual/hierophant/wall/Initialize(mapload, new_caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	queue_smooth_neighbors(src)
 	queue_smooth(src)
 
 /obj/effect/temp_visual/hierophant/wall/Destroy()
+	procstart = null
+	src.procstart = null
 	queue_smooth_neighbors(src)
 	return ..()
 
 /obj/effect/temp_visual/hierophant/wall/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(caster))
 		return FALSE
 	if(mover == caster.pulledby)
@@ -511,6 +553,8 @@ Difficulty: Hard
 	var/damage = 10
 
 /obj/effect/temp_visual/hierophant/chaser/Initialize(mapload, new_caster, new_target, new_speed, is_friendly_fire)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target = new_target
 	friendly_fire_check = is_friendly_fire
@@ -519,6 +563,8 @@ Difficulty: Hard
 	addtimer(CALLBACK(src, .proc/seek_target), 1)
 
 /obj/effect/temp_visual/hierophant/chaser/proc/get_target_dir()
+	procstart = null
+	src.procstart = null
 	. = get_cardinal_dir(src, targetturf)
 	if((. != previous_moving_dir && . == more_previouser_moving_dir) || . == 0) //we're alternating, recalculate
 		var/list/cardinal_copy = GLOB.cardinals.Copy()
@@ -526,6 +572,8 @@ Difficulty: Hard
 		. = pick(cardinal_copy)
 
 /obj/effect/temp_visual/hierophant/chaser/proc/seek_target()
+	procstart = null
+	src.procstart = null
 	if(!currently_seeking)
 		currently_seeking = TRUE
 		targetturf = get_turf(target)
@@ -553,6 +601,8 @@ Difficulty: Hard
 				sleep(speed)
 			targetturf = get_turf(target)
 /obj/effect/temp_visual/hierophant/chaser/proc/make_blast()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/temp_visual/hierophant/blast/B = new(loc, caster, friendly_fire_check)
 	B.damage = damage
 	B.monster_damage_boost = monster_damage_boost
@@ -592,6 +642,8 @@ Difficulty: Hard
 	var/bursting = FALSE //if we're bursting and need to hit anyone crossing us
 
 /obj/effect/temp_visual/hierophant/blast/Initialize(mapload, new_caster, friendly_fire)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	friendly_fire_check = friendly_fire
 	if(new_caster)
@@ -602,6 +654,8 @@ Difficulty: Hard
 	INVOKE_ASYNC(src, .proc/blast)
 
 /obj/effect/temp_visual/hierophant/blast/proc/blast()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T)
 		return
@@ -613,11 +667,15 @@ Difficulty: Hard
 	bursting = FALSE //we no longer damage crossers
 
 /obj/effect/temp_visual/hierophant/blast/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(bursting)
 		do_damage(get_turf(src))
 
 /obj/effect/temp_visual/hierophant/blast/proc/do_damage(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!damage)
 		return
 	for(var/mob/living/L in T.contents - hit_things) //find and damage mobs...
@@ -661,9 +719,13 @@ Difficulty: Hard
 	anchored = TRUE
 
 /obj/effect/hierophant/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/hierophant/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/hierophant_club))
 		var/obj/item/hierophant_club/H = I
 		if(H.timer > world.time)

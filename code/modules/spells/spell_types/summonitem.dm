@@ -16,6 +16,8 @@
 	action_icon_state = "summons"
 
 /obj/effect/proc_holder/spell/targeted/summonitem/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/L in targets)
 		var/list/hand_items = list(L.get_active_held_item(),L.get_inactive_held_item())
 		var/message

@@ -21,6 +21,8 @@
 	anchored = TRUE
 
 /obj/structure/closet/emcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if (prob(40))
@@ -62,6 +64,8 @@
 	icon_state = "fire"
 
 /obj/structure/closet/firecloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 
 	new /obj/item/clothing/suit/fire/firefighter(src)
@@ -71,6 +75,8 @@
 	new /obj/item/clothing/head/hardhat/red(src)
 
 /obj/structure/closet/firecloset/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/fire/firefighter(src)
 	new /obj/item/clothing/mask/gas(src)
 	new /obj/item/device/flashlight(src)
@@ -88,6 +94,8 @@
 	icon_door = "eng_tool"
 
 /obj/structure/closet/toolcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(40))
 		new /obj/item/clothing/suit/hazardvest(src)
@@ -131,6 +139,8 @@
 	icon_door = "eng_rad"
 
 /obj/structure/closet/radiation/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/device/geiger_counter(src)
 	new /obj/item/clothing/suit/radiation(src)
@@ -145,6 +155,8 @@
 	icon_state = "bomb"
 
 /obj/structure/closet/bombcloset/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/suit/bomb_suit(src)
 	new /obj/item/clothing/under/color/black(src)
@@ -152,12 +164,16 @@
 	new /obj/item/clothing/head/bomb_hood(src)
 
 /obj/structure/closet/bombcloset/security/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/bomb_suit/security(src)
 	new /obj/item/clothing/under/rank/security(src)
 	new /obj/item/clothing/shoes/jackboots(src)
 	new /obj/item/clothing/head/bomb_hood/security(src)
 
 /obj/structure/closet/bombcloset/white/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/bomb_suit/white(src)
 	new /obj/item/clothing/under/color/black(src)
 	new /obj/item/clothing/shoes/sneakers/black(src)
@@ -170,6 +186,8 @@
 	name = "ammunition locker"
 
 /obj/structure/closet/ammunitionlocker/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 8)
 		new /obj/item/ammo_casing/shotgun/beanbag(src)

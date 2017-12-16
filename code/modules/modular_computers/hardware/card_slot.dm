@@ -10,10 +10,14 @@
 	var/obj/item/card/id/stored_card2 = null
 
 /obj/item/computer_hardware/card_slot/Destroy()
+	procstart = null
+	src.procstart = null
 	try_eject()
 	return ..()
 
 /obj/item/computer_hardware/card_slot/GetAccess()
+	procstart = null
+	src.procstart = null
 	if(stored_card && stored_card2) // Best of both worlds
 		return (stored_card.GetAccess() | stored_card2.GetAccess())
 	else if(stored_card)
@@ -23,6 +27,8 @@
 	return ..()
 
 /obj/item/computer_hardware/card_slot/GetID()
+	procstart = null
+	src.procstart = null
 	if(stored_card)
 		return stored_card
 	else if(stored_card2)
@@ -30,12 +36,18 @@
 	return ..()
 
 /obj/item/computer_hardware/card_slot/on_install(obj/item/device/modular_computer/M, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	M.add_verb(device_type)
 
 /obj/item/computer_hardware/card_slot/on_remove(obj/item/device/modular_computer/M, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	M.remove_verb(device_type)
 
 /obj/item/computer_hardware/card_slot/try_insert(obj/item/I, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return FALSE
 
@@ -62,6 +74,8 @@
 
 
 /obj/item/computer_hardware/card_slot/try_eject(slot=0, mob/living/user = null, forced = 0)
+	procstart = null
+	src.procstart = null
 	if(!stored_card && !stored_card2)
 		to_chat(user, "<span class='warning'>There are no cards in \the [src].</span>")
 		return FALSE
@@ -98,6 +112,8 @@
 	return FALSE
 
 /obj/item/computer_hardware/card_slot/attackby(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(istype(I, /obj/item/screwdriver))
@@ -106,6 +122,8 @@
 		return
 
 /obj/item/computer_hardware/card_slot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(stored_card || stored_card2)
 		to_chat(user, "There appears to be something loaded in the card slots.")

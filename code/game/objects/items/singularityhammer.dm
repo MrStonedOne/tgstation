@@ -18,14 +18,20 @@
 	force_string = "LORD SINGULOTH HIMSELF"
 
 /obj/item/twohanded/singularityhammer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/twohanded/singularityhammer/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/twohanded/singularityhammer/process()
+	procstart = null
+	src.procstart = null
 	if(charged < 5)
 		charged++
 	return
@@ -35,6 +41,8 @@
 	return
 
 /obj/item/twohanded/singularityhammer/proc/vortex(turf/pull, mob/wielder)
+	procstart = null
+	src.procstart = null
 	for(var/atom/X in orange(5,pull))
 		if(ismovableatom(X))
 			var/atom/movable/A = X
@@ -57,6 +65,8 @@
 	return
 
 /obj/item/twohanded/singularityhammer/afterattack(atom/A as mob|obj|turf|area, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(wielded)
@@ -85,6 +95,8 @@
 	w_class = WEIGHT_CLASS_HUGE
 
 /obj/item/twohanded/mjollnir/proc/shock(mob/living/target)
+	procstart = null
+	src.procstart = null
 	target.Stun(60)
 	var/datum/effect_system/lightning_spread/s = new /datum/effect_system/lightning_spread
 	s.set_up(5, 1, target.loc)
@@ -97,12 +109,16 @@
 	return
 
 /obj/item/twohanded/mjollnir/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(wielded)
 		playsound(src.loc, "sparks", 50, 1)
 		shock(M)
 
 /obj/item/twohanded/mjollnir/throw_impact(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		shock(target)

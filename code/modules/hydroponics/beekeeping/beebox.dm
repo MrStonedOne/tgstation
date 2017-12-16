@@ -8,14 +8,20 @@
 
 
 /mob/proc/bee_friendly()
+	procstart = null
+	src.procstart = null
 	return 0
 
 
 /mob/living/simple_animal/hostile/poison/bees/bee_friendly()
+	procstart = null
+	src.procstart = null
 	return 1
 
 
 /mob/living/carbon/human/bee_friendly()
+	procstart = null
+	src.procstart = null
 	if(dna && dna.species && dna.species.id == "pod") //bees pollinate plants, duh.
 		return 1
 	if((wear_suit && (wear_suit.flags_1 & THICKMATERIAL_1)) && (head && (head.flags_1 & THICKMATERIAL_1)))
@@ -38,11 +44,15 @@
 
 
 /obj/structure/beebox/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 
 /obj/structure/beebox/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	bees.Cut()
 	honeycombs.Cut()
@@ -56,6 +66,8 @@
 
 
 /obj/structure/beebox/premade/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	icon_state = "beebox"
@@ -86,6 +98,8 @@
 
 
 /obj/structure/beebox/process()
+	procstart = null
+	src.procstart = null
 	if(queen_bee)
 		if(bee_resources >= BEE_RESOURCE_HONEYCOMB_COST)
 			if(honeycombs.len < get_max_honeycomb())
@@ -109,6 +123,8 @@
 
 
 /obj/structure/beebox/proc/get_max_honeycomb()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/hf in honey_frames)
 		var/obj/item/honey_frame/HF = hf
@@ -116,10 +132,14 @@
 
 
 /obj/structure/beebox/proc/get_max_bees()
+	procstart = null
+	src.procstart = null
 	. = get_max_honeycomb() * BEES_RATIO
 
 
 /obj/structure/beebox/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!queen_bee)
@@ -142,6 +162,8 @@
 
 
 /obj/structure/beebox/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/honey_frame))
 		var/obj/item/honey_frame/HF = I
 		if(honey_frames.len < BEEBOX_MAX_FRAMES)
@@ -194,6 +216,8 @@
 
 
 /obj/structure/beebox/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.bee_friendly())
 		//Time to get stung!
 		var/bees = FALSE
@@ -252,6 +276,8 @@
 				queen_bee = null
 
 /obj/structure/beebox/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood (loc, 20)
 	for(var/mob/living/simple_animal/hostile/poison/bees/B in bees)
 		if(B.loc == src)

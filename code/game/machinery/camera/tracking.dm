@@ -23,6 +23,8 @@
 
 
 /mob/living/silicon/ai/proc/ai_camera_list(camera)
+	procstart = null
+	src.procstart = null
 	if (!camera)
 		return 0
 
@@ -40,6 +42,8 @@
 
 /mob/living/silicon/ai/proc/trackable_mobs()
 
+	procstart = null
+	src.procstart = null
 	track.names.Cut()
 	track.namecounts.Cut()
 	track.humans.Cut()
@@ -70,6 +74,8 @@
 	return targets
 
 /mob/living/silicon/ai/verb/ai_camera_track(target_name in trackable_mobs())
+	procstart = null
+	src.procstart = null
 	set name = "track"
 	set hidden = 1 //Don't display it on the verb lists. This verb exists purely so you can type "track Oldman Robustin" and follow his ass
 
@@ -81,6 +87,8 @@
 	ai_actual_track(target)
 
 /mob/living/silicon/ai/proc/ai_actual_track(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return
 	var/mob/living/silicon/ai/U = usr
@@ -130,6 +138,8 @@
 			sleep(10)
 
 /proc/near_camera(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if (!isturf(M.loc))
 		return 0
 	if(issilicon(M))
@@ -141,6 +151,8 @@
 	return 1
 
 /obj/machinery/camera/attack_ai(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if (!istype(user))
 		return
 	if (!src.can_use())
@@ -149,9 +161,13 @@
 
 
 /mob/living/silicon/ai/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	ai_camera_list()
 
 /proc/camera_sort(list/L)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/camera/a
 	var/obj/machinery/camera/b
 

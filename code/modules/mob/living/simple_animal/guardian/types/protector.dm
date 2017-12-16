@@ -12,6 +12,8 @@
 	var/toggle = FALSE
 
 /mob/living/simple_animal/hostile/guardian/protector/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	if(severity == 1)
 		adjustBruteLoss(400) //if in protector mode, will do 20 damage and not actually necessarily kill the summoner
 	else
@@ -20,6 +22,8 @@
 		visible_message("<span class='danger'>The explosion glances off [src]'s energy shielding!</span>")
 
 /mob/living/simple_animal/hostile/guardian/protector/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. > 0 && toggle)
 		var/image/I = new('icons/effects/effects.dmi', src, "shield-flash", MOB_LAYER+0.01, dir = pick(GLOB.cardinals))
@@ -28,6 +32,8 @@
 		flick_overlay_view(I, src, 5)
 
 /mob/living/simple_animal/hostile/guardian/protector/ToggleMode()
+	procstart = null
+	src.procstart = null
 	if(cooldown > world.time)
 		return 0
 	cooldown = world.time + 10

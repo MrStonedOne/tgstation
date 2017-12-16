@@ -20,6 +20,8 @@
 
 //Ugh this is a lot of copypasta from emitters, welding need some boilerplate reduction
 /obj/structure/shuttle/engine/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(state == ENGINE_WELDED)
 		if(!silent)
 			to_chat(user, "<span class='warning'>[src] is welded to the floor!</span>")
@@ -27,6 +29,8 @@
 	return ..()
 
 /obj/structure/shuttle/engine/default_unfasten_wrench(mob/user, obj/item/wrench/W, time = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_UNFASTEN)
 		if(anchored)
@@ -35,6 +39,8 @@
 			state = ENGINE_UNWRENCHED
 
 /obj/structure/shuttle/engine/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(default_unfasten_wrench(user, I))
 		return
@@ -68,12 +74,16 @@
 		return ..()
 
 /obj/structure/shuttle/engine/Destroy()
+	procstart = null
+	src.procstart = null
 	if(state == ENGINE_WELDED)
 		alter_engine_power(-engine_power)
 	. = ..()
 
 //Propagates the change to the shuttle.
 /obj/structure/shuttle/engine/proc/alter_engine_power(mod)
+	procstart = null
+	src.procstart = null
 	if(mod == 0)
 		return
 	if(SSshuttle.is_in_shuttle_bounds(src))

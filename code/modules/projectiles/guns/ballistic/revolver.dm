@@ -6,21 +6,29 @@
 	casing_ejector = FALSE
 
 /obj/item/gun/ballistic/revolver/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!istype(magazine, /obj/item/ammo_box/magazine/internal/cylinder))
 		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 
 /obj/item/gun/ballistic/revolver/chamber_round(spin = 1)
+	procstart = null
+	src.procstart = null
 	if(spin)
 		chambered = magazine.get_round(1)
 	else
 		chambered = magazine.stored_ammo[1]
 
 /obj/item/gun/ballistic/revolver/shoot_with_empty_chamber(mob/living/user as mob|obj)
+	procstart = null
+	src.procstart = null
 	..()
 	chamber_round(1)
 
 /obj/item/gun/ballistic/revolver/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -33,6 +41,8 @@
 		chamber_round(0)
 
 /obj/item/gun/ballistic/revolver/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/num_unloaded = 0
 	chambered = null
 	while (get_ammo() > 0)
@@ -50,6 +60,8 @@
 		to_chat(user, "<span class='warning'>[src] is empty!</span>")
 
 /obj/item/gun/ballistic/revolver/verb/spin()
+	procstart = null
+	src.procstart = null
 	set name = "Spin Chamber"
 	set category = "Object"
 	set desc = "Click to spin your revolver's chamber."
@@ -65,6 +77,8 @@
 		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 
 /obj/item/gun/ballistic/revolver/proc/do_spin()
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_box/magazine/internal/cylinder/C = magazine
 	. = istype(C)
 	if(.)
@@ -72,9 +86,13 @@
 		chamber_round(0)
 
 /obj/item/gun/ballistic/revolver/can_shoot()
+	procstart = null
+	src.procstart = null
 	return get_ammo(0,0)
 
 /obj/item/gun/ballistic/revolver/get_ammo(countchambered = 0, countempties = 1)
+	procstart = null
+	src.procstart = null
 	var/boolets = 0 //mature var names for mature people
 	if (chambered && countchambered)
 		boolets++
@@ -83,6 +101,8 @@
 	return boolets
 
 /obj/item/gun/ballistic/revolver/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "[get_ammo(0,0)] of those are live rounds.")
 
@@ -100,6 +120,8 @@
 						)
 
 /obj/item/gun/ballistic/revolver/detective/process_fire(atom/target as mob|obj|turf, mob/living/user as mob|obj, message = 1, params, zone_override = "")
+	procstart = null
+	src.procstart = null
 	if(magazine.caliber != initial(magazine.caliber))
 		if(prob(70 - (magazine.ammo_count() * 10)))	//minimum probability of 10, maximum of 60
 			playsound(user, fire_sound, 50, 1)
@@ -110,6 +132,8 @@
 	..()
 
 /obj/item/gun/ballistic/revolver/detective/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(A, /obj/item/screwdriver))
 		if(magazine.caliber == "38")
@@ -172,12 +196,16 @@
 	var/spun = FALSE
 
 /obj/item/gun/ballistic/revolver/russian/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	do_spin()
 	spun = TRUE
 	update_icon()
 
 /obj/item/gun/ballistic/revolver/russian/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(get_ammo() > 0)
 		spin()
@@ -187,6 +215,8 @@
 	return
 
 /obj/item/gun/ballistic/revolver/russian/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!spun && can_shoot())
 		spin()
 		spun = TRUE
@@ -194,6 +224,8 @@
 	..()
 
 /obj/item/gun/ballistic/revolver/russian/afterattack(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(flag)
 		if(!(target in user.contents) && ismob(target))
 			if(user.a_intent == INTENT_HARM) // Flogging action
@@ -232,6 +264,8 @@
 		playsound(src, "gun_dry_fire", 50, 1)
 
 /obj/item/gun/ballistic/revolver/russian/proc/shoot_self(mob/living/carbon/human/user, affecting = "head")
+	procstart = null
+	src.procstart = null
 	user.apply_damage(300, BRUTE, affecting)
 	user.visible_message("<span class='danger'>[user.name] fires [src] at [user.p_their()] head!</span>", "<span class='userdanger'>You fire [src] at your head!</span>", "<span class='italics'>You hear a gunshot!</span>")
 
@@ -240,6 +274,8 @@
 	desc = "To play with this revolver requires wagering your very soul."
 
 /obj/item/gun/ballistic/revolver/russian/soul/shoot_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/device/soulstone/anybody/SS = new /obj/item/device/soulstone/anybody(get_turf(src))
 	if(!SS.transfer_soul("FORCE", user)) //Something went wrong
@@ -273,6 +309,8 @@
 						)
 
 /obj/item/gun/ballistic/revolver/doublebarrel/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(A, /obj/item/ammo_box) || istype(A, /obj/item/ammo_casing))
 		chamber_round()
@@ -284,6 +322,8 @@
 		sawoff(user)
 
 /obj/item/gun/ballistic/revolver/doublebarrel/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/num_unloaded = 0
 	while (get_ammo() > 0)
 		var/obj/item/ammo_casing/CB
@@ -314,6 +354,8 @@
 	var/slung = FALSE
 
 /obj/item/gun/ballistic/revolver/doublebarrel/improvised/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(A, /obj/item/stack/cable_coil) && !sawn_state)
 		var/obj/item/stack/cable_coil/C = A
@@ -326,11 +368,15 @@
 			to_chat(user, "<span class='warning'>You need at least ten lengths of cable if you want to make a sling!</span>")
 
 /obj/item/gun/ballistic/revolver/doublebarrel/improvised/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(slung)
 		icon_state += "sling"
 
 /obj/item/gun/ballistic/revolver/doublebarrel/improvised/sawoff(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && slung) //sawing off the gun removes the sling
 		new /obj/item/stack/cable_coil(get_turf(src), 10)
@@ -351,6 +397,8 @@
 	clumsy_check = 0
 
 /obj/item/gun/ballistic/revolver/reverse/can_trigger_gun(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if((user.disabilities & CLUMSY) || (user.mind && user.mind.assigned_role == "Clown"))
 		return ..()
 	if(process_fire(user, user, 0, zone_override = "head"))

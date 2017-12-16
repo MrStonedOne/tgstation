@@ -37,6 +37,8 @@
 	no_cost = TRUE
 
 /obj/item/clockwork/slab/debug/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!is_servant_of_ratvar(user))
 		add_servant_of_ratvar(user)
@@ -73,17 +75,23 @@
 	quickbound = list(/datum/clockwork_scripture/abscond, /datum/clockwork_scripture/ranged_ability/linked_vanguard, /datum/clockwork_scripture/spatial_gateway)
 
 /obj/item/clockwork/slab/cyborg/access_display(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.ratvar_awakens)
 		to_chat(user, "<span class='warning'>Use the action buttons to recite your limited set of scripture!</span>")
 	else
 		..()
 
 /obj/item/clockwork/slab/cyborg/ratvar_act()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!GLOB.ratvar_awakens)
 		SStgui.close_uis(src)
 
 /obj/item/clockwork/slab/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_slab_info(src)
 	START_PROCESSING(SSobj, src)
@@ -92,6 +100,8 @@
 		speed_multiplier = max(0.1, speed_multiplier - 0.25)
 
 /obj/item/clockwork/slab/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	if(slab_ability && slab_ability.ranged_ability_user)
 		slab_ability.remove_ranged_ability()
@@ -99,27 +109,37 @@
 	return ..()
 
 /obj/item/clockwork/slab/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/check_on_mob, user), 1) //dropped is called before the item is out of the slot, so we need to check slightly later
 
 /obj/item/clockwork/slab/worn_overlays(isinhands = FALSE, icon_file)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(isinhands && item_state && inhand_overlay)
 		var/mutable_appearance/M = mutable_appearance(icon_file, "slab_[inhand_overlay]")
 		. += M
 
 /obj/item/clockwork/slab/proc/check_on_mob(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user && !(src in user.held_items) && slab_ability && slab_ability.ranged_ability_user) //if we happen to check and we AREN'T in user's hands, remove whatever ability we have
 		slab_ability.remove_ranged_ability()
 
 //Power generation
 /obj/item/clockwork/slab/process()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_approaches && speed_multiplier == initial(speed_multiplier))
 		name = "supercharged [name]"
 		speed_multiplier = max(0.1, speed_multiplier - 0.25)
 	adjust_clockwork_power(0.1) //Slabs serve as very weak power generators on their own (no, not enough to justify spamming them)
 
 /obj/item/clockwork/slab/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		if(LAZYLEN(quickbound))
@@ -132,12 +152,16 @@
 
 //Slab actions; Hierophant, Quickbind
 /obj/item/clockwork/slab/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/clock/quickbind))
 		var/datum/action/item_action/clock/quickbind/Q = action
 		recite_scripture(quickbound[Q.scripture_index], user, FALSE)
 
 //Scripture Recital
 /obj/item/clockwork/slab/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscultist(user))
 		to_chat(user, "<span class='heavy_brass'>\"You reek of blood. You've got a lot of nerve to even look at that slab.\"</span>")
 		user.visible_message("<span class='warning'>A sizzling sound comes from [user]'s hands!</span>", "<span class='userdanger'>[src] suddenly grows extremely hot in your hands!</span>")
@@ -161,17 +185,23 @@
 	access_display(user)
 
 /obj/item/clockwork/slab/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user) && linking)
 		linking = null
 		to_chat(user, "<span class='notice'>Object link canceled.</span>")
 
 /obj/item/clockwork/slab/proc/access_display(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		return FALSE
 	ui_interact(user)
 	return TRUE
 
 /obj/item/clockwork/slab/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.inventory_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "clockwork_slab", name, 800, 420, master_ui, state)
@@ -180,6 +210,8 @@
 		ui.open()
 
 /obj/item/clockwork/slab/proc/recite_scripture(datum/clockwork_scripture/scripture, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!scripture || !user || !user.canUseTopic(src) || (!no_cost && !can_recite_scripture(user)))
 		return FALSE
 	if(user.get_active_held_item() != src)
@@ -199,6 +231,8 @@
 
 //Guide to Serving Ratvar
 /obj/item/clockwork/slab/proc/recollection()
+	procstart = null
+	src.procstart = null
 	var/list/textlist = list("If you're seeing this, file a bug report.")
 	if(GLOB.ratvar_awakens)
 		textlist = list("<font color=#BE8700 size=3><b>")
@@ -226,6 +260,8 @@
 //- Power
 //- Conversion
 /obj/item/clockwork/slab/proc/get_recollection_text(section)
+	procstart = null
+	src.procstart = null
 	var/list/dat = list()
 	switch(section)
 		if("Default")
@@ -390,6 +426,8 @@
 
 //Gets the quickbound scripture as a text block.
 /obj/item/clockwork/slab/proc/get_recollection_quickbinds()
+	procstart = null
+	src.procstart = null
 	var/list/dat = list()
 	dat += "<font color=#BE8700 size=3>Quickbound Scripture</font><br>\
 	<i>You can have up to five scriptures bound to action buttons for easy use.</i><br><br>"
@@ -462,6 +500,8 @@
 	return data
 
 /obj/item/clockwork/slab/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("toggle")
 			recollecting = !recollecting
@@ -503,6 +543,8 @@
 	update_quickbind()
 
 /obj/item/clockwork/slab/proc/update_quickbind()
+	procstart = null
+	src.procstart = null
 	for(var/datum/action/item_action/clock/quickbind/Q in actions)
 		qdel(Q) //regenerate all our quickbound scriptures
 	if(LAZYLEN(quickbound))

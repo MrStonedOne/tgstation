@@ -25,6 +25,8 @@
 
 /obj/effect/proc_holder/spell/dumbfire/choose_targets(mob/user = usr)
 
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(user)
 	for(var/i = 1; i < range; i++)
 		var/turf/new_turf = get_step(T, user.dir)
@@ -34,11 +36,15 @@
 	perform(list(T),user = user)
 
 /obj/effect/proc_holder/spell/dumbfire/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	playMagSound()
 	for(var/turf/target in targets)
 		launch_at(target, user)
 
 /obj/effect/proc_holder/spell/dumbfire/proc/launch_at(turf/target, mob/user)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/obj/effect/proc_holder/spell/targeted/projectile
 	if(istext(proj_type))
@@ -91,6 +97,8 @@
 		qdel(projectile)
 
 /obj/effect/proc_holder/spell/dumbfire/proc/proj_trail(obj/effect/proc_holder/spell/targeted/projectile)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(projectile)
 		var/obj/effect/overlay/trail = new /obj/effect/overlay(projectile.loc)

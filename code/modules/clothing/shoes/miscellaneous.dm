@@ -2,6 +2,8 @@
 	SendSignal(COMSIG_SHOES_STEP_ACTION)
 
 /obj/item/clothing/shoes/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is bashing [user.p_their()] own head in with [src]! Ain't that a kick in the head?</span>")
 	for(var/i = 0, i < 3, i++)
 		sleep(3)
@@ -70,6 +72,8 @@
 	icon_state = "galoshes_dry"
 
 /obj/item/clothing/shoes/galoshes/dry/step_action()
+	procstart = null
+	src.procstart = null
 	var/turf/open/t_loc = get_turf(src)
 	if(istype(t_loc) && t_loc.wet)
 		t_loc.MakeDry(TURF_WET_WATER)
@@ -85,6 +89,8 @@
 	pockets = /obj/item/storage/internal/pocket/shoes/clown
 
 /obj/item/clothing/shoes/clown_shoes/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/squeak, list('sound/effects/clownstep1.ogg'=1,'sound/effects/clownstep2.ogg'=1), 50)
 
@@ -202,6 +208,8 @@
 	var/jumping = FALSE //are we mid-jump?
 
 /obj/item/clothing/shoes/bhop/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 
@@ -222,6 +230,8 @@
 		to_chat(user, "<span class='warning'>Something prevents you from dashing forward!</span>")
 
 /obj/item/clothing/shoes/bhop/proc/hop_end()
+	procstart = null
+	src.procstart = null
 	jumping = FALSE
 	recharging_time = world.time + recharging_rate
 

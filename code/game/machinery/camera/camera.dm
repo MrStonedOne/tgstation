@@ -43,6 +43,8 @@
 	var/internal_light = TRUE //Whether it can light up when an AI views it
 
 /obj/machinery/camera/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	assembly = new(src)
 	assembly.state = 4
@@ -57,6 +59,8 @@
 		toggle_cam()
 
 /obj/machinery/camera/Destroy()
+	procstart = null
+	src.procstart = null
 	toggle_cam(null, 0) //kick anyone viewing out
 	if(isarea(myarea))
 		LAZYREMOVE(myarea.cameras, src)
@@ -73,6 +77,8 @@
 	return ..()
 
 /obj/machinery/camera/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!status)
 		return
 	if(!isEmpProof())
@@ -112,25 +118,35 @@
 	qdel(src)//to prevent bomb testing camera from exploding over and over forever
 
 /obj/machinery/camera/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(invuln)
 		return
 	..()
 
 /obj/machinery/camera/proc/setViewRange(num = 7)
+	procstart = null
+	src.procstart = null
 	src.view_range = num
 	GLOB.cameranet.updateVisibility(src, 0)
 
 /obj/machinery/camera/proc/shock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	user.electrocute_act(10, src)
 
 /obj/machinery/camera/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	if (status && current_size >= STAGE_FIVE) // If the singulo is strong enough to pull anchored objects and the camera is still active, turn off the camera as it gets ripped off the wall.
 		toggle_cam(null, 0)
 	..()
 
 /obj/machinery/camera/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	var/msg = "<span class='notice'>You attach [W] into the assembly's inner circuits.</span>"
 	var/msg2 = "<span class='notice'>[src] already has that upgrade!</span>"
 
@@ -243,16 +259,22 @@
 	return ..()
 
 /obj/machinery/camera/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" && damage_amount < 12 && !(stat & BROKEN))
 		return 0
 	. = ..()
 
 /obj/machinery/camera/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(status && !(flags_1 & NODECONSTRUCT_1))
 		triggerCameraAlarm()
 		toggle_cam(null, 0)
 
 /obj/machinery/camera/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(disassembled)
 			if(!assembly)
@@ -268,6 +290,8 @@
 	qdel(src)
 
 /obj/machinery/camera/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!status)
 		icon_state = "[initial(icon_state)]1"
 	else if (stat & EMPED)
@@ -276,6 +300,8 @@
 		icon_state = "[initial(icon_state)]"
 
 /obj/machinery/camera/proc/toggle_cam(mob/user, displaymessage = 1)
+	procstart = null
+	src.procstart = null
 	status = !status
 	if(can_use())
 		GLOB.cameranet.addCamera(src)
@@ -315,16 +341,22 @@
 			to_chat(O, "The screen bursts into static.")
 
 /obj/machinery/camera/proc/triggerCameraAlarm()
+	procstart = null
+	src.procstart = null
 	alarm_on = TRUE
 	for(var/mob/living/silicon/S in GLOB.silicon_mobs)
 		S.triggerAlarm("Camera", get_area(src), list(src), src)
 
 /obj/machinery/camera/proc/cancelCameraAlarm()
+	procstart = null
+	src.procstart = null
 	alarm_on = FALSE
 	for(var/mob/living/silicon/S in GLOB.silicon_mobs)
 		S.cancelAlarm("Camera", get_area(src), src)
 
 /obj/machinery/camera/proc/can_use()
+	procstart = null
+	src.procstart = null
 	if(!status)
 		return FALSE
 	if(stat & EMPED)
@@ -332,6 +364,8 @@
 	return TRUE
 
 /obj/machinery/camera/proc/can_see()
+	procstart = null
+	src.procstart = null
 	var/list/see = null
 	var/turf/pos = get_turf(src)
 	if(isXRay())
@@ -341,6 +375,8 @@
 	return see
 
 /atom/proc/auto_turn()
+	procstart = null
+	src.procstart = null
 	//Automatically turns based on nearby walls.
 	var/turf/closed/wall/T = null
 	for(var/i in GLOB.cardinals)
@@ -352,6 +388,8 @@
 //Return a working camera that can see a given mob
 //or null if none
 /proc/seen_by_camera(var/mob/M)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/camera/C in oview(4, M))
 		if(C.can_use())	// check if camera disabled
 			return C
@@ -359,6 +397,8 @@
 	return null
 
 /proc/near_range_camera(var/mob/M)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/camera/C in range(4, M))
 		if(C.can_use())	// check if camera disabled
 			return C
@@ -367,6 +407,8 @@
 	return null
 
 /obj/machinery/camera/proc/weld(obj/item/weldingtool/WT, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(busy)
 		return FALSE
 	if(!WT.remove_fuel(0, user))
@@ -384,6 +426,8 @@
 	return FALSE
 
 /obj/machinery/camera/proc/Togglelight(on=0)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/silicon/ai/A in GLOB.ai_list)
 		for(var/obj/machinery/camera/cam in A.lit_cameras)
 			if(cam == src)
@@ -394,10 +438,14 @@
 		set_light(0)
 
 /obj/machinery/camera/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	if(view_range == short_range) //unfocused
 		user.overlay_fullscreen("remote_view", /obj/screen/fullscreen/impaired, 2)
 
 /obj/machinery/camera/update_remote_sight(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.see_invisible = SEE_INVISIBLE_LIVING //can't see ghosts through cameras
 	if(isXRay())
 		user.sight |= (SEE_TURFS|SEE_MOBS|SEE_OBJS)

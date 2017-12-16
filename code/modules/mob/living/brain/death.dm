@@ -12,6 +12,8 @@
 	return ..()
 
 /mob/living/brain/gib()
+	procstart = null
+	src.procstart = null
 	if(container)
 		qdel(container)//Gets rid of the MMI if there is one
 	if(loc)

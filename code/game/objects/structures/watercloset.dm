@@ -12,12 +12,16 @@
 
 
 /obj/structure/toilet/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	open = round(rand(0, 1))
 	update_icon()
 
 
 /obj/structure/toilet/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(swirlie)
 		user.changeNext_move(CLICK_CD_MELEE)
 		playsound(src.loc, "swing_hit", 25, 1)
@@ -68,10 +72,14 @@
 
 
 /obj/structure/toilet/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "toilet[open][cistern]"
 
 
 /obj/structure/toilet/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/crowbar))
 		to_chat(user, "<span class='notice'>You start to [cistern ? "replace the lid on the cistern" : "lift the lid off the cistern"]...</span>")
 		playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 50, 1)
@@ -108,6 +116,8 @@
 	var/secret_type = null
 
 /obj/structure/toilet/secret/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (secret_type)
 		secret = new secret_type(src)
@@ -129,10 +139,14 @@
 	var/obj/item/hiddenitem = null // what's in the urinal
 
 /obj/structure/urinal/New()
+	procstart = null
+	src.procstart = null
 	..()
 	hiddenitem = new /obj/item/reagent_containers/food/urinalcake
 
 /obj/structure/urinal/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.pulling && user.a_intent == INTENT_GRAB && isliving(user.pulling))
 		var/mob/living/GM = user.pulling
 		if(user.grab_state >= GRAB_AGGRESSIVE)
@@ -159,6 +173,8 @@
 		..()
 
 /obj/structure/urinal/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		to_chat(user, "<span class='notice'>You start to [exposed ? "screw the cap back into place" : "unscrew the cap to the drain protector"]...</span>")
 		playsound(loc, 'sound/effects/stonedoor_openclose.ogg', 50, 1)
@@ -202,10 +218,14 @@
 	var/datum/looping_sound/showering/soundloop
 
 /obj/machinery/shower/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(list(src), FALSE)
 
 /obj/machinery/shower/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(soundloop)
 	return ..()
 
@@ -219,6 +239,8 @@
 
 
 /obj/machinery/shower/attack_hand(mob/M)
+	procstart = null
+	src.procstart = null
 	on = !on
 	update_icon()
 	add_fingerprint(M)
@@ -240,6 +262,8 @@
 
 
 /obj/machinery/shower/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(I.type == /obj/item/device/analyzer)
 		to_chat(user, "<span class='notice'>The water temperature seems to be [watertemp].</span>")
 	if(istype(I, /obj/item/wrench))
@@ -284,6 +308,8 @@
 
 
 /obj/machinery/shower/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(on)
 		if(isliving(AM))
@@ -296,6 +322,8 @@
 
 
 /obj/machinery/shower/proc/wash_obj(obj/O)
+	procstart = null
+	src.procstart = null
 	O.SendSignal(COMSIG_COMPONENT_CLEAN_ACT, CLEAN_WEAK)
 	. = O.clean_blood()
 	O.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
@@ -306,6 +334,8 @@
 
 
 /obj/machinery/shower/proc/wash_turf()
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		var/turf/tile = loc
 		tile.SendSignal(COMSIG_COMPONENT_CLEAN_ACT, CLEAN_WEAK)
@@ -317,6 +347,8 @@
 
 
 /obj/machinery/shower/proc/wash_mob(mob/living/L)
+	procstart = null
+	src.procstart = null
 	L.SendSignal(COMSIG_COMPONENT_CLEAN_ACT, CLEAN_WEAK)
 	L.wash_cream()
 	L.ExtinguishMob()
@@ -383,6 +415,8 @@
 		L.clean_blood()
 
 /obj/machinery/shower/proc/contamination_cleanse(atom/movable/thing)
+	procstart = null
+	src.procstart = null
 	var/datum/component/radioactive/healthy_green_glow = thing.GetComponent(/datum/component/radioactive)
 	if(!healthy_green_glow || QDELETED(healthy_green_glow))
 		return
@@ -393,6 +427,8 @@
 	healthy_green_glow.strength = max(strength-1, 0)
 
 /obj/machinery/shower/process()
+	procstart = null
+	src.procstart = null
 	if(on)
 		wash_turf()
 		for(var/atom/movable/AM in loc)
@@ -403,10 +439,14 @@
 			contamination_cleanse(AM)
 
 /obj/machinery/shower/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/metal (loc, 3)
 	qdel(src)
 
 /obj/machinery/shower/proc/check_heat(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(watertemp == "freezing")
 		C.bodytemperature = max(80, C.bodytemperature - 80)
 		to_chat(C, "<span class='warning'>The water is freezing!</span>")
@@ -438,6 +478,8 @@
 
 
 /obj/structure/sink/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user || !istype(user))
 		return
 	if(!iscarbon(user))
@@ -477,6 +519,8 @@
 
 
 /obj/structure/sink/attackby(obj/item/O, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(busy)
 		to_chat(user, "<span class='warning'>Someone's already washing here!</span>")
 		return
@@ -542,6 +586,8 @@
 		return ..()
 
 /obj/structure/sink/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/metal (loc, 3)
 	qdel(src)
 
@@ -559,16 +605,22 @@
 	resistance_flags = UNACIDABLE
 
 /obj/structure/sink/puddle/attack_hand(mob/M)
+	procstart = null
+	src.procstart = null
 	icon_state = "puddle-splash"
 	..()
 	icon_state = "puddle"
 
 /obj/structure/sink/puddle/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	icon_state = "puddle-splash"
 	. = ..()
 	icon_state = "puddle"
 
 /obj/structure/sink/puddle/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 
@@ -590,10 +642,14 @@
 	var/open = TRUE
 
 /obj/structure/curtain/proc/toggle()
+	procstart = null
+	src.procstart = null
 	open = !open
 	update_icon()
 
 /obj/structure/curtain/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!open)
 		icon_state = "closed"
 		layer = WALL_OBJ_LAYER
@@ -607,6 +663,8 @@
 		open = TRUE
 
 /obj/structure/curtain/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if (istype(W, /obj/item/toy/crayon))
 		color = input(user,"Choose Color") as color
 	else if(istype(W, /obj/item/screwdriver))
@@ -640,17 +698,23 @@
 
 
 /obj/structure/curtain/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(loc, 'sound/effects/curtain.ogg', 50, 1)
 	toggle()
 	..()
 
 /obj/structure/curtain/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/cloth (loc, 2)
 	new /obj/item/stack/sheet/plastic (loc, 2)
 	new /obj/item/stack/rods (loc, 1)
 	qdel(src)
 
 /obj/structure/curtain/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)

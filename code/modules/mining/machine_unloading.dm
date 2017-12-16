@@ -12,6 +12,8 @@
 	speed_process = TRUE
 
 /obj/machinery/mineral/unloading_machine/process()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_step(src,input_dir)
 	if(T)
 		var/limit

@@ -5,6 +5,8 @@
 #define CREDITS_PATH "[GLOB.config_dir]contributors.dmi"
 
 /client/proc/RollCredits()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!fexists(CREDITS_PATH))
 		return
@@ -25,6 +27,8 @@
 	qdel(credits_icon)
 
 /client/proc/ClearCredits()
+	procstart = null
+	src.procstart = null
 	set name = "Hide Credits"
 	set category = "OOC"
 	verbs -= /client/proc/ClearCredits
@@ -40,6 +44,8 @@
 	var/matrix/target
 
 /obj/screen/credit/Initialize(mapload, credited, client/P, icon/I)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon = I
 	parent = P
@@ -58,6 +64,8 @@
 	P.screen += src
 
 /obj/screen/credit/Destroy()
+	procstart = null
+	src.procstart = null
 	var/client/P = parent
 	P.screen -= src
 	icon = null
@@ -66,4 +74,6 @@
 	return ..()
 
 /obj/screen/credit/proc/FadeOut()
+	procstart = null
+	src.procstart = null
 	animate(src, alpha = 0, transform = target, time = CREDIT_EASE_DURATION)

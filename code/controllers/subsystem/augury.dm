@@ -9,15 +9,23 @@ SUBSYSTEM_DEF(augury)
 	var/list/observers_given_action = list()
 
 /datum/controller/subsystem/augury/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	..("W:[watchers.len]|D:[doombringers.len]")
 
 /datum/controller/subsystem/augury/proc/register_doom(atom/A, severity)
+	procstart = null
+	src.procstart = null
 	doombringers[A] = severity
 
 /datum/controller/subsystem/augury/proc/unregister_doom(atom/A)
+	procstart = null
+	src.procstart = null
 	doombringers -= A
 
 /datum/controller/subsystem/augury/fire()
+	procstart = null
+	src.procstart = null
 	var/biggest_doom = null
 	var/biggest_threat = null
 
@@ -60,23 +68,31 @@ SUBSYSTEM_DEF(augury)
 	background_icon_state = ACTION_BUTTON_DEFAULT_BACKGROUND
 
 /datum/action/innate/augury/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		SSaugury.watchers -= owner
 	return ..()
 
 /datum/action/innate/augury/Activate()
+	procstart = null
+	src.procstart = null
 	SSaugury.watchers += owner
 	to_chat(owner, "<span class='notice'>You are now auto-following debris.</span>")
 	active = TRUE
 	UpdateButtonIcon()
 
 /datum/action/innate/augury/Deactivate()
+	procstart = null
+	src.procstart = null
 	SSaugury.watchers -= owner
 	to_chat(owner, "<span class='notice'>You are no longer auto-following debris.</span>")
 	active = FALSE
 	UpdateButtonIcon()
 
 /datum/action/innate/augury/UpdateButtonIcon(status_only = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(active)
 		button.icon_state = "template_active"

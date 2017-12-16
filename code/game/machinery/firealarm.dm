@@ -31,6 +31,8 @@
 	var/area/myarea = null
 
 /obj/machinery/firealarm/New(loc, dir, building)
+	procstart = null
+	src.procstart = null
 	..()
 	if(dir)
 		src.setDir(dir)
@@ -44,14 +46,20 @@
 	LAZYADD(myarea.firealarms, src)
 
 /obj/machinery/firealarm/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(myarea.firealarms, src)
 	return ..()
 
 /obj/machinery/firealarm/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/firealarm/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	var/area/A = src.loc
@@ -81,11 +89,15 @@
 			add_overlay("overlay_fire")
 
 /obj/machinery/firealarm/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(prob(50 / severity))
 		alarm()
 	..()
 
 /obj/machinery/firealarm/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
@@ -95,11 +107,15 @@
 	playsound(src, "sparks", 50, 1)
 
 /obj/machinery/firealarm/temperature_expose(datum/gas_mixture/air, temperature, volume)
+	procstart = null
+	src.procstart = null
 	if((temperature > T0C + 200 || temperature < BODYTEMP_COLD_DAMAGE_LIMIT) && (last_alarm+FIREALARM_COOLDOWN < world.time) && !emagged && detecting && !stat)
 		alarm()
 	..()
 
 /obj/machinery/firealarm/proc/alarm()
+	procstart = null
+	src.procstart = null
 	if(!is_operational() && (last_alarm+FIREALARM_COOLDOWN < world.time))
 		return
 	last_alarm = world.time
@@ -108,6 +124,8 @@
 	playsound(src.loc, 'goon/sound/machinery/FireAlarm.ogg', 75)
 
 /obj/machinery/firealarm/proc/reset()
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		return
 	var/area/A = get_area(src)
@@ -121,6 +139,8 @@
 		ui.open()
 
 /obj/machinery/firealarm/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["emagged"] = emagged
 
@@ -135,6 +155,8 @@
 	return data
 
 /obj/machinery/firealarm/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..() || buildstage != 2)
 		return
 	switch(action)
@@ -146,6 +168,8 @@
 			. = TRUE
 
 /obj/machinery/firealarm/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 
 	if(istype(W, /obj/item/screwdriver) && buildstage == 2)
@@ -245,6 +269,8 @@
 
 
 /obj/machinery/firealarm/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.) //damage received
 		if(obj_integrity > 0 && !(stat & BROKEN) && buildstage != 0)
@@ -252,17 +278,23 @@
 				alarm()
 
 /obj/machinery/firealarm/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	if (current_size >= STAGE_FIVE) // If the singulo is strong enough to pull anchored objects, the fire alarm experiences integrity failure
 		deconstruct()
 	..()
 
 /obj/machinery/firealarm/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(stat & BROKEN) && !(flags_1 & NODECONSTRUCT_1) && buildstage != 0) //can't break the electronics if there isn't any inside.
 		LAZYREMOVE(myarea.firealarms, src)
 		stat |= BROKEN
 		update_icon()
 
 /obj/machinery/firealarm/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc, 1)
 		if(!(stat & BROKEN))
@@ -283,6 +315,8 @@
 
 
 /obj/machinery/firealarm/partyalarm/reset()
+	procstart = null
+	src.procstart = null
 	if (stat & (NOPOWER|BROKEN))
 		return
 	var/area/A = src.loc
@@ -294,6 +328,8 @@
 	return
 
 /obj/machinery/firealarm/partyalarm/alarm()
+	procstart = null
+	src.procstart = null
 	if (stat & (NOPOWER|BROKEN))
 		return
 	var/area/A = src.loc
@@ -305,6 +341,8 @@
 	return
 
 /obj/machinery/firealarm/partyalarm/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/A = get_area(src)
 	.["alarm"] = A.party

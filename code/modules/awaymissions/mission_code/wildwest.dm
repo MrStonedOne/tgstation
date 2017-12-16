@@ -71,6 +71,8 @@
 	var/insistinga = 0
 
 /obj/machinery/wish_granter_dark/attack_hand(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	usr.set_machine(src)
 
 	if(chargesa <= 0)
@@ -143,10 +145,14 @@
 	var/triggered = 0
 
 /obj/effect/meatgrinder/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	CollidedWith(AM)
 
 /obj/effect/meatgrinder/CollidedWith(atom/movable/AM)
 
+	procstart = null
+	src.procstart = null
 	if(triggered)
 		return
 	if(!ishuman(AM))

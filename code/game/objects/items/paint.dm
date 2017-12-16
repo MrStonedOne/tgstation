@@ -56,6 +56,8 @@
 	icon_state = "paint_neutral"
 
 /obj/item/paint/anycolor/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/t1 = input(user, "Please select a color:", "Locking Computer", null) in list( "red", "blue", "green", "yellow", "violet", "black", "white")
 	if ((user.get_active_held_item() != src || user.stat || user.restrained()))
 		return
@@ -79,6 +81,8 @@
 
 
 /obj/item/paint/afterattack(turf/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(paintleft <= 0)
@@ -96,6 +100,8 @@
 	icon_state = "paint_neutral"
 
 /obj/item/paint/paint_remover/afterattack(turf/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(istype(target) && target.color != initial(target.color))

@@ -7,10 +7,14 @@
 	var/obj/screen/leap_icon = null
 
 /mob/living/carbon/alien/humanoid/hunter/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	internal_organs += new /obj/item/organ/alien/plasmavessel/small
 	..()
 
 /mob/living/carbon/alien/humanoid/hunter/movement_delay()
+	procstart = null
+	src.procstart = null
 	. = -1	//hunters are sanic
 	. += ..()	//but they still need to slow down on stun
 
@@ -18,6 +22,8 @@
 //Hunter verbs
 
 /mob/living/carbon/alien/humanoid/hunter/proc/toggle_leap(message = 1)
+	procstart = null
+	src.procstart = null
 	leap_on_click = !leap_on_click
 	leap_icon.icon_state = "leap_[leap_on_click ? "on":"off"]"
 	update_icons()
@@ -28,6 +34,8 @@
 
 
 /mob/living/carbon/alien/humanoid/hunter/ClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	face_atom(A)
 	if(leap_on_click)
 		leap_at(A)
@@ -38,6 +46,8 @@
 #define MAX_ALIEN_LEAP_DIST 7
 
 /mob/living/carbon/alien/humanoid/hunter/proc/leap_at(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!canmove || leaping)
 		return
 
@@ -57,12 +67,16 @@
 		throw_at(A, MAX_ALIEN_LEAP_DIST, 1, spin=0, diagonals_first = 1, callback = CALLBACK(src, .leap_end))
 
 /mob/living/carbon/alien/humanoid/hunter/proc/leap_end()
+	procstart = null
+	src.procstart = null
 	leaping = 0
 	weather_immunities -= "lava"
 	update_icons()
 
 /mob/living/carbon/alien/humanoid/hunter/throw_impact(atom/A)
 
+	procstart = null
+	src.procstart = null
 	if(!leaping)
 		return ..()
 
@@ -95,6 +109,8 @@
 
 
 /mob/living/carbon/alien/humanoid/float(on)
+	procstart = null
+	src.procstart = null
 	if(leaping)
 		return
 	..()

@@ -24,11 +24,15 @@
 ********************/
 
 /obj/machinery/microwave/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(100)
 	soundloop = new(list(src), FALSE)
 
 /obj/machinery/microwave/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/E
 	var/max_items = 10
 	for(var/obj/item/stock_parts/micro_laser/M in component_parts)
@@ -43,6 +47,8 @@
 ********************/
 
 /obj/machinery/microwave/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(operating)
 		return
 	if(!broken && dirty<100)
@@ -157,12 +163,18 @@
 	updateUsrDialog()
 
 /obj/machinery/microwave/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/microwave/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/machinery/microwave/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	user.set_machine(src)
@@ -211,6 +223,8 @@
 ************************************/
 
 /obj/machinery/microwave/proc/cook()
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return
 	start()
@@ -250,6 +264,8 @@
 		return
 
 /obj/machinery/microwave/proc/microwaving(seconds as num)
+	procstart = null
+	src.procstart = null
 	for (var/i=1 to seconds)
 		if (stat & (NOPOWER|BROKEN))
 			return 0
@@ -258,6 +274,8 @@
 	return 1
 
 /obj/machinery/microwave/proc/has_extra_item()
+	procstart = null
+	src.procstart = null
 	for (var/obj/O in contents)
 		if ( \
 				!istype(O, /obj/item/reagent_containers/food) && \
@@ -267,6 +285,8 @@
 	return 0
 
 /obj/machinery/microwave/proc/start()
+	procstart = null
+	src.procstart = null
 	visible_message("The microwave turns on.", "<span class='italics'>You hear a microwave humming.</span>")
 	soundloop.start()
 	operating = TRUE
@@ -274,25 +294,35 @@
 	updateUsrDialog()
 
 /obj/machinery/microwave/proc/abort()
+	procstart = null
+	src.procstart = null
 	operating = FALSE // Turn it off again aferwards
 	icon_state = "mw"
 	updateUsrDialog()
 
 /obj/machinery/microwave/proc/stop()
+	procstart = null
+	src.procstart = null
 	soundloop.stop()
 	abort()
 
 /obj/machinery/microwave/proc/dispose()
+	procstart = null
+	src.procstart = null
 	for (var/obj/O in contents)
 		O.forceMove(drop_location())
 	to_chat(usr, "<span class='notice'>You dispose of the microwave contents.</span>")
 	updateUsrDialog()
 
 /obj/machinery/microwave/proc/muck_start()
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/effects/splat.ogg', 50, 1) // Play a splat sound
 	icon_state = "mwbloody1" // Make it look dirty!!
 
 /obj/machinery/microwave/proc/muck_finish()
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
 	visible_message("<span class='warning'>The microwave gets covered in muck!</span>")
 	dirty = 100 // Make it dirty so it can't be used util cleaned
@@ -305,6 +335,8 @@
 			qdel(S)
 
 /obj/machinery/microwave/proc/broke()
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/spark_spread/s = new
 	s.set_up(2, 1, src)
 	s.start()
@@ -316,6 +348,8 @@
 	updateUsrDialog()
 
 /obj/machinery/microwave/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..() || panel_open)
 		return
 

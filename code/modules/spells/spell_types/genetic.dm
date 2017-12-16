@@ -16,6 +16,8 @@
 	*/
 
 /obj/effect/proc_holder/spell/targeted/genetic/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	playMagSound()
 	for(var/mob/living/carbon/target in targets)
 		if(!target.dna)
@@ -26,6 +28,8 @@
 		addtimer(CALLBACK(src, .proc/remove, target), duration)
 
 /obj/effect/proc_holder/spell/targeted/genetic/proc/remove(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(target))
 		for(var/A in mutations)
 			target.dna.remove_mutation(A)

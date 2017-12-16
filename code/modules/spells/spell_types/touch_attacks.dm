@@ -6,6 +6,8 @@
 	range = -1
 
 /obj/effect/proc_holder/spell/targeted/touch/Click(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(attached_hand)
 		qdel(attached_hand)
 		charge_counter = charge_max
@@ -15,6 +17,8 @@
 	..()
 
 /obj/effect/proc_holder/spell/targeted/touch/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/C in targets)
 		if(!attached_hand)
 			if(!ChargeHand(C))
@@ -24,6 +28,8 @@
 		stoplag(1)
 
 /obj/effect/proc_holder/spell/targeted/touch/proc/ChargeHand(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	attached_hand = new hand_path(src)
 	if(!user.put_in_hands(attached_hand))
 		qdel(attached_hand)

@@ -34,6 +34,8 @@
 	light_color = LIGHT_COLOR_BROWN
 
 /obj/machinery/computer/slot_machine/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	jackpots = rand(1, 4) //false hope
 	plays = rand(75, 200)
@@ -51,11 +53,15 @@
 		coinvalues["[cointype]"] = initial(C.value)
 
 /obj/machinery/computer/slot_machine/Destroy()
+	procstart = null
+	src.procstart = null
 	if(balance)
 		give_coins(balance)
 	return ..()
 
 /obj/machinery/computer/slot_machine/process()
+	procstart = null
+	src.procstart = null
 	. = ..() //Sanity checks.
 	if(!.)
 		return .
@@ -63,6 +69,8 @@
 	money++ //SPESSH MAJICKS
 
 /obj/machinery/computer/slot_machine/update_icon()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		icon_state = "slots0"
 
@@ -76,10 +84,14 @@
 		icon_state = "slots1"
 
 /obj/machinery/computer/slot_machine/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/computer/slot_machine/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/coin))
 		var/obj/item/coin/C = I
 		if(prob(2))
@@ -100,6 +112,8 @@
 		return ..()
 
 /obj/machinery/computer/slot_machine/emag_act()
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
@@ -109,6 +123,8 @@
 	playsound(src, "sparks", 50, 1)
 
 /obj/machinery/computer/slot_machine/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..() //Sanity checks.
 	if(.)
 		return .
@@ -116,6 +132,8 @@
 	interact(user)
 
 /obj/machinery/computer/slot_machine/interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/reeltext = {"<center><font face=\"courier new\">
 	/*****^*****^*****^*****^*****\\<BR>
 	| \[[reels[1][1]]\] | \[[reels[2][1]]\] | \[[reels[3][1]]\] | \[[reels[4][1]]\] | \[[reels[5][1]]\] |<BR>
@@ -146,6 +164,8 @@
 	popup.open()
 
 /obj/machinery/computer/slot_machine/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	. = ..() //Sanity checks.
 	if(.)
 		return .
@@ -158,6 +178,8 @@
 		balance = 0
 
 /obj/machinery/computer/slot_machine/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(prob(15 * severity))
@@ -171,6 +193,8 @@
 	spin()
 
 /obj/machinery/computer/slot_machine/proc/spin(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_spin(user))
 		return
 
@@ -204,6 +228,8 @@
 		updateDialog()
 
 /obj/machinery/computer/slot_machine/proc/can_spin(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		to_chat(user, "<span class='warning'>The slot machine has no power!</span>")
 	if(stat & BROKEN)
@@ -223,6 +249,8 @@
 
 /obj/machinery/computer/slot_machine/proc/randomize_reels()
 
+	procstart = null
+	src.procstart = null
 	for(var/reel in reels)
 		if(reels[reel])
 			reel[3] = reel[2]
@@ -230,6 +258,8 @@
 			reel[1] = pick(symbols)
 
 /obj/machinery/computer/slot_machine/proc/give_prizes(usrname, mob/user)
+	procstart = null
+	src.procstart = null
 	var/linelength = get_lines()
 
 	if(reels[1][2] + reels[2][2] + reels[3][2] + reels[4][2] + reels[5][2] == "[SEVEN][SEVEN][SEVEN][SEVEN][SEVEN]")
@@ -261,6 +291,8 @@
 		to_chat(user, "<span class='warning'>No luck!</span>")
 
 /obj/machinery/computer/slot_machine/proc/get_lines()
+	procstart = null
+	src.procstart = null
 	var/amountthesame
 
 	for(var/i = 1, i <= 3, i++)
@@ -280,12 +312,16 @@
 	return amountthesame
 
 /obj/machinery/computer/slot_machine/proc/give_money(amount)
+	procstart = null
+	src.procstart = null
 	var/amount_to_give = money >= amount ? amount : money
 	var/surplus = amount_to_give - give_coins(amount_to_give)
 	money = max(0, money - amount)
 	balance += surplus
 
 /obj/machinery/computer/slot_machine/proc/give_coins(amount)
+	procstart = null
+	src.procstart = null
 	var/cointype = emagged ? /obj/item/coin/iron : /obj/item/coin/silver
 
 	if(!emagged)
@@ -299,6 +335,8 @@
 	return amount
 
 /obj/machinery/computer/slot_machine/proc/dispense(amount = 0, cointype = /obj/item/coin/silver, mob/living/target, throwit = 0)
+	procstart = null
+	src.procstart = null
 	var/value = coinvalues["[cointype]"]
 
 

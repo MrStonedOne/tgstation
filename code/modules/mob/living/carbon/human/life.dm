@@ -21,6 +21,8 @@
 #define COLD_GAS_DAMAGE_LEVEL_3 3 //Amount of damage applied when the current breath's temperature passes the 120K point
 
 /mob/living/carbon/human/Life()
+	procstart = null
+	src.procstart = null
 	set invisibility = 0
 	set background = BACKGROUND_ENABLED
 
@@ -48,6 +50,8 @@
 
 
 /mob/living/carbon/human/calculate_affecting_pressure(pressure)
+	procstart = null
+	src.procstart = null
 	if((wear_suit && (wear_suit.flags_1 & STOPSPRESSUREDMAGE_1)) && (head && (head.flags_1 & STOPSPRESSUREDMAGE_1)))
 		return ONE_ATMOSPHERE
 	else
@@ -55,6 +59,8 @@
 
 
 /mob/living/carbon/human/handle_disabilities()
+	procstart = null
+	src.procstart = null
 	if(eye_blind)			//blindness, heals slowly over time
 		if(tinttotal >= TINT_BLIND) //covering your eyes heals blurry eyes faster
 			adjust_blindness(-3)
@@ -64,16 +70,22 @@
 		adjust_blurriness(-1)
 
 /mob/living/carbon/human/handle_mutations_and_radiation()
+	procstart = null
+	src.procstart = null
 	if(!dna || !dna.species.handle_mutations_and_radiation(src))
 		..()
 
 /mob/living/carbon/human/breathe()
+	procstart = null
+	src.procstart = null
 	if(!dna.species.breathe(src))
 		..()
 #define HUMAN_MAX_OXYLOSS 3
 #define HUMAN_CRIT_MAX_OXYLOSS (SSmobs.wait/30)
 /mob/living/carbon/human/check_breath(datum/gas_mixture/breath)
 
+	procstart = null
+	src.procstart = null
 	var/L = getorganslot(ORGAN_SLOT_LUNGS)
 
 	if(!L)
@@ -105,15 +117,21 @@
 #undef HUMAN_CRIT_MAX_OXYLOSS
 
 /mob/living/carbon/human/handle_environment(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	dna.species.handle_environment(environment, src)
 
 ///FIRE CODE
 /mob/living/carbon/human/handle_fire()
+	procstart = null
+	src.procstart = null
 	..()
 	if(dna)
 		dna.species.handle_fire(src)
 
 /mob/living/carbon/human/proc/get_thermal_protection()
+	procstart = null
+	src.procstart = null
 	var/thermal_protection = 0 //Simple check to estimate how protected we are against multiple temperatures
 	if(wear_suit)
 		if(wear_suit.max_heat_protection_temperature >= FIRE_SUIT_MAX_TEMP_PROTECT)
@@ -125,6 +143,8 @@
 	return thermal_protection
 
 /mob/living/carbon/human/IgniteMob()
+	procstart = null
+	src.procstart = null
 	//If have no DNA or can be Ignited, call parent handling to light user
 	//If firestacks are high enough
 	if(!dna || dna.species.CanIgniteMob(src))
@@ -132,6 +152,8 @@
 	. = FALSE //No ignition
 
 /mob/living/carbon/human/ExtinguishMob()
+	procstart = null
+	src.procstart = null
 	if(!dna || !dna.species.ExtinguishMob(src))
 		..()
 //END FIRE CODE
@@ -195,6 +217,8 @@
 
 //See proc/get_heat_protection_flags(temperature) for the description of this proc.
 /mob/living/carbon/human/proc/get_cold_protection_flags(temperature)
+	procstart = null
+	src.procstart = null
 	var/thermal_protection_flags = 0
 	//Handle normal clothing
 
@@ -221,6 +245,8 @@
 
 /mob/living/carbon/human/proc/get_cold_protection(temperature)
 
+	procstart = null
+	src.procstart = null
 	if(dna.check_mutation(COLDRES))
 		return TRUE //Fully protected from the cold.
 
@@ -258,6 +284,8 @@
 	return min(1,thermal_protection)
 
 /mob/living/carbon/human/handle_random_events()
+	procstart = null
+	src.procstart = null
 	//Puke if toxloss is too high
 	if(!stat)
 		if(getToxLoss() >= 45 && nutrition > 20)
@@ -268,6 +296,8 @@
 
 
 /mob/living/carbon/human/has_smoke_protection()
+	procstart = null
+	src.procstart = null
 	if(wear_mask)
 		if(wear_mask.flags_1 & BLOCK_GAS_SMOKE_EFFECT_1)
 			. = 1
@@ -283,6 +313,8 @@
 
 
 /mob/living/carbon/human/proc/handle_embedded_objects()
+	procstart = null
+	src.procstart = null
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
 		for(var/obj/item/I in BP.embedded_objects)
@@ -299,12 +331,16 @@
 					clear_alert("embeddedobject")
 
 /mob/living/carbon/human/proc/can_heartattack()
+	procstart = null
+	src.procstart = null
 	CHECK_DNA_AND_SPECIES(src)
 	if(NOBLOOD in dna.species.species_traits)
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/human/proc/undergoing_cardiac_arrest()
+	procstart = null
+	src.procstart = null
 	if(!can_heartattack())
 		return FALSE
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
@@ -313,6 +349,8 @@
 	return TRUE
 
 /mob/living/carbon/human/proc/set_heartattack(status)
+	procstart = null
+	src.procstart = null
 	if(!can_heartattack())
 		return FALSE
 
@@ -323,10 +361,14 @@
 	heart.beating = !status
 
 /mob/living/carbon/human/proc/handle_active_genes()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mutation/human/HM in dna.mutations)
 		HM.on_life(src)
 
 /mob/living/carbon/human/proc/handle_heart()
+	procstart = null
+	src.procstart = null
 	if(!can_heartattack())
 		return
 
@@ -366,6 +408,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 */
 
 /mob/living/carbon/human/handle_status_effects()
+	procstart = null
+	src.procstart = null
 	..()
 	if(drunkenness)
 		drunkenness = max(drunkenness - (drunkenness * 0.04), 0)

@@ -1,5 +1,7 @@
 //Used for normal mobs that have hands.
 /datum/hud/dextrous/New(mob/living/owner, ui_style = 'icons/mob/screen_midnight.dmi')
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/screen/using
 
@@ -61,6 +63,8 @@
 			inv.update_icon()
 
 /datum/hud/dextrous/persistent_inventory_update()
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	var/mob/living/D = mymob
@@ -76,6 +80,8 @@
 
 //Dextrous simple mobs can use hands!
 /mob/living/simple_animal/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		if(dextrous)
 			hud_used = new dextrous_hud_type(src, ui_style2icon(client.prefs.UI_style))

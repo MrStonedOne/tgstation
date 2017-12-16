@@ -63,6 +63,8 @@
 	var/generated_objectives_and_spells = FALSE
 
 /mob/living/simple_animal/revenant/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(src, "<span class='deadsay'><font size=3><b>You are a revenant.</b></font></span>")
 	to_chat(src, "<b>Your formerly mundane spirit has been infused with alien energies and empowered into a revenant.</b>")
@@ -97,6 +99,8 @@
 
 //Life, Stat, Hud Updates, and Say
 /mob/living/simple_animal/revenant/Life()
+	procstart = null
+	src.procstart = null
 	if(stasis)
 		return
 	if(revealed && essence <= 0)
@@ -119,6 +123,8 @@
 	..()
 
 /mob/living/simple_animal/revenant/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		stat(null, "Current essence: [essence]/[essence_regen_cap]E")
@@ -126,6 +132,8 @@
 		stat(null, "Stolen perfect souls: [perfectsouls]")
 
 /mob/living/simple_animal/revenant/update_health_hud()
+	procstart = null
+	src.procstart = null
 	if(hud_used)
 		var/essencecolor = "#8F48C6"
 		if(essence > essence_regen_cap)
@@ -135,12 +143,18 @@
 		hud_used.healths.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='[essencecolor]'>[essence]E</font></div>"
 
 /mob/living/simple_animal/revenant/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	return //we use no hud
 
 /mob/living/simple_animal/revenant/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	return //we use no hud
 
 /mob/living/simple_animal/revenant/say(message)
+	procstart = null
+	src.procstart = null
 	if(!message)
 		return
 	log_talk(src,"[key_name(src)] : [message]",LOGSAY)
@@ -157,22 +171,34 @@
 //Immunities
 
 /mob/living/simple_animal/revenant/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return 1 //Immune to the effects of explosions.
 
 /mob/living/simple_animal/revenant/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return //blah blah blobs aren't in tune with the spirit world, or something.
 
 /mob/living/simple_animal/revenant/singularity_act()
+	procstart = null
+	src.procstart = null
 	return //don't walk into the singularity expecting to find corpses, okay?
 
 /mob/living/simple_animal/revenant/narsie_act()
+	procstart = null
+	src.procstart = null
 	return //most humans will now be either bones or harvesters, but we're still un-alive.
 
 /mob/living/simple_animal/revenant/ratvar_act()
+	procstart = null
+	src.procstart = null
 	return //clocks get out reee
 
 //damage, gibbing, and dying
 /mob/living/simple_animal/revenant/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(W, /obj/item/nullrod))
 		visible_message("<span class='warning'>[src] violently flinches!</span>", \
@@ -183,10 +209,14 @@
 		addtimer(CALLBACK(src, .proc/reset_inhibit), 30)
 
 /mob/living/simple_animal/revenant/proc/reset_inhibit()
+	procstart = null
+	src.procstart = null
 	inhibited = FALSE
 	update_action_buttons_icon()
 
 /mob/living/simple_animal/revenant/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && !revealed)
 		return FALSE
 	. = amount
@@ -197,12 +227,18 @@
 		death()
 
 /mob/living/simple_animal/revenant/dust()
+	procstart = null
+	src.procstart = null
 	death()
 
 /mob/living/simple_animal/revenant/gib()
+	procstart = null
+	src.procstart = null
 	death()
 
 /mob/living/simple_animal/revenant/death()
+	procstart = null
+	src.procstart = null
 	if(!revealed || stasis) //Revenants cannot die if they aren't revealed //or are already dead
 		return 0
 	stasis = TRUE
@@ -230,6 +266,8 @@
 
 //reveal, stun, icon updates, cast checks, and essence changing
 /mob/living/simple_animal/revenant/proc/reveal(time)
+	procstart = null
+	src.procstart = null
 	if(!src)
 		return
 	if(time <= 0)
@@ -246,6 +284,8 @@
 	update_spooky_icon()
 
 /mob/living/simple_animal/revenant/proc/stun(time)
+	procstart = null
+	src.procstart = null
 	if(!src)
 		return
 	if(time <= 0)
@@ -260,6 +300,8 @@
 	update_spooky_icon()
 
 /mob/living/simple_animal/revenant/proc/update_spooky_icon()
+	procstart = null
+	src.procstart = null
 	if(revealed)
 		if(notransform)
 			if(draining)
@@ -272,6 +314,8 @@
 		icon_state = icon_idle
 
 /mob/living/simple_animal/revenant/proc/castcheck(essence_cost)
+	procstart = null
+	src.procstart = null
 	if(!src)
 		return
 	var/turf/T = get_turf(src)
@@ -291,6 +335,8 @@
 	return TRUE
 
 /mob/living/simple_animal/revenant/proc/change_essence_amount(essence_amt, silent = FALSE, source = null)
+	procstart = null
+	src.procstart = null
 	if(!src)
 		return
 	if(essence + essence_amt <= 0)
@@ -308,6 +354,8 @@
 	return 1
 
 /mob/living/simple_animal/revenant/proc/death_reset()
+	procstart = null
+	src.procstart = null
 	revealed = FALSE
 	unreveal_time = 0
 	notransform = 0
@@ -334,13 +382,19 @@
 	var/mob/living/simple_animal/revenant/revenant
 
 /obj/item/ectoplasm/revenant/New()
+	procstart = null
+	src.procstart = null
 	..()
 	addtimer(CALLBACK(src, .proc/try_reform), 600)
 
 /obj/item/ectoplasm/revenant/proc/scatter()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/item/ectoplasm/revenant/proc/try_reform()
+	procstart = null
+	src.procstart = null
 	if(reforming)
 		reforming = FALSE
 		reform()
@@ -349,6 +403,8 @@
 		visible_message("<span class='warning'>[src] settles down and seems lifeless.</span>")
 
 /obj/item/ectoplasm/revenant/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!reforming || inert)
 		return ..()
 	user.visible_message("<span class='notice'>[user] scatters [src] in all directions.</span>", \
@@ -357,6 +413,8 @@
 	scatter()
 
 /obj/item/ectoplasm/revenant/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	..()
 	if(inert)
 		return
@@ -364,6 +422,8 @@
 	scatter()
 
 /obj/item/ectoplasm/revenant/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(inert)
 		to_chat(user, "<span class='revennotice'>It seems inert.</span>")
@@ -371,6 +431,8 @@
 		to_chat(user, "<span class='revenwarning'>It is shifting and distorted. It would be wise to destroy this.</span>")
 
 /obj/item/ectoplasm/revenant/proc/reform()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(revenant) || inert)
 		return
 	var/key_of_revenant
@@ -413,11 +475,15 @@
 	qdel(src)
 
 /obj/item/ectoplasm/revenant/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is inhaling [src]! It looks like [user.p_theyre()] trying to visit the shadow realm!</span>")
 	scatter()
 	return (OXYLOSS)
 
 /obj/item/ectoplasm/revenant/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(revenant))
 		qdel(revenant)
 	..()
@@ -427,11 +493,15 @@
 	var/targetAmount = 100
 
 /datum/objective/revenant/New()
+	procstart = null
+	src.procstart = null
 	targetAmount = rand(350,600)
 	explanation_text = "Absorb [targetAmount] points of essence from humans."
 	..()
 
 /datum/objective/revenant/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!isrevenant(owner.current))
 		return FALSE
 	var/mob/living/simple_animal/revenant/R = owner.current
@@ -445,6 +515,8 @@
 /datum/objective/revenantFluff
 
 /datum/objective/revenantFluff/New()
+	procstart = null
+	src.procstart = null
 	var/list/explanationTexts = list("Assist and exacerbate existing threats at critical moments.", \
 									 "Avoid killing in plain sight.", \
 									 "Cause as much chaos and anger as you can without being killed.", \
@@ -460,4 +532,6 @@
 	..()
 
 /datum/objective/revenantFluff/check_completion()
+	procstart = null
+	src.procstart = null
 	return TRUE

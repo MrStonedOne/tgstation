@@ -5,6 +5,8 @@
 	activated = 0
 
 /obj/item/implant/weapons_auth/get_data()
+	procstart = null
+	src.procstart = null
 	var/dat = {"<b>Implant Specifications:</b><BR>
 				<b>Name:</b> Firearms Authentication Implant<BR>
 				<b>Life:</b> 4 hours after death of host<BR>
@@ -20,6 +22,8 @@
 	uses = 3
 
 /obj/item/implant/adrenalin/get_data()
+	procstart = null
+	src.procstart = null
 	var/dat = {"<b>Implant Specifications:</b><BR>
 				<b>Name:</b> Cybersun Industries Adrenaline Implant<BR>
 				<b>Life:</b> Five days.<BR>
@@ -31,6 +35,8 @@
 	return dat
 
 /obj/item/implant/adrenalin/activate()
+	procstart = null
+	src.procstart = null
 	uses--
 	to_chat(imp_in, "<span class='notice'>You feel a sudden surge of energy!</span>")
 	imp_in.SetStun(0)
@@ -54,6 +60,8 @@
 	uses = 3
 
 /obj/item/implant/emp/activate()
+	procstart = null
+	src.procstart = null
 	uses--
 	empulse(imp_in, 3, 5)
 	if(!uses)
@@ -68,6 +76,8 @@
 	var/healthstring = ""
 
 /obj/item/implant/health/proc/sensehealth()
+	procstart = null
+	src.procstart = null
 	if (!imp_in)
 		return "ERROR"
 	else

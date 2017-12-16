@@ -19,6 +19,8 @@
 	var/ride_check_ridden_incapacitated = FALSE
 
 /datum/component/riding/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!ismovableatom(parent))
 		. = COMPONENT_INCOMPATIBLE
 		CRASH("RIDING COMPONENT ASSIGNED TO NON ATOM MOVABLE!")
@@ -27,13 +29,19 @@
 	RegisterSignal(COMSIG_MOVABLE_MOVED, .proc/vehicle_moved)
 
 /datum/component/riding/proc/vehicle_mob_unbuckle(mob/living/M, force = FALSE)
+	procstart = null
+	src.procstart = null
 	restore_position(M)
 	unequip_buckle_inhands(M)
 
 /datum/component/riding/proc/vehicle_mob_buckle(mob/living/M, force = FALSE)
+	procstart = null
+	src.procstart = null
 	handle_vehicle_offsets()
 
 /datum/component/riding/proc/handle_vehicle_layer()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	var/static/list/defaults = list(TEXT_NORTH = OBJ_LAYER, TEXT_SOUTH = ABOVE_MOB_LAYER, TEXT_EAST = ABOVE_MOB_LAYER, TEXT_WEST = ABOVE_MOB_LAYER)
 	. = defaults["[AM.dir]"]
@@ -44,9 +52,13 @@
 	AM.layer = .
 
 /datum/component/riding/proc/set_vehicle_dir_layer(dir, layer)
+	procstart = null
+	src.procstart = null
 	directional_vehicle_layers["[dir]"] = layer
 
 /datum/component/riding/proc/vehicle_moved()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	for(var/i in AM.buckled_mobs)
 		ride_check(i)
@@ -54,6 +66,8 @@
 	handle_vehicle_layer()
 
 /datum/component/riding/proc/ride_check(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	var/mob/AMM = AM
 	if((ride_check_rider_restrained && M.restrained(TRUE)) || (ride_check_rider_incapacitated && M.incapacitated(FALSE, TRUE)) || (ride_check_ridden_incapacitated && istype(AMM) && AMM.incapacitated(FALSE, TRUE)))
@@ -62,10 +76,14 @@
 	return TRUE
 
 /datum/component/riding/proc/force_dismount(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	AM.unbuckle_mob(M)
 
 /datum/component/riding/proc/handle_vehicle_offsets()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	var/AM_dir = "[AM.dir]"
 	var/passindex = 0
@@ -100,10 +118,14 @@
 	AM.pixel_y = py
 
 /datum/component/riding/proc/set_vehicle_dir_offsets(dir, x, y)
+	procstart = null
+	src.procstart = null
 	directional_vehicle_offsets["[dir]"] = list(x, y)
 
 //Override this to set your vehicle's various pixel offsets
 /datum/component/riding/proc/get_offsets(pass_index) // list(dir = x, y, layer)
+	procstart = null
+	src.procstart = null
 	. = list(TEXT_NORTH = list(0, 0), TEXT_SOUTH = list(0, 0), TEXT_EAST = list(0, 0), TEXT_WEST = list(0, 0))
 	if(riding_offsets["[pass_index]"])
 		. = riding_offsets["[pass_index]"]
@@ -111,6 +133,8 @@
 		. = riding_offsets["[RIDING_OFFSET_ALL]"]
 
 /datum/component/riding/proc/set_riding_offsets(index, list/offsets)
+	procstart = null
+	src.procstart = null
 	if(!islist(offsets))
 		return FALSE
 	riding_offsets["[index]"] = offsets
@@ -118,15 +142,21 @@
 //Override this to set the passengers/riders dir based on which passenger they are.
 //ie: rider facing the vehicle's dir, but passenger 2 facing backwards, etc.
 /datum/component/riding/proc/get_rider_dir(pass_index)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	return AM.dir
 
 //KEYS
 /datum/component/riding/proc/keycheck(mob/user)
+	procstart = null
+	src.procstart = null
 	return !keytype || user.is_holding_item_of_type(keytype)
 
 //BUCKLE HOOKS
 /datum/component/riding/proc/restore_position(mob/living/buckled_mob)
+	procstart = null
+	src.procstart = null
 	if(buckled_mob)
 		buckled_mob.pixel_x = 0
 		buckled_mob.pixel_y = 0
@@ -135,6 +165,8 @@
 
 //MOVEMENT
 /datum/component/riding/proc/turf_check(turf/next, turf/current)
+	procstart = null
+	src.procstart = null
 	if(allowed_turf_typecache && !allowed_turf_typecache[next.type])
 		return (allow_one_away_from_valid_turf && allowed_turf_typecache[current.type])
 	else if(forbid_turf_typecache && forbid_turf_typecache[next.type])
@@ -142,6 +174,8 @@
 	return TRUE
 
 /datum/component/riding/proc/handle_ride(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	if(user.incapacitated())
 		Unbuckle(user)
@@ -169,13 +203,19 @@
 		to_chat(user, "<span class='notice'>You'll need the keys in one of your hands to [drive_verb] [AM].</span>")
 
 /datum/component/riding/proc/Unbuckle(atom/movable/M)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(parent, /atom/movable/.proc/unbuckle_mob, M), 0, TIMER_UNIQUE)
 
 /datum/component/riding/proc/Process_Spacemove(direction)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	return override_allow_spacemove || AM.has_gravity()
 
 /datum/component/riding/proc/account_limbs(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.get_num_legs() < 2 && !slowed)
 		vehicle_move_delay = vehicle_move_delay + slowvalue
 		slowed = TRUE
@@ -187,15 +227,21 @@
 /datum/component/riding/human
 
 /datum/component/riding/human/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RegisterSignal(COMSIG_HUMAN_MELEE_UNARMED_ATTACK, .proc/on_host_unarmed_melee)
 
 /datum/component/riding/human/proc/on_host_unarmed_melee(atom/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/AM = parent
 	if(AM.a_intent == INTENT_DISARM && (target in AM.buckled_mobs))
 		force_dismount(target)
 
 /datum/component/riding/human/handle_vehicle_layer()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	if(AM.buckled_mobs && AM.buckled_mobs.len)
 		if(AM.dir == SOUTH)
@@ -206,6 +252,8 @@
 		AM.layer = MOB_LAYER
 
 /datum/component/riding/human/force_dismount(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	AM.unbuckle_mob(user)
 	user.Knockdown(60)
@@ -214,6 +262,8 @@
 /datum/component/riding/cyborg
 
 /datum/component/riding/cyborg/ride_check(mob/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	if(user.incapacitated())
 		var/kick = TRUE
@@ -233,6 +283,8 @@
 			return
 
 /datum/component/riding/cyborg/handle_vehicle_layer()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	if(AM.buckled_mobs && AM.buckled_mobs.len)
 		if(AM.dir == SOUTH)
@@ -243,9 +295,13 @@
 		AM.layer = MOB_LAYER
 
 /datum/component/riding/cyborg/get_offsets(pass_index) // list(dir = x, y, layer)
+	procstart = null
+	src.procstart = null
 	return list(TEXT_NORTH = list(0, 4), TEXT_SOUTH = list(0, 4), TEXT_EAST = list(-6, 3), TEXT_WEST = list( 6, 3))
 
 /datum/component/riding/cyborg/handle_vehicle_offsets()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	if(AM.has_buckled_mobs())
 		for(var/mob/living/M in AM.buckled_mobs)
@@ -259,6 +315,8 @@
 				..()
 
 /datum/component/riding/cyborg/force_dismount(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	AM.unbuckle_mob(M)
 	var/turf/target = get_edge_target_turf(AM, AM.dir)
@@ -269,6 +327,8 @@
 	M.Knockdown(60)
 
 /datum/component/riding/proc/equip_buckle_inhands(mob/living/carbon/human/user, amount_required = 1)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	var/amount_equipped = 0
 	for(var/amount_needed = amount_required, amount_needed > 0, amount_needed--)
@@ -286,6 +346,8 @@
 		return FALSE
 
 /datum/component/riding/proc/unequip_buckle_inhands(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	for(var/obj/item/riding_offhand/O in user.contents)
 		if(O.parent != AM)
@@ -309,16 +371,22 @@
 	var/selfdeleting = FALSE
 
 /obj/item/riding_offhand/dropped()
+	procstart = null
+	src.procstart = null
 	selfdeleting = TRUE
 	. = ..()
 
 /obj/item/riding_offhand/equipped()
+	procstart = null
+	src.procstart = null
 	if(loc != rider)
 		selfdeleting = TRUE
 		qdel(src)
 	. = ..()
 
 /obj/item/riding_offhand/Destroy()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = parent
 	if(selfdeleting)
 		if(rider in AM.buckled_mobs)

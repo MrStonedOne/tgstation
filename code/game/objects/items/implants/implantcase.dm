@@ -15,6 +15,8 @@
 
 
 /obj/item/implantcase/update_icon()
+	procstart = null
+	src.procstart = null
 	if(imp)
 		icon_state = "implantcase-[imp.item_color]"
 		reagents = imp.reagents
@@ -24,6 +26,8 @@
 
 
 /obj/item/implantcase/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pen))
 		var/t = stripped_input(user, "What would you like the label to be?", name, null)
 		if(user.get_active_held_item() != W)
@@ -58,6 +62,8 @@
 		return ..()
 
 /obj/item/implantcase/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(imp_type)
 		imp = new imp_type(src)

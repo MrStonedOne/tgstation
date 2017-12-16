@@ -17,6 +17,8 @@
 	mutatelist = list(/obj/item/seeds/harebell)
 
 /obj/item/seeds/starthistle/harvest(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/hydroponics/parent = loc
 	var/seed_count = yield
 	if(prob(getYield() * 20))
@@ -135,6 +137,8 @@
 	max_integrity = 40
 
 /obj/item/reagent_containers/food/snacks/grown/cherry_bomb/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(user)
 	user.visible_message("<span class='warning'>[user] plucks the stem from [src]!</span>", "<span class='userdanger'>You pluck the stem from [src], which begins to hiss loudly!</span>")
 	message_admins("[ADMIN_LOOKUPFLW(user)] primed a cherry bomb for detonation at [A] [ADMIN_COORDJMP(user)]")
@@ -142,15 +146,21 @@
 	prime()
 
 /obj/item/reagent_containers/food/snacks/grown/cherry_bomb/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		prime()
 	if(!QDELETED(src))
 		qdel(src)
 
 /obj/item/reagent_containers/food/snacks/grown/cherry_bomb/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	qdel(src) //Ensuring that it's deleted by its own explosion. Also prevents mass chain reaction with piles of cherry bombs
 
 /obj/item/reagent_containers/food/snacks/grown/cherry_bomb/proc/prime()
+	procstart = null
+	src.procstart = null
 	icon_state = "cherry_bomb_lit"
 	playsound(src, 'sound/effects/fuse.ogg', seed.potency, 0)
 	reagents.chem_temp = 1000 //Sets off the black powder

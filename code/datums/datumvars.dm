@@ -3,6 +3,8 @@
 	var/fingerprintslast = null
 
 /datum/proc/can_vv_get(var_name)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/proc/vv_edit_var(var_name, var_value) //called whenever a var is edited
@@ -15,6 +17,8 @@
 	vars[var_name] = var_value
 
 /datum/proc/vv_get_var(var_name)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if ("vars")
 			return debug_variable(var_name, list(), 0, src)
@@ -23,6 +27,8 @@
 //please call . = ..() first and append to the result, that way parent items are always at the top and child items are further down
 //add separaters by doing . += "---"
 /datum/proc/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = list()
 	. += "---"
 	.["Call Proc"] = "?_src_=vars;[HrefToken()];proc_call=[REF(src)]"
@@ -32,10 +38,14 @@
 
 
 /datum/proc/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /client/proc/debug_variables(datum/D in world)
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "View Variables"
 	//set src in world
@@ -378,6 +388,8 @@
 
 #define VV_HTML_ENCODE(thing) ( sanitize ? html_encode(thing) : thing )
 /proc/debug_variable(name, value, level, datum/DA = null, sanitize = TRUE)
+	procstart = null
+	src.procstart = null
 	var/header
 	if(DA)
 		if (islist(DA))
@@ -448,6 +460,8 @@
 #undef VV_HTML_ENCODE
 
 /client/proc/view_var_Topic(href, href_list, hsrc)
+	procstart = null
+	src.procstart = null
 	if( (usr.client != src) || !src.holder || !holder.CheckAdminHref(href, href_list))
 		return
 	if(href_list["Vars"])

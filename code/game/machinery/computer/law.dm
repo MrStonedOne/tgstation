@@ -5,6 +5,8 @@
 	icon_screen = "command"
 
 /obj/machinery/computer/upload/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/aiModule))
 		var/obj/item/aiModule/M = O
 		if(src.stat & (NOPOWER|BROKEN|MAINT))
@@ -26,6 +28,8 @@
 		return ..()
 
 /obj/machinery/computer/upload/proc/can_upload_to(mob/living/silicon/S)
+	procstart = null
+	src.procstart = null
 	if(S.stat == DEAD || S.syndicate)
 		return 0
 	return 1
@@ -36,6 +40,8 @@
 	circuit = /obj/item/circuitboard/computer/aiupload
 
 /obj/machinery/computer/upload/ai/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -47,6 +53,8 @@
 		to_chat(user, "[src.current.name] selected for law changes.")
 
 /obj/machinery/computer/upload/ai/can_upload_to(mob/living/silicon/ai/A)
+	procstart = null
+	src.procstart = null
 	if(!A || !isAI(A))
 		return 0
 	if(A.control_disabled)
@@ -60,6 +68,8 @@
 	circuit = /obj/item/circuitboard/computer/borgupload
 
 /obj/machinery/computer/upload/borg/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -71,6 +81,8 @@
 		to_chat(user, "[src.current.name] selected for law changes.")
 
 /obj/machinery/computer/upload/borg/can_upload_to(mob/living/silicon/robot/B)
+	procstart = null
+	src.procstart = null
 	if(!B || !iscyborg(B))
 		return 0
 	if(B.scrambledcodes || B.emagged)

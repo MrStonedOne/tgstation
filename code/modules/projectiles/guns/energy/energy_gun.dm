@@ -22,10 +22,14 @@
 	can_flashlight = 0 // Can't attach or detach the flashlight, and override it's icon update
 
 /obj/item/gun/energy/e_gun/mini/Initialize()
+	procstart = null
+	src.procstart = null
 	gun_light = new /obj/item/device/flashlight/seclite(src)
 	return ..()
 
 /obj/item/gun/energy/e_gun/mini/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(gun_light && gun_light.on)
 		add_overlay("mini-light")
@@ -103,16 +107,22 @@
 	var/fail_chance = 0
 
 /obj/item/gun/energy/e_gun/nuclear/process()
+	procstart = null
+	src.procstart = null
 	if(fail_tick > 0)
 		fail_tick--
 	..()
 
 /obj/item/gun/energy/e_gun/nuclear/shoot_live_shot()
+	procstart = null
+	src.procstart = null
 	failcheck()
 	update_icon()
 	..()
 
 /obj/item/gun/energy/e_gun/nuclear/proc/failcheck()
+	procstart = null
+	src.procstart = null
 	if(prob(fail_chance) && isliving(loc))
 		var/mob/living/M = loc
 		switch(fail_tick)
@@ -127,10 +137,14 @@
 				to_chat(M, "<span class='userdanger'>Your [name]'s reactor overloads!</span>")
 
 /obj/item/gun/energy/e_gun/nuclear/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	..()
 	fail_chance = min(fail_chance + round(15/severity), 100)
 
 /obj/item/gun/energy/e_gun/nuclear/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(crit_fail)
 		add_overlay("[icon_state]_fail_3")

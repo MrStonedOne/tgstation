@@ -61,6 +61,8 @@
 	var/refill_count = 3		//The number of canisters the vending machine uses
 
 /obj/machinery/vending/Initialize()
+	procstart = null
+	src.procstart = null
 	var/build_inv = FALSE
 	if(!refill_canister)
 		circuit = null
@@ -81,12 +83,16 @@
 
 
 /obj/machinery/vending/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(wires)
 	QDEL_NULL(coin)
 	QDEL_NULL(bill)
 	return ..()
 
 /obj/machinery/vending/snack/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/reagent_containers/food/snacks/S in contents)
 		S.forceMove(get_turf(src))
 	return ..()
@@ -106,6 +112,8 @@
 
 
 /obj/machinery/vending/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!refill_canister) //the non constructable vendors drop metal instead of a machine frame.
 		if(!(flags_1 & NODECONSTRUCT_1))
 			new /obj/item/stack/sheet/metal(loc, 3)
@@ -114,6 +122,8 @@
 		..()
 
 /obj/machinery/vending/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(stat & BROKEN) && !(flags_1 & NODECONSTRUCT_1))
 		var/dump_amount = 0
 		for(var/datum/data/vending_product/R in product_records)
@@ -134,6 +144,8 @@
 		icon_state = "[initial(icon_state)]-broken"
 
 /obj/machinery/vending/proc/build_inventory(list/productlist, hidden=0, req_coin=0, start_empty = null)
+	procstart = null
+	src.procstart = null
 	for(var/typepath in productlist)
 		var/amount = productlist[typepath]
 		if(isnull(amount))
@@ -156,6 +168,8 @@
 			product_records += R
 
 /obj/machinery/vending/proc/refill_inventory(obj/item/vending_refill/refill, datum/data/vending_product/machine, var/charge_type = STANDARD_CHARGE)
+	procstart = null
+	src.procstart = null
 	var/total = 0
 	var/to_restock = 0
 
@@ -184,6 +198,8 @@
 	return total
 
 /obj/machinery/vending/snack/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/reagent_containers/food/snacks))
 		if(!compartment_access_check(user))
 			return
@@ -223,6 +239,8 @@
 		return ..()
 
 /obj/machinery/vending/snack/proc/compartment_access_check(user)
+	procstart = null
+	src.procstart = null
 	req_access_txt = chef_compartment_access
 	if(!allowed(user) && !emagged && scan_id)
 		to_chat(user, "<span class='warning'>[src]'s chef compartment blinks red: Access denied.</span>")
@@ -232,12 +250,16 @@
 	return 1
 
 /obj/machinery/vending/snack/proc/iscompartmentfull(mob/user)
+	procstart = null
+	src.procstart = null
 	if(contents.len >= 30) // no more than 30 dishes can fit inside
 		to_chat(user, "<span class='warning'>[src]'s chef compartment is full.</span>")
 		return 1
 	return 0
 
 /obj/machinery/vending/snack/proc/food_load(obj/item/reagent_containers/food/snacks/S)
+	procstart = null
+	src.procstart = null
 	if(dish_quants[S.name])
 		dish_quants[S.name]++
 	else
@@ -245,6 +267,8 @@
 	sortList(dish_quants)
 
 /obj/machinery/vending/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		if(default_unfasten_wrench(user, W, time = 60))
 			return
@@ -323,6 +347,8 @@
 
 
 /obj/machinery/vending/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	var/product_list = list(product_records, hidden_records, coin_records)
 	for(var/i=1, i<=3, i++)
 		for(var/datum/data/vending_product/machine_content in product_list[i])
@@ -342,15 +368,21 @@
 	..()
 
 /obj/machinery/vending/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
 	to_chat(user, "<span class='notice'>You short out the product lock on [src].</span>")
 
 /obj/machinery/vending/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/vending/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	if(panel_open && !isAI(user))
 		return wires.interact(user)
@@ -409,6 +441,8 @@
 
 
 /obj/machinery/vending/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -525,6 +559,8 @@
 
 
 /obj/machinery/vending/process()
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 	if(!active)
@@ -544,6 +580,8 @@
 
 
 /obj/machinery/vending/proc/speak(message)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 	if(!message)
@@ -552,6 +590,8 @@
 	say(message)
 
 /obj/machinery/vending/power_change()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		icon_state = "[initial(icon_state)]-broken"
 	else
@@ -565,6 +605,8 @@
 
 //Somebody cut an important wire and now we're following a new definition of "pitch."
 /obj/machinery/vending/proc/throw_item()
+	procstart = null
+	src.procstart = null
 	var/obj/throw_item = null
 	var/mob/living/target = locate() in view(7,src)
 	if(!target)
@@ -590,10 +632,14 @@
 	return 1
 
 /obj/machinery/vending/proc/pre_throw(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/machinery/vending/proc/shock(mob/user, prb)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))		// unpowered, no shock
 		return FALSE
 	if(!prob(prb))
@@ -837,6 +883,8 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	refill_canister = /obj/item/vending_refill/cigarette
 
 /obj/machinery/vending/cigarette/pre_throw(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/lighter))
 		var/obj/item/lighter/L = I
 		L.set_lit(TRUE)
@@ -897,6 +945,8 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 	resistance_flags = FIRE_PROOF
 
 /obj/machinery/vending/security/pre_throw(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/grenade))
 		var/obj/item/grenade/G = I
 		G.preprime()
@@ -1191,6 +1241,8 @@ IF YOU MODIFY THE PRODUCTS LIST OF A MACHINE, MAKE SURE TO UPDATE ITS RESUPPLY C
 
 
 /obj/machinery/vending/onTransitZ()
+	procstart = null
+	src.procstart = null
 	return
 
 #undef STANDARD_CHARGE

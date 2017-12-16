@@ -13,10 +13,14 @@
 	var/max_wash_capacity = 5
 
 /obj/machinery/washing_machine/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click it to start a wash cycle.</span>")
 
 /obj/machinery/washing_machine/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.canUseTopic(src))
 		return
 
@@ -40,6 +44,8 @@
 	wash_cycle()
 
 /obj/machinery/washing_machine/clean_blood()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!busy)
 		bloody_mess = 0
@@ -47,6 +53,8 @@
 
 
 /obj/machinery/washing_machine/proc/wash_cycle()
+	procstart = null
+	src.procstart = null
 	for(var/X in contents)
 		var/atom/movable/AM = X
 		AM.clean_blood()
@@ -61,33 +69,49 @@
 
 //what happens to this object when washed inside a washing machine
 /atom/movable/proc/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/stack/sheet/hairlesshide/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/sheet/wetleather/WL = new(loc)
 	WL.amount = amount
 	qdel(src)
 
 /obj/item/clothing/suit/hooded/ian_costume/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/food/snacks/meat/slab/corgi(loc)
 	qdel(src)
 
 /obj/item/paper/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	if(WM.color_source)
 		if(istype(WM.color_source, /obj/item/toy/crayon))
 			var/obj/item/toy/crayon/CR = WM.color_source
 			add_atom_colour(CR.paint_color, WASHABLE_COLOUR_PRIORITY)
 
 /mob/living/simple_animal/pet/dog/corgi/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	gib()
 
 /obj/item/clothing/under/color/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	jumpsuit_wash(WM)
 
 /obj/item/clothing/under/rank/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	jumpsuit_wash(WM)
 
 /obj/item/clothing/under/proc/jumpsuit_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	if(WM.color_source)
 		var/wash_color = WM.color_source.item_color
 		var/obj/item/clothing/under/U
@@ -113,6 +137,8 @@
 				toggle_jumpsuit_adjust()
 
 /obj/item/clothing/gloves/color/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	if(WM.color_source)
 		var/wash_color = WM.color_source.item_color
 		for(var/T in typesof(/obj/item/clothing/gloves/color))
@@ -126,6 +152,8 @@
 				break
 
 /obj/item/clothing/shoes/sneakers/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	if(chained)
 		chained = 0
 		slowdown = SHOES_SLOWDOWN
@@ -142,6 +170,8 @@
 				break
 
 /obj/item/bedsheet/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	if(WM.color_source)
 		var/wash_color = WM.color_source.item_color
 		for(var/T in typesof(/obj/item/bedsheet))
@@ -154,6 +184,8 @@
 				break
 
 /obj/item/clothing/head/soft/machine_wash(obj/machinery/washing_machine/WM)
+	procstart = null
+	src.procstart = null
 	if(WM.color_source)
 		var/wash_color = WM.color_source.item_color
 		for(var/T in typesof(/obj/item/clothing/head/soft))
@@ -167,9 +199,13 @@
 
 
 /obj/machinery/washing_machine/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	container_resist(user)
 
 /obj/machinery/washing_machine/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!busy)
 		add_fingerprint(user)
 		open_machine()
@@ -177,6 +213,8 @@
 
 
 /obj/machinery/washing_machine/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(busy)
 		icon_state = "wm_running_[bloody_mess]"
@@ -189,6 +227,8 @@
 		add_overlay("wm_panel")
 
 /obj/machinery/washing_machine/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, null, null, W))
 		update_icon()
 		return
@@ -219,6 +259,8 @@
 		return ..()
 
 /obj/machinery/washing_machine/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(busy)
 		to_chat(user, "<span class='warning'>[src] is busy.</span>")
 		return
@@ -241,10 +283,14 @@
 		update_icon()
 
 /obj/machinery/washing_machine/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/metal (loc, 2)
 	qdel(src)
 
 /obj/machinery/washing_machine/open_machine(drop = 1)
+	procstart = null
+	src.procstart = null
 	..()
 	density = TRUE //because machinery/open_machine() sets it to 0
 	color_source = null

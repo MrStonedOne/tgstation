@@ -5,6 +5,8 @@
 	return 0
 
 /mob/living/carbon/true_devil/update_inv_hands()
+	procstart = null
+	src.procstart = null
 	//TODO LORDPIDEY:  Figure out how to make the hands line up properly.  the l/r_hand_overlay should use the down sprite when facing down, left, or right, and the up sprite when facing up.
 	remove_overlay(DEVIL_HANDS_LAYER)
 	var/list/hands_overlays = list()
@@ -47,6 +49,8 @@
 	apply_overlay(DEVIL_HANDS_LAYER)
 
 /mob/living/carbon/true_devil/remove_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	var/I = devil_overlays[cache_index]
 	if(I)
 		cut_overlay(I)
@@ -54,5 +58,7 @@
 
 
 /mob/living/carbon/true_devil/apply_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	if((. = devil_overlays[cache_index]))
 		add_overlay(.)

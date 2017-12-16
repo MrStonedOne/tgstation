@@ -17,6 +17,8 @@
 	var/number_of_pins = 2
 
 /obj/item/integrated_circuit/transfer/multiplexer/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/i = 1 to number_of_pins)
 		inputs["input [i]"] = IC_PINTYPE_ANY // This is just a string since pins don't get built until ..() is called.
 
@@ -26,6 +28,8 @@
 	extended_desc += " This multiplexer has a range from 1 to [inputs.len - 1]."
 
 /obj/item/integrated_circuit/transfer/multiplexer/do_work()
+	procstart = null
+	src.procstart = null
 	var/input_index = get_pin_data(IC_INPUT, 1)
 
 	if(!isnull(input_index) && (input_index >= 1 && input_index < inputs.len))
@@ -65,6 +69,8 @@
 	var/number_of_pins = 2
 
 /obj/item/integrated_circuit/transfer/demultiplexer/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/i = 1 to number_of_pins)
 		outputs["output [i]"] = IC_PINTYPE_ANY
 	complexity = number_of_pins
@@ -74,6 +80,8 @@
 	extended_desc += " This demultiplexer has a range from 1 to [outputs.len]."
 
 /obj/item/integrated_circuit/transfer/demultiplexer/do_work()
+	procstart = null
+	src.procstart = null
 	var/output_index = get_pin_data(IC_INPUT, 1)
 	for(var/i = 1 to outputs.len)
 		set_pin_data(IC_OUTPUT, i, i == output_index ? get_pin_data(IC_INPUT, 2) : null)
@@ -112,6 +120,8 @@
 	var/number_of_pins = 2
 
 /obj/item/integrated_circuit/transfer/pulsedemultiplexer/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/i = 1 to number_of_pins)
 		activators["output [i]"] = IC_PINTYPE_PULSE_OUT
 	complexity = number_of_pins
@@ -121,6 +131,8 @@
 	extended_desc += " This pulse demultiplexer has a range from 1 to [activators.len - 1]."
 
 /obj/item/integrated_circuit/transfer/pulsedemultiplexer/do_work()
+	procstart = null
+	src.procstart = null
 	var/output_index = get_pin_data(IC_INPUT, 1)
 
 	if(output_index == Clamp(output_index, 1, number_of_pins))

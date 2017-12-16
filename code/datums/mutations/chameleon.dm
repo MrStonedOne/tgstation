@@ -9,22 +9,32 @@
 	time_coeff = 5
 
 /datum/mutation/human/chameleon/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.alpha = CHAMELEON_MUTATION_DEFAULT_TRANSPARENCY
 
 /datum/mutation/human/chameleon/on_life(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	owner.alpha = max(0, owner.alpha - 25)
 
 /datum/mutation/human/chameleon/on_move(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	owner.alpha = CHAMELEON_MUTATION_DEFAULT_TRANSPARENCY
 
 /datum/mutation/human/chameleon/on_attack_hand(mob/living/carbon/human/owner, atom/target, proximity)
+	procstart = null
+	src.procstart = null
 	if(proximity) //stops tk from breaking chameleon
 		owner.alpha = CHAMELEON_MUTATION_DEFAULT_TRANSPARENCY
 		return
 
 /datum/mutation/human/chameleon/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.alpha = 255

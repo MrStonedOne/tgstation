@@ -71,6 +71,8 @@
 				to_chat(C, "<font color='[GLOB.normal_ooc_colour]'><span class='ooc'><span class='prefix'>OOC:</span> <EM>[keyname]:</EM> <span class='message'>[msg]</span></span></font>")
 
 /proc/toggle_ooc(toggle = null)
+	procstart = null
+	src.procstart = null
 	if(toggle != null) //if we're specifically en/disabling ooc
 		if(toggle != GLOB.ooc_allowed)
 			GLOB.ooc_allowed = toggle
@@ -81,6 +83,8 @@
 	to_chat(world, "<B>The OOC channel has been globally [GLOB.ooc_allowed ? "enabled" : "disabled"].</B>")
 
 /proc/toggle_dooc(toggle = null)
+	procstart = null
+	src.procstart = null
 	if(toggle != null)
 		if(toggle != GLOB.dooc_allowed)
 			GLOB.dooc_allowed = toggle
@@ -92,18 +96,24 @@
 GLOBAL_VAR_INIT(normal_ooc_colour, OOC_COLOR)
 
 /client/proc/set_ooc(newColor as color)
+	procstart = null
+	src.procstart = null
 	set name = "Set Player OOC Color"
 	set desc = "Modifies player OOC Color"
 	set category = "Fun"
 	GLOB.normal_ooc_colour = sanitize_ooccolor(newColor)
 
 /client/proc/reset_ooc()
+	procstart = null
+	src.procstart = null
 	set name = "Reset Player OOC Color"
 	set desc = "Returns player OOC Color to default"
 	set category = "Fun"
 	GLOB.normal_ooc_colour = OOC_COLOR
 
 /client/verb/colorooc()
+	procstart = null
+	src.procstart = null
 	set name = "Set Your OOC Color"
 	set category = "Preferences"
 
@@ -119,6 +129,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, OOC_COLOR)
 	return
 
 /client/verb/resetcolorooc()
+	procstart = null
+	src.procstart = null
 	set name = "Reset Your OOC Color"
 	set desc = "Returns your OOC Color to default"
 	set category = "Preferences"
@@ -132,6 +144,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, OOC_COLOR)
 
 //Checks admin notice
 /client/verb/admin_notice()
+	procstart = null
+	src.procstart = null
 	set name = "Adminnotice"
 	set category = "Admin"
 	set desc ="Check the admin notice if it has been set"
@@ -142,6 +156,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, OOC_COLOR)
 		to_chat(src, "<span class='notice'>There are no admin notices at the moment.</span>")
 
 /client/verb/fix_chat()
+	procstart = null
+	src.procstart = null
 	set name = "Fix chat"
 	set category = "OOC"
 	if (!chatOutput || !istype(chatOutput))
@@ -225,6 +241,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, OOC_COLOR)
 
 
 /client/verb/motd()
+	procstart = null
+	src.procstart = null
 	set name = "MOTD"
 	set category = "OOC"
 	set desc ="Check the Message of the Day"
@@ -235,6 +253,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, OOC_COLOR)
 		to_chat(src, "<span class='notice'>The Message of the Day has not been set.</span>")
 
 /client/proc/self_notes()
+	procstart = null
+	src.procstart = null
 	set name = "View Admin Remarks"
 	set category = "OOC"
 	set desc = "View the notes that admins have written about you"
@@ -246,6 +266,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, OOC_COLOR)
 	browse_messages(null, usr.ckey, null, TRUE)
 
 /client/proc/ignore_key(client)
+	procstart = null
+	src.procstart = null
 	var/client/C = client
 	if(C.key in prefs.ignoring)
 		prefs.ignoring -= C.key
@@ -255,6 +277,8 @@ GLOBAL_VAR_INIT(normal_ooc_colour, OOC_COLOR)
 	prefs.save_preferences()
 
 /client/verb/select_ignore()
+	procstart = null
+	src.procstart = null
 	set name = "Ignore"
 	set category = "OOC"
 	set desc ="Ignore a player's messages on the OOC channel"

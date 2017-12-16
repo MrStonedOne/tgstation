@@ -11,6 +11,8 @@
 
 // Causes any affecting light sources to be queued for a visibility update, for example a door got opened.
 /turf/proc/reconsider_lights()
+	procstart = null
+	src.procstart = null
 	var/datum/light_source/L
 	var/thing
 	for (thing in affecting_lights)
@@ -18,6 +20,8 @@
 		L.vis_update()
 
 /turf/proc/lighting_clear_overlay()
+	procstart = null
+	src.procstart = null
 	if (lighting_object)
 		qdel(lighting_object, TRUE)
 
@@ -31,6 +35,8 @@
 
 // Builds a lighting object for us, but only if our area is dynamic.
 /turf/proc/lighting_build_overlay()
+	procstart = null
+	src.procstart = null
 	if (lighting_object)
 		qdel(lighting_object,force=TRUE) //Shitty fix for lighting objects persisting after death
 
@@ -58,6 +64,8 @@
 
 // Used to get a scaled lumcount.
 /turf/proc/get_lumcount(var/minlum = 0, var/maxlum = 1)
+	procstart = null
+	src.procstart = null
 	if (!lighting_object)
 		return 1
 
@@ -81,6 +89,8 @@
 // itself as too dark to allow sight and see_in_dark becomes useful.
 // So basically if this returns true the tile is unlit black.
 /turf/proc/is_softly_lit()
+	procstart = null
+	src.procstart = null
 	if (!lighting_object)
 		return FALSE
 
@@ -88,6 +98,8 @@
 
 // Can't think of a good name, this proc will recalculate the has_opaque_atom variable.
 /turf/proc/recalc_atom_opacity()
+	procstart = null
+	src.procstart = null
 	has_opaque_atom = opacity
 	if (!has_opaque_atom)
 		for (var/atom/A in src.contents) // Loop through every movable atom on our tile PLUS ourselves (we matter too...)
@@ -96,6 +108,8 @@
 				break
 
 /turf/Exited(var/atom/movable/Obj, var/atom/newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if (Obj && Obj.opacity)
@@ -103,6 +117,8 @@
 		reconsider_lights()
 
 /turf/proc/change_area(var/area/old_area, var/area/new_area)
+	procstart = null
+	src.procstart = null
 	if(SSlighting.initialized)
 		if (new_area.dynamic_lighting != old_area.dynamic_lighting)
 			if (new_area.dynamic_lighting)
@@ -111,6 +127,8 @@
 				lighting_clear_overlay()
 
 /turf/proc/get_corners()
+	procstart = null
+	src.procstart = null
 	if (!IS_DYNAMIC_LIGHTING(src) && !light_sources)
 		return null
 	if (!lighting_corners_initialised)
@@ -121,6 +139,8 @@
 	return corners
 
 /turf/proc/generate_missing_corners()
+	procstart = null
+	src.procstart = null
 	if (!IS_DYNAMIC_LIGHTING(src) && !light_sources)
 		return
 	lighting_corners_initialised = TRUE

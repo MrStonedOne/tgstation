@@ -9,6 +9,8 @@
 	var/payload = /obj/item/grenade/flashbang/cluster
 
 /obj/item/grenade/clusterbuster/prime()
+	procstart = null
+	src.procstart = null
 	update_mob()
 	var/numspawned = rand(4,8)
 	var/again = 0
@@ -38,6 +40,8 @@
 	icon_state = "clusterbang_segment"
 
 /obj/item/grenade/clusterbuster/segment/New(var/loc, var/payload_type = /obj/item/grenade/flashbang/cluster)
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "clusterbang_segment_active"
 	payload = payload_type
@@ -47,6 +51,8 @@
 
 /obj/item/grenade/clusterbuster/segment/prime()
 
+	procstart = null
+	src.procstart = null
 	new /obj/effect/payload_spawner(loc, payload, rand(4,8))
 
 	playsound(loc, 'sound/weapons/armbomb.ogg', 75, 1, -3)
@@ -58,6 +64,8 @@
 /////////////////////////////////
 /obj/effect/payload_spawner/New(var/turf/newloc,var/type, var/numspawned as num)
 
+	procstart = null
+	src.procstart = null
 	for(var/loop = numspawned ,loop > 0, loop--)
 		var/obj/item/grenade/P = new type(loc)
 		P.active = 1
@@ -133,6 +141,8 @@
 	icon_state = "random_clusterbang"
 
 /obj/item/grenade/clusterbuster/random/New()
+	procstart = null
+	src.procstart = null
 	var/real_type = pick(subtypesof(/obj/item/grenade/clusterbuster))
 	new real_type(loc)
 	qdel(src)

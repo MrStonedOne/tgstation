@@ -5,9 +5,13 @@
 	return name
 
 /datum/plant_gene/proc/can_add(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	return !istype(S, /obj/item/seeds/sample) // Samples can't accept new genes
 
 /datum/plant_gene/proc/Copy()
+	procstart = null
+	src.procstart = null
 	return new type
 
 /datum/plant_gene/proc/apply_vars(obj/item/seeds/S) // currently used for fire resist, can prob. be further refactored
@@ -18,22 +22,32 @@
 	var/value
 
 /datum/plant_gene/core/get_name()
+	procstart = null
+	src.procstart = null
 	return "[name] [value]"
 
 /datum/plant_gene/core/proc/apply_stat(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/plant_gene/core/New(var/i = null)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isnull(i))
 		value = i
 
 /datum/plant_gene/core/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/plant_gene/core/C = ..()
 	C.value = value
 	return C
 
 /datum/plant_gene/core/can_add(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	return S.get_gene(src.type)
@@ -43,6 +57,8 @@
 	value = 25
 
 /datum/plant_gene/core/lifespan/apply_stat(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	S.lifespan = value
 
 
@@ -51,6 +67,8 @@
 	value = 15
 
 /datum/plant_gene/core/endurance/apply_stat(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	S.endurance = value
 
 
@@ -59,6 +77,8 @@
 	value = 6
 
 /datum/plant_gene/core/production/apply_stat(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	S.production = value
 
 
@@ -67,6 +87,8 @@
 	value = 3
 
 /datum/plant_gene/core/yield/apply_stat(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	S.yield = value
 
 
@@ -75,6 +97,8 @@
 	value = 10
 
 /datum/plant_gene/core/potency/apply_stat(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	S.potency = value
 
 
@@ -83,6 +107,8 @@
 	value = 1
 
 /datum/plant_gene/core/weed_rate/apply_stat(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	S.weed_rate = value
 
 
@@ -91,6 +117,8 @@
 	value = 5
 
 /datum/plant_gene/core/weed_chance/apply_stat(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	S.weed_chance = value
 
 
@@ -101,9 +129,13 @@
 	var/rate = 0.04
 
 /datum/plant_gene/reagent/get_name()
+	procstart = null
+	src.procstart = null
 	return "[name] production [rate*100]%"
 
 /datum/plant_gene/reagent/proc/set_reagent(reag_id)
+	procstart = null
+	src.procstart = null
 	reagent_id = reag_id
 	name = "UNKNOWN"
 
@@ -112,12 +144,16 @@
 		name = R.name
 
 /datum/plant_gene/reagent/New(reag_id = null, reag_rate = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(reag_id && reag_rate)
 		set_reagent(reag_id)
 		rate = reag_rate
 
 /datum/plant_gene/reagent/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/plant_gene/reagent/G = ..()
 	G.name = name
 	G.reagent_id = reagent_id
@@ -125,6 +161,8 @@
 	return G
 
 /datum/plant_gene/reagent/can_add(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	for(var/datum/plant_gene/reagent/R in S.genes)
@@ -140,11 +178,15 @@
 	var/trait_id // must be set and equal for any two traits of the same type
 
 /datum/plant_gene/trait/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/plant_gene/trait/G = ..()
 	G.rate = rate
 	return G
 
 /datum/plant_gene/trait/can_add(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -156,24 +198,38 @@
 	return TRUE
 
 /datum/plant_gene/trait/proc/on_new(obj/item/reagent_containers/food/snacks/grown/G, newloc)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/plant_gene/trait/proc/on_consume(obj/item/reagent_containers/food/snacks/grown/G, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/plant_gene/trait/proc/on_cross(obj/item/reagent_containers/food/snacks/grown/G, atom/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/plant_gene/trait/proc/on_slip(obj/item/reagent_containers/food/snacks/grown/G, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/plant_gene/trait/proc/on_squash(obj/item/reagent_containers/food/snacks/grown/G, atom/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/plant_gene/trait/proc/on_attackby(obj/item/reagent_containers/food/snacks/grown/G, obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/plant_gene/trait/proc/on_throw_impact(obj/item/reagent_containers/food/snacks/grown/G, atom/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/plant_gene/trait/squash
@@ -191,6 +247,8 @@
 	examine_line = "<span class='info'>It has a very slippery skin.</span>"
 
 /datum/plant_gene/trait/slip/on_cross(obj/item/reagent_containers/food/snacks/grown/G, atom/target)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		var/obj/item/seeds/seed = G.seed
 		var/mob/living/carbon/M = target
@@ -217,11 +275,15 @@
 	rate = 0.2
 
 /datum/plant_gene/trait/cell_charge/on_slip(obj/item/reagent_containers/food/snacks/grown/G, mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	var/power = G.seed.potency*rate
 	if(prob(power))
 		C.electrocute_act(round(power), G, 1, 1)
 
 /datum/plant_gene/trait/cell_charge/on_squash(obj/item/reagent_containers/food/snacks/grown/G, atom/target)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target
 		var/power = G.seed.potency*rate
@@ -229,6 +291,8 @@
 			C.electrocute_act(round(power), G, 1, 1)
 
 /datum/plant_gene/trait/cell_charge/on_consume(obj/item/reagent_containers/food/snacks/grown/G, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(!G.reagents.total_volume)
 		var/batteries_recharged = 0
 		for(var/obj/item/stock_parts/cell/C in target.GetAllContents())
@@ -255,12 +319,18 @@
 	var/glow_color = "#C3E381"
 
 /datum/plant_gene/trait/glow/proc/glow_range(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	return 1.4 + S.potency*rate
 
 /datum/plant_gene/trait/glow/proc/glow_power(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	return max(S.potency*(rate + 0.01), 0.1)
 
 /datum/plant_gene/trait/glow/on_new(obj/item/reagent_containers/food/snacks/grown/G, newloc)
+	procstart = null
+	src.procstart = null
 	..()
 	G.set_light(glow_range(G.seed), glow_power(G.seed), glow_color)
 
@@ -272,6 +342,8 @@
 	glow_color = "#AAD84B"
 
 /datum/plant_gene/trait/glow/shadow/glow_power(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	return -max(S.potency*(rate*0.05), 0.075)
 
 /datum/plant_gene/trait/glow/red
@@ -291,6 +363,8 @@
 	rate = 0.1
 
 /datum/plant_gene/trait/teleport/on_squash(obj/item/reagent_containers/food/snacks/grown/G, atom/target)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/teleport_radius = max(round(G.seed.potency / 10), 1)
 		var/turf/T = get_turf(target)
@@ -298,6 +372,8 @@
 		do_teleport(target, T, teleport_radius)
 
 /datum/plant_gene/trait/teleport/on_slip(obj/item/reagent_containers/food/snacks/grown/G, mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	var/teleport_radius = max(round(G.seed.potency / 10), 1)
 	var/turf/T = get_turf(C)
 	to_chat(C, "<span class='warning'>You slip through spacetime!</span>")
@@ -314,10 +390,14 @@
 	name = "Separated Chemicals"
 
 /datum/plant_gene/trait/noreact/on_new(obj/item/reagent_containers/food/snacks/grown/G, newloc)
+	procstart = null
+	src.procstart = null
 	..()
 	G.reagents.set_reacting(FALSE)
 
 /datum/plant_gene/trait/noreact/on_squash(obj/item/reagent_containers/food/snacks/grown/G, atom/target)
+	procstart = null
+	src.procstart = null
 	G.reagents.set_reacting(TRUE)
 	G.reagents.handle_reactions()
 
@@ -328,6 +408,8 @@
 	rate = 2
 
 /datum/plant_gene/trait/maxchem/on_new(obj/item/reagent_containers/food/snacks/grown/G, newloc)
+	procstart = null
+	src.procstart = null
 	..()
 	G.reagents.maximum_volume *= rate
 
@@ -335,6 +417,8 @@
 	name = "Perennial Growth"
 
 /datum/plant_gene/trait/repeated_harvest/can_add(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(istype(S, /obj/item/seeds/replicapod))
@@ -345,6 +429,8 @@
 	name = "Capacitive Cell Production"
 
 /datum/plant_gene/trait/battery/on_attackby(obj/item/reagent_containers/food/snacks/grown/G, obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/C = I
 		if(C.use(5))
@@ -373,6 +459,8 @@
 	name = "Hypodermic Prickles"
 
 /datum/plant_gene/trait/stinging/on_throw_impact(obj/item/reagent_containers/food/snacks/grown/G, atom/target)
+	procstart = null
+	src.procstart = null
 	if(isliving(target) && G.reagents && G.reagents.total_volume)
 		var/mob/living/L = target
 		if(L.reagents && L.can_inject(null, 0))
@@ -386,6 +474,8 @@
 	name = "gaseous decomposition"
 
 /datum/plant_gene/trait/smoke/on_squash(obj/item/reagent_containers/food/snacks/grown/G, atom/target)
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/smoke_spread/chem/S = new
 	var/splat_location = get_turf(target)
 	var/smoke_amount = round(sqrt(G.seed.potency * 0.1), 1)
@@ -398,10 +488,14 @@
 	name = "Fire Resistance"
 
 /datum/plant_gene/trait/fire_resistance/apply_vars(obj/item/seeds/S)
+	procstart = null
+	src.procstart = null
 	if(!(S.resistance_flags & FIRE_PROOF))
 		S.resistance_flags |= FIRE_PROOF
 
 /datum/plant_gene/trait/fire_resistance/on_new(obj/item/reagent_containers/food/snacks/grown/G, newloc)
+	procstart = null
+	src.procstart = null
 	if(!(G.resistance_flags & FIRE_PROOF))
 		G.resistance_flags |= FIRE_PROOF
 

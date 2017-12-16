@@ -9,6 +9,8 @@
 	standard 0 if fail
 */
 /mob/living/proc/apply_damage(damage = 0,damagetype = BRUTE, def_zone = null, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	var/hit_percent = (100-blocked)/100
 	if(!damage || (hit_percent <= 0))
 		return 0
@@ -47,6 +49,8 @@
 			return adjustBrainLoss(damage)
 
 /mob/living/proc/get_damage_amount(damagetype = BRUTE)
+	procstart = null
+	src.procstart = null
 	switch(damagetype)
 		if(BRUTE)
 			return getBruteLoss()
@@ -65,6 +69,8 @@
 
 
 /mob/living/proc/apply_damages(brute = 0, burn = 0, tox = 0, oxy = 0, clone = 0, def_zone = null, blocked = FALSE, stamina = 0, brain = 0)
+	procstart = null
+	src.procstart = null
 	if(blocked >= 100)
 		return 0
 	if(brute)
@@ -86,6 +92,8 @@
 
 
 /mob/living/proc/apply_effect(effect = 0,effecttype = STUN, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	var/hit_percent = (100-blocked)/100
 	if(!effect || (hit_percent <= 0))
 		return 0
@@ -114,6 +122,8 @@
 
 
 /mob/living/proc/apply_effects(stun = 0, knockdown = 0, unconscious = 0, irradiate = 0, slur = 0, stutter = 0, eyeblur = 0, drowsy = 0, blocked = FALSE, stamina = 0, jitter = 0)
+	procstart = null
+	src.procstart = null
 	if(blocked >= 100)
 		return 0
 	if(stun)
@@ -140,9 +150,13 @@
 
 
 /mob/living/proc/getBruteLoss()
+	procstart = null
+	src.procstart = null
 	return bruteloss
 
 /mob/living/proc/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	bruteloss = Clamp((bruteloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -151,9 +165,13 @@
 	return amount
 
 /mob/living/proc/getOxyLoss()
+	procstart = null
+	src.procstart = null
 	return oxyloss
 
 /mob/living/proc/adjustOxyLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	oxyloss = Clamp((oxyloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -162,6 +180,8 @@
 	return amount
 
 /mob/living/proc/setOxyLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return 0
 	oxyloss = amount
@@ -170,9 +190,13 @@
 	return amount
 
 /mob/living/proc/getToxLoss()
+	procstart = null
+	src.procstart = null
 	return toxloss
 
 /mob/living/proc/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	toxloss = Clamp((toxloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -181,6 +205,8 @@
 	return amount
 
 /mob/living/proc/setToxLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	toxloss = amount
@@ -189,9 +215,13 @@
 	return amount
 
 /mob/living/proc/getFireLoss()
+	procstart = null
+	src.procstart = null
 	return fireloss
 
 /mob/living/proc/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	fireloss = Clamp((fireloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -200,9 +230,13 @@
 	return amount
 
 /mob/living/proc/getCloneLoss()
+	procstart = null
+	src.procstart = null
 	return cloneloss
 
 /mob/living/proc/adjustCloneLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	cloneloss = Clamp((cloneloss + (amount * CONFIG_GET(number/damage_multiplier))), 0, maxHealth * 2)
@@ -211,6 +245,8 @@
 	return amount
 
 /mob/living/proc/setCloneLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	cloneloss = amount
@@ -219,26 +255,40 @@
 	return amount
 
 /mob/living/proc/getBrainLoss()
+	procstart = null
+	src.procstart = null
 	. = 0
 
 /mob/living/proc/adjustBrainLoss(amount, maximum = BRAIN_DAMAGE_DEATH)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/setBrainLoss(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/getStaminaLoss()
+	procstart = null
+	src.procstart = null
 	return staminaloss
 
 /mob/living/proc/adjustStaminaLoss(amount, updating_stamina = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/setStaminaLoss(amount, updating_stamina = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 
 // heal ONE external organ, organ gets randomly selected from damaged ones.
 /mob/living/proc/heal_bodypart_damage(brute, burn, updating_health = 1)
+	procstart = null
+	src.procstart = null
 	adjustBruteLoss(-brute, 0) //zero as argument for no instant health update
 	adjustFireLoss(-burn, 0)
 	if(updating_health)
@@ -246,6 +296,8 @@
 
 // damage ONE external organ, organ gets randomly selected from damaged ones.
 /mob/living/proc/take_bodypart_damage(brute, burn, updating_health = 1)
+	procstart = null
+	src.procstart = null
 	adjustBruteLoss(brute, 0) //zero as argument for no instant health update
 	adjustFireLoss(burn, 0)
 	if(updating_health)
@@ -253,6 +305,8 @@
 
 // heal MANY bodyparts, in random order
 /mob/living/proc/heal_overall_damage(brute, burn, only_robotic = 0, only_organic = 1, updating_health = 1)
+	procstart = null
+	src.procstart = null
 	adjustBruteLoss(-brute, 0) //zero as argument for no instant health update
 	adjustFireLoss(-burn, 0)
 	if(updating_health)
@@ -260,6 +314,8 @@
 
 // damage MANY bodyparts, in random order
 /mob/living/proc/take_overall_damage(brute, burn, updating_health = 1)
+	procstart = null
+	src.procstart = null
 	adjustBruteLoss(brute, 0) //zero as argument for no instant health update
 	adjustFireLoss(burn, 0)
 	if(updating_health)
@@ -267,6 +323,8 @@
 
 //heal up to amount damage, in a given order
 /mob/living/proc/heal_ordered_damage(amount, list/damage_types)
+	procstart = null
+	src.procstart = null
 	. = amount //we'll return the amount of damage healed
 	for(var/i in damage_types)
 		var/amount_to_heal = min(amount, get_damage_amount(i)) //heal only up to the amount of damage we have

@@ -11,4 +11,6 @@
 	tint = 3 //Makes it feel more authentic when it latches on
 
 /obj/item/clothing/mask/facehugger/toy/Die()
+	procstart = null
+	src.procstart = null
 	return

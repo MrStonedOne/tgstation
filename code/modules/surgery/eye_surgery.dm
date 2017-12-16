@@ -12,6 +12,8 @@
 	time = 64
 
 /datum/surgery/eye_surgery/can_start(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/E = target.getorganslot(ORGAN_SLOT_EYES)
 	if(!E)
 		to_chat(user, "It's hard to do surgery on someone's eyes when they don't have any.")
@@ -19,9 +21,13 @@
 	return TRUE
 
 /datum/surgery_step/fix_eyes/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] begins to fix [target]'s eyes.", "<span class='notice'>You begin to fix [target]'s eyes...</span>")
 
 /datum/surgery_step/fix_eyes/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] successfully fixes [target]'s eyes!", "<span class='notice'>You succeed in fixing [target]'s eyes.</span>")
 	target.cure_blind()
 	target.set_blindness(0)
@@ -31,6 +37,8 @@
 	return TRUE
 
 /datum/surgery_step/fix_eyes/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	if(target.getorgan(/obj/item/organ/brain))
 		user.visible_message("<span class='warning'>[user] accidentally stabs [target] right in the brain!</span>", "<span class='warning'>You accidentally stab [target] right in the brain!</span>")
 		target.adjustBrainLoss(70)

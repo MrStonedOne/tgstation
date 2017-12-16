@@ -12,6 +12,8 @@
 	var/battlecry = "AT"
 
 /mob/living/simple_animal/hostile/guardian/punch/verb/Battlecry()
+	procstart = null
+	src.procstart = null
 	set name = "Set Battlecry"
 	set category = "Guardian"
 	set desc = "Choose what you shout as you punch people."
@@ -22,6 +24,8 @@
 
 
 /mob/living/simple_animal/hostile/guardian/punch/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		say("[battlecry][battlecry][battlecry][battlecry][battlecry][battlecry][battlecry][battlecry][battlecry][battlecry]!!", ignore_spam = TRUE)

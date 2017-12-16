@@ -10,6 +10,8 @@
 
 
 /obj/item/clothing/mask/worn_overlays(isinhands = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands)
 		if(body_parts_covered & HEAD)
@@ -19,6 +21,8 @@
 				. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
 
 /obj/item/clothing/mask/update_clothes_damaged_state(damaging = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc
@@ -26,6 +30,8 @@
 
 //Proc that moves gas/breath masks out of the way, disabling them and allowing pill/food consumption
 /obj/item/clothing/mask/proc/adjustmask(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user && user.incapacitated())
 		return
 	mask_adjusted = !mask_adjusted

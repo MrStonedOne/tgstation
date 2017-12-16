@@ -30,6 +30,8 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 								)
 
 /obj/machinery/rnd/circuit_imprinter/Initialize()
+	procstart = null
+	src.procstart = null
 	materials = AddComponent(/datum/component/material_container, list(MAT_GLASS, MAT_GOLD, MAT_DIAMOND, MAT_METAL, MAT_BLUESPACE), 0,
 		FALSE, list(/obj/item/stack, /obj/item/ore/bluespace_crystal), CALLBACK(src, .proc/is_insertion_ready), CALLBACK(src, .proc/AfterMaterialInsert))
 	materials.precise_insertion = TRUE
@@ -38,6 +40,8 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 	return ..()
 
 /obj/machinery/rnd/circuit_imprinter/RefreshParts()
+	procstart = null
+	src.procstart = null
 	reagents.maximum_volume = 0
 	for(var/obj/item/reagent_containers/glass/G in component_parts)
 		reagents.maximum_volume += G.volume
@@ -54,6 +58,8 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 	efficiency_coeff = 2 ** (T - 1) //Only 1 manipulator here, you're making runtimes Razharas
 
 /obj/machinery/rnd/circuit_imprinter/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if (prob(50))
 		qdel(src)
 
@@ -69,6 +75,8 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 
 //we eject the materials upon deconstruction.
 /obj/machinery/rnd/circuit_imprinter/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/reagent_containers/glass/G in component_parts)
 		reagents.trans_to(G, G.reagents.maximum_volume)
 	GET_COMPONENT(materials, /datum/component/material_container)
@@ -77,10 +85,14 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 
 
 /obj/machinery/rnd/circuit_imprinter/disconnect_console()
+	procstart = null
+	src.procstart = null
 	linked_console.linked_imprinter = null
 	..()
 
 /obj/machinery/rnd/circuit_imprinter/proc/user_try_print_id(id)
+	procstart = null
+	src.procstart = null
 	if((!linked_console && requires_console) || !id)
 		return FALSE
 	var/datum/design/D = (linked_console || requires_console)? linked_console.stored_research.researched_designs[id] : get_techweb_design_by_id(id)
@@ -117,6 +129,8 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 	return TRUE
 
 /obj/machinery/rnd/circuit_imprinter/proc/do_print(path, list/matlist, notify_admins)
+	procstart = null
+	src.procstart = null
 	if(notify_admins && usr)
 		investigate_log("[key_name(usr)] built [path] at a circuit imprinter.", INVESTIGATE_RESEARCH)
 		message_admins("[ADMIN_LOOKUPFLW(usr)] has built [path] at a circuit imprinter.")

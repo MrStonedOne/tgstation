@@ -6,6 +6,8 @@
 	req_human = 1
 
 /obj/effect/proc_holder/changeling/linglink/can_sting(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
@@ -35,6 +37,8 @@
 	return changeling.can_absorb_dna(target)
 
 /obj/effect/proc_holder/changeling/linglink/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	var/mob/living/carbon/human/target = user.pulling
 	changeling.islinking = 1

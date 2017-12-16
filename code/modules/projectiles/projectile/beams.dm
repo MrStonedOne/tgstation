@@ -23,6 +23,8 @@
 	damage = 40
 
 /obj/item/projectile/beam/laser/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target
@@ -74,6 +76,8 @@
 	light_color = LIGHT_COLOR_BLUE
 
 /obj/item/projectile/beam/pulse/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isturf(target) || istype(target, /obj/structure/))
 		target.ex_act(EXPLODE_HEAVY)
@@ -87,6 +91,8 @@
 	var/life = 20
 
 /obj/item/projectile/beam/pulse/heavy/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	life -= 10
 	if(life > 0)
 		. = -1
@@ -100,6 +106,8 @@
 	light_color = LIGHT_COLOR_GREEN
 
 /obj/item/projectile/beam/emitter/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return //don't want the emitters to miss
 
 /obj/item/projectile/beam/lasertag
@@ -114,6 +122,8 @@
 	light_color = LIGHT_COLOR_BLUE
 
 /obj/item/projectile/beam/lasertag/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(target))
 		var/mob/living/carbon/human/M = target
@@ -150,6 +160,8 @@
 	light_color = LIGHT_COLOR_RED
 
 /obj/item/projectile/beam/instakill/on_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/M = target

@@ -1,5 +1,7 @@
 //wrapper
 /proc/do_teleport(ateleatom, adestination, aprecision=0, afteleport=1, aeffectin=null, aeffectout=null, asoundin=null, asoundout=null)
+	procstart = null
+	src.procstart = null
 	var/datum/teleport/instant/science/D = new
 	if(D.start(arglist(args)))
 		return 1
@@ -16,11 +18,15 @@
 	var/force_teleport = 1 //if false, teleport will use Move() proc (dense objects will prevent teleportation)
 
 /datum/teleport/proc/start(ateleatom, adestination, aprecision=0, afteleport=1, aeffectin=null, aeffectout=null, asoundin=null, asoundout=null)
+	procstart = null
+	src.procstart = null
 	if(!initTeleport(arglist(args)))
 		return 0
 	return 1
 
 /datum/teleport/proc/initTeleport(ateleatom,adestination,aprecision,afteleport,aeffectin,aeffectout,asoundin,asoundout)
+	procstart = null
+	src.procstart = null
 	if(!setTeleatom(ateleatom))
 		return 0
 	if(!setDestination(adestination))
@@ -34,6 +40,8 @@
 
 //must succeed
 /datum/teleport/proc/setPrecision(aprecision)
+	procstart = null
+	src.procstart = null
 	if(isnum(aprecision))
 		precision = aprecision
 		return 1
@@ -41,6 +49,8 @@
 
 //must succeed
 /datum/teleport/proc/setDestination(atom/adestination)
+	procstart = null
+	src.procstart = null
 	if(istype(adestination))
 		destination = adestination
 		return 1
@@ -48,6 +58,8 @@
 
 //must succeed in most cases
 /datum/teleport/proc/setTeleatom(atom/movable/ateleatom)
+	procstart = null
+	src.procstart = null
 	if(istype(ateleatom, /obj/effect) && !istype(ateleatom, /obj/effect/dummy/chameleon))
 		qdel(ateleatom)
 		return 0
@@ -59,26 +71,36 @@
 //custom effects must be properly set up first for instant-type teleports
 //optional
 /datum/teleport/proc/setEffects(datum/effect_system/aeffectin=null,datum/effect_system/aeffectout=null)
+	procstart = null
+	src.procstart = null
 	effectin = istype(aeffectin) ? aeffectin : null
 	effectout = istype(aeffectout) ? aeffectout : null
 	return 1
 
 //optional
 /datum/teleport/proc/setForceTeleport(afteleport)
+	procstart = null
+	src.procstart = null
 	force_teleport = afteleport
 	return 1
 
 //optional
 /datum/teleport/proc/setSounds(asoundin=null,asoundout=null)
+	procstart = null
+	src.procstart = null
 	soundin = isfile(asoundin) ? asoundin : null
 	soundout = isfile(asoundout) ? asoundout : null
 	return 1
 
 //placeholder
 /datum/teleport/proc/teleportChecks()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /datum/teleport/proc/playSpecials(atom/location,datum/effect_system/effect,sound)
+	procstart = null
+	src.procstart = null
 	if(location)
 		if(effect)
 			INVOKE_ASYNC(src, .proc/do_effect, location, effect)
@@ -86,17 +108,23 @@
 			INVOKE_ASYNC(src, .proc/do_sound, location, sound)
 
 /datum/teleport/proc/do_effect(atom/location, datum/effect_system/effect)
+	procstart = null
+	src.procstart = null
 	src = null
 	effect.attach(location)
 	effect.start()
 
 /datum/teleport/proc/do_sound(atom/location, sound)
+	procstart = null
+	src.procstart = null
 	src = null
 	playsound(location, sound, 60, 1)
 
 //do the monkey dance
 /datum/teleport/proc/doTeleport()
 
+	procstart = null
+	src.procstart = null
 	var/turf/destturf
 	var/turf/curturf = get_turf(teleatom)
 	destturf = get_teleport_turf(get_turf(destination), precision)
@@ -125,6 +153,8 @@
 	return 1
 
 /datum/teleport/proc/teleport()
+	procstart = null
+	src.procstart = null
 	if(teleportChecks())
 		return doTeleport()
 	return 0
@@ -141,6 +171,8 @@
 /datum/teleport/instant/science
 
 /datum/teleport/instant/science/setEffects(datum/effect_system/aeffectin,datum/effect_system/aeffectout)
+	procstart = null
+	src.procstart = null
 	if(aeffectin==null || aeffectout==null)
 		var/datum/effect_system/spark_spread/aeffect = new
 		aeffect.set_up(5, 1, teleatom)
@@ -151,6 +183,8 @@
 		return ..()
 
 /datum/teleport/instant/science/setPrecision(aprecision)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(teleatom, /obj/item/storage/backpack/holding))
 		precision = rand(1,100)
@@ -167,6 +201,8 @@
 // Safe location finder
 
 /proc/find_safe_turf(zlevel = ZLEVEL_STATION_PRIMARY, list/zlevels, extended_safety_checks = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!zlevels)
 		zlevels = list(zlevel)
 	var/cycles = 1000
@@ -219,6 +255,8 @@
 		return F
 
 /proc/get_teleport_turfs(turf/center, precision = 0)
+	procstart = null
+	src.procstart = null
 	if(!precision)
 		return list(center)
 	var/list/posturfs = list()
@@ -231,4 +269,6 @@
 	return posturfs
 
 /proc/get_teleport_turf(turf/center, precision = 0)
+	procstart = null
+	src.procstart = null
 	return safepick(get_teleport_turfs(center, precision))

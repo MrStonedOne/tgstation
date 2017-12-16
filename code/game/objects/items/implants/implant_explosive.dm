@@ -12,6 +12,8 @@
 	var/active = FALSE
 
 /obj/item/implant/explosive/get_data()
+	procstart = null
+	src.procstart = null
 	var/dat = {"<b>Implant Specifications:</b><BR>
 				<b>Name:</b> Robust Corp RX-78 Employee Management Implant<BR>
 				<b>Life:</b> Activates upon death.<BR>
@@ -24,10 +26,14 @@
 	return dat
 
 /obj/item/implant/explosive/trigger(emote, mob/source)
+	procstart = null
+	src.procstart = null
 	if(emote == "deathgasp")
 		activate("death")
 
 /obj/item/implant/explosive/activate(cause)
+	procstart = null
+	src.procstart = null
 	if(!cause || !imp_in || active)
 		return 0
 	if(cause == "action_button" && !popup)
@@ -54,6 +60,8 @@
 	timed_explosion()
 
 /obj/item/implant/explosive/implant(mob/living/target)
+	procstart = null
+	src.procstart = null
 	for(var/X in target.implants)
 		if(istype(X, type))
 			var/obj/item/implant/explosive/imp_e = X
@@ -67,6 +75,8 @@
 	return ..()
 
 /obj/item/implant/explosive/proc/timed_explosion()
+	procstart = null
+	src.procstart = null
 	imp_in.visible_message("<span class='warning'>[imp_in] starts beeping ominously!</span>")
 	playsound(loc, 'sound/items/timer.ogg', 30, 0)
 	sleep(delay*0.25)
@@ -94,6 +104,8 @@
 	delay = 70
 
 /obj/item/implant/explosive/macro/implant(mob/living/target)
+	procstart = null
+	src.procstart = null
 	for(var/X in target.implants)
 		if(istype(X, type))
 			return 0

@@ -98,10 +98,14 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 	grind_results = list("iron" = 20)
 
 /obj/item/stack/sheet/metal/ratvar_act()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/tile/brass(loc, amount)
 	qdel(src)
 
 /obj/item/stack/sheet/metal/narsie_act()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/runed_metal(loc, amount)
 	qdel(src)
 
@@ -120,6 +124,8 @@ GLOBAL_LIST_INIT(metal_recipes, list ( \
 	cost = 500
 
 /obj/item/stack/sheet/metal/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.metal_recipes
 	return ..()
 
@@ -151,6 +157,8 @@ GLOBAL_LIST_INIT(plasteel_recipes, list ( \
 	grind_results = list("iron" = 20, "plasma" = 20)
 
 /obj/item/stack/sheet/plasteel/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.plasteel_recipes
 	return ..()
 
@@ -203,6 +211,8 @@ GLOBAL_LIST_INIT(wood_recipes, list ( \
 	grind_results = list("carbon" = 20)
 
 /obj/item/stack/sheet/mineral/wood/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.wood_recipes
 	return ..()
 
@@ -247,6 +257,8 @@ GLOBAL_LIST_INIT(cloth_recipes, list ( \
 	merge_type = /obj/item/stack/sheet/cloth
 
 /obj/item/stack/sheet/cloth/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.cloth_recipes
 	return ..()
 
@@ -281,6 +293,8 @@ GLOBAL_LIST_INIT(cardboard_recipes, list ( \
 	novariants = TRUE
 
 /obj/item/stack/sheet/cardboard/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.cardboard_recipes
 	return ..()
 
@@ -288,6 +302,8 @@ GLOBAL_LIST_INIT(cardboard_recipes, list ( \
 	amount = 50
 
 /obj/item/stack/sheet/cardboard/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/stamp/clown) && !istype(loc, /obj/item/storage))
 		var/atom/droploc = drop_location()
 		if(use(1))
@@ -324,22 +340,30 @@ GLOBAL_LIST_INIT(runed_metal_recipes, list ( \
 	grind_results = list("iron" = 0.5, "blood" = 1.5)
 
 /obj/item/stack/sheet/runed_metal/ratvar_act()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/tile/brass(loc, amount)
 	qdel(src)
 
 /obj/item/stack/sheet/runed_metal/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user))
 		to_chat(user, "<span class='warning'>Only one with forbidden knowledge could hope to work this metal...</span>")
 		return
 	return ..()
 
 /obj/item/stack/sheet/runed_metal/attack(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user))
 		to_chat(user, "<span class='warning'>Only one with forbidden knowledge could hope to work this metal...</span>")
 		return
 	..()
 
 /obj/item/stack/sheet/runed_metal/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.runed_metal_recipes
 	return ..()
 
@@ -388,16 +412,22 @@ GLOBAL_LIST_INIT(brass_recipes, list ( \
 	grind_results = list("iron" = 0.5, "teslium" = 1.5)
 
 /obj/item/stack/tile/brass/narsie_act()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/runed_metal(loc, amount)
 	qdel(src)
 
 /obj/item/stack/tile/brass/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		to_chat(user, "<span class='danger'>[src] seems far too fragile and rigid to build with.</span>") //haha that's because it's actually replicant alloy you DUMMY
 		return
 	..()
 
 /obj/item/stack/tile/brass/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.brass_recipes
 	. = ..()
 	pixel_x = 0
@@ -459,6 +489,8 @@ GLOBAL_LIST_INIT(plastic_recipes, list(
 	amount = 5
 
 /obj/item/stack/sheet/plastic/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.plastic_recipes
 	. = ..()
 
@@ -475,6 +507,8 @@ new /datum/stack_recipe("paper frame door", /obj/structure/mineral_door/paperfra
 	resistance_flags = FLAMMABLE
 
 /obj/item/stack/sheet/paperframes/Initialize()
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.paperframe_recipes
 	. = ..()
 /obj/item/stack/sheet/paperframes/five

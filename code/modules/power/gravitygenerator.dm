@@ -29,40 +29,60 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 	var/sprite_number = 0
 
 /obj/machinery/gravity_generator/throw_at()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/gravity_generator/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity == 1) // Very sturdy.
 		set_broken()
 
 /obj/machinery/gravity_generator/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(prob(20))
 		set_broken()
 
 /obj/machinery/gravity_generator/tesla_act(power, explosive)
+	procstart = null
+	src.procstart = null
 	..()
 	if(explosive)
 		qdel(src)//like the singulo, tesla deletes it. stops it from exploding over and over
 
 /obj/machinery/gravity_generator/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "[get_status()]_[sprite_number]"
 
 /obj/machinery/gravity_generator/proc/get_status()
+	procstart = null
+	src.procstart = null
 	return "off"
 
 // You aren't allowed to move.
 /obj/machinery/gravity_generator/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(src)
 
 /obj/machinery/gravity_generator/proc/set_broken()
+	procstart = null
+	src.procstart = null
 	stat |= BROKEN
 
 /obj/machinery/gravity_generator/proc/set_fix()
+	procstart = null
+	src.procstart = null
 	stat &= ~BROKEN
 
 /obj/machinery/gravity_generator/part/Destroy()
+	procstart = null
+	src.procstart = null
 	if(main_part)
 		qdel(main_part)
 	set_broken()
@@ -76,15 +96,23 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 	var/obj/machinery/gravity_generator/main/main_part = null
 
 /obj/machinery/gravity_generator/part/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return main_part.attackby(I, user)
 
 /obj/machinery/gravity_generator/part/get_status()
+	procstart = null
+	src.procstart = null
 	return main_part.get_status()
 
 /obj/machinery/gravity_generator/part/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	return main_part.attack_hand(user)
 
 /obj/machinery/gravity_generator/part/set_broken()
+	procstart = null
+	src.procstart = null
 	..()
 	if(main_part && !(main_part.stat & BROKEN))
 		main_part.set_broken()
@@ -94,6 +122,8 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 //
 
 /obj/machinery/gravity_generator/main/station/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setup_parts()
 	middle.add_overlay("activated")
@@ -137,6 +167,8 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 	return ..()
 
 /obj/machinery/gravity_generator/main/proc/setup_parts()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	// 9x9 block obtained from the bottom middle of the block
 	var/list/spawn_turfs = block(locate(our_turf.x - 1, our_turf.y + 2, our_turf.z), locate(our_turf.x + 1, our_turf.y, our_turf.z))
@@ -157,9 +189,13 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 		part.update_icon()
 
 /obj/machinery/gravity_generator/main/proc/connected_parts()
+	procstart = null
+	src.procstart = null
 	return parts.len == 8
 
 /obj/machinery/gravity_generator/main/set_broken()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/obj/machinery/gravity_generator/M in parts)
 		if(!(M.stat & BROKEN))
@@ -172,6 +208,8 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 	investigate_log("has broken down.", INVESTIGATE_GRAVITY)
 
 /obj/machinery/gravity_generator/main/set_fix()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/obj/machinery/gravity_generator/M in parts)
 		if(M.stat & BROKEN)
@@ -184,6 +222,8 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 
 // Fixing the gravity generator.
 /obj/machinery/gravity_generator/main/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	switch(broken_state)
 		if(GRAV_NEEDS_SCREWDRIVER)
 			if(istype(I, /obj/item/screwdriver))
@@ -225,10 +265,14 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 
 
 /obj/machinery/gravity_generator/main/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return interact(user)
 
 /obj/machinery/gravity_generator/main/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		return
 	var/dat = "Gravity Generator Breaker: "
@@ -254,6 +298,8 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 
 /obj/machinery/gravity_generator/main/Topic(href, href_list)
 
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -266,22 +312,30 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 // Power and Icon States
 
 /obj/machinery/gravity_generator/main/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	investigate_log("has [stat & NOPOWER ? "lost" : "regained"] power.", INVESTIGATE_GRAVITY)
 	set_power()
 
 /obj/machinery/gravity_generator/main/get_status()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		return "fix[min(broken_state, 3)]"
 	return on || charging_state != POWER_IDLE ? "on" : "off"
 
 /obj/machinery/gravity_generator/main/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/obj/O in parts)
 		O.update_icon()
 
 // Set the charging state based on power/breaker.
 /obj/machinery/gravity_generator/main/proc/set_power()
+	procstart = null
+	src.procstart = null
 	var/new_state = 0
 	if(stat & (NOPOWER|BROKEN) || !breaker)
 		new_state = 0
@@ -294,6 +348,8 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 
 // Set the state of the gravity.
 /obj/machinery/gravity_generator/main/proc/set_state(new_state)
+	procstart = null
+	src.procstart = null
 	charging_state = POWER_IDLE
 	on = new_state
 	use_power = on ? ACTIVE_POWER_USE : IDLE_POWER_USE
@@ -321,6 +377,8 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 // Charge/Discharge and turn on/off gravity when you reach 0/100 percent.
 // Also emit radiation and handle the overlays.
 /obj/machinery/gravity_generator/main/process()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		return
 	if(charging_state != POWER_IDLE)
@@ -363,10 +421,14 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 
 
 /obj/machinery/gravity_generator/main/proc/pulse_radiation()
+	procstart = null
+	src.procstart = null
 	radiation_pulse(src, 200)
 
 // Shake everyone on the z level to let them know that gravity was enagaged/disenagaged.
 /obj/machinery/gravity_generator/main/proc/shake_everyone()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/sound/alert_sound = sound('sound/effects/alert.ogg')
 	for(var/i in GLOB.mob_list)
@@ -379,6 +441,8 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 			M.playsound_local(T, null, 100, 1, 0.5, S = alert_sound)
 
 /obj/machinery/gravity_generator/main/proc/gravity_in_level()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T)
 		return 0
@@ -387,6 +451,8 @@ GLOBAL_LIST_EMPTY(gravity_generators) // We will keep track of this by adding ne
 	return 0
 
 /obj/machinery/gravity_generator/main/proc/update_list()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src.loc)
 	if(T)
 		if(!GLOB.gravity_generators["[T.z]"])

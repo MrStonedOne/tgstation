@@ -9,12 +9,16 @@
 	var/owner
 
 /datum/language_holder/New(owner)
+	procstart = null
+	src.procstart = null
 	src.owner = owner
 
 	languages = typecacheof(languages)
 	shadow_languages = typecacheof(shadow_languages)
 
 /datum/language_holder/Destroy()
+	procstart = null
+	src.procstart = null
 	owner = null
 	QDEL_NULL(language_menu)
 	languages.Cut()
@@ -22,6 +26,8 @@
 	return ..()
 
 /datum/language_holder/proc/copy(newowner)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/copy = new(newowner)
 	copy.languages = src.languages.Copy()
 	// shadow languages are not copied.
@@ -32,9 +38,13 @@
 	return copy
 
 /datum/language_holder/proc/grant_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	languages[dt] = TRUE
 
 /datum/language_holder/proc/grant_all_languages(omnitongue=FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/la in GLOB.all_languages)
 		grant_language(la)
 
@@ -42,18 +52,26 @@
 		src.omnitongue = TRUE
 
 /datum/language_holder/proc/get_random_understood_language()
+	procstart = null
+	src.procstart = null
 	var/list/possible = list()
 	for(var/dt in languages)
 		possible += dt
 	. = safepick(possible)
 
 /datum/language_holder/proc/remove_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	languages -= dt
 
 /datum/language_holder/proc/remove_all_languages()
+	procstart = null
+	src.procstart = null
 	languages.Cut()
 
 /datum/language_holder/proc/has_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(dt, languages))
 		return LANGUAGE_KNOWN
 	else
@@ -65,6 +83,8 @@
 	return FALSE
 
 /datum/language_holder/proc/copy_known_languages_from(thing, replace=FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/language_holder/other
 	if(istype(thing, /datum/language_holder))
 		other = thing
@@ -83,11 +103,15 @@
 
 
 /datum/language_holder/proc/open_language_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!language_menu)
 		language_menu = new(src)
 	language_menu.ui_interact(user)
 
 /datum/language_holder/proc/get_atom()
+	procstart = null
+	src.procstart = null
 	if(ismovableatom(owner))
 		. = owner
 	else if(istype(owner, /datum/mind))
@@ -130,5 +154,7 @@
 	shadow_languages = list(/datum/language/common, /datum/language/machine, /datum/language/draconic)
 
 /datum/language_holder/universal/New()
+	procstart = null
+	src.procstart = null
 	..()
 	grant_all_languages(omnitongue=TRUE)

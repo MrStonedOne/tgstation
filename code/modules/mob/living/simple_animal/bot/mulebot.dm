@@ -49,6 +49,8 @@
 	var/bloodiness = 0
 
 /mob/living/simple_animal/bot/mulebot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires = new /datum/wires/mulebot(src)
 	var/datum/job/cargo_tech/J = new/datum/job/cargo_tech
@@ -62,12 +64,16 @@
 	suffix = null
 
 /mob/living/simple_animal/bot/mulebot/Destroy()
+	procstart = null
+	src.procstart = null
 	unload(0)
 	qdel(wires)
 	wires = null
 	return ..()
 
 /mob/living/simple_animal/bot/mulebot/proc/set_id(new_id)
+	procstart = null
+	src.procstart = null
 	id = new_id
 	if(paicard)
 		bot_name = "\improper MULEbot ([new_id])"
@@ -75,10 +81,14 @@
 		name = "\improper MULEbot ([new_id])"
 
 /mob/living/simple_animal/bot/mulebot/bot_reset()
+	procstart = null
+	src.procstart = null
 	..()
 	reached_target = 0
 
 /mob/living/simple_animal/bot/mulebot/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		..()
 		if(open)
@@ -111,6 +121,8 @@
 	return
 
 /mob/living/simple_animal/bot/mulebot/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged < 1)
 		emagged = TRUE
 	if(!open)
@@ -120,6 +132,8 @@
 	playsound(src, "sparks", 100, 0)
 
 /mob/living/simple_animal/bot/mulebot/update_icon()
+	procstart = null
+	src.procstart = null
 	if(open)
 		icon_state="mulebot-hatch"
 	else
@@ -133,6 +147,8 @@
 	return
 
 /mob/living/simple_animal/bot/mulebot/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	unload(0)
 	switch(severity)
 		if(1)
@@ -145,6 +161,8 @@
 	return
 
 /mob/living/simple_animal/bot/mulebot/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(prob(50) && !isnull(load))
 			unload(0)
@@ -153,6 +171,8 @@
 			wires.cut_random()
 
 /mob/living/simple_animal/bot/mulebot/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(open && !isAI(user))
 		wires.interact(user)
 	else
@@ -168,6 +188,8 @@
 		ui.open()
 
 /mob/living/simple_animal/bot/mulebot/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["on"] = on
 	data["locked"] = locked
@@ -193,6 +215,8 @@
 	return data
 
 /mob/living/simple_animal/bot/mulebot/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..() || (locked && !usr.has_unlimited_silicon_privilege))
 		return
 	switch(action)
@@ -213,6 +237,8 @@
 			. = TRUE
 
 /mob/living/simple_animal/bot/mulebot/bot_control(command, mob/user, pda = 0)
+	procstart = null
+	src.procstart = null
 	if(pda && wires.is_cut(WIRE_RX)) // MULE wireless is controlled by wires.
 		return
 
@@ -255,6 +281,8 @@
 
 // TODO: remove this; PDAs currently depend on it
 /mob/living/simple_animal/bot/mulebot/get_controls(mob/user)
+	procstart = null
+	src.procstart = null
 	var/ai = issilicon(user)
 	var/dat
 	dat += "<h3>Multiple Utility Load Effector Mk. V</h3>"
@@ -305,9 +333,13 @@
 
 // returns true if the bot has power
 /mob/living/simple_animal/bot/mulebot/proc/has_power()
+	procstart = null
+	src.procstart = null
 	return !open && cell && cell.charge > 0 && (!wires.is_cut(WIRE_POWER1) && !wires.is_cut(WIRE_POWER2))
 
 /mob/living/simple_animal/bot/mulebot/proc/buzz(type)
+	procstart = null
+	src.procstart = null
 	switch(type)
 		if(SIGH)
 			audible_message("[src] makes a sighing buzz.", "<span class='italics'>You hear an electronic buzzing sound.</span>")
@@ -324,6 +356,8 @@
 // can load anything if hacked
 /mob/living/simple_animal/bot/mulebot/MouseDrop_T(atom/movable/AM, mob/user)
 
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated() || user.lying)
 		return
 
@@ -334,6 +368,8 @@
 
 // called to load a crate
 /mob/living/simple_animal/bot/mulebot/proc/load(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(load ||  AM.anchored)
 		return
 
@@ -368,6 +404,8 @@
 	update_icon()
 
 /mob/living/simple_animal/bot/mulebot/proc/load_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	can_buckle = TRUE
 	if(buckle_mob(M))
 		passenger = M
@@ -377,11 +415,15 @@
 	return FALSE
 
 /mob/living/simple_animal/bot/mulebot/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.pixel_y = initial(M.pixel_y) + 9
 	if(M.layer < layer)
 		M.layer = layer + 0.01
 
 /mob/living/simple_animal/bot/mulebot/post_unbuckle_mob(mob/living/M)
+		procstart = null
+		src.procstart = null
 		load = null
 		M.layer = initial(M.layer)
 		M.pixel_y = initial(M.pixel_y)
@@ -390,6 +432,8 @@
 // argument is optional direction to unload
 // if zero, unload at bot's location
 /mob/living/simple_animal/bot/mulebot/proc/unload(dirn)
+	procstart = null
+	src.procstart = null
 	if(!load)
 		return
 
@@ -414,6 +458,8 @@
 
 
 /mob/living/simple_animal/bot/mulebot/call_bot()
+	procstart = null
+	src.procstart = null
 	..()
 	var/area/dest_area
 	if(path && path.len)
@@ -424,6 +470,8 @@
 		start()
 
 /mob/living/simple_animal/bot/mulebot/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!has_power())
 		on = FALSE
 		return
@@ -450,6 +498,8 @@
 						process_bot()
 
 /mob/living/simple_animal/bot/mulebot/proc/process_bot()
+	procstart = null
+	src.procstart = null
 	if(!on || client)
 		return
 	update_icon()
@@ -545,17 +595,23 @@
 // calculates a path to the current destination
 // given an optional turf to avoid
 /mob/living/simple_animal/bot/mulebot/calc_path(turf/avoid = null)
+	procstart = null
+	src.procstart = null
 	path = get_path_to(src, target, /turf/proc/Distance_cardinal, 0, 250, id=access_card, exclude=avoid)
 
 // sets the current destination
 // signals all beacons matching the delivery code
 // beacons will return a signal giving their locations
 /mob/living/simple_animal/bot/mulebot/proc/set_destination(new_dest)
+	procstart = null
+	src.procstart = null
 	new_destination = new_dest
 	get_nav()
 
 // starts bot moving to current destination
 /mob/living/simple_animal/bot/mulebot/proc/start()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	if(destination == home_destination)
@@ -568,6 +624,8 @@
 // starts bot moving to home
 // sends a beacon query to find
 /mob/living/simple_animal/bot/mulebot/proc/start_home()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	spawn(0)
@@ -577,6 +635,8 @@
 
 // called when bot reaches current target
 /mob/living/simple_animal/bot/mulebot/proc/at_target()
+	procstart = null
+	src.procstart = null
 	if(!reached_target)
 		radio_channel = "Supply" //Supply channel
 		audible_message("[src] makes a chiming sound!", "<span class='italics'>You hear a chime.</span>")
@@ -623,6 +683,8 @@
 
 // called when bot bumps into anything
 /mob/living/simple_animal/bot/mulebot/Collide(atom/obs)
+	procstart = null
+	src.procstart = null
 	if(wires.is_cut(WIRE_AVOIDANCE))	// usually just bumps, but if avoidance disabled knock over mobs
 		if(isliving(obs))
 			var/mob/living/L = obs
@@ -638,6 +700,8 @@
 // called from mob/living/carbon/human/Crossed()
 // when mulebot is in the same loc
 /mob/living/simple_animal/bot/mulebot/proc/RunOver(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	add_logs(src, H, "run over", null, "(DAMTYPE: [uppertext(BRUTE)])")
 	H.visible_message("<span class='danger'>[src] drives over [H]!</span>", \
 					"<span class='userdanger'>[src] drives over you!</span>")
@@ -661,6 +725,8 @@
 
 // player on mulebot attempted to move
 /mob/living/simple_animal/bot/mulebot/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated())
 		return
 	if(load == user)
@@ -669,6 +735,8 @@
 
 //Update navigation data. Called when commanded to deliver, return home, or a route update is needed...
 /mob/living/simple_animal/bot/mulebot/proc/get_nav()
+	procstart = null
+	src.procstart = null
 	if(!on || wires.is_cut(WIRE_BEACON))
 		return
 
@@ -687,6 +755,8 @@
 				calc_path()
 
 /mob/living/simple_animal/bot/mulebot/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(cell)
 		cell.emp_act(severity)
 	if(load)
@@ -695,6 +765,8 @@
 
 
 /mob/living/simple_animal/bot/mulebot/explode()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='boldannounce'>[src] blows apart!</span>")
 	var/atom/Tsec = drop_location()
 
@@ -719,17 +791,23 @@
 		return null
 
 /mob/living/simple_animal/bot/mulebot/resist()
+	procstart = null
+	src.procstart = null
 	..()
 	if(load)
 		unload()
 
 /mob/living/simple_animal/bot/mulebot/UnarmedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isturf(A) && isturf(loc) && loc.Adjacent(A) && load)
 		unload(get_dir(loc, A))
 	else
 		..()
 
 /mob/living/simple_animal/bot/mulebot/insertpai(mob/user, obj/item/device/paicard/card)
+	procstart = null
+	src.procstart = null
 	if(..())
 		visible_message("[src] safeties are locked on.")
 

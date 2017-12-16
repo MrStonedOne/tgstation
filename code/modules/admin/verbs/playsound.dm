@@ -46,6 +46,8 @@
 
 
 /client/proc/play_local_sound(S as sound)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Play Local Sound"
 	if(!check_rights(R_SOUNDS))
@@ -57,6 +59,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Play Local Sound") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/play_web_sound()
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Play Internet Sound"
 	if(!check_rights(R_SOUNDS))
@@ -115,6 +119,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Play Internet Sound")
 
 /client/proc/set_round_end_sound(S as sound)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Set Round End Sound"
 	if(!check_rights(R_SOUNDS))
@@ -127,6 +133,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Set Round End Sound") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/stop_sounds()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Stop All Playing Sounds"
 	if(!src.holder)

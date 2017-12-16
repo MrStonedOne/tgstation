@@ -11,6 +11,8 @@
 
 
 /datum/round_event/wizard/darkness/start()
+	procstart = null
+	src.procstart = null
 	if(!started)
 		started = TRUE
 		SSweather.run_weather("advanced darkness", ZLEVEL_STATION_PRIMARY)

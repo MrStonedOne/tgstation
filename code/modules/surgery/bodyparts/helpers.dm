@@ -1,8 +1,12 @@
 
 /mob/living/proc/get_bodypart(zone)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/get_bodypart(zone)
+	procstart = null
+	src.procstart = null
 	if(!zone)
 		zone = "chest"
 	for(var/X in bodyparts)
@@ -11,6 +15,8 @@
 			return L
 
 /mob/living/carbon/has_hand_for_held_index(i)
+	procstart = null
+	src.procstart = null
 	if(i)
 		var/obj/item/bodypart/L = hand_bodyparts[i]
 		if(L)
@@ -21,37 +27,53 @@
 
 
 /mob/proc/has_left_hand()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/carbon/has_left_hand()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/bodypart/L in hand_bodyparts)
 		if(L.held_index % 2)
 			return TRUE
 	return FALSE
 
 /mob/living/carbon/alien/larva/has_left_hand()
+	procstart = null
+	src.procstart = null
 	return 1
 
 
 /mob/proc/has_right_hand()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/carbon/has_right_hand()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/bodypart/L in hand_bodyparts)
 		if(!(L.held_index % 2))
 			return TRUE
 	return FALSE
 
 /mob/living/carbon/alien/larva/has_right_hand()
+	procstart = null
+	src.procstart = null
 	return 1
 
 
 
 //Limb numbers
 /mob/proc/get_num_arms()
+	procstart = null
+	src.procstart = null
 	return 2
 
 /mob/living/carbon/get_num_arms()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/affecting = X
@@ -63,16 +85,24 @@
 
 //sometimes we want to ignore that we don't have the required amount of arms.
 /mob/proc/get_arm_ignore()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/carbon/alien/larva/get_arm_ignore()
+	procstart = null
+	src.procstart = null
 	return 1 //so we can still handcuff larvas.
 
 
 /mob/proc/get_num_legs()
+	procstart = null
+	src.procstart = null
 	return 2
 
 /mob/living/carbon/get_num_legs()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/affecting = X
@@ -83,20 +113,30 @@
 
 //sometimes we want to ignore that we don't have the required amount of legs.
 /mob/proc/get_leg_ignore()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/carbon/alien/larva/get_leg_ignore()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/carbon/human/get_leg_ignore()
+	procstart = null
+	src.procstart = null
 	if((movement_type & FLYING) || floating)
 		return TRUE
 	return FALSE
 
 /mob/living/proc/get_missing_limbs()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /mob/living/carbon/get_missing_limbs()
+	procstart = null
+	src.procstart = null
 	var/list/full = list("head", "chest", "r_arm", "l_arm", "r_leg", "l_leg")
 	for(var/zone in full)
 		if(get_bodypart(zone))
@@ -104,6 +144,8 @@
 	return full
 
 /mob/living/carbon/alien/larva/get_missing_limbs()
+	procstart = null
+	src.procstart = null
 	var/list/full = list("head", "chest")
 	for(var/zone in full)
 		if(get_bodypart(zone))
@@ -112,6 +154,8 @@
 
 //Remove all embedded objects from all limbs on the carbon mob
 /mob/living/carbon/proc/remove_all_embedded_objects()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 
 	for(var/X in bodyparts)
@@ -123,6 +167,8 @@
 	clear_alert("embeddedobject")
 
 /mob/living/carbon/proc/has_embedded_objects()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/L = X
@@ -132,6 +178,8 @@
 
 //Helper for quickly creating a new limb - used by augment code in species.dm spec_attacked_by
 /mob/living/carbon/proc/newBodyPart(zone, robotic, fixed_icon)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/L
 	switch(zone)
 		if("l_arm")
@@ -153,6 +201,8 @@
 	. = L
 
 /mob/living/carbon/monkey/newBodyPart(zone, robotic, fixed_icon)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/L
 	switch(zone)
 		if("l_arm")
@@ -174,6 +224,8 @@
 	. = L
 
 /mob/living/carbon/alien/larva/newBodyPart(zone, robotic, fixed_icon)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/L
 	switch(zone)
 		if("head")
@@ -187,6 +239,8 @@
 	. = L
 
 /mob/living/carbon/alien/humanoid/newBodyPart(zone, robotic, fixed_icon)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/L
 	switch(zone)
 		if("l_arm")
@@ -209,6 +263,8 @@
 
 
 /proc/skintone2hex(skin_tone)
+	procstart = null
+	src.procstart = null
 	. = 0
 	switch(skin_tone)
 		if("caucasian1")
@@ -239,6 +295,8 @@
 			. = "ffc905"
 
 /mob/living/carbon/proc/Digitigrade_Leg_Swap(swap_back)
+	procstart = null
+	src.procstart = null
 	var/body_plan_changed = FALSE
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/O = X

@@ -10,6 +10,8 @@
 #define HOLORECORD_MAX_LENGTH 200
 
 /mob/camera/aiEye/remote/holo/setLoc()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/machinery/holopad/H = origin
 	H.move_hologram(eye_user, loc)
@@ -30,6 +32,8 @@
 
 //creates a holocall made by `caller` from `calling_pad` to `callees`
 /datum/holocall/New(mob/living/caller, obj/machinery/holopad/calling_pad, list/callees)
+	procstart = null
+	src.procstart = null
 	call_start_time = world.time
 	user = caller
 	calling_pad.outgoing_call = src
@@ -52,6 +56,8 @@
 
 //cleans up ALL references :)
 /datum/holocall/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(hangup)
 
 	var/user_good = !QDELETED(user)
@@ -91,6 +97,8 @@
 
 //Gracefully disconnects a holopad `H` from a call. Pads not in the call are ignored. Notifies participants of the disconnection
 /datum/holocall/proc/Disconnect(obj/machinery/holopad/H)
+	procstart = null
+	src.procstart = null
 	testing("Holocall disconnect")
 	if(H == connected_holopad)
 		calling_holopad.say("[usr] disconnected.")
@@ -101,6 +109,8 @@
 
 //Forcefully disconnects a holopad `H` from a call. Pads not in the call are ignored.
 /datum/holocall/proc/ConnectionFailure(obj/machinery/holopad/H, graceful = FALSE)
+	procstart = null
+	src.procstart = null
 	testing("Holocall connection failure: graceful [graceful]")
 	if(H == connected_holopad || H == calling_holopad)
 		if(!graceful && H != calling_holopad)
@@ -118,6 +128,8 @@
 
 //Answers a call made to a holopad `H` which cannot be the calling holopad. Pads not in the call are ignored
 /datum/holocall/proc/Answer(obj/machinery/holopad/H)
+	procstart = null
+	src.procstart = null
 	testing("Holocall answer")
 	if(H == calling_holopad)
 		CRASH("How cute, a holopad tried to answer itself.")
@@ -160,6 +172,8 @@
 
 //Checks the validity of a holocall and qdels itself if it's not. Returns TRUE if valid, FALSE otherwise
 /datum/holocall/proc/Check()
+	procstart = null
+	src.procstart = null
 	for(var/I in dialed_holopads)
 		var/obj/machinery/holopad/H = I
 		if(!H.is_operational())
@@ -188,10 +202,14 @@
 	var/datum/holocall/hcall
 
 /datum/action/innate/end_holocall/New(Target, datum/holocall/HC)
+	procstart = null
+	src.procstart = null
 	..()
 	hcall = HC
 
 /datum/action/innate/end_holocall/Activate()
+	procstart = null
+	src.procstart = null
 	hcall.Disconnect(hcall.calling_holopad)
 
 
@@ -212,15 +230,21 @@
 	var/preset_record_text
 
 /obj/item/disk/holodisk/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(preset_record_text)
 		build_record()
 
 /obj/item/disk/holodisk/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(record)
 	return ..()
 
 /obj/item/disk/holodisk/proc/build_record()
+	procstart = null
+	src.procstart = null
 	record = new
 	var/list/lines = splittext(preset_record_text,"\n")
 	for(var/line in lines)
@@ -268,6 +292,8 @@
 	var/species_type = /datum/species/human
 
 /datum/preset_holoimage/proc/build_image()
+	procstart = null
+	src.procstart = null
 	if(nonhuman_mobtype)
 		var/mob/living/L = nonhuman_mobtype
 		. = image(initial(L.icon),initial(L.icon_state))

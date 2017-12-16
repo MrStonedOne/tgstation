@@ -33,6 +33,8 @@ effective or pretty fucking useless.
 
 
 /obj/item/device/batterer/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
+	procstart = null
+	src.procstart = null
 	if(!user) 	return
 	if(times_used >= max_uses)
 		to_chat(user, "<span class='danger'>The mind batterer has been burnt out!</span>")
@@ -76,6 +78,8 @@ effective or pretty fucking useless.
 	var/stealth = FALSE
 
 /obj/item/device/healthanalyzer/rad_laser/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!stealth || !irradiate)
 		..()
 	if(!irradiate)
@@ -96,17 +100,25 @@ effective or pretty fucking useless.
 		to_chat(user, "<span class='warning'>The radioactive microlaser is still recharging.</span>")
 
 /obj/item/device/healthanalyzer/rad_laser/proc/handle_cooldown(cooldown)
+	procstart = null
+	src.procstart = null
 	spawn(cooldown)
 		used = 0
 		icon_state = "health"
 
 /obj/item/device/healthanalyzer/rad_laser/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/item/device/healthanalyzer/rad_laser/proc/GetCooldown()
+	procstart = null
+	src.procstart = null
 	return round(max(10, (stealth*30 + intensity*5 - wavelength/4)))
 
 /obj/item/device/healthanalyzer/rad_laser/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 
 	var/dat = "Irradiation: <A href='?src=[REF(src)];rad=1'>[irradiate ? "On" : "Off"]</A><br>"
@@ -138,6 +150,8 @@ effective or pretty fucking useless.
 	popup.open()
 
 /obj/item/device/healthanalyzer/rad_laser/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!usr.canUseTopic(src))
 		return 1
 
@@ -184,6 +198,8 @@ effective or pretty fucking useless.
 	actions_types = list(/datum/action/item_action/toggle)
 
 /obj/item/device/shadowcloak/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.get_item_by_slot(slot_belt) == src)
 		if(!on)
 			Activate(usr)
@@ -192,10 +208,14 @@ effective or pretty fucking useless.
 	return
 
 /obj/item/device/shadowcloak/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot == slot_belt)
 		return 1
 
 /obj/item/device/shadowcloak/proc/Activate(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	to_chat(user, "<span class='notice'>You activate [src].</span>")
@@ -205,6 +225,8 @@ effective or pretty fucking useless.
 	on = TRUE
 
 /obj/item/device/shadowcloak/proc/Deactivate()
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>You deactivate [src].</span>")
 	STOP_PROCESSING(SSobj, src)
 	if(user)
@@ -213,11 +235,15 @@ effective or pretty fucking useless.
 	user = null
 
 /obj/item/device/shadowcloak/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user && user.get_item_by_slot(slot_belt) != src)
 		Deactivate()
 
 /obj/item/device/shadowcloak/process()
+	procstart = null
+	src.procstart = null
 	if(user.get_item_by_slot(slot_belt) != src)
 		Deactivate()
 		return
@@ -239,6 +265,8 @@ effective or pretty fucking useless.
 	var/range = 12
 
 /obj/item/device/jammer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user,"<span class='notice'>You [active ? "deactivate" : "activate"] [src].</span>")
 	active = !active
 	if(active)

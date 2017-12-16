@@ -9,6 +9,8 @@
 	var/listindex
 
 /datum/progressbar/New(mob/User, goal_number, atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!istype(target))
 		EXCEPTION("Invalid target given")
@@ -29,6 +31,8 @@
 	bar.pixel_y = 32 + (PROGRESSBAR_HEIGHT * (listindex - 1))
 
 /datum/progressbar/proc/update(progress)
+	procstart = null
+	src.procstart = null
 	if (!user || !user.client)
 		shown = 0
 		return
@@ -45,10 +49,14 @@
 		shown = 1
 
 /datum/progressbar/proc/shiftDown()
+	procstart = null
+	src.procstart = null
 	--listindex
 	bar.pixel_y -= PROGRESSBAR_HEIGHT
 
 /datum/progressbar/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/I in user.progressbars[bar.loc])
 		var/datum/progressbar/P = I
 		if(P != src && P.listindex > listindex)

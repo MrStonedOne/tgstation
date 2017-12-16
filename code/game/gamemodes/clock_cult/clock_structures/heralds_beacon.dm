@@ -16,15 +16,21 @@
 	var/available = FALSE //If the beacon can be used
 
 /obj/structure/destructible/clockwork/heralds_beacon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	voters = list()
 	START_PROCESSING(SSprocessing, src)
 
 /obj/structure/destructible/clockwork/heralds_beacon/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	. = ..()
 
 /obj/structure/destructible/clockwork/heralds_beacon/process()
+	procstart = null
+	src.procstart = null
 	if(!available)
 		if(istype(SSticker.mode, /datum/game_mode/clockwork_cult))
 			available = TRUE
@@ -47,6 +53,8 @@
 		STOP_PROCESSING(SSprocessing, src)
 
 /obj/structure/destructible/clockwork/heralds_beacon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isobserver(user) || is_servant_of_ratvar(user))
 		if(!available)
@@ -59,6 +67,8 @@
 			to_chat(user, "<span class='big brass'>There are <b>[voters.len]/[votes_needed]</b> votes to activate the beacon!</span>")
 
 /obj/structure/destructible/clockwork/heralds_beacon/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		to_chat(user, "<span class='notice'>You can tell how powerful [src] is; you know better than to touch it.</span>")
 		return
@@ -88,6 +98,8 @@
 		herald_the_justiciar()
 
 /obj/structure/destructible/clockwork/heralds_beacon/proc/herald_the_justiciar()
+	procstart = null
+	src.procstart = null
 	priority_announce("A powerful group of fanatical zealots following the cause of Ratvar have brazenly sacrificed stealth for power, and dare anyone \
 	to try and stop them.", title = "The Justiciar Comes", sound = 'sound/magic/clockwork/ark_activation.ogg')
 	GLOB.ratvar_approaches = TRUE

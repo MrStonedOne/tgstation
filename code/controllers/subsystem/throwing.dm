@@ -2,6 +2,8 @@
 #define MAX_TICKS_TO_MAKE_UP 3 //how many missed ticks will we attempt to make up for this run.
 
 SUBSYSTEM_DEF(throwing)
+	procstart = null
+	src.procstart = null
 	name = "Throwing"
 	priority = FIRE_PRIORITY_THROWING
 	wait = 1
@@ -12,10 +14,14 @@ SUBSYSTEM_DEF(throwing)
 	var/list/processing = list()
 
 /datum/controller/subsystem/throwing/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("P:[processing.len]")
 
 
 /datum/controller/subsystem/throwing/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = processing.Copy()
 
@@ -62,6 +68,8 @@ SUBSYSTEM_DEF(throwing)
 	var/last_move = 0
 
 /datum/thrownthing/proc/tick()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = thrownthing
 	if (!isturf(AM.loc) || !AM.throwing)
 		finalize()
@@ -113,6 +121,8 @@ SUBSYSTEM_DEF(throwing)
 			return
 
 /datum/thrownthing/proc/finalize(hit = FALSE, target=null)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	SSthrowing.processing -= thrownthing
 	//done throwing, either because it hit something or it finished moving
@@ -137,9 +147,13 @@ SUBSYSTEM_DEF(throwing)
 		callback.Invoke()
 
 /datum/thrownthing/proc/hit_atom(atom/A)
+	procstart = null
+	src.procstart = null
 	finalize(hit=TRUE, target=A)
 
 /datum/thrownthing/proc/hitcheck()
+	procstart = null
+	src.procstart = null
 	for (var/thing in get_turf(thrownthing))
 		var/atom/movable/AM = thing
 		if (AM == thrownthing)

@@ -17,6 +17,8 @@
 
 /mob/camera/aiEye/proc/setLoc(T)
 
+	procstart = null
+	src.procstart = null
 	if(ai)
 		if(!isturf(ai.loc))
 			return
@@ -36,23 +38,33 @@
 			H.move_hologram(ai, T)
 
 /mob/camera/aiEye/Move()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/camera/aiEye/proc/GetViewerClient()
+	procstart = null
+	src.procstart = null
 	if(ai)
 		return ai.client
 	return null
 
 /mob/camera/aiEye/proc/RemoveImages()
+	procstart = null
+	src.procstart = null
 	if(use_static)
 		for(var/datum/camerachunk/chunk in visibleCameraChunks)
 			chunk.remove(src)
 
 /mob/camera/aiEye/Destroy()
+	procstart = null
+	src.procstart = null
 	ai = null
 	return ..()
 
 /atom/proc/move_camera_by_click()
+	procstart = null
+	src.procstart = null
 	if(isAI(usr))
 		var/mob/living/silicon/ai/AI = usr
 		if(AI.eyeobj && AI.client.eye == AI.eyeobj)
@@ -65,6 +77,8 @@
 
 /client/proc/AIMove(n, direct, mob/living/silicon/ai/user)
 
+	procstart = null
+	src.procstart = null
 	var/initial = initial(user.sprint)
 	var/max_sprint = 50
 
@@ -93,6 +107,8 @@
 // Return to the Core.
 /mob/living/silicon/ai/proc/view_core()
 
+	procstart = null
+	src.procstart = null
 	current = null
 	cameraFollow = null
 	unset_machine()
@@ -106,6 +122,8 @@
 	eyeobj.setLoc(loc)
 
 /mob/living/silicon/ai/verb/toggle_acceleration()
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "Toggle Camera Acceleration"
 
@@ -115,5 +133,7 @@
 	to_chat(usr, "Camera acceleration has been toggled [acceleration ? "on" : "off"].")
 
 /mob/camera/aiEye/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(relay_speech && speaker && ai && !radio_freq && speaker != ai && near_camera(speaker))
 		ai.relay_speech(message, speaker, message_language, raw_message, radio_freq, spans, message_mode)

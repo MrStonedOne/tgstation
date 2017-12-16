@@ -35,6 +35,8 @@ Bonus
 					  <b>Stealth 5:</b> The mutations persist even if the virus is cured."
 
 /datum/symptom/genetic_mutation/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/carbon/C = A.affected_mob
@@ -49,6 +51,8 @@ Bonus
 
 // Archive their DNA before they were infected.
 /datum/symptom/genetic_mutation/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 5) //don't restore dna after curing
@@ -67,6 +71,8 @@ Bonus
 
 // Give them back their old DNA when cured.
 /datum/symptom/genetic_mutation/End(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(!no_reset)

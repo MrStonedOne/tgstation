@@ -31,12 +31,18 @@
 	var/busy = FALSE
 
 /obj/machinery/photocopier/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/photocopier/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/photocopier/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 
 	var/dat = "Photocopier<BR><BR>"
@@ -60,6 +66,8 @@
 	onclose(user, "copier")
 
 /obj/machinery/photocopier/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(href_list["copy"])
@@ -240,12 +248,16 @@
 		updateUsrDialog()
 
 /obj/machinery/photocopier/proc/do_insertion(obj/item/O, mob/user)
+	procstart = null
+	src.procstart = null
 	O.forceMove(src)
 	to_chat(user, "<span class ='notice'>You insert [O] into [src].</span>")
 	flick("photocopier1", src)
 	updateUsrDialog()
 
 /obj/machinery/photocopier/proc/remove_photocopy(obj/item/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!issilicon(user)) //surprised this check didn't exist before, putting stuff in AI's hand is bad
 		O.forceMove(user.loc)
 		user.put_in_hands(O)
@@ -254,6 +266,8 @@
 	to_chat(user, "<span class='notice'>You take [O] out of [src].</span>")
 
 /obj/machinery/photocopier/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/paper))
 		if(copier_empty())
 			if(istype(O, /obj/item/paper/contract/infernal))
@@ -314,12 +328,16 @@
 		return ..()
 
 /obj/machinery/photocopier/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(toner > 0)
 			new /obj/effect/decal/cleanable/oil(get_turf(src))
 			toner = 0
 
 /obj/machinery/photocopier/MouseDrop_T(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	check_ass() //Just to make sure that you can re-drag somebody onto it after they moved off.
 	if (!istype(target) || target.anchored || target.buckled || !Adjacent(user) || !Adjacent(target) || !user.canUseTopic(src, 1) || target == ass || copier_blocked())
 		return
@@ -368,6 +386,8 @@
 		return 1
 
 /obj/machinery/photocopier/proc/copier_blocked()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(loc.density)
@@ -380,6 +400,8 @@
 	return 0
 
 /obj/machinery/photocopier/proc/copier_empty()
+	procstart = null
+	src.procstart = null
 	if(copy || photocopy || check_ass())
 		return 0
 	else

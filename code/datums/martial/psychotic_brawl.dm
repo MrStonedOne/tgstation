@@ -2,15 +2,23 @@
 	name = "Psychotic Brawling"
 
 /datum/martial_art/psychotic_brawling/disarm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	return psycho_attack(A,D)
 
 /datum/martial_art/psychotic_brawling/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	return psycho_attack(A,D)
 
 /datum/martial_art/psychotic_brawling/harm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	return psycho_attack(A,D)
 
 /datum/martial_art/psychotic_brawling/proc/psycho_attack(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	var/atk_verb
 	switch(rand(1,8))
 		if(1)

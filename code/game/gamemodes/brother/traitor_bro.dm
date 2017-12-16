@@ -21,6 +21,8 @@
 	var/meeting_areas = list("The Bar", "Dorms", "Escape Dock", "Arrivals", "Holodeck", "Primary Tool Storage", "Recreation Area", "Chapel", "Library")
 
 /datum/game_mode/traitor/bros/pre_setup()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		restricted_jobs += protected_jobs
 	if(CONFIG_GET(flag/protect_assistant_from_antagonist))
@@ -49,6 +51,8 @@
 	return ..()
 
 /datum/game_mode/traitor/bros/post_setup()
+	procstart = null
+	src.procstart = null
 	for(var/datum/objective_team/brother_team/team in pre_brother_teams)
 		team.meeting_area = pick(meeting_areas)
 		meeting_areas -= team.meeting_area
@@ -60,14 +64,20 @@
 	return ..()
 
 /datum/game_mode/traitor/bros/generate_report()
+	procstart = null
+	src.procstart = null
 	return "It's Syndicate recruiting season. Be alert for potential Syndicate infiltrators, but also watch out for disgruntled employees trying to defect. Unlike Nanotrasen, the Syndicate prides itself in teamwork and will only recruit pairs that share a brotherly trust."
 
 /datum/game_mode/proc/update_brother_icons_added(datum/mind/brother_mind)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/brotherhud = GLOB.huds[ANTAG_HUD_BROTHER]
 	brotherhud.join_hud(brother_mind.current)
 	set_antag_hud(brother_mind.current, "brother")
 
 /datum/game_mode/proc/update_brother_icons_removed(datum/mind/brother_mind)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/brotherhud = GLOB.huds[ANTAG_HUD_BROTHER]
 	brotherhud.leave_hud(brother_mind.current)
 	set_antag_hud(brother_mind.current, null)

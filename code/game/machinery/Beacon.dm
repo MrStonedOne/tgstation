@@ -12,6 +12,8 @@
 	var/obj/item/device/radio/beacon/Beacon
 
 /obj/machinery/bluespace_beacon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = loc
 	Beacon = new(T)
@@ -20,16 +22,22 @@
 	hide(T.intact)
 
 /obj/machinery/bluespace_beacon/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(Beacon)
 	return ..()
 
 // update the invisibility and icon
 /obj/machinery/bluespace_beacon/hide(intact)
+	procstart = null
+	src.procstart = null
 	invisibility = intact ? INVISIBILITY_MAXIMUM : 0
 	updateicon()
 
 // update the icon_state
 /obj/machinery/bluespace_beacon/proc/updateicon()
+	procstart = null
+	src.procstart = null
 	var/state="floor_beacon"
 
 	if(invisibility)
@@ -39,6 +47,8 @@
 		icon_state = "[state]"
 
 /obj/machinery/bluespace_beacon/process()
+	procstart = null
+	src.procstart = null
 	if(!Beacon)
 		var/turf/T = loc
 		Beacon = new(T)

@@ -6,6 +6,8 @@
 	var/datum/parent
 
 /datum/component/New(datum/P, ...)
+	procstart = null
+	src.procstart = null
 	if(type == /datum/component)
 		qdel(src)
 		CRASH("[type] instantiated!")
@@ -28,6 +30,8 @@
 	_CheckDupesAndJoinParent(P)
 
 /datum/component/proc/_CheckDupesAndJoinParent()
+	procstart = null
+	src.procstart = null
 	var/datum/P = parent
 	var/dm = dupe_mode
 
@@ -86,9 +90,13 @@
 			dc[I] = src
 
 /datum/component/proc/Initialize(...)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/component/Destroy(force=FALSE, silent=FALSE)
+	procstart = null
+	src.procstart = null
 	enabled = FALSE
 	var/datum/P = parent
 	if(!force)
@@ -100,6 +108,8 @@
 	return ..()
 
 /datum/component/proc/_RemoveFromParent()
+	procstart = null
+	src.procstart = null
 	var/datum/P = parent
 	var/list/dc = P.datum_components
 	for(var/I in _GetInverseTypeList())
@@ -116,6 +126,8 @@
 		P.datum_components = null
 
 /datum/component/proc/RegisterSignal(sig_type_or_types, proc_or_callback, override = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	var/list/procs = signal_procs
@@ -137,12 +149,18 @@
 	enabled = TRUE
 
 /datum/component/proc/InheritComponent(datum/component/C, i_am_original)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/component/proc/OnTransfer(datum/new_parent)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/component/proc/_GetInverseTypeList(our_type = type)
+	procstart = null
+	src.procstart = null
 	#if DM_VERSION >= 513
 	#warning 512 is definitely stable now, remove the old code
 	#endif
@@ -160,6 +178,8 @@
 		. += current_type
 
 /datum/proc/SendSignal(sigtype, ...)
+	procstart = null
+	src.procstart = null
 	var/list/comps = datum_components
 	if(!comps)
 		return NONE
@@ -184,6 +204,8 @@
 		. |= CB.InvokeAsync(arglist(arguments))
 
 /datum/proc/GetComponent(c_type)
+	procstart = null
+	src.procstart = null
 	var/list/dc = datum_components
 	if(!dc)
 		return null
@@ -192,6 +214,8 @@
 		return .[1]
 
 /datum/proc/GetExactComponent(c_type)
+	procstart = null
+	src.procstart = null
 	var/list/dc = datum_components
 	if(!dc)
 		return null
@@ -204,6 +228,8 @@
 	return null
 
 /datum/proc/GetComponents(c_type)
+	procstart = null
+	src.procstart = null
 	var/list/dc = datum_components
 	if(!dc)
 		return null
@@ -212,17 +238,23 @@
 		return list(.)
 
 /datum/proc/AddComponent(new_type, ...)
+	procstart = null
+	src.procstart = null
 	var/nt = new_type
 	args[1] = src
 	var/datum/component/C = new nt(arglist(args))
 	return QDELING(C) ? GetExactComponent(new_type) : C
 
 /datum/proc/LoadComponent(component_type, ...)
+	procstart = null
+	src.procstart = null
 	. = GetComponent(component_type)
 	if(!.)
 		return AddComponent(arglist(args))
 
 /datum/proc/TakeComponent(datum/component/C)
+	procstart = null
+	src.procstart = null
 	if(!C)
 		return
 	var/datum/helicopter = C.parent
@@ -238,6 +270,8 @@
 	C._CheckDupesAndJoinParent()
 
 /datum/proc/TransferComponents(datum/target)
+	procstart = null
+	src.procstart = null
 	var/list/dc = datum_components
 	if(!dc)
 		return
@@ -249,4 +283,6 @@
 		target.TakeComponent(comps)
 
 /datum/component/ui_host()
+	procstart = null
+	src.procstart = null
 	return parent

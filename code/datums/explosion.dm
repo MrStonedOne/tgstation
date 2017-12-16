@@ -7,6 +7,8 @@ GLOBAL_LIST_EMPTY(explosions)
 //If I see any GC errors for it I will find you
 //and I will gib you
 /proc/explosion(atom/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog = TRUE, ignorecap = FALSE, flame_range = 0 , silent = FALSE, smoke = FALSE)
+	procstart = null
+	src.procstart = null
 	return new /datum/explosion(epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog, ignorecap, flame_range, silent, smoke)
 
 //This datum creates 3 async tasks
@@ -35,6 +37,8 @@ GLOBAL_LIST_EMPTY(explosions)
 	}
 
 /datum/explosion/New(atom/epicenter, devastation_range, heavy_impact_range, light_impact_range, flash_range, adminlog, ignorecap, flame_range, silent, smoke)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	var/id = ++id_counter
@@ -286,12 +290,16 @@ GLOBAL_LIST_EMPTY(explosions)
 
 //asyncly populate the affected_turfs list
 /datum/explosion/proc/GatherSpiralTurfs(range, turf/epicenter)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	. = list()
 	spiral_range_turfs(range, epicenter, outlist = ., tick_checked = TRUE)
 	++stopped
 
 /datum/explosion/proc/CaculateExplosionBlock(list/affected_turfs)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	. = list()
@@ -315,6 +323,8 @@ GLOBAL_LIST_EMPTY(explosions)
 		stoplag()
 
 /datum/explosion/Destroy()
+	procstart = null
+	src.procstart = null
 	running = FALSE
 	if(stopped < 2)	//wait for main thread and spiral_range thread
 		return QDEL_HINT_IWILLGC
@@ -322,6 +332,8 @@ GLOBAL_LIST_EMPTY(explosions)
 	return ..()
 
 /client/proc/check_bomb_impacts()
+	procstart = null
+	src.procstart = null
 	set name = "Check Bomb Impact"
 	set category = "Debug"
 
@@ -389,12 +401,16 @@ GLOBAL_LIST_EMPTY(explosions)
 	addtimer(CALLBACK(GLOBAL_PROC, .proc/wipe_color_and_text, wipe_colours), 100)
 
 /proc/wipe_color_and_text(list/atom/wiping)
+	procstart = null
+	src.procstart = null
 	for(var/i in wiping)
 		var/atom/A = i
 		A.color = null
 		A.maptext = ""
 
 /proc/dyn_explosion(turf/epicenter, power, flash_range, adminlog = 1, ignorecap = 1, flame_range = 0 ,silent = 0, smoke = 1)
+	procstart = null
+	src.procstart = null
 	if(!power)
 		return
 	var/range = 0

@@ -5,6 +5,8 @@
 	container_type = OPENCONTAINER_1
 
 /obj/item/implant/chem/get_data()
+	procstart = null
+	src.procstart = null
 	var/dat = {"<b>Implant Specifications:</b><BR>
 				<b>Name:</b> Robust Corp MJ-420 Prisoner Management Implant<BR>
 				<b>Life:</b> Deactivates upon death but remains within the body.<BR>
@@ -21,19 +23,27 @@
 	return dat
 
 /obj/item/implant/chem/New()
+	procstart = null
+	src.procstart = null
 	..()
 	create_reagents(50)
 	GLOB.tracked_chem_implants += src
 
 /obj/item/implant/chem/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.tracked_chem_implants -= src
 
 /obj/item/implant/chem/trigger(emote, mob/source)
+	procstart = null
+	src.procstart = null
 	if(emote == "deathgasp")
 		activate(reagents.total_volume)
 
 /obj/item/implant/chem/activate(cause)
+	procstart = null
+	src.procstart = null
 	if(!cause || !imp_in)
 		return 0
 	var/mob/living/carbon/R = imp_in
@@ -55,6 +65,8 @@
 	imp_type = /obj/item/implant/chem
 
 /obj/item/implantcase/chem/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/reagent_containers/syringe) && imp)
 		W.afterattack(imp, user, TRUE, params)
 		return TRUE

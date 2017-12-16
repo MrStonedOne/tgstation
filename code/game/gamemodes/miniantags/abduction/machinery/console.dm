@@ -26,6 +26,8 @@
 	var/list/datum/icon_snapshot/disguises = list()
 
 /obj/machinery/abductor/console/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!isabductor(user))
@@ -82,6 +84,8 @@
 	popup.open()
 
 /obj/machinery/abductor/console/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -112,24 +116,34 @@
 	updateUsrDialog()
 
 /obj/machinery/abductor/console/proc/TeleporterRetrieve()
+	procstart = null
+	src.procstart = null
 	if(pad && gizmo && gizmo.marked)
 		pad.Retrieve(gizmo.marked)
 
 /obj/machinery/abductor/console/proc/TeleporterSend()
+	procstart = null
+	src.procstart = null
 	if(pad)
 		pad.Send()
 
 /obj/machinery/abductor/console/proc/FlipVest()
+	procstart = null
+	src.procstart = null
 	if(vest)
 		vest.flip_mode()
 
 /obj/machinery/abductor/console/proc/SelectDisguise(remote = 0)
+	procstart = null
+	src.procstart = null
 	var/entry_name = input( "Choose Disguise", "Disguise") as null|anything in disguises
 	var/datum/icon_snapshot/chosen = disguises[entry_name]
 	if(chosen && vest && (remote || in_range(usr,src)))
 		vest.SetDisguise(chosen)
 
 /obj/machinery/abductor/console/proc/SetDroppoint(turf/open/location,user)
+	procstart = null
+	src.procstart = null
 	if(!istype(location))
 		to_chat(user, "<span class='warning'>That place is not safe for the specimen.</span>")
 		return
@@ -140,10 +154,14 @@
 
 
 /obj/machinery/abductor/console/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/abductor/console/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(!team_number)
 		return
 
@@ -163,6 +181,8 @@
 			c.console = src
 
 /obj/machinery/abductor/console/proc/AddSnapshot(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	var/datum/icon_snapshot/entry = new
 	entry.name = target.name
 	entry.icon = target.icon
@@ -175,6 +195,8 @@
 	disguises[entry.name] = entry
 
 /obj/machinery/abductor/console/proc/AddGizmo(obj/item/device/abductor/gizmo/G)
+	procstart = null
+	src.procstart = null
 	if(G == gizmo && G.console == src)
 		return FALSE
 
@@ -186,6 +208,8 @@
 	return TRUE
 
 /obj/machinery/abductor/console/proc/AddVest(obj/item/clothing/suit/armor/abductor/vest/V)
+	procstart = null
+	src.procstart = null
 	if(vest == V)
 		return FALSE
 
@@ -198,6 +222,8 @@
 	return TRUE
 
 /obj/machinery/abductor/console/attackby(obj/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/device/abductor/gizmo) && AddGizmo(O))
 		to_chat(user, "<span class='notice'>You link the tool to the console.</span>")
 	else if(istype(O, /obj/item/clothing/suit/armor/abductor/vest) && AddVest(O))
@@ -208,6 +234,8 @@
 
 
 /obj/machinery/abductor/console/proc/Dispense(item,cost=1)
+	procstart = null
+	src.procstart = null
 	if(experiment && experiment.credits >= cost)
 		experiment.credits -=cost
 		say("Incoming supply!")

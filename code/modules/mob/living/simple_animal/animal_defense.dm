@@ -1,6 +1,8 @@
 
 
 /mob/living/simple_animal/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(M.a_intent)
 
@@ -23,6 +25,8 @@
 			return 1
 
 /mob/living/simple_animal/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		..(user, 1)
 		playsound(loc, "punch", 25, 1, -1)
@@ -32,6 +36,8 @@
 		return 1
 
 /mob/living/simple_animal/attack_paw(mob/living/carbon/monkey/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful monkey bite.
 		if(stat != DEAD)
 			var/damage = rand(1, 3)
@@ -44,6 +50,8 @@
 
 
 /mob/living/simple_animal/attack_alien(mob/living/carbon/alien/humanoid/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //if harm or disarm intent.
 		if(M.a_intent == INTENT_DISARM)
 			playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
@@ -60,6 +68,8 @@
 		return 1
 
 /mob/living/simple_animal/attack_larva(mob/living/carbon/alien/larva/L)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && stat != DEAD) //successful larva bite
 		var/damage = rand(5, 10)
@@ -68,12 +78,16 @@
 			L.amount_grown = min(L.amount_grown + damage, L.max_grown)
 
 /mob/living/simple_animal/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
 		return attack_threshold_check(damage, M.melee_damage_type)
 
 /mob/living/simple_animal/attack_slime(mob/living/simple_animal/slime/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful slime attack
 		var/damage = rand(15, 25)
 		if(M.is_adult)
@@ -81,11 +95,15 @@
 		return attack_threshold_check(damage)
 
 /mob/living/simple_animal/attack_drone(mob/living/simple_animal/drone/M)
+	procstart = null
+	src.procstart = null
 	if(M.a_intent == INTENT_HARM) //No kicking dogs even as a rogue drone. Use a weapon.
 		return
 	return ..()
 
 /mob/living/simple_animal/proc/attack_threshold_check(damage, damagetype = BRUTE, armorcheck = "melee")
+	procstart = null
+	src.procstart = null
 	var/temp_damage = damage
 	if(!damage_coeff[damagetype])
 		temp_damage = 0
@@ -100,6 +118,8 @@
 		return TRUE
 
 /mob/living/simple_animal/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(!Proj)
 		return
 	apply_damage(Proj.damage, Proj.damage_type)
@@ -107,6 +127,8 @@
 	return 0
 
 /mob/living/simple_animal/ex_act(severity, target, origin)
+	procstart = null
+	src.procstart = null
 	if(origin && istype(origin, /datum/spacevine_mutation) && isvineimmune(src))
 		return
 	..()
@@ -131,10 +153,14 @@
 			adjustBruteLoss(bloss)
 
 /mob/living/simple_animal/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	adjustBruteLoss(20)
 	return
 
 /mob/living/simple_animal/do_attack_animation(atom/A, visual_effect_icon, used_item, no_effect, end_pixel_y)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && !visual_effect_icon && melee_damage_upper)
 		if(melee_damage_upper < 10)
 			visual_effect_icon = ATTACK_EFFECT_PUNCH

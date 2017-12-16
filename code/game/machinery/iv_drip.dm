@@ -15,15 +15,21 @@
 									/obj/item/reagent_containers/glass))
 
 /obj/machinery/iv_drip/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/machinery/iv_drip/Destroy()
+	procstart = null
+	src.procstart = null
 	attached = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/iv_drip/update_icon()
+	procstart = null
+	src.procstart = null
 	if(attached)
 		if(mode)
 			icon_state = "injecting"
@@ -66,6 +72,8 @@
 			add_overlay(filling_overlay)
 
 /obj/machinery/iv_drip/MouseDrop(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(usr) || !usr.canUseTopic(src, BE_CLOSE) || !isliving(target))
 		return
 
@@ -90,6 +98,8 @@
 
 
 /obj/machinery/iv_drip/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(W, drip_containers))
 		if(beaker)
 			to_chat(user, "<span class='warning'>There is already a reagent container loaded!</span>")
@@ -104,11 +114,15 @@
 		return ..()
 
 /obj/machinery/iv_drip/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc)
 	qdel(src)
 
 /obj/machinery/iv_drip/process()
+	procstart = null
+	src.procstart = null
 	if(!attached)
 		return PROCESS_KILL
 
@@ -150,6 +164,8 @@
 			update_icon()
 
 /obj/machinery/iv_drip/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	if(attached)
@@ -163,6 +179,8 @@
 		toggle_mode()
 
 /obj/machinery/iv_drip/verb/eject_beaker(mob/user)
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "Remove IV Container"
 	set src in view(1)
@@ -180,6 +198,8 @@
 		update_icon()
 
 /obj/machinery/iv_drip/verb/toggle_mode()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "Toggle Mode"
 	set src in view(1)
@@ -196,6 +216,8 @@
 	update_icon()
 
 /obj/machinery/iv_drip/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(get_dist(user, src) > 2)
 		return

@@ -82,6 +82,8 @@ Bonus
 					  <b>Stealth 4:</b> Doubles the time before the virus self-cures."
 
 /datum/symptom/viralreverse/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(time_to_cure > 0)
@@ -91,12 +93,16 @@ Bonus
 		Heal(M, A)
 
 /datum/symptom/viralreverse/proc/Heal(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	A.stage -= 1
 	if(A.stage < 2)
 		to_chat(M, "<span class='notice'>You suddenly feel healthy.</span>")
 		A.cure()
 
 /datum/symptom/viralreverse/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	A.stage = 5

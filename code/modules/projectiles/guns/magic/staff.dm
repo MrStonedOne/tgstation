@@ -46,6 +46,8 @@
 	/obj/item/projectile/magic/spellblade, /obj/item/projectile/magic/arcane_barrage)
 
 /obj/item/gun/magic/staff/chaos/process_fire(atom/target as mob|obj|turf, mob/living/user as mob|obj, message = 1, params, zone_override, bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	chambered.projectile_type = pick(allowed_projectile_types)
 	. = ..(target, user, message, params, zone_override, bonus_spread)
 
@@ -87,6 +89,8 @@
 	max_charges = 4
 
 /obj/item/gun/magic/staff/spellblade/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK)
 		final_block_chance = 0
 	return ..()

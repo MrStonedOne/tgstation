@@ -9,9 +9,13 @@
 	var/taste_sensitivity = 15
 
 /obj/item/taster/get_spans()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/item/taster/afterattack(atom/O, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 

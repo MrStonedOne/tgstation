@@ -7,6 +7,8 @@ SUBSYSTEM_DEF(parallax)
 	var/list/currentrun
 
 /datum/controller/subsystem/parallax/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = GLOB.clients.Copy()
 

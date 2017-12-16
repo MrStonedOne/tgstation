@@ -3,6 +3,8 @@
 	var/jones = FALSE
 
 /obj/structure/closet/secure_closet/freezer/ex_act()
+	procstart = null
+	src.procstart = null
 	if(!jones)
 		jones = TRUE
 	else
@@ -13,6 +15,8 @@
 	req_access = list(ACCESS_KITCHEN)
 
 /obj/structure/closet/secure_closet/freezer/kitchen/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i = 0, i < 3, i++)
 		new /obj/item/reagent_containers/food/condiment/flour(src)
@@ -25,6 +29,8 @@
 	req_access = list()
 
 /obj/structure/closet/secure_closet/freezer/kitchen/maintenance/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i = 0, i < 5, i++)
 		new /obj/item/reagent_containers/food/condiment/milk(src)
@@ -40,6 +46,8 @@
 	name = "meat fridge"
 
 /obj/structure/closet/secure_closet/freezer/meat/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i = 0, i < 4, i++)
 		new /obj/item/reagent_containers/food/snacks/meat/slab/monkey(src)
@@ -47,6 +55,8 @@
 	name = "refrigerator"
 
 /obj/structure/closet/secure_closet/freezer/fridge/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i = 0, i < 5, i++)
 		new /obj/item/reagent_containers/food/condiment/milk(src)
@@ -61,6 +71,8 @@
 	req_access = list(ACCESS_HEADS_VAULT)
 
 /obj/structure/closet/secure_closet/freezer/money/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i = 0, i < 3, i++)
 		new /obj/item/stack/spacecash/c1000(src)
@@ -75,5 +87,7 @@
 	req_access = list(ACCESS_THEATRE)
 
 /obj/structure/closet/secure_closet/freezer/pie/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/reagent_containers/food/snacks/pie/cream(src)

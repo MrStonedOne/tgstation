@@ -14,12 +14,16 @@
 	actions_types = list(/datum/action/item_action/clock/toggle_visor)
 
 /obj/item/clothing/glasses/judicial_visor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.all_clockwork_objects += src
 	blaster = new(src)
 	blaster.visor = src
 
 /obj/item/clothing/glasses/judicial_visor/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.all_clockwork_objects -= src
 	if(blaster.ranged_ability_user)
 		blaster.remove_ranged_ability()
@@ -28,11 +32,15 @@
 	return ..()
 
 /obj/item/clothing/glasses/judicial_visor/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot != slot_glasses)
 		return 0
 	return ..()
 
 /obj/item/clothing/glasses/judicial_visor/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot != slot_glasses)
 		update_status(FALSE)
@@ -51,20 +59,28 @@
 	return 1
 
 /obj/item/clothing/glasses/judicial_visor/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/check_on_mob, user), 1) //dropped is called before the item is out of the slot, so we need to check slightly later
 
 /obj/item/clothing/glasses/judicial_visor/proc/check_on_mob(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user && src != user.get_item_by_slot(slot_glasses)) //if we happen to check and we AREN'T in the slot, we need to remove our shit from whoever we got dropped from
 		update_status(FALSE)
 		if(blaster.ranged_ability_user)
 			blaster.remove_ranged_ability()
 
 /obj/item/clothing/glasses/judicial_visor/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user) && src == user.get_item_by_slot(slot_glasses))
 		blaster.toggle(user)
 
 /obj/item/clothing/glasses/judicial_visor/proc/update_status(change_to)
+	procstart = null
+	src.procstart = null
 	if(recharging || !isliving(loc))
 		icon_state = "judicial_visor_0"
 		return 0
@@ -86,6 +102,8 @@
 	return 1
 
 /obj/item/clothing/glasses/judicial_visor/proc/recharge_visor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!src)
 		return 0
 	recharging = FALSE
@@ -104,6 +122,8 @@
 	var/obj/item/clothing/glasses/judicial_visor/visor
 
 /obj/effect/proc_holder/judicial_visor/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	var/message
 	if(active)
 		message = "<span class='brass'>You dispel the power of [visor].</span>"
@@ -113,6 +133,8 @@
 		add_ranged_ability(user, message)
 
 /obj/effect/proc_holder/judicial_visor/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(ranged_ability_user.incapacitated() || !visor || visor != ranged_ability_user.get_item_by_slot(slot_glasses))
@@ -157,18 +179,26 @@
 	var/mob/user
 
 /obj/effect/clockwork/judicial_marker/Initialize(mapload, caster)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(1.4, 2, "#FE9C11")
 	user = caster
 	INVOKE_ASYNC(src, .proc/judicialblast)
 
 /obj/effect/clockwork/judicial_marker/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/judicial_marker/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/judicial_marker/proc/judicialblast()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/magic/magic_missile.ogg', 50, 1, 1, 1)
 	flick("judicial_marker", src)
 	for(var/mob/living/carbon/C in range(1, src))
@@ -213,4 +243,6 @@
 	qdel(src)
 
 /obj/effect/clockwork/judicial_marker/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	return

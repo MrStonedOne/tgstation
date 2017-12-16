@@ -23,6 +23,8 @@
 	circuit = /obj/item/circuitboard/machine/telecomms/hub
 
 /obj/machinery/telecomms/hub/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	if(is_freq_listening(signal))
 		if(istype(machine_from, /obj/machinery/telecomms/receiver))
 			//If the signal is compressed, send it to the bus.

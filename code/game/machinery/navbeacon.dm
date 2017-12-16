@@ -23,6 +23,8 @@
 	req_access = list(ACCESS_ENGINE, ACCESS_ROBOTICS)
 
 /obj/machinery/navbeacon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	set_codes()
@@ -38,12 +40,16 @@
 		GLOB.deliverybeacontags += location
 
 /obj/machinery/navbeacon/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.navbeacons["[z]"] -= src //Remove from beacon list, if in one.
 	GLOB.deliverybeacons -= src
 	return ..()
 
 // set the transponder codes assoc list from codes_txt
 /obj/machinery/navbeacon/proc/set_codes()
+	procstart = null
+	src.procstart = null
 	if(!codes_txt)
 		return
 
@@ -64,11 +70,15 @@
 // called when turf state changes
 // hide the object if turf is intact
 /obj/machinery/navbeacon/hide(intact)
+	procstart = null
+	src.procstart = null
 	invisibility = intact ? INVISIBILITY_MAXIMUM : 0
 	updateicon()
 
 // update the icon_state
 /obj/machinery/navbeacon/proc/updateicon()
+	procstart = null
+	src.procstart = null
 	var/state="navbeacon[open]"
 
 	if(invisibility)
@@ -78,6 +88,8 @@
 		icon_state = "[state]"
 
 /obj/machinery/navbeacon/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	if(T.intact)
 		return		// prevent intraction when T-scanner revealed
@@ -103,15 +115,23 @@
 		return ..()
 
 /obj/machinery/navbeacon/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user, 1)
 
 /obj/machinery/navbeacon/attack_paw()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/navbeacon/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user, 0)
 
 /obj/machinery/navbeacon/interact(mob/user, ai = 0)
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	if(T.intact)
 		return		// prevent intraction when T-scanner revealed
@@ -155,6 +175,8 @@ Transponder Codes:<UL>"}
 	return
 
 /obj/machinery/navbeacon/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(open && !locked)

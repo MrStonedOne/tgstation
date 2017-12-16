@@ -12,16 +12,22 @@
 
 
 /obj/item/device/assembly/timer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/device/assembly/timer/describe()
+	procstart = null
+	src.procstart = null
 	if(timing)
 		return "The timer is counting down from [time]!"
 	return "The timer is set for [time] seconds."
 
 
 /obj/item/device/assembly/timer/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0//Cooldown check
 	timing = !timing
@@ -30,6 +36,8 @@
 
 
 /obj/item/device/assembly/timer/toggle_secure()
+	procstart = null
+	src.procstart = null
 	secured = !secured
 	if(secured)
 		START_PROCESSING(SSobj, src)
@@ -41,6 +49,8 @@
 
 
 /obj/item/device/assembly/timer/proc/timer_end()
+	procstart = null
+	src.procstart = null
 	if(!secured || next_activate > world.time)
 		return FALSE
 	pulse(0)
@@ -51,6 +61,8 @@
 
 
 /obj/item/device/assembly/timer/process()
+	procstart = null
+	src.procstart = null
 	if(timing)
 		time--
 		if(time <= 0)
@@ -60,6 +72,8 @@
 
 
 /obj/item/device/assembly/timer/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	attached_overlays = list()
 	if(timing)
@@ -83,6 +97,8 @@
 
 
 /obj/item/device/assembly/timer/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usr.incapacitated() || !in_range(loc, usr))
 		usr << browse(null, "window=timer")

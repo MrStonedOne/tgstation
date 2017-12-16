@@ -15,6 +15,8 @@
 
 
 /obj/item/device/assembly/flash/update_icon(var/flash = 0)
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	attached_overlays = list()
 	if(crit_fail)
@@ -30,12 +32,16 @@
 		holder.update_icon()
 
 /obj/item/device/assembly/flash/proc/clown_check(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(user.disabilities & CLUMSY && prob(50))
 		flash_carbon(user, user, 15, 0)
 		return 0
 	return 1
 
 /obj/item/device/assembly/flash/activate()
+	procstart = null
+	src.procstart = null
 	if(!try_use_flash())
 		return 0
 	var/turf/T = get_turf(src)
@@ -57,6 +63,8 @@
 
 
 /obj/item/device/assembly/flash/proc/flash_recharge(interval=10)
+	procstart = null
+	src.procstart = null
 	if(prob(times_used * 3)) //The more often it's used in a short span of time the more likely it will burn out
 		burn_out()
 		return 0
@@ -70,6 +78,8 @@
 	return 1
 
 /obj/item/device/assembly/flash/proc/try_use_flash(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(crit_fail)
 		return 0
 	playsound(src.loc, 'sound/weapons/flash.ogg', 100, 1)
@@ -83,6 +93,8 @@
 
 
 /obj/item/device/assembly/flash/proc/flash_carbon(mob/living/carbon/M, mob/user = null, power = 15, targeted = 1)
+	procstart = null
+	src.procstart = null
 	add_logs(user, M, "flashed", src)
 	if(user && targeted)
 		if(M.flash_act(1, 1))
@@ -101,6 +113,8 @@
 			M.confused += power
 
 /obj/item/device/assembly/flash/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!try_use_flash(user))
 		return 0
 	if(iscarbon(M))
@@ -120,6 +134,8 @@
 
 
 /obj/item/device/assembly/flash/attack_self(mob/living/carbon/user, flag = 0, emp = 0)
+	procstart = null
+	src.procstart = null
 	if(holder)
 		return 0
 	if(!try_use_flash(user))
@@ -130,6 +146,8 @@
 
 
 /obj/item/device/assembly/flash/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!try_use_flash())
 		return 0
 	if(iscarbon(loc))
@@ -139,6 +157,8 @@
 
 
 /obj/item/device/assembly/flash/proc/terrible_conversion_proc(mob/living/carbon/human/H, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(H) && ishuman(user) && H.stat != DEAD)
 		if(user.mind)
 			var/datum/antagonist/rev/head/converter = user.mind.has_antag_datum(/datum/antagonist/rev/head)
@@ -159,14 +179,20 @@
 /obj/item/device/assembly/flash/cyborg
 
 /obj/item/device/assembly/flash/cyborg/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/effect/temp_visual/borgflash(get_turf(src))
 
 /obj/item/device/assembly/flash/cyborg/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/effect/temp_visual/borgflash(get_turf(src))
 
 /obj/item/device/assembly/flash/cyborg/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/device/assembly/flash/memorizer
@@ -186,6 +212,8 @@
 	var/obj/item/organ/cyberimp/arm/flash/I = null
 
 /obj/item/device/assembly/flash/armimplant/burn_out()
+	procstart = null
+	src.procstart = null
 	if(I && I.owner)
 		to_chat(I.owner, "<span class='warning'>Your photon projector implant overheats and deactivates!</span>")
 		I.Retract()
@@ -193,6 +221,8 @@
 	addtimer(CALLBACK(src, .proc/cooldown), flashcd * 2)
 
 /obj/item/device/assembly/flash/armimplant/try_use_flash(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(overheat)
 		if(I && I.owner)
 			to_chat(I.owner, "<span class='warning'>Your photon projector is running too hot to be used again so quickly!</span>")
@@ -205,6 +235,8 @@
 
 
 /obj/item/device/assembly/flash/armimplant/proc/cooldown()
+	procstart = null
+	src.procstart = null
 	overheat = FALSE
 
 /obj/item/device/assembly/flash/shield
@@ -227,12 +259,16 @@
 	armor = list(melee = 50, bullet = 50, laser = 50, energy = 0, bomb = 30, bio = 0, rad = 0, fire = 80, acid = 70)
 
 /obj/item/device/assembly/flash/shield/flash_recharge(interval=10)
+	procstart = null
+	src.procstart = null
 	if(times_used >= 4)
 		burn_out()
 		return 0
 	return 1
 
 /obj/item/device/assembly/flash/shield/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/assembly/flash/handheld))
 		var/obj/item/device/assembly/flash/handheld/flash = W
 		if(flash.crit_fail)
@@ -253,6 +289,8 @@
 	..()
 
 /obj/item/device/assembly/flash/shield/update_icon(flash = 0)
+	procstart = null
+	src.procstart = null
 	item_state = "flashshield"
 	item_state = "flashshield"
 
@@ -268,5 +306,7 @@
 		holder.update_icon()
 
 /obj/item/device/assembly/flash/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	activate()
 	return ..()

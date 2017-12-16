@@ -42,6 +42,8 @@
 	var/obj/item/udder/gutlunch/udder = null
 
 /mob/living/simple_animal/hostile/asteroid/gutlunch/Initialize()
+	procstart = null
+	src.procstart = null
 	udder = new()
 	. = ..()
 
@@ -68,16 +70,22 @@
 	return FALSE
 
 /mob/living/simple_animal/hostile/asteroid/gutlunch/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(udder)
 	return ..()
 
 /mob/living/simple_animal/hostile/asteroid/gutlunch/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(udder.reagents.total_volume == udder.reagents.maximum_volume)
 		add_overlay("gl_full")
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/gutlunch/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(stat == CONSCIOUS && istype(O, /obj/item/reagent_containers/glass))
 		udder.milkAnimal(O, user)
 		regenerate_icons()
@@ -85,6 +93,8 @@
 		..()
 
 /mob/living/simple_animal/hostile/asteroid/gutlunch/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(is_type_in_typecache(target,wanted_objects)) //we eats
 		udder.generateMilk()
 		regenerate_icons()
@@ -98,6 +108,8 @@
 	gender = MALE
 
 /mob/living/simple_animal/hostile/asteroid/gutlunch/gubbuck/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_atom_colour(pick("#E39FBB", "#D97D64", "#CF8C4A"), FIXED_COLOUR_PRIORITY)
 	resize = 0.85
@@ -109,11 +121,15 @@
 	gender = FEMALE
 
 /mob/living/simple_animal/hostile/asteroid/gutlunch/guthen/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(udder.reagents.total_volume == udder.reagents.maximum_volume) //Only breed when we're full.
 		make_babies()
 
 /mob/living/simple_animal/hostile/asteroid/gutlunch/guthen/make_babies()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		udder.reagents.clear_reagents()
@@ -124,11 +140,15 @@
 	name = "nutrient sac"
 
 /obj/item/udder/gutlunch/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents = new(50)
 	reagents.my_atom = src
 
 /obj/item/udder/gutlunch/generateMilk()
+	procstart = null
+	src.procstart = null
 	if(prob(60))
 		reagents.add_reagent("cream", rand(2, 5))
 	if(prob(45))

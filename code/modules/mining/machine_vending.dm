@@ -65,15 +65,21 @@
 	var/cost = 0
 
 /datum/data/mining_equipment/New(name, path, cost)
+	procstart = null
+	src.procstart = null
 	src.equipment_name = name
 	src.equipment_path = path
 	src.cost = cost
 
 /obj/machinery/mineral/equipment_vendor/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/mineral/equipment_vendor/update_icon()
+	procstart = null
+	src.procstart = null
 	if(powered())
 		icon_state = initial(icon_state)
 	else
@@ -81,11 +87,15 @@
 	return
 
 /obj/machinery/mineral/equipment_vendor/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/mineral/equipment_vendor/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat +="<div class='statusDisplay'>"
 	if(istype(inserted_id))
@@ -104,6 +114,8 @@
 	return
 
 /obj/machinery/mineral/equipment_vendor/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(href_list["choice"])
@@ -145,6 +157,8 @@
 	return
 
 /obj/machinery/mineral/equipment_vendor/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/mining_voucher))
 		RedeemVoucher(I, user)
 		return
@@ -165,6 +179,8 @@
 	return ..()
 
 /obj/machinery/mineral/equipment_vendor/proc/RedeemVoucher(obj/item/mining_voucher/voucher, mob/redeemer)
+	procstart = null
+	src.procstart = null
 	var/items = list("Survival Capsule and Explorer's Webbing", "Resonator and Advanced Scanner", "Mining Drone", "Extraction and Rescue Kit", "Crusher Kit", "Mining Conscription Kit")
 
 	var/selection = input(redeemer, "Pick your equipment", "Mining Voucher Redemption") as null|anything in items
@@ -195,6 +211,8 @@
 	qdel(voucher)
 
 /obj/machinery/mineral/equipment_vendor/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	do_sparks(5, TRUE, src)
 	if(prob(50 / severity) && severity < 3)
 		qdel(src)
@@ -207,6 +225,8 @@
 	circuit = /obj/item/circuitboard/machine/mining_equipment_vendor/golem
 
 /obj/machinery/mineral/equipment_vendor/golem/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc += "\nIt seems a few selections have been added."
 	prize_list += list(
@@ -241,6 +261,8 @@
 	var/points = 500
 
 /obj/item/card/mining_point_card/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/card/id))
 		if(points)
 			var/obj/item/card/id/C = I
@@ -252,6 +274,8 @@
 	..()
 
 /obj/item/card/mining_point_card/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "There's [points] point\s on the card.")
 
@@ -262,6 +286,8 @@
 	icon_state = "data"
 
 /obj/item/card/mining_access_card/afterattack(atom/movable/AM, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/item/card/id) && proximity)
 		var/obj/item/card/id/I = AM
 		I.access |=	ACCESS_MINING
@@ -277,6 +303,8 @@
 	desc = "A kit containing everything a crewmember needs to support a shaft miner in the field."
 
 /obj/item/storage/backpack/duffelbag/mining_conscript/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/pickaxe/mini(src)
 	new /obj/item/clothing/glasses/meson(src)

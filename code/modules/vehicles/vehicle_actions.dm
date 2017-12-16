@@ -1,8 +1,12 @@
 //VEHICLE DEFAULT HANDLING
 /obj/vehicle/proc/generate_actions()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/vehicle/proc/generate_action_type(actiontype)
+	procstart = null
+	src.procstart = null
 	var/datum/action/vehicle/A = new actiontype
 	if(!istype(A))
 		return
@@ -10,17 +14,23 @@
 	return A
 
 /obj/vehicle/proc/initialize_passenger_action_type(actiontype)
+	procstart = null
+	src.procstart = null
 	autogrant_actions_passenger += actiontype
 	for(var/i in occupants)
 		grant_passenger_actions(i)	//refresh
 
 /obj/vehicle/proc/initialize_controller_action_type(actiontype, control_flag)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(autogrant_actions_controller["[control_flag]"])
 	autogrant_actions_controller["[control_flag]"] += actiontype
 	for(var/i in occupants)
 		grant_controller_actions(i)	//refresh
 
 /obj/vehicle/proc/grant_action_type_to_mob(actiontype, mob/m)
+	procstart = null
+	src.procstart = null
 	if(!occupants[m] || !actiontype)
 		return FALSE
 	LAZYINITLIST(occupant_actions[m])
@@ -32,6 +42,8 @@
 	return TRUE
 
 /obj/vehicle/proc/remove_action_type_from_mob(actiontype, mob/m)
+	procstart = null
+	src.procstart = null
 	if(!occupants[m] || !actiontype)
 		return FALSE
 	LAZYINITLIST(occupant_actions[m])
@@ -42,14 +54,20 @@
 	return TRUE
 
 /obj/vehicle/proc/grant_passenger_actions(mob/M)
+	procstart = null
+	src.procstart = null
 	for(var/v in autogrant_actions_passenger)
 		grant_action_type_to_mob(v, M)
 
 /obj/vehicle/proc/remove_passenger_actions(mob/M)
+	procstart = null
+	src.procstart = null
 	for(var/v in autogrant_actions_passenger)
 		remove_action_type_from_mob(v, M)
 
 /obj/vehicle/proc/grant_controller_actions(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || !occupants[M])
 		return FALSE
 	for(var/i in GLOB.bitflags)
@@ -58,6 +76,8 @@
 	return TRUE
 
 /obj/vehicle/proc/remove_controller_actions(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || !occupants[M])
 		return FALSE
 	for(var/i in GLOB.bitflags)
@@ -65,6 +85,8 @@
 	return TRUE
 
 /obj/vehicle/proc/grant_controller_actions_by_flag(mob/M, flag)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || !autogrant_actions_controller["[flag]"])
 		return FALSE
 	for(var/v in autogrant_actions_controller["[flag]"])
@@ -72,6 +94,8 @@
 	return TRUE
 
 /obj/vehicle/proc/remove_controller_actions_by_flag(mob/M, flag)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || autogrant_actions_controller["[flag]"])
 		return FALSE
 	for(var/v in autogrant_actions_controller["[flag]"])
@@ -79,6 +103,8 @@
 	return TRUE
 
 /obj/vehicle/proc/cleanup_actions_for_mob(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return FALSE
 	LAZYINITLIST(occupant_actions[M])
@@ -105,6 +131,8 @@
 	desc = "Climb out of your vehicle!"
 
 /datum/action/vehicle/sealed/climb_out/Trigger()
+	procstart = null
+	src.procstart = null
 	if(..() && istype(vehicle_entered_target))
 		vehicle_entered_target.mob_try_exit(owner, owner)
 

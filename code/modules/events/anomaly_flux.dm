@@ -11,10 +11,14 @@
 	announceWhen = 3
 
 /datum/round_event/anomaly/anomaly_flux/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Localized hyper-energetic flux wave detected on long range scanners. Expected location: [impact_area.name].", "Anomaly Alert")
 
 
 /datum/round_event/anomaly/anomaly_flux/start()
+	procstart = null
+	src.procstart = null
 	var/turf/T = safepick(get_area_turfs(impact_area))
 	if(T)
 		newAnomaly = new /obj/effect/anomaly/flux(T)

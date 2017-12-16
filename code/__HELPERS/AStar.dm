@@ -38,6 +38,8 @@ Actual Adjacent procs :
 	var/nt		//count the number of Nodes traversed
 
 /PathNode/New(s,p,pg,ph,pnt)
+	procstart = null
+	src.procstart = null
 	source = s
 	prevNode = p
 	g = pg
@@ -46,6 +48,8 @@ Actual Adjacent procs :
 	nt = pnt
 
 /PathNode/proc/calc_f()
+	procstart = null
+	src.procstart = null
 	f = g + h
 
 //////////////////////
@@ -54,14 +58,20 @@ Actual Adjacent procs :
 
 //the weighting function, used in the A* algorithm
 /proc/PathWeightCompare(PathNode/a, PathNode/b)
+	procstart = null
+	src.procstart = null
 	return a.f - b.f
 
 //reversed so that the Heap is a MinHeap rather than a MaxHeap
 /proc/HeapPathWeightCompare(PathNode/a, PathNode/b)
+	procstart = null
+	src.procstart = null
 	return b.f - a.f
 
 //wrapper that returns an empty list if A* failed to find a path
 /proc/get_path_to(caller, end, dist, maxnodes, maxnodedepth = 30, mintargetdist, adjacent = /turf/proc/reachableAdjacentTurfs, id=null, turf/exclude=null, simulated_only = 1)
+	procstart = null
+	src.procstart = null
 	var/list/path = AStar(caller, end, dist, maxnodes, maxnodedepth, mintargetdist, adjacent,id, exclude, simulated_only)
 	if(!path)
 		path = list()
@@ -69,6 +79,8 @@ Actual Adjacent procs :
 
 //the actual algorithm
 /proc/AStar(caller, end, dist, maxnodes, maxnodedepth = 30, mintargetdist, adjacent = /turf/proc/reachableAdjacentTurfs, id=null, turf/exclude=null, simulated_only = 1)
+	procstart = null
+	src.procstart = null
 	var/list/pnodelist = list()
 	//sanitation
 	var/start = get_turf(caller)
@@ -152,6 +164,8 @@ Actual Adjacent procs :
 //Returns adjacent turfs in cardinal directions that are reachable
 //simulated_only controls whether only simulated turfs are considered or not
 /turf/proc/reachableAdjacentTurfs(caller, ID, simulated_only)
+	procstart = null
+	src.procstart = null
 	var/list/L = new()
 	var/turf/T
 	var/static/space_type_cache = typecacheof(/turf/open/space)
@@ -166,9 +180,13 @@ Actual Adjacent procs :
 
 //Returns adjacent turfs in cardinal directions that are reachable via atmos
 /turf/proc/reachableAdjacentAtmosTurfs()
+	procstart = null
+	src.procstart = null
 	return atmos_adjacent_turfs
 
 /turf/proc/LinkBlockedWithAccess(turf/T, caller, ID)
+	procstart = null
+	src.procstart = null
 	var/adir = get_dir(src, T)
 	var/rdir = get_dir(T, src)
 

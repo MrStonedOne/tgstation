@@ -26,19 +26,27 @@
 	critical_machine = TRUE
 
 /obj/machinery/atmospherics/components/trinary/filter/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
 		radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/trinary/filter/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/machinery/atmospherics/components/trinary/filter/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 	return ..()
 
 /obj/machinery/atmospherics/components/trinary/filter/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	for(var/direction in GLOB.cardinals)
 		if(direction & initialize_directions)
@@ -50,18 +58,24 @@
 	..()
 
 /obj/machinery/atmospherics/components/trinary/filter/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	if(on && NODE1 && NODE2 && NODE3 && is_operational())
 		icon_state = "filter_on[flipped?"_f":""]"
 		return
 	icon_state = "filter_off[flipped?"_f":""]"
 
 /obj/machinery/atmospherics/components/trinary/filter/power_change()
+	procstart = null
+	src.procstart = null
 	var/old_stat = stat
 	..()
 	if(stat != old_stat)
 		update_icon()
 
 /obj/machinery/atmospherics/components/trinary/filter/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!on || !(NODE1 && NODE2 && NODE3) || !is_operational())
 		return
@@ -117,6 +131,8 @@
 	update_parents()
 
 /obj/machinery/atmospherics/components/trinary/filter/atmosinit()
+	procstart = null
+	src.procstart = null
 	set_frequency(frequency)
 	return ..()
 
@@ -128,6 +144,8 @@
 		ui.open()
 
 /obj/machinery/atmospherics/components/trinary/filter/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
@@ -142,6 +160,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/trinary/filter/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -176,6 +196,8 @@
 	update_icon()
 
 /obj/machinery/atmospherics/components/trinary/filter/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")

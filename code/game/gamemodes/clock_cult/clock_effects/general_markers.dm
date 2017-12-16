@@ -7,14 +7,20 @@
 	layer = MASSIVE_OBJ_LAYER
 
 /obj/effect/clockwork/general_marker/New()
+	procstart = null
+	src.procstart = null
 	..()
 	animate(src, alpha = 0, time = 10)
 	QDEL_IN(src, 10)
 
 /obj/effect/clockwork/general_marker/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/general_marker/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/general_marker/inathneq

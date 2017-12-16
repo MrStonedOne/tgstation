@@ -48,11 +48,15 @@
 	icon_state = "vent_map_siphon_on"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!id_tag)
 		id_tag = assign_uid_vents()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/Destroy()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	A.air_vent_names -= id_tag
 	A.air_vent_info -= id_tag
@@ -80,11 +84,15 @@
 	icon_state = "vent_map_siphon_on"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/gas_mixture/air_contents = AIR1
 	air_contents.volume = 1000
 
 /obj/machinery/atmospherics/components/unary/vent_pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(showpipe)
 		add_overlay(getpipeimage(icon, "vent_cap", initialize_directions))
@@ -119,6 +127,8 @@
 		icon_state = "vent_in"
 
 /obj/machinery/atmospherics/components/unary/vent_pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!is_operational())
 		return
@@ -169,12 +179,16 @@
 //Radio remote control
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
 		radio_connection = SSradio.add_object(src, frequency,radio_filter_in)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/proc/broadcast_status()
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return
 
@@ -201,6 +215,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/vent_pump/atmosinit()
+	procstart = null
+	src.procstart = null
 	//some vents work his own spesial way
 	radio_filter_in = frequency==FREQ_ATMOS_CONTROL?(RADIO_FROM_AIRALARM):null
 	radio_filter_out = frequency==FREQ_ATMOS_CONTROL?(RADIO_TO_AIRALARM):null
@@ -210,6 +226,8 @@
 	..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		return
 	// log_admin("DEBUG \[[world.timeofday]\]: /obj/machinery/atmospherics/components/unary/vent_pump/receive_signal([signal.debug_print()])")
@@ -270,6 +288,8 @@
 	update_icon()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/weldingtool))
 		var/obj/item/weldingtool/WT = W
 		if (WT.remove_fuel(0, user))
@@ -293,24 +313,34 @@
 		return ..()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")
 		return FALSE
 
 /obj/machinery/atmospherics/components/unary/vent_pump/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(welded)
 		to_chat(user, "It seems welded shut.")
 
 /obj/machinery/atmospherics/components/unary/vent_pump/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon_nopipes()
 
 /obj/machinery/atmospherics/components/unary/vent_pump/can_crawl_through()
+	procstart = null
+	src.procstart = null
 	return !welded
 
 /obj/machinery/atmospherics/components/unary/vent_pump/attack_alien(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!welded || !(do_after(user, 20, target = src)))
 		return
 	user.visible_message("[user] furiously claws at [src]!", "You manage to clear away the stuff blocking the vent", "You hear loud scraping noises.")

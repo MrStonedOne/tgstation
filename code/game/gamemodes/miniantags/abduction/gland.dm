@@ -13,6 +13,8 @@
 	var/active = 0
 
 /obj/item/organ/heart/gland/proc/ownerCheck()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		return 1
 	if(!human_only && iscarbon(owner))
@@ -20,22 +22,30 @@
 	return 0
 
 /obj/item/organ/heart/gland/proc/Start()
+	procstart = null
+	src.procstart = null
 	active = 1
 	next_activation = world.time + rand(cooldown_low,cooldown_high)
 
 
 /obj/item/organ/heart/gland/Remove(var/mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	active = 0
 	if(initial(uses) == 1)
 		uses = initial(uses)
 	..()
 
 /obj/item/organ/heart/gland/Insert(var/mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(special != 2 && uses) // Special 2 means abductor surgery
 		Start()
 
 /obj/item/organ/heart/gland/on_life()
+	procstart = null
+	src.procstart = null
 	if(!beating)
 		// alien glands are immune to stopping.
 		beating = TRUE
@@ -52,6 +62,8 @@
 		active = 0
 
 /obj/item/organ/heart/gland/proc/activate()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/organ/heart/gland/heals
@@ -61,6 +73,8 @@
 	icon_state = "health"
 
 /obj/item/organ/heart/gland/heals/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='notice'>You feel curiously revitalized.</span>")
 	owner.adjustBruteLoss(-20)
 	owner.adjustOxyLoss(-20)
@@ -73,6 +87,8 @@
 	icon_state = "slime"
 
 /obj/item/organ/heart/gland/slime/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='warning'>You feel nauseous!</span>")
 	owner.vomit(20)
 
@@ -88,6 +104,8 @@
 	icon_state = "mindshock"
 
 /obj/item/organ/heart/gland/mindshock/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='notice'>You get a headache.</span>")
 
 	var/turf/T = get_turf(owner)
@@ -105,6 +123,8 @@
 	icon_state = "species"
 
 /obj/item/organ/heart/gland/pop/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='notice'>You feel unlike yourself.</span>")
 	var/species = pick(list(/datum/species/lizard, /datum/species/jelly/slime, /datum/species/pod, /datum/species/fly, /datum/species/jelly))
 	owner.set_species(species)
@@ -116,6 +136,8 @@
 	icon_state = "vent"
 
 /obj/item/organ/heart/gland/ventcrawling/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='notice'>You feel very stretchy.</span>")
 	owner.ventcrawler = VENTCRAWLER_ALWAYS
 
@@ -127,6 +149,8 @@
 	icon_state = "viral"
 
 /obj/item/organ/heart/gland/viral/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='warning'>You feel sick.</span>")
 	var/virus_type = pick(/datum/disease/beesease, /datum/disease/brainrot, /datum/disease/magnitis)
 	var/datum/disease/D = new virus_type()
@@ -143,6 +167,8 @@
 	icon_state = "emp"
 
 /obj/item/organ/heart/gland/emp/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='warning'>You feel a spike of pain in your head.</span>")
 	empulse(get_turf(owner), 2, 5, 1)
 
@@ -153,6 +179,8 @@
 	icon_state = "spider"
 
 /obj/item/organ/heart/gland/spiderman/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='warning'>You feel something crawling in your skin.</span>")
 	owner.faction |= "spiders"
 	new /obj/structure/spider/spiderling(owner.loc)
@@ -166,6 +194,8 @@
 	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
 
 /obj/item/organ/heart/gland/egg/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='boldannounce'>You lay an egg!</span>")
 	var/obj/item/reagent_containers/food/snacks/egg/egg = new(owner.loc)
 	egg.reagents.add_reagent("sacid",20)
@@ -177,6 +207,8 @@
 	uses = -1
 
 /obj/item/organ/heart/gland/bloody/activate()
+	procstart = null
+	src.procstart = null
 	owner.blood_volume -= 20
 	owner.visible_message("<span class='danger'>[owner]'s skin erupts with blood!</span>",\
 	"<span class='userdanger'>Blood pours from your skin!</span>")
@@ -194,6 +226,8 @@
 	uses = 1
 
 /obj/item/organ/heart/gland/bodysnatch/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='warning'>You feel something moving around inside you...</span>")
 	//spawn cocoon with clone greytide snpc inside
 	if(ishuman(owner))
@@ -213,14 +247,20 @@
 	var/hatch_time = 0
 
 /obj/structure/spider/cocoon/abductor/proc/Copy(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/interactive/greytide/clone = new(src)
 	clone.hardset_dna(H.dna.uni_identity,H.dna.struc_enzymes,H.real_name, H.dna.blood_type, H.dna.species, H.dna.features)
 
 /obj/structure/spider/cocoon/abductor/proc/Start()
+	procstart = null
+	src.procstart = null
 	hatch_time = world.time + 600
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/spider/cocoon/abductor/process()
+	procstart = null
+	src.procstart = null
 	if(world.time > hatch_time)
 		STOP_PROCESSING(SSobj, src)
 		for(var/mob/M in contents)
@@ -235,11 +275,15 @@
 	uses = -1
 
 /obj/item/organ/heart/gland/plasma/activate()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='warning'>You feel bloated.</span>")
 	addtimer(CALLBACK(GLOBAL_PROC, .proc/to_chat, owner, "<span class='userdanger'>A massive stomachache overcomes you.</span>"), 150)
 	addtimer(CALLBACK(src, .proc/vomit_plasma), 200)
 
 /obj/item/organ/heart/gland/plasma/proc/vomit_plasma()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	owner.visible_message("<span class='danger'>[owner] vomits a cloud of plasma!</span>")

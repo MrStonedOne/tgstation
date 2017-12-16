@@ -22,6 +22,8 @@
 			to_chat(usr, "Unconnected [pipe.name] located at [pipe.x],[pipe.y],[pipe.z] ([get_area(pipe.loc)])")
 
 /client/proc/powerdebug()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Check Power"
 	if(!src.holder)

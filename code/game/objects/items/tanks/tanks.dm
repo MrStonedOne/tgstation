@@ -19,9 +19,13 @@
 	var/volume = 70
 
 /obj/item/tank/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_internals(user)
 
 /obj/item/tank/proc/toggle_internals(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = user
 	if(!istype(H))
 		return
@@ -51,6 +55,8 @@
 
 
 /obj/item/tank/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 	air_contents = new(volume) //liters
@@ -59,6 +65,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/tank/Destroy()
+	procstart = null
+	src.procstart = null
 	if(air_contents)
 		qdel(air_contents)
 
@@ -66,6 +74,8 @@
 	. = ..()
 
 /obj/item/tank/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/icon = src
 	..()
 	if (istype(src.loc, /obj/item/assembly))
@@ -96,6 +106,8 @@
 	to_chat(user, "<span class='notice'>It feels [descriptive].</span>")
 
 /obj/item/tank/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(B && B.loc == loc)
 		var/turf/location = get_turf(src)
 		if(!location)
@@ -107,6 +119,8 @@
 		qdel(src)
 
 /obj/item/tank/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		var/turf/T = get_turf(src)
 		if(T)
@@ -116,6 +130,8 @@
 	qdel(src)
 
 /obj/item/tank/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = user
 	user.visible_message("<span class='suicide'>[user] is putting [src]'s valve to [user.p_their()] lips! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(loc, 'sound/effects/spray.ogg', 10, 1, -3)
@@ -136,6 +152,8 @@
 	return (BRUTELOSS)
 
 /obj/item/tank/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if((istype(W, /obj/item/device/analyzer)) && get_dist(user, src) <= 1)
 		atmosanalyzer_scan(air_contents, user)
@@ -153,6 +171,8 @@
 		ui.open()
 
 /obj/item/tank/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["tankPressure"] = round(air_contents.return_pressure() ? air_contents.return_pressure() : 0)
 	data["releasePressure"] = round(distribute_pressure ? distribute_pressure : 0)
@@ -172,6 +192,8 @@
 	return data
 
 /obj/item/tank/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -197,18 +219,26 @@
 				distribute_pressure = Clamp(round(pressure), TANK_MIN_RELEASE_PRESSURE, TANK_MAX_RELEASE_PRESSURE)
 
 /obj/item/tank/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	return air_contents.remove(amount)
 
 /obj/item/tank/return_air()
+	procstart = null
+	src.procstart = null
 	return air_contents
 
 /obj/item/tank/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	air_contents.merge(giver)
 
 	check_status()
 	return 1
 
 /obj/item/tank/proc/remove_air_volume(volume_to_return)
+	procstart = null
+	src.procstart = null
 	if(!air_contents)
 		return null
 
@@ -221,12 +251,16 @@
 	return remove_air(moles_needed)
 
 /obj/item/tank/process()
+	procstart = null
+	src.procstart = null
 	//Allow for reactions
 	air_contents.react()
 	check_status()
 
 
 /obj/item/tank/proc/check_status()
+	procstart = null
+	src.procstart = null
 	//Handle exploding, leaking, and rupturing of the tank
 
 	if(!air_contents)

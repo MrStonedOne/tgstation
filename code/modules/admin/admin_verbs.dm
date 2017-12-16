@@ -3,6 +3,8 @@
 GLOBAL_PROTECT(admin_verbs_default)
 GLOBAL_LIST_INIT(admin_verbs_default, world.AVerbsDefault())
 /world/proc/AVerbsDefault()
+	procstart = null
+	src.procstart = null
 	return list(
 	/client/proc/deadmin,				/*destroys our own admin datum so we can play as a regular player*/
 	/client/proc/cmd_admin_say,			/*admin-only ooc chat*/
@@ -23,6 +25,8 @@ GLOBAL_LIST_INIT(admin_verbs_default, world.AVerbsDefault())
 GLOBAL_PROTECT(admin_verbs_admin)
 GLOBAL_LIST_INIT(admin_verbs_admin, world.AVerbsAdmin())
 /world/proc/AVerbsAdmin()
+	procstart = null
+	src.procstart = null
 	return list(
 	/client/proc/invisimin,				/*allows our mob to go invisible/visible*/
 //	/datum/admins/proc/show_traitor_panel,	/*interface which shows a mob's mind*/ -Removed due to rare practical use. Moved to debug verbs ~Errorage
@@ -104,6 +108,8 @@ GLOBAL_LIST_INIT(admin_verbs_spawn, list(/datum/admins/proc/spawn_atom, /client/
 GLOBAL_PROTECT(admin_verbs_server)
 GLOBAL_LIST_INIT(admin_verbs_server, world.AVerbsServer())
 /world/proc/AVerbsServer()
+	procstart = null
+	src.procstart = null
 	return list(
 	/datum/admins/proc/startnow,
 	/datum/admins/proc/restart,
@@ -123,6 +129,8 @@ GLOBAL_LIST_INIT(admin_verbs_server, world.AVerbsServer())
 GLOBAL_PROTECT(admin_verbs_debug)
 GLOBAL_LIST_INIT(admin_verbs_debug, world.AVerbsDebug())
 /world/proc/AVerbsDebug()
+	procstart = null
+	src.procstart = null
 	return list(
 	/client/proc/restart_controller,
 	/client/proc/cmd_admin_list_open_jobs,
@@ -237,6 +245,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	))
 
 /client/proc/add_admin_verbs()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		control_freak = CONTROL_FREAK_SKIN | CONTROL_FREAK_MACROS
 
@@ -275,6 +285,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 			verbs -= path
 
 /client/proc/remove_admin_verbs()
+	procstart = null
+	src.procstart = null
 	verbs.Remove(
 		GLOB.admin_verbs_default,
 		/client/proc/togglebuildmodeself,
@@ -323,6 +335,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	return
 
 /client/proc/hide_verbs()
+	procstart = null
+	src.procstart = null
 	set name = "Adminverbs - Hide All"
 	set category = "Admin"
 
@@ -334,6 +348,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	return
 
 /client/proc/show_verbs()
+	procstart = null
+	src.procstart = null
 	set name = "Adminverbs - Show"
 	set category = "Admin"
 
@@ -347,6 +363,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 
 
 /client/proc/admin_ghost()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Aghost"
 	if(!holder)
@@ -376,6 +394,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 
 
 /client/proc/invisimin()
+	procstart = null
+	src.procstart = null
 	set name = "Invisimin"
 	set category = "Admin"
 	set desc = "Toggles ghost-like invisibility (Don't abuse this)"
@@ -388,6 +408,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 			to_chat(mob, "<span class='adminnotice'><b>Invisimin on. You are now as invisible as a ghost.</b></span>")
 
 /client/proc/check_antagonists()
+	procstart = null
+	src.procstart = null
 	set name = "Check Antagonists"
 	set category = "Admin"
 	if(holder)
@@ -398,6 +420,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Check Antagonists") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/unban_panel()
+	procstart = null
+	src.procstart = null
 	set name = "Unban Panel"
 	set category = "Admin"
 	if(holder)
@@ -408,6 +432,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Unban Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/game_panel()
+	procstart = null
+	src.procstart = null
 	set name = "Game Panel"
 	set category = "Admin"
 	if(holder)
@@ -415,6 +441,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Game Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/secrets()
+	procstart = null
+	src.procstart = null
 	set name = "Secrets"
 	set category = "Admin"
 	if (holder)
@@ -423,6 +451,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 
 
 /client/proc/findStealthKey(txt)
+	procstart = null
+	src.procstart = null
 	if(txt)
 		for(var/P in GLOB.stealthminID)
 			if(GLOB.stealthminID[P] == txt)
@@ -431,6 +461,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	return txt
 
 /client/proc/createStealthKey()
+	procstart = null
+	src.procstart = null
 	var/num = (rand(0,1000))
 	var/i = 0
 	while(i == 0)
@@ -442,6 +474,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	GLOB.stealthminID["[ckey]"] = "@[num2text(num)]"
 
 /client/proc/stealth()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Stealth Mode"
 	if(holder)
@@ -470,6 +504,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Stealth Mode") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/drop_bomb()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Drop Bomb"
 	set desc = "Cause an explosion of varying strength at your location."
@@ -512,6 +548,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Drop Bomb") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/drop_dynex_bomb()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Drop DynEx Bomb"
 	set desc = "Cause an explosion of varying strength at your location."
@@ -525,6 +563,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 		SSblackbox.record_feedback("tally", "admin_verb", 1, "Drop Dynamic Bomb") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/get_dynex_range()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Get DynEx Range"
 	set desc = "Get the estimated range of a bomb, using explosive power."
@@ -534,6 +574,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	to_chat(usr, "Estimated Explosive Range: (Devestation: [round(range*0.25)], Heavy: [round(range*0.5)], Light: [round(range)])")
 
 /client/proc/get_dynex_power()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Get DynEx Power"
 	set desc = "Get the estimated required power of a bomb, to reach a specific range."
@@ -543,6 +585,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	to_chat(usr, "Estimated Explosive Power: [power]")
 
 /client/proc/set_dynex_scale()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Set DynEx Scale"
 	set desc = "Set the scale multiplier of dynex explosions. The default is 0.5."
@@ -555,6 +599,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	message_admins("[key_name_admin(usr)] has  modified Dynamic Explosion Scale: [ex_scale]")
 
 /client/proc/give_spell(mob/T in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Give Spell"
 	set desc = "Gives a spell to a mob."
@@ -579,6 +625,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 		message_admins("<span class='danger'>Spells given to mindless mobs will not be transferred in mindswap or cloning!</span>")
 
 /client/proc/remove_spell(mob/T in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Remove Spell"
 	set desc = "Remove a spell from the selected mob."
@@ -592,6 +640,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 			SSblackbox.record_feedback("tally", "admin_verb", 1, "Remove Spell") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/give_disease(mob/T in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Give Disease"
 	set desc = "Gives a Disease to a mob."
@@ -604,6 +654,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	message_admins("<span class='adminnotice'>[key_name_admin(usr)] gave [key_name(T)] the disease [D].</span>")
 
 /client/proc/object_say(obj/O in world)
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "OSay"
 	set desc = "Makes an object say something."
@@ -615,6 +667,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	message_admins("<span class='adminnotice'>[key_name_admin(usr)] made [O] at [O.x], [O.y], [O.z]. say \"[message]\"</span>")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Object Say") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 /client/proc/togglebuildmodeself()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Build Mode Self"
 	set category = "Special Verbs"
 	if(src.mob)
@@ -622,12 +676,16 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Toggle Build Mode") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/check_ai_laws()
+	procstart = null
+	src.procstart = null
 	set name = "Check AI Laws"
 	set category = "Admin"
 	if(holder)
 		src.holder.output_ai_laws()
 
 /client/proc/deadmin()
+	procstart = null
+	src.procstart = null
 	set name = "Deadmin"
 	set category = "Admin"
 	set desc = "Shed your admin powers."
@@ -646,6 +704,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Deadmin")
 
 /client/proc/readmin()
+	procstart = null
+	src.procstart = null
 	set name = "Readmin"
 	set category = "Admin"
 	set desc = "Regain your admin powers."
@@ -671,6 +731,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Readmin")
 
 /client/proc/populate_world(amount = 50 as num)
+	procstart = null
+	src.procstart = null
 	set name = "Populate World"
 	set category = "Debug"
 	set desc = "(\"Amount of mobs to create\") Populate the world with test mobs."
@@ -704,6 +766,8 @@ GLOBAL_LIST_INIT(admin_verbs_hideable, list(
 			while (!area && --j > 0)
 
 /client/proc/toggle_AI_interact()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Admin AI Interact"
 	set category = "Admin"
 	set desc = "Allows you to interact with most machines as an AI would as a ghost"

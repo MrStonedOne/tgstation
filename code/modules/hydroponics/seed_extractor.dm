@@ -50,6 +50,8 @@
 	var/seed_multiplier = 1
 
 /obj/machinery/seed_extractor/RefreshParts()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		max_seeds = 1000 * B.rating
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
@@ -57,6 +59,8 @@
 
 /obj/machinery/seed_extractor/attackby(obj/item/O, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "sextractor_open", "sextractor", O))
 		return
 
@@ -110,6 +114,8 @@
 	var/amount = 0
 
 /datum/seed_pile/New(var/name, var/life, var/endur, var/matur, var/prod, var/yie, var/poten, var/am = 1)
+	procstart = null
+	src.procstart = null
 	src.name = name
 	src.lifespan = life
 	src.endurance = endur
@@ -120,10 +126,14 @@
 	src.amount = am
 
 /obj/machinery/seed_extractor/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	interact(user)
 
 /obj/machinery/seed_extractor/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if (stat)
 		return 0
 
@@ -144,6 +154,8 @@
 	return
 
 /obj/machinery/seed_extractor/Topic(var/href, var/list/href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -175,6 +187,8 @@
 	return
 
 /obj/machinery/seed_extractor/proc/add_seed(obj/item/seeds/O)
+	procstart = null
+	src.procstart = null
 	if(contents.len >= 999)
 		to_chat(usr, "<span class='notice'>\The [src] is full.</span>")
 		return 0

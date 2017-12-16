@@ -28,6 +28,8 @@
 	icon_state = "random_lipstick"
 
 /obj/item/lipstick/random/New()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "lipstick"
 	colour = pick("red","purple","lime","black","green","blue","white")
@@ -36,6 +38,8 @@
 
 
 /obj/item/lipstick/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	to_chat(user, "<span class='notice'>You twist \the [src] [open ? "closed" : "open"].</span>")
 	open = !open
@@ -48,6 +52,8 @@
 		icon_state = "lipstick"
 
 /obj/item/lipstick/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!open)
 		return
 
@@ -82,6 +88,8 @@
 
 //you can wipe off lipstick with paper!
 /obj/item/paper/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.zone_selected == "mouth")
 		if(!ismob(M))
 			return
@@ -114,6 +122,8 @@
 
 
 /obj/item/razor/proc/shave(mob/living/carbon/human/H, location = "mouth")
+	procstart = null
+	src.procstart = null
 	if(location == "mouth")
 		H.facial_hair_style = "Shaved"
 	else
@@ -124,6 +134,8 @@
 
 
 /obj/item/razor/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/location = user.zone_selected

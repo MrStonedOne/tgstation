@@ -53,6 +53,8 @@
 // No movement while seen code.
 
 /mob/living/simple_animal/hostile/statue/Initialize(mapload, var/mob/living/creator)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Give spells
 	mob_spell_list += new /obj/effect/proc_holder/spell/aoe_turf/flicker_lights(src)
@@ -64,12 +66,18 @@
 		src.creator = creator
 
 /mob/living/simple_animal/hostile/statue/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	return //we're a statue we're invincible
 
 /mob/living/simple_animal/hostile/statue/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	return //we're a statue we're invincible
 
 /mob/living/simple_animal/hostile/statue/Move(turf/NewLoc)
+	procstart = null
+	src.procstart = null
 	if(can_be_seen(NewLoc))
 		if(client)
 			to_chat(src, "<span class='warning'>You cannot move, there are eyes on you!</span>")
@@ -77,6 +85,8 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/statue/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!client && target) // If we have a target and we're AI controlled
 		var/mob/watching = can_be_seen()
@@ -88,6 +98,8 @@
 				GiveTarget(watching)
 
 /mob/living/simple_animal/hostile/statue/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(can_be_seen(get_turf(loc)))
 		if(client)
 			to_chat(src, "<span class='warning'>You cannot attack, there are eyes on you!</span>")
@@ -96,14 +108,20 @@
 		return ..()
 
 /mob/living/simple_animal/hostile/statue/DestroyPathToTarget()
+	procstart = null
+	src.procstart = null
 	if(!can_be_seen(get_turf(loc)))
 		..()
 
 /mob/living/simple_animal/hostile/statue/face_atom()
+	procstart = null
+	src.procstart = null
 	if(!can_be_seen(get_turf(loc)))
 		..()
 
 /mob/living/simple_animal/hostile/statue/proc/can_be_seen(turf/destination)
+	procstart = null
+	src.procstart = null
 	if(!cannot_be_seen)
 		return null
 	// Check for darkness
@@ -134,17 +152,23 @@
 // Cannot talk
 
 /mob/living/simple_animal/hostile/statue/say()
+	procstart = null
+	src.procstart = null
 	return 0
 
 // Turn to dust when gibbed
 
 /mob/living/simple_animal/hostile/statue/gib()
+	procstart = null
+	src.procstart = null
 	dust()
 
 
 // Stop attacking clientless mobs
 
 /mob/living/simple_animal/hostile/statue/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	if(isliving(the_target))
 		var/mob/living/L = the_target
 		if(!L.client && !L.ckey)
@@ -154,6 +178,8 @@
 // Don't attack your creator if there is one
 
 /mob/living/simple_animal/hostile/statue/ListTargets()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return . - creator
 
@@ -169,6 +195,8 @@
 	range = 14
 
 /obj/effect/proc_holder/spell/aoe_turf/flicker_lights/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/turf/T in targets)
 		for(var/obj/machinery/light/L in T)
 			L.flicker()
@@ -185,6 +213,8 @@
 	range = 10
 
 /obj/effect/proc_holder/spell/aoe_turf/blindness/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/L in GLOB.alive_mob_list)
 		var/turf/T = get_turf(L.loc)
 		if(T && T in targets)
@@ -204,6 +234,8 @@
 	include_user = 1
 
 /obj/effect/proc_holder/spell/targeted/night_vision/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target in targets)
 		switch(target.lighting_alpha)
 			if (LIGHTING_PLANE_ALPHA_VISIBLE)
@@ -221,9 +253,13 @@
 		target.update_sight()
 
 /mob/living/simple_animal/hostile/statue/sentience_act()
+	procstart = null
+	src.procstart = null
 	faction -= "neutral"
 
 /mob/living/simple_animal/hostile/statue/restrained(ignore_grab)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_be_seen(loc))
 		return 1

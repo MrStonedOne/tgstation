@@ -25,6 +25,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	var/photo_file
 
 /datum/newscaster/feed_message/proc/returnAuthor(censor)
+	procstart = null
+	src.procstart = null
 	if(censor == -1)
 		censor = authorCensor
 	var/txt = "[GLOB.news_network.redactedText]"
@@ -33,6 +35,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	return txt
 
 /datum/newscaster/feed_message/proc/returnBody(censor)
+	procstart = null
+	src.procstart = null
 	if(censor == -1)
 		censor = bodyCensor
 	var/txt = "[GLOB.news_network.redactedText]"
@@ -41,6 +45,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	return txt
 
 /datum/newscaster/feed_message/proc/toggleCensorAuthor()
+	procstart = null
+	src.procstart = null
 	if(authorCensor)
 		authorCensorTime.Add(GLOB.news_network.lastAction*-1)
 	else
@@ -49,6 +55,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	GLOB.news_network.lastAction ++
 
 /datum/newscaster/feed_message/proc/toggleCensorBody()
+	procstart = null
+	src.procstart = null
 	if(bodyCensor)
 		bodyCensorTime.Add(GLOB.news_network.lastAction*-1)
 	else
@@ -68,6 +76,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	var/is_admin_channel = 0
 
 /datum/newscaster/feed_channel/proc/returnAuthor(censor)
+	procstart = null
+	src.procstart = null
 	if(censor == -1)
 		censor = authorCensor
 	var/txt = "[GLOB.news_network.redactedText]"
@@ -76,6 +86,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	return txt
 
 /datum/newscaster/feed_channel/proc/toggleCensorDclass()
+	procstart = null
+	src.procstart = null
 	if(censored)
 		DclassCensorTime.Add(GLOB.news_network.lastAction*-1)
 	else
@@ -84,6 +96,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	GLOB.news_network.lastAction ++
 
 /datum/newscaster/feed_channel/proc/toggleCensorAuthor()
+	procstart = null
+	src.procstart = null
 	if(authorCensor)
 		authorCensorTime.Add(GLOB.news_network.lastAction*-1)
 	else
@@ -107,10 +121,14 @@ GLOBAL_LIST_EMPTY(allCasters)
 	var/redactedText = "\[REDACTED\]"
 
 /datum/newscaster/feed_network/New()
+	procstart = null
+	src.procstart = null
 	CreateFeedChannel("Station Announcements", "SS13", 1)
 	wanted_issue = new /datum/newscaster/wanted_message
 
 /datum/newscaster/feed_network/proc/CreateFeedChannel(channel_name, author, locked, adminChannel = 0)
+	procstart = null
+	src.procstart = null
 	var/datum/newscaster/feed_channel/newChannel = new /datum/newscaster/feed_channel
 	newChannel.channel_name = channel_name
 	newChannel.author = author
@@ -119,6 +137,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	network_channels += newChannel
 
 /datum/newscaster/feed_network/proc/SubmitArticle(msg, author, channel_name, obj/item/photo/photo, adminMessage = 0, allow_comments = 1)
+	procstart = null
+	src.procstart = null
 	var/datum/newscaster/feed_message/newMsg = new /datum/newscaster/feed_message
 	newMsg.author = author
 	newMsg.body = msg
@@ -139,6 +159,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	newMsg.creationTime = lastAction
 
 /datum/newscaster/feed_network/proc/submitWanted(criminal, body, scanned_user, obj/item/photo/photo, adminMsg = 0, newMessage = 0)
+	procstart = null
+	src.procstart = null
 	wanted_issue.active = 1
 	wanted_issue.criminal = criminal
 	wanted_issue.body = body
@@ -153,6 +175,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 			N.update_icon()
 
 /datum/newscaster/feed_network/proc/deleteWanted()
+	procstart = null
+	src.procstart = null
 	wanted_issue.active = 0
 	wanted_issue.criminal = null
 	wanted_issue.body = null
@@ -162,6 +186,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 		NEWSCASTER.update_icon()
 
 /datum/newscaster/feed_network/proc/save_photo(icon/photo)
+	procstart = null
+	src.procstart = null
 	var/photo_file = copytext(md5("\icon[photo]"), 1, 6)
 	if(!fexists("[GLOB.log_directory]/photos/[photo_file].png"))
 		var/icon/p = icon(photo, frame = 1)
@@ -207,6 +233,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	securityCaster = 1
 
 /obj/machinery/newscaster/Initialize(mapload, ndir, building)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(building)
 		setDir(ndir)
@@ -218,12 +246,16 @@ GLOBAL_LIST_EMPTY(allCasters)
 	update_icon()
 
 /obj/machinery/newscaster/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.allCasters -= src
 	viewing_channel = null
 	photo = null
 	return ..()
 
 /obj/machinery/newscaster/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(stat & (NOPOWER|BROKEN))
 		icon_state = "newscaster_off"
@@ -247,6 +279,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 
 
 /obj/machinery/newscaster/power_change()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		return
 	if(powered())
@@ -258,13 +292,19 @@ GLOBAL_LIST_EMPTY(allCasters)
 			update_icon()
 
 /obj/machinery/newscaster/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/machinery/newscaster/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/newscaster/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(ishuman(user) || issilicon(user))
@@ -510,6 +550,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 		popup.open()
 
 /obj/machinery/newscaster/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && isturf(loc))) || issilicon(usr))
@@ -720,6 +762,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 			updateUsrDialog()
 
 /obj/machinery/newscaster/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench))
 		to_chat(user, "<span class='notice'>You start [anchored ? "un" : ""]securing [name]...</span>")
 		playsound(loc, I.usesound, 50, 1)
@@ -756,6 +800,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 		return ..()
 
 /obj/machinery/newscaster/play_attack_sound(damage, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(stat & BROKEN)
@@ -767,6 +813,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 
 
 /obj/machinery/newscaster/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc, 2)
 		new /obj/item/shard(loc)
@@ -774,6 +822,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	qdel(src)
 
 /obj/machinery/newscaster/obj_break()
+	procstart = null
+	src.procstart = null
 	if(!(stat & BROKEN) && !(flags_1 & NODECONSTRUCT_1))
 		stat |= BROKEN
 		playsound(loc, 'sound/effects/glassbr3.ogg', 100, 1)
@@ -781,12 +831,16 @@ GLOBAL_LIST_EMPTY(allCasters)
 
 
 /obj/machinery/newscaster/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent != INTENT_HARM)
 		to_chat(user, "<span class='warning'>The newscaster controls are far too complicated for your tiny brain!</span>")
 	else
 		take_damage(5, BRUTE, "melee")
 
 /obj/machinery/newscaster/proc/AttachPhoto(mob/user)
+	procstart = null
+	src.procstart = null
 	if(photo)
 		if(!photo.sillynewscastervar)
 			photo.forceMove(drop_location())
@@ -831,6 +885,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 		qdel(P)
 
 /obj/machinery/newscaster/proc/scan_user(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		var/mob/living/carbon/human/human_user = user
 		if(human_user.wear_id)
@@ -855,6 +911,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 		return
 
 /obj/machinery/newscaster/proc/print_paper()
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("amount", "newspapers_printed", 1)
 	var/obj/item/newspaper/NEWSPAPER = new /obj/item/newspaper
 	for(var/datum/newscaster/feed_channel/FC in GLOB.news_network.network_channels)
@@ -870,6 +928,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	paper_remaining--
 
 /obj/machinery/newscaster/proc/newsAlert(channel)
+	procstart = null
+	src.procstart = null
 	if(channel)
 		say("Breaking news from [channel]!")
 		alert ++
@@ -905,6 +965,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	var/creationTime
 
 /obj/item/newspaper/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is focusing intently on [src]! It looks like [user.p_theyre()] trying to commit sudoku... until [user.p_their()] eyes light up with realization!</span>")
 	user.say(";JOURNALISM IS MY CALLING! EVERYBODY APPRECIATES UNBIASED REPORTI-GLORF")
 	var/mob/living/carbon/human/H = user
@@ -916,6 +978,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	return(TOXLOSS)
 
 /obj/item/newspaper/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		var/mob/living/carbon/human/human_user = user
 		var/dat
@@ -997,6 +1061,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 		to_chat(user, "The paper is full of unintelligible symbols!")
 
 /obj/item/newspaper/proc/notContent(list/L)
+	procstart = null
+	src.procstart = null
 	if(!L.len)
 		return 0
 	for(var/i=L.len;i>0;i--)
@@ -1011,6 +1077,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 	return 0
 
 /obj/item/newspaper/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	var/mob/living/U = usr
 	..()
 	if((src in U.contents) || (isturf(loc) && in_range(src, U)))
@@ -1039,6 +1107,8 @@ GLOBAL_LIST_EMPTY(allCasters)
 			attack_self(loc)
 
 /obj/item/newspaper/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pen))
 		if(scribble_page == curr_page)
 			to_chat(user, "<span class='notice'>There's already a scribble in this page... You wouldn't want to make things too cluttered, would you?</span>")

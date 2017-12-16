@@ -14,10 +14,14 @@
 	var/repairs
 
 /obj/machinery/recharge_station/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/machinery/recharge_station/RefreshParts()
+	procstart = null
+	src.procstart = null
 	recharge_speed = 0
 	repairs = 0
 	for(var/obj/item/stock_parts/capacitor/C in component_parts)
@@ -28,6 +32,8 @@
 		recharge_speed *= C.maxcharge / 10000
 
 /obj/machinery/recharge_station/process()
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		return
 
@@ -36,11 +42,15 @@
 	return 1
 
 /obj/machinery/recharge_station/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat)
 		return
 	open_machine()
 
 /obj/machinery/recharge_station/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!(stat & (BROKEN|NOPOWER)))
 		if(occupant)
 			occupant.emp_act(severity)
@@ -48,12 +58,18 @@
 	..()
 
 /obj/machinery/recharge_station/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/recharge_station/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/recharge_station/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		if(default_deconstruction_screwdriver(user, "borgdecon2", "borgcharger0", P))
 			return
@@ -69,6 +85,8 @@
 	return ..()
 
 /obj/machinery/recharge_station/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..(user,1,set_machine = 0))
 		return
 
@@ -76,16 +94,22 @@
 	add_fingerprint(user)
 
 /obj/machinery/recharge_station/proc/toggle_open()
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		close_machine()
 	else
 		open_machine()
 
 /obj/machinery/recharge_station/open_machine()
+	procstart = null
+	src.procstart = null
 	..()
 	use_power = IDLE_POWER_USE
 
 /obj/machinery/recharge_station/close_machine()
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		for(var/mob/living/silicon/robot/R in loc)
 			R.forceMove(src)
@@ -98,6 +122,8 @@
 		update_icon()
 
 /obj/machinery/recharge_station/update_icon()
+	procstart = null
+	src.procstart = null
 	if(is_operational())
 		if(state_open)
 			icon_state = "borgcharger0"
@@ -107,10 +133,14 @@
 		icon_state = (state_open ? "borgcharger-u0" : "borgcharger-u1")
 
 /obj/machinery/recharge_station/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/recharge_station/proc/process_occupant()
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		var/mob/living/silicon/robot/R = occupant
 		restock_modules()
@@ -120,6 +150,8 @@
 			R.cell.charge = min(R.cell.charge + recharge_speed, R.cell.maxcharge)
 
 /obj/machinery/recharge_station/proc/restock_modules()
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		var/mob/living/silicon/robot/R = occupant
 		if(R && R.module)

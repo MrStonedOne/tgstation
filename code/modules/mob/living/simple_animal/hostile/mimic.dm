@@ -40,12 +40,16 @@
 
 // Pickup loot
 /mob/living/simple_animal/hostile/mimic/crate/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)	//eat shit
 		for(var/obj/item/I in loc)
 			I.forceMove(src)
 
 /mob/living/simple_animal/hostile/mimic/crate/DestroyPathToTarget()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(90))
 		icon_state = "[initial(icon_state)]open"
@@ -53,16 +57,22 @@
 		icon_state = initial(icon_state)
 
 /mob/living/simple_animal/hostile/mimic/crate/ListTargets()
+	procstart = null
+	src.procstart = null
 	if(attempt_open)
 		return ..()
 	return ..(1)
 
 /mob/living/simple_animal/hostile/mimic/crate/FindTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		trigger()
 
 /mob/living/simple_animal/hostile/mimic/crate/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		icon_state = initial(icon_state)
@@ -73,19 +83,27 @@
 					"<span class='userdanger'>\The [src] knocks you down!</span>")
 
 /mob/living/simple_animal/hostile/mimic/crate/proc/trigger()
+	procstart = null
+	src.procstart = null
 	if(!attempt_open)
 		visible_message("<b>[src]</b> starts to move!")
 		attempt_open = TRUE
 
 /mob/living/simple_animal/hostile/mimic/crate/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	trigger()
 	. = ..()
 
 /mob/living/simple_animal/hostile/mimic/crate/LoseTarget()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = initial(icon_state)
 
 /mob/living/simple_animal/hostile/mimic/crate/death()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/crate/C = new(get_turf(src))
 	// Put loot in crate
 	for(var/obj/O in src)
@@ -104,10 +122,14 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 	gold_core_spawnable = NO_SPAWN
 
 /mob/living/simple_animal/hostile/mimic/copy/Initialize(mapload, obj/copy, mob/living/creator, destroy_original = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	CopyObject(copy, creator, destroy_original)
 
 /mob/living/simple_animal/hostile/mimic/copy/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!target && !ckey) //Objects eventually revert to normal if no one is around to terrorize
 		adjustBruteLoss(1)
@@ -115,26 +137,36 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 		death()
 
 /mob/living/simple_animal/hostile/mimic/copy/death()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/M in src)
 		M.forceMove(get_turf(src))
 	..()
 
 /mob/living/simple_animal/hostile/mimic/copy/ListTargets()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return . - creator
 
 /mob/living/simple_animal/hostile/mimic/copy/proc/ChangeOwner(mob/owner)
+	procstart = null
+	src.procstart = null
 	if(owner != creator)
 		LoseTarget()
 		creator = owner
 		faction |= "[REF(owner)]"
 
 /mob/living/simple_animal/hostile/mimic/copy/proc/CheckObject(obj/O)
+	procstart = null
+	src.procstart = null
 	if((isitem(O) || isstructure(O)) && !is_type_in_list(O, GLOB.protected_objects))
 		return 1
 	return 0
 
 /mob/living/simple_animal/hostile/mimic/copy/proc/CopyObject(obj/O, mob/living/user, destroy_original = 0)
+	procstart = null
+	src.procstart = null
 	if(destroy_original || CheckObject(O))
 		O.forceMove(src)
 		name = O.name
@@ -166,10 +198,14 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 		return 1
 
 /mob/living/simple_animal/hostile/mimic/copy/DestroySurroundings()
+	procstart = null
+	src.procstart = null
 	if(destroy_objects)
 		..()
 
 /mob/living/simple_animal/hostile/mimic/copy/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(knockdown_people && . && prob(15) && iscarbon(target))
 		var/mob/living/carbon/C = target
@@ -183,6 +219,8 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 	speak_chance = 7
 
 /mob/living/simple_animal/hostile/mimic/copy/machine/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	if(the_target == creator) // Don't attack our creator AI.
 		return 0
 	if(iscyborg(the_target))
@@ -200,6 +238,8 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 	var/obj/item/gun/energy/Zapgun
 
 /mob/living/simple_animal/hostile/mimic/copy/ranged/CopyObject(obj/O, mob/living/creator, destroy_original = 0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		emote_see = list("aims menacingly")
 		obj_damage = 0
@@ -228,6 +268,8 @@ GLOBAL_LIST_INIT(protected_objects, list(/obj/structure/table, /obj/structure/ca
 			projectiletype = initial(E.projectile_type)
 
 /mob/living/simple_animal/hostile/mimic/copy/ranged/OpenFire(the_target)
+	procstart = null
+	src.procstart = null
 	if(Zapgun)
 		if(Zapgun.cell)
 			var/obj/item/ammo_casing/energy/shot = Zapgun.ammo_type[Zapgun.select]

@@ -12,6 +12,8 @@
 	severity = VIRUS_SEVERITY_MINOR
 
 /datum/disease/anxiety/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(2) //also changes say, see say.dm

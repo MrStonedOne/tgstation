@@ -3,6 +3,8 @@
 	proper_name = "Particle Accelerator"
 
 /datum/wires/particle_accelerator/control_box/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_POWER, WIRE_STRENGTH, WIRE_LIMIT,
 		WIRE_INTERFACE
@@ -11,11 +13,15 @@
 	..()
 
 /datum/wires/particle_accelerator/control_box/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/particle_accelerator/control_box/C = holder
 	if(C.construction_state == 2)
 		return TRUE
 
 /datum/wires/particle_accelerator/control_box/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/particle_accelerator/control_box/C = holder
 	switch(wire)
 		if(WIRE_POWER)
@@ -28,6 +34,8 @@
 			C.visible_message("[icon2html(C, viewers(holder))]<b>[C]</b> makes a large whirring noise.")
 
 /datum/wires/particle_accelerator/control_box/on_cut(wire, mend)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/particle_accelerator/control_box/C = holder
 	switch(wire)
 		if(WIRE_POWER)

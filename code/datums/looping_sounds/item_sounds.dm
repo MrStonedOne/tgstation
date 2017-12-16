@@ -14,6 +14,8 @@
 	var/last_radiation
 
 /datum/looping_sound/geiger/get_sound(looped)
+	procstart = null
+	src.procstart = null
 	var/danger
 	switch(last_radiation)
 		if(RAD_BACKGROUND_RADIATION to RAD_GEIGER_LOW)
@@ -29,6 +31,8 @@
 	return ..(looped, mid_sounds[danger])
 
 /datum/looping_sound/geiger/stop()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	last_radiation = 0
 

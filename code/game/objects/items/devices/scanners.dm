@@ -20,6 +20,8 @@ GAS ANALYZER
 
 /obj/item/device/t_scanner/attack_self(mob/user)
 
+	procstart = null
+	src.procstart = null
 	on = !on
 	icon_state = copytext(icon_state, 1, length(icon_state))+"[on]"
 
@@ -27,6 +29,8 @@ GAS ANALYZER
 		START_PROCESSING(SSobj, src)
 
 /obj/item/device/t_scanner/proc/flick_sonar(obj/pipe)
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		var/mob/M = loc
 		var/image/I = new(loc = get_turf(pipe))
@@ -40,6 +44,8 @@ GAS ANALYZER
 			flick_overlay(I, list(M.client), 8)
 
 /obj/item/device/t_scanner/process()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		STOP_PROCESSING(SSobj, src)
 		return null
@@ -47,6 +53,8 @@ GAS ANALYZER
 
 /obj/item/device/t_scanner/proc/scan()
 
+	procstart = null
+	src.procstart = null
 	for(var/turf/T in range(2, src.loc) )
 		for(var/obj/O in T.contents)
 
@@ -75,6 +83,8 @@ GAS ANALYZER
 	var/advanced = FALSE
 
 /obj/item/device/healthanalyzer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!scanmode)
 		to_chat(user, "<span class='notice'>You switch the health analyzer to scan chemical contents.</span>")
 		scanmode = 1
@@ -84,6 +94,8 @@ GAS ANALYZER
 
 /obj/item/device/healthanalyzer/attack(mob/living/M, mob/living/carbon/human/user)
 
+	procstart = null
+	src.procstart = null
 	// Clumsiness/brain damage check
 	if ((user.disabilities & (CLUMSY | DUMB)) && prob(50))
 		to_chat(user, "<span class='notice'>You stupidly try to analyze the floor's vitals!</span>")
@@ -106,6 +118,8 @@ GAS ANALYZER
 
 // Used by the PDA medical scanner too
 /proc/healthscan(mob/user, mob/living/M, mode = 1, advanced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isliving(user) && (user.incapacitated() || user.eye_blind))
 		return
 	//Damage specifics
@@ -281,6 +295,8 @@ GAS ANALYZER
 			to_chat(user, "<span class='notice'>[cyberimp_detect]</span>")
 
 /proc/chemscan(mob/living/user, mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(istype(M))
 		if(M.reagents)
 			if(M.reagents.reagent_list.len)
@@ -297,6 +313,8 @@ GAS ANALYZER
 				to_chat(user, "<span class='notice'>Subject is not addicted to any reagents.</span>")
 
 /obj/item/device/healthanalyzer/verb/toggle_mode()
+	procstart = null
+	src.procstart = null
 	set name = "Switch Verbosity"
 	set category = "Object"
 
@@ -334,6 +352,8 @@ GAS ANALYZER
 
 /obj/item/device/analyzer/attack_self(mob/user)
 
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 
 	if (user.stat || user.eye_blind)
@@ -407,6 +427,8 @@ GAS ANALYZER
 	materials = list(MAT_METAL=30, MAT_GLASS=20)
 
 /obj/item/device/slime_scanner/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || user.eye_blind)
 		return
 	if (!isslime(M))

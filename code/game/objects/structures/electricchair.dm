@@ -7,10 +7,14 @@
 	item_chair = null
 
 /obj/structure/chair/e_chair/New()
+	procstart = null
+	src.procstart = null
 	..()
 	add_overlay(mutable_appearance('icons/obj/chairs.dmi', "echair_over", MOB_LAYER + 1))
 
 /obj/structure/chair/e_chair/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench))
 		var/obj/structure/chair/C = new /obj/structure/chair(loc)
 		playsound(loc, W.usesound, 50, 1)
@@ -21,6 +25,8 @@
 		qdel(src)
 
 /obj/structure/chair/e_chair/proc/shock()
+	procstart = null
+	src.procstart = null
 	if(last_time + 50 > world.time)
 		return
 	last_time = world.time

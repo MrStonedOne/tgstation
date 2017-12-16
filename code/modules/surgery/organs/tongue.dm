@@ -19,26 +19,38 @@
 	))
 
 /obj/item/organ/tongue/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	languages_possible = languages_possible_base
 
 /obj/item/organ/tongue/get_spans()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /obj/item/organ/tongue/proc/TongueSpeech(var/message)
+	procstart = null
+	src.procstart = null
 	return message
 
 /obj/item/organ/tongue/Insert(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(say_mod && M.dna && M.dna.species)
 		M.dna.species.say_mod = say_mod
 
 /obj/item/organ/tongue/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(say_mod && M.dna && M.dna.species)
 		M.dna.species.say_mod = initial(M.dna.species.say_mod)
 
 /obj/item/organ/tongue/could_speak_in_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	. = is_type_in_typecache(dt, languages_possible)
 
 /obj/item/organ/tongue/lizard
@@ -49,6 +61,8 @@
 	taste_sensitivity = 10 // combined nose + tongue, extra sensitive
 
 /obj/item/organ/tongue/lizard/TongueSpeech(var/message)
+	procstart = null
+	src.procstart = null
 	var/regex/lizard_hiss = new("s+", "g")
 	var/regex/lizard_hiSS = new("S+", "g")
 	if(copytext(message, 1, 2) != "*")
@@ -64,6 +78,8 @@
 	taste_sensitivity = 25 // you eat vomit, this is a mercy
 
 /obj/item/organ/tongue/fly/TongueSpeech(var/message)
+	procstart = null
+	src.procstart = null
 	var/regex/fly_buzz = new("z+", "g")
 	var/regex/fly_buZZ = new("Z+", "g")
 	if(copytext(message, 1, 2) != "*")
@@ -79,6 +95,8 @@
 	taste_sensitivity = 101 // ayys cannot taste anything.
 
 /obj/item/organ/tongue/abductor/TongueSpeech(var/message)
+	procstart = null
+	src.procstart = null
 	//Hacks
 	var/mob/living/carbon/human/user = usr
 	var/rendered = "<span class='abductor'><b>[user.name]:</b> [message]</span>"
@@ -104,6 +122,8 @@
 	taste_sensitivity = 32
 
 /obj/item/organ/tongue/zombie/TongueSpeech(var/message)
+	procstart = null
+	src.procstart = null
 	var/list/message_list = splittext(message, " ")
 	var/maxchanges = max(round(message_list.len / 1.5), 2)
 
@@ -133,10 +153,14 @@
 		/datum/language/monkey))
 
 /obj/item/organ/tongue/alien/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	languages_possible = languages_possible_alien
 
 /obj/item/organ/tongue/alien/TongueSpeech(var/message)
+	procstart = null
+	src.procstart = null
 	playsound(owner, "hiss", 25, 1, 1)
 	return message
 
@@ -153,10 +177,14 @@
 	var/list/phomeme_types = list("sans", "papyrus")
 
 /obj/item/organ/tongue/bone/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	phomeme_type = pick(phomeme_types)
 
 /obj/item/organ/tongue/bone/TongueSpeech(var/message)
+	procstart = null
+	src.procstart = null
 	. = message
 
 	if(chattering)
@@ -164,6 +192,8 @@
 		chatter(message, phomeme_type, usr)
 
 /obj/item/organ/tongue/bone/get_spans()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// Feature, if the tongue talks directly, it will speak with its span
 	switch(phomeme_type)
@@ -178,6 +208,8 @@
 	icon_state = "tongueplasma"
 
 /obj/item/organ/tongue/bone/plasmaman/get_spans()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/organ/tongue/robot
@@ -190,7 +222,11 @@
 	taste_sensitivity = 25 // not as good as an organic tongue
 
 /obj/item/organ/tongue/robot/can_speak_in_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	. = TRUE // THE MAGIC OF ELECTRONICS
 
 /obj/item/organ/tongue/robot/get_spans()
+	procstart = null
+	src.procstart = null
 	return ..() | SPAN_ROBOT

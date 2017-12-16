@@ -4,6 +4,8 @@
 #define TIMER_ID_MAX (2**24) //max float with integer precision
 
 SUBSYSTEM_DEF(timer)
+	procstart = null
+	src.procstart = null
 	name = "Timer"
 	wait = 1 //SS_TICKER subsystem, so wait is in ticks
 	init_order = INIT_ORDER_TIMER
@@ -29,14 +31,20 @@ SUBSYSTEM_DEF(timer)
 	var/static/bucket_auto_reset = TRUE
 
 /datum/controller/subsystem/timer/PreInit()
+	procstart = null
+	src.procstart = null
 	bucket_list.len = BUCKET_LEN
 	head_offset = world.time
 	bucket_resolution = world.tick_lag
 
 /datum/controller/subsystem/timer/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	..("B:[bucket_count] P:[length(second_queue)] H:[length(hashes)] C:[length(clienttime_timers)] S:[length(timer_id_dict)]")
 
 /datum/controller/subsystem/timer/fire(resumed = FALSE)
+	procstart = null
+	src.procstart = null
 	var/lit = last_invoke_tick
 	var/last_check = world.time - TIMER_NO_INVOKE_WARNING
 	var/list/bucket_list = src.bucket_list
@@ -204,6 +212,8 @@ SUBSYSTEM_DEF(timer)
 
 //formated this way to be runtime resistant
 /datum/controller/subsystem/timer/proc/get_timer_debug_string(datum/timedevent/TE)
+	procstart = null
+	src.procstart = null
 	. = "Timer: [TE]"
 	. += "Prev: [TE.prev ? TE.prev : "NULL"], Next: [TE.next ? TE.next : "NULL"]"
 	if(TE.spent)
@@ -214,6 +224,8 @@ SUBSYSTEM_DEF(timer)
 		. += ", NO CALLBACK"
 
 /datum/controller/subsystem/timer/proc/reset_buckets()
+	procstart = null
+	src.procstart = null
 	var/list/bucket_list = src.bucket_list
 	var/list/alltimers = list()
 	//collect the timers currently in the bucket
@@ -285,6 +297,8 @@ SUBSYSTEM_DEF(timer)
 
 
 /datum/controller/subsystem/timer/Recover()
+	procstart = null
+	src.procstart = null
 	second_queue |= SStimer.second_queue
 	hashes |= SStimer.hashes
 	timer_id_dict |= SStimer.timer_id_dict
@@ -303,6 +317,8 @@ SUBSYSTEM_DEF(timer)
 	var/datum/timedevent/prev
 
 /datum/timedevent/New(datum/callback/callBack, timeToRun, flags, hash)
+	procstart = null
+	src.procstart = null
 	id = TIMER_ID_NULL
 	src.callBack = callBack
 	src.timeToRun = timeToRun
@@ -380,6 +396,8 @@ SUBSYSTEM_DEF(timer)
 	prev.next = src
 
 /datum/timedevent/Destroy()
+	procstart = null
+	src.procstart = null
 	..()
 	if (flags & TIMER_UNIQUE && hash)
 		SStimer.hashes -= hash
@@ -436,6 +454,8 @@ SUBSYSTEM_DEF(timer)
 	return QDEL_HINT_IWILLGC
 
 /datum/timedevent/proc/getcallingtype()
+	procstart = null
+	src.procstart = null
 	. = "ERROR"
 	if (callBack.object == GLOBAL_PROC)
 		. = "GLOBAL_PROC"
@@ -443,6 +463,8 @@ SUBSYSTEM_DEF(timer)
 		. = "[callBack.object.type]"
 
 /proc/addtimer(datum/callback/callback, wait = 0, flags = 0)
+	procstart = null
+	src.procstart = null
 	if (!callback)
 		CRASH("addtimer called without a callback")
 
@@ -491,6 +513,8 @@ SUBSYSTEM_DEF(timer)
 	return timer.id
 
 /proc/deltimer(id)
+	procstart = null
+	src.procstart = null
 	if (!id)
 		return FALSE
 	if (id == TIMER_ID_NULL)

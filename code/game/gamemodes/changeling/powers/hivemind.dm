@@ -7,6 +7,8 @@
 	chemical_cost = -1
 
 /obj/effect/proc_holder/changeling/hivemind_comms/on_purchase(mob/user, is_respec)
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	changeling.changeling_speak = 1
@@ -28,6 +30,8 @@ GLOBAL_LIST_EMPTY(hivemind_bank)
 	dna_cost = -1
 
 /obj/effect/proc_holder/changeling/hivemind_upload/sting_action(var/mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	var/list/names = list()
 	for(var/datum/changelingprofile/prof in changeling.stored_profiles)
@@ -59,6 +63,8 @@ GLOBAL_LIST_EMPTY(hivemind_bank)
 	dna_cost = -1
 
 /obj/effect/proc_holder/changeling/hivemind_download/can_sting(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
@@ -69,6 +75,8 @@ GLOBAL_LIST_EMPTY(hivemind_bank)
 	return 1
 
 /obj/effect/proc_holder/changeling/hivemind_download/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	var/list/names = list()
 	for(var/datum/changelingprofile/prof in GLOB.hivemind_bank)

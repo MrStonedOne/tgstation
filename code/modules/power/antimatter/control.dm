@@ -30,6 +30,8 @@
 
 
 /obj/machinery/power/am_control_unit/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	linked_shielding = list()
 	linked_cores = list()
@@ -44,6 +46,8 @@
 
 
 /obj/machinery/power/am_control_unit/process()
+	procstart = null
+	src.procstart = null
 	if(exploding)
 		explosion(get_turf(src),8,12,18,12)
 		if(src)
@@ -72,6 +76,8 @@
 
 
 /obj/machinery/power/am_control_unit/proc/produce_power()
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/effects/bang.ogg', 25, 1)
 	var/core_power = reported_core_efficiency//Effectively how much fuel we can safely deal with
 	if(core_power <= 0)
@@ -98,6 +104,8 @@
 
 
 /obj/machinery/power/am_control_unit/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			if(active)
@@ -112,6 +120,8 @@
 
 
 /obj/machinery/power/am_control_unit/blob_act()
+	procstart = null
+	src.procstart = null
 	stability -= 20
 	if(prob(100-stability))//Might infect the rest of the machine
 		for(var/obj/machinery/am_shielding/AMS in linked_shielding)
@@ -123,12 +133,16 @@
 
 
 /obj/machinery/power/am_control_unit/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	stability -= (80 - (severity * 20))
 	check_stability()
 	return
 
 
 /obj/machinery/power/am_control_unit/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(Proj.flag != "bullet")
 		stability -= Proj.force
@@ -136,6 +150,8 @@
 
 
 /obj/machinery/power/am_control_unit/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & NOPOWER)
 		if(active)
@@ -150,6 +166,8 @@
 
 
 /obj/machinery/power/am_control_unit/update_icon()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = "control_on"
 	else icon_state = "control"
@@ -157,6 +175,8 @@
 
 
 /obj/machinery/power/am_control_unit/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench))
 		if(!anchored)
 			playsound(src.loc, W.usesound, 75, 1)
@@ -191,6 +211,8 @@
 
 
 /obj/machinery/power/am_control_unit/take_damage(damage, damage_type = BRUTE, sound_effect = 1)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(sound_effect)
@@ -208,10 +230,14 @@
 		check_stability()
 
 /obj/machinery/power/am_control_unit/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		interact(user)
 
 /obj/machinery/power/am_control_unit/proc/add_shielding(obj/machinery/am_shielding/AMS, AMS_linking = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(AMS))
 		return 0
 	if(!anchored)
@@ -224,6 +250,8 @@
 
 
 /obj/machinery/power/am_control_unit/proc/remove_shielding(obj/machinery/am_shielding/AMS)
+	procstart = null
+	src.procstart = null
 	if(!istype(AMS))
 		return 0
 	linked_shielding.Remove(AMS)
@@ -240,6 +268,8 @@
 
 
 /obj/machinery/power/am_control_unit/proc/toggle_power(powerfail = 0)
+	procstart = null
+	src.procstart = null
 	active = !active
 	if(active)
 		use_power = ACTIVE_POWER_USE
@@ -268,9 +298,13 @@
 	addtimer(CALLBACK(src, .proc/reset_shield_icon_delay), 20)
 
 /obj/machinery/power/am_control_unit/proc/reset_shield_icon_delay()
+	procstart = null
+	src.procstart = null
 	shield_icon_delay = 0
 
 /obj/machinery/power/am_control_unit/proc/check_core_stability()
+	procstart = null
+	src.procstart = null
 	if(stored_core_stability_delay || linked_cores.len <= 0)
 		return
 	stored_core_stability_delay = 1
@@ -281,9 +315,13 @@
 	addtimer(CALLBACK(src, .proc/reset_stored_core_stability_delay), 40)
 
 /obj/machinery/power/am_control_unit/proc/reset_stored_core_stability_delay()
+	procstart = null
+	src.procstart = null
 	stored_core_stability_delay = 0
 
 /obj/machinery/power/am_control_unit/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if((get_dist(src, user) > 1) || (stat & (BROKEN|NOPOWER)))
 		if(!isAI(user))
 			user.unset_machine()
@@ -323,6 +361,8 @@
 
 
 /obj/machinery/power/am_control_unit/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 

@@ -26,11 +26,15 @@
 	var/proj_step_delay = 1 //lower = faster
 
 /obj/effect/proc_holder/spell/targeted/projectile/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	playMagSound()
 	for(var/mob/living/target in targets)
 		launch(target, user)
 
 /obj/effect/proc_holder/spell/targeted/projectile/proc/launch(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/obj/effect/proc_holder/spell/targeted/projectile
 	if(istext(proj_type))
@@ -87,6 +91,8 @@
 		qdel(projectile)
 
 /obj/effect/proc_holder/spell/targeted/projectile/proc/spawntrail(obj/effect/proc_holder/spell/targeted/projectile)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(projectile)
 		var/obj/effect/overlay/trail = new /obj/effect/overlay(projectile.loc)

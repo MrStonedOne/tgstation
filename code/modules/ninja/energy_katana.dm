@@ -22,6 +22,8 @@
 	var/dash_toggled = TRUE
 
 /obj/item/energy_katana/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	jaunt = new(src)
 	spark_system = new /datum/effect_system/spark_spread()
@@ -29,10 +31,14 @@
 	spark_system.attach(src)
 
 /obj/item/energy_katana/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	dash_toggled = !dash_toggled
 	to_chat(user, "<span class='notice'>You [dash_toggled ? "enable" : "disable"] the dash function on [src].</span>")
 
 /obj/item/energy_katana/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	procstart = null
+	src.procstart = null
 	if(dash_toggled)
 		jaunt.Teleport(user, target)
 	if(proximity_flag && (isobj(target) || issilicon(target)))
@@ -42,12 +48,16 @@
 		target.emag_act(user)
 
 /obj/item/energy_katana/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	jaunt.Grant(user, src)
 	user.update_icons()
 	playsound(src, 'sound/items/unsheath.ogg', 25, 1)
 
 /obj/item/energy_katana/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	jaunt.Remove(user)
 	user.update_icons()
@@ -56,6 +66,8 @@
 //Works for if the Ninja throws it or it throws itself or someone tries
 //To throw it at the ninja
 /obj/item/energy_katana/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(ishuman(hit_atom))
 		var/mob/living/carbon/human/H = hit_atom
 		if(istype(H.wear_suit, /obj/item/clothing/suit/space/space_ninja))
@@ -67,6 +79,8 @@
 	..()
 
 /obj/item/energy_katana/proc/returnToOwner(mob/living/carbon/human/user, doSpark = 1, caught = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	forceMove(get_turf(user))
@@ -95,6 +109,8 @@
 
 
 /obj/item/energy_katana/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	return ..()
 

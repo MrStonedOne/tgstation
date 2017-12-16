@@ -22,12 +22,16 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	open = TRUE
 
 /obj/machinery/atmospherics/components/binary/valve/update_icon_nopipes(animation = 0)
+	procstart = null
+	src.procstart = null
 	normalize_dir()
 	if(animation)
 		flick("[valve_type]valve_[open][!open]",src)
 	icon_state = "[valve_type]valve_[open?"on":"off"]"
 
 /obj/machinery/atmospherics/components/binary/valve/proc/open()
+	procstart = null
+	src.procstart = null
 	open = TRUE
 	update_icon_nopipes()
 	update_parents()
@@ -36,20 +40,28 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	investigate_log("was opened by [usr ? key_name(usr) : "a remote signal"]", INVESTIGATE_ATMOS)
 
 /obj/machinery/atmospherics/components/binary/valve/proc/close()
+	procstart = null
+	src.procstart = null
 	open = FALSE
 	update_icon_nopipes()
 	investigate_log("was closed by [usr ? key_name(usr) : "a remote signal"]", INVESTIGATE_ATMOS)
 
 /obj/machinery/atmospherics/components/binary/valve/proc/normalize_dir()
+	procstart = null
+	src.procstart = null
 	if(dir==SOUTH)
 		setDir(NORTH)
 	else if(dir==WEST)
 		setDir(EAST)
 
 /obj/machinery/atmospherics/components/binary/valve/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/components/binary/valve/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(usr)
 	update_icon_nopipes(1)
 	sleep(10)
@@ -66,9 +78,13 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	pipe_state = "dvalve"
 
 /obj/machinery/atmospherics/components/binary/valve/digital/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/atmospherics/components/binary/valve/digital/update_icon_nopipes(animation)
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		normalize_dir()
 		icon_state = "dvalve_nopower"

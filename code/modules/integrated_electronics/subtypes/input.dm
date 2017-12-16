@@ -4,6 +4,8 @@
 	power_draw_per_use = 5
 
 /obj/item/integrated_circuit/input/proc/ask_for_input(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/integrated_circuit/input/button
@@ -51,6 +53,8 @@
 	power_draw_per_use = 4
 
 /obj/item/integrated_circuit/input/numberpad/ask_for_input(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_input = input(user, "Enter a number, please.","Number pad") as null|num
 	if(isnum(new_input) && user.IsAdvancedToolUser())
 		set_pin_data(IC_OUTPUT, 1, new_input)
@@ -70,6 +74,8 @@
 	power_draw_per_use = 4
 
 /obj/item/integrated_circuit/input/textpad/ask_for_input(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_input = stripped_input(user, "Enter some words, please.","Number pad")
 	if(istext(new_input) && user.IsAdvancedToolUser())
 		set_pin_data(IC_OUTPUT, 1, new_input)
@@ -91,6 +97,8 @@
 	power_draw_per_use = 40
 
 /obj/item/integrated_circuit/input/med_scanner/do_work()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon/human)
 	if(!istype(H)) //Invalid input
 		return
@@ -125,6 +133,8 @@
 	power_draw_per_use = 80
 
 /obj/item/integrated_circuit/input/adv_med_scanner/do_work()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon/human)
 	if(!istype(H)) //Invalid input
 		return
@@ -175,6 +185,8 @@
 	power_draw_per_use = 10
 
 /obj/item/integrated_circuit/input/plant_scanner/do_work()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/hydroponics/H = get_pin_data_as_type(IC_INPUT, 1, /obj/machinery/hydroponics)
 	if(!istype(H)) //Invalid input
 		return
@@ -221,6 +233,8 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/input/gene_scanner/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/gtraits = list()
 	var/list/greagents = list()
 	var/obj/machinery/hydroponics/H = get_pin_data_as_type(IC_INPUT, 1, /obj/machinery/hydroponics)
@@ -271,6 +285,8 @@
 	power_draw_per_use = 80
 
 /obj/item/integrated_circuit/input/examiner/do_work()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/H = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
 	var/turf/T = get_turf(src)
 	if(!istype(H)) //Invalid input
@@ -307,6 +323,8 @@
 	power_draw_per_use = 20
 
 /obj/item/integrated_circuit/input/local_locator/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/O = outputs[1]
 	O.data = null
 	if(assembly)
@@ -330,6 +348,8 @@
 	power_draw_per_use = 30
 
 /obj/item/integrated_circuit/input/adjacent_locator/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/I = inputs[1]
 	var/datum/integrated_io/O = outputs[1]
 	O.data = null
@@ -370,6 +390,8 @@
 	var/radius = 1
 
 /obj/item/integrated_circuit/input/advanced_locator_list/on_data_written()
+	procstart = null
+	src.procstart = null
 	var/rad = get_pin_data(IC_INPUT, 2)
 
 	if(isnum(rad))
@@ -377,6 +399,8 @@
 		radius = rad
 
 /obj/item/integrated_circuit/input/advanced_locator_list/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/I = inputs[1]
 	var/datum/integrated_io/O = outputs[1]
 	O.data = null
@@ -424,12 +448,16 @@
 	var/radius = 1
 
 /obj/item/integrated_circuit/input/advanced_locator/on_data_written()
+	procstart = null
+	src.procstart = null
 	var/rad = get_pin_data(IC_INPUT, 2)
 	if(isnum(rad))
 		rad = Clamp(rad, 0, 8)
 		radius = rad
 
 /obj/item/integrated_circuit/input/advanced_locator/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/I = inputs[1]
 	var/datum/integrated_io/O = outputs[1]
 	O.data = null
@@ -483,6 +511,8 @@
 	var/datum/radio_frequency/radio_connection
 
 /obj/item/integrated_circuit/input/signaler/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawn(40)
 		set_frequency(frequency)
@@ -491,12 +521,16 @@
 		set_pin_data(IC_INPUT, 2, code)
 
 /obj/item/integrated_circuit/input/signaler/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 
 	frequency = 0
 	return ..()
 
 /obj/item/integrated_circuit/input/signaler/on_data_written()
+	procstart = null
+	src.procstart = null
 	var/new_freq = get_pin_data(IC_INPUT, 1)
 	var/new_code = get_pin_data(IC_INPUT, 2)
 	if(isnum(new_freq) && new_freq > 0)
@@ -514,6 +548,8 @@
 	activate_pin(2)
 
 /obj/item/integrated_circuit/input/signaler/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	if(!frequency)
 		return
 	SSradio.remove_object(src, frequency)
@@ -521,6 +557,8 @@
 	radio_connection = SSradio.add_object(src, frequency, RADIO_SIGNALER)
 
 /obj/item/integrated_circuit/input/signaler/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	var/new_code = get_pin_data(IC_INPUT, 2)
 	var/code = 0
 
@@ -564,11 +602,15 @@
 	var/datum/ntnet_connection/exonet = null
 
 /obj/item/integrated_circuit/input/ntnet_packet/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/ntnet_interface/net = LoadComponent(/datum/component/ntnet_interface)
 	desc += "<br>This circuit's NTNet hardware address is: [net.hardware_id]"
 
 /obj/item/integrated_circuit/input/ntnet_packet/do_work()
+	procstart = null
+	src.procstart = null
 	var/target_address = get_pin_data(IC_INPUT, 1)
 	var/message = get_pin_data(IC_INPUT, 2)
 	var/text = get_pin_data(IC_INPUT, 3)
@@ -582,6 +624,8 @@
 	ntnet_send(data)
 
 /obj/item/integrated_circuit/input/ntnet_recieve(datum/netdata/data)
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 1, length(data.recipient_ids) >= 1? data.recipient_ids[1] : null)
 	set_pin_data(IC_OUTPUT, 2, data.plaintext_data)
 	set_pin_data(IC_OUTPUT, 3, data.plaintext_data_secondary)
@@ -604,6 +648,8 @@
 	power_draw_per_use = 30
 
 /obj/item/integrated_circuit/input/gps/do_work()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 
 	set_pin_data(IC_OUTPUT, 1, null)
@@ -638,6 +684,8 @@
 	power_draw_per_use = 5
 
 /obj/item/integrated_circuit/input/microphone/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, message_mode)
+	procstart = null
+	src.procstart = null
 	var/translated = FALSE
 	if(speaker && message)
 		if(raw_message)
@@ -664,6 +712,8 @@
 	power_draw_per_use = 120
 
 /obj/item/integrated_circuit/input/sensor/proc/scan(var/atom/A)
+	procstart = null
+	src.procstart = null
 	var/ignore_bags = get_pin_data(IC_INPUT, 1)
 	if(ignore_bags)
 		if(istype(A, /obj/item/storage))
@@ -705,6 +755,8 @@
 	power_draw_per_use = 1
 
 /obj/item/integrated_circuit/input/internalbm/do_work()
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 1, null)
 	set_pin_data(IC_OUTPUT, 2, null)
 	set_pin_data(IC_OUTPUT, 3, null)
@@ -737,6 +789,8 @@
 
 /obj/item/integrated_circuit/input/externalbm/do_work()
 
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
 	set_pin_data(IC_OUTPUT, 1, null)
 	set_pin_data(IC_OUTPUT, 2, null)

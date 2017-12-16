@@ -16,37 +16,55 @@
 	container_type = TRANSPARENT_1
 
 /obj/item/reagent_containers/syringe/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(list_reagents) //syringe starts in inject mode if its already got something inside
 		mode = SYRINGE_INJECT
 		update_icon()
 
 /obj/item/reagent_containers/syringe/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	update_icon()
 
 /obj/item/reagent_containers/syringe/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/item/reagent_containers/syringe/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/item/reagent_containers/syringe/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	mode = !mode
 	update_icon()
 
 /obj/item/reagent_containers/syringe/attack_hand()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/item/reagent_containers/syringe/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/item/reagent_containers/syringe/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/reagent_containers/syringe/afterattack(atom/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	if(busy)
 		return
 	if(!proximity)
@@ -157,6 +175,8 @@
 
 
 /obj/item/reagent_containers/syringe/update_icon()
+	procstart = null
+	src.procstart = null
 	var/rounded_vol = Clamp(round((reagents.total_volume / volume * 15),5), 0, 15)
 	cut_overlays()
 	if(ismob(loc))
@@ -250,6 +270,8 @@
 	volume = 20
 
 /obj/item/reagent_containers/syringe/noreact/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.set_reacting(FALSE)
 

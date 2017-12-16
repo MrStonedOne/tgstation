@@ -4,6 +4,8 @@
 	icon_state = "hydro"
 
 /obj/structure/closet/secure_closet/hydroponics/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/bag/plants/portaseeder(src)
 	new /obj/item/device/plant_analyzer(src)

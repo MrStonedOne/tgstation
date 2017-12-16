@@ -6,6 +6,8 @@
 	randomize = TRUE
 
 /datum/wires/airlock/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_POWER1, WIRE_POWER2,
 		WIRE_BACKUP1, WIRE_BACKUP2,
@@ -17,6 +19,8 @@
 	..()
 
 /datum/wires/airlock/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/A = holder
 	if(!issilicon(user) && A.isElectrified() && A.shock(user, 100))
 		return FALSE
@@ -24,6 +28,8 @@
 		return TRUE
 
 /datum/wires/airlock/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/A = holder
 	var/list/status = list()
 	status += "The door bolts [A.locked ? "have fallen!" : "look up."]"
@@ -36,6 +42,8 @@
 	return status
 
 /datum/wires/airlock/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/obj/machinery/door/airlock/A = holder
 	switch(wire)
@@ -101,6 +109,8 @@
 			A.update_icon()
 
 /datum/wires/airlock/on_cut(wire, mend)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/airlock/A = holder
 	switch(wire)
 		if(WIRE_POWER1, WIRE_POWER2) // Cut to loose power, repair all to gain power.

@@ -18,18 +18,26 @@
 	var/heat_diffusion = 1
 
 /obj/item/minigunpack/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gun = new(src)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/minigunpack/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/minigunpack/process()
+	procstart = null
+	src.procstart = null
 	overheat = max(0, overheat - heat_diffusion)
 
 /obj/item/minigunpack/attack_hand(var/mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(src.loc == user)
 		if(!armed)
 			if(user.get_item_by_slot(slot_back) == src)
@@ -47,16 +55,22 @@
 		..()
 
 /obj/item/minigunpack/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W == gun) //Don't need armed check, because if you have the gun assume its armed.
 		user.dropItemToGround(gun, TRUE)
 	else
 		..()
 
 /obj/item/minigunpack/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(armed)
 		user.dropItemToGround(gun, TRUE)
 
 /obj/item/minigunpack/MouseDrop(atom/over_object)
+	procstart = null
+	src.procstart = null
 	if(armed)
 		return
 	if(iscarbon(usr))
@@ -73,12 +87,16 @@
 
 
 /obj/item/minigunpack/update_icon()
+	procstart = null
+	src.procstart = null
 	if(armed)
 		icon_state = "notholstered"
 	else
 		icon_state = "holstered"
 
 /obj/item/minigunpack/proc/attach_gun(var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(!gun)
 		gun = new(src)
 	gun.forceMove(src)
@@ -113,6 +131,8 @@
 	var/obj/item/minigunpack/ammo_pack
 
 /obj/item/gun/ballistic/minigun/Initialize()
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/item/minigunpack)) //We should spawn inside an ammo pack so let's use that one.
 		ammo_pack = loc
 	else
@@ -121,15 +141,21 @@
 	return ..()
 
 /obj/item/gun/ballistic/minigun/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/ballistic/minigun/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ammo_pack)
 		ammo_pack.attach_gun(user)
 	else
 		qdel(src)
 
 /obj/item/gun/ballistic/minigun/process_fire(atom/target as mob|obj|turf, mob/living/user as mob|obj, message = 1, params, zone_override)
+	procstart = null
+	src.procstart = null
 	if(ammo_pack)
 		if(ammo_pack.overheat < ammo_pack.overheat_max)
 			ammo_pack.overheat += burst_size
@@ -138,11 +164,15 @@
 			to_chat(user, "The gun's heat sensor locked the trigger to prevent lens damage.")
 
 /obj/item/gun/ballistic/minigun/afterattack(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(!ammo_pack || ammo_pack.loc != user)
 		to_chat(user, "You need the backpack power source to fire the gun!")
 	..()
 
 /obj/item/gun/ballistic/minigun/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	ammo_pack.attach_gun(user)
 
 

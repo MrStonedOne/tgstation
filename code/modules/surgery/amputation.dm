@@ -13,9 +13,13 @@
 	time = 64
 
 /datum/surgery_step/sever_limb/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] begins to sever [target]'s [parse_zone(target_zone)]!", "<span class='notice'>You begin to sever [target]'s [parse_zone(target_zone)]...</span>")
 
 /datum/surgery_step/sever_limb/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/L = target
 	user.visible_message("[user] severs [L]'s [parse_zone(target_zone)]!", "<span class='notice'>You sever [L]'s [parse_zone(target_zone)].</span>")
 	if(surgery.operated_bodypart)

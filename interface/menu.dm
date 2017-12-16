@@ -1,5 +1,7 @@
 /*
 /datum/verbs/menu/Example/verb/Example()
+	procstart = null
+	src.procstart = null
 	set name = "" //if this starts with @ the verb is not created and name becomes the command to invoke.
 	set desc = "" //desc is the text given to this entry in the menu
 	//You can not use src in these verbs. It will be the menu at compile time, but the client at runtime.
@@ -14,9 +16,13 @@ GLOBAL_LIST_EMPTY(menulist)
 	//Rather then add us as a node (used for having more then one checkgroups in the same menu)
 
 /datum/verbs/menu/GetList()
+	procstart = null
+	src.procstart = null
 	return GLOB.menulist
 
 /datum/verbs/menu/HandleVerb(list/entry, verbpath, client/C)
+	procstart = null
+	src.procstart = null
 	var/datum/verbs/menu/verb_true_parent = GLOB.menulist[verblist[verbpath]]
 	var/true_checkbox = verb_true_parent.checkbox
 	if (true_checkbox != CHECKBOX_NONE)
@@ -35,12 +41,16 @@ GLOBAL_LIST_EMPTY(menulist)
 	return list2params(entry)
 
 /datum/verbs/menu/proc/Get_checked(client/C)
+	procstart = null
+	src.procstart = null
 	return C.prefs.menuoptions[type] || default || FALSE
 
 /datum/verbs/menu/proc/Load_checked(client/C) //Loads the checked menu item into a new client. Used by icon menus to invoke the checked item.
 	return
 
 /datum/verbs/menu/proc/Set_checked(client/C, verbpath)
+	procstart = null
+	src.procstart = null
 	if (checkbox == CHECKBOX_GROUP)
 		C.prefs.menuoptions[type] = verbpath
 		C.prefs.save_preferences()
@@ -51,6 +61,8 @@ GLOBAL_LIST_EMPTY(menulist)
 		winset(C, "[verbpath]", "is-checked = [!checked]")
 
 /client/verb/updatemenuchecked(menutype as text, verbpath as text)
+	procstart = null
+	src.procstart = null
 	set name = ".updatemenuchecked"
 	menutype = text2path(menutype)
 	verbpath = text2path(verbpath)
@@ -79,22 +91,32 @@ GLOBAL_LIST_EMPTY(menulist)
 	default = /datum/verbs/menu/Icon/Size/verb/iconstretchtofit
 
 /datum/verbs/menu/Icon/Size/verb/iconstretchtofit()
+	procstart = null
+	src.procstart = null
 	set name = "@.winset \"mapwindow.map.icon-size=0\""
 	set desc = "&Auto (stretch-to-fit)"
 
 /datum/verbs/menu/Icon/Size/verb/icon96()
+	procstart = null
+	src.procstart = null
 	set name = "@.winset \"mapwindow.map.icon-size=96\""
 	set desc = "&96x96 (3x)"
 
 /datum/verbs/menu/Icon/Size/verb/icon64()
+	procstart = null
+	src.procstart = null
 	set name = "@.winset \"mapwindow.map.icon-size=64\""
 	set desc = "&64x64 (2x)"
 
 /datum/verbs/menu/Icon/Size/verb/icon48()
+	procstart = null
+	src.procstart = null
 	set name = "@.winset \"mapwindow.map.icon-size=48\""
 	set desc = "&48x48 (1.5x)"
 
 /datum/verbs/menu/Icon/Size/verb/icon32()
+	procstart = null
+	src.procstart = null
 	set name = "@.winset \"mapwindow.map.icon-size=32\""
 	set desc = "&32x32 (1x)"
 
@@ -105,14 +127,20 @@ GLOBAL_LIST_EMPTY(menulist)
 	default = /datum/verbs/menu/Icon/Scaling/verb/NN
 
 /datum/verbs/menu/Icon/Scaling/verb/NN()
+	procstart = null
+	src.procstart = null
 	set name = "@.winset \"mapwindow.map.zoom-mode=distort\""
 	set desc = "Nearest Neighbor"
 
 /datum/verbs/menu/Icon/Scaling/verb/PS()
+	procstart = null
+	src.procstart = null
 	set name = "@.winset \"mapwindow.map.zoom-mode=normal\""
 	set desc = "Point Sampling"
 
 /datum/verbs/menu/Icon/Scaling/verb/BL()
+	procstart = null
+	src.procstart = null
 	set name = "@.winset \"mapwindow.map.zoom-mode=blur\""
 	set desc = "Bilinear"
 

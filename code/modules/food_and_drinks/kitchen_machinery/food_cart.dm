@@ -19,6 +19,8 @@
 	var/obj/item/reagent_containers/mixer
 
 /obj/machinery/food_cart/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(LIQUID_CAPACIY)
 	reagents.set_reacting(FALSE)
@@ -26,14 +28,20 @@
 	mixer.name = "Mixer"
 
 /obj/machinery/food_cart/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(mixer)
 	return ..()
 
 /obj/machinery/food_cart/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	interact(user)
 
 /obj/machinery/food_cart/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += "<br><b>STORED INGREDIENTS AND DRINKS</b><br><div class='statusDisplay'>"
 	dat += "Remaining glasses: [glasses]<br>"
@@ -62,9 +70,13 @@
 	popup.open()
 
 /obj/machinery/food_cart/proc/isFull()
+	procstart = null
+	src.procstart = null
 	return food_stored >= STORAGE_CAPACITY
 
 /obj/machinery/food_cart/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/reagent_containers/food/drinks/drinkingglass))
 		var/obj/item/reagent_containers/food/drinks/drinkingglass/DG = O
 		if(!DG.reagents.total_volume) //glass is empty
@@ -107,6 +119,8 @@
 	updateDialog()
 
 /obj/machinery/food_cart/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -152,6 +166,8 @@
 	return
 
 /obj/machinery/food_cart/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc, 4)
 	qdel(src)

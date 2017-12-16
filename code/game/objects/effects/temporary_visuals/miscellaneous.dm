@@ -7,6 +7,8 @@
 	var/splatter_type = "splatter"
 
 /obj/effect/temp_visual/dir_setting/bloodsplatter/Initialize(mapload, set_dir)
+	procstart = null
+	src.procstart = null
 	if(set_dir in GLOB.diagonals)
 		icon_state = "[splatter_type][pick(1, 2, 6)]"
 	else
@@ -56,6 +58,8 @@
 	duration = 2
 
 /obj/effect/temp_visual/dir_setting/firing_effect/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	switch(newdir)
 		if(NORTH)
 			layer = BELOW_MOB_LAYER
@@ -115,6 +119,8 @@
 	var/fades = TRUE
 
 /obj/effect/temp_visual/dir_setting/curse/Initialize(mapload, set_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fades)
 		animate(src, alpha = 0, time = 32)
@@ -138,10 +144,14 @@
 	icon_state = "cursehand"
 
 /obj/effect/temp_visual/dir_setting/curse/hand/Initialize(mapload, set_dir, handedness)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/projectile/curse_hand/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[icon_state][handedness]"
 
 /obj/effect/temp_visual/wizard
@@ -182,6 +192,8 @@
 	duration = 15
 
 /obj/effect/temp_visual/decoy/Initialize(mapload, atom/mimiced_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	alpha = initial(alpha)
 	if(mimiced_atom)
@@ -191,6 +203,8 @@
 		mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/effect/temp_visual/decoy/fading/Initialize(mapload, atom/mimiced_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 0, time = duration)
 
@@ -256,6 +270,8 @@
 	duration = 15
 
 /obj/effect/temp_visual/gib_animation/Initialize(mapload, gib_icon)
+	procstart = null
+	src.procstart = null
 	icon_state = gib_icon // Needs to be before ..() so icon is correct
 	. = ..()
 
@@ -267,6 +283,8 @@
 	duration = 15
 
 /obj/effect/temp_visual/dust_animation/Initialize(mapload, dust_icon)
+	procstart = null
+	src.procstart = null
 	icon_state = dust_icon // Before ..() so the correct icon is flick()'d
 	. = ..()
 
@@ -281,6 +299,8 @@
 	duration = 15
 
 /obj/effect/temp_visual/heal/Initialize(mapload, set_color)
+	procstart = null
+	src.procstart = null
 	if(set_color)
 		add_atom_colour(set_color, FIXED_COLOUR_PRIORITY)
 	. = ..()
@@ -318,6 +338,8 @@
 	duration = 5
 
 /obj/effect/temp_visual/impact_effect/Initialize(mapload, x, y)
+	procstart = null
+	src.procstart = null
 	pixel_x = x
 	pixel_y = y
 	return ..()
@@ -353,6 +375,8 @@
 	duration = 25
 
 /obj/effect/temp_visual/heart/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-4,4)
 	pixel_y = rand(-4,4)
@@ -366,6 +390,8 @@
 	var/shrink = TRUE
 
 /obj/effect/temp_visual/bleed/Initialize(mapload, atom/size_calc_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/size_matrix = matrix()
 	if(size_calc_target)
@@ -390,6 +416,8 @@
 	var/outgoing = TRUE
 
 /obj/effect/temp_visual/warp_cube/Initialize(mapload, atom/teleporting_atom, warp_color, new_outgoing)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(teleporting_atom)
 		outgoing = new_outgoing

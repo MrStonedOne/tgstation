@@ -15,6 +15,8 @@
 	reagents_add = list("water" = 0.2, "vitamin" = 0.04, "nutriment" = 0.2)
 
 /obj/item/seeds/watermelon/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is swallowing [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	user.gib()
 	new product(drop_location())

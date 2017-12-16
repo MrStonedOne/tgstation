@@ -4,6 +4,8 @@
 	icon_state = "rd"
 
 /obj/structure/closet/secure_closet/RD/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/neck/cloak/rd(src)
 	new /obj/item/clothing/suit/bio_suit/scientist(src)

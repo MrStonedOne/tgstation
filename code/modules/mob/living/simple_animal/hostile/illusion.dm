@@ -22,12 +22,16 @@
 
 
 /mob/living/simple_animal/hostile/illusion/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(world.time > life_span)
 		death()
 
 
 /mob/living/simple_animal/hostile/illusion/proc/Copy_Parent(mob/living/original, life = 50, health = 100, damage = 0, replicate = 0 )
+	procstart = null
+	src.procstart = null
 	appearance = original.appearance
 	parent_mob = original
 	setDir(original.dir)
@@ -41,6 +45,8 @@
 	pixel_x = initial(pixel_x)
 
 /mob/living/simple_animal/hostile/illusion/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(parent_mob)
 		parent_mob.examine(user)
 	else
@@ -48,6 +54,8 @@
 
 
 /mob/living/simple_animal/hostile/illusion/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && isliving(target) && prob(multiply_chance))
 		var/mob/living/L = target
@@ -71,4 +79,6 @@
 
 
 /mob/living/simple_animal/hostile/illusion/escape/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	return FALSE

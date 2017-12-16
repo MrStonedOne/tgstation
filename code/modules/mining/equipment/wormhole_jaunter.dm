@@ -14,11 +14,15 @@
 	slot_flags = SLOT_BELT
 
 /obj/item/device/wormhole_jaunter/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='notice'>[user.name] activates the [src.name]!</span>")
 	SSblackbox.record_feedback("tally", "jaunter", 1, "User") // user activated
 	activate(user, TRUE)
 
 /obj/item/device/wormhole_jaunter/proc/turf_check(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/device_turf = get_turf(user)
 	if(!device_turf || device_turf.z == ZLEVEL_CENTCOM || device_turf.z == ZLEVEL_TRANSIT)
 		to_chat(user, "<span class='notice'>You're having difficulties getting the [src.name] to work.</span>")
@@ -26,6 +30,8 @@
 	return TRUE
 
 /obj/item/device/wormhole_jaunter/proc/get_destinations(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/destinations = list()
 
 	if(isgolem(user))
@@ -46,6 +52,8 @@
 	return destinations
 
 /obj/item/device/wormhole_jaunter/proc/activate(mob/user, adjacent)
+	procstart = null
+	src.procstart = null
 	if(!turf_check(user))
 		return
 
@@ -61,6 +69,8 @@
 	qdel(src)
 
 /obj/item/device/wormhole_jaunter/emp_act(power)
+	procstart = null
+	src.procstart = null
 	var/triggered = FALSE
 
 	if(usr.get_item_by_slot(slot_belt) == src)
@@ -75,6 +85,8 @@
 		activate(usr)
 
 /obj/item/device/wormhole_jaunter/proc/chasm_react(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.get_item_by_slot(slot_belt) == src)
 		to_chat(user, "Your [src] activates, saving you from the chasm!</span>")
 		SSblackbox.record_feedback("tally", "jaunter", 1, "Chasm") // chasm automatic activation
@@ -91,6 +103,8 @@
 	mech_sized = TRUE //save your ripley
 
 /obj/effect/portal/wormhole/jaunt_tunnel/teleport(atom/movable/M)
+	procstart = null
+	src.procstart = null
 	if(!ismob(M) && !isobj(M))	//No don't teleport lighting and effects!
 		return
 

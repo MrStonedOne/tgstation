@@ -7,6 +7,8 @@
 GLOBAL_DATUM_INIT(self_state, /datum/ui_state/self_state, new)
 
 /datum/ui_state/self_state/can_use_topic(src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(src_object != user)
 		return UI_CLOSE
 	return user.shared_ui_interaction(src_object)

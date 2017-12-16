@@ -2,12 +2,16 @@
 	blood_volume = BLOOD_VOLUME_NORMAL
 
 /mob/living/carbon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(1000)
 	update_body_parts() //to update the carbon's new bodyparts appearance
 	GLOB.carbon_list += src
 
 /mob/living/carbon/Destroy()
+	procstart = null
+	src.procstart = null
 	//This must be done first, so the mob ghosts correctly before DNA etc is nulled
 	. =  ..()
 
@@ -20,6 +24,8 @@
 	GLOB.carbon_list -= src
 
 /mob/living/carbon/relaymove(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if(user in src.stomach_contents)
 		if(prob(40))
 			if(prob(25))
@@ -44,6 +50,8 @@
 
 
 /mob/living/carbon/swap_hand(held_index)
+	procstart = null
+	src.procstart = null
 	if(!held_index)
 		held_index = (active_hand_index % held_items.len)+1
 
@@ -83,6 +91,8 @@
 		mode() // Activate held item
 
 /mob/living/carbon/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(lying && surgeries.len)
 		if(user != src && user.a_intent == INTENT_HELP)
 			for(var/datum/surgery/S in surgeries)
@@ -91,6 +101,8 @@
 	return ..()
 
 /mob/living/carbon/throw_impact(atom/hit_atom, throwingdatum)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/hurt = TRUE
 	if(istype(throwingdatum, /datum/thrownthing))
@@ -119,6 +131,8 @@
 
 //Throwing stuff
 /mob/living/carbon/proc/toggle_throw_mode()
+	procstart = null
+	src.procstart = null
 	if(stat)
 		return
 	if(in_throw_mode)
@@ -128,20 +142,28 @@
 
 
 /mob/living/carbon/proc/throw_mode_off()
+	procstart = null
+	src.procstart = null
 	in_throw_mode = 0
 	if(client && hud_used)
 		hud_used.throw_icon.icon_state = "act_throw_off"
 
 
 /mob/living/carbon/proc/throw_mode_on()
+	procstart = null
+	src.procstart = null
 	in_throw_mode = 1
 	if(client && hud_used)
 		hud_used.throw_icon.icon_state = "act_throw_on"
 
 /mob/proc/throw_item(atom/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/throw_item(atom/target)
+	procstart = null
+	src.procstart = null
 	throw_mode_off()
 	if(!target || !isturf(loc))
 		return
@@ -175,13 +197,19 @@
 		thrown_thing.throw_at(target, thrown_thing.throw_range, thrown_thing.throw_speed, src)
 
 /mob/living/carbon/restrained(ignore_grab)
+	procstart = null
+	src.procstart = null
 	. = (handcuffed || (!ignore_grab && pulledby && pulledby.grab_state >= GRAB_AGGRESSIVE))
 
 /mob/living/carbon/proc/canBeHandcuffed()
+	procstart = null
+	src.procstart = null
 	return 0
 
 
 /mob/living/carbon/show_inv(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = {"
 	<HR>
@@ -213,6 +241,8 @@
 	onclose(user, "mob[REF(src)]")
 
 /mob/living/carbon/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	//strip panel
 	if(usr.canUseTopic(src, BE_CLOSE, NO_DEXTERY))
@@ -239,15 +269,21 @@
     loc.handle_fall(src, forced)//it's loc so it doesn't call the mob's handle_fall which does nothing
 
 /mob/living/carbon/is_muzzled()
+	procstart = null
+	src.procstart = null
 	return(istype(src.wear_mask, /obj/item/clothing/mask/muzzle))
 
 /mob/living/carbon/hallucinating()
+	procstart = null
+	src.procstart = null
 	if(hallucination)
 		return TRUE
 	else
 		return FALSE
 
 /mob/living/carbon/resist_buckle()
+	procstart = null
+	src.procstart = null
 	if(restrained())
 		changeNext_move(CLICK_CD_BREAKOUT)
 		last_special = world.time + CLICK_CD_BREAKOUT
@@ -264,6 +300,8 @@
 		buckled.user_unbuckle_mob(src,src)
 
 /mob/living/carbon/resist_fire()
+	procstart = null
+	src.procstart = null
 	fire_stacks -= 5
 	Knockdown(60, TRUE, TRUE)
 	spin(32,2)
@@ -277,6 +315,8 @@
 	return
 
 /mob/living/carbon/resist_restraints()
+	procstart = null
+	src.procstart = null
 	var/obj/item/I = null
 	var/type = 0
 	if(handcuffed)
@@ -296,6 +336,8 @@
 
 
 /mob/living/carbon/proc/cuff_resist(obj/item/I, breakouttime = 600, cuff_break = 0)
+	procstart = null
+	src.procstart = null
 	if(I.being_removed)
 		to_chat(src, "<span class='warning'>You're already attempting to remove [I]!</span>")
 		return
@@ -323,6 +365,8 @@
 	I.being_removed = FALSE
 
 /mob/living/carbon/proc/uncuff()
+	procstart = null
+	src.procstart = null
 	if (handcuffed)
 		var/obj/item/W = handcuffed
 		handcuffed = null
@@ -353,6 +397,8 @@
 		changeNext_move(0)
 
 /mob/living/carbon/proc/clear_cuffs(obj/item/I, cuff_break)
+	procstart = null
+	src.procstart = null
 	if(!I.loc || buckled)
 		return
 	visible_message("<span class='danger'>[src] manages to [cuff_break ? "break" : "remove"] [I]!</span>")
@@ -391,12 +437,16 @@
 		return TRUE
 
 /mob/living/carbon/get_standard_pixel_y_offset(lying = 0)
+	procstart = null
+	src.procstart = null
 	if(lying)
 		return -6
 	else
 		return initial(pixel_y)
 
 /mob/living/carbon/proc/accident(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!I || (I.flags_1 & (NODROP_1|ABSTRACT_1)))
 		return
 
@@ -425,6 +475,8 @@
 			I.throw_at(target,I.throw_range,I.throw_speed,src)
 
 /mob/living/carbon/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		var/obj/item/organ/alien/plasmavessel/vessel = getorgan(/obj/item/organ/alien/plasmavessel)
@@ -436,11 +488,15 @@
 	add_abilities_to_panel()
 
 /mob/living/carbon/attack_ui(slot)
+	procstart = null
+	src.procstart = null
 	if(!has_hand_for_held_index(active_hand_index))
 		return 0
 	return ..()
 
 /mob/living/carbon/proc/vomit(lost_nutrition = 10, blood = FALSE, stun = TRUE, distance = 1, message = TRUE, toxic = FALSE)
+	procstart = null
+	src.procstart = null
 	if(dna && dna.species && NOHUNGER in dna.species.species_traits)
 		return 1
 
@@ -484,6 +540,8 @@
 	return 1
 
 /mob/living/carbon/proc/spew_organ(power = 5)
+	procstart = null
+	src.procstart = null
 	if(!internal_organs.len)
 		return //Guess we're out of organs
 	var/obj/item/organ/guts = pick(internal_organs)
@@ -495,12 +553,16 @@
 
 
 /mob/living/carbon/fully_replace_character_name(oldname,newname)
+	procstart = null
+	src.procstart = null
 	..()
 	if(dna)
 		dna.real_name = real_name
 
 //Updates the mob's health from bodyparts and mob damage variables
 /mob/living/carbon/updatehealth()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	var/total_burn	= 0
@@ -516,6 +578,8 @@
 	med_hud_set_health()
 
 /mob/living/carbon/update_sight()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	if(stat == DEAD)
@@ -565,6 +629,8 @@
 
 //to recalculate and update the mob's total tint from tinted equipment it's wearing.
 /mob/living/carbon/proc/update_tint()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.tinted_weldhelh)
 		return
 	tinttotal = get_total_tint()
@@ -576,6 +642,8 @@
 		clear_fullscreen("tint", 0)
 
 /mob/living/carbon/proc/get_total_tint()
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(istype(head, /obj/item/clothing/head))
 		var/obj/item/clothing/head/HT = head
@@ -593,6 +661,8 @@
 //this handles hud updates
 /mob/living/carbon/update_damage_hud()
 
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 
@@ -686,6 +756,8 @@
 		clear_fullscreen("brute")
 
 /mob/living/carbon/update_health_hud(shown_health_amount)
+	procstart = null
+	src.procstart = null
 	if(!client || !hud_used)
 		return
 	if(hud_used.healths)
@@ -711,10 +783,14 @@
 			hud_used.healths.icon_state = "health7"
 
 /mob/living/carbon/proc/update_internals_hud_icon(internal_state = 0)
+	procstart = null
+	src.procstart = null
 	if(hud_used && hud_used.internals)
 		hud_used.internals.icon_state = "internal[internal_state]"
 
 /mob/living/carbon/update_stat()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
@@ -737,6 +813,8 @@
 
 //called when we get cuffed/uncuffed
 /mob/living/carbon/proc/update_handcuffed()
+	procstart = null
+	src.procstart = null
 	if(handcuffed)
 		drop_all_held_items()
 		stop_pulling()
@@ -748,6 +826,8 @@
 	update_hud_handcuffed()
 
 /mob/living/carbon/fully_heal(admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		reagents.clear_reagents()
 	var/obj/item/organ/brain/B = getorgan(/obj/item/organ/brain)
@@ -773,11 +853,15 @@
 	restoreEars()
 
 /mob/living/carbon/can_be_revived()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!getorgan(/obj/item/organ/brain) && (!mind || !mind.has_antag_datum(/datum/antagonist/changeling)))
 		return 0
 
 /mob/living/carbon/harvest(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	var/organs_amt = 0
@@ -793,6 +877,8 @@
 	..()
 
 /mob/living/carbon/ExtinguishMob()
+	procstart = null
+	src.procstart = null
 	for(var/X in get_equipped_items())
 		var/obj/item/I = X
 		I.acid_level = 0 //washes off the acid on our clothes
@@ -800,16 +886,22 @@
 	..()
 
 /mob/living/carbon/fakefire(var/fire_icon = "Generic_mob_burning")
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/new_fire_overlay = mutable_appearance('icons/mob/OnFire.dmi', fire_icon, -FIRE_LAYER)
 	new_fire_overlay.appearance_flags = RESET_COLOR
 	overlays_standing[FIRE_LAYER] = new_fire_overlay
 	apply_overlay(FIRE_LAYER)
 
 /mob/living/carbon/fakefireextinguish()
+	procstart = null
+	src.procstart = null
 	remove_overlay(FIRE_LAYER)
 
 
 /mob/living/carbon/proc/devour_mob(mob/living/carbon/C, devour_time = 130)
+	procstart = null
+	src.procstart = null
 	C.visible_message("<span class='danger'>[src] is attempting to devour [C]!</span>", \
 					"<span class='userdanger'>[src] is attempting to devour you!</span>")
 	if(!do_mob(src, C, devour_time))
@@ -822,6 +914,8 @@
 		add_logs(src, C, "devoured")
 
 /mob/living/carbon/proc/create_bodyparts()
+	procstart = null
+	src.procstart = null
 	var/l_arm_index_next = -1
 	var/r_arm_index_next = 0
 	for(var/X in bodyparts)
@@ -840,11 +934,15 @@
 
 
 /mob/living/carbon/proc/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	for(var/X in internal_organs)
 		var/obj/item/organ/I = X
 		I.Insert(src)
 
 /mob/living/carbon/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "---"
 	.["Make AI"] = "?_src_=vars;[HrefToken()];makeai=[REF(src)]"

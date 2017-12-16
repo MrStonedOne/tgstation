@@ -13,10 +13,14 @@
 								 "plantbgone","banana","charcoal","space_drugs","morphine","holywater","ethanol","hot_coco","sacid")
 
 /datum/round_event/vent_clog/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("The scrubbers network is experiencing a backpressure surge. Some ejection of contents may occur.", "Atmospherics alert")
 
 
 /datum/round_event/vent_clog/setup()
+	procstart = null
+	src.procstart = null
 	endWhen = rand(25, 100)
 	for(var/obj/machinery/atmospherics/components/unary/vent_scrubber/temp_vent in GLOB.machines)
 		if((temp_vent.loc.z in GLOB.station_z_levels) && !temp_vent.welded)
@@ -27,6 +31,8 @@
 		return kill()
 
 /datum/round_event/vent_clog/tick()
+	procstart = null
+	src.procstart = null
 	if(activeFor % interval == 0)
 		var/obj/machinery/atmospherics/components/unary/vent = pick_n_take(vents)
 		while(vent && vent.welded)

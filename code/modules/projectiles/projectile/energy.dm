@@ -21,6 +21,8 @@
 	range = 7
 
 /obj/item/projectile/energy/electrode/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ismob(target) || blocked >= 100) //Fully blocked by mob or collided with dense object - burst into sparks!
 		do_sparks(1, TRUE, src)
@@ -44,10 +46,14 @@
 	range = 10
 
 /obj/item/projectile/energy/net/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SpinAnimation()
 
 /obj/item/projectile/energy/net/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/turf/Tloc = get_turf(target)
 		if(!locate(/obj/effect/nettingportal) in Tloc)
@@ -55,6 +61,8 @@
 	..()
 
 /obj/item/projectile/energy/net/on_range()
+	procstart = null
+	src.procstart = null
 	do_sparks(1, TRUE, src)
 	..()
 
@@ -67,6 +75,8 @@
 	anchored = TRUE
 
 /obj/effect/nettingportal/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/device/radio/beacon/teletarget = null
 	for(var/obj/machinery/computer/teleporter/com in GLOB.machines)
@@ -77,6 +87,8 @@
 	addtimer(CALLBACK(src, .proc/pop, teletarget), 30)
 
 /obj/effect/nettingportal/proc/pop(teletarget)
+	procstart = null
+	src.procstart = null
 	if(teletarget)
 		for(var/mob/living/L in get_turf(src))
 			do_teleport(L, teletarget, 2)//teleport what's in the tile to the beacon
@@ -87,9 +99,13 @@
 	qdel(src)
 
 /obj/effect/nettingportal/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/nettingportal/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -102,6 +118,8 @@
 	range = 4
 
 /obj/item/projectile/energy/trap/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ismob(target) || blocked >= 100) //Fully blocked by mob or collided with dense object - drop a trap
 		new/obj/item/restraints/legcuffs/beartrap/energy(get_turf(loc))
 	else if(iscarbon(target))
@@ -110,6 +128,8 @@
 	..()
 
 /obj/item/projectile/energy/trap/on_range()
+	procstart = null
+	src.procstart = null
 	new /obj/item/restraints/legcuffs/beartrap/energy(loc)
 	..()
 
@@ -122,6 +142,8 @@
 	range = 10
 
 /obj/item/projectile/energy/trap/cyborg/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ismob(target) || blocked >= 100)
 		do_sparks(1, TRUE, src)
 		qdel(src)
@@ -132,6 +154,8 @@
 	..()
 
 /obj/item/projectile/energy/trap/cyborg/on_range()
+	procstart = null
+	src.procstart = null
 	do_sparks(1, TRUE, src)
 	qdel(src)
 
@@ -174,11 +198,15 @@
 	var/chain
 
 /obj/item/projectile/energy/tesla/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(firer)
 		chain = firer.Beam(src, icon_state = "lightning[rand(1, 12)]", time = INFINITY, maxdistance = INFINITY)
 	..()
 
 /obj/item/projectile/energy/tesla/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(chain)
 	return ..()
 
@@ -186,6 +214,8 @@
 	name = "energy orb"
 
 /obj/item/projectile/energy/tesla/revolver/on_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		tesla_zap(target, 3, 10000)
@@ -195,6 +225,8 @@
 	name = "tesla orb"
 
 /obj/item/projectile/energy/tesla/cannon/on_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tesla_zap(target, 3, 10000, explosive = FALSE, stun_mobs = FALSE)
 	qdel(src)

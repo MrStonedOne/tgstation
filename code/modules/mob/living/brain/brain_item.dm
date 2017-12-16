@@ -20,6 +20,8 @@
 	decoy_override = TRUE
 
 /obj/item/organ/brain/Insert(mob/living/carbon/C, special = 0,no_id_transfer = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 	name = "brain"
@@ -51,6 +53,8 @@
 	C.update_hair()
 
 /obj/item/organ/brain/Remove(mob/living/carbon/C, special = 0, no_id_transfer = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/X in traumas)
 		var/datum/brain_trauma/BT = X
@@ -62,9 +66,13 @@
 	C.update_hair()
 
 /obj/item/organ/brain/prepare_eat()
+	procstart = null
+	src.procstart = null
 	return // Too important to eat.
 
 /obj/item/organ/brain/proc/transfer_identity(mob/living/L)
+	procstart = null
+	src.procstart = null
 	name = "[L.name]'s brain"
 	if(brainmob || decoy_override)
 		return
@@ -89,11 +97,15 @@
 	to_chat(brainmob, "<span class='notice'>You feel slightly disoriented. That's normal when you're just a brain.</span>")
 
 /obj/item/organ/brain/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	if(brainmob)
 		O.attack(brainmob, user) //Oh noooeeeee
 
 /obj/item/organ/brain/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(brainmob)
@@ -111,6 +123,8 @@
 			to_chat(user, "This one is completely devoid of life.")
 
 /obj/item/organ/brain/attack(mob/living/carbon/C, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(C))
 		return ..()
 
@@ -146,11 +160,15 @@
 		..()
 
 /obj/item/organ/brain/proc/get_brain_damage()
+	procstart = null
+	src.procstart = null
 	var/brain_damage_threshold = max_integrity * BRAIN_DAMAGE_INTEGRITY_MULTIPLIER
 	var/offset_integrity = obj_integrity - (max_integrity - brain_damage_threshold)
 	. = (1 - (offset_integrity / brain_damage_threshold)) * BRAIN_DAMAGE_DEATH
 
 /obj/item/organ/brain/proc/adjust_brain_damage(amount, maximum)
+	procstart = null
+	src.procstart = null
 	var/adjusted_amount
 	if(amount >= 0 && maximum)
 		var/brainloss = get_brain_damage()
@@ -184,6 +202,8 @@
 ////////////////////////////////////TRAUMAS////////////////////////////////////////
 
 /obj/item/organ/brain/proc/has_trauma_type(brain_trauma_type, consider_permanent = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/X in traumas)
 		var/datum/brain_trauma/BT = X
 		if(istype(BT, brain_trauma_type) && (consider_permanent || !BT.permanent))
@@ -192,6 +212,8 @@
 
 //Add a specific trauma
 /obj/item/organ/brain/proc/gain_trauma(datum/brain_trauma/trauma, permanent = FALSE, list/arguments)
+	procstart = null
+	src.procstart = null
 	var/trauma_type
 	if(ispath(trauma))
 		trauma_type = trauma
@@ -202,6 +224,8 @@
 
 //Add a random trauma of a certain subtype
 /obj/item/organ/brain/proc/gain_trauma_type(brain_trauma_type = /datum/brain_trauma, permanent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/datum/brain_trauma/possible_traumas = list()
 	for(var/T in subtypesof(brain_trauma_type))
 		var/datum/brain_trauma/BT = T
@@ -213,11 +237,15 @@
 
 //Cure a random trauma of a certain subtype
 /obj/item/organ/brain/proc/cure_trauma_type(brain_trauma_type, cure_permanent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/brain_trauma/trauma = has_trauma_type(brain_trauma_type)
 	if(trauma && (cure_permanent || !trauma.permanent))
 		qdel(trauma)
 
 /obj/item/organ/brain/proc/cure_all_traumas(cure_permanent = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/X in traumas)
 		var/datum/brain_trauma/trauma = X
 		if(cure_permanent || !trauma.permanent)

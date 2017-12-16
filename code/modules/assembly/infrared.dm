@@ -11,18 +11,26 @@
 
 
 /obj/item/device/assembly/infra/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/device/assembly/infra/Destroy()
+	procstart = null
+	src.procstart = null
 	if(first)
 		qdel(first)
 	return ..()
 
 /obj/item/device/assembly/infra/describe()
+	procstart = null
+	src.procstart = null
 	return "The infrared trigger is [on?"on":"off"]."
 
 /obj/item/device/assembly/infra/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0//Cooldown check
 	on = !on
@@ -30,6 +38,8 @@
 	return 1
 
 /obj/item/device/assembly/infra/toggle_secure()
+	procstart = null
+	src.procstart = null
 	secured = !secured
 	if(secured)
 		START_PROCESSING(SSobj, src)
@@ -42,6 +52,8 @@
 	return secured
 
 /obj/item/device/assembly/infra/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	attached_overlays = list()
 	if(on)
@@ -53,6 +65,8 @@
 	return
 
 /obj/item/device/assembly/infra/process()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		if(first)
 			qdel(first)
@@ -77,23 +91,31 @@
 			I.process()
 
 /obj/item/device/assembly/infra/attack_hand()
+	procstart = null
+	src.procstart = null
 	qdel(first)
 	..()
 	return
 
 /obj/item/device/assembly/infra/Move()
+	procstart = null
+	src.procstart = null
 	var/t = dir
 	. = ..()
 	setDir(t)
 	qdel(first)
 
 /obj/item/device/assembly/infra/holder_movement()
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return 0
 	qdel(first)
 	return 1
 
 /obj/item/device/assembly/infra/proc/trigger_beam()
+	procstart = null
+	src.procstart = null
 	if(!secured || !on || next_activate > world.time)
 		return FALSE
 	pulse(0)
@@ -111,6 +133,8 @@
 		return
 
 /obj/item/device/assembly/infra/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usr.incapacitated() || !in_range(loc, usr))
 		usr << browse(null, "window=infra")
@@ -140,6 +164,8 @@
 	setDir(turn(dir, -90))
 
 /obj/item/device/assembly/infra/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -167,18 +193,24 @@
 
 
 /obj/effect/beam/i_beam/proc/hit()
+	procstart = null
+	src.procstart = null
 	if(master)
 		master.trigger_beam()
 	qdel(src)
 	return
 
 /obj/effect/beam/i_beam/proc/vis_spread(v)
+	procstart = null
+	src.procstart = null
 	visible = v
 	if(next)
 		next.vis_spread(v)
 
 
 /obj/effect/beam/i_beam/process()
+	procstart = null
+	src.procstart = null
 	if((loc.density || !(master)))
 		qdel(src)
 		return
@@ -208,18 +240,26 @@
 			I.process()
 
 /obj/effect/beam/i_beam/Collide()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return
 
 /obj/effect/beam/i_beam/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	hit()
 
 /obj/effect/beam/i_beam/Crossed(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/effect/beam))
 		return
 	hit()
 
 /obj/effect/beam/i_beam/Destroy()
+	procstart = null
+	src.procstart = null
 	if(master.first == src)
 		master.first = null
 	if(next)

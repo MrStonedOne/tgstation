@@ -77,6 +77,8 @@
 	"cerulean", "sepia", "black", "pyrite")
 
 /mob/living/simple_animal/slime/Initialize(mapload, new_colour="grey", new_is_adult=FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/action/innate/slime/feed/F = new
 	F.Grant(src)
 
@@ -95,12 +97,16 @@
 	. = ..()
 
 /mob/living/simple_animal/slime/Destroy()
+	procstart = null
+	src.procstart = null
 	for (var/A in actions)
 		var/datum/action/AC = A
 		AC.Remove(src)
 	return ..()
 
 /mob/living/simple_animal/slime/proc/set_colour(new_colour)
+	procstart = null
+	src.procstart = null
 	colour = new_colour
 	update_name()
 	slime_mutation = mutation_table(colour)
@@ -109,15 +115,21 @@
 	regenerate_icons()
 
 /mob/living/simple_animal/slime/proc/update_name()
+	procstart = null
+	src.procstart = null
 	if(slime_name_regex.Find(name))
 		number = rand(1, 1000)
 		name = "[colour] [is_adult ? "adult" : "baby"] slime ([number])"
 		real_name = name
 
 /mob/living/simple_animal/slime/proc/random_colour()
+	procstart = null
+	src.procstart = null
 	set_colour(pick(slime_colours))
 
 /mob/living/simple_animal/slime/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	var/icon_text = "[colour] [is_adult ? "adult" : "baby"] slime"
 	icon_dead = "[icon_text] dead"
@@ -130,6 +142,8 @@
 	..()
 
 /mob/living/simple_animal/slime/movement_delay()
+	procstart = null
+	src.procstart = null
 	if(bodytemperature >= 330.23) // 135 F or 57.08 C
 		return -1	// slimes become supercharged at high temperatures
 
@@ -158,6 +172,8 @@
 	. += config_slime_delay
 
 /mob/living/simple_animal/slime/ObjCollide(obj/O)
+	procstart = null
+	src.procstart = null
 	if(!client && powerlevel > 0)
 		var/probab = 10
 		switch(powerlevel)
@@ -183,9 +199,13 @@
 							Atkcool = 0
 
 /mob/living/simple_animal/slime/Process_Spacemove(movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	return 2
 
 /mob/living/simple_animal/slime/Stat()
+	procstart = null
+	src.procstart = null
 	if(..())
 
 		if(!docile)
@@ -203,11 +223,15 @@
 
 
 /mob/living/simple_animal/slime/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced)
 		amount = -abs(amount)
 	return ..() //Heals them
 
 /mob/living/simple_animal/slime/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(!Proj)
 		return
 	attacked += 10
@@ -219,10 +243,14 @@
 	return 0
 
 /mob/living/simple_animal/slime/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	powerlevel = 0 // oh no, the power!
 	..()
 
 /mob/living/simple_animal/slime/MouseDrop(atom/movable/A as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(isliving(A) && A != src && usr == src)
 		var/mob/living/Food = A
 		if(CanFeedon(Food))
@@ -230,15 +258,23 @@
 	..()
 
 /mob/living/simple_animal/slime/doUnEquip(obj/item/W)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/slime/start_pulling(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/slime/attack_ui(slot)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/slime/attack_slime(mob/living/simple_animal/slime/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful slime attack
 		if(M == src)
 			return
@@ -255,20 +291,28 @@
 			M.updatehealth()
 
 /mob/living/simple_animal/slime/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		attacked += 10
 
 
 /mob/living/simple_animal/slime/attack_paw(mob/living/carbon/monkey/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful monkey bite.
 		attacked += 10
 
 /mob/living/simple_animal/slime/attack_larva(mob/living/carbon/alien/larva/L)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful larva bite.
 		attacked += 10
 
 /mob/living/simple_animal/slime/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		discipline_slime(user)
 		return ..()
@@ -276,6 +320,8 @@
 
 
 /mob/living/simple_animal/slime/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if(buckled)
 		M.do_attack_animation(src, ATTACK_EFFECT_DISARM)
 		if(buckled == M)
@@ -309,12 +355,16 @@
 			attacked += 10
 
 /mob/living/simple_animal/slime/attack_alien(mob/living/carbon/alien/humanoid/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //if harm or disarm intent.
 		attacked += 10
 		discipline_slime(M)
 
 
 /mob/living/simple_animal/slime/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD && surgeries.len)
 		if(user.a_intent == INTENT_HELP)
 			for(var/datum/surgery/S in surgeries)
@@ -347,6 +397,8 @@
 	..()
 
 /mob/living/simple_animal/slime/proc/apply_water()
+	procstart = null
+	src.procstart = null
 	adjustBruteLoss(rand(15,20))
 	if(!client)
 		if(Target) // Like cats
@@ -356,6 +408,8 @@
 
 /mob/living/simple_animal/slime/examine(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/msg = "<span class='info'>*---------*\nThis is [icon2html(src, user)] \a <EM>[src]</EM>!\n"
 	if (src.stat == DEAD)
 		msg += "<span class='deadsay'>It is limp and unresponsive.</span>\n"
@@ -388,6 +442,8 @@
 	return
 
 /mob/living/simple_animal/slime/proc/discipline_slime(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat)
 		return
 
@@ -417,14 +473,22 @@
 	docile = 1
 
 /mob/living/simple_animal/slime/can_unbuckle()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/simple_animal/slime/can_buckle()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/simple_animal/slime/get_mob_buckling_height(mob/seat)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 3
 
 /mob/living/simple_animal/slime/random/Initialize(mapload, new_colour, new_is_adult)
+	procstart = null
+	src.procstart = null
 	. = ..(mapload, pick(slime_colours), prob(50))

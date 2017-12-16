@@ -9,15 +9,21 @@
 	var/max_paper = 30
 
 /obj/item/computer_hardware/printer/diagnostics(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "Paper level: [stored_paper]/[max_paper].")
 
 /obj/item/computer_hardware/printer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Paper level: [stored_paper]/[max_paper].</span>")
 
 
 /obj/item/computer_hardware/printer/proc/print_text(var/text_to_print, var/paper_title = "")
+	procstart = null
+	src.procstart = null
 	if(!stored_paper)
 		return FALSE
 	if(!check_functionality())
@@ -39,6 +45,8 @@
 	return TRUE
 
 /obj/item/computer_hardware/printer/try_insert(obj/item/I, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/paper))
 		if(stored_paper >= max_paper)
 			to_chat(user, "<span class='warning'>You try to add \the [I] into [src], but its paper bin is full!</span>")

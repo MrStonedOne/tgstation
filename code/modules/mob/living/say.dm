@@ -70,6 +70,8 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 ))
 
 /mob/living/say(message, bubble_type,var/list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE)
+	procstart = null
+	src.procstart = null
 	var/static/list/crit_allowed_modes = list(MODE_WHISPER = TRUE, MODE_CHANGELING = TRUE, MODE_ALIEN = TRUE)
 	var/static/list/unconscious_allowed_modes = list(MODE_CHANGELING = TRUE, MODE_ALIEN = TRUE)
 	var/talk_key = get_key(message)
@@ -204,6 +206,8 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	return 1
 
 /mob/living/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	var/deaf_message
@@ -222,6 +226,8 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	return message
 
 /mob/living/send_speech(message, message_range = 6, obj/source = src, bubble_type = bubble_icon, list/spans, datum/language/message_language=null, message_mode)
+	procstart = null
+	src.procstart = null
 	var/static/list/eavesdropping_modes = list(MODE_WHISPER = TRUE, MODE_WHISPER_CRIT = TRUE)
 	var/eavesdrop_range = 0
 	if(eavesdropping_modes[message_mode])
@@ -266,9 +272,13 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	INVOKE_ASYNC(GLOBAL_PROC, /.proc/flick_overlay, I, speech_bubble_recipients, 30)
 
 /mob/proc/binarycheck()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/can_speak(message) //For use outside of Say()
+	procstart = null
+	src.procstart = null
 	if(can_speak_basic(message) && can_speak_vocal(message))
 		return 1
 
@@ -295,11 +305,15 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	return 1
 
 /mob/living/proc/check_emote(message)
+	procstart = null
+	src.procstart = null
 	if(copytext(message, 1, 2) == "*")
 		emote(copytext(message, 2))
 		return 1
 
 /mob/living/proc/get_message_mode(message)
+	procstart = null
+	src.procstart = null
 	var/key = copytext(message, 1, 2)
 	if(key == "#")
 		return MODE_WHISPER
@@ -310,11 +324,15 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		return GLOB.department_radio_keys[key_symbol]
 
 /mob/living/proc/get_key(message)
+	procstart = null
+	src.procstart = null
 	var/key = copytext(message, 1, 2)
 	if(key in GLOB.department_radio_prefixes)
 		return lowertext(copytext(message, 2, 3))
 
 /mob/living/proc/get_message_language(message)
+	procstart = null
+	src.procstart = null
 	if(copytext(message, 1, 2) == ",")
 		var/key = copytext(message, 2, 3)
 		for(var/ld in GLOB.all_languages)
@@ -324,6 +342,8 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	return null
 
 /mob/living/proc/treat_message(message)
+	procstart = null
+	src.procstart = null
 	if(derpspeech)
 		message = derpspeech(message, stuttering)
 
@@ -341,6 +361,8 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	return message
 
 /mob/living/proc/radio(message, message_mode, list/spans, language)
+	procstart = null
+	src.procstart = null
 	switch(message_mode)
 		if(MODE_WHISPER)
 			return ITALICS
@@ -365,6 +387,8 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 	return 0
 
 /mob/living/say_mod(input, message_mode)
+	procstart = null
+	src.procstart = null
 	if(message_mode == MODE_WHISPER)
 		. = verb_whisper
 	else if(message_mode == MODE_WHISPER_CRIT)
@@ -377,9 +401,13 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 		. = ..()
 
 /mob/living/whisper(message, bubble_type, var/list/spans = list(), sanitize = TRUE, datum/language/language = null)
+	procstart = null
+	src.procstart = null
 	say("#[message]", bubble_type, spans, sanitize, language)
 
 /mob/living/get_language_holder(shadow=TRUE)
+	procstart = null
+	src.procstart = null
 	if(mind && shadow)
 		// Mind language holders shadow mob holders.
 		. = mind.get_language_holder()

@@ -10,6 +10,8 @@ GLOBAL_LIST_INIT(diagonals, list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 GLOBAL_LIST_INIT(station_z_levels, list(ZLEVEL_STATION_PRIMARY))
 
 GLOBAL_LIST(global_map)
+	procstart = null
+	src.procstart = null
 	//list/global_map = list(list(1,5),list(4,3))//an array of map Z levels.
 	//Resulting sector map looks like
 	//|_1_|_4_|
@@ -46,6 +48,8 @@ GLOBAL_LIST_EMPTY(servant_spawns) //Servants of Ratvar spawn here
 GLOBAL_LIST_EMPTY(city_of_cogs_spawns) //Anyone entering the City of Cogs spawns here
 GLOBAL_LIST_EMPTY(ruin_landmarks)
 
+	procstart = null
+	src.procstart = null
 	//away missions
 GLOBAL_LIST_EMPTY(awaydestinations)	//a list of landmarks that the warpgate can take you to
 

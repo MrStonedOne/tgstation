@@ -21,6 +21,8 @@
 	pipe_state = "injector"
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 	return ..()
 
@@ -28,6 +30,8 @@
 	on = TRUE
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(showpipe)
 		add_overlay(getpipeimage(icon, "inje_cap", initialize_directions))
@@ -39,6 +43,8 @@
 	icon_state = "inje_on"
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/power_change()
+	procstart = null
+	src.procstart = null
 	var/old_stat = stat
 	..()
 	if(old_stat != stat)
@@ -46,6 +52,8 @@
 
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 
 	injecting = 0
@@ -67,6 +75,8 @@
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/proc/inject()
 
+	procstart = null
+	src.procstart = null
 	if(on || injecting || !is_operational())
 		return
 
@@ -83,6 +93,8 @@
 	flick("inje_inject", src)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
@@ -90,6 +102,8 @@
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/proc/broadcast_status()
 
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return
 
@@ -104,12 +118,16 @@
 	radio_connection.post_signal(src, signal)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/atmosinit()
+	procstart = null
+	src.procstart = null
 	set_frequency(frequency)
 	broadcast_status()
 	..()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/receive_signal(datum/signal/signal)
 
+	procstart = null
+	src.procstart = null
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
@@ -147,6 +165,8 @@
 		ui.open()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(volume_rate)
@@ -154,6 +174,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -181,6 +203,8 @@
 	broadcast_status()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")

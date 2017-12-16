@@ -30,6 +30,8 @@
 	var/unwieldsound = null
 
 /obj/item/twohanded/proc/unwield(mob/living/carbon/user, show_message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!wielded || !user)
 		return
 	wielded = 0
@@ -56,6 +58,8 @@
 	return
 
 /obj/item/twohanded/proc/wield(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(wielded)
 		return
 	if(ismonkey(user))
@@ -86,6 +90,8 @@
 	return
 
 /obj/item/twohanded/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//handles unwielding a twohanded weapon when dropped as well as clearing up the offhand
 	if(!wielded)
@@ -93,9 +99,13 @@
 	unwield(user)
 
 /obj/item/twohanded/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/twohanded/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(wielded) //Trying to unwield it
 		unwield(user)
@@ -103,6 +113,8 @@
 		wield(user)
 
 /obj/item/twohanded/equip_to_best_slot(mob/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(src, /obj/item/twohanded/required))
 			return // unwield forces twohanded-required items to be dropped.
@@ -110,6 +122,8 @@
 		return
 
 /obj/item/twohanded/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!user.is_holding(src) && wielded && !istype(src, /obj/item/twohanded/required))
 		unwield(user)
@@ -123,11 +137,15 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/item/twohanded/offhand/unwield()
+	procstart = null
+	src.procstart = null
 	if(wielded)//Only delete if we're wielded
 		wielded = FALSE
 		qdel(src)
 
 /obj/item/twohanded/offhand/wield()
+	procstart = null
+	src.procstart = null
 	if(wielded)//Only delete if we're wielded
 		wielded = FALSE
 		qdel(src)
@@ -146,9 +164,13 @@
 	w_class = WEIGHT_CLASS_HUGE
 
 /obj/item/twohanded/required/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/twohanded/required/mob_can_equip(mob/M, mob/equipper, slot, disable_warning = 0)
+	procstart = null
+	src.procstart = null
 	if(wielded && !slot_flags)
 		if(!disable_warning)
 			to_chat(M, "<span class='warning'>[src] is too cumbersome to carry with anything but your hands!</span>")
@@ -167,6 +189,8 @@
 	..()
 
 /obj/item/twohanded/required/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	var/slotbit = slotdefine2slotbit(slot)
 	if(slot_flags & slotbit)
@@ -181,15 +205,21 @@
 		unwield(user)
 
 /obj/item/twohanded/required/dropped(mob/living/user, show_message = TRUE)
+	procstart = null
+	src.procstart = null
 	unwield(user, show_message)
 	..()
 
 /obj/item/twohanded/required/wield(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!wielded)
 		user.dropItemToGround(src)
 
 /obj/item/twohanded/required/unwield(mob/living/carbon/user, show_message = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!wielded)
 		return
 	if(show_message)
@@ -223,10 +253,14 @@
 	return
 
 /obj/item/twohanded/fireaxe/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] axes [user.p_them()]self from head to toe! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS)
 
 /obj/item/twohanded/fireaxe/afterattack(atom/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(wielded) //destroys windows and grilles in one hit
@@ -271,6 +305,8 @@
 	var/list/possible_colors = list("red", "blue", "green", "purple")
 
 /obj/item/twohanded/dualsaber/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(LAZYLEN(possible_colors))
 		item_color = pick(possible_colors)
@@ -285,10 +321,14 @@
 				light_color = LIGHT_COLOR_LAVENDER
 
 /obj/item/twohanded/dualsaber/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/item/twohanded/dualsaber/update_icon()
+	procstart = null
+	src.procstart = null
 	if(wielded)
 		icon_state = "dualsaber[item_color][wielded]"
 	else
@@ -296,6 +336,8 @@
 	clean_blood()//blood overlays get weird otherwise, because the sprite changes.
 
 /obj/item/twohanded/dualsaber/attack(mob/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(user.has_dna())
 		if(user.dna.check_mutation(HULK))
 			to_chat(user, "<span class='warning'>You grip the blade too hard and accidentally close it!</span>")
@@ -309,6 +351,8 @@
 		INVOKE_ASYNC(src, .proc/jedi_spin, user)
 
 /obj/item/twohanded/dualsaber/proc/jedi_spin(mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/i in list(NORTH,SOUTH,EAST,WEST,EAST,SOUTH,NORTH,SOUTH,EAST,WEST,EAST,SOUTH))
 		user.setDir(i)
 		if(i == WEST)
@@ -316,6 +360,8 @@
 		sleep(1)
 
 /obj/item/twohanded/dualsaber/proc/impale(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='warning'>You twirl around a bit before losing your balance and impaling yourself on [src].</span>")
 	if (force_wielded)
 		user.take_bodypart_damage(20,25)
@@ -323,6 +369,8 @@
 		user.adjustStaminaLoss(25)
 
 /obj/item/twohanded/dualsaber/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(wielded)
 		return ..()
 	return 0
@@ -354,6 +402,8 @@
 	set_light(0)
 
 /obj/item/twohanded/dualsaber/process()
+	procstart = null
+	src.procstart = null
 	if(wielded)
 		if(hacked)
 			light_color = pick(LIGHT_COLOR_RED, LIGHT_COLOR_GREEN, LIGHT_COLOR_LIGHT_CYAN, LIGHT_COLOR_LAVENDER)
@@ -362,10 +412,14 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/twohanded/dualsaber/IsReflect()
+	procstart = null
+	src.procstart = null
 	if(wielded)
 		return 1
 
 /obj/item/twohanded/dualsaber/ignition_effect(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	// same as /obj/item/melee/transforming/energy, mostly
 	if(!wielded)
 		return ""
@@ -393,6 +447,8 @@
 	possible_colors = list("purple")
 
 /obj/item/twohanded/dualsaber/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		if(!hacked)
 			hacked = TRUE
@@ -430,17 +486,23 @@
 	var/war_cry = "AAAAARGH!!!"
 
 /obj/item/twohanded/spear/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(explosive)
 		to_chat(user, "<span class='notice'>Alt-click to set your war cry.</span>")
 
 /obj/item/twohanded/spear/update_icon()
+	procstart = null
+	src.procstart = null
 	if(explosive)
 		icon_state = "spearbomb[wielded]"
 	else
 		icon_state = "spearglass[wielded]"
 
 /obj/item/twohanded/spear/afterattack(atom/movable/AM, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(isopenturf(AM)) //So you can actually melee with it
@@ -453,6 +515,8 @@
 
  //THIS MIGHT BE UNBALANCED SO I DUNNO // it totally is.
 /obj/item/twohanded/spear/throw_impact(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //not caught
 		if(explosive)
@@ -460,6 +524,8 @@
 			qdel(src)
 
 /obj/item/twohanded/spear/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.canUseTopic(src, be_close=TRUE))
 		..()
 		if(!explosive)
@@ -470,6 +536,8 @@
 				src.war_cry = input
 
 /obj/item/twohanded/spear/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	var/obj/item/twohanded/spear/S = locate() in parts_list
 	if(S)
 		if(S.explosive)
@@ -507,6 +575,8 @@
 	var/on = FALSE
 
 /obj/item/twohanded/required/chainsaw/suicide_act(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(on)
 		user.visible_message("<span class='suicide'>[user] begins to tear [user.p_their()] head off with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 		playsound(src, 'sound/weapons/chainsawhit.ogg', 100, 1)
@@ -519,6 +589,8 @@
 	return(BRUTELOSS)
 
 /obj/item/twohanded/required/chainsaw/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	to_chat(user, "As you pull the starting cord dangling from [src], [on ? "it begins to whirr." : "the chain stops moving."]")
 	force = on ? force_on : initial(force)
@@ -537,6 +609,8 @@
 		A.UpdateButtonIcon()
 
 /obj/item/twohanded/required/chainsaw/get_dismemberment_chance()
+	procstart = null
+	src.procstart = null
 	if(wielded)
 		. = ..()
 
@@ -547,6 +621,8 @@
 	force_on = 30
 
 /obj/item/twohanded/required/chainsaw/doomslayer/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK)
 		owner.visible_message("<span class='danger'>Ranged attacks just make [owner] angrier!</span>")
 		playsound(src, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, 1)
@@ -565,6 +641,8 @@
 	attack_verb = list("gored")
 
 /obj/item/twohanded/spear/grey_tide/afterattack(atom/movable/AM, mob/living/user, proximity)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!proximity)
 		return
@@ -606,6 +684,8 @@
 	force_wielded = 25
 
 /obj/item/twohanded/pitchfork/demonic/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(3,6,LIGHT_COLOR_RED)
 
@@ -622,13 +702,19 @@
 	force_wielded = 500000 // Kills you DEAD.
 
 /obj/item/twohanded/pitchfork/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "pitchfork[wielded]"
 
 /obj/item/twohanded/pitchfork/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] impales [user.p_them()]self in [user.p_their()] abdomen with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS)
 
 /obj/item/twohanded/pitchfork/demonic/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(user) && user.mind && user.owns_soul() && !is_devil(user))
 		var/mob/living/U = user
 		U.visible_message("<span class='warning'>As [U] picks [src] up, [U]'s arms briefly catch fire.</span>", \
@@ -640,12 +726,16 @@
 			U.adjustFireLoss(rand(force/2,force))
 
 /obj/item/twohanded/pitchfork/demonic/attack(mob/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(user.mind && user.owns_soul() && !is_devil(user))
 		to_chat(user, "<span class ='warning'>[src] burns in your hands.</span>")
 		user.apply_damage(rand(force/2, force), BURN, pick("l_arm", "r_arm"))
 	..()
 
 /obj/item/twohanded/pitchfork/demonic/ascended/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || !wielded)
 		return
 	if(iswallturf(target))
@@ -677,6 +767,8 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 
 /obj/item/twohanded/vibro_weapon/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(wielded)
 		final_block_chance *= 2
 	if(wielded || attack_type != PROJECTILE_ATTACK)
@@ -691,6 +783,8 @@
 	return 0
 
 /obj/item/twohanded/vibro_weapon/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "hfrequency[wielded]"
 
 /*
@@ -703,6 +797,8 @@
 	force_wielded = 23
 
 /obj/item/twohanded/fireaxe/boneaxe/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "bone_axe[wielded]"
 
 /*
@@ -728,4 +824,6 @@
 	sharpness = IS_SHARP
 
 /obj/item/twohanded/bonespear/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "bone_spear[wielded]"

@@ -30,6 +30,8 @@
 	var/list/thresholds
 
 /datum/symptom/New()
+	procstart = null
+	src.procstart = null
 	var/list/S = SSdisease.list_symptoms
 	for(var/i = 1; i <= S.len; i++)
 		if(type == S[i])
@@ -39,6 +41,8 @@
 
 // Called when processing of the advance disease, which holds this symptom, starts.
 /datum/symptom/proc/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(neutered)
 		return FALSE
 	next_activation = world.time + rand(symptom_delay_min * 10, symptom_delay_max * 10) //so it doesn't instantly activate on infection
@@ -46,11 +50,15 @@
 
 // Called when the advance disease is going to be deleted or when the advance disease stops processing.
 /datum/symptom/proc/End(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(neutered)
 		return FALSE
 	return TRUE
 
 /datum/symptom/proc/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(neutered)
 		return FALSE
 	if(world.time < next_activation)
@@ -60,6 +68,8 @@
 		return TRUE
 
 /datum/symptom/proc/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/symptom/new_symp = new type
 	new_symp.name = name
 	new_symp.id = id
@@ -67,4 +77,6 @@
 	return new_symp
 
 /datum/symptom/proc/generate_threshold_desc()
+	procstart = null
+	src.procstart = null
 	return

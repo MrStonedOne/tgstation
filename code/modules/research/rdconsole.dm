@@ -53,6 +53,8 @@ doesn't have toxins access.
 	research_control = FALSE
 
 /proc/CallMaterialName(ID)
+	procstart = null
+	src.procstart = null
 	if (copytext(ID, 1, 2) == "$" && GLOB.materials_list[ID])
 		var/datum/material/material = GLOB.materials_list[ID]
 		return material.name
@@ -86,6 +88,8 @@ doesn't have toxins access.
 				D.linked_console = src
 
 /obj/machinery/computer/rdconsole/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stored_research = SSresearch.science_tech
 	stored_research.consoles_accessing[src] = TRUE
@@ -93,6 +97,8 @@ doesn't have toxins access.
 	SyncRDevices()
 
 /obj/machinery/computer/rdconsole/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stored_research)
 		stored_research.consoles_accessing -= src
 	if(linked_destroy)
@@ -116,6 +122,8 @@ doesn't have toxins access.
 	return ..()
 
 /obj/machinery/computer/rdconsole/attackby(obj/item/D, mob/user, params)
+	procstart = null
+	src.procstart = null
 	//Loading a disk into it.
 	if(istype(D, /obj/item/disk))
 		if(istype(D, /obj/item/disk/tech_disk))
@@ -142,6 +150,8 @@ doesn't have toxins access.
 		. = ..()
 
 /obj/machinery/computer/rdconsole/proc/research_node(id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!stored_research.available_nodes[id] || stored_research.researched_nodes[id])
 		say("Node unlock failed: Either already researched or not available!")
 		return FALSE
@@ -179,6 +189,8 @@ doesn't have toxins access.
 	return FALSE
 
 /obj/machinery/computer/rdconsole/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	if(linked_destroy)
 		linked_destroy.linked_console = null
 		linked_destroy = null
@@ -191,6 +203,8 @@ doesn't have toxins access.
 	..()
 
 /obj/machinery/computer/rdconsole/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!emagged)
 		to_chat(user, "<span class='notice'>You disable the security protocols</span>")
 		playsound(src, "sparks", 75, 1)
@@ -198,6 +212,8 @@ doesn't have toxins access.
 	return ..()
 
 /obj/machinery/computer/rdconsole/proc/list_categories(list/categories, menu_num as num)
+	procstart = null
+	src.procstart = null
 	if(!categories)
 		return
 
@@ -216,6 +232,8 @@ doesn't have toxins access.
 	return l
 
 /obj/machinery/computer/rdconsole/proc/ui_header()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	l += "<div class='statusDisplay'><b>[stored_research.organization] Research and Development Network</b>"
 	l += "Available points: [round(stored_research.research_points)] (+[round(stored_research.last_bitcoins * 60)] / minute)"
@@ -225,6 +243,8 @@ doesn't have toxins access.
 	return l
 
 /obj/machinery/computer/rdconsole/proc/ui_main_menu()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	if(research_control)
 		l += "<H2><a href='?src=[REF(src)];switch_screen=[RDSCREEN_TECHWEB]'>Technology</a>"
@@ -242,9 +262,13 @@ doesn't have toxins access.
 	return l
 
 /obj/machinery/computer/rdconsole/proc/ui_locked()
+	procstart = null
+	src.procstart = null
 	return list("<h3><a href='?src=[REF(src)];switch_screen=[RDSCREEN_MENU];unlock_console=1'>SYSTEM LOCKED</a></h3></br>")
 
 /obj/machinery/computer/rdconsole/proc/ui_settings()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	l += "<div class='statusDisplay'><h3>R&D Console Settings:</h3>"
 	l += "<A href='?src=[REF(src)];switch_screen=[RDSCREEN_DEVICE_LINKING]'>Device Linkage Menu</A>"
@@ -252,6 +276,8 @@ doesn't have toxins access.
 	return l
 
 /obj/machinery/computer/rdconsole/proc/ui_device_linking()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	l += "<A href='?src=[REF(src)];switch_screen=[RDSCREEN_SETTINGS]'>Settings Menu</A><div class='statusDisplay'>"
 	l += "<h3>R&D Console Device Linkage Menu:</h3>"
@@ -264,6 +290,8 @@ doesn't have toxins access.
 	return l
 
 /obj/machinery/computer/rdconsole/proc/ui_protolathe_header()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	l += "<div class='statusDisplay'><A href='?src=[REF(src)];switch_screen=[RDSCREEN_PROTOLATHE]'>Protolathe Menu</A>"
 	l += "<A href='?src=[REF(src)];switch_screen=[RDSCREEN_PROTOLATHE_MATERIALS]'><B>Material Amount:</B> [linked_lathe.materials.total_amount] / [linked_lathe.materials.max_amount]</A>"
@@ -601,6 +629,8 @@ doesn't have toxins access.
 	return l
 
 /obj/machinery/computer/rdconsole/proc/ui_techweb()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	if(ui_mode != RDCONSOLE_UI_MODE_LIST)
 		var/list/columns = list()
@@ -649,9 +679,13 @@ doesn't have toxins access.
 	return l
 
 /obj/machinery/computer/rdconsole/proc/machine_icon(atom/item)
+	procstart = null
+	src.procstart = null
 	return icon2html(initial(item.icon), usr, initial(item.icon_state), SOUTH)
 
 /obj/machinery/computer/rdconsole/proc/ui_techweb_single_node(datum/techweb_node/node, selflink=TRUE, minimal=FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	if (stored_research.hidden_nodes[node.id])
 		return l
@@ -681,6 +715,8 @@ doesn't have toxins access.
 	return l
 
 /obj/machinery/computer/rdconsole/proc/ui_techweb_nodeview()
+	procstart = null
+	src.procstart = null
 	RDSCREEN_UI_SNODE_CHECK
 	var/list/l = list()
 	if(stored_research.hidden_nodes[selected_node.id])
@@ -752,6 +788,8 @@ doesn't have toxins access.
 
 //Fuck TGUI.
 /obj/machinery/computer/rdconsole/proc/generate_ui()
+	procstart = null
+	src.procstart = null
 	var/list/ui = list()
 	ui += ui_header()
 	if(locked)
@@ -805,6 +843,8 @@ doesn't have toxins access.
 	return ui.Join("")
 
 /obj/machinery/computer/rdconsole/Topic(raw, ls)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	add_fingerprint(usr)
@@ -960,11 +1000,15 @@ doesn't have toxins access.
 	updateUsrDialog()
 
 /obj/machinery/computer/rdconsole/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/computer/rdconsole/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/datum/browser/popup = new(user, "rndconsole", name, 900, 600)
 	popup.add_stylesheet("techwebs", 'html/browser/techwebs.css')
@@ -972,14 +1016,20 @@ doesn't have toxins access.
 	popup.open()
 
 /obj/machinery/computer/rdconsole/proc/tdisk_uple_complete()
+	procstart = null
+	src.procstart = null
 	tdisk_uple = FALSE
 	updateUsrDialog()
 
 /obj/machinery/computer/rdconsole/proc/ddisk_uple_complete()
+	procstart = null
+	src.procstart = null
 	ddisk_uple = FALSE
 	updateUsrDialog()
 
 /obj/machinery/computer/rdconsole/proc/eject_disk(type)
+	procstart = null
+	src.procstart = null
 	if(type == "design")
 		d_disk.forceMove(get_turf(src))
 		d_disk = null
@@ -988,6 +1038,8 @@ doesn't have toxins access.
 		t_disk = null
 
 /obj/machinery/computer/rdconsole/proc/rescan_views()
+	procstart = null
+	src.procstart = null
 	var/compare
 	matching_designs.Cut()
 	if(searchtype == "proto")
@@ -1002,6 +1054,8 @@ doesn't have toxins access.
 			matching_designs.Add(D)
 
 /obj/machinery/computer/rdconsole/proc/check_canprint(datum/design/D, buildtype)
+	procstart = null
+	src.procstart = null
 	var/amount = 50
 	if(buildtype == IMPRINTER)
 		if(!linked_imprinter)
@@ -1022,9 +1076,13 @@ doesn't have toxins access.
 	return amount
 
 /obj/machinery/computer/rdconsole/proc/lock_console(mob/user)
+	procstart = null
+	src.procstart = null
 	locked = TRUE
 
 /obj/machinery/computer/rdconsole/proc/unlock_console(mob/user)
+	procstart = null
+	src.procstart = null
 	locked = FALSE
 
 /obj/machinery/computer/rdconsole/robotics
@@ -1033,6 +1091,8 @@ doesn't have toxins access.
 	req_access_txt = "29"
 
 /obj/machinery/computer/rdconsole/robotics/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(circuit)
 		circuit.name = "R&D Console - Robotics (Computer Board)"

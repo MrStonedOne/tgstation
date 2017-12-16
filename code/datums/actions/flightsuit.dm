@@ -9,6 +9,8 @@
 	background_icon_state = "bg_tech"
 
 /datum/action/item_action/flightsuit/toggle_boots/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/suit/space/hardsuit/flightsuit/FS = target
 	if(istype(FS))
 		FS.deployedshoes? FS.retract_flightshoes() : FS.extend_flightshoes()
@@ -20,6 +22,8 @@
 	background_icon_state = "bg_tech"
 
 /datum/action/item_action/flightsuit/toggle_helmet/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/suit/space/hardsuit/flightsuit/FS = target
 	if(istype(FS))
 		FS.ToggleHelmet()
@@ -31,6 +35,8 @@
 	background_icon_state = "bg_tech"
 
 /datum/action/item_action/flightsuit/toggle_flightpack/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/suit/space/hardsuit/flightsuit/FS = target
 	if(istype(FS))
 		FS.deployedpack? FS.retract_flightpack() : FS.extend_flightpack()
@@ -42,6 +48,8 @@
 	background_icon_state = "bg_tech"
 
 /datum/action/item_action/flightsuit/lock_suit/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/suit/space/hardsuit/flightsuit/FS = target
 	if(istype(FS))
 		FS.locked? FS.unlock_suit(owner) : FS.lock_suit(owner)
@@ -56,6 +64,8 @@
 	background_icon_state = "bg_tech_blue"
 
 /datum/action/item_action/flightpack/toggle_flight/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/flightpack/F = target
 	if(istype(F))
 		F.flight? F.disable_flight() : F.enable_flight()
@@ -67,6 +77,8 @@
 	background_icon_state = "bg_tech_blue"
 
 /datum/action/item_action/flightpack/engage_boosters/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/flightpack/F = target
 	if(istype(F))
 		F.boost? F.deactivate_booster() : F.activate_booster()
@@ -78,6 +90,8 @@
 	background_icon_state = "bg_tech_blue"
 
 /datum/action/item_action/flightpack/toggle_stabilizers/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/flightpack/F = target
 	if(istype(F))
 		F.stabilizer? F.disable_stabilizers() : F.enable_stabilizers()
@@ -89,6 +103,8 @@
 	background_icon_state = "bg_tech_blue"
 
 /datum/action/item_action/flightpack/change_power/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/flightpack/F = target
 	if(istype(F))
 		F.cycle_power()
@@ -100,6 +116,8 @@
 	background_icon_state = "bg_tech_blue"
 
 /datum/action/item_action/flightpack/toggle_airbrake/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/flightpack/F = target
 	if(istype(F))
 		F.brake? F.disable_airbrake() : F.enable_airbrake()
@@ -113,6 +131,8 @@
 	button_icon_state = "sniper_zoom"
 
 /datum/action/item_action/flightpack/zoom/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/head/helmet/space/hardsuit/flightsuit/FH = target
 	if(istype(FH))
 		FH.toggle_zoom(owner)

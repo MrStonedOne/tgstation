@@ -84,12 +84,16 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 /datum/species/New()
 
+	procstart = null
+	src.procstart = null
 	if(!limbs_id)	//if we havent set a limbs id to use, just use our own id
 		limbs_id = id
 	..()
 
 
 /proc/generate_selectable_species()
+	procstart = null
+	src.procstart = null
 	for(var/I in subtypesof(/datum/species))
 		var/datum/species/S = new I
 		if(S.check_roundstart_eligible())
@@ -99,11 +103,15 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		GLOB.roundstart_races += "human"
 
 /datum/species/proc/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(id in (CONFIG_GET(keyed_flag_list/roundstart_races)))
 		return TRUE
 	return FALSE
 
 /datum/species/proc/random_name(gender,unique,lastname)
+	procstart = null
+	src.procstart = null
 	if(unique)
 		return random_unique_name(gender)
 
@@ -122,16 +130,22 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 //Called when cloning, copies some vars that should be kept
 /datum/species/proc/copy_properties_from(datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	return
 
 //Please override this locally if you want to define when what species qualifies for what rank if human authority is enforced.
 /datum/species/proc/qualifies_for_rank(rank, list/features)
+	procstart = null
+	src.procstart = null
 	if(rank in GLOB.command_positions)
 		return 0
 	return 1
 
 //Will regenerate missing organs
 /datum/species/proc/regenerate_organs(mob/living/carbon/C,datum/species/old_species,replace_current=TRUE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/brain = C.getorganslot(ORGAN_SLOT_BRAIN)
 	var/obj/item/organ/heart/heart = C.getorganslot(ORGAN_SLOT_HEART)
 	var/obj/item/organ/lungs/lungs = C.getorganslot(ORGAN_SLOT_LUNGS)
@@ -247,6 +261,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		I.Insert(C)
 
 /datum/species/proc/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	// Drop the items the new species can't wear
 	for(var/slot_id in no_equip)
 		var/obj/item/thing = C.get_item_by_slot(slot_id)
@@ -287,12 +303,16 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 
 /datum/species/proc/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(C.dna.species.exotic_bloodtype)
 		C.dna.blood_type = random_blood_type()
 	if(DIGITIGRADE in species_traits)
 		C.Digitigrade_Leg_Swap(TRUE)
 
 /datum/species/proc/handle_hair(mob/living/carbon/human/H, forced_colour)
+	procstart = null
+	src.procstart = null
 	H.remove_overlay(HAIR_LAYER)
 
 	var/obj/item/bodypart/head/HD = H.get_bodypart("head")
@@ -434,6 +454,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	H.apply_overlay(HAIR_LAYER)
 
 /datum/species/proc/handle_body(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.remove_overlay(BODY_LAYER)
 
 	var/list/standing = list()
@@ -491,6 +513,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	handle_mutant_bodyparts(H)
 
 /datum/species/proc/handle_mutant_bodyparts(mob/living/carbon/human/H, forced_colour)
+	procstart = null
+	src.procstart = null
 	var/list/bodyparts_to_add = mutant_bodyparts.Copy()
 	var/list/relevent_layers = list(BODY_BEHIND_LAYER, BODY_ADJ_LAYER, BODY_FRONT_LAYER)
 	var/list/standing	= list()
@@ -688,6 +712,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 //This exists so sprite accessories can still be per-layer without having to include that layer's
 //number in their sprite name, which causes issues when those numbers change.
 /datum/species/proc/mutant_bodyparts_layertext(layer)
+	procstart = null
+	src.procstart = null
 	switch(layer)
 		if(BODY_BEHIND_LAYER)
 			return "BEHIND"
@@ -698,6 +724,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 
 /datum/species/proc/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(NOBREATH in species_traits)
 		H.setOxyLoss(0)
 		H.losebreath = 0
@@ -707,13 +735,19 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			H.adjustBruteLoss(1)
 
 /datum/species/proc/spec_death(gibbed, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/species/proc/auto_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	// handles the equipping of species-specific gear
 	return
 
 /datum/species/proc/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
+	procstart = null
+	src.procstart = null
 	if(slot in no_equip)
 		if(!I.species_exception || !is_type_in_list(src, I.species_exception))
 			return 0
@@ -905,18 +939,26 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	return 0 //Unsupported slot
 
 /datum/species/proc/equip_delay_self_check(obj/item/I, mob/living/carbon/human/H, bypass_equip_delay_self)
+	procstart = null
+	src.procstart = null
 	if(!I.equip_delay_self || bypass_equip_delay_self)
 		return TRUE
 	H.visible_message("<span class='notice'>[H] start putting on [I]...</span>", "<span class='notice'>You start putting on [I]...</span>")
 	return do_after(H, I.equip_delay_self, target = H)
 
 /datum/species/proc/before_equip_job(datum/job/J, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/species/proc/after_equip_job(datum/job/J, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.update_mutant_bodyparts()
 
 /datum/species/proc/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(chem.id == exotic_blood)
 		H.blood_volume = min(H.blood_volume + round(chem.volume, 0.1), BLOOD_VOLUME_MAXIMUM)
 		H.reagents.del_reagent(chem.id)
@@ -924,13 +966,19 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	return 0
 
 /datum/species/proc/handle_speech(message, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return message
 
 //return a list of spans or an empty list
 /datum/species/proc/get_spans()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /datum/species/proc/check_weakness(obj/item, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	return 0
 
 ////////
@@ -939,6 +987,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 /datum/species/proc/handle_digestion(mob/living/carbon/human/H)
 
+	procstart = null
+	src.procstart = null
 	//The fucking FAT mutation is the dumbest shit ever. It makes the code so difficult to work with
 	if(H.disabilities & FAT)//I share your pain, past coder.
 		if(H.overeatduration < 100)
@@ -1002,9 +1052,13 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			H.throw_alert("nutrition", /obj/screen/alert/starving)
 
 /datum/species/proc/update_health_hud(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/species/proc/handle_mutations_and_radiation(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/radiation = H.radiation
 
@@ -1034,6 +1088,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			addtimer(CALLBACK(src, .proc/go_bald, H), 50)
 
 /datum/species/proc/go_bald(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(H))	//may be called from a timer
 		return
 	H.facial_hair_style = "Shaved"
@@ -1045,6 +1101,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 ////////////////
 
 /datum/species/proc/movement_delay(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	. = 0	//We start at 0.
 	var/flight = 0	//Check for flight and flying items
 	var/flightpack = 0
@@ -1121,6 +1179,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 //////////////////
 
 /datum/species/proc/help(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	if(target.health >= 0 && !(target.status_flags & FAKEDEATH))
 		target.help_shake_act(user)
 		if(target != user)
@@ -1138,6 +1198,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			to_chat(user, "<span class='notice'>You do not breathe, so you cannot perform CPR.</span>")
 
 /datum/species/proc/grab(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	if(target.check_block())
 		target.visible_message("<span class='warning'>[target] blocks [user]'s grab attempt!</span>")
 		return 0
@@ -1152,6 +1214,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 
 /datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	if(target.check_block())
 		target.visible_message("<span class='warning'>[target] blocks [user]'s attack!</span>")
 		return 0
@@ -1206,6 +1270,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	if(target.check_block())
 		target.visible_message("<span class='warning'>[target] blocks [user]'s disarm attempt!</span>")
 		return 0
@@ -1251,9 +1317,13 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 
 
 /datum/species/proc/spec_hitby(atom/movable/AM, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/species/proc/spec_attack_hand(mob/living/carbon/human/M, mob/living/carbon/human/H, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 	CHECK_DNA_AND_SPECIES(M)
@@ -1281,6 +1351,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			disarm(M, H, attacker_style)
 
 /datum/species/proc/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, intent, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	// Allows you to put in item-specific reactions based on species
 	if(user != H)
 		if(H.check_shields(I, I.force, "the [I.name]", MELEE_ATTACK, I.armour_penetration))
@@ -1375,6 +1447,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	return TRUE
 
 /datum/species/proc/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/hit_percent = (100-(blocked+armor))/100
 	if(!damage || hit_percent <= 0)
 		return 0
@@ -1417,6 +1491,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	return 1
 
 /datum/species/proc/on_hit(obj/item/projectile/P, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	// called when hit by a projectile
 	switch(P.type)
 		if(/obj/item/projectile/energy/floramut) // overwritten by plants/pods
@@ -1425,6 +1501,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			H.show_message("<span class='notice'>The radiation beam dissipates harmlessly through your body.</span>")
 
 /datum/species/proc/bullet_act(obj/item/projectile/P, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	// called before a projectile hit
 	return 0
 
@@ -1433,10 +1511,14 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 /////////////
 
 /datum/species/proc/breathe(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(NOBREATH in species_traits)
 		return TRUE
 
 /datum/species/proc/handle_environment(datum/gas_mixture/environment, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!environment)
 		return
 	if(istype(H.loc, /obj/machinery/atmospherics/components/unary/cryo_cell))
@@ -1524,6 +1606,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 //////////
 
 /datum/species/proc/handle_fire(mob/living/carbon/human/H, no_protection = FALSE)
+	procstart = null
+	src.procstart = null
 	if(NOFIRE in species_traits)
 		return
 	if(H.on_fire)
@@ -1591,11 +1675,15 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			H.bodytemperature += (BODYTEMP_HEATING_MAX + (H.fire_stacks * 12))
 
 /datum/species/proc/CanIgniteMob(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(NOFIRE in species_traits)
 		return FALSE
 	return TRUE
 
 /datum/species/proc/ExtinguishMob(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -1604,6 +1692,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 ////////////
 
 /datum/species/proc/spec_stun(mob/living/carbon/human/H,amount)
+	procstart = null
+	src.procstart = null
 	. = stunmod * amount
 
 //////////////
@@ -1611,9 +1701,13 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 //////////////
 
 /datum/species/proc/space_move(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/species/proc/negates_gravity(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return 0
 
 

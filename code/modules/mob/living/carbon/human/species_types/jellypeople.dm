@@ -12,17 +12,23 @@
 	liked_food = MEAT
 
 /datum/species/jelly/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(regenerate_limbs)
 		regenerate_limbs.Remove(C)
 	..()
 
 /datum/species/jelly/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(C))
 		regenerate_limbs = new
 		regenerate_limbs.Grant(C)
 
 /datum/species/jelly/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.stat == DEAD) //can't farm slime jelly from a dead slime/jelly person indefinitely
 		return
 	if(!H.blood_volume)
@@ -42,6 +48,8 @@
 	H.update_action_buttons_icon()
 
 /datum/species/jelly/proc/Cannibalize_Body(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/list/limbs_to_consume = list("r_arm", "l_arm", "r_leg", "l_leg") - H.get_missing_limbs()
 	var/obj/item/bodypart/consumed_limb
 	if(!limbs_to_consume.len)
@@ -63,6 +71,8 @@
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/regenerate_limbs/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/mob/living/carbon/human/H = owner
 		var/list/limbs_to_heal = H.get_missing_limbs()
@@ -73,6 +83,8 @@
 		return 0
 
 /datum/action/innate/regenerate_limbs/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	var/list/limbs_to_heal = H.get_missing_limbs()
 	if(limbs_to_heal.len < 1)
@@ -114,6 +126,8 @@
 	var/datum/action/innate/swap_body/swap_body
 
 /datum/species/jelly/slime/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(slime_split)
 		slime_split.Remove(C)
 	if(swap_body)
@@ -126,6 +140,8 @@
 	..()
 
 /datum/species/jelly/slime/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(C))
 		slime_split = new
@@ -142,9 +158,13 @@
 
 //If you're cloned you get your body pool back
 /datum/species/jelly/slime/copy_properties_from(datum/species/jelly/slime/old_species)
+	procstart = null
+	src.procstart = null
 	bodies = old_species.bodies
 
 /datum/species/jelly/slime/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.blood_volume >= BLOOD_VOLUME_SLIME_SPLIT)
 		if(prob(5))
 			to_chat(H, "<span class='notice'>You feel very bloated!</span>")
@@ -162,6 +182,8 @@
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/split_body/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/mob/living/carbon/human/H = owner
 		if(H.blood_volume >= BLOOD_VOLUME_SLIME_SPLIT)
@@ -169,6 +191,8 @@
 		return 0
 
 /datum/action/innate/split_body/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	if(!isslimeperson(H))
 		return
@@ -191,6 +215,8 @@
 	H.notransform = FALSE
 
 /datum/action/innate/split_body/proc/make_dupe()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	CHECK_DNA_AND_SPECIES(H)
 
@@ -229,6 +255,8 @@
 	background_icon_state = "bg_alien"
 
 /datum/action/innate/swap_body/Activate()
+	procstart = null
+	src.procstart = null
 	if(!isslimeperson(owner))
 		to_chat(owner, "<span class='warning'>You are not a slimeperson.</span>")
 		Remove(owner)
@@ -237,12 +265,16 @@
 
 /datum/action/innate/swap_body/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.conscious_state)
 
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "slime_swap_body", name, 400, 400, master_ui, state)
 		ui.open()
 
 /datum/action/innate/swap_body/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	if(!isslimeperson(H))
 		return
@@ -294,6 +326,8 @@
 	return data
 
 /datum/action/innate/swap_body/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/carbon/human/H = owner
@@ -326,6 +360,8 @@
 			swap_to_dupe(M, selected)
 
 /datum/action/innate/swap_body/proc/swap_to_dupe(datum/mind/M, mob/living/carbon/human/dupe)
+	procstart = null
+	src.procstart = null
 	M.current.visible_message("<span class='notice'>[M.current] \
 		stops moving and starts staring vacantly into space.</span>",
 		"<span class='notice'>You stop moving this body...</span>")

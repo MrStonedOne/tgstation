@@ -12,6 +12,8 @@
 	var/chargelevel = -1
 
 /obj/machinery/cell_charger/proc/updateicon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(charging)
 		add_overlay(image(charging.icon, charging.icon_state))
@@ -22,12 +24,16 @@
 			add_overlay("ccharger-o[newlevel]")
 
 /obj/machinery/cell_charger/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "There's [charging ? "a" : "no"] cell in the charger.")
 	if(charging)
 		to_chat(user, "Current charge: [round(charging.percent(), 1)]%.")
 
 /obj/machinery/cell_charger/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stock_parts/cell))
 		if(stat & BROKEN)
 			to_chat(user, "<span class='warning'>[src] is broken!</span>")
@@ -65,12 +71,16 @@
 
 
 /obj/machinery/cell_charger/proc/removecell()
+	procstart = null
+	src.procstart = null
 	charging.update_icon()
 	charging = null
 	chargelevel = -1
 	updateicon()
 
 /obj/machinery/cell_charger/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		return
 
@@ -82,6 +92,8 @@
 	removecell()
 
 /obj/machinery/cell_charger/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!charging)
 		return
 
@@ -91,9 +103,13 @@
 	removecell()
 
 /obj/machinery/cell_charger/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/cell_charger/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 
@@ -104,6 +120,8 @@
 
 
 /obj/machinery/cell_charger/process()
+	procstart = null
+	src.procstart = null
 	if(!charging || !anchored || (stat & (BROKEN|NOPOWER)))
 		return
 

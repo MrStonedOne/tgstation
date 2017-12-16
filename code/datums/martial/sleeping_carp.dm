@@ -12,6 +12,8 @@
 	help_verb = /mob/living/carbon/human/proc/sleeping_carp_help
 
 /datum/martial_art/the_sleeping_carp/proc/check_streak(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(findtext(streak,WRIST_WRENCH_COMBO))
 		streak = ""
 		wristWrench(A,D)
@@ -35,6 +37,8 @@
 	return 0
 
 /datum/martial_art/the_sleeping_carp/proc/wristWrench(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D.stat && !D.IsStun() && !D.IsKnockdown())
 		A.do_attack_animation(D, ATTACK_EFFECT_PUNCH)
 		D.visible_message("<span class='warning'>[A] grabs [D]'s wrist and wrenches it sideways!</span>", \
@@ -49,6 +53,8 @@
 	return basic_hit(A,D)
 
 /datum/martial_art/the_sleeping_carp/proc/backKick(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(A.dir == D.dir && !D.stat && !D.IsKnockdown())
 		A.do_attack_animation(D, ATTACK_EFFECT_PUNCH)
 		D.visible_message("<span class='warning'>[A] kicks [D] in the back!</span>", \
@@ -61,6 +67,8 @@
 	return basic_hit(A,D)
 
 /datum/martial_art/the_sleeping_carp/proc/kneeStomach(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D.stat && !D.IsKnockdown())
 		A.do_attack_animation(D, ATTACK_EFFECT_KICK)
 		D.visible_message("<span class='warning'>[A] knees [D] in the stomach!</span>", \
@@ -74,6 +82,8 @@
 	return basic_hit(A,D)
 
 /datum/martial_art/the_sleeping_carp/proc/headKick(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D.stat && !D.IsKnockdown())
 		A.do_attack_animation(D, ATTACK_EFFECT_KICK)
 		D.visible_message("<span class='warning'>[A] kicks [D] in the head!</span>", \
@@ -87,6 +97,8 @@
 	return basic_hit(A,D)
 
 /datum/martial_art/the_sleeping_carp/proc/elbowDrop(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(D.IsKnockdown() || D.resting || D.stat)
 		A.do_attack_animation(D, ATTACK_EFFECT_PUNCH)
 		D.visible_message("<span class='warning'>[A] elbow drops [D]!</span>", \
@@ -100,6 +112,8 @@
 	return basic_hit(A,D)
 
 /datum/martial_art/the_sleeping_carp/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	add_to_streak("G",D)
 	if(check_streak(A,D))
 		return 1
@@ -121,6 +135,8 @@
 	return 1
 
 /datum/martial_art/the_sleeping_carp/harm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	add_to_streak("H",D)
 	if(check_streak(A,D))
 		return 1
@@ -138,12 +154,16 @@
 
 
 /datum/martial_art/the_sleeping_carp/disarm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	add_to_streak("D",D)
 	if(check_streak(A,D))
 		return 1
 	return ..()
 
 /mob/living/carbon/human/proc/sleeping_carp_help()
+	procstart = null
+	src.procstart = null
 	set name = "Recall Teachings"
 	set desc = "Remember the martial techniques of the Sleeping Carp clan."
 	set category = "Sleeping Carp"
@@ -163,6 +183,8 @@
 	icon_state = "scroll2"
 
 /obj/item/sleeping_carp_scroll/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user)
 		return
 	var/message = "<span class='sciradio'>You have learned the ancient martial art of the Sleeping Carp! Your hand-to-hand combat has become much more effective, and you are now able to deflect any projectiles \
@@ -192,10 +214,14 @@
 	block_chance = 50
 
 /obj/item/twohanded/bostaff/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "bostaff[wielded]"
 	return
 
 /obj/item/twohanded/bostaff/attack(mob/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if((CLUMSY in user.disabilities) && prob(50))
 		to_chat(user, "<span class ='warning'>You club yourself over the head with [src].</span>")
@@ -245,6 +271,8 @@
 		return ..()
 
 /obj/item/twohanded/bostaff/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(wielded)
 		return ..()
 	return 0

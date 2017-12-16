@@ -11,26 +11,36 @@ PROCESSING_SUBSYSTEM_DEF(networks)
 	var/list/interfaces_by_id = list()				//hardware id = component interface
 
 /datum/controller/subsystem/processing/networks/Initialize()
+	procstart = null
+	src.procstart = null
 	station_network = new
 	station_network.register_map_supremecy()
 	. = ..()
 
 /datum/controller/subsystem/processing/networks/proc/register_network(datum/ntnet/network)
+	procstart = null
+	src.procstart = null
 	if(!networks_by_id[network.network_id])
 		networks_by_id[network.network_id] = network
 		return TRUE
 	return FALSE
 
 /datum/controller/subsystem/processing/networks/proc/unregister_network(datum/ntnet/network)
+	procstart = null
+	src.procstart = null
 	networks_by_id -= network.network_id
 	return TRUE
 
 /datum/controller/subsystem/processing/networks/proc/register_interface(datum/component/ntnet_interface/D)
+	procstart = null
+	src.procstart = null
 	if(!interfaces_by_id[D.hardware_id])
 		interfaces_by_id[D.hardware_id] = D
 		return TRUE
 	return FALSE
 
 /datum/controller/subsystem/processing/networks/proc/unregister_interface(datum/component/ntnet_interface/D)
+	procstart = null
+	src.procstart = null
 	interfaces_by_id -= D.hardware_id
 	return TRUE

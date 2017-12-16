@@ -27,6 +27,8 @@
 
 
 /datum/game_mode/monkey/pre_setup()
+	procstart = null
+	src.procstart = null
 	carriers_to_make = max(round(num_players()/players_per_carrier, 1), 1)
 
 	for(var/j = 0, j < carriers_to_make, j++)
@@ -45,10 +47,14 @@
 
 
 /datum/game_mode/monkey/announce()
+	procstart = null
+	src.procstart = null
 	to_chat(world, "<B>The current game mode is - Monkey!</B>")
 	to_chat(world, "<B>One or more crewmembers have been infected with Jungle Fever! Crew: Contain the outbreak. None of the infected monkeys may escape alive to CentCom. Monkeys: Ensure that your kind lives on! Rise up against your captors!</B>")
 
 /datum/game_mode/monkey/post_setup()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/carriermind in carriers)
 		var/datum/antagonist/monkey/M = add_monkey_leader(carriermind, monkey_team)
 		if(M)
@@ -56,6 +62,8 @@
 	return ..()
 
 /datum/game_mode/monkey/check_finished()
+	procstart = null
+	src.procstart = null
 	if((SSshuttle.emergency.mode == SHUTTLE_ENDGAME) || station_was_nuked)
 		return TRUE
 
@@ -76,6 +84,8 @@
 	return ..()
 
 /datum/game_mode/monkey/proc/check_monkey_victory()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.emergency.mode != SHUTTLE_ENDGAME)
 		return FALSE
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
@@ -90,6 +100,8 @@
 
 
 /datum/game_mode/monkey/set_round_result()
+	procstart = null
+	src.procstart = null
 	..()
 	if(check_monkey_victory())
 		SSticker.mode_result = "win - monkey win"
@@ -97,27 +109,37 @@
 		SSticker.mode_result = "loss - staff stopped the monkeys"
 
 /datum/game_mode/monkey/special_report()
+	procstart = null
+	src.procstart = null
 	if(check_monkey_victory())
 		return "<span class='redtext big'>The monkeys have overthrown their captors! Eeek eeeek!!</span>"
 	else
 		return "<span class='redtext big'>The staff managed to contain the monkey infestation!</span>"
 
 /datum/game_mode/monkey/generate_report()
+	procstart = null
+	src.procstart = null
 	return "Reports of an ancient [pick("retrovirus", "flesh eating bacteria", "disease", "magical curse blamed on viruses", "banana blight")] outbreak that turn humans into monkeys has been reported in your quadrant.  Any such infections may be treated with banana juice.  If an outbreak occurs, ensure the station is quarantined to prevent a largescale outbreak at CentCom."
 
 /proc/add_monkey_leader(datum/mind/monkey_mind)
+	procstart = null
+	src.procstart = null
 	if(is_monkey_leader(monkey_mind))
 		return FALSE
 	var/datum/antagonist/monkey/leader/M = monkey_mind.add_antag_datum(ANTAG_DATUM_MONKEY_LEADER)
 	return M
 
 /proc/add_monkey(datum/mind/monkey_mind)
+	procstart = null
+	src.procstart = null
 	if(is_monkey(monkey_mind))
 		return FALSE
 	var/datum/antagonist/monkey/M = monkey_mind.add_antag_datum(ANTAG_DATUM_MONKEY)
 	return M
 
 /proc/remove_monkey(datum/mind/monkey_mind)
+	procstart = null
+	src.procstart = null
 	if(!is_monkey(monkey_mind))
 		return FALSE
 	var/datum/antagonist/monkey/M = monkey_mind.has_antag_datum(ANTAG_DATUM_MONKEY)
@@ -125,8 +147,12 @@
 	return TRUE
 
 /proc/is_monkey_leader(datum/mind/monkey_mind)
+	procstart = null
+	src.procstart = null
 	return monkey_mind && monkey_mind.has_antag_datum(ANTAG_DATUM_MONKEY_LEADER)
 
 /proc/is_monkey(datum/mind/monkey_mind)
+	procstart = null
+	src.procstart = null
 	return monkey_mind && (monkey_mind.has_antag_datum(ANTAG_DATUM_MONKEY) || is_monkey_leader(monkey_mind))
 

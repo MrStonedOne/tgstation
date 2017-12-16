@@ -47,6 +47,8 @@
 	var/plants_off = 0
 
 /mob/living/simple_animal/hostile/alien/drone/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!..()) //AIStatus is off
 		return
 	plant_cooldown--
@@ -96,6 +98,8 @@
 	var/plant_cooldown = 30
 
 /mob/living/simple_animal/hostile/alien/queen/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!..()) //AIStatus is off
 		return
 	egg_cooldown--
@@ -109,6 +113,8 @@
 			LayEggs()
 
 /mob/living/simple_animal/hostile/alien/proc/SpreadPlants()
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc) || isspaceturf(loc))
 		return
 	if(locate(/obj/structure/alien/weeds/node) in get_turf(src))
@@ -117,6 +123,8 @@
 	new /obj/structure/alien/weeds/node(loc)
 
 /mob/living/simple_animal/hostile/alien/proc/LayEggs()
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc) || isspaceturf(loc))
 		return
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
@@ -145,6 +153,8 @@
 	icon_state = "toxin"
 
 /mob/living/simple_animal/hostile/alien/handle_temperature_damage()
+	procstart = null
+	src.procstart = null
 	if(bodytemperature < minbodytemp)
 		adjustBruteLoss(2)
 	else if(bodytemperature > maxbodytemp)
@@ -165,6 +175,8 @@
 	icon_dead = "maid_dead"
 
 /mob/living/simple_animal/hostile/alien/maid/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(ismovableatom(target))
 		if(istype(target, /obj/effect/decal/cleanable))
 			visible_message("[src] cleans up \the [target].")

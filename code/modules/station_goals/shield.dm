@@ -6,6 +6,8 @@
 	var/coverage_goal = 500
 
 /datum/station_goal/station_shield/get_report()
+	procstart = null
+	src.procstart = null
 	return {"The station is located in a zone full of space debris.
 			 We have a prototype shielding system you must deploy to reduce collision-related accidents.
 
@@ -14,6 +16,8 @@
 
 
 /datum/station_goal/station_shield/on_report()
+	procstart = null
+	src.procstart = null
 	//Unlock
 	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/misc/shield_sat]
 	P.special_enabled = TRUE
@@ -22,6 +26,8 @@
 	P.special_enabled = TRUE
 
 /datum/station_goal/station_shield/check_completion()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(get_coverage() >= coverage_goal)
@@ -29,6 +35,8 @@
 	return FALSE
 
 /datum/station_goal/proc/get_coverage()
+	procstart = null
+	src.procstart = null
 	var/list/coverage = list()
 	for(var/obj/machinery/satellite/meteor_shield/A in GLOB.machines)
 		if(!A.active || !(A.z in GLOB.station_z_levels))
@@ -43,12 +51,16 @@
 	var/notice
 
 /obj/machinery/computer/sat_control/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "sat_control", name, 400, 305, master_ui, state)
 		ui.open()
 
 /obj/machinery/computer/sat_control/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -57,11 +69,15 @@
 			. = TRUE
 
 /obj/machinery/computer/sat_control/proc/toggle(id)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/satellite/S in GLOB.machines)
 		if(S.id == id && S.z == z)
 			S.toggle()
 
 /obj/machinery/computer/sat_control/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["satellites"] = list()
@@ -95,13 +111,19 @@
 	var/id = 0
 
 /obj/machinery/satellite/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id = gid++
 
 /obj/machinery/satellite/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle(user)
 
 /obj/machinery/satellite/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active && !isinspace())
 		if(user)
 			to_chat(user, "<span class='warning'>You can only activate [src] in space.</span>")
@@ -118,9 +140,13 @@
 	update_icon()
 
 /obj/machinery/satellite/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = active ? "sat_active" : "sat_inactive"
 
 /obj/machinery/satellite/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/multitool))
 		to_chat(user, "<span class='notice'>// NTSAT-[id] // Mode : [active ? "PRIMARY" : "STANDBY"] //[emagged ? "DEBUG_MODE //" : ""]</span>")
 	else
@@ -134,12 +160,16 @@
 	var/kill_range = 14
 
 /obj/machinery/satellite/meteor_shield/proc/space_los(meteor)
+	procstart = null
+	src.procstart = null
 	for(var/turf/T in getline(src,meteor))
 		if(!isspaceturf(T))
 			return FALSE
 	return TRUE
 
 /obj/machinery/satellite/meteor_shield/process()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 	for(var/obj/effect/meteor/M in GLOB.meteor_list)
@@ -152,6 +182,8 @@
 			qdel(M)
 
 /obj/machinery/satellite/meteor_shield/toggle(user)
+	procstart = null
+	src.procstart = null
 	if(!..(user))
 		return FALSE
 	if(emagged)
@@ -161,16 +193,22 @@
 			change_meteor_chance(0.5)
 
 /obj/machinery/satellite/meteor_shield/proc/change_meteor_chance(mod)
+	procstart = null
+	src.procstart = null
 	var/datum/round_event_control/E = locate(/datum/round_event_control/meteor_wave) in SSevents.control
 	if(E)
 		E.weight *= mod
 
 /obj/machinery/satellite/meteor_shield/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(active && emagged)
 		change_meteor_chance(0.5)
 
 /obj/machinery/satellite/meteor_shield/emag_act()
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE

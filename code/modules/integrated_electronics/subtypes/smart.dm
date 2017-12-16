@@ -15,6 +15,8 @@
 	power_draw_per_use = 40
 
 /obj/item/integrated_circuit/smart/basic_pathfinder/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/I = inputs[1]
 	set_pin_data(IC_OUTPUT, 1, null)
 

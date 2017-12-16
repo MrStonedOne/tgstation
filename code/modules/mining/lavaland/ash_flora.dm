@@ -21,6 +21,8 @@
 	var/regrowth_time_high = 8400
 
 /obj/structure/flora/ash/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	base_icon = "[icon_state][rand(1, 4)]"
 	icon_state = base_icon
@@ -28,6 +30,8 @@
 		harvest(null, TRUE)
 
 /obj/structure/flora/ash/proc/harvest(user, no_drop)
+	procstart = null
+	src.procstart = null
 	if(harvested)
 		return 0
 	if(!no_drop)
@@ -50,12 +54,16 @@
 	return 1
 
 /obj/structure/flora/ash/proc/regrow()
+	procstart = null
+	src.procstart = null
 	icon_state = base_icon
 	name = initial(name)
 	desc = initial(desc)
 	harvested = FALSE
 
 /obj/structure/flora/ash/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!harvested && needs_sharp_harvest && W.sharpness)
 		user.visible_message("<span class='notice'>[user] starts to harvest from [src] with [W].</span>","<span class='notice'>You begin to harvest from [src] with [W].</span>")
 		if(do_after(user, harvest_time, target = src))
@@ -64,6 +72,8 @@
 		return ..()
 
 /obj/structure/flora/ash/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!harvested && !needs_sharp_harvest)
 		user.visible_message("<span class='notice'>[user] starts to harvest from [src].</span>","<span class='notice'>You begin to harvest from [src].</span>")
 		if(do_after(user, harvest_time, target = src))
@@ -138,6 +148,8 @@
 	regrowth_time_high = 7200
 
 /obj/structure/flora/ash/cacti/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// min dmg 3, max dmg 6, prob(70)
 	AddComponent(/datum/component/caltrop, 3, 6, 70)
@@ -154,6 +166,8 @@
 	seed = /obj/item/seeds/lavaland/polypore
 
 /obj/item/reagent_containers/food/snacks/grown/ash_flora/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-4, 4)
 	pixel_y = rand(-4, 4)

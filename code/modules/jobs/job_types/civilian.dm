@@ -18,6 +18,8 @@ Clown
 	minimal_access = list(ACCESS_THEATRE)
 
 /datum/job/clown/after_spawn(mob/living/carbon/human/H, mob/M)
+	procstart = null
+	src.procstart = null
 	H.rename_self("clown", M.client)
 
 /datum/outfit/job/clown
@@ -46,6 +48,8 @@ Clown
 
 
 /datum/outfit/job/clown/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(visualsOnly)
 		return
@@ -53,6 +57,8 @@ Clown
 	H.fully_replace_character_name(H.real_name, pick(GLOB.clown_names))
 
 /datum/outfit/job/clown/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(visualsOnly)
 		return
@@ -79,6 +85,8 @@ Mime
 	minimal_access = list(ACCESS_THEATRE)
 
 /datum/job/mime/after_spawn(mob/living/carbon/human/H, mob/M)
+	procstart = null
+	src.procstart = null
 	H.rename_self("mime", M.client)
 
 /datum/outfit/job/mime
@@ -99,6 +107,8 @@ Mime
 
 
 /datum/outfit/job/mime/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(visualsOnly)
@@ -146,6 +156,8 @@ Curator
 
 
 /datum/outfit/job/curator/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(visualsOnly)
@@ -188,6 +200,8 @@ Lawyer
 
 
 /datum/outfit/job/lawyer/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(visualsOnly)
 		return

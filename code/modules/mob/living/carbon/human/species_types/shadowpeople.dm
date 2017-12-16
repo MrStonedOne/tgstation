@@ -16,6 +16,8 @@
 
 
 /datum/species/shadow/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/turf/T = H.loc
 	if(istype(T))
 		var/light_amount = T.get_lumcount()
@@ -26,6 +28,8 @@
 			H.heal_overall_damage(1,1)
 
 /datum/species/shadow/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
 		return TRUE
 	return ..()
@@ -46,6 +50,8 @@
 					Your <span class='warning'>light eater</span> will destroy any light producing objects you attack, as well as destroy any lights a living creature may be holding. You will automatically dodge gunfire and melee attacks when on a dark tile. If killed, you will eventually revive if left in darkness."
 
 /datum/species/shadow/nightmare/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(C, "[info_text]")
 
@@ -56,6 +62,8 @@
 	C.dna.real_name = C.real_name
 
 /datum/species/shadow/nightmare/bullet_act(obj/item/projectile/P, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/turf/T = H.loc
 	if(istype(T))
 		var/light_amount = T.get_lumcount()
@@ -66,6 +74,8 @@
 	return 0
 
 /datum/species/shadow/nightmare/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //Organs
@@ -77,6 +87,8 @@
 	var/obj/effect/proc_holder/spell/targeted/shadowwalk/shadowwalk
 
 /obj/item/organ/brain/nightmare/Insert(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(M.dna.species.id != "nightmare")
 		M.set_species(/datum/species/shadow/nightmare)
@@ -87,6 +99,8 @@
 
 
 /obj/item/organ/brain/nightmare/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	if(shadowwalk)
 		M.RemoveSpell(shadowwalk)
 	..()
@@ -103,6 +117,8 @@
 
 
 /obj/item/organ/heart/nightmare/attack(mob/M, mob/living/carbon/user, obj/target)
+	procstart = null
+	src.procstart = null
 	if(M != user)
 		return ..()
 	user.visible_message("<span class='warning'>[user] raises [src] to their mouth and tears into it with their teeth!</span>", \
@@ -116,6 +132,8 @@
 	Insert(user)
 
 /obj/item/organ/heart/nightmare/Insert(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(special != HEART_SPECIAL_SHADOWIFY)
 		blade = new/obj/item/light_eater
@@ -123,6 +141,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/organ/heart/nightmare/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	respawn_progress = 0
 	if(blade && special != HEART_SPECIAL_SHADOWIFY)
@@ -131,12 +151,18 @@
 	..()
 
 /obj/item/organ/heart/nightmare/Stop()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/organ/heart/nightmare/update_icon()
+	procstart = null
+	src.procstart = null
 	return //always beating visually
 
 /obj/item/organ/heart/nightmare/process()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(owner) || owner.stat != DEAD)
 		respawn_progress = 0
 		return
@@ -174,6 +200,8 @@
 	sharpness = IS_SHARP
 
 /obj/item/light_eater/afterattack(atom/movable/AM, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(isopenturf(AM)) //So you can actually melee with it
@@ -197,6 +225,8 @@
 			disintegrate(I)
 
 /obj/item/light_eater/proc/disintegrate(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/device/pda))
 		var/obj/item/device/pda/PDA = O
 		PDA.set_light(0)

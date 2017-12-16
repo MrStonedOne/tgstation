@@ -143,6 +143,8 @@
 	actions_types = list(/datum/action/item_action/toggle_wings)
 
 /obj/item/clothing/suit/toggle/owlwings/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.security_vest_allowed
 
@@ -172,15 +174,21 @@
 	dog_fashion = /datum/dog_fashion/back
 
 /obj/item/clothing/suit/cardborg/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot == slot_wear_suit)
 		disguise(user)
 
 /obj/item/clothing/suit/cardborg/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.remove_alt_appearance("standard_borg_disguise")
 
 /obj/item/clothing/suit/cardborg/proc/disguise(mob/living/carbon/human/H, obj/item/clothing/head/cardborg/borghead)
+	procstart = null
+	src.procstart = null
 	if(istype(H))
 		if(!borghead)
 			borghead = H.head
@@ -489,6 +497,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/captain
 
 /obj/item/clothing/suit/hooded/wintercoat/captain/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.security_wintercoat_allowed
 
@@ -503,6 +513,8 @@
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/security
 
 /obj/item/clothing/suit/hooded/wintercoat/security/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.security_wintercoat_allowed
 

@@ -7,6 +7,8 @@
 	var/mergeable_decal = TRUE //when two of these are on a same tile or do we need to merge them into just one?
 
 /obj/effect/decal/cleanable/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	if (random_icon_states && length(src.random_icon_states) > 0)
 		src.icon_state = pick(src.random_icon_states)
 	create_reagents(300)
@@ -24,10 +26,14 @@
 	. = ..()
 
 /obj/effect/decal/cleanable/proc/replace_decal(obj/effect/decal/cleanable/C)
+	procstart = null
+	src.procstart = null
 	if(mergeable_decal)
 		qdel(C)
 
 /obj/effect/decal/cleanable/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/reagent_containers/glass) || istype(W, /obj/item/reagent_containers/food/drinks))
 		if(src.reagents && W.reagents)
 			. = 1 //so the containers don't splash their content on the src while scooping.
@@ -53,12 +59,16 @@
 		return ..()
 
 /obj/effect/decal/cleanable/ex_act()
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		for(var/datum/reagent/R in reagents.reagent_list)
 			R.on_ex_act()
 	..()
 
 /obj/effect/decal/cleanable/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		reagents.expose_temperature(exposed_temperature)
 	..()
@@ -67,6 +77,8 @@
 //Add "bloodiness" of this blood's type, to the human's shoes
 //This is on /cleanable because fuck this ancient mess
 /obj/effect/decal/cleanable/Crossed(atom/movable/O)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(O))
 		var/mob/living/carbon/human/H = O
@@ -88,6 +100,8 @@
 
 
 /obj/effect/decal/cleanable/proc/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	if((blood_state != BLOOD_STATE_OIL) && (blood_state != BLOOD_STATE_NOT_BLOODY))
 		return bloodiness
 	else

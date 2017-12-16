@@ -36,6 +36,8 @@
 	impact_effect_type = /obj/effect/temp_visual/leaper_projectile_impact
 
 /obj/item/projectile/leaper/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target
@@ -46,6 +48,8 @@
 		L.adjustHealth(25)
 
 /obj/item/projectile/leaper/on_range()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	..()
 	new /obj/structure/leaper_bubble(T)
@@ -58,6 +62,8 @@
 	duration = 3
 
 /obj/effect/temp_visual/leaper_projectile_impact/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/decal/cleanable/leaper_sludge(get_turf(src))
 
@@ -76,16 +82,22 @@
 	density = FALSE
 
 /obj/structure/leaper_bubble/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	float(on = TRUE)
 	QDEL_IN(src, 100)
 
 /obj/structure/leaper_bubble/Destroy()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/leaper_projectile_impact(get_turf(src))
 	playsound(src,'sound/effects/snap.ogg',50, 1, -1)
 	return ..()
 
 /obj/structure/leaper_bubble/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!istype(L, /mob/living/simple_animal/hostile/jungle/leaper))
@@ -110,6 +122,8 @@
 	taste_mult = 1.3
 
 /datum/reagent/toxin/leaper_venom/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(volume >= 10)
 		M.adjustToxLoss(5, 0)
 	..()
@@ -125,10 +139,14 @@
 	duration = 30
 
 /mob/living/simple_animal/hostile/jungle/leaper/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	verbs -= /mob/living/verb/pulled
 
 /mob/living/simple_animal/hostile/jungle/leaper/CtrlClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	face_atom(A)
 	target = A
 	if(!isturf(loc))
@@ -146,11 +164,15 @@
 		Hop(player_hop = TRUE)
 
 /mob/living/simple_animal/hostile/jungle/leaper/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/leaper/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(hopping || projectile_ready)
 		return
 	. = ..()
@@ -164,15 +186,21 @@
 			Hop()
 
 /mob/living/simple_animal/hostile/jungle/leaper/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icons()
 
 /mob/living/simple_animal/hostile/jungle/leaper/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(prob(33) && !ckey)
 		ranged_cooldown = 0 //Keeps em on their toes instead of a constant rotation
 	..()
 
 /mob/living/simple_animal/hostile/jungle/leaper/OpenFire()
+	procstart = null
+	src.procstart = null
 	face_atom(target)
 	if(ranged_cooldown <= world.time)
 		if(ckey)
@@ -189,6 +217,8 @@
 		update_icons()
 
 /mob/living/simple_animal/hostile/jungle/leaper/proc/Hop(player_hop = FALSE)
+	procstart = null
+	src.procstart = null
 	if(z != target.z)
 		return
 	hopping = TRUE
@@ -205,6 +235,8 @@
 	throw_at(new_turf, max(3,get_dist(src,new_turf)), 1, src, FALSE, callback = CALLBACK(src, .FinishHop))
 
 /mob/living/simple_animal/hostile/jungle/leaper/proc/FinishHop()
+	procstart = null
+	src.procstart = null
 	density = TRUE
 	notransform = FALSE
 	pass_flags &= ~PASSMOB
@@ -215,6 +247,8 @@
 		addtimer(CALLBACK(src, .proc/OpenFire, target), 5)
 
 /mob/living/simple_animal/hostile/jungle/leaper/proc/BellyFlop()
+	procstart = null
+	src.procstart = null
 	var/turf/new_turf = get_turf(target)
 	hopping = TRUE
 	notransform = TRUE
@@ -222,10 +256,14 @@
 	addtimer(CALLBACK(src, .proc/BellyFlopHop, new_turf), 30)
 
 /mob/living/simple_animal/hostile/jungle/leaper/proc/BellyFlopHop(turf/T)
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	throw_at(T, get_dist(src,T),1,src, FALSE, callback = CALLBACK(src, .proc/Crush))
 
 /mob/living/simple_animal/hostile/jungle/leaper/proc/Crush()
+	procstart = null
+	src.procstart = null
 	hopping = FALSE
 	density = TRUE
 	notransform = FALSE
@@ -244,12 +282,18 @@
 		update_icons()
 
 /mob/living/simple_animal/hostile/jungle/leaper/Goto()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/jungle/leaper/throw_impact()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/jungle/leaper/update_icons()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat)
 		icon_state = "leaper_dead"

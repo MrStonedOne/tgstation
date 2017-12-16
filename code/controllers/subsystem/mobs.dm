@@ -8,13 +8,19 @@ SUBSYSTEM_DEF(mobs)
 	var/static/list/clients_by_zlevel[][]
 
 /datum/controller/subsystem/mobs/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("P:[GLOB.mob_living_list.len]")
 
 /datum/controller/subsystem/mobs/Initialize(start_timeofday)
+	procstart = null
+	src.procstart = null
 	clients_by_zlevel = new /list(world.maxz,0)
 	return ..()
 
 /datum/controller/subsystem/mobs/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	var/seconds = wait * 0.1
 	if (!resumed)
 		src.currentrun = GLOB.mob_living_list.Copy()

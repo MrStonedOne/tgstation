@@ -7,12 +7,16 @@
 	debris = list(/obj/item/stack/sheet/runed_metal = 1)
 
 /obj/structure/destructible/cult/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>\The [src] is [anchored ? "":"not "]secured to the floor.</span>")
 	if((iscultist(user) || isobserver(user)) && cooldowntime > world.time)
 		to_chat(user, "<span class='cultitalic'>The magic in [src] is too weak, [p_they()] will be ready to use again in [DisplayTimeText(cooldowntime - world.time)].</span>")
 
 /obj/structure/destructible/cult/examine_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscultist(user) || isobserver(user))
 		var/t_It = p_they(TRUE)
 		var/t_is = p_are()
@@ -20,6 +24,8 @@
 	return ..()
 
 /obj/structure/destructible/cult/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	if(istype(M, /mob/living/simple_animal/hostile/construct/builder))
 		if(obj_integrity < max_integrity)
 			M.changeNext_move(CLICK_CD_MELEE)
@@ -33,6 +39,8 @@
 		..()
 
 /obj/structure/destructible/cult/attackby(obj/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/tome) && iscultist(user))
 		anchored = !anchored
 		to_chat(user, "<span class='notice'>You [anchored ? "":"un"]secure \the [src] [anchored ? "to":"from"] the floor.</span>")
@@ -44,6 +52,8 @@
 		return ..()
 
 /obj/structure/destructible/cult/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(take_damage(rand(25, 50), BURN) && src) //if we still exist
 		var/previouscolor = color
 		color = "#FAE48C"
@@ -58,6 +68,8 @@
 	break_message = "<span class='warning'>The altar shatters, leaving only the wailing of the damned!</span>"
 
 /obj/structure/destructible/cult/talisman/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user))
 		to_chat(user, "<span class='warning'>You're pretty sure you know exactly what this is used for and you can't seem to touch it.</span>")
 		return
@@ -91,6 +103,8 @@
 	break_message = "<span class='warning'>The force breaks apart into shards with a howling scream!</span>"
 
 /obj/structure/destructible/cult/forge/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user))
 		to_chat(user, "<span class='warning'>The heat radiating from [src] pushes you back.</span>")
 		return
@@ -136,14 +150,20 @@
 	var/last_corrupt = 0
 
 /obj/structure/destructible/cult/pylon/New()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSfastprocess, src)
 	..()
 
 /obj/structure/destructible/cult/pylon/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/structure/destructible/cult/pylon/process()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		return
 	if(last_heal <= world.time)
@@ -204,6 +224,8 @@
 	break_message = "<span class='warning'>The books and tomes of the archives burn into ash as the desk shatters!</span>"
 
 /obj/structure/destructible/cult/tome/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user))
 		to_chat(user, "<span class='warning'>All of these books seem to be gibberish.</span>")
 		return
@@ -238,7 +260,11 @@
 	anchored = TRUE
 
 /obj/effect/gateway/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/gateway/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return

@@ -18,10 +18,14 @@
 	var/mix_sound = 'sound/effects/bubbles.ogg' //The sound played upon mixing, if applicable
 
 /datum/chemical_reaction/proc/on_reaction(datum/reagents/holder, created_volume)
+	procstart = null
+	src.procstart = null
 	return
 	//I recommend you set the result amount to the total volume of all components.
 
 /datum/chemical_reaction/proc/chemical_mob_spawn(datum/reagents/holder, amount_to_spawn, reaction_name, mob_faction = "chemicalsummon")
+	procstart = null
+	src.procstart = null
 	var/static/list/chemical_mob_spawn_meancritters = list() // list of possible hostile mobs
 	var/static/list/chemical_mob_spawn_nicecritters = list() // and possible friendly mobs
 	if(holder && holder.my_atom)
@@ -65,6 +69,8 @@
 					step(C, pick(NORTH,SOUTH,EAST,WEST))
 
 /datum/chemical_reaction/proc/goonchem_vortex(turf/T, setting_type, range)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/X in orange(range, T))
 		if(istype(X, /obj/effect))
 			continue

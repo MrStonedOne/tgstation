@@ -21,6 +21,8 @@
 
 
 /obj/effect/acid/New(loc, acid_pwr, acid_amt)
+	procstart = null
+	src.procstart = null
 	..(loc)
 
 	target = get_turf(src)
@@ -36,11 +38,15 @@
 
 
 /obj/effect/acid/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	target = null
 	return ..()
 
 /obj/effect/acid/process()
+	procstart = null
+	src.procstart = null
 	. = 1
 	if(!target)
 		qdel(src)
@@ -62,6 +68,8 @@
 		return 0
 
 /obj/effect/acid/Crossed(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(L.movement_type & FLYING)
@@ -79,6 +87,8 @@
 
 
 /obj/effect/acid/alien/process()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(prob(45))

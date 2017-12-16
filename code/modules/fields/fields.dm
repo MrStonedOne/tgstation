@@ -10,6 +10,8 @@
 
 //Proc to make fields. make_field(field_type, field_params_in_associative_list)
 /proc/make_field(field_type, list/field_params, override_checks = FALSE, start_field = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/proximity_monitor/advanced/F = new field_type()
 	if(!F.assume_params(field_params) && !override_checks)
 		QDEL_NULL(F)
@@ -41,11 +43,15 @@
 	var/list/turf/edge_turfs_new = list()
 
 /datum/proximity_monitor/advanced/Destroy()
+	procstart = null
+	src.procstart = null
 	full_cleanup()
 	STOP_PROCESSING(SSfields, src)
 	return ..()
 
 /datum/proximity_monitor/advanced/proc/assume_params(list/field_params)
+	procstart = null
+	src.procstart = null
 	var/pass_check = TRUE
 	for(var/param in field_params)
 		if(vars[param] || isnull(vars[param]) || (param in vars))
@@ -55,6 +61,8 @@
 	return pass_check
 
 /datum/proximity_monitor/advanced/proc/check_variables()
+	procstart = null
+	src.procstart = null
 	var/pass = TRUE
 	if(field_shape == FIELD_NO_SHAPE)	//If you're going to make a manually updated field you shouldn't be using automatic checks so don't.
 		pass = FALSE
@@ -65,6 +73,8 @@
 	return pass
 
 /datum/proximity_monitor/advanced/process()
+	procstart = null
+	src.procstart = null
 	if(process_inner_turfs)
 		for(var/turf/T in field_turfs)
 			process_inner_turf(T)
@@ -79,10 +89,14 @@
 /datum/proximity_monitor/advanced/proc/process_edge_turf(turf/T)
 
 /datum/proximity_monitor/advanced/New()
+	procstart = null
+	src.procstart = null
 	if(requires_processing)
 		START_PROCESSING(SSfields, src)
 
 /datum/proximity_monitor/advanced/proc/Initialize()
+	procstart = null
+	src.procstart = null
 	setup_field()
 	post_setup_field()
 
@@ -93,6 +107,8 @@
 		cleanup_field_turf(T)
 
 /datum/proximity_monitor/advanced/proc/check_movement()
+	procstart = null
+	src.procstart = null
 	if(!use_host_turf)
 		if(host.loc != last_host_loc)
 			last_host_loc = host.loc
@@ -127,30 +143,48 @@
 			CHECK_TICK
 
 /datum/proximity_monitor/advanced/proc/field_turf_canpass(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_turf/F, turf/entering)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/proximity_monitor/advanced/proc/field_turf_uncross(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_turf/F)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/proximity_monitor/advanced/proc/field_turf_crossed(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_turf/F)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/proximity_monitor/advanced/proc/field_turf_uncrossed(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_turf/F)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/proximity_monitor/advanced/proc/field_edge_canpass(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_edge/F, turf/entering)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/proximity_monitor/advanced/proc/field_edge_uncross(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_edge/F)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/proximity_monitor/advanced/proc/field_edge_crossed(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_edge/F)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/proximity_monitor/advanced/proc/field_edge_uncrossed(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_edge/F)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/proximity_monitor/advanced/HandleMove()
+	procstart = null
+	src.procstart = null
 	var/atom/_host = host
 	var/atom/new_host_loc = _host.loc
 	if(last_host_loc != new_host_loc)
@@ -159,6 +193,8 @@
 /datum/proximity_monitor/advanced/proc/post_setup_field()
 
 /datum/proximity_monitor/advanced/proc/setup_field()
+	procstart = null
+	src.procstart = null
 	update_new_turfs()
 	if(setup_field_turfs)
 		for(var/turf/T in field_turfs_new)
@@ -170,20 +206,30 @@
 			CHECK_TICK
 
 /datum/proximity_monitor/advanced/proc/cleanup_field_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	qdel(field_turfs[T])
 	field_turfs -= T
 
 /datum/proximity_monitor/advanced/proc/cleanup_edge_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	qdel(edge_turfs[T])
 	edge_turfs -= T
 
 /datum/proximity_monitor/advanced/proc/setup_field_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	field_turfs[T] = new /obj/effect/abstract/proximity_checker/advanced/field_turf(T, src)
 
 /datum/proximity_monitor/advanced/proc/setup_edge_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	edge_turfs[T] = new /obj/effect/abstract/proximity_checker/advanced/field_edge(T, src)
 
 /datum/proximity_monitor/advanced/proc/update_new_turfs()
+	procstart = null
+	src.procstart = null
 	if(!istype(host))
 		return FALSE
 	var/turf/center = get_turf(host)
@@ -215,6 +261,8 @@
 
 //Gets edge direction/corner, only works with square radius/WDH fields!
 /datum/proximity_monitor/advanced/proc/get_edgeturf_direction(turf/T, turf/center_override = null)
+	procstart = null
+	src.procstart = null
 	var/turf/checking_from = get_turf(host)
 	if(istype(center_override))
 		checking_from = center_override
@@ -258,20 +306,28 @@
 
 
 /datum/proximity_monitor/advanced/debug/setup_edge_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	T.color = set_edgeturf_color
 	..()
 
 /datum/proximity_monitor/advanced/debug/cleanup_edge_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	T.color = initial(T.color)
 	..()
 	if(T in field_turfs)
 		T.color = set_fieldturf_color
 
 /datum/proximity_monitor/advanced/debug/setup_field_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	T.color = set_fieldturf_color
 	..()
 
 /datum/proximity_monitor/advanced/debug/cleanup_field_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	T.color = initial(T.color)
 	..()
 
@@ -285,20 +341,28 @@
 	var/datum/proximity_monitor/advanced/current = null
 
 /obj/item/device/multitool/field_debug/New()
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	..()
 
 /obj/item/device/multitool/field_debug/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(current)
 	..()
 
 /obj/item/device/multitool/field_debug/proc/setup_debug_field()
+	procstart = null
+	src.procstart = null
 	var/list/new_params = field_params.Copy()
 	new_params["host"] = src
 	current = make_field(field_type, new_params)
 
 /obj/item/device/multitool/field_debug/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	operating = !operating
 	to_chat(user, "You turn [src] [operating? "on":"off"].")
 	if(!istype(current) && operating)
@@ -307,10 +371,16 @@
 		QDEL_NULL(current)
 
 /obj/item/device/multitool/field_debug/on_mob_move()
+	procstart = null
+	src.procstart = null
 	check_turf(get_turf(src))
 
 /obj/item/device/multitool/field_debug/process()
+	procstart = null
+	src.procstart = null
 	check_turf(get_turf(src))
 
 /obj/item/device/multitool/field_debug/proc/check_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	current.HandleMove()

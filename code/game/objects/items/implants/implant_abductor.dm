@@ -8,6 +8,8 @@
 	var/cooldown = 30
 
 /obj/item/implant/abductor/activate()
+	procstart = null
+	src.procstart = null
 	if(cooldown == initial(cooldown))
 		home.Retrieve(imp_in,1)
 		cooldown = 0
@@ -16,12 +18,16 @@
 		to_chat(imp_in, "<span class='warning'>You must wait [30 - cooldown] seconds to use [src] again!</span>")
 
 /obj/item/implant/abductor/process()
+	procstart = null
+	src.procstart = null
 	if(cooldown < initial(cooldown))
 		cooldown++
 		if(cooldown == initial(cooldown))
 			STOP_PROCESSING(SSobj, src)
 
 /obj/item/implant/abductor/implant(mob/living/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/obj/machinery/abductor/console/console
 		if(ishuman(target))

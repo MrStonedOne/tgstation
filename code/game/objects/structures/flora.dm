@@ -14,6 +14,8 @@
 	var/log_amount = 10
 
 /obj/structure/flora/tree/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!cut && log_amount && (!(flags_1 & NODECONSTRUCT_1)))
 		if(W.sharpness && W.force > 0)
 			if(W.hitsound)
@@ -46,6 +48,8 @@
 	icon_state = "pine_1"
 
 /obj/structure/flora/tree/pine/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "pine_[rand(1, 3)]"
 	. = ..()
 
@@ -55,6 +59,8 @@
 	icon_state = "pine_c"
 
 /obj/structure/flora/tree/pine/xmas/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "pine_c"
 
@@ -69,6 +75,8 @@
 	icon_state = "palm1"
 
 /obj/structure/flora/tree/palm/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = pick("palm1","palm2")
 	pixel_x = 0
@@ -80,6 +88,8 @@
 	desc = "During last year's Feats of Strength the Research Director was able to suplex this passing immobile rod into a planter."
 
 /obj/structure/flora/tree/dead/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "tree_[rand(1, 6)]"
 	. = ..()
 
@@ -92,6 +102,8 @@
 	pixel_y = -20
 
 /obj/structure/flora/tree/jungle/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "[icon_state][rand(1, 6)]"
 	. = ..()
 
@@ -111,6 +123,8 @@
 	icon_state = "snowgrass1bb"
 
 /obj/structure/flora/grass/brown/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "snowgrass[rand(1, 3)]bb"
 	. = ..()
 
@@ -119,6 +133,8 @@
 	icon_state = "snowgrass1gb"
 
 /obj/structure/flora/grass/green/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "snowgrass[rand(1, 3)]gb"
 	. = ..()
 
@@ -126,6 +142,8 @@
 	icon_state = "snowgrassall1"
 
 /obj/structure/flora/grass/both/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "snowgrassall[rand(1, 3)]"
 	. = ..()
 
@@ -139,6 +157,8 @@
 	anchored = TRUE
 
 /obj/structure/flora/bush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "snowbush[rand(1, 6)]"
 	. = ..()
 
@@ -151,6 +171,8 @@
 	icon_state = "firstbush_1"
 
 /obj/structure/flora/ausbushes/Initialize()
+	procstart = null
+	src.procstart = null
 	if(icon_state == "firstbush_1")
 		icon_state = "firstbush_[rand(1, 4)]"
 	. = ..()
@@ -159,6 +181,8 @@
 	icon_state = "reedbush_1"
 
 /obj/structure/flora/ausbushes/reedbush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "reedbush_[rand(1, 4)]"
 	. = ..()
 
@@ -166,6 +190,8 @@
 	icon_state = "leafybush_1"
 
 /obj/structure/flora/ausbushes/leafybush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "leafybush_[rand(1, 3)]"
 	. = ..()
 
@@ -173,6 +199,8 @@
 	icon_state = "palebush_1"
 
 /obj/structure/flora/ausbushes/palebush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "palebush_[rand(1, 4)]"
 	. = ..()
 
@@ -180,6 +208,8 @@
 	icon_state = "stalkybush_1"
 
 /obj/structure/flora/ausbushes/stalkybush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "stalkybush_[rand(1, 3)]"
 	. = ..()
 
@@ -187,6 +217,8 @@
 	icon_state = "grassybush_1"
 
 /obj/structure/flora/ausbushes/grassybush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "grassybush_[rand(1, 4)]"
 	. = ..()
 
@@ -194,6 +226,8 @@
 	icon_state = "fernybush_1"
 
 /obj/structure/flora/ausbushes/fernybush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "fernybush_[rand(1, 3)]"
 	. = ..()
 
@@ -201,6 +235,8 @@
 	icon_state = "sunnybush_1"
 
 /obj/structure/flora/ausbushes/sunnybush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "sunnybush_[rand(1, 3)]"
 	. = ..()
 
@@ -208,6 +244,8 @@
 	icon_state = "genericbush_1"
 
 /obj/structure/flora/ausbushes/genericbush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "genericbush_[rand(1, 4)]"
 	. = ..()
 
@@ -215,6 +253,8 @@
 	icon_state = "pointybush_1"
 
 /obj/structure/flora/ausbushes/pointybush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "pointybush_[rand(1, 4)]"
 	. = ..()
 
@@ -222,6 +262,8 @@
 	icon_state = "lavendergrass_1"
 
 /obj/structure/flora/ausbushes/lavendergrass/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "lavendergrass_[rand(1, 4)]"
 	. = ..()
 
@@ -229,6 +271,8 @@
 	icon_state = "ywflowers_1"
 
 /obj/structure/flora/ausbushes/ywflowers/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "ywflowers_[rand(1, 3)]"
 	. = ..()
 
@@ -236,6 +280,8 @@
 	icon_state = "brflowers_1"
 
 /obj/structure/flora/ausbushes/brflowers/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "brflowers_[rand(1, 3)]"
 	. = ..()
 
@@ -243,6 +289,8 @@
 	icon_state = "ppflowers_1"
 
 /obj/structure/flora/ausbushes/ppflowers/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "ppflowers_[rand(1, 3)]"
 	. = ..()
 
@@ -250,6 +298,8 @@
 	icon_state = "sparsegrass_1"
 
 /obj/structure/flora/ausbushes/sparsegrass/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "sparsegrass_[rand(1, 3)]"
 	. = ..()
 
@@ -257,6 +307,8 @@
 	icon_state = "fullgrass_1"
 
 /obj/structure/flora/ausbushes/fullgrass/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "fullgrass_[rand(1, 3)]"
 	. = ..()
 
@@ -273,6 +325,8 @@
 	throw_range = 4
 
 /obj/item/twohanded/required/kirbyplants/equipped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/image/I = image(icon = 'icons/obj/flora/plants.dmi' , icon_state = src.icon_state, loc = user)
 	I.copy_overlays(src)
 	I.override = 1
@@ -281,6 +335,8 @@
 	..()
 
 /obj/item/twohanded/required/kirbyplants/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.remove_alt_appearance("sneaking_mission")
 
@@ -290,6 +346,8 @@
 	var/list/static/states
 
 /obj/item/twohanded/required/kirbyplants/random/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon = 'icons/obj/flora/plants.dmi'
 	if(!states)
@@ -297,6 +355,8 @@
 	icon_state = pick(states)
 
 /obj/item/twohanded/required/kirbyplants/random/proc/generate_states()
+	procstart = null
+	src.procstart = null
 	states = list()
 	for(var/i in 1 to 25)
 		var/number
@@ -332,6 +392,8 @@
 	density = TRUE
 
 /obj/structure/flora/rock/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[icon_state][rand(1,3)]"
 
@@ -340,6 +402,8 @@
 	desc = "A pile of rocks."
 
 /obj/structure/flora/rock/pile/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[icon_state][rand(1,3)]"
 
@@ -353,6 +417,8 @@
 
 
 /obj/structure/flora/grass/jungle/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "[icon_state][rand(1, 5)]"
 	. = ..()
 
@@ -369,6 +435,8 @@
 	density = FALSE
 
 /obj/structure/flora/rock/jungle/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][rand(1,5)]"
 
@@ -382,6 +450,8 @@
 	icon_state = "busha"
 
 /obj/structure/flora/junglebush/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "[icon_state][rand(1, 3)]"
 	. = ..()
 
@@ -407,5 +477,7 @@
 	pixel_y = -16
 
 /obj/structure/flora/rock/pile/largejungle/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][rand(1,3)]"

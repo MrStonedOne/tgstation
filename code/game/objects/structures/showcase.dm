@@ -18,6 +18,8 @@
 	icon_state = "computer"
 
 /obj/structure/showcase/fakeid/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	add_overlay("id")
 	add_overlay("id_key")
@@ -29,6 +31,8 @@
 	icon_state = "computer"
 
 /obj/structure/showcase/fakesec/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	add_overlay("security")
 	add_overlay("security_key")
@@ -109,6 +113,8 @@
 //However if a player wants to move an existing showcase or remove one, this is for that.
 
 /obj/structure/showcase/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver) && !anchored)
 		if(deconstruction_state == SHOWCASE_SCREWDRIVERED)
 			to_chat(user, "<span class='notice'>You screw the screws back into the showcase.</span>")
@@ -132,6 +138,8 @@
 //Feedback is given in examine because showcases can basically have any sprite assigned to them
 
 /obj/structure/showcase/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	switch(deconstruction_state)

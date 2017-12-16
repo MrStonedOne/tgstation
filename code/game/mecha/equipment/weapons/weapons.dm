@@ -10,15 +10,21 @@
 	var/firing_effect_type = /obj/effect/temp_visual/dir_setting/firing_effect	//the visual effect appearing when the weapon is fired.
 
 /obj/item/mecha_parts/mecha_equipment/weapon/can_attach(obj/mecha/combat/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(M))
 			return 1
 	return 0
 
 /obj/item/mecha_parts/mecha_equipment/weapon/proc/get_shot_amount()
+	procstart = null
+	src.procstart = null
 	return projectiles_per_shot
 
 /obj/item/mecha_parts/mecha_equipment/weapon/action(atom/target, params)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return 0
 
@@ -60,9 +66,13 @@
 	firing_effect_type = /obj/effect/temp_visual/dir_setting/firing_effect/energy
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/get_shot_amount()
+	procstart = null
+	src.procstart = null
 	return min(round(chassis.cell.charge / energy_drain), projectiles_per_shot)
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/start_cooldown()
+	procstart = null
+	src.procstart = null
 	set_ready_state(0)
 	chassis.use_power(energy_drain*get_shot_amount())
 	addtimer(CALLBACK(src, .proc/set_ready_state, 1), equip_cooldown)
@@ -126,6 +136,8 @@
 	fire_sound = 'sound/weapons/plasma_cutter.ogg'
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/plasma/can_attach(obj/mecha/working/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //combat mech
 		return 1
 	else if(M.equipment.len < M.max_equip && istype(M))
@@ -151,12 +163,16 @@
 	range = MELEE|RANGED
 
 /obj/item/mecha_parts/mecha_equipment/weapon/honker/can_attach(obj/mecha/combat/honker/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(M))
 			return 1
 	return 0
 
 /obj/item/mecha_parts/mecha_equipment/weapon/honker/action(target, params)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	playsound(chassis, 'sound/items/airhorn.ogg', 100, 1)
@@ -192,9 +208,13 @@
 	var/projectile_energy_cost
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/get_shot_amount()
+	procstart = null
+	src.procstart = null
 	return min(projectiles, projectiles_per_shot)
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/action_checks(target)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	if(projectiles <= 0)
@@ -202,10 +222,14 @@
 	return 1
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/get_equip_info()
+	procstart = null
+	src.procstart = null
 	return "[..()] \[[src.projectiles]\][(src.projectiles < initial(src.projectiles))?" - <a href='?src=[REF(src)];rearm=1'>Rearm</a>":null]"
 
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/rearm()
+	procstart = null
+	src.procstart = null
 	if(projectiles < initial(projectiles))
 		var/projectiles_to_add = initial(projectiles) - projectiles
 		while(chassis.get_charge() >= projectile_energy_cost && projectiles_to_add)
@@ -218,17 +242,23 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/needs_rearm()
+	procstart = null
+	src.procstart = null
 	. = !(projectiles > 0)
 
 
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if (href_list["rearm"])
 		src.rearm()
 	return
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/action(atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		projectiles -= get_shot_amount()
 		send_byjax(chassis.occupant,"exosuit.browser","[REF(src)]",src.get_equip_info())
@@ -295,6 +325,8 @@
 	var/diags_first = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/action(target)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	var/obj/O = new projectile(chassis.loc)
@@ -307,6 +339,8 @@
 
 //used for projectile initilisation (priming flashbang) and additional logging
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/proc/proj_init(var/obj/O)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -323,6 +357,8 @@
 	var/det_time = 20
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/flashbang/proj_init(var/obj/item/grenade/flashbang/F)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	message_admins("[ADMIN_LOOKUPFLW(chassis.occupant)] fired a [src] in [ADMIN_COORDJMP(T)]",0,1)
 	log_game("[key_name(chassis.occupant)] fired a [src] [COORD(T)]")
@@ -348,6 +384,8 @@
 	equip_cooldown = 20
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/banana_mortar/can_attach(obj/mecha/combat/honker/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(M))
 			return 1
@@ -365,12 +403,16 @@
 	equip_cooldown = 10
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/mousetrap_mortar/can_attach(obj/mecha/combat/honker/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(M))
 			return 1
 	return 0
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/mousetrap_mortar/proj_init(var/obj/item/device/assembly/mousetrap/armed/M)
+	procstart = null
+	src.procstart = null
 	M.secured = 1
 
 
@@ -390,17 +432,23 @@
 	diags_first = TRUE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/can_attach(obj/mecha/combat/honker/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(istype(M))
 			return 1
 	return 0
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/action(target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		chassis.occupant_message("<font color='red' size='5'>HONK</font>")
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/proj_init(obj/item/punching_glove/PG)
+	procstart = null
+	src.procstart = null
 	if(!istype(PG))
 		return
 	 //has to be low sleep or it looks weird, the beam doesn't exist for very long so it's a non-issue
@@ -413,6 +461,8 @@
 	icon_state = "punching_glove"
 
 /obj/item/punching_glove/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		if(ismovableatom(hit_atom))
 			var/atom/movable/AM = hit_atom

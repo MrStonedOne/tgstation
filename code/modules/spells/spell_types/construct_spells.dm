@@ -26,6 +26,8 @@
 	action_background_icon_state = "bg_cult"
 
 /obj/effect/proc_holder/spell/aoe_turf/area_conversion/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(user), 'sound/items/welder.ogg', 75, 1)
 	for(var/turf/T in targets)
 		T.narsie_act(FALSE, TRUE, 100 - (get_dist(user, T) * 25))
@@ -139,6 +141,8 @@
 	jaunt_out_type = /obj/effect/temp_visual/dir_setting/wraith/out
 
 /obj/effect/proc_holder/spell/targeted/ethereal_jaunt/shift/jaunt_steam(mobloc)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/spell/targeted/projectile/magic_missile/lesser
@@ -194,6 +198,8 @@
 	action_icon_state = "abyssal_gaze"
 
 /obj/effect/proc_holder/spell/targeted/abyssal_gaze/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(targets))
 		to_chat(user, "<span class='notice'>No target found in range.</span>")
 		revert_cast()
@@ -214,6 +220,8 @@
 	target.bodytemperature -= 200
 
 /obj/effect/proc_holder/spell/targeted/abyssal_gaze/proc/cure_blindness(mob/target)
+	procstart = null
+	src.procstart = null
 	target.adjust_blindness(-5)
 
 /obj/effect/proc_holder/spell/targeted/dominate
@@ -235,6 +243,8 @@
 	action_icon_state = "dominate"
 
 /obj/effect/proc_holder/spell/targeted/dominate/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(targets))
 		to_chat(user, "<span class='notice'>No target found in range.</span>")
 		revert_cast()
@@ -268,6 +278,8 @@
 	new /obj/effect/temp_visual/cult/sac(get_turf(S))
 
 /obj/effect/proc_holder/spell/targeted/dominate/can_target(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(!isanimal(target) || target.stat)
 		return FALSE
 	if("cult" in target.faction)

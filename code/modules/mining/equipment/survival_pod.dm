@@ -19,6 +19,8 @@
 	var/used = FALSE
 
 /obj/item/survivalcapsule/proc/get_template()
+	procstart = null
+	src.procstart = null
 	if(template)
 		return
 	template = SSmapping.shelter_templates[template_id]
@@ -27,16 +29,22 @@
 		qdel(src)
 
 /obj/item/survivalcapsule/Destroy()
+	procstart = null
+	src.procstart = null
 	template = null // without this, capsules would be one use. per round.
 	. = ..()
 
 /obj/item/survivalcapsule/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	get_template()
 	to_chat(user, "This capsule has the [template.name] stored.")
 	to_chat(user, template.description)
 
 /obj/item/survivalcapsule/attack_self()
+	procstart = null
+	src.procstart = null
 	//Can't grab when capsule is New() because templates aren't loaded then
 	get_template()
 	if(!used)
@@ -124,6 +132,8 @@
 	icon_state = "sleeper"
 
 /obj/machinery/sleeper/survival_pod/update_icon()
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		cut_overlays()
 	else
@@ -139,6 +149,8 @@
 	pixel_y = -32
 
 /obj/item/device/gps/computer/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench) && !(flags_1&NODECONSTRUCT_1))
 		playsound(src.loc, W.usesound, 50, 1)
 		user.visible_message("<span class='warning'>[user] disassembles the gps.</span>", \
@@ -150,6 +162,8 @@
 	return ..()
 
 /obj/item/device/gps/computer/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_self(user)
 
 //Bed
@@ -174,6 +188,8 @@
 	var/empty = FALSE
 
 /obj/machinery/smartfridge/survival_pod/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(empty)
 		return
@@ -188,6 +204,8 @@
 		load(G)
 
 /obj/machinery/smartfridge/survival_pod/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	return isitem(O)
 
 /obj/machinery/smartfridge/survival_pod/empty
@@ -209,12 +227,16 @@
 	CanAtmosPass = ATMOS_PASS_NO
 
 /obj/structure/fans/deconstruct()
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(buildstacktype)
 			new buildstacktype(loc,buildstackamount)
 	qdel(src)
 
 /obj/structure/fans/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench) && !(flags_1&NODECONSTRUCT_1))
 		playsound(src.loc, W.usesound, 50, 1)
 		user.visible_message("<span class='warning'>[user] disassembles the fan.</span>", \
@@ -232,10 +254,14 @@
 	buildstackamount = 2
 
 /obj/structure/fans/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	air_update_turf(1)
 
 /obj/structure/fans/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	T.air_update_turf(1)
@@ -293,6 +319,8 @@
 						/obj/item/banhammer)
 
 /obj/item/fakeartefact/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/I = pick(possible)
 	name = initial(I.name)

@@ -19,6 +19,8 @@
 	var/outfit = /datum/outfit/vr_basic
 
 /obj/machinery/vr_sleeper/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sparks = new /datum/effect_system/spark_spread()
 	sparks.set_up(2,0)
@@ -36,6 +38,8 @@
 
 
 /obj/machinery/vr_sleeper/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		ui_interact(user)
 	else
@@ -46,14 +50,20 @@
 
 
 /obj/machinery/vr_sleeper/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	open_machine()
 
 
 /obj/machinery/vr_sleeper/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	open_machine()
 
 
 /obj/machinery/vr_sleeper/Destroy()
+	procstart = null
+	src.procstart = null
 	open_machine()
 	cleanup_vr_human()
 	QDEL_NULL(sparks)
@@ -61,15 +71,21 @@
 
 
 /obj/machinery/vr_sleeper/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	you_die_in_the_game_you_die_for_real = TRUE
 	sparks.start()
 
 
 /obj/machinery/vr_sleeper/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][state_open ? "-open" : ""]"
 
 
 /obj/machinery/vr_sleeper/open_machine()
+	procstart = null
+	src.procstart = null
 	if(!state_open)
 		if(vr_human)
 			vr_human.revert_to_reality(FALSE, FALSE)
@@ -79,12 +95,16 @@
 
 
 /obj/machinery/vr_sleeper/close_machine()
+	procstart = null
+	src.procstart = null
 	..()
 	if(occupant)
 		ui_interact(occupant)
 
 
 /obj/machinery/vr_sleeper/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "vr_sleeper", "VR Sleeper", 475, 340, master_ui, state)
@@ -92,6 +112,8 @@
 
 
 /obj/machinery/vr_sleeper/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -133,6 +155,8 @@
 
 
 /obj/machinery/vr_sleeper/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(vr_human && !QDELETED(vr_human))
 		data["can_delete_avatar"] = TRUE
@@ -155,6 +179,8 @@
 
 
 /obj/machinery/vr_sleeper/proc/build_virtual_human(mob/living/carbon/human/H, location, transfer = TRUE)
+	procstart = null
+	src.procstart = null
 	if(H)
 		cleanup_vr_human()
 		vr_human = new /mob/living/carbon/human/virtual_reality(location)
@@ -175,6 +201,8 @@
 
 
 /obj/machinery/vr_sleeper/proc/cleanup_vr_human()
+	procstart = null
+	src.procstart = null
 	if(vr_human)
 		vr_human.death(0)
 

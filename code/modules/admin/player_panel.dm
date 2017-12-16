@@ -310,6 +310,8 @@
 	usr << browse(dat, "window=players;size=600x480")
 
 /datum/admins/proc/check_antagonists()
+	procstart = null
+	src.procstart = null
 	if (SSticker.HasRoundStarted())
 		var/dat = "<html><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"
 		if(SSticker.mode.replacementmode)

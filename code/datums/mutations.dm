@@ -5,6 +5,8 @@ GLOBAL_LIST_EMPTY(mutations_list)
 	var/name
 
 /datum/mutation/New()
+	procstart = null
+	src.procstart = null
 	GLOB.mutations_list[name] = src
 
 /datum/mutation/human
@@ -23,14 +25,20 @@ GLOBAL_LIST_EMPTY(mutations_list)
 	var/time_coeff = 1 //coefficient for timed mutations
 
 /datum/mutation/human/proc/force_give(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	set_block(owner)
 	. = on_acquiring(owner)
 
 /datum/mutation/human/proc/force_lose(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	set_block(owner, 0)
 	. = on_losing(owner)
 
 /datum/mutation/human/proc/set_se(se_string, on = 1)
+	procstart = null
+	src.procstart = null
 	if(!se_string || lentext(se_string) < DNA_STRUC_ENZYMES_BLOCKS * DNA_BLOCK_SIZE)
 		return
 	var/before = copytext(se_string, 1, ((dna_block - 1) * DNA_BLOCK_SIZE) + 1)
@@ -39,16 +47,22 @@ GLOBAL_LIST_EMPTY(mutations_list)
 	return before + injection + after
 
 /datum/mutation/human/proc/set_block(mob/living/carbon/owner, on = 1)
+	procstart = null
+	src.procstart = null
 	if(owner && owner.has_dna())
 		owner.dna.struc_enzymes = set_se(owner.dna.struc_enzymes, on)
 
 /datum/mutation/human/proc/check_block_string(se_string)
+	procstart = null
+	src.procstart = null
 	if(!se_string || lentext(se_string) < DNA_STRUC_ENZYMES_BLOCKS * DNA_BLOCK_SIZE)
 		return 0
 	if(hex2num(getblock(se_string, dna_block)) >= lowest_value)
 		return 1
 
 /datum/mutation/human/proc/check_block(mob/living/carbon/human/owner, force_powers=0)
+	procstart = null
+	src.procstart = null
 	if(check_block_string(owner.dna.struc_enzymes))
 		if(prob(get_chance)||force_powers)
 			. = on_acquiring(owner)
@@ -56,6 +70,8 @@ GLOBAL_LIST_EMPTY(mutations_list)
 		. = on_losing(owner)
 
 /datum/mutation/human/proc/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(!owner || !istype(owner) || owner.stat == DEAD || (src in owner.dna.mutations))
 		return 1
 	if(species_allowed.len && !species_allowed.Find(owner.dna.species.id))
@@ -77,21 +93,33 @@ GLOBAL_LIST_EMPTY(mutations_list)
 		owner.apply_overlay(layer_used)
 
 /datum/mutation/human/proc/get_visual_indicator(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/mutation/human/proc/on_attack_hand(mob/living/carbon/human/owner, atom/target, proximity)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/mutation/human/proc/on_ranged_attack(mob/living/carbon/human/owner, atom/target)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/mutation/human/proc/on_move(mob/living/carbon/human/owner, new_loc)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/mutation/human/proc/on_life(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/mutation/human/proc/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(owner && istype(owner) && (owner.dna.mutations.Remove(src)))
 		if(text_lose_indication && owner.stat != DEAD)
 			to_chat(owner, text_lose_indication)
@@ -107,16 +135,24 @@ GLOBAL_LIST_EMPTY(mutations_list)
 	return 1
 
 /datum/mutation/human/proc/say_mod(message)
+	procstart = null
+	src.procstart = null
 	if(message)
 		return message
 
 /datum/mutation/human/proc/get_spans()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /mob/living/carbon/proc/update_mutations_overlay()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/human/update_mutations_overlay()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mutation/human/CM in dna.mutations)
 		if(CM.species_allowed.len && !CM.species_allowed.Find(dna.species.id))
 			CM.force_lose(src) //shouldn't have that mutation at all

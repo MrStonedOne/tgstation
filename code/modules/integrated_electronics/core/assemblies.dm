@@ -22,10 +22,14 @@
 	var/use_cyborg_cell = TRUE
 
 /obj/item/device/electronic_assembly/proc/check_interactivity(mob/user)
+	procstart = null
+	src.procstart = null
 	return user.canUseTopic(src,be_close = TRUE)
 
 
 /obj/item/device/electronic_assembly/Initialize()
+	procstart = null
+	src.procstart = null
 	.=..()
 	START_PROCESSING(SScircuit, src)
 	materials[MAT_METAL] = round((max_complexity + max_components) / 4) * SScircuit.cost_multiplier
@@ -33,13 +37,19 @@
 
 
 /obj/item/device/electronic_assembly/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SScircuit, src)
 	return ..()
 
 /obj/item/device/electronic_assembly/process()
+	procstart = null
+	src.procstart = null
 	handle_idle_power()
 
 /obj/item/device/electronic_assembly/proc/handle_idle_power()
+	procstart = null
+	src.procstart = null
 	// First we generate power.
 	for(var/obj/item/integrated_circuit/passive/power/P in assembly_components)
 		P.make_energy()
@@ -53,6 +63,8 @@
 
 
 /obj/item/device/electronic_assembly/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!check_interactivity(user))
 		return
 
@@ -112,6 +124,8 @@
 	user << browse(HTML, "window=assembly-[REF(src)];size=600x350;border=1;can_resize=1;can_close=1;can_minimize=1")
 
 /obj/item/device/electronic_assembly/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -170,6 +184,8 @@
 	interact(usr) // To refresh the UI.
 
 /obj/item/device/electronic_assembly/proc/rename()
+	procstart = null
+	src.procstart = null
 	var/mob/M = usr
 	if(!check_interactivity(M))
 		return
@@ -182,15 +198,21 @@
 		name = input
 
 /obj/item/device/electronic_assembly/proc/can_move()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/device/electronic_assembly/update_icon()
+	procstart = null
+	src.procstart = null
 	if(opened)
 		icon_state = initial(icon_state) + "-open"
 	else
 		icon_state = initial(icon_state)
 
 /obj/item/device/electronic_assembly/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/I in assembly_components)
 		var/obj/item/integrated_circuit/IC = I
@@ -199,6 +221,8 @@
 		interact(user)
 
 /obj/item/device/electronic_assembly/proc/return_total_complexity()
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/obj/item/integrated_circuit/part
 	for(var/p in assembly_components)
@@ -206,6 +230,8 @@
 		. += part.complexity
 
 /obj/item/device/electronic_assembly/proc/return_total_size()
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/obj/item/integrated_circuit/part
 	for(var/p in assembly_components)
@@ -214,6 +240,8 @@
 
 // Returns true if the circuit made it inside.
 /obj/item/device/electronic_assembly/proc/try_add_component(obj/item/integrated_circuit/IC, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		to_chat(user, "<span class='warning'>\The [src]'s hatch is closed, you can't put anything inside.</span>")
 		return FALSE
@@ -244,12 +272,16 @@
 
 // Actually puts the circuit inside, doesn't perform any checks.
 /obj/item/device/electronic_assembly/proc/add_component(obj/item/integrated_circuit/component)
+	procstart = null
+	src.procstart = null
 	component.forceMove(get_object())
 	component.assembly = src
 	assembly_components |= component
 
 
 /obj/item/device/electronic_assembly/proc/try_remove_component(obj/item/integrated_circuit/IC, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		to_chat(user, "<span class='warning'>[src]'s hatch is closed, so you can't fiddle with the internal components.</span>")
 		return FALSE
@@ -266,6 +298,8 @@
 
 // Actually removes the component, doesn't perform any checks.
 /obj/item/device/electronic_assembly/proc/remove_component(obj/item/integrated_circuit/component)
+	procstart = null
+	src.procstart = null
 	component.disconnect_all()
 	component.forceMove(drop_location())
 	component.assembly = null
@@ -273,6 +307,8 @@
 
 
 /obj/item/device/electronic_assembly/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/integrated_circuit/input/sensor/S in assembly_components)
 		if(!proximity)
 			if(istype(S,/obj/item/integrated_circuit/input/sensor/ranged)||(!user))
@@ -292,6 +328,8 @@
 
 
 /obj/item/device/electronic_assembly/screwdriver_act(mob/living/user, obj/item/S)
+	procstart = null
+	src.procstart = null
 	playsound(src, S.usesound, 50, 1)
 	opened = !opened
 	to_chat(user, "<span class='notice'>You [opened ? "open" : "close"] the maintenance hatch of [src].</span>")
@@ -299,6 +337,8 @@
 	return TRUE
 
 /obj/item/device/electronic_assembly/attackby(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/integrated_circuit))
 		if(!user.canUnEquip(I))
 			return FALSE
@@ -329,6 +369,8 @@
 		return ..()
 
 /obj/item/device/electronic_assembly/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!check_interactivity(user))
 		return
 	if(opened)
@@ -364,6 +406,8 @@
 		choice.ask_for_input(user)
 
 /obj/item/device/electronic_assembly/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to contents.len)
 		var/atom/movable/AM = contents[i]
@@ -371,17 +415,23 @@
 
 // Returns true if power was successfully drawn.
 /obj/item/device/electronic_assembly/proc/draw_power(amount)
+	procstart = null
+	src.procstart = null
 	if(battery && battery.use(amount * GLOB.CELLRATE))
 		return TRUE
 	return FALSE
 
 // Ditto for giving.
 /obj/item/device/electronic_assembly/proc/give_power(amount)
+	procstart = null
+	src.procstart = null
 	if(battery && battery.give(amount * GLOB.CELLRATE))
 		return TRUE
 	return FALSE
 
 /obj/item/device/electronic_assembly/Moved(oldLoc, dir)
+	procstart = null
+	src.procstart = null
 	for(var/I in assembly_components)
 		var/obj/item/integrated_circuit/IC = I
 		IC.ext_moved(oldLoc, dir)
@@ -389,12 +439,16 @@
 // Returns the object that is supposed to be used in attack messages, location checks, etc.
 // Override in children for special behavior.
 /obj/item/device/electronic_assembly/proc/get_object()
+	procstart = null
+	src.procstart = null
 	return src
 
 
 // Returns the location to be used for dropping items.
 // Same as the regular drop_location(), but with checks being run on acting_object if necessary.
 /obj/item/integrated_circuit/drop_location()
+	procstart = null
+	src.procstart = null
 	var/atom/movable/acting_object = get_object()
 
 	// plz no infinite loops
@@ -457,16 +511,22 @@
 	anchored = FALSE
 
 /obj/item/device/electronic_assembly/large/attackby(obj/item/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, O, 20))
 		return
 	..()
 
 /obj/item/device/electronic_assembly/large/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		return
 	..()
 
 /obj/item/device/electronic_assembly/large/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		attack_self(user)
 		return
@@ -499,6 +559,8 @@
 	max_complexity = IC_COMPLEXITY_BASE * 3
 
 /obj/item/device/electronic_assembly/drone/can_move()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/device/electronic_assembly/drone/default

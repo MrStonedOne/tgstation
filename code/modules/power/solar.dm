@@ -22,16 +22,22 @@
 	var/obj/machinery/power/solar_control/control = null
 
 /obj/machinery/power/solar/Initialize(mapload, obj/item/solar_assembly/S)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	Make(S)
 	connect_to_network()
 
 /obj/machinery/power/solar/Destroy()
+	procstart = null
+	src.procstart = null
 	unset_control() //remove from control computer
 	return ..()
 
 //set the control of the panel to a given computer if closer than SOLAR_MAX_DIST
 /obj/machinery/power/solar/proc/set_control(obj/machinery/power/solar_control/SC)
+	procstart = null
+	src.procstart = null
 	if(!SC || (get_dist(src, SC) > SOLAR_MAX_DIST))
 		return 0
 	control = SC
@@ -40,11 +46,15 @@
 
 //set the control of the panel to null and removes it from the control list of the previous control computer if needed
 /obj/machinery/power/solar/proc/unset_control()
+	procstart = null
+	src.procstart = null
 	if(control)
 		control.connected_panels.Remove(src)
 	control = null
 
 /obj/machinery/power/solar/proc/Make(obj/item/solar_assembly/S)
+	procstart = null
+	src.procstart = null
 	if(!S)
 		S = new /obj/item/solar_assembly(src)
 		S.glass_type = /obj/item/stack/sheet/glass
@@ -57,6 +67,8 @@
 	update_icon()
 
 /obj/machinery/power/solar/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/crowbar))
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
 		user.visible_message("[user] begins to take the glass off the solar panel.", "<span class='notice'>You begin to take the glass off the solar panel...</span>")
@@ -68,6 +80,8 @@
 		return ..()
 
 /obj/machinery/power/solar/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(stat & BROKEN)
@@ -79,6 +93,8 @@
 
 
 /obj/machinery/power/solar/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(stat & BROKEN) && !(flags_1 & NODECONSTRUCT_1))
 		playsound(loc, 'sound/effects/glassbr3.ogg', 100, 1)
 		stat |= BROKEN
@@ -86,6 +102,8 @@
 		update_icon()
 
 /obj/machinery/power/solar/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(disassembled)
 			var/obj/item/solar_assembly/S = locate() in src
@@ -100,6 +118,8 @@
 
 
 /obj/machinery/power/solar/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	cut_overlays()
 	if(stat & BROKEN)
@@ -110,6 +130,8 @@
 
 //calculates the fraction of the sunlight that the panel recieves
 /obj/machinery/power/solar/proc/update_solar_exposure()
+	procstart = null
+	src.procstart = null
 	if(obscured)
 		sunfrac = 0
 		return
@@ -142,15 +164,21 @@
 
 
 /obj/machinery/power/solar/fake/New(var/turf/loc, var/obj/item/solar_assembly/S)
+	procstart = null
+	src.procstart = null
 	..(loc, S, 0)
 
 /obj/machinery/power/solar/fake/process()
+	procstart = null
+	src.procstart = null
 	. = PROCESS_KILL
 	return
 
 //trace towards sun to see if we're in shadow
 /obj/machinery/power/solar/proc/occlusion()
 
+	procstart = null
+	src.procstart = null
 	var/ax = x		// start at the solar panel
 	var/ay = y
 	var/turf/T = null
@@ -192,11 +220,15 @@
 	var/glass_type = null
 
 /obj/item/solar_assembly/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored && isturf(loc)) // You can't pick it up
 		..()
 
 // Give back the glass type we were supplied with
 /obj/item/solar_assembly/proc/give_glass(device_broken)
+	procstart = null
+	src.procstart = null
 	if(device_broken)
 		new /obj/item/shard(loc)
 		new /obj/item/shard(loc)
@@ -207,6 +239,8 @@
 
 
 /obj/item/solar_assembly/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench) && isturf(loc))
 		if(isinspace())
 			to_chat(user, "<span class='warning'>You can't secure [src] here.</span>")
@@ -283,12 +317,16 @@
 	var/list/connected_panels = list()
 
 /obj/machinery/power/solar_control/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(powernet)
 		set_panels(currentdir)
 	connect_to_network()
 
 /obj/machinery/power/solar_control/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/power/solar/M in connected_panels)
 		M.unset_control()
 	if(connected_tracker)
@@ -296,10 +334,14 @@
 	return ..()
 
 /obj/machinery/power/solar_control/disconnect_from_network()
+	procstart = null
+	src.procstart = null
 	..()
 	SSsun.solars.Remove(src)
 
 /obj/machinery/power/solar_control/connect_to_network()
+	procstart = null
+	src.procstart = null
 	var/to_return = ..()
 	if(powernet) //if connected and not already in solar_list...
 		SSsun.solars |= src //... add it
@@ -307,6 +349,8 @@
 
 //search for unconnected panels and trackers in the computer powernet and connect them
 /obj/machinery/power/solar_control/proc/search_for_connected()
+	procstart = null
+	src.procstart = null
 	if(powernet)
 		for(var/obj/machinery/power/M in powernet.nodes)
 			if(istype(M, /obj/machinery/power/solar))
@@ -321,6 +365,8 @@
 
 //called by the sun controller, update the facing angle (either manually or via tracking) and rotates the panels accordingly
 /obj/machinery/power/solar_control/proc/update()
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER | BROKEN))
 		return
 
@@ -336,6 +382,8 @@
 	updateDialog()
 
 /obj/machinery/power/solar_control/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(stat & NOPOWER)
 		add_overlay("[icon_keyboard]_off")
@@ -357,6 +405,8 @@
 		ui.open()
 
 /obj/machinery/power/solar_control/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 
 	data["generated"] = round(lastgen)
@@ -372,6 +422,8 @@
 	return data
 
 /obj/machinery/power/solar_control/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -410,6 +462,8 @@
 			. = TRUE
 
 /obj/machinery/power/solar_control/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		playsound(src.loc, I.usesound, 50, 1)
 		if(do_after(user, 20*I.toolspeed, target = src))
@@ -442,6 +496,8 @@
 		return ..()
 
 /obj/machinery/power/solar_control/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(stat & BROKEN)
@@ -452,12 +508,16 @@
 			playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/machinery/power/solar_control/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(stat & BROKEN) && !(flags_1 & NODECONSTRUCT_1))
 		playsound(loc, 'sound/effects/glassbr3.ogg', 100, 1)
 		stat |= BROKEN
 		update_icon()
 
 /obj/machinery/power/solar_control/process()
+	procstart = null
+	src.procstart = null
 	lastgen = gen
 	gen = 0
 
@@ -476,6 +536,8 @@
 //rotates the panel to the passed angle
 /obj/machinery/power/solar_control/proc/set_panels(currentdir)
 
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/power/solar/S in connected_panels)
 		S.adir = currentdir //instantly rotates the panel
 		S.occlusion()//and
@@ -485,6 +547,8 @@
 
 
 /obj/machinery/power/solar_control/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 

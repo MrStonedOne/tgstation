@@ -12,6 +12,8 @@
 	var/needs_growth = NO_GROWTH_NEEDED
 
 /datum/action/innate/slime/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/mob/living/simple_animal/slime/S = owner
 		if(needs_growth == GROWTH_NEEDED)
@@ -21,6 +23,8 @@
 		return 1
 
 /mob/living/simple_animal/slime/verb/Feed()
+	procstart = null
+	src.procstart = null
 	set category = "Slime"
 	set desc = "This will let you feed on any valid creature in the surrounding area. This should also be used to halt the feeding process."
 
@@ -45,10 +49,14 @@
 
 
 /datum/action/innate/slime/feed/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/slime/S = owner
 	S.Feed()
 
 /mob/living/simple_animal/slime/proc/CanFeedon(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!Adjacent(M))
 		return 0
 
@@ -78,6 +86,8 @@
 	return 1
 
 /mob/living/simple_animal/slime/proc/Feedon(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.unbuckle_all_mobs(force=1) //Slimes rip other mobs (eg: shoulder parrots) off (Slimes Vs Slimes is already handled in CanFeedon())
 	if(M.buckle_mob(src, force=TRUE))
 		layer = M.layer+0.01 //appear above the target mob
@@ -87,6 +97,8 @@
 		to_chat(src, "<span class='warning'><i>I have failed to latch onto the subject!</i></span>")
 
 /mob/living/simple_animal/slime/proc/Feedstop(silent=0, living=1)
+	procstart = null
+	src.procstart = null
 	if(buckled)
 		if(!living)
 			to_chat(src, "<span class='warning'>[pick("This subject is incompatible", \
@@ -100,6 +112,8 @@
 		buckled.unbuckle_mob(src,force=TRUE)
 
 /mob/living/simple_animal/slime/verb/Evolve()
+	procstart = null
+	src.procstart = null
 	set category = "Slime"
 	set desc = "This will let you evolve from baby to adult slime."
 
@@ -126,6 +140,8 @@
 	needs_growth = GROWTH_NEEDED
 
 /datum/action/innate/slime/evolve/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/slime/S = owner
 	S.Evolve()
 	if(S.is_adult)
@@ -133,6 +149,8 @@
 		A.Grant(S)
 
 /mob/living/simple_animal/slime/verb/Reproduce()
+	procstart = null
+	src.procstart = null
 	set category = "Slime"
 	set desc = "This will make you split into four Slimes."
 
@@ -187,5 +205,7 @@
 	needs_growth = GROWTH_NEEDED
 
 /datum/action/innate/slime/reproduce/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/slime/S = owner
 	S.Reproduce()

@@ -19,11 +19,15 @@
 	var/glass_colour_type //colors your vision when worn
 
 /obj/item/clothing/glasses/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(glass_colour_type && ishuman(user))
 		to_chat(user, "<span class='notice'>Alt-click to toggle its colors.</span>")
 
 /obj/item/clothing/glasses/visor_toggling()
+	procstart = null
+	src.procstart = null
 	..()
 	if(visor_vars_to_toggle & VISOR_VISIONFLAGS)
 		vision_flags ^= initial(vision_flags)
@@ -33,12 +37,16 @@
 		invis_view ^= initial(invis_view)
 
 /obj/item/clothing/glasses/weldingvisortoggle(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && user)
 		user.update_sight()
 
 //called when thermal glasses are emped.
 /obj/item/clothing/glasses/proc/thermal_overload()
+	procstart = null
+	src.procstart = null
 	if(ishuman(src.loc))
 		var/mob/living/carbon/human/H = src.loc
 		if(!(H.disabilities & BLIND))
@@ -92,6 +100,8 @@
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 80, acid = 100)
 
 /obj/item/clothing/glasses/science/item_action_slot_check(slot)
+	procstart = null
+	src.procstart = null
 	if(slot == slot_glasses)
 		return 1
 
@@ -239,6 +249,8 @@
 	glass_colour_type = /datum/client_colour/glass_colour/gray
 
 /obj/item/clothing/glasses/welding/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	weldingvisortoggle(user)
 
 
@@ -266,6 +278,8 @@
 	glass_colour_type = /datum/client_colour/glass_colour/red
 
 /obj/item/clothing/glasses/thermal/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	thermal_overload()
 	..()
 
@@ -277,6 +291,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/glasses/thermal/syndi/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/glasses
@@ -285,6 +301,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/clothing/glasses/thermal/syndi/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action.emp_randomise()
 
@@ -347,6 +365,8 @@
 	lighting_alpha = LIGHTING_PLANE_ALPHA_MOSTLY_INVISIBLE
 
 /obj/item/clothing/glasses/godeye/attackby(obj/item/W as obj, mob/user as mob, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, src) && W != src && W.loc == user)
 		if(W.icon_state == "godeye")
 			W.icon_state = "doublegodeye"
@@ -361,6 +381,8 @@
 	..()
 
 /obj/item/clothing/glasses/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(glass_colour_type && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.client)
@@ -376,6 +398,8 @@
 		return ..()
 
 /obj/item/clothing/glasses/proc/change_glass_color(mob/living/carbon/human/H, datum/client_colour/glass_colour/new_color_type)
+	procstart = null
+	src.procstart = null
 	var/old_colour_type = glass_colour_type
 	if(!new_color_type || ispath(new_color_type)) //the new glass colour type must be null or a path.
 		glass_colour_type = new_color_type
@@ -387,6 +411,8 @@
 
 
 /mob/living/carbon/human/proc/update_glasses_color(obj/item/clothing/glasses/G, glasses_equipped)
+	procstart = null
+	src.procstart = null
 	if(client && client.prefs.uses_glasses_colour && glasses_equipped)
 		add_client_colour(G.glass_colour_type)
 	else

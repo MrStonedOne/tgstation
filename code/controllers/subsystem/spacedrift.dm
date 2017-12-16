@@ -9,10 +9,14 @@ SUBSYSTEM_DEF(spacedrift)
 	var/list/processing = list()
 
 /datum/controller/subsystem/spacedrift/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("P:[processing.len]")
 
 
 /datum/controller/subsystem/spacedrift/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = processing.Copy()
 

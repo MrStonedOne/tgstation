@@ -9,5 +9,7 @@
 	fakeable = FALSE
 
 /datum/round_event/mass_hallucination/start()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/C in GLOB.alive_mob_list)
 		C.hallucination += rand(20, 50)

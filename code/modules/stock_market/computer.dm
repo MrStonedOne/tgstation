@@ -12,21 +12,31 @@
 	light_color = LIGHT_COLOR_GREEN
 
 /obj/machinery/computer/stockexchange/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	logged_in = "SS13 Cargo Department"
 
 /obj/machinery/computer/stockexchange/proc/balance()
+	procstart = null
+	src.procstart = null
 	if (!logged_in)
 		return 0
 	return SSshuttle.points
 
 /obj/machinery/computer/stockexchange/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/computer/stockexchange/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/computer/stockexchange/attack_hand(var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	user.machine = src
@@ -174,6 +184,8 @@ a.updated {
 	return
 
 /obj/machinery/computer/stockexchange/proc/sell_some_shares(var/datum/stock/S, var/mob/user)
+	procstart = null
+	src.procstart = null
 	if (!user || !S)
 		return
 	var/li = logged_in
@@ -208,6 +220,8 @@ a.updated {
 	GLOB.stockExchange.add_log(/datum/stock_log/sell, user.name, S.name, amt, S.current_value, total)
 
 /obj/machinery/computer/stockexchange/proc/buy_some_shares(var/datum/stock/S, var/mob/user)
+	procstart = null
+	src.procstart = null
 	if (!user || !S)
 		return
 	var/li = logged_in
@@ -243,6 +257,8 @@ a.updated {
 	GLOB.stockExchange.add_log(/datum/stock_log/buy, user.name, S.name, amt, S.current_value,  total)
 
 /obj/machinery/computer/stockexchange/proc/do_borrowing_deal(var/datum/borrow/B, var/mob/user)
+	procstart = null
+	src.procstart = null
 	if (B.stock.borrow(B, logged_in))
 		to_chat(user, "<span class='notice'>You successfully borrowed [B.share_amount] shares. Deposit: [B.deposit].</span>")
 		GLOB.stockExchange.add_log(/datum/stock_log/borrow, user.name, B.stock.name, B.share_amount, B.deposit)
@@ -250,6 +266,8 @@ a.updated {
 		to_chat(user, "<span class='danger'>Could not complete transaction. Check your account balance.</span>")
 
 /obj/machinery/computer/stockexchange/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if (..())
 		return 1
 

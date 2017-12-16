@@ -207,6 +207,8 @@
 
 
 /proc/summonevents()
+	procstart = null
+	src.procstart = null
 	if(!SSevents.wizardmode)
 		SSevents.frequency_lower = 600									//1 minute lower bound
 		SSevents.frequency_upper = 3000									//5 minutes upper bound

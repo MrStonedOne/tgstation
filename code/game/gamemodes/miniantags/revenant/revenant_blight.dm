@@ -16,6 +16,8 @@
 	var/finalstage = 0 //Because we're spawning off the cure in the final stage, we need to check if we've done the final stage's effects.
 
 /datum/disease/revblight/cure()
+	procstart = null
+	src.procstart = null
 	if(affected_mob)
 		affected_mob.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#1d2953")
 		if(affected_mob.dna && affected_mob.dna.species)
@@ -25,6 +27,8 @@
 	..()
 
 /datum/disease/revblight/stage_act()
+	procstart = null
+	src.procstart = null
 	if(!finalstage)
 		if(affected_mob.lying && prob(stage*6))
 			cure()

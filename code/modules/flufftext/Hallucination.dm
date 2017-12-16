@@ -41,6 +41,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	/datum/hallucination/oh_yeah))
 
 /mob/living/carbon/proc/handle_hallucinations()
+	procstart = null
+	src.procstart = null
 	if(world.time < next_hallucination)
 		return
 
@@ -54,6 +56,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 		new halpick(src, FALSE)
 
 /mob/living/carbon/proc/set_screwyhud(hud_type)
+	procstart = null
+	src.procstart = null
 	hal_screwyhud = hud_type
 	update_health_hud()
 
@@ -63,6 +67,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	var/feedback_details //extra info for investigate
 
 /datum/hallucination/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	target = T
 	if(!forced)
@@ -70,10 +76,14 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 		target.next_hallucination = world.time + (rand(cost * 0.5, cost * 3) * 10)
 
 /datum/hallucination/proc/wake_and_restore()
+	procstart = null
+	src.procstart = null
 	target.set_screwyhud(SCREWYHUD_NONE)
 	target.SetSleeping(0)
 
 /datum/hallucination/Destroy()
+	procstart = null
+	src.procstart = null
 	target.investigate_log("was afflicted with a hallucination of type [type]. [feedback_details]", INVESTIGATE_HALLUCINATIONS)
 	target = null
 	return ..()
@@ -93,12 +103,18 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	var/active = TRUE //qdelery
 
 /obj/effect/hallucination/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/hallucination/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/hallucination/simple/Initialize(mapload, var/mob/living/carbon/T)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target = T
 	current_image = GetImage()
@@ -106,6 +122,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 		target.client.images |= current_image
 
 /obj/effect/hallucination/simple/proc/GetImage()
+	procstart = null
+	src.procstart = null
 	var/image/I = image(image_icon,src,image_state,image_layer,dir=src.dir)
 	I.pixel_x = px
 	I.pixel_y = py
@@ -114,6 +132,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	return I
 
 /obj/effect/hallucination/simple/proc/Show(update=1)
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(target.client)
 			target.client.images.Remove(current_image)
@@ -123,6 +143,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 			target.client.images |= current_image
 
 /obj/effect/hallucination/simple/update_icon(new_state,new_icon,new_px=0,new_py=0)
+	procstart = null
+	src.procstart = null
 	image_state = new_state
 	if(new_icon)
 		image_icon = new_icon
@@ -133,9 +155,13 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	Show()
 
 /obj/effect/hallucination/simple/Moved(atom/OldLoc, Dir)
+	procstart = null
+	src.procstart = null
 	Show()
 
 /obj/effect/hallucination/simple/Destroy()
+	procstart = null
+	src.procstart = null
 	if(target.client)
 		target.client.images.Remove(current_image)
 	active = FALSE
@@ -156,6 +182,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 25
 
 /datum/hallucination/fake_flood/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/obj/machinery/atmospherics/components/unary/vent_pump/U in orange(7,target))
 		if(!U.welded)
@@ -170,6 +198,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	START_PROCESSING(SSobj, src)
 
 /datum/hallucination/fake_flood/process()
+	procstart = null
+	src.procstart = null
 	if(next_expand <= world.time)
 		radius++
 		if(radius > FAKE_FLOOD_MAX_RADIUS)
@@ -181,6 +211,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 		next_expand = world.time + FAKE_FLOOD_EXPAND_TIME
 
 /datum/hallucination/fake_flood/proc/Expand()
+	procstart = null
+	src.procstart = null
 	for(var/turf/FT in flood_turfs)
 		for(var/dir in GLOB.cardinals)
 			var/turf/T = get_step(FT, dir)
@@ -192,6 +224,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 		target.client.images |= flood_images
 
 /datum/hallucination/fake_flood/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	qdel(flood_turfs)
 	flood_turfs = list()
@@ -206,10 +240,14 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	image_state = "alienh_pounce"
 
 /obj/effect/hallucination/simple/xeno/Initialize(mapload, mob/living/carbon/T)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "alien hunter ([rand(1, 1000)])"
 
 /obj/effect/hallucination/simple/xeno/throw_impact(A)
+	procstart = null
+	src.procstart = null
 	update_icon("alienh_pounce")
 	if(A == target && target.stat!=DEAD)
 		target.Knockdown(100)
@@ -222,6 +260,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 25
 
 /datum/hallucination/xeno_attack/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/obj/machinery/atmospherics/components/unary/vent_pump/U in orange(7,target))
 		if(!U.welded)
@@ -249,6 +289,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	image_state = "clown"
 
 /obj/effect/hallucination/simple/clown/Initialize(mapload, mob/living/carbon/T, duration)
+	procstart = null
+	src.procstart = null
 	..(loc, T)
 	name = pick(GLOB.clown_names)
 	QDEL_IN(src,duration)
@@ -269,6 +311,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 75
 
 /datum/hallucination/oh_yeah/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/closed/wall/wall
 	for(var/turf/closed/wall/W in range(7,target))
@@ -291,6 +335,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	addtimer(CALLBACK(src, .proc/bubble_attack, landing), 10)
 
 /datum/hallucination/oh_yeah/proc/bubble_attack(turf/landing)
+	procstart = null
+	src.procstart = null
 	var/charged = FALSE //only get hit once
 	while(get_turf(bubblegum) != landing && target && target.stat != DEAD)
 		bubblegum.forceMove(get_step_towards(bubblegum, landing))
@@ -309,6 +355,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	qdel(src)
 
 /datum/hallucination/oh_yeah/Destroy()
+	procstart = null
+	src.procstart = null
 	if(target.client)
 		target.client.images.Remove(fakebroken)
 		target.client.images.Remove(fakerune)
@@ -324,6 +372,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 75
 
 /datum/hallucination/singularity_scare/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/start = get_turf(T)
 	var/screen_border = pick(SOUTH,EAST,WEST,NORTH)
@@ -348,6 +398,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	var/datum/hallucination/singularity_scare/parent
 
 /obj/effect/hallucination/simple/singularity/proc/Eat(atom/OldLoc, Dir)
+	procstart = null
+	src.procstart = null
 	var/target_dist = get_dist(src,target)
 	if(target_dist<=3) //"Eaten"
 		target.set_screwyhud(SCREWYHUD_DEAD)
@@ -358,6 +410,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 15
 
 /datum/hallucination/battle/New(mob/living/carbon/T, forced = TRUE, battle_type)
+	procstart = null
+	src.procstart = null
 	..()
 	var/hits = rand(3,6)
 	if(!battle_type)
@@ -404,6 +458,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 10
 
 /datum/hallucination/items_other/New(mob/living/carbon/T, forced = TRUE, item_type)
+	procstart = null
+	src.procstart = null
 	..()
 	var/item
 	if(!item_type)
@@ -455,6 +511,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 50
 
 /datum/hallucination/delusion/New(mob/living/carbon/T, forced, force_kind = null , duration = 300,skip_nearby = 1, custom_icon = null, custom_icon_file = null, custom_name = null)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/image/A = null
 	var/kind = force_kind ? force_kind : pick("monkey","corgi","carp","skeleton","demon","zombie")
@@ -494,6 +552,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 		QDEL_IN(src, duration)
 
 /datum/hallucination/delusion/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/image/I in delusions)
 		if(target.client)
 			target.client.images.Remove(I)
@@ -536,11 +596,15 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	QDEL_IN(src, duration)
 
 /datum/hallucination/self_delusion/Destroy()
+	procstart = null
+	src.procstart = null
 	if(target.client)
 		target.client.images.Remove(delusion)
 	return ..()
 
 /datum/hallucination/fakeattacker/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/carbon/human/clone = null
 	var/clone_weapon = null
@@ -615,6 +679,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	max_integrity = 100
 
 /obj/effect/fake_attacker/attackby(obj/item/P, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	step_away(src,my_target,2)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src)
@@ -625,6 +691,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	obj_integrity -= P.force
 
 /obj/effect/fake_attacker/Crossed(mob/M, somenumber)
+	procstart = null
+	src.procstart = null
 	if(M == my_target)
 		step_away(src,my_target,2)
 		if(prob(30))
@@ -632,6 +700,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 				to_chat(O, "<span class='danger'>[my_target] stumbles around.</span>")
 
 /obj/effect/fake_attacker/Initialize(mapload, mob/living/carbon/T)
+	procstart = null
+	src.procstart = null
 	..()
 	my_target = T
 	QDEL_IN(src, 300)
@@ -657,6 +727,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 
 
 /obj/effect/fake_attacker/proc/attack_loop()
+	procstart = null
+	src.procstart = null
 	while(1)
 		sleep(rand(5,10))
 		if(obj_integrity < 0 || my_target.stat)
@@ -689,11 +761,15 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 			step_away(src,my_target,2)
 
 /obj/effect/fake_attacker/proc/collapse()
+	procstart = null
+	src.procstart = null
 	collapse = 1
 	updateimage()
 	qdel(src)
 
 /obj/effect/fake_attacker/proc/fake_blood(mob/target)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/O = new/obj/effect/overlay(target.loc)
 	O.name = "blood"
 	var/image/I = image('icons/effects/blood.dmi',O,"floor[rand(1,7)]",O.dir,1)
@@ -732,6 +808,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 15
 
 /datum/hallucination/whispers/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/speak_messages = list("[pick_list_replacements(HAL_LINES_FILE, "suspicion")]",\
 	"[pick_list_replacements(HAL_LINES_FILE, "greetings")][target.first_name()]!",\
@@ -788,6 +866,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 15
 
 /datum/hallucination/message/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/chosen = pick("<span class='userdanger'>The light burns you!</span>", \
 		"<span class='danger'>You don't feel like yourself.</span>", \
@@ -808,6 +888,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 15
 
 /datum/hallucination/sounds/New(mob/living/carbon/T, forced = TRUE, sound_type)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!sound_type)
 		sound_type = pick("airlock","explosion","far_explosion","glass","phone","summon_guns","alarm","beepsky","hallelujah","creepy","ratvar","shuttle_dock",
@@ -894,6 +976,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 10
 
 /datum/hallucination/hudscrew/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	//Screwy HUD
 	target.set_screwyhud(pick(SCREWYHUD_CRIT,SCREWYHUD_DEAD,SCREWYHUD_HEALTHY))
@@ -906,6 +990,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 15
 
 /datum/hallucination/fake_alert/New(mob/living/carbon/T, forced = TRUE, specific, duration = 150)
+	procstart = null
+	src.procstart = null
 	..()
 	var/alert_type = pick("not_enough_oxy","not_enough_tox","not_enough_co2","too_much_oxy","too_much_co2","too_much_tox","newlaw","nutrition","charge","weightless","fire","locked","hacked","temphot","tempcold","pressure")
 	if(specific)
@@ -961,6 +1047,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 15
 
 /datum/hallucination/items/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	//Strange items
 	if(!target.halitem)
@@ -1023,6 +1111,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 15
 
 /datum/hallucination/dangerflash/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	//Flashes of danger
 	if(!target.halimage)
@@ -1057,6 +1147,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 40
 
 /datum/hallucination/death/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	..()
 	target.set_screwyhud(SCREWYHUD_DEAD)
@@ -1087,6 +1179,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 25
 
 /datum/hallucination/fire/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/image/fire_overlay = image('icons/mob/OnFire.dmi', target, "Standing", ABOVE_MOB_LAYER)
 	if(target.client)
@@ -1115,6 +1209,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 20
 
 /datum/hallucination/husks/New(mob/living/carbon/T, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!target.halbody)
 		var/list/possible_points = list()
@@ -1147,6 +1243,8 @@ GLOBAL_LIST_INIT(hallucinations_major, list(
 	cost = 15
 
 /datum/hallucination/stray_bullet/New(mob/living/carbon/C, forced = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/turf/startlocs = list()
 	for(var/turf/open/T in view(world.view+1,target)-view(world.view,target))

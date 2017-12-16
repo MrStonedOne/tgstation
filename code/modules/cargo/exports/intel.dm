@@ -12,6 +12,8 @@
 	export_types = list(/obj/item/documents/syndicate)
 
 /datum/export/intel/applies_to(obj/O, contr = 0, emag = 0)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -34,11 +36,15 @@
 	return TRUE
 
 /datum/export/intel/get_cost(obj/O)
+	procstart = null
+	src.procstart = null
 	if(O.type in copies_recieved)
 		return ..() - 15000 // Already have a copy of it, deduce the cost.
 	return ..()
 
 /datum/export/intel/sell_object(obj/O)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(O, /obj/item/documents/photocopy))
 		var/obj/item/documents/photocopy/C = O

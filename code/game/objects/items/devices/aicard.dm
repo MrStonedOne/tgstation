@@ -13,6 +13,8 @@
 	var/mob/living/silicon/ai/AI
 
 /obj/item/device/aicard/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!proximity || !target)
 		return
@@ -24,6 +26,8 @@
 	update_icon() //Whatever happened, update the card's state (icon, name) to match.
 
 /obj/item/device/aicard/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(AI)
 		name = "[initial(name)]- [AI.name]"
@@ -46,6 +50,8 @@
 		ui.open()
 
 /obj/item/device/aicard/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	if(AI)
 		data["name"] = AI.name
@@ -59,6 +65,8 @@
 	return data
 
 /obj/item/device/aicard/ui_act(action,params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)

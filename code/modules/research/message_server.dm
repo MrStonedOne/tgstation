@@ -8,6 +8,8 @@ GLOBAL_LIST_INIT(message_servers, list())
 
 /datum/data_pda_msg/New(var/param_rec = "",var/param_sender = "",var/param_message = "",var/param_photo=null)
 
+	procstart = null
+	src.procstart = null
 	if(param_rec)
 		recipient = param_rec
 	if(param_sender)
@@ -18,11 +20,15 @@ GLOBAL_LIST_INIT(message_servers, list())
 		photo = param_photo
 
 /datum/data_pda_msg/proc/get_photo_ref()
+	procstart = null
+	src.procstart = null
 	if(photo)
 		return "<a href='byond://?src=[REF(src)];photo=1'>(Photo)</a>"
 	return ""
 
 /datum/data_pda_msg/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["photo"])
 		var/mob/M = usr
@@ -42,6 +48,8 @@ GLOBAL_LIST_INIT(message_servers, list())
 	var/priority = "Normal"
 
 /datum/data_rc_msg/New(var/param_rec = "",var/param_sender = "",var/param_message = "",var/param_stamp = "",var/param_id_auth = "",var/param_priority)
+	procstart = null
+	src.procstart = null
 	if(param_rec)
 		rec_dpt = param_rec
 	if(param_sender)
@@ -80,16 +88,22 @@ GLOBAL_LIST_INIT(message_servers, list())
 	var/decryptkey = "password"
 
 /obj/machinery/message_server/Initialize()
+	procstart = null
+	src.procstart = null
 	GLOB.message_servers += src
 	decryptkey = GenerateKey()
 	send_pda_message("System Administrator", "system", "This is an automated message. The messaging system is functioning correctly.")
 	. = ..()
 
 /obj/machinery/message_server/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.message_servers -= src
 	return ..()
 
 /obj/machinery/message_server/proc/GenerateKey()
+	procstart = null
+	src.procstart = null
 	//Feel free to move to Helpers.
 	var/newKey
 	newKey += pick("the", "if", "of", "as", "in", "a", "you", "from", "to", "an", "too", "little", "snow", "dead", "drunk", "rosebud", "duck", "al", "le")
@@ -98,6 +112,8 @@ GLOBAL_LIST_INIT(message_servers, list())
 	return newKey
 
 /obj/machinery/message_server/process()
+	procstart = null
+	src.procstart = null
 	if(active && (stat & (BROKEN|NOPOWER)))
 		active = 0
 		return
@@ -105,13 +121,19 @@ GLOBAL_LIST_INIT(message_servers, list())
 	return
 
 /obj/machinery/message_server/proc/send_pda_message(recipient = "",sender = "",message = "",photo=null)
+	procstart = null
+	src.procstart = null
 	. = new/datum/data_pda_msg(recipient,sender,message,photo)
 	pda_msgs += .
 
 /obj/machinery/message_server/proc/send_rc_message(recipient = "",sender = "",message = "",stamp = "", id_auth = "", priority = 1)
+	procstart = null
+	src.procstart = null
 	rc_msgs += new/datum/data_rc_msg(recipient,sender,message,stamp,id_auth)
 
 /obj/machinery/message_server/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "You toggle PDA message passing from [active ? "On" : "Off"] to [active ? "Off" : "On"]")
 	active = !active
 	update_icon()
@@ -119,6 +141,8 @@ GLOBAL_LIST_INIT(message_servers, list())
 	return
 
 /obj/machinery/message_server/update_icon()
+	procstart = null
+	src.procstart = null
 	if((stat & (BROKEN|NOPOWER)))
 		icon_state = "server-nopower"
 	else if (!active)

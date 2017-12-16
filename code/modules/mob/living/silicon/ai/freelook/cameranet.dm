@@ -20,6 +20,8 @@ GLOBAL_DATUM_INIT(cameranet, /datum/cameranet, new)
 
 // Checks if a chunk has been Generated in x, y, z.
 /datum/cameranet/proc/chunkGenerated(x, y, z)
+	procstart = null
+	src.procstart = null
 	x &= ~(CHUNK_SIZE - 1)
 	y &= ~(CHUNK_SIZE - 1)
 	var/key = "[x],[y],[z]"
@@ -28,6 +30,8 @@ GLOBAL_DATUM_INIT(cameranet, /datum/cameranet, new)
 // Returns the chunk in the x, y, z.
 // If there is no chunk, it creates a new chunk and returns that.
 /datum/cameranet/proc/getCameraChunk(x, y, z)
+	procstart = null
+	src.procstart = null
 	x &= ~(CHUNK_SIZE - 1)
 	y &= ~(CHUNK_SIZE - 1)
 	var/key = "[x],[y],[z]"
@@ -39,6 +43,8 @@ GLOBAL_DATUM_INIT(cameranet, /datum/cameranet, new)
 // Updates what the aiEye can see. It is recommended you use this when the aiEye moves or it's location is set.
 
 /datum/cameranet/proc/visibility(mob/camera/aiEye/ai)
+	procstart = null
+	src.procstart = null
 	// 0xf = 15
 	var/x1 = max(0, ai.x - 16) & ~(CHUNK_SIZE - 1)
 	var/y1 = max(0, ai.y - 16) & ~(CHUNK_SIZE - 1)
@@ -66,11 +72,15 @@ GLOBAL_DATUM_INIT(cameranet, /datum/cameranet, new)
 
 /datum/cameranet/proc/updateVisibility(atom/A, opacity_check = 1)
 
+	procstart = null
+	src.procstart = null
 	if(!SSticker || (opacity_check && !A.opacity))
 		return
 	majorChunkChange(A, 2)
 
 /datum/cameranet/proc/updateChunk(x, y, z)
+	procstart = null
+	src.procstart = null
 	// 0xf = 15
 	if(!chunkGenerated(x, y, z))
 		return
@@ -80,18 +90,24 @@ GLOBAL_DATUM_INIT(cameranet, /datum/cameranet, new)
 // Removes a camera from a chunk.
 
 /datum/cameranet/proc/removeCamera(obj/machinery/camera/c)
+	procstart = null
+	src.procstart = null
 	if(c.can_use())
 		majorChunkChange(c, 0)
 
 // Add a camera to a chunk.
 
 /datum/cameranet/proc/addCamera(obj/machinery/camera/c)
+	procstart = null
+	src.procstart = null
 	if(c.can_use())
 		majorChunkChange(c, 1)
 
 // Used for Cyborg cameras. Since portable cameras can be in ANY chunk.
 
 /datum/cameranet/proc/updatePortableCamera(obj/machinery/camera/c)
+	procstart = null
+	src.procstart = null
 	if(c.can_use())
 		majorChunkChange(c, 1)
 
@@ -102,6 +118,8 @@ GLOBAL_DATUM_INIT(cameranet, /datum/cameranet, new)
 // If you want to update the chunks around an object, without adding/removing a camera, use choice 2.
 
 /datum/cameranet/proc/majorChunkChange(atom/c, choice)
+	procstart = null
+	src.procstart = null
 	// 0xf = 15
 	if(!c)
 		return
@@ -128,12 +146,16 @@ GLOBAL_DATUM_INIT(cameranet, /datum/cameranet, new)
 
 /datum/cameranet/proc/checkCameraVis(mob/living/target)
 
+	procstart = null
+	src.procstart = null
 	// 0xf = 15
 	var/turf/position = get_turf(target)
 	return checkTurfVis(position)
 
 
 /datum/cameranet/proc/checkTurfVis(turf/position)
+	procstart = null
+	src.procstart = null
 	var/datum/camerachunk/chunk = getCameraChunk(position.x, position.y, position.z)
 	if(chunk)
 		if(chunk.changed)
@@ -143,6 +165,8 @@ GLOBAL_DATUM_INIT(cameranet, /datum/cameranet, new)
 	return 0
 
 /datum/cameranet/proc/stat_entry()
+	procstart = null
+	src.procstart = null
 	if(!statclick)
 		statclick = new/obj/effect/statclick/debug(null, "Initializing...", src)
 

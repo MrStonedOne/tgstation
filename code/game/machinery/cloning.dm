@@ -47,6 +47,8 @@
 		"mimesbane") // stops them gasping from lack of air.
 
 /obj/machinery/clonepod/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	countdown = new(src)
@@ -58,6 +60,8 @@
 	radio.recalculateChannels()
 
 /obj/machinery/clonepod/Destroy()
+	procstart = null
+	src.procstart = null
 	go_out()
 	QDEL_NULL(radio)
 	QDEL_NULL(countdown)
@@ -67,6 +71,8 @@
 	. = ..()
 
 /obj/machinery/clonepod/RefreshParts()
+	procstart = null
+	src.procstart = null
 	speed_coeff = 0
 	efficiency = 0
 	for(var/obj/item/stock_parts/scanning_module/S in component_parts)
@@ -89,15 +95,21 @@
 
 //Disk stuff.
 /obj/item/disk/data/New()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "datadisk[rand(0,6)]"
 	add_overlay("datadisk_gene")
 
 /obj/item/disk/data/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	read_only = !read_only
 	to_chat(user, "<span class='notice'>You flip the write-protect tab to [read_only ? "protected" : "unprotected"].</span>")
 
 /obj/item/disk/data/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "The write-protect tab is set to [read_only ? "protected" : "unprotected"].")
 
@@ -105,6 +117,8 @@
 //Clonepod
 
 /obj/machinery/clonepod/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/mob_occupant = occupant
 	if(mess)
@@ -114,6 +128,8 @@
 			to_chat(user, "Current clone cycle is [round(get_completion())]% complete.")
 
 /obj/machinery/clonepod/return_air()
+	procstart = null
+	src.procstart = null
 	// We want to simulate the clone not being in contact with
 	// the atmosphere, so we'll put them in a constant pressure
 	// nitrogen. They'll breathe through the chemicals we pump into them.
@@ -123,16 +139,22 @@
 	return GM
 
 /obj/machinery/clonepod/proc/get_completion()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/mob/living/mob_occupant = occupant
 	if(mob_occupant)
 		. = (100 * ((mob_occupant.health + 100) / (heal_level + 100)))
 
 /obj/machinery/clonepod/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return examine(user)
 
 //Start growing a human clone in the pod!
 /obj/machinery/clonepod/proc/growclone(ckey, clonename, ui, se, mindref, datum/species/mrace, list/features, factions)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		return FALSE
 	if(mess || attempting)
@@ -208,6 +230,8 @@
 
 //Grow clones to maturity then kick them out.  FREELOADERS
 /obj/machinery/clonepod/process()
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_occupant = occupant
 
 	if(!is_operational()) //Autoeject if power is lost
@@ -274,6 +298,8 @@
 
 //Let's unlock this early I guess.  Might be too early, needs tweaking.
 /obj/machinery/clonepod/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!(occupant || mess))
 		if(default_deconstruction_screwdriver(user, "[icon_state]_maintenance", "[initial(icon_state)]",W))
 			return
@@ -319,6 +345,8 @@
 		return ..()
 
 /obj/machinery/clonepod/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!occupant)
 		return
 	to_chat(user, "<span class='warning'>You corrupt the genetic compiler.</span>")
@@ -326,6 +354,8 @@
 
 //Put messages in the connected computer's temp var for display.
 /obj/machinery/clonepod/proc/connected_message(message)
+	procstart = null
+	src.procstart = null
 	if ((isnull(connected)) || (!istype(connected, /obj/machinery/computer/cloning)))
 		return FALSE
 	if (!message)
@@ -336,6 +366,8 @@
 	return TRUE
 
 /obj/machinery/clonepod/proc/go_out()
+	procstart = null
+	src.procstart = null
 	countdown.stop()
 	var/mob/living/mob_occupant = occupant
 	var/turf/T = get_turf(src)
@@ -369,6 +401,8 @@
 	occupant = null
 
 /obj/machinery/clonepod/proc/malfunction()
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_occupant = occupant
 	if(mob_occupant)
 		connected_message("Critical Error!")
@@ -387,13 +421,19 @@
 		QDEL_IN(mob_occupant, 40)
 
 /obj/machinery/clonepod/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	container_resist()
 
 /obj/machinery/clonepod/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat == CONSCIOUS)
 		go_out()
 
 /obj/machinery/clonepod/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	var/mob/living/mob_occupant = occupant
 	if(mob_occupant && prob(100/(severity*efficiency)))
 		connected_message(Gibberish("EMP-caused Accidental Ejection", 0))
@@ -402,16 +442,22 @@
 	..()
 
 /obj/machinery/clonepod/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!QDELETED(src))
 		go_out()
 
 /obj/machinery/clonepod/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == occupant)
 		occupant = null
 		countdown.stop()
 
 /obj/machinery/clonepod/proc/horrifyingsound()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		playsound(loc,pick('sound/hallucinations/growl1.ogg','sound/hallucinations/growl2.ogg','sound/hallucinations/growl3.ogg'), 100, rand(0.95,1.05))
 		sleep(1)
@@ -419,11 +465,15 @@
 	playsound(loc,'sound/hallucinations/wail.ogg',100,1)
 
 /obj/machinery/clonepod/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		go_out()
 	..()
 
 /obj/machinery/clonepod/proc/maim_clone(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!unattached_flesh)
 		unattached_flesh = list()
 	else
@@ -454,6 +504,8 @@
 	flesh_number = unattached_flesh.len
 
 /obj/machinery/clonepod/proc/check_brine()
+	procstart = null
+	src.procstart = null
 	// Clones are in a pickled bath of mild chemicals, keeping
 	// them alive, despite their lack of internal organs
 	for(var/bt in brine_types)

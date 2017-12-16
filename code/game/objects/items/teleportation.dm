@@ -30,6 +30,8 @@
 	materials = list(MAT_METAL=400)
 
 /obj/item/locator/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat
 	if (src.temp)
@@ -49,6 +51,8 @@ Frequency:
 	return
 
 /obj/item/locator/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if (usr.stat || usr.restrained())
 		return
@@ -146,15 +150,21 @@ Frequency:
 	var/max_portal_pairs = 3
 
 /obj/item/hand_tele/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	active_portal_pairs = list()
 
 /obj/item/hand_tele/pre_attackby(atom/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(try_dispel_portal(target, user))
 		return FALSE
 	return ..()
 
 /obj/item/hand_tele/proc/try_dispel_portal(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_parent_of_portal(target))
 		qdel(target)
 		to_chat(user, "<span class='notice'>You dispel [target] with \the [src]!</span>")
@@ -162,10 +172,14 @@ Frequency:
 	return FALSE
 
 /obj/item/hand_tele/afterattack(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	try_dispel_portal(target, user)
 	. = ..()
 
 /obj/item/hand_tele/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/current_location = get_turf(user)//What turf is the user on?
 	var/area/current_area = current_location.loc
 	if(!current_location || current_area.noteleport || current_location.z > ZLEVEL_SPACEMAX || !isturf(user.loc))//If turf was not found or they're on z level 2 or >7 which does not currently exist. or if user is not located on a turf
@@ -221,9 +235,13 @@ Frequency:
 	add_fingerprint(user)
 
 /obj/item/hand_tele/proc/on_portal_destroy(obj/effect/portal/P)
+	procstart = null
+	src.procstart = null
 	active_portal_pairs -= P	//If this portal pair is made by us it'll be erased along with the other portal by the portal.
 
 /obj/item/hand_tele/proc/is_parent_of_portal(obj/effect/portal/P)
+	procstart = null
+	src.procstart = null
 	if(!istype(P))
 		return FALSE
 	if(active_portal_pairs[P])

@@ -28,6 +28,8 @@
 	consume_range = 12 //How many tiles out do we eat
 
 /obj/singularity/narsie/large/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	send_to_playing_players("<span class='narsie'>NAR-SIE HAS RISEN</span>")
 	sound_to_playing_players('sound/creatures/narsie_rises.ogg')
@@ -45,6 +47,8 @@
 	var/resolved = FALSE
 
 /obj/singularity/narsie/large/cult/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.cult_narsie = src
 	var/list/all_cults = list()
@@ -67,6 +71,8 @@
 	INVOKE_ASYNC(src, .proc/begin_the_end)
 
 /obj/singularity/narsie/large/cult/proc/begin_the_end()
+	procstart = null
+	src.procstart = null
 	sleep(50)
 	priority_announce("An acausal dimensional event has been detected in your sector. Event has been flagged EXTINCTION-CLASS. Directing all available assets toward simulating solutions. SOLUTION ETA: 60 SECONDS.","Central Command Higher Dimensional Affairs", 'sound/misc/airraid.ogg')
 	sleep(550)
@@ -82,21 +88,31 @@
 		addtimer(CALLBACK(GLOBAL_PROC, .proc/cult_ending_helper), 120)
 
 /obj/singularity/narsie/large/cult/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.cult_narsie = null
 	return ..()
 
 /proc/ending_helper()
+	procstart = null
+	src.procstart = null
 	SSticker.force_ending = 1
 
 /proc/cult_ending_helper(var/no_explosion = 0)
+	procstart = null
+	src.procstart = null
 	Cinematic(CINEMATIC_CULT,world,CALLBACK(GLOBAL_PROC,.ending_helper))
 
 
 /obj/singularity/narsie/large/attack_ghost(mob/dead/observer/user as mob)
+	procstart = null
+	src.procstart = null
 	makeNewConstruct(/mob/living/simple_animal/hostile/construct/harvester, user, cultoverride = TRUE, loc_override = src.loc)
 
 
 /obj/singularity/narsie/process()
+	procstart = null
+	src.procstart = null
 	if(clashing)
 		return
 	eat()
@@ -111,10 +127,14 @@
 
 
 /obj/singularity/narsie/Process_Spacemove()
+	procstart = null
+	src.procstart = null
 	return clashing
 
 
 /obj/singularity/narsie/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(A)
 	if(T == loc)
 		T = get_step(A, A.dir) //please don't slam into a window like a bird, nar-sie
@@ -122,6 +142,8 @@
 
 
 /obj/singularity/narsie/mezzer()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/M in viewers(consume_range, src))
 		if(M.stat == CONSCIOUS)
 			if(!iscultist(M))
@@ -130,6 +152,8 @@
 
 
 /obj/singularity/narsie/consume(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isturf(A))
 		A.narsie_act()
 
@@ -179,6 +203,8 @@
 
 
 /obj/singularity/narsie/proc/acquire(atom/food)
+	procstart = null
+	src.procstart = null
 	if(food == target)
 		return
 	to_chat(target, "<span class='cultsmall'>NAR-SIE HAS LOST INTEREST IN YOU.</span>")
@@ -193,6 +219,8 @@
 	grav_pull = 0
 
 /obj/singularity/narsie/wizard/eat()
+	procstart = null
+	src.procstart = null
 	set background = BACKGROUND_ENABLED
 //	if(defer_powernet_rebuild != 2)
 //		defer_powernet_rebuild = 1
@@ -205,6 +233,8 @@
 
 
 /obj/singularity/narsie/proc/narsie_spawn_animation()
+	procstart = null
+	src.procstart = null
 	icon = 'icons/obj/narsie_spawn_anim.dmi'
 	setDir(SOUTH)
 	move_self = 0

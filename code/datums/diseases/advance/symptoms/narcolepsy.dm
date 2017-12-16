@@ -30,6 +30,8 @@ Bonus
 					  <b>Resistance 10:</b> Causes narcolepsy more often, increasing the chance of the host falling asleep."
 
 /datum/symptom/narcolepsy/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["transmittable"] >= 7) //stamina damage
@@ -39,6 +41,8 @@ Bonus
 		symptom_delay_max = 60
 
 /datum/symptom/narcolepsy/Activate(var/datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = A.affected_mob
 	//this ticks even when on cooldown
 	switch(sleep_level) //Works sorta like morphine

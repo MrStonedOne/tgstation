@@ -14,6 +14,8 @@
 
 
 /obj/structure/blob/core/Initialize(mapload, client/new_overmind = null, new_rate = 2, placed = 0)
+	procstart = null
+	src.procstart = null
 	GLOB.blob_cores += src
 	START_PROCESSING(SSobj, src)
 	GLOB.poi_list |= src
@@ -27,12 +29,18 @@
 	. = ..()
 
 /obj/structure/blob/core/proc/generate_announcement()
+	procstart = null
+	src.procstart = null
 	priority_announce("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert", 'sound/ai/outbreak5.ogg')
 
 /obj/structure/blob/core/scannerreport()
+	procstart = null
+	src.procstart = null
 	return "Directs the blob's expansion, gradually expands, and sustains nearby blob spores and blobbernauts."
 
 /obj/structure/blob/core/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	color = null
 	var/mutable_appearance/blob_overlay = mutable_appearance('icons/mob/blob.dmi', "blob")
@@ -42,6 +50,8 @@
 	add_overlay(mutable_appearance('icons/mob/blob.dmi', "blob_core_overlay"))
 
 /obj/structure/blob/core/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.blob_cores -= src
 	if(overmind)
 		overmind.blob_core = null
@@ -51,16 +61,22 @@
 	return ..()
 
 /obj/structure/blob/core/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	var/damage = 50 - 10 * severity //remember, the core takes half brute damage, so this is 20/15/10 damage based on severity
 	take_damage(damage, BRUTE, "bomb", 0)
 
 /obj/structure/blob/core/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir, overmind_reagent_trigger = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(obj_integrity > 0)
 		if(overmind) //we should have an overmind, but...
 			overmind.update_health_hud()
 
 /obj/structure/blob/core/Life()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(!overmind)

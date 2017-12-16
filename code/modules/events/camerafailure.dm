@@ -9,6 +9,8 @@
 	fakeable = FALSE
 
 /datum/round_event/camera_failure/start()
+	procstart = null
+	src.procstart = null
 	var/iterations = 1
 	var/obj/machinery/camera/C = pick(GLOB.cameranet.cameras)
 	while(prob(round(100/iterations)))

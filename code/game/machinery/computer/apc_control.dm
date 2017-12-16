@@ -16,11 +16,15 @@
 	var/auth_id = "\[NULL\]"
 
 /obj/machinery/computer/apc_control/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apcs = list() //To avoid BYOND making the list run through a ton of procs
 	result_filters = list("Name" = null, "Charge Above" = null, "Charge Below" = null, "Responsive" = null)
 
 /obj/machinery/computer/apc_control/process()
+	procstart = null
+	src.procstart = null
 	apcs = list() //Clear the list every tick
 	for(var/V in GLOB.apcs_list)
 		var/obj/machinery/power/apc/APC = V
@@ -38,15 +42,21 @@
 			active_apc = null
 
 /obj/machinery/computer/apc_control/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!IsAdminGhost(user))
 		to_chat(user,"<span class='warning'>[src] does not support AI control.</span>") //You already have APC access, cheater!
 		return
 	..(user)
 
 /obj/machinery/computer/apc_control/proc/check_apc(obj/machinery/power/apc/APC)
+	procstart = null
+	src.procstart = null
 	return APC.z == z && !APC.malfhack && !APC.aidisabled && !APC.emagged && !APC.stat && !istype(APC.area, /area/ai_monitored) && !APC.area.outdoors
 
 /obj/machinery/computer/apc_control/interact(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	if(authenticated)
 		if(!checking_logs)
@@ -92,6 +102,8 @@
 	popup.open()
 
 /obj/machinery/computer/apc_control/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!usr || !usr.canUseTopic(src) || usr.incapacitated() || stat || QDELETED(src))
@@ -193,6 +205,8 @@
 	interact(usr) //Refresh the UI after a filter changes
 
 /obj/machinery/computer/apc_control/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	user.visible_message("<span class='warning'>You emag [src], disabling precise logging and allowing you to clear logs.</span>")
@@ -201,10 +215,14 @@
 	emagged = TRUE
 
 /obj/machinery/computer/apc_control/proc/log_activity(log_text)
+	procstart = null
+	src.procstart = null
 	var/op_string = operator && !emagged ? operator : "\[NULL OPERATOR\]"
 	LAZYADD(logs, "<b>([worldtime2text()])</b> [op_string] [log_text]")
 
 /mob/proc/using_power_flow_console()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/computer/apc_control/A in range(1, src))
 		if(A.operator && A.operator == src && !A.stat)
 			return TRUE

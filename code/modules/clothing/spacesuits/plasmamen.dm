@@ -15,11 +15,15 @@
 
 
 /obj/item/clothing/suit/space/eva/plasmaman/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>There [extinguishes_left == 1 ? "is" : "are"] [extinguishes_left] extinguisher charge\s left in this suit.</span>")
 
 
 /obj/item/clothing/suit/space/eva/plasmaman/proc/Extinguish(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!istype(H))
 		return
 
@@ -48,6 +52,8 @@
 	actions_types = list(/datum/action/item_action/toggle_helmet_light)
 
 /obj/item/clothing/head/helmet/space/plasmaman/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	icon_state = "[initial(icon_state)][on ? "-light":""]"
 	item_state = icon_state

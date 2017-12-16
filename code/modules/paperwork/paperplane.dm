@@ -13,6 +13,8 @@
 	var/obj/item/paper/internalPaper
 
 /obj/item/paperplane/Initialize(mapload, obj/item/paper/newPaper)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_y = rand(-8, 8)
 	pixel_x = rand(-9, 9)
@@ -26,12 +28,16 @@
 	update_icon()
 
 /obj/item/paperplane/Destroy()
+	procstart = null
+	src.procstart = null
 	if(internalPaper)
 		qdel(internalPaper)
 		internalPaper = null
 	return ..()
 
 /obj/item/paperplane/suicide_act(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.Stun(200)
 	user.visible_message("<span class='suicide'>[user] jams [src] in [user.p_their()] nose. It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	user.adjust_blurriness(6)
@@ -40,6 +46,8 @@
 	return (BRUTELOSS)
 
 /obj/item/paperplane/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	var/list/stamped = internalPaper.stamped
 	if(stamped)
@@ -47,6 +55,8 @@
 			add_overlay("paperplane_[S]")
 
 /obj/item/paperplane/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>You unfold [src].</span>")
 	var/atom/movable/internal_paper_tmp = internalPaper
 	internal_paper_tmp.forceMove(loc)
@@ -55,6 +65,8 @@
 	user.put_in_hands(internal_paper_tmp)
 
 /obj/item/paperplane/attackby(obj/item/P, mob/living/carbon/human/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(P, /obj/item/pen) || istype(P, /obj/item/toy/crayon))
 		to_chat(user, "<span class='notice'>You should unfold [src] before changing it.</span>")
@@ -83,9 +95,13 @@
 
 
 /obj/item/paperplane/throw_at(atom/target, range, speed, mob/thrower, spin=FALSE, diagonals_first = FALSE, datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	. = ..(target, range, speed, thrower, FALSE, diagonals_first, callback)
 
 /obj/item/paperplane/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(..() || !ishuman(hit_atom))//if the plane is caught or it hits a nonhuman
 		return
 	var/mob/living/carbon/human/H = hit_atom
@@ -99,6 +115,8 @@
 		H.emote("scream")
 
 /obj/item/paper/AltClick(mob/living/carbon/user, obj/item/I)
+	procstart = null
+	src.procstart = null
 	if ( istype(user) )
 		if( (!in_range(src, user)) || user.stat || user.restrained() )
 			return

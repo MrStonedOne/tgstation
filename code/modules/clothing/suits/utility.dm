@@ -128,6 +128,8 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/head/radiation/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION, TRUE, FALSE)
 
@@ -150,6 +152,8 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/suit/radiation/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION, TRUE, FALSE)
 	// Just don't want things to be irradiated inside this

@@ -30,6 +30,8 @@
 
 
 /datum/light_source/New(var/atom/owner, var/atom/top)
+	procstart = null
+	src.procstart = null
 	source_atom = owner // Set our new owner.
 	LAZYADD(source_atom.light_sources, src)
 	top_atom = top
@@ -50,6 +52,8 @@
 	return ..()
 
 /datum/light_source/Destroy(force)
+	procstart = null
+	src.procstart = null
 	remove_lum()
 	if (source_atom)
 		LAZYREMOVE(source_atom.light_sources, src)
@@ -74,6 +78,8 @@
 
 // This proc will cause the light source to update the top atom, and add itself to the update queue.
 /datum/light_source/proc/update(var/atom/new_top_atom)
+	procstart = null
+	src.procstart = null
 	// This top atom is different.
 	if (new_top_atom && new_top_atom != top_atom)
 		if(top_atom != source_atom && top_atom.light_sources) // Remove ourselves from the light sources of that top atom.
@@ -88,14 +94,20 @@
 
 // Will force an update without checking if it's actually needed.
 /datum/light_source/proc/force_update()
+	procstart = null
+	src.procstart = null
 	EFFECT_UPDATE(LIGHTING_FORCE_UPDATE)
 
 // Will cause the light source to recalculate turfs that were removed or added to visibility only.
 /datum/light_source/proc/vis_update()
+	procstart = null
+	src.procstart = null
 	EFFECT_UPDATE(LIGHTING_VIS_UPDATE)
 
 // Decompile the hexadecimal colour into lumcounts of each perspective.
 /datum/light_source/proc/parse_light_color()
+	procstart = null
+	src.procstart = null
 	if (light_color)
 		lum_r = GetRedPart   (light_color) / 255
 		lum_g = GetGreenPart (light_color) / 255
@@ -139,6 +151,8 @@
 // This is the define used to calculate falloff.
 
 /datum/light_source/proc/remove_lum()
+	procstart = null
+	src.procstart = null
 	applied = FALSE
 	var/thing
 	for (thing in affecting_turfs)
@@ -157,6 +171,8 @@
 	effect_str = null
 
 /datum/light_source/proc/recalc_corner(var/datum/lighting_corner/C)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(effect_str)
 	if (effect_str[C]) // Already have one.
 		REMOVE_CORNER(C)
@@ -166,6 +182,8 @@
 	UNSETEMPTY(effect_str)
 
 /datum/light_source/proc/update_corners()
+	procstart = null
+	src.procstart = null
 	var/update = FALSE
 
 	if (!source_atom || QDELETED(source_atom))

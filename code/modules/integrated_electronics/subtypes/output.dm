@@ -13,10 +13,14 @@
 	var/stuff_to_display = null
 
 /obj/item/integrated_circuit/output/screen/disconnect_all()
+	procstart = null
+	src.procstart = null
 	..()
 	stuff_to_display = null
 
 /obj/item/integrated_circuit/output/screen/any_examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/shown_label = ""
 	if(displayed_name && displayed_name != name)
 		shown_label = " labeled '[displayed_name]'"
@@ -24,6 +28,8 @@
 	to_chat(user, "There is \a [src][shown_label], which displays [!isnull(stuff_to_display) ? "'[stuff_to_display]'" : "nothing"].")
 
 /obj/item/integrated_circuit/output/screen/do_work()
+	procstart = null
+	src.procstart = null
 	var/datum/integrated_io/I = inputs[1]
 	if(isweakref(I.data))
 		var/datum/d = I.data_as_type(/datum)
@@ -39,6 +45,8 @@
 	power_draw_per_use = 20
 
 /obj/item/integrated_circuit/output/screen/medium/do_work()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/nearby_things = range(0, get_turf(src))
 	for(var/mob/M in nearby_things)
@@ -52,6 +60,8 @@
 	power_draw_per_use = 40
 
 /obj/item/integrated_circuit/output/screen/large/do_work()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/O = assembly ? loc : assembly
 	O.visible_message("<span class='notice'>[icon2html(O.icon, world, O.icon_state)]  [stuff_to_display]</span>")
@@ -71,10 +81,14 @@
 	power_draw_idle = 0 // Adjusted based on brightness.
 
 /obj/item/integrated_circuit/output/light/do_work()
+	procstart = null
+	src.procstart = null
 	light_toggled = !light_toggled
 	update_lighting()
 
 /obj/item/integrated_circuit/output/light/proc/update_lighting()
+	procstart = null
+	src.procstart = null
 	if(light_toggled)
 		if(assembly)
 			assembly.set_light(l_range = light_brightness, l_power = light_brightness, l_color = light_rgb)
@@ -84,6 +98,8 @@
 	power_draw_idle = light_toggled ? light_brightness * 2 : 0
 
 /obj/item/integrated_circuit/output/light/advanced/update_lighting()
+	procstart = null
+	src.procstart = null
 	var/new_color = get_pin_data(IC_INPUT, 1)
 	var/brightness = get_pin_data(IC_INPUT, 2)
 
@@ -111,6 +127,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/output/light/advanced/on_data_written()
+	procstart = null
+	src.procstart = null
 	update_lighting()
 
 /obj/item/integrated_circuit/output/sound
@@ -130,6 +148,8 @@
 	var/list/sounds = list()
 
 /obj/item/integrated_circuit/output/sound/Initialize()
+	procstart = null
+	src.procstart = null
 	.= ..()
 	extended_desc = list()
 	extended_desc += "The first input pin determines which sound is used. The choices are; "
@@ -139,6 +159,8 @@
 	extended_desc = jointext(extended_desc, null)
 
 /obj/item/integrated_circuit/output/sound/do_work()
+	procstart = null
+	src.procstart = null
 	var/ID = get_pin_data(IC_INPUT, 1)
 	var/vol = get_pin_data(IC_INPUT, 2)
 	var/freq = get_pin_data(IC_INPUT, 3)
@@ -150,6 +172,8 @@
 		playsound(get_turf(src), selected_sound, vol, freq, -1)
 
 /obj/item/integrated_circuit/output/sound/on_data_written()
+	procstart = null
+	src.procstart = null
 	power_draw_per_use =  get_pin_data(IC_INPUT, 2) * 15
 
 /obj/item/integrated_circuit/output/sound/beeper
@@ -210,6 +234,8 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/output/sound/vox/Initialize()
+	procstart = null
+	src.procstart = null
 	.= ..()
 	sounds = GLOB.vox_sounds
 	extended_desc = "The first input pin determines which sound is used. It uses the AI Vox Broadcast word list. So either experiment to find words that work, or ask the AI to help in figuring them out. The second pin determines the volume of sound that is played, and the third determines if the frequency of the sound will vary with each activation."
@@ -227,6 +253,8 @@
 	power_draw_per_use = 60
 
 /obj/item/integrated_circuit/output/text_to_speech/do_work()
+	procstart = null
+	src.procstart = null
 	text = get_pin_data(IC_INPUT, 1)
 	if(!isnull(text))
 		var/atom/movable/A = get_object()
@@ -253,16 +281,22 @@
 	var/updating = FALSE
 
 /obj/item/integrated_circuit/output/video_camera/New()
+	procstart = null
+	src.procstart = null
 	..()
 	camera = new(src)
 	camera.network = list("RD")
 	on_data_written()
 
 /obj/item/integrated_circuit/output/video_camera/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(camera)
 	return ..()
 
 /obj/item/integrated_circuit/output/video_camera/proc/set_camera_status(var/status)
+	procstart = null
+	src.procstart = null
 	if(camera)
 		camera.status = status
 		GLOB.cameranet.updatePortableCamera(camera)
@@ -272,6 +306,8 @@
 				power_fail()
 
 /obj/item/integrated_circuit/output/video_camera/on_data_written()
+	procstart = null
+	src.procstart = null
 	if(camera)
 		var/cam_name = get_pin_data(IC_INPUT, 1)
 		var/cam_active = get_pin_data(IC_INPUT, 2)
@@ -280,16 +316,22 @@
 		set_camera_status(cam_active)
 
 /obj/item/integrated_circuit/output/video_camera/power_fail()
+	procstart = null
+	src.procstart = null
 	if(camera)
 		set_camera_status(0)
 		set_pin_data(IC_INPUT, 2, FALSE)
 
 /obj/item/integrated_circuit/output/video_camera/ext_moved(oldLoc, dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_camera_location(oldLoc)
 
 #define VIDEO_CAMERA_BUFFER 10
 /obj/item/integrated_circuit/output/video_camera/proc/update_camera_location(oldLoc)
+	procstart = null
+	src.procstart = null
 	oldLoc = get_turf(oldLoc)
 	if(!QDELETED(camera) && !updating && oldLoc != get_turf(src))
 		updating = TRUE
@@ -297,6 +339,8 @@
 #undef VIDEO_CAMERA_BUFFER
 
 /obj/item/integrated_circuit/output/video_camera/proc/do_camera_update(oldLoc)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(camera) && oldLoc != get_turf(src))
 		GLOB.cameranet.updatePortableCamera(camera)
 	updating = FALSE
@@ -321,13 +365,19 @@
 	var/led_color = "#FF0000"
 
 /obj/item/integrated_circuit/output/led/on_data_written()
+	procstart = null
+	src.procstart = null
 	power_draw_idle = get_pin_data(IC_INPUT, 1) ? 1 : 0
 	led_color = get_pin_data(IC_INPUT, 2)
 
 /obj/item/integrated_circuit/output/led/power_fail()
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_INPUT, 1, FALSE)
 
 /obj/item/integrated_circuit/output/led/external_examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/text_output = "There is "
 
 	if(name == displayed_name)

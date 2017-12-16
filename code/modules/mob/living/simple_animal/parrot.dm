@@ -99,6 +99,8 @@
 
 
 /mob/living/simple_animal/parrot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!ears)
 		var/headset = pick(/obj/item/device/radio/headset/headset_sec, \
@@ -119,11 +121,15 @@
 
 
 /mob/living/simple_animal/parrot/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat)
 		to_chat(user, pick("This parrot is no more.", "This is a late parrot.", "This is an ex-parrot."))
 
 /mob/living/simple_animal/parrot/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(held_item)
 		held_item.forceMove(drop_location())
 		held_item = null
@@ -138,12 +144,16 @@
 	..(gibbed)
 
 /mob/living/simple_animal/parrot/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		stat("Held Item", held_item)
 		stat("Mode",a_intent)
 
 /mob/living/simple_animal/parrot/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(speaker != src && prob(50)) //Dont imitate ourselves
 		if(!radio_freq || prob(10))
 			if(speech_buffer.len >= 500)
@@ -180,6 +190,8 @@
  * Inventory
  */
 /mob/living/simple_animal/parrot/show_inv(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = 	"<div align='center'><b>Inventory of [name]</b></div><p>"
 	if(ears)
@@ -193,6 +205,8 @@
 
 /mob/living/simple_animal/parrot/Topic(href, href_list)
 
+	procstart = null
+	src.procstart = null
 	//Can the usr physically do this?
 	if(usr.incapacitated() || !usr.Adjacent(loc))
 		return
@@ -276,6 +290,8 @@
  */
 //Humans, monkeys, aliens
 /mob/living/simple_animal/parrot/attack_hand(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	..()
 	if(client)
 		return
@@ -299,13 +315,19 @@
 	return
 
 /mob/living/simple_animal/parrot/attack_paw(mob/living/carbon/monkey/M)
+	procstart = null
+	src.procstart = null
 	attack_hand(M)
 
 /mob/living/simple_animal/parrot/attack_alien(mob/living/carbon/alien/M)
+	procstart = null
+	src.procstart = null
 	attack_hand(M)
 
 //Simple animals
 /mob/living/simple_animal/parrot/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	. = ..() //goodbye immortal parrots
 
 	if(client)
@@ -321,6 +343,8 @@
 
 //Mobs with objects
 /mob/living/simple_animal/parrot/attackby(obj/item/O, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!stat && !client && !istype(O, /obj/item/stack/medical) && !istype(O, /obj/item/reagent_containers/food/snacks/cracker))
 		if(O.force)
 			if(parrot_state == PARROT_PERCH)
@@ -346,6 +370,8 @@
 
 //Bullets
 /mob/living/simple_animal/parrot/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!stat && !client)
 		if(parrot_state == PARROT_PERCH)
@@ -363,6 +389,8 @@
  * AI - Not really intelligent, but I'm calling it AI anyway.
  */
 /mob/living/simple_animal/parrot/Life()
+	procstart = null
+	src.procstart = null
 	..()
 
 	//Sprite update for when a parrot gets pulled
@@ -378,6 +406,8 @@
 	   Phrases that the parrot Hear()s get added to speach_buffer.
 	   Every once in a while, the parrot picks one of the lines from the buffer and replaces an element of the 'speech' list. */
 /mob/living/simple_animal/parrot/handle_automated_speech()
+	procstart = null
+	src.procstart = null
 	..()
 	if(speech_buffer.len && prob(speech_shuffle_rate)) //shuffle out a phrase and add in a new one
 		if(speak.len)
@@ -387,6 +417,8 @@
 
 
 /mob/living/simple_animal/parrot/handle_automated_movement()
+	procstart = null
+	src.procstart = null
 	if(!isturf(src.loc) || !canmove || buckled)
 		return //If it can't move, dont let it move. (The buckled check probably isn't necessary thanks to canmove)
 
@@ -601,12 +633,16 @@
  */
 
 /mob/living/simple_animal/parrot/movement_delay()
+	procstart = null
+	src.procstart = null
 	if(client && stat == CONSCIOUS && parrot_state != icon_living)
 		icon_state = icon_living
 		//Because the most appropriate place to set icon_state is movement_delay(), clearly
 	return ..()
 
 /mob/living/simple_animal/parrot/proc/isStuck()
+	procstart = null
+	src.procstart = null
 	//Check to see if the parrot is stuck due to things like windows or doors or windowdoors
 	if(parrot_lastmove)
 		if(parrot_lastmove == src.loc)
@@ -622,6 +658,8 @@
 	return 0
 
 /mob/living/simple_animal/parrot/proc/search_for_item()
+	procstart = null
+	src.procstart = null
 	var/item
 	for(var/atom/movable/AM in view(src))
 		//Skip items we already stole or are wearing or are too big
@@ -646,6 +684,8 @@
 	return null
 
 /mob/living/simple_animal/parrot/proc/search_for_perch()
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in view(src))
 		for(var/path in desired_perches)
 			if(istype(O, path))
@@ -654,6 +694,8 @@
 
 //This proc was made to save on doing two 'in view' loops seperatly
 /mob/living/simple_animal/parrot/proc/search_for_perch_and_item()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/AM in view(src))
 		for(var/perch_path in desired_perches)
 			if(istype(AM, perch_path))
@@ -680,6 +722,8 @@
  * Verbs - These are actually procs, but can be used as verbs by player-controlled parrots.
  */
 /mob/living/simple_animal/parrot/proc/steal_from_ground()
+	procstart = null
+	src.procstart = null
 	set name = "Steal from ground"
 	set category = "Parrot"
 	set desc = "Grabs a nearby item."
@@ -708,6 +752,8 @@
 	return 0
 
 /mob/living/simple_animal/parrot/proc/steal_from_mob()
+	procstart = null
+	src.procstart = null
 	set name = "Steal from mob"
 	set category = "Parrot"
 	set desc = "Steals an item right out of a person's hand!"
@@ -737,6 +783,8 @@
 	return 0
 
 /mob/living/simple_animal/parrot/verb/drop_held_item_player()
+	procstart = null
+	src.procstart = null
 	set name = "Drop held item"
 	set category = "Parrot"
 	set desc = "Drop the item you're holding."
@@ -749,6 +797,8 @@
 	return
 
 /mob/living/simple_animal/parrot/proc/drop_held_item(drop_gently = 1)
+	procstart = null
+	src.procstart = null
 	set name = "Drop held item"
 	set category = "Parrot"
 	set desc = "Drop the item you're holding."
@@ -788,6 +838,8 @@
 	return 1
 
 /mob/living/simple_animal/parrot/proc/perch_player()
+	procstart = null
+	src.procstart = null
 	set name = "Sit"
 	set category = "Parrot"
 	set desc = "Sit on a nice comfy perch."
@@ -807,6 +859,8 @@
 
 
 /mob/living/simple_animal/parrot/proc/perch_mob_player()
+	procstart = null
+	src.procstart = null
 	set name = "Sit on Human's Shoulder"
 	set category = "Parrot"
 	set desc = "Sit on a nice comfy human being!"
@@ -834,6 +888,8 @@
 
 
 /mob/living/simple_animal/parrot/proc/perch_on_human(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!H)
 		return
 	forceMove(get_turf(H))
@@ -846,6 +902,8 @@
 
 
 /mob/living/simple_animal/parrot/proc/toggle_mode()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle mode"
 	set category = "Parrot"
 	set desc = "Time to bear those claws!"
@@ -877,6 +935,8 @@
 	var/longest_deathstreak = 0
 
 /mob/living/simple_animal/parrot/Poly/Initialize()
+	procstart = null
+	src.procstart = null
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
 	available_channels = list(":e")
 	Read_Memory()
@@ -898,12 +958,16 @@
 	. = ..()
 
 /mob/living/simple_animal/parrot/Poly/Life()
+	procstart = null
+	src.procstart = null
 	if(!stat && SSticker.current_state == GAME_STATE_FINISHED && !memory_saved)
 		Write_Memory(FALSE)
 		memory_saved = TRUE
 	..()
 
 /mob/living/simple_animal/parrot/Poly/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(!memory_saved)
 		Write_Memory(TRUE)
 	if(rounds_survived == longest_survival || rounds_survived == longest_deathstreak || prob(0.666))
@@ -915,6 +979,8 @@
 	..(gibbed)
 
 /mob/living/simple_animal/parrot/Poly/proc/Read_Memory()
+	procstart = null
+	src.procstart = null
 	if(fexists("data/npc_saves/Poly.sav")) //legacy compatability to convert old format to new
 		var/savefile/S = new /savefile("data/npc_saves/Poly.sav")
 		S["phrases"] 			>> speech_buffer
@@ -935,6 +1001,8 @@
 		speech_buffer = list()
 
 /mob/living/simple_animal/parrot/Poly/proc/Write_Memory(dead)
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/npc_saves/Poly.json")
 	var/list/file_data = list()
 	if(islist(speech_buffer))
@@ -957,6 +1025,8 @@
 	WRITE_FILE(json_file, json_encode(file_data))
 
 /mob/living/simple_animal/parrot/Poly/ratvar_act()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/magic/clockwork/fellowship_armory.ogg', 75, TRUE)
 	var/mob/living/simple_animal/parrot/clock_hawk/H = new(loc)
 	H.setDir(dir)
@@ -972,15 +1042,21 @@
 	butcher_results = list(/obj/item/ectoplasm = 1)
 
 /mob/living/simple_animal/parrot/Poly/ghost/Initialize()
+	procstart = null
+	src.procstart = null
 	memory_saved = TRUE //At this point nothing is saved
 	. = ..()
 
 /mob/living/simple_animal/parrot/Poly/ghost/handle_automated_speech()
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		return
 	..()
 
 /mob/living/simple_animal/parrot/Poly/ghost/handle_automated_movement()
+	procstart = null
+	src.procstart = null
 	if(isliving(parrot_interest))
 		if(!ishuman(parrot_interest))
 			parrot_interest = null
@@ -990,6 +1066,8 @@
 	..()
 
 /mob/living/simple_animal/parrot/Poly/ghost/proc/Possess(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(H))
 		return
 	var/datum/disease/parrot_possession/P = new
@@ -1016,4 +1094,6 @@
 	death_sound = 'sound/magic/clockwork/anima_fragment_death.ogg'
 
 /mob/living/simple_animal/parrot/clock_hawk/ratvar_act()
+	procstart = null
+	src.procstart = null
 	return

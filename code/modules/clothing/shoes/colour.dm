@@ -87,6 +87,8 @@
 	item_color = "orange"
 
 /obj/item/clothing/shoes/sneakers/orange/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (src.chained)
 		src.chained = null
 		src.slowdown = SHOES_SLOWDOWN
@@ -95,6 +97,8 @@
 	return
 
 /obj/item/clothing/shoes/sneakers/orange/attackby(obj/H, loc, params)
+	procstart = null
+	src.procstart = null
 	..()
 	// Note: not using istype here because we want to ignore all subtypes
 	if (H.type == /obj/item/restraints/handcuffs && !chained)
@@ -105,6 +109,8 @@
 	return
 
 /obj/item/clothing/shoes/sneakers/orange/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		var/mob/living/carbon/human/C = user
 		if(C.shoes == src && src.chained == 1)

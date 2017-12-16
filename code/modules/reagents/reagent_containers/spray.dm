@@ -24,6 +24,8 @@
 
 
 /obj/item/reagent_containers/spray/afterattack(atom/A as mob|obj, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/structure/sink) || istype(A, /obj/structure/janitorialcart) || istype(A, /obj/machinery/hydroponics))
 		return
 
@@ -64,6 +66,8 @@
 
 
 /obj/item/reagent_containers/spray/proc/spray(atom/A)
+	procstart = null
+	src.procstart = null
 	var/range = max(min(current_range, get_dist(src, A)), 1)
 	var/obj/effect/decal/chempuff/D = new /obj/effect/decal/chempuff(get_turf(src))
 	D.create_reagents(amount_per_transfer_from_this)
@@ -78,6 +82,8 @@
 	do_spray(A, wait_step, D, range, puff_reagent_left)
 
 /obj/item/reagent_containers/spray/proc/do_spray(atom/A, wait_step, obj/effect/decal/chempuff/D, range, puff_reagent_left)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/range_left = range
 	for(var/i=0, i<range, i++)
@@ -114,6 +120,8 @@
 	qdel(D)
 
 /obj/item/reagent_containers/spray/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	stream_mode = !stream_mode
 	if(stream_mode)
 		amount_per_transfer_from_this = stream_amount
@@ -124,6 +132,8 @@
 	to_chat(user, "<span class='notice'>You switch the nozzle setting to [stream_mode ? "\"stream\"":"\"spray\""]. You'll now use [amount_per_transfer_from_this] units per use.</span>")
 
 /obj/item/reagent_containers/spray/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/hotness = I.is_hot()
 	if(hotness && reagents)
 		reagents.expose_temperature(hotness)
@@ -131,6 +141,8 @@
 	return ..()
 
 /obj/item/reagent_containers/spray/verb/empty()
+	procstart = null
+	src.procstart = null
 	set name = "Empty Spray Bottle"
 	set category = "Object"
 	set src in usr
@@ -186,6 +198,8 @@
 
 // Fix pepperspraying yourself
 /obj/item/reagent_containers/spray/pepper/afterattack(atom/A as mob|obj, mob/user)
+	procstart = null
+	src.procstart = null
 	if (A.loc == user)
 		return
 	..()
@@ -223,12 +237,16 @@
 	volume = 600
 
 /obj/item/reagent_containers/spray/chemsprayer/afterattack(atom/A as mob|obj, mob/user)
+	procstart = null
+	src.procstart = null
 	// Make it so the bioterror spray doesn't spray yourself when you click your inventory items
 	if (A.loc == user)
 		return
 	..()
 
 /obj/item/reagent_containers/spray/chemsprayer/spray(atom/A)
+	procstart = null
+	src.procstart = null
 	var/direction = get_dir(src, A)
 	var/turf/T = get_turf(A)
 	var/turf/T1 = get_step(T,turn(direction, 90))

@@ -16,6 +16,8 @@
 	var/build_path = null
 
 /obj/item/circuitboard/proc/apply_default_parts(obj/machinery/M)
+	procstart = null
+	src.procstart = null
 	return
 
 // Circuitboard/machine
@@ -32,6 +34,8 @@ micro-manipulator, console screen, beaker, Microlaser, matter bin, power cells.
 
 // Applies the default parts defined by the circuit board when the machine is created
 /obj/item/circuitboard/machine/apply_default_parts(obj/machinery/M)
+	procstart = null
+	src.procstart = null
 	if(!req_components)
 		return
 

@@ -43,11 +43,15 @@
 	cant_hold = list(/obj/item/disk/nuclear)
 
 /obj/item/storage/bag/trash/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] puts [src] over [user.p_their()] head and starts chomping at the insides! Disgusting!</span>")
 	playsound(loc, 'sound/items/eatfood.ogg', 50, 1, -1)
 	return (TOXLOSS)
 
 /obj/item/storage/bag/trash/update_icon()
+	procstart = null
+	src.procstart = null
 	if(contents.len == 0)
 		icon_state = "[initial(icon_state)]"
 	else if(contents.len < 12)
@@ -59,11 +63,15 @@
 /obj/item/storage/bag/trash/cyborg
 
 /obj/item/storage/bag/trash/proc/janicart_insert(mob/user, obj/structure/janitorialcart/J)
+	procstart = null
+	src.procstart = null
 	J.put_in_cart(src, user)
 	J.mybag=src
 	J.update_icon()
 
 /obj/item/storage/bag/trash/cyborg/janicart_insert(mob/user, obj/structure/janitorialcart/J)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/storage/bag/trash/bluespace
@@ -124,6 +132,8 @@
 	icon_state = "portaseeder"
 
 /obj/item/storage/bag/plants/portaseeder/verb/dissolve_contents()
+	procstart = null
+	src.procstart = null
 	set name = "Activate Seed Extraction"
 	set category = "Object"
 	set desc = "Activate to convert your plants into plantable seeds."
@@ -152,6 +162,8 @@
 	allow_quick_empty = 1 // this function is superceded
 
 /obj/item/storage/bag/sheetsnatcher/can_be_inserted(obj/item/W, stop_messages = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(W, /obj/item/stack/sheet) || istype(W, /obj/item/stack/sheet/mineral/sandstone) || istype(W, /obj/item/stack/sheet/mineral/wood))
 		if(!stop_messages)
 			to_chat(usr, "The snatcher does not accept [W].")
@@ -168,6 +180,8 @@
 
 // Modified handle_item_insertion.  Would prefer not to, but...
 /obj/item/storage/bag/sheetsnatcher/handle_item_insertion(obj/item/W, prevent_warning = 0)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/sheet/S = W
 	if(!istype(S))
 		return 0
@@ -211,6 +225,8 @@
 // Sets up numbered display to show the stack size of each stored mineral
 // NOTE: numbered display is turned off currently because it's broken
 /obj/item/storage/bag/sheetsnatcher/orient2hud(mob/user)
+	procstart = null
+	src.procstart = null
 	var/adjusted_contents = contents.len
 
 	//Numbered contents display
@@ -234,6 +250,8 @@
 
 // Modified quick_empty verb drops appropriate sized stacks
 /obj/item/storage/bag/sheetsnatcher/quick_empty()
+	procstart = null
+	src.procstart = null
 	var/location = get_turf(src)
 	for(var/obj/item/stack/sheet/S in contents)
 		while(S.amount)
@@ -250,6 +268,8 @@
 
 // Instead of removing
 /obj/item/storage/bag/sheetsnatcher/remove_from_storage(obj/item/W, atom/new_location)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/sheet/S = W
 	if(!istype(S))
 		return 0
@@ -311,6 +331,8 @@
 	preposition = "on"
 
 /obj/item/storage/bag/tray/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	// Drop all the things. All of them.
 	var/list/obj/item/oldContents = contents.Copy()
@@ -334,15 +356,21 @@
 			M.Knockdown(40)
 
 /obj/item/storage/bag/tray/proc/rebuild_overlays()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	for(var/obj/item/I in contents)
 		add_overlay(mutable_appearance(I.icon, I.icon_state))
 
 /obj/item/storage/bag/tray/remove_from_storage(obj/item/W as obj, atom/new_location)
+	procstart = null
+	src.procstart = null
 	..()
 	rebuild_overlays()
 
 /obj/item/storage/bag/tray/handle_item_insertion(obj/item/I, prevent_warning = 0)
+	procstart = null
+	src.procstart = null
 	add_overlay(mutable_appearance(I.icon, I.icon_state))
 	. = ..()
 

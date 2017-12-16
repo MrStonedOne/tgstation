@@ -13,11 +13,15 @@
 	materials = list(MAT_METAL=2000)
 
 /obj/item/gun/grenadelauncher/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "[grenades.len] / [max_grenades] grenades loaded.")
 
 /obj/item/gun/grenadelauncher/attackby(obj/item/I, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if((istype(I, /obj/item/grenade)))
 		if(grenades.len < max_grenades)
 			if(!user.transferItemToLoc(I, src))
@@ -29,6 +33,8 @@
 			to_chat(usr, "<span class='danger'>The grenade launcher cannot hold more grenades.</span>")
 
 /obj/item/gun/grenadelauncher/afterattack(obj/target, mob/user , flag)
+	procstart = null
+	src.procstart = null
 	if(target == user)
 		return
 
@@ -38,6 +44,8 @@
 		to_chat(user, "<span class='danger'>The grenade launcher is empty.</span>")
 
 /obj/item/gun/grenadelauncher/proc/fire_grenade(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='danger'>[user] fired a grenade!</span>", \
 						"<span class='danger'>You fire the grenade launcher!</span>")
 	var/obj/item/grenade/F = grenades[1] //Now with less copypasta!

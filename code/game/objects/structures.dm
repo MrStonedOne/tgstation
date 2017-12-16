@@ -9,6 +9,8 @@
 	var/broken = 0 //similar to machinery's stat BROKEN
 
 /obj/structure/Initialize()
+	procstart = null
+	src.procstart = null
 	if (!armor)
 		armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 50, acid = 50)
 	. = ..()
@@ -19,12 +21,16 @@
 	GLOB.cameranet.updateVisibility(src)
 
 /obj/structure/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.cameranet.updateVisibility(src)
 	if(smooth)
 		queue_smooth_neighbors(src)
 	return ..()
 
 /obj/structure/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_fingerprint(user)
 	if(structureclimber && structureclimber != user)
@@ -35,13 +41,19 @@
 	interact(user)
 
 /obj/structure/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 /obj/structure/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	..()
 	add_fingerprint(usr)
 
 /obj/structure/MouseDrop_T(atom/movable/O, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!climbable)
 		return
@@ -60,12 +72,16 @@
 	return
 
 /obj/structure/proc/do_climb(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(climbable)
 		density = FALSE
 		. = step(A,get_dir(A,src.loc))
 		density = TRUE
 
 /obj/structure/proc/climb_structure(mob/living/user)
+	procstart = null
+	src.procstart = null
 	src.add_fingerprint(user)
 	user.visible_message("<span class='warning'>[user] starts climbing onto [src].</span>", \
 								"<span class='notice'>You start climbing onto [src]...</span>")
@@ -89,6 +105,8 @@
 	structureclimber = null
 
 /obj/structure/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!(resistance_flags & INDESTRUCTIBLE))
 		if(resistance_flags & ON_FIRE)

@@ -40,6 +40,8 @@
 	search_objects = 2
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/no_mech/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wanted_objects = typecacheof(/obj/mecha/combat, TRUE)
 
@@ -60,6 +62,8 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(spawn_mecha_type)
 		var/obj/mecha/M = new spawn_mecha_type (get_turf(src))
@@ -68,6 +72,8 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/proc/enter_mecha(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	if(!M)
 		return 0
 	target = null //Target was our mecha, so null it out
@@ -93,6 +99,8 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/proc/exit_mecha(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	if(!M)
 		return 0
 
@@ -116,6 +124,8 @@
 
 //Checks if a mecha is valid for theft
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/proc/is_valid_mecha(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	if(!M)
 		return 0
 	if(M.occupant)
@@ -128,6 +138,8 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/proc/mecha_face_target(atom/A)
+	procstart = null
+	src.procstart = null
 	if(mecha)
 		var/dirto = get_dir(mecha,A)
 		if(mecha.dir != dirto) //checking, because otherwise the mecha makes too many turn noises
@@ -136,6 +148,8 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/proc/mecha_reload()
+	procstart = null
+	src.procstart = null
 	if(mecha)
 		for(var/equip in mecha.equipment)
 			var/obj/item/mecha_parts/mecha_equipment/ME = equip
@@ -144,6 +158,8 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/proc/get_mecha_equip_by_flag(flag = RANGED)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(mecha)
 		for(var/equip in mecha.equipment)
@@ -156,6 +172,8 @@
 //Pick a ranged weapon/tool
 //Fire it
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/OpenFire(atom/A)
+	procstart = null
+	src.procstart = null
 	if(mecha)
 		mecha_reload()
 		mecha_face_target(A)
@@ -171,6 +189,8 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(mecha)
 		var/list/possible_weapons = get_mecha_equip_by_flag(MELEE)
 		if(possible_weapons.len)
@@ -198,6 +218,8 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(!mecha)
 			for(var/obj/mecha/combat/C in range(src,vision_range))
@@ -246,11 +268,15 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(mecha)
 		mecha.aimob_exit_mech(src)
 	..()
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/gib()
+	procstart = null
+	src.procstart = null
 	if(mecha)
 		mecha.aimob_exit_mech(src)
 	..()
@@ -259,6 +285,8 @@
 //Yes they actually try and pull this shit
 //~simple animals~
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	if(ismecha(the_target))
 		var/obj/mecha/M = the_target
 		if(mecha)
@@ -276,18 +304,24 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/EscapeConfinement()
+	procstart = null
+	src.procstart = null
 	if(mecha && loc == mecha)
 		return 0
 	..()
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/Move(NewLoc,Dir=0,step_x=0,step_y=0)
+	procstart = null
+	src.procstart = null
 	if(mecha && loc == mecha)
 		return mecha.relaymove(src, Dir)
 	return ..()
 
 
 /mob/living/simple_animal/hostile/syndicate/mecha_pilot/Goto(target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	if(mecha)
 		walk_to(mecha, target, minimum_distance, delay)
 	else

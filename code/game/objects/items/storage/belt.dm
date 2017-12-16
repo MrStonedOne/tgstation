@@ -10,6 +10,8 @@
 	var/content_overlays = FALSE //If this is true, the belt will gain overlays based on what it's holding
 
 /obj/item/storage/belt/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(content_overlays)
 		for(var/obj/item/I in contents)
@@ -18,6 +20,8 @@
 	..()
 
 /obj/item/storage/belt/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
@@ -51,6 +55,8 @@
 	item_state = "utility_ce"
 
 /obj/item/storage/belt/utility/chief/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/power(src)
 	new /obj/item/crowbar/power(src)
 	new /obj/item/weldingtool/experimental(src)//This can be changed if this is too much
@@ -62,6 +68,8 @@
 
 
 /obj/item/storage/belt/utility/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool(src)
@@ -71,6 +79,8 @@
 	new /obj/item/stack/cable_coil(src,30,pick("red","yellow","orange"))
 
 /obj/item/storage/belt/utility/full/engi/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool/largetank(src)
@@ -81,6 +91,8 @@
 
 
 /obj/item/storage/belt/utility/atmostech/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver(src)
 	new /obj/item/wrench(src)
 	new /obj/item/weldingtool(src)
@@ -90,6 +102,8 @@
 	new /obj/item/extinguisher/mini(src)
 
 /obj/item/storage/belt/utility/servant/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/brass(src)
 	new /obj/item/wirecutters/brass(src)
 	new /obj/item/wrench/brass(src)
@@ -179,6 +193,8 @@
 	content_overlays = TRUE
 
 /obj/item/storage/belt/security/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/spray/pepper(src)
 	new /obj/item/restraints/handcuffs(src)
 	new /obj/item/grenade/flashbang(src)
@@ -260,6 +276,8 @@
 		)
 
 /obj/item/storage/belt/soulstone/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 6)
 		new /obj/item/device/soulstone(src)
 
@@ -289,6 +307,8 @@
 	item_state = "security"
 
 /obj/item/storage/belt/military/abductor/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/abductor(src)
 	new /obj/item/wrench/abductor(src)
 	new /obj/item/weldingtool/abductor(src)
@@ -329,6 +349,8 @@
 		/obj/item/grenade/plastic/c4,
 		)
 /obj/item/storage/belt/grenade/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/grenade/flashbang(src)
 	new /obj/item/grenade/smokebomb(src)
 	new /obj/item/grenade/smokebomb(src)
@@ -369,6 +391,8 @@
 		)
 
 /obj/item/storage/belt/wands/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/magic/wand/death(src)
 	new /obj/item/gun/magic/wand/resurrection(src)
 	new /obj/item/gun/magic/wand/polymorph(src)
@@ -424,6 +448,8 @@
 	alternate_worn_layer = UNDER_SUIT_LAYER
 
 /obj/item/storage/belt/holster/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/ballistic/revolver/detective(src)
 	new /obj/item/ammo_box/c38(src)
 	new /obj/item/ammo_box/c38(src)
@@ -500,11 +526,15 @@
 		)
 
 /obj/item/storage/belt/sabre/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(contents.len)
 		to_chat(user, "<span class='notice'>Alt-click it to quickly draw the blade.</span>")
 
 /obj/item/storage/belt/sabre/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user) || !user.canUseTopic(src, be_close=TRUE))
 		return
 	if(contents.len)
@@ -517,6 +547,8 @@
 		to_chat(user, "[src] is empty.")
 
 /obj/item/storage/belt/sabre/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "sheath"
 	item_state = "sheath"
 	if(contents.len)
@@ -529,5 +561,7 @@
 
 
 /obj/item/storage/belt/sabre/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/melee/sabre(src)
 	update_icon()

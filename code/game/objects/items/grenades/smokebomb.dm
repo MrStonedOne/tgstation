@@ -9,15 +9,21 @@
 	var/datum/effect_system/smoke_spread/bad/smoke
 
 /obj/item/grenade/smokebomb/New()
+	procstart = null
+	src.procstart = null
 	..()
 	src.smoke = new /datum/effect_system/smoke_spread/bad
 	src.smoke.attach(src)
 
 /obj/item/grenade/smokebomb/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(smoke)
 	return ..()
 
 /obj/item/grenade/smokebomb/prime()
+	procstart = null
+	src.procstart = null
 	update_mob()
 	playsound(src.loc, 'sound/effects/smoke.ogg', 50, 1, -3)
 	smoke.set_up(4, src)

@@ -26,11 +26,15 @@
 // Auto conveyour is always on unless unpowered
 
 /obj/machinery/conveyor/auto/Initialize(mapload, newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	operating = TRUE
 	update_move_direction()
 
 /obj/machinery/conveyor/auto/update()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		icon_state = "conveyor-broken"
 		operating = FALSE
@@ -45,12 +49,16 @@
 
 // create a conveyor
 /obj/machinery/conveyor/Initialize(mapload, newdir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(newdir)
 		setDir(newdir)
 	update_move_direction()
 
 /obj/machinery/conveyor/proc/update_move_direction()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			forwards = NORTH
@@ -87,6 +95,8 @@
 	update()
 
 /obj/machinery/conveyor/proc/update()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		icon_state = "conveyor-broken"
 		operating = FALSE
@@ -100,6 +110,8 @@
 	// machine process
 	// move items to the target location
 /obj/machinery/conveyor/process()
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN | NOPOWER))
 		return
 	if(!operating)
@@ -109,12 +121,16 @@
 	addtimer(CALLBACK(src, .proc/convey, affecting), 1)
 
 /obj/machinery/conveyor/proc/convey(list/affecting)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/A in affecting)
 		if((A.loc == loc) && A.has_gravity())
 			A.ConveyorMove(movedir)
 
 // attack with item, place item on conveyor
 /obj/machinery/conveyor/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/crowbar))
 		user.visible_message("<span class='notice'>[user] struggles to pry up \the [src] with \the [I].</span>", \
 		"<span class='notice'>You struggle to pry up \the [src] with \the [I].</span>")
@@ -148,12 +164,16 @@
 
 // attack with hand, move pulled object onto conveyor
 /obj/machinery/conveyor/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.Move_Pulled(src)
 
 
 // make the conveyor broken
 // also propagate inoperability to any connected conveyor with the same ID
 /obj/machinery/conveyor/proc/broken()
+	procstart = null
+	src.procstart = null
 	stat |= BROKEN
 	update()
 
@@ -170,6 +190,8 @@
 
 /obj/machinery/conveyor/proc/set_operable(stepdir, match_id, op)
 
+	procstart = null
+	src.procstart = null
 	if(id != match_id)
 		return
 	operable = op
@@ -180,6 +202,8 @@
 		C.set_operable(stepdir, id, op)
 
 /obj/machinery/conveyor/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update()
 
@@ -207,6 +231,8 @@
 
 
 /obj/machinery/conveyor_switch/Initialize(mapload, newid)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!id)
 		id = newid
@@ -215,6 +241,8 @@
 	return INITIALIZE_HINT_LATELOAD //for machines list
 
 /obj/machinery/conveyor_switch/LateInitialize()
+	procstart = null
+	src.procstart = null
 	conveyors = list()
 	for(var/obj/machinery/conveyor/C in GLOB.machines)
 		if(C.id == id)
@@ -223,6 +251,8 @@
 // update the icon depending on the position
 
 /obj/machinery/conveyor_switch/proc/update()
+	procstart = null
+	src.procstart = null
 	if(position<0)
 		icon_state = "switch-rev"
 	else if(position>0)
@@ -235,6 +265,8 @@
 // if the switch changed, update the linked conveyors
 
 /obj/machinery/conveyor_switch/process()
+	procstart = null
+	src.procstart = null
 	if(!operated)
 		return
 	operated = 0
@@ -246,6 +278,8 @@
 
 // attack with hand, switch position
 /obj/machinery/conveyor_switch/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(position == 0)
 		if(convdir)   //is it a oneway switch
@@ -272,6 +306,8 @@
 		CHECK_TICK
 
 /obj/machinery/conveyor_switch/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/crowbar))
 		var/obj/item/conveyor_switch_construct/C = new/obj/item/conveyor_switch_construct(src.loc)
 		C.id = id
@@ -296,6 +332,8 @@
 	var/id = "" //inherited by the belt
 
 /obj/item/conveyor_construct/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(I, /obj/item/conveyor_switch_construct))
 		to_chat(user, "<span class='notice'>You link the switch to the conveyor belt assembly.</span>")
@@ -303,6 +341,8 @@
 		id = C.id
 
 /obj/item/conveyor_construct/afterattack(atom/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || user.stat || !isfloorturf(A) || istype(A, /area/shuttle))
 		return
 	var/cdir = get_dir(A, user)
@@ -323,10 +363,14 @@
 	var/id = "" //inherited by the switch
 
 /obj/item/conveyor_switch_construct/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	id = rand() //this couldn't possibly go wrong
 
 /obj/item/conveyor_switch_construct/afterattack(atom/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || user.stat || !isfloorturf(A) || istype(A, /area/shuttle))
 		return
 	var/found = 0

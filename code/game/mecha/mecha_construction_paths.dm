@@ -3,6 +3,8 @@
 ////////////////////////////////
 
 /datum/construction/mecha/custom_action(step, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(used_atom, /obj/item/weldingtool))
 		var/obj/item/weldingtool/W = used_atom
 		if (W.remove_fuel(0, user))
@@ -38,6 +40,8 @@
 	return TRUE
 
 /datum/construction/reversible/mecha/custom_action(index as num, diff as num, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(used_atom, /obj/item/weldingtool))
 		var/obj/item/weldingtool/W = used_atom
 		if (W.remove_fuel(0, user))
@@ -82,15 +86,21 @@
 					)
 
 /datum/construction/mecha/ripley_chassis/custom_action(step, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] has connected [used_atom] to the [holder].", "<span class='notice'>You connect [used_atom] to the [holder].</span>")
 	holder.add_overlay(used_atom.icon_state+"+o")
 	qdel(used_atom)
 	return TRUE
 
 /datum/construction/mecha/ripley_chassis/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_all_steps(used_atom,user)
 
 /datum/construction/mecha/ripley_chassis/spawn_result()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/chassis/const_holder = holder
 	const_holder.construct = new /datum/construction/reversible/mecha/ripley(const_holder)
 	const_holder.icon = 'icons/mecha/mech_construction.dmi'
@@ -172,9 +182,13 @@
 					)
 
 /datum/construction/reversible/mecha/ripley/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_step(used_atom,user)
 
 /datum/construction/reversible/mecha/ripley/custom_action(index, diff, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -314,15 +328,21 @@
 					)
 
 /datum/construction/mecha/gygax_chassis/custom_action(step, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] has connected [used_atom] to the [holder].", "<span class='notice'>You connect [used_atom] to the [holder].</span>")
 	holder.add_overlay(used_atom.icon_state+"+o")
 	qdel(used_atom)
 	return TRUE
 
 /datum/construction/mecha/gygax_chassis/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_all_steps(used_atom,user)
 
 /datum/construction/mecha/gygax_chassis/spawn_result()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/chassis/const_holder = holder
 	const_holder.construct = new /datum/construction/reversible/mecha/gygax(const_holder)
 	const_holder.icon = 'icons/mecha/mech_construction.dmi'
@@ -426,9 +446,13 @@
 					)
 
 /datum/construction/reversible/mecha/gygax/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_step(used_atom,user)
 
 /datum/construction/reversible/mecha/gygax/custom_action(index, diff, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -620,15 +644,21 @@
 					)
 
 /datum/construction/mecha/firefighter_chassis/custom_action(step, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] has connected [used_atom] to the [holder].", "<span class='notice'>You connect [used_atom] to the [holder].</span>")
 	holder.add_overlay(used_atom.icon_state+"+o")
 	qdel(used_atom)
 	return TRUE
 
 /datum/construction/mecha/firefighter_chassis/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_all_steps(used_atom,user)
 
 /datum/construction/mecha/firefighter_chassis/spawn_result()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/chassis/const_holder = holder
 	const_holder.construct = new /datum/construction/reversible/mecha/firefighter(const_holder)
 	const_holder.icon = 'icons/mecha/mech_construction.dmi'
@@ -713,9 +743,13 @@
 					)
 
 /datum/construction/reversible/mecha/firefighter/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_step(used_atom,user)
 
 /datum/construction/reversible/mecha/firefighter/custom_action(index, diff, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -864,15 +898,21 @@
 					)
 
 /datum/construction/mecha/honker_chassis/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_all_steps(used_atom,user)
 
 /datum/construction/mecha/honker_chassis/custom_action(step, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] has connected [used_atom] to the [holder].", "<span class='notice'>You connect [used_atom] to the [holder].</span>")
 	holder.add_overlay(used_atom.icon_state+"+o")
 	qdel(used_atom)
 	return TRUE
 
 /datum/construction/mecha/honker_chassis/spawn_result()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/chassis/const_holder = holder
 	const_holder.construct = new /datum/construction/mecha/honker(const_holder)
 	const_holder.density = TRUE
@@ -898,9 +938,13 @@
 				)
 
 /datum/construction/mecha/honker/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_step(used_atom,user)
 
 /datum/construction/mecha/honker/custom_action(step, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -944,15 +988,21 @@
 					)
 
 /datum/construction/mecha/durand_chassis/custom_action(step, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] has connected [used_atom] to the [holder].", "You connect [used_atom] to the [holder]")
 	holder.add_overlay(used_atom.icon_state+"+o")
 	qdel(used_atom)
 	return TRUE
 
 /datum/construction/mecha/durand_chassis/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_all_steps(used_atom,user)
 
 /datum/construction/mecha/durand_chassis/spawn_result()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/chassis/const_holder = holder
 	const_holder.construct = new /datum/construction/reversible/mecha/durand(const_holder)
 	const_holder.icon = 'icons/mecha/mech_construction.dmi'
@@ -1057,9 +1107,13 @@
 
 
 /datum/construction/reversible/mecha/durand/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_step(used_atom,user)
 
 /datum/construction/reversible/mecha/durand/custom_action(index, diff, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -1253,15 +1307,21 @@
 					)
 
 /datum/construction/mecha/phazon_chassis/custom_action(step, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] has connected [used_atom] to the [holder].", "<span class='notice'>You connect [used_atom] to the [holder].</span>")
 	holder.add_overlay(used_atom.icon_state+"+o")
 	qdel(used_atom)
 	return TRUE
 
 /datum/construction/mecha/phazon_chassis/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_all_steps(used_atom,user)
 
 /datum/construction/mecha/phazon_chassis/spawn_result()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/chassis/const_holder = holder
 	const_holder.construct = new /datum/construction/reversible/mecha/phazon(const_holder)
 	const_holder.icon = 'icons/mecha/mech_construction.dmi'
@@ -1382,9 +1442,13 @@
 
 
 /datum/construction/reversible/mecha/phazon/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_step(used_atom,user)
 
 /datum/construction/reversible/mecha/phazon/custom_action(index, diff, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 
@@ -1605,15 +1669,21 @@
 					)
 
 /datum/construction/mecha/odysseus_chassis/custom_action(step, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] has connected [used_atom] to the [holder].", "<span class='notice'>You connect [used_atom] to the [holder].</span>")
 	holder.add_overlay(used_atom.icon_state+"+o")
 	qdel(used_atom)
 	return TRUE
 
 /datum/construction/mecha/odysseus_chassis/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_all_steps(used_atom,user)
 
 /datum/construction/mecha/odysseus_chassis/spawn_result()
+	procstart = null
+	src.procstart = null
 	var/obj/item/mecha_parts/chassis/const_holder = holder
 	const_holder.construct = new /datum/construction/reversible/mecha/odysseus(const_holder)
 	const_holder.icon = 'icons/mecha/mech_construction.dmi'
@@ -1694,9 +1764,13 @@
 					)
 
 /datum/construction/reversible/mecha/odysseus/action(atom/used_atom,mob/user)
+	procstart = null
+	src.procstart = null
 	return check_step(used_atom,user)
 
 /datum/construction/reversible/mecha/odysseus/custom_action(index, diff, atom/used_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 

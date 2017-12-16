@@ -21,6 +21,8 @@
 	return 1
 
 /obj/item/ammo_casing/proc/ready_proj(atom/target, mob/living/user, quiet, zone_override)
+	procstart = null
+	src.procstart = null
 	if (!BB)
 		return
 	BB.original = target
@@ -36,6 +38,8 @@
 		qdel(reagents)
 
 /obj/item/ammo_casing/proc/throw_proj(atom/target, turf/targloc, mob/living/user, params, spread)
+	procstart = null
+	src.procstart = null
 	var/turf/curloc = get_turf(user)
 	if (!istype(targloc) || !istype(curloc) || !BB)
 		return 0
@@ -57,6 +61,8 @@
 	return 1
 
 /obj/item/ammo_casing/proc/spread(turf/target, turf/current, distro)
+	procstart = null
+	src.procstart = null
 	var/dx = abs(target.x - current.x)
 	var/dy = abs(target.y - current.y)
 	return locate(target.x + round(gaussian(0, distro) * (dy+2)/8, 1), target.y + round(gaussian(0, distro) * (dx+2)/8, 1), target.z)

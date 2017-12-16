@@ -13,6 +13,8 @@
 	anchored = TRUE
 
 /obj/machinery/artillerycontrol/process()
+	procstart = null
+	src.procstart = null
 	if(reload < reload_cooldown)
 		reload++
 
@@ -26,6 +28,8 @@
 	density = FALSE
 
 /obj/machinery/artillerycontrol/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = "<B>Bluespace Artillery Control:</B><BR>"
 	dat += "Locked on<BR>"
@@ -37,6 +41,8 @@
 	return
 
 /obj/machinery/artillerycontrol/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/A

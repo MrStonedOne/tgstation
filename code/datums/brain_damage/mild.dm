@@ -12,10 +12,14 @@
 	lose_text = "<span class='notice'>You feel more grounded.</span>"
 
 /datum/brain_trauma/mild/hallucinations/on_life()
+	procstart = null
+	src.procstart = null
 	owner.hallucination = min(owner.hallucination + 10, 50)
 	..()
 
 /datum/brain_trauma/mild/hallucinations/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.hallucination = 0
 	..()
 
@@ -27,10 +31,14 @@
 	lose_text = "<span class='notice'>You feel in control of your speech.</span>"
 
 /datum/brain_trauma/mild/stuttering/on_life()
+	procstart = null
+	src.procstart = null
 	owner.stuttering = min(owner.stuttering + 5, 25)
 	..()
 
 /datum/brain_trauma/mild/stuttering/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.stuttering = 0
 	..()
 
@@ -42,10 +50,14 @@
 	lose_text = "<span class='notice'>You feel smart again.</span>"
 
 /datum/brain_trauma/mild/dumbness/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.disabilities |= DUMB
 	..()
 
 /datum/brain_trauma/mild/dumbness/on_life()
+	procstart = null
+	src.procstart = null
 	owner.derpspeech = min(owner.derpspeech + 5, 25)
 	if(prob(3))
 		owner.emote("drool")
@@ -54,6 +66,8 @@
 	..()
 
 /datum/brain_trauma/mild/dumbness/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.disabilities &= ~DUMB
 	owner.derpspeech = 0
 	..()
@@ -66,16 +80,22 @@
 	lose_text = ""
 
 /datum/brain_trauma/mild/speech_impediment/on_gain()
+	procstart = null
+	src.procstart = null
 	owner.dna.add_mutation(UNINTELLIGIBLE)
 	..()
 
 //no fiddling with genetics to get out of this one
 /datum/brain_trauma/mild/speech_impediment/on_life()
+	procstart = null
+	src.procstart = null
 	if(!(GLOB.mutations_list[UNINTELLIGIBLE] in owner.dna.mutations))
 		on_gain()
 	..()
 
 /datum/brain_trauma/mild/speech_impediment/on_lose()
+	procstart = null
+	src.procstart = null
 	owner.dna.remove_mutation(UNINTELLIGIBLE)
 	..()
 
@@ -87,6 +107,8 @@
 	lose_text = "<span class='notice'>The pressure inside your head starts fading.</span>"
 
 /datum/brain_trauma/mild/concussion/on_life()
+	procstart = null
+	src.procstart = null
 	if(prob(5))
 		switch(rand(1,11))
 			if(1)
@@ -115,6 +137,8 @@
 	lose_text = "<span class='notice'>You feel in control of your muscles again.</span>"
 
 /datum/brain_trauma/mild/muscle_weakness/on_life()
+	procstart = null
+	src.procstart = null
 	var/fall_chance = 1
 	if(owner.m_intent == MOVE_INTENT_RUN)
 		fall_chance += 2

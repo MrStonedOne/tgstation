@@ -16,18 +16,26 @@
 	var/shock_cooldown = 0
 
 /obj/item/device/electropack/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] hooks [user.p_them()]self to the electropack and spams the trigger! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (FIRELOSS)
 
 /obj/item/device/electropack/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSradio.add_object(src, frequency, RADIO_SIGNALER)
 
 /obj/item/device/electropack/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	return ..()
 
 /obj/item/device/electropack/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
 		if(src == C.back)
@@ -36,6 +44,8 @@
 	..()
 
 /obj/item/device/electropack/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/clothing/head/helmet))
 		var/obj/item/assembly/shock_kit/A = new /obj/item/assembly/shock_kit( user )
 		A.icon = 'icons/obj/assemblies.dmi'
@@ -58,6 +68,8 @@
 		return ..()
 
 /obj/item/device/electropack/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	//..()
 	var/mob/living/carbon/C = usr
 	if(usr.stat || usr.restrained() || C.back == src)
@@ -98,6 +110,8 @@
 	return
 
 /obj/item/device/electropack/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal || signal.data["code"] != code)
 		return
 
@@ -123,6 +137,8 @@
 
 /obj/item/device/electropack/attack_self(mob/user)
 
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	user.set_machine(src)

@@ -37,16 +37,22 @@
 		"Very doubtful")
 
 /obj/item/toy/eightball/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(MakeHaunted())
 		return INITIALIZE_HINT_QDEL
 
 /obj/item/toy/eightball/proc/MakeHaunted()
+	procstart = null
+	src.procstart = null
 	. = prob(1)
 	if(.)
 		new /obj/item/toy/eightball/haunted(loc)
 
 /obj/item/toy/eightball/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(shaking)
 		return
 
@@ -69,12 +75,18 @@
 	shaking = FALSE
 
 /obj/item/toy/eightball/proc/start_shaking(user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/toy/eightball/proc/get_answer()
+	procstart = null
+	src.procstart = null
 	return pick(possible_answers)
 
 /obj/item/toy/eightball/proc/clear_cooldown()
+	procstart = null
+	src.procstart = null
 	on_cooldown = FALSE
 
 // A broken magic eightball, it only says "YOU SUCK" over and over again.
@@ -85,10 +97,14 @@
 	var/fixed_answer
 
 /obj/item/toy/eightball/broken/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fixed_answer = pick(possible_answers)
 
 /obj/item/toy/eightball/broken/get_answer()
+	procstart = null
+	src.procstart = null
 	return fixed_answer
 
 // Haunted eightball is identical in description and function to toy,
@@ -101,38 +117,54 @@
 	var/list/votes
 
 /obj/item/toy/eightball/haunted/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	votes = list()
 	GLOB.poi_list |= src
 
 /obj/item/toy/eightball/haunted/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list -= src
 	. = ..()
 
 /obj/item/toy/eightball/haunted/MakeHaunted()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/toy/eightball/haunted/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!shaking)
 		to_chat(user, "<span class='warning'>[src] is not currently being shaken.</span>")
 		return
 	interact(user)
 
 /obj/item/toy/eightball/haunted/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, spans, message_mode)
+	procstart = null
+	src.procstart = null
 	last_message = raw_message
 
 /obj/item/toy/eightball/haunted/start_shaking(mob/user)
+	procstart = null
+	src.procstart = null
 	// notify ghosts that someone's shaking a haunted eightball
 	// and inform them of the message, (hopefully a yes/no question)
 	selected_message = last_message
 	notify_ghosts("[user] is shaking [src], hoping to get an answer to \"[selected_message]\"", source=src, enter_link="<a href=?src=[REF(src)];interact=1>(Click to help)</a>", action=NOTIFY_ATTACK)
 
 /obj/item/toy/eightball/haunted/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["interact"])
 		if(isobserver(usr))
 			interact(usr)
 
 /obj/item/toy/eightball/haunted/proc/get_vote_tallies()
+	procstart = null
+	src.procstart = null
 	var/list/answers = list()
 	for(var/ckey in votes)
 		var/selected = votes[ckey]
@@ -145,6 +177,8 @@
 
 
 /obj/item/toy/eightball/haunted/get_answer()
+	procstart = null
+	src.procstart = null
 	if(!votes.len)
 		return pick(possible_answers)
 
@@ -165,12 +199,16 @@
 
 /obj/item/toy/eightball/haunted/ui_interact(mob/user, ui_key="main", datum/tgui/ui=null, force_open=0, datum/tgui/master_ui=null, datum/ui_state/state = GLOB.observer_state)
 
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "eightball", name, 400, 600, master_ui, state)
 		ui.open()
 
 /obj/item/toy/eightball/haunted/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["shaking"] = shaking
 	data["question"] = selected_message
@@ -194,6 +232,8 @@
 	return data
 
 /obj/item/toy/eightball/haunted/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/user = usr

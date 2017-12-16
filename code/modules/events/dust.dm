@@ -12,6 +12,8 @@
 	fakeable = FALSE
 
 /datum/round_event/space_dust/start()
+	procstart = null
+	src.procstart = null
 	spawn_meteors(1, GLOB.meteorsC)
 
 /datum/round_event_control/sandstorm
@@ -28,4 +30,6 @@
 	fakeable = FALSE
 
 /datum/round_event/sandstorm/tick()
+	procstart = null
+	src.procstart = null
 	spawn_meteors(10, GLOB.meteorsC)

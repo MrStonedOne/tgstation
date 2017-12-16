@@ -79,6 +79,8 @@
 	"<span class='warning'><u>If you do not have the regular drone laws, follow your laws to the best of your ability.</u></span>"
 
 /mob/living/simple_animal/drone/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.drones_list += src
 	access_card = new /obj/item/card/id(src)
@@ -107,12 +109,16 @@
 
 
 /mob/living/simple_animal/drone/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
 	holder.icon_state = "huddiag[RoundDiagBar(health/maxHealth)]"
 
 /mob/living/simple_animal/drone/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_STAT_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -124,11 +130,15 @@
 		holder.icon_state = "hudstat"
 
 /mob/living/simple_animal/drone/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.drones_list -= src
 	qdel(access_card) //Otherwise it ends up on the floor!
 	return ..()
 
 /mob/living/simple_animal/drone/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	check_laws()
 
@@ -142,6 +152,8 @@
 
 
 /mob/living/simple_animal/drone/death(gibbed)
+	procstart = null
+	src.procstart = null
 	..(gibbed)
 	if(internal_storage)
 		dropItemToGround(internal_storage)
@@ -152,9 +164,13 @@
 
 
 /mob/living/simple_animal/drone/gib()
+	procstart = null
+	src.procstart = null
 	dust()
 
 /mob/living/simple_animal/drone/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 
@@ -172,6 +188,8 @@
 
 
 /mob/living/simple_animal/drone/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/msg = "<span class='info'>*---------*\nThis is [icon2html(src, user)] \a <b>[src]</b>!\n"
 
 	//Hands
@@ -226,6 +244,8 @@
 
 
 /mob/living/simple_animal/drone/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	Stun(100)
 	to_chat(src, "<span class='danger'><b>ER@%R: MME^RY CO#RU9T!</b> R&$b@0tin)...</span>")
 	if(severity == 1)
@@ -234,6 +254,8 @@
 
 
 /mob/living/simple_animal/drone/proc/triggerAlarm(class, area/A, O, obj/alarmsource)
+	procstart = null
+	src.procstart = null
 	if(alarmsource.z != z)
 		return
 	if(stat != DEAD)
@@ -250,6 +272,8 @@
 
 
 /mob/living/simple_animal/drone/proc/cancelAlarm(class, area/A, obj/origin)
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD)
 		var/list/L = alarms[class]
 		var/cleared = 0
@@ -266,24 +290,38 @@
 			to_chat(src, "--- [class] alarm in [A.name] has been cleared.")
 
 /mob/living/simple_animal/drone/handle_temperature_damage()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/drone/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0)
+	procstart = null
+	src.procstart = null
 	if(affect_silicon)
 		return ..()
 
 /mob/living/simple_animal/drone/mob_negates_gravity()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /mob/living/simple_animal/drone/mob_has_gravity()
+	procstart = null
+	src.procstart = null
 	return ..() || mob_negates_gravity()
 
 /mob/living/simple_animal/drone/experience_pressure_difference(pressure_difference, direction)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/drone/bee_friendly()
+	procstart = null
+	src.procstart = null
 	// Why would bees pay attention to drones?
 	return 1
 
 /mob/living/simple_animal/drone/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
+	procstart = null
+	src.procstart = null
 	return 0 //So they don't die trying to fix wiring

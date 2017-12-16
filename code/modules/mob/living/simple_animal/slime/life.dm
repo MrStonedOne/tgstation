@@ -8,6 +8,8 @@
 
 
 /mob/living/simple_animal/slime/Life()
+	procstart = null
+	src.procstart = null
 	set invisibility = 0
 	set background = BACKGROUND_ENABLED
 
@@ -25,6 +27,8 @@
 
 // Unlike most of the simple animals, slimes support UNCONSCIOUS
 /mob/living/simple_animal/slime/update_stat()
+	procstart = null
+	src.procstart = null
 	if(stat == UNCONSCIOUS && health > 0)
 		return
 	..()
@@ -109,6 +113,8 @@
 	AIproc = 0
 
 /mob/living/simple_animal/slime/handle_environment(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	if(!environment)
 		return
 
@@ -156,6 +162,8 @@
 	return //TODO: DEFERRED
 
 /mob/living/simple_animal/slime/proc/adjust_body_temperature(current, loc_temp, boost)
+	procstart = null
+	src.procstart = null
 	var/temperature = current
 	var/difference = abs(current-loc_temp)	//get difference
 	var/increments// = difference/10			//find how many increments apart they are
@@ -173,11 +181,15 @@
 	return temp_change
 
 /mob/living/simple_animal/slime/handle_status_effects()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(30) && !stat)
 		adjustBruteLoss(-1)
 
 /mob/living/simple_animal/slime/proc/handle_feeding()
+	procstart = null
+	src.procstart = null
 	if(!ismob(buckled))
 		return
 	var/mob/M = buckled
@@ -240,6 +252,8 @@
 
 /mob/living/simple_animal/slime/proc/handle_nutrition()
 
+	procstart = null
+	src.procstart = null
 	if(docile) //God as my witness, I will never go hungry again
 		nutrition = 700
 		return
@@ -264,6 +278,8 @@
 			Evolve()
 
 /mob/living/simple_animal/slime/proc/add_nutrition(nutrition_to_add = 0)
+	procstart = null
+	src.procstart = null
 	nutrition = min((nutrition + nutrition_to_add), get_max_nutrition())
 	if(nutrition >= get_grow_nutrition())
 		if(powerlevel<10)
@@ -278,6 +294,8 @@
 
 
 /mob/living/simple_animal/slime/proc/handle_targets()
+	procstart = null
+	src.procstart = null
 	if(Tempstun)
 		if(!buckled) // not while they're eating!
 			canmove = 0
@@ -395,12 +413,18 @@
 			INVOKE_ASYNC(src, .proc/AIprocess)
 
 /mob/living/simple_animal/slime/handle_automated_movement()
+	procstart = null
+	src.procstart = null
 	return //slime random movement is currently handled in handle_targets()
 
 /mob/living/simple_animal/slime/handle_automated_speech()
+	procstart = null
+	src.procstart = null
 	return //slime random speech is currently handled in handle_speech()
 
 /mob/living/simple_animal/slime/proc/handle_mood()
+	procstart = null
+	src.procstart = null
 	var/newmood = ""
 	if (rabid || attacked)
 		newmood = "angry"
@@ -424,6 +448,8 @@
 		regenerate_icons()
 
 /mob/living/simple_animal/slime/proc/handle_speech()
+	procstart = null
+	src.procstart = null
 	//Speech understanding starts here
 	var/to_say
 	if (speech_buffer.len > 0)

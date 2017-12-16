@@ -12,30 +12,42 @@
 	var/instrumentExt = "mid"
 
 /obj/item/device/instrument/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	song = new(instrumentId, src, instrumentExt)
 
 /obj/item/device/instrument/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(song)
 	song = null
 	return ..()
 
 /obj/item/device/instrument/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] begins to play 'Gloomy Sunday'! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS)
 
 /obj/item/device/instrument/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		song.tempo = song.sanitize_tempo(song.tempo) // tick_lag isn't set when the map is loaded
 
 /obj/item/device/instrument/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return 1
 	interact(user)
 
 /obj/item/device/instrument/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 
@@ -71,6 +83,8 @@
 	actions_types = list(/datum/action/item_action/synthswitch)
 
 /obj/item/device/instrument/piano_synth/proc/changeInstrument(name = "piano")
+	procstart = null
+	src.procstart = null
 	song.instrumentDir = name
 	song.instrumentExt = insTypes[name]
 
@@ -126,10 +140,14 @@
 	attack_verb = list("played","jazzed","trumpeted","mourned","dooted","spooked")
 
 /obj/item/device/instrument/trumpet/spectral/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/spooky)
 
 /obj/item/device/instrument/trumpet/spectral/attack(mob/living/carbon/C, mob/user)
+	procstart = null
+	src.procstart = null
 	playsound (loc, 'sound/instruments/trombone/En4.mid', 100,1,-1)
 	..()
 
@@ -150,10 +168,14 @@
 	attack_verb = list("played","jazzed","saxxed","mourned","dooted","spooked")
 
 /obj/item/device/instrument/saxophone/spectral/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/spooky)
 
 /obj/item/device/instrument/saxophone/spectral/attack(mob/living/carbon/C, mob/user)
+	procstart = null
+	src.procstart = null
 	playsound (loc, 'sound/instruments/saxophone/En4.mid', 100,1,-1)
 	..()
 
@@ -174,10 +196,14 @@
 	attack_verb = list("played","jazzed","tromboned","mourned","dooted","spooked")
 
 /obj/item/device/instrument/trombone/spectral/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/spooky)
 
 /obj/item/device/instrument/trombone/spectral/attack(mob/living/carbon/C, mob/user)
+	procstart = null
+	src.procstart = null
 	playsound (loc, 'sound/instruments/trombone/Cn4.mid', 100,1,-1)
 	..()
 
@@ -201,6 +227,8 @@
 	actions_types = list(/datum/action/item_action/instrument)
 
 /obj/item/device/instrument/harmonica/speechModification(message)
+	procstart = null
+	src.procstart = null
 	if(song.playing && ismob(loc))
 		to_chat(loc, "<span class='warning'>You stop playing the harmonica to talk...</span>")
 		song.playing = FALSE

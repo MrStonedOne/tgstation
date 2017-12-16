@@ -60,6 +60,8 @@
 	sound = 'sound/machines/warning-buzzer.ogg'
 
 /mob/living/silicon/robot/verb/powerwarn()
+	procstart = null
+	src.procstart = null
 	set category = "Robot Commands"
 	set name = "Power Warning"
 

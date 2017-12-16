@@ -18,6 +18,8 @@
 
 
 /mob/living/carbon/monkey/Initialize()
+	procstart = null
+	src.procstart = null
 	verbs += /mob/living/proc/mob_sleep
 	verbs += /mob/living/proc/lay_down
 
@@ -36,6 +38,8 @@
 	dna.initialize_dna(random_blood_type())
 
 /mob/living/carbon/monkey/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	internal_organs += new /obj/item/organ/appendix
 	internal_organs += new /obj/item/organ/lungs
 	internal_organs += new /obj/item/organ/heart
@@ -48,6 +52,8 @@
 	..()
 
 /mob/living/carbon/monkey/movement_delay()
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		if(reagents.has_reagent("morphine"))
 			return -1
@@ -69,6 +75,8 @@
 	. += config_monkey_delay
 
 /mob/living/carbon/monkey/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		stat(null, "Intent: [a_intent]")
@@ -82,6 +90,8 @@
 
 
 /mob/living/carbon/monkey/verb/removeinternal()
+	procstart = null
+	src.procstart = null
 	set name = "Remove Internals"
 	set category = "IC"
 	internal = null
@@ -97,9 +107,13 @@
 	return FALSE
 
 /mob/living/carbon/monkey/canBeHandcuffed()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/carbon/monkey/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
+	procstart = null
+	src.procstart = null
 	if(judgement_criteria & JUDGE_EMAGGED)
 		return 10 //Everyone is a criminal!
 
@@ -134,6 +148,8 @@
 	return threatcount
 
 /mob/living/carbon/monkey/get_permeability_protection()
+	procstart = null
+	src.procstart = null
 	var/protection = 0
 	if(head)
 		protection = 1 - head.permeability_coefficient
@@ -143,17 +159,23 @@
 	return protection
 
 /mob/living/carbon/monkey/IsVocal()
+	procstart = null
+	src.procstart = null
 	if(!getorganslot(ORGAN_SLOT_LUNGS))
 		return 0
 	return 1
 
 /mob/living/carbon/monkey/can_use_guns(obj/item/G)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/carbon/monkey/angry
 	aggressive = TRUE
 
 /mob/living/carbon/monkey/angry/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(10))
 		var/obj/item/clothing/head/helmet/justice/escape/helmet = new(src)

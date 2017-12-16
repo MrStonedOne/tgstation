@@ -17,6 +17,8 @@
 	var/clockwork = FALSE
 
 /obj/machinery/computer/Initialize(mapload, obj/item/circuitboard/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	power_change()
 	if(!QDELETED(C))
@@ -25,15 +27,21 @@
 		C.moveToNullspace()
 
 /obj/machinery/computer/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(circuit)
 	return ..()
 
 /obj/machinery/computer/process()
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return 0
 	return 1
 
 /obj/machinery/computer/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(!clockwork)
 		clockwork = TRUE
 		icon_screen = "ratvar[rand(1, 4)]"
@@ -42,6 +50,8 @@
 		update_icon()
 
 /obj/machinery/computer/narsie_act()
+	procstart = null
+	src.procstart = null
 	if(clockwork && clockwork != initial(clockwork)) //if it's clockwork but isn't normally clockwork
 		clockwork = FALSE
 		icon_screen = initial(icon_screen)
@@ -50,6 +60,8 @@
 		update_icon()
 
 /obj/machinery/computer/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(stat & NOPOWER)
 		add_overlay("[icon_keyboard]_off")
@@ -61,6 +73,8 @@
 		add_overlay(icon_screen)
 
 /obj/machinery/computer/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & NOPOWER)
 		set_light(0)
@@ -70,6 +84,8 @@
 	return
 
 /obj/machinery/computer/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver) && circuit && !(flags_1&NODECONSTRUCT_1))
 		playsound(src.loc, I.usesound, 50, 1)
 		to_chat(user, "<span class='notice'> You start to disconnect the monitor...</span>")
@@ -79,6 +95,8 @@
 		return ..()
 
 /obj/machinery/computer/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(stat & BROKEN)
@@ -89,6 +107,8 @@
 			playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/machinery/computer/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(circuit && !(flags_1 & NODECONSTRUCT_1)) //no circuit, no breaking
 		if(!(stat & BROKEN))
 			playsound(loc, 'sound/effects/glassbr3.ogg', 100, 1)
@@ -97,6 +117,8 @@
 			set_light(0)
 
 /obj/machinery/computer/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			if(prob(50))
@@ -107,6 +129,8 @@
 	..()
 
 /obj/machinery/computer/deconstruct(disassembled = TRUE, mob/user)
+	procstart = null
+	src.procstart = null
 	on_deconstruction()
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(circuit) //no circuit, no computer frame

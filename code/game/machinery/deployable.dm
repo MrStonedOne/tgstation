@@ -18,14 +18,20 @@
 	var/material = METAL
 
 /obj/structure/barricade/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		make_debris()
 	qdel(src)
 
 /obj/structure/barricade/proc/make_debris()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/barricade/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/weldingtool) && user.a_intent != INTENT_HARM && material == METAL)
 		var/obj/item/weldingtool/WT = I
 		if(obj_integrity < max_integrity)
@@ -64,6 +70,8 @@
 	material = WOOD
 
 /obj/structure/barricade/wooden/make_debris()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood(get_turf(src), 3)
 
 
@@ -97,10 +105,14 @@
 
 
 /obj/structure/barricade/security/New()
+	procstart = null
+	src.procstart = null
 	..()
 	addtimer(CALLBACK(src, .proc/deploy), deploy_time)
 
 /obj/structure/barricade/security/proc/deploy()
+	procstart = null
+	src.procstart = null
 	icon_state = "barrier1"
 	density = TRUE
 	anchored = TRUE
@@ -118,15 +130,21 @@
 	var/mode = SINGLE
 
 /obj/item/grenade/barrier/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to toggle modes.</span>")
 
 /obj/item/grenade/barrier/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || user.incapacitated())
 		return
 	toggle_mode(user)
 
 /obj/item/grenade/barrier/proc/toggle_mode(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(SINGLE)
 			mode = VERTICAL
@@ -138,6 +156,8 @@
 	to_chat(user, "[src] is now in [mode] mode.")
 
 /obj/item/grenade/barrier/prime()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/barricade/security(get_turf(src.loc))
 	switch(mode)
 		if(VERTICAL)
@@ -159,6 +179,8 @@
 	qdel(src)
 
 /obj/item/grenade/barrier/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	toggle_mode(user)
 
 

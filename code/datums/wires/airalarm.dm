@@ -3,6 +3,8 @@
 	proper_name = "Air Alarm"
 
 /datum/wires/airalarm/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_POWER,
 		WIRE_IDSCAN, WIRE_AI,
@@ -12,11 +14,15 @@
 	..()
 
 /datum/wires/airalarm/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airalarm/A = holder
 	if(A.panel_open && A.buildstage == 2)
 		return TRUE
 
 /datum/wires/airalarm/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airalarm/A = holder
 	var/list/status = list()
 	status += "The interface light is [A.locked ? "red" : "green"]."
@@ -25,6 +31,8 @@
 	return status
 
 /datum/wires/airalarm/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airalarm/A = holder
 	switch(wire)
 		if(WIRE_POWER) // Short out for a long time.
@@ -52,6 +60,8 @@
 			A.update_icon()
 
 /datum/wires/airalarm/on_cut(wire, mend)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/airalarm/A = holder
 	switch(wire)
 		if(WIRE_POWER) // Short out forever.

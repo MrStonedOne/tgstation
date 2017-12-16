@@ -27,10 +27,14 @@
 	var/charge_time = 15
 
 /obj/item/twohanded/required/kinetic_crusher/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(trophies)
 	return ..()
 
 /obj/item/twohanded/required/kinetic_crusher/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Mark a large creature with the destabilizing force, then hit them in melee to do <b>50</b> damage.</span>")
 	to_chat(user, "<span class='notice'>Does <b>80</b> damage if the target is backstabbed, instead of <b>50</b>.</span>")
@@ -39,6 +43,8 @@
 		to_chat(user, "<span class='notice'>It has \a [T] attached, which causes [T.effect_desc()].</span>")
 
 /obj/item/twohanded/required/kinetic_crusher/attackby(obj/item/A, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/item/crowbar))
 		if(LAZYLEN(trophies))
 			to_chat(user, "<span class='notice'>You remove [src]'s trophies.</span>")
@@ -55,6 +61,8 @@
 		return ..()
 
 /obj/item/twohanded/required/kinetic_crusher/attack(mob/living/target, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/crusher_damage/C = target.has_status_effect(STATUS_EFFECT_CRUSHERDAMAGETRACKING)
 	var/target_health = target.health
 	..()
@@ -66,6 +74,8 @@
 		C.total_damage += target_health - target.health //we did some damage, but let's not assume how much we did
 
 /obj/item/twohanded/required/kinetic_crusher/afterattack(atom/target, mob/living/user, proximity_flag, clickparams)
+	procstart = null
+	src.procstart = null
 	if(!proximity_flag && charged)//Mark a target, or mine a tile.
 		var/turf/proj_turf = user.loc
 		if(!isturf(proj_turf))
@@ -110,6 +120,8 @@
 				L.apply_damage(50, BRUTE, blocked = def_check)
 
 /obj/item/twohanded/required/kinetic_crusher/proc/Recharge()
+	procstart = null
+	src.procstart = null
 	if(!charged)
 		charged = TRUE
 		icon_state = "mining_hammer1"
@@ -128,10 +140,14 @@
 	var/obj/item/twohanded/required/kinetic_crusher/hammer_synced
 
 /obj/item/projectile/destabilizer/Destroy()
+	procstart = null
+	src.procstart = null
 	hammer_synced = null
 	return ..()
 
 /obj/item/projectile/destabilizer/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		var/mob/living/L = target
 		var/had_effect = (L.has_status_effect(STATUS_EFFECT_CRUSHERMARK)) //used as a boolean
@@ -157,19 +173,27 @@
 	var/denied_type = /obj/item/crusher_trophy
 
 /obj/item/crusher_trophy/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Causes [effect_desc()] when attached to a kinetic crusher.</span>")
 
 /obj/item/crusher_trophy/proc/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "errors"
 
 /obj/item/crusher_trophy/attackby(obj/item/A, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/item/twohanded/required/kinetic_crusher))
 		add_to(A, user)
 	else
 		..()
 
 /obj/item/crusher_trophy/proc/add_to(obj/item/twohanded/required/kinetic_crusher/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/t in H.trophies)
 		var/obj/item/crusher_trophy/T = t
 		if(istype(T, denied_type) || istype(src, T.denied_type))
@@ -182,6 +206,8 @@
 	return TRUE
 
 /obj/item/crusher_trophy/proc/remove_from(obj/item/twohanded/required/kinetic_crusher/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	forceMove(get_turf(H))
 	H.trophies -= src
 	return TRUE
@@ -202,9 +228,13 @@
 	var/missing_health_desc = 10
 
 /obj/item/crusher_trophy/goliath_tentacle/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to do <b>[bonus_value]</b> more damage for every <b>[missing_health_desc]</b> health you are missing"
 
 /obj/item/crusher_trophy/goliath_tentacle/on_mark_detonation(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/missing_health = user.health - user.maxHealth
 	missing_health *= missing_health_ratio //bonus is active at all times, even if you're above 90 health
 	missing_health *= bonus_value //multiply the remaining amount by bonus_value
@@ -220,9 +250,13 @@
 	bonus_value = 8
 
 /obj/item/crusher_trophy/watcher_wing/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to prevent certain creatures from using certain attacks for <b>[bonus_value*0.1]</b> second\s"
 
 /obj/item/crusher_trophy/watcher_wing/on_mark_detonation(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishostile(target))
 		var/mob/living/simple_animal/hostile/H = target
 		if(H.ranged) //briefly delay ranged attacks
@@ -240,9 +274,13 @@
 	bonus_value = 5
 
 /obj/item/crusher_trophy/blaster_tubes/magma_wing/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to make the next destabilizer shot deal <b>[bonus_value]</b> damage"
 
 /obj/item/crusher_trophy/blaster_tubes/magma_wing/on_projectile_fire(obj/item/projectile/destabilizer/marker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(deadly_shot)
 		marker.name = "heated [marker.name]"
 		marker.icon_state = "lava"
@@ -265,14 +303,20 @@
 	bonus_value = 3
 
 /obj/item/crusher_trophy/legion_skull/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "a kinetic crusher to recharge <b>[bonus_value*0.1]</b> second\s faster"
 
 /obj/item/crusher_trophy/legion_skull/add_to(obj/item/twohanded/required/kinetic_crusher/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		H.charge_time -= bonus_value
 
 /obj/item/crusher_trophy/legion_skull/remove_from(obj/item/twohanded/required/kinetic_crusher/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		H.charge_time += bonus_value
@@ -285,9 +329,13 @@
 	denied_type = /obj/item/crusher_trophy/miner_eye
 
 /obj/item/crusher_trophy/miner_eye/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to grant stun immunity and <b>90%</b> damage reduction for <b>1</b> second"
 
 /obj/item/crusher_trophy/miner_eye/on_mark_detonation(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.apply_status_effect(STATUS_EFFECT_BLOODDRUNK)
 
 //ash drake
@@ -297,9 +345,13 @@
 	bonus_value = 5
 
 /obj/item/crusher_trophy/tail_spike/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to do <b>[bonus_value]</b> damage to nearby creatures and push them back"
 
 /obj/item/crusher_trophy/tail_spike/on_mark_detonation(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/L in oview(2, user))
 		if(L.stat == DEAD)
 			continue
@@ -309,6 +361,8 @@
 		L.adjustFireLoss(bonus_value, forced = TRUE)
 
 /obj/item/crusher_trophy/tail_spike/proc/pushback(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(target) && !QDELETED(user) && (!target.anchored || ismegafauna(target))) //megafauna will always be pushed
 		step(target, get_dir(user, target))
 
@@ -323,9 +377,13 @@
 	var/static/list/damage_heal_order = list(BRUTE, BURN, OXY)
 
 /obj/item/crusher_trophy/demon_claws/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "melee hits to do <b>[bonus_value * 0.2]</b> more damage and heal you for <b>[bonus_value * 0.1]</b>; this effect is increased by <b>500%</b> during mark detonation"
 
 /obj/item/crusher_trophy/demon_claws/add_to(obj/item/twohanded/required/kinetic_crusher/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		H.force += bonus_value * 0.2
@@ -333,6 +391,8 @@
 		H.force_wielded += bonus_value * 0.2
 
 /obj/item/crusher_trophy/demon_claws/remove_from(obj/item/twohanded/required/kinetic_crusher/H, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		H.force -= bonus_value * 0.2
@@ -340,9 +400,13 @@
 		H.force_wielded -= bonus_value * 0.2
 
 /obj/item/crusher_trophy/demon_claws/on_melee_hit(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.heal_ordered_damage(bonus_value * 0.1, damage_heal_order)
 
 /obj/item/crusher_trophy/demon_claws/on_mark_detonation(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	target.adjustBruteLoss(bonus_value * 0.8)
 	user.heal_ordered_damage(bonus_value * 0.4, damage_heal_order)
 
@@ -357,9 +421,13 @@
 	var/deadly_shot = FALSE
 
 /obj/item/crusher_trophy/blaster_tubes/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to make the next destabilizer shot deal <b>[bonus_value]</b> damage but move slower"
 
 /obj/item/crusher_trophy/blaster_tubes/on_projectile_fire(obj/item/projectile/destabilizer/marker, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(deadly_shot)
 		marker.name = "deadly [marker.name]"
 		marker.icon_state = "chronobolt"
@@ -369,10 +437,14 @@
 		deadly_shot = FALSE
 
 /obj/item/crusher_trophy/blaster_tubes/on_mark_detonation(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	deadly_shot = TRUE
 	addtimer(CALLBACK(src, .proc/reset_deadly_shot), 300, TIMER_OVERRIDE)
 
 /obj/item/crusher_trophy/blaster_tubes/proc/reset_deadly_shot()
+	procstart = null
+	src.procstart = null
 	deadly_shot = FALSE
 
 //hierophant
@@ -383,9 +455,13 @@
 	denied_type = /obj/item/crusher_trophy/vortex_talisman
 
 /obj/item/crusher_trophy/vortex_talisman/effect_desc()
+	procstart = null
+	src.procstart = null
 	return "mark detonation to create a barrier you can pass"
 
 /obj/item/crusher_trophy/vortex_talisman/on_mark_detonation(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(user)
 	new /obj/effect/temp_visual/hierophant/wall/crusher(T, user) //a wall only you can pass!
 	var/turf/otherT = get_step(T, turn(user.dir, 90))

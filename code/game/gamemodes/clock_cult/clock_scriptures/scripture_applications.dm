@@ -91,6 +91,8 @@
 	var/static/scaled_recital_time = 0
 
 /datum/clockwork_scripture/create_object/construct/clockwork_marauder/update_construct_limit()
+	procstart = null
+	src.procstart = null
 	var/human_servants = 0
 	for(var/V in SSticker.mode.servants_of_ratvar)
 		var/datum/mind/M = V
@@ -100,6 +102,8 @@
 	construct_limit = Clamp(construct_limit, 1, 3)
 
 /datum/clockwork_scripture/create_object/construct/clockwork_marauder/pre_recital()
+	procstart = null
+	src.procstart = null
 	channel_time = initial(channel_time)
 	calculate_scaling()
 	if(scaled_recital_time)
@@ -108,12 +112,16 @@
 	return TRUE
 
 /datum/clockwork_scripture/create_object/construct/clockwork_marauder/scripture_effects()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	time_since_last_marauder = world.time
 	recent_marauders++
 	calculate_scaling()
 
 /datum/clockwork_scripture/create_object/construct/clockwork_marauder/proc/calculate_scaling()
+	procstart = null
+	src.procstart = null
 	var/WT = world.time
 	var/MT = time_since_last_marauder //Cast it for quicker reference
 	var/marauders_to_exclude = 0

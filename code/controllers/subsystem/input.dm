@@ -6,6 +6,8 @@ SUBSYSTEM_DEF(input)
 	runlevels = RUNLEVELS_DEFAULT | RUNLEVEL_LOBBY
 
 /datum/controller/subsystem/input/fire()
+	procstart = null
+	src.procstart = null
 	var/list/clients = GLOB.clients // Let's sing the list cache song
 	for(var/i in 1 to clients.len)
 		var/client/C = clients[i]

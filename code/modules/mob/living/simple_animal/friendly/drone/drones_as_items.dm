@@ -16,6 +16,8 @@
 	var/drone_type = /mob/living/simple_animal/drone //Type of drone that will be spawned
 
 /obj/item/drone_shell/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/A = get_area(src)
 	if(A)
@@ -23,10 +25,14 @@
 	GLOB.poi_list |= src
 
 /obj/item/drone_shell/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list -= src
 	. = ..()
 
 /obj/item/drone_shell/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(jobban_isbanned(user,"drone"))
 		return
 	if(CONFIG_GET(flag/use_age_restriction_for_jobs))
@@ -56,6 +62,8 @@
 	var/mob/living/simple_animal/drone/drone //stored drone
 
 /obj/item/clothing/head/drone_holder/proc/uncurl()
+	procstart = null
+	src.procstart = null
 	if(!drone)
 		return
 
@@ -76,13 +84,19 @@
 
 
 /obj/item/clothing/head/drone_holder/relaymove()
+	procstart = null
+	src.procstart = null
 	uncurl()
 
 /obj/item/clothing/head/drone_holder/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	uncurl()
 
 
 /obj/item/clothing/head/drone_holder/proc/updateVisualAppearence(mob/living/simple_animal/drone/D)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		return
 	icon_state = "[D.visualAppearence]_hat"

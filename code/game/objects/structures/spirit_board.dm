@@ -11,20 +11,28 @@
 	var/lastuser = null
 
 /obj/structure/spirit_board/examine()
+	procstart = null
+	src.procstart = null
 	desc = "[initial(desc)] The planchette is sitting at \"[planchette]\"."
 	..()
 
 /obj/structure/spirit_board/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	spirit_board_pick_letter(user)
 
 
 /obj/structure/spirit_board/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	spirit_board_pick_letter(user)
 
 
 /obj/structure/spirit_board/proc/spirit_board_pick_letter(mob/M)
+	procstart = null
+	src.procstart = null
 	if(!spirit_board_checks(M))
 		return 0
 
@@ -43,6 +51,8 @@
 	visible_message(msg,"",msg)
 
 /obj/structure/spirit_board/proc/spirit_board_checks(mob/M)
+	procstart = null
+	src.procstart = null
 	//cooldown
 	var/bonus = 0
 	if(M.ckey == lastuser)

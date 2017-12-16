@@ -11,9 +11,13 @@
 	icon_state = "ratvar"
 
 /datum/language/ratvar/scramble(var/input)
+	procstart = null
+	src.procstart = null
 	. = text2ratvar(input)
 
 /datum/language/ratvar/get_spoken_verb(msg_end)
+	procstart = null
+	src.procstart = null
 	if(!msg_end)
 		return pick(random_speech_verbs)
 	return ..()

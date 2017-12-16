@@ -13,14 +13,20 @@
 	var/meat_counter = 6
 
 /mob/living/simple_animal/hostile/spawner/lavaland/ash_walker/death()
+	procstart = null
+	src.procstart = null
 	new /obj/item/device/assembly/signaler/anomaly (get_step(loc, pick(GLOB.alldirs)))
 	return ..()
 
 /mob/living/simple_animal/hostile/spawner/lavaland/ash_walker/Life()
+	procstart = null
+	src.procstart = null
 	consume()
 	return ..()
 
 /mob/living/simple_animal/hostile/spawner/lavaland/ash_walker/proc/consume()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/H in view(src, 1)) //Only for corpse right next to/on same tile
 		if(H.stat)
 			visible_message("<span class='warning'>Serrated tendrils eagerly pull [H] to [src], tearing the body apart as its blood seeps over the eggs.</span>")
@@ -36,6 +42,8 @@
 			adjustHealth(-maxHealth * 0.05)//restores 5% hp of tendril
 
 /mob/living/simple_animal/hostile/spawner/lavaland/ash_walker/spawn_mob()
+	procstart = null
+	src.procstart = null
 	if(meat_counter >= ASH_WALKER_SPAWN_THRESHOLD)
 		new /obj/effect/mob_spawn/human/ash_walker(get_step(loc, pick(GLOB.alldirs)))
 		visible_message("<span class='danger'>One of the eggs swells to an unnatural size and tumbles free. It's ready to hatch!</span>")

@@ -23,15 +23,21 @@
 	var/ui_header = null					// Example: "something.gif" - a header image that will be rendered in computer's UI when this program is running at background. Images are taken from /icons/program_icons. Be careful not to use too large images!
 
 /datum/computer_file/program/New(obj/item/device/modular_computer/comp = null)
+	procstart = null
+	src.procstart = null
 	..()
 	if(comp && istype(comp))
 		computer = comp
 
 /datum/computer_file/program/Destroy()
+	procstart = null
+	src.procstart = null
 	computer = null
 	. = ..()
 
 /datum/computer_file/program/clone()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/temp = ..()
 	temp.required_access = required_access
 	temp.filedesc = filedesc
@@ -43,16 +49,22 @@
 
 // Relays icon update to the computer.
 /datum/computer_file/program/proc/update_computer_icon()
+	procstart = null
+	src.procstart = null
 	if(computer)
 		computer.update_icon()
 
 // Attempts to create a log in global ntnet datum. Returns 1 on success, 0 on fail.
 /datum/computer_file/program/proc/generate_network_log(text)
+	procstart = null
+	src.procstart = null
 	if(computer)
 		return computer.add_log(text)
 	return 0
 
 /datum/computer_file/program/proc/is_supported_by_hardware(hardware_flag = 0, loud = 0, mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(!(hardware_flag & usage_flags))
 		if(loud && computer && user)
 			to_chat(user, "<span class='danger'>\The [computer] flashes an \"Hardware Error - Incompatible software\" warning.</span>")
@@ -60,18 +72,24 @@
 	return 1
 
 /datum/computer_file/program/proc/get_signal(specific_action = 0)
+	procstart = null
+	src.procstart = null
 	if(computer)
 		return computer.get_ntnet_status(specific_action)
 	return 0
 
 // Called by Process() on device that runs us, once every tick.
 /datum/computer_file/program/proc/process_tick()
+	procstart = null
+	src.procstart = null
 	return 1
 
 // Check if the user can run program. Only humans can operate computer. Automatically called in run_program()
 // User has to wear their ID for ID Scan to work.
 // Can also be called manually, with optional parameter being access_to_check to scan the user's ID
 /datum/computer_file/program/proc/can_run(mob/user, loud = 0, access_to_check, transfer = 0)
+	procstart = null
+	src.procstart = null
 	// Defaults to required_access
 	if(!access_to_check)
 		if(transfer && transfer_access)
@@ -125,6 +143,8 @@
 // This attempts to retrieve header data for UIs. If implementing completely new device of different type than existing ones
 // always include the device here in this proc. This proc basically relays the request to whatever is running the program.
 /datum/computer_file/program/proc/get_header_data()
+	procstart = null
+	src.procstart = null
 	if(computer)
 		return computer.get_header_data()
 	return list()
@@ -132,6 +152,8 @@
 // This is performed on program startup. May be overriden to add extra logic. Remember to include ..() call. Return 1 on success, 0 on failure.
 // When implementing new program based device, use this to run the program.
 /datum/computer_file/program/proc/run_program(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(can_run(user, 1))
 		if(requires_ntnet && network_destination)
 			generate_network_log("Connection opened to [network_destination].")
@@ -141,6 +163,8 @@
 
 // Use this proc to kill the program. Designed to be implemented by each program if it requires on-quit logic, such as the NTNRC client.
 /datum/computer_file/program/proc/kill_program(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	program_state = PROGRAM_STATE_KILLED
 	if(network_destination)
 		generate_network_log("Connection to [network_destination] closed.")
@@ -148,6 +172,8 @@
 
 
 /datum/computer_file/program/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui && tgui_id)
 		var/datum/asset/assets = get_asset_datum(/datum/asset/simple/headers)
@@ -166,6 +192,8 @@
 // Calls beginning with "PC_" are reserved for computer handling (by whatever runs the program)
 // ALWAYS INCLUDE PARENT CALL ..() OR DIE IN FIRE.
 /datum/computer_file/program/ui_act(action,params,datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	if(computer)
@@ -195,12 +223,16 @@
 
 
 /datum/computer_file/program/ui_host()
+	procstart = null
+	src.procstart = null
 	if(computer.physical)
 		return computer.physical
 	else
 		return computer
 
 /datum/computer_file/program/ui_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(program_state != PROGRAM_STATE_ACTIVE) // Our program was closed. Close the ui if it exists.
 		return UI_CLOSE
 	return ..()

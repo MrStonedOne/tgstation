@@ -20,6 +20,8 @@
 	integrity_failure = 150
 
 /obj/machinery/modular_computer/console/buildable/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// User-built consoles start as empty frames.
 	var/obj/item/computer_hardware/hard_drive/hard_drive = cpu.all_components[MC_HDD]
@@ -30,6 +32,8 @@
 	qdel(hard_drive)
 
 /obj/machinery/modular_computer/console/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/computer_hardware/battery/battery_module = cpu.all_components[MC_CELL]
 	if(battery_module)

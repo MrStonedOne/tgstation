@@ -4,6 +4,8 @@
 #define BAD_INIT_NO_HINT 8
 
 SUBSYSTEM_DEF(atoms)
+	procstart = null
+	src.procstart = null
 	name = "Atoms"
 	init_order = INIT_ORDER_ATOMS
 	flags = SS_NO_FIRE
@@ -16,6 +18,8 @@ SUBSYSTEM_DEF(atoms)
 	var/list/BadInitializeCalls = list()
 
 /datum/controller/subsystem/atoms/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	GLOB.fire_overlay.appearance_flags = RESET_COLOR
 	setupGenetics() //to set the mutations' place in structural enzymes, so monkey.initialize() knows where to put the monkey mutation.
 	initialized = INITIALIZATION_INNEW_MAPLOAD
@@ -23,6 +27,8 @@ SUBSYSTEM_DEF(atoms)
 	return ..()
 
 /datum/controller/subsystem/atoms/proc/InitializeAtoms(list/atoms)
+	procstart = null
+	src.procstart = null
 	if(initialized == INITIALIZATION_INSSATOMS)
 		return
 
@@ -65,6 +71,8 @@ SUBSYSTEM_DEF(atoms)
 		created_atoms = null
 
 /datum/controller/subsystem/atoms/proc/InitAtom(atom/A, list/arguments)
+	procstart = null
+	src.procstart = null
 	var/the_type = A.type
 	if(QDELING(A))
 		BadInitializeCalls[the_type] |= BAD_INIT_QDEL_BEFORE
@@ -100,13 +108,19 @@ SUBSYSTEM_DEF(atoms)
 	return qdeleted || QDELING(A)
 
 /datum/controller/subsystem/atoms/proc/map_loader_begin()
+	procstart = null
+	src.procstart = null
 	old_initialized = initialized
 	initialized = INITIALIZATION_INSSATOMS
 
 /datum/controller/subsystem/atoms/proc/map_loader_stop()
+	procstart = null
+	src.procstart = null
 	initialized = old_initialized
 
 /datum/controller/subsystem/atoms/Recover()
+	procstart = null
+	src.procstart = null
 	initialized = SSatoms.initialized
 	if(initialized == INITIALIZATION_INNEW_MAPLOAD)
 		InitializeAtoms()
@@ -114,6 +128,8 @@ SUBSYSTEM_DEF(atoms)
 	BadInitializeCalls = SSatoms.BadInitializeCalls
 
 /datum/controller/subsystem/atoms/proc/setupGenetics()
+	procstart = null
+	src.procstart = null
 	var/list/avnums = new /list(DNA_STRUC_ENZYMES_BLOCKS)
 	for(var/i=1, i<=DNA_STRUC_ENZYMES_BLOCKS, i++)
 		avnums[i] = i
@@ -133,6 +149,8 @@ SUBSYSTEM_DEF(atoms)
 		CHECK_TICK
 
 /datum/controller/subsystem/atoms/proc/InitLog()
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/path in BadInitializeCalls)
 		. += "Path : [path] \n"
@@ -147,6 +165,8 @@ SUBSYSTEM_DEF(atoms)
 			. += "- Slept during Initialize()\n"
 
 /datum/controller/subsystem/atoms/Shutdown()
+	procstart = null
+	src.procstart = null
 	var/initlog = InitLog()
 	if(initlog)
 		text2file(initlog, "[GLOB.log_directory]/initialize.log")

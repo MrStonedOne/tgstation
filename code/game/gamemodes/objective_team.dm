@@ -6,6 +6,8 @@
 	var/list/objectives = list() //common objectives, these won't be added or removed automatically, subtypes handle this, this is here for bookkeeping purposes.
 
 /datum/objective_team/New(starting_members)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(starting_members)
 		if(islist(starting_members))
@@ -15,16 +17,24 @@
 			add_member(starting_members)
 
 /datum/objective_team/proc/is_solo()
+	procstart = null
+	src.procstart = null
 	return members.len == 1
 
 /datum/objective_team/proc/add_member(datum/mind/new_member)
+	procstart = null
+	src.procstart = null
 	members |= new_member
 
 /datum/objective_team/proc/remove_member(datum/mind/member)
+	procstart = null
+	src.procstart = null
 	members -= member
 
 //Display members/victory/failure/objectives for the team
 /datum/objective_team/proc/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/report = list()
 
 	report += "<b>[name]:</b>"

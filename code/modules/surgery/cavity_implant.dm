@@ -14,6 +14,8 @@
 	var/obj/item/IC = null
 
 /datum/surgery_step/handle_cavity/preop(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/chest/CH = target.get_bodypart("chest")
 	IC = CH.cavity_item
 	if(tool)
@@ -27,6 +29,8 @@
 		user.visible_message("[user] checks for items in [target]'s [target_zone].", "<span class='notice'>You check for items in [target]'s [target_zone]...</span>")
 
 /datum/surgery_step/handle_cavity/success(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/chest/CH = target.get_bodypart("chest")
 	if(tool)
 		if(IC || tool.w_class > WEIGHT_CLASS_NORMAL || (tool.flags_1 & NODROP_1) || istype(tool, /obj/item/organ))

@@ -13,6 +13,8 @@
 	var/summon_path = /obj/item/gun/ballistic/shotgun/boltaction/enchanted
 
 /obj/effect/proc_holder/spell/targeted/infinite_guns/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/C in targets)
 		C.drop_all_held_items()
 		var/GUN = new summon_path

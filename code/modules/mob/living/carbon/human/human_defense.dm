@@ -18,6 +18,8 @@
 
 
 /mob/living/carbon/human/proc/checkarmor(obj/item/bodypart/def_zone, d_type)
+	procstart = null
+	src.procstart = null
 	if(!d_type)
 		return 0
 	var/protection = 0
@@ -32,10 +34,14 @@
 	return protection
 
 /mob/living/carbon/human/on_hit(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	dna.species.on_hit(P, src)
 
 
 /mob/living/carbon/human/bullet_act(obj/item/projectile/P, def_zone)
+	procstart = null
+	src.procstart = null
 	var/spec_return = dna.species.bullet_act(P, src)
 	if(spec_return)
 		return spec_return
@@ -85,6 +91,8 @@
 	return 0
 
 /mob/living/carbon/human/proc/check_shields(atom/AM, var/damage, attack_text = "the attack", attack_type = MELEE_ATTACK, armour_penetration = 0)
+	procstart = null
+	src.procstart = null
 	var/block_chance_modifier = round(damage / -3)
 
 	for(var/obj/item/I in held_items)
@@ -103,12 +111,16 @@
 	return 0
 
 /mob/living/carbon/human/proc/check_block()
+	procstart = null
+	src.procstart = null
 	if(mind)
 		if(mind.martial_art && prob(mind.martial_art.block_chance) && in_throw_mode && !stat && !IsKnockdown() && !IsStun())
 			return TRUE
 	return FALSE
 
 /mob/living/carbon/human/hitby(atom/movable/AM, skipcatch = FALSE, hitpush = TRUE, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	var/spec_return = dna.species.spec_hitby(AM, src)
 	if(spec_return)
 		return spec_return
@@ -140,18 +152,24 @@
 	return ..()
 
 /mob/living/carbon/human/grabbedby(mob/living/carbon/user, supress_message = 0)
+	procstart = null
+	src.procstart = null
 	if(user == src && pulling && !pulling.anchored && grab_state >= GRAB_AGGRESSIVE && (disabilities & FAT) && ismonkey(pulling))
 		devour_mob(pulling)
 	else
 		..()
 
 /mob/living/carbon/human/grippedby(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(w_uniform)
 		w_uniform.add_fingerprint(user)
 	..()
 
 
 /mob/living/carbon/human/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!I || !user)
 		return 0
 
@@ -170,6 +188,8 @@
 
 
 /mob/living/carbon/human/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		var/hulk_verb = pick("smash","pummel")
 		if(check_shields(user, 15, "the [hulk_verb]ing"))
@@ -183,6 +203,8 @@
 		return 1
 
 /mob/living/carbon/human/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())	//to allow surgery to return properly.
 		return
 	if(ishuman(user))
@@ -190,6 +212,8 @@
 		dna.species.spec_attack_hand(H, src)
 
 /mob/living/carbon/human/attack_paw(mob/living/carbon/monkey/M)
+	procstart = null
+	src.procstart = null
 	var/dam_zone = pick("chest", "l_hand", "r_hand", "l_leg", "r_leg")
 	var/obj/item/bodypart/affecting = get_bodypart(ran_zone(dam_zone))
 	if(!affecting)
@@ -224,6 +248,8 @@
 		return 1
 
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/humanoid/M)
+	procstart = null
+	src.procstart = null
 	if(check_shields(M, 0, "the M.name"))
 		visible_message("<span class='danger'>[M] attempted to touch [src]!</span>")
 		return 0
@@ -267,6 +293,8 @@
 
 /mob/living/carbon/human/attack_larva(mob/living/carbon/alien/larva/L)
 
+	procstart = null
+	src.procstart = null
 	if(..()) //successful larva bite.
 		var/damage = rand(1, 3)
 		if(check_shields(L, damage, "the [L.name]"))
@@ -281,6 +309,8 @@
 
 
 /mob/living/carbon/human/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
@@ -297,6 +327,8 @@
 
 
 /mob/living/carbon/human/attack_slime(mob/living/simple_animal/slime/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful slime attack
 		var/damage = rand(5, 25)
 		if(M.is_adult)
@@ -317,6 +349,8 @@
 
 /mob/living/carbon/human/mech_melee_attack(obj/mecha/M)
 
+	procstart = null
+	src.procstart = null
 	if(M.occupant.a_intent == INTENT_HARM)
 		M.do_attack_animation(src)
 		if(M.damtype == "brute")
@@ -351,6 +385,8 @@
 
 
 /mob/living/carbon/human/ex_act(severity, target, origin)
+	procstart = null
+	src.procstart = null
 	if(origin && istype(origin, /datum/spacevine_mutation) && isvineimmune(src))
 		return
 	..()
@@ -412,6 +448,8 @@
 
 
 /mob/living/carbon/human/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return
 	show_message("<span class='userdanger'>The blob attacks you!</span>")
@@ -422,6 +460,8 @@
 
 //Added a safety check in case you want to shock a human mob directly through electrocute_act.
 /mob/living/carbon/human/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, override = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
+	procstart = null
+	src.procstart = null
 	if(tesla_shock)
 		var/total_coeff = 1
 		if(gloves)
@@ -455,6 +495,8 @@
 
 
 /mob/living/carbon/human/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	var/informed = FALSE
 	for(var/obj/item/bodypart/L in src.bodyparts)
 		if(L.status == BODYPART_ROBOTIC)
@@ -471,6 +513,8 @@
 	..()
 
 /mob/living/carbon/human/acid_act(acidpwr, acid_volume, bodyzone_hit)
+	procstart = null
+	src.procstart = null
 	var/list/damaged = list()
 	var/list/inventory_items_to_kill = list()
 	var/acidity = acidpwr * min(acid_volume*0.005, 0.1)
@@ -612,6 +656,8 @@
 	return 1
 
 /mob/living/carbon/human/singularity_act()
+	procstart = null
+	src.procstart = null
 	var/gain = 20
 	if(mind)
 		if((mind.assigned_role == "Station Engineer") || (mind.assigned_role == "Chief Engineer") )
@@ -623,6 +669,8 @@
 	return(gain)
 
 /mob/living/carbon/human/help_shake_act(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 
@@ -686,6 +734,8 @@
 
 
 /mob/living/carbon/human/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)
+	procstart = null
+	src.procstart = null
 	if(damage_type != BRUTE && damage_type != BURN)
 		return
 	damage_amount *= 0.5 //0.5 multiplier for balance reason, we don't want clothes to be too easily destroyed

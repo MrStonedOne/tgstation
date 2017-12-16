@@ -9,6 +9,8 @@
 	density = FALSE
 
 /obj/structure/destructible/clockwork/trap/steam_vent/activate()
+	procstart = null
+	src.procstart = null
 	opacity = !opacity
 	icon_state = "steam_vent_[opacity]"
 	if(opacity)
@@ -18,6 +20,8 @@
 		playsound(src, 'sound/machines/clockcult/integration_cog_install.ogg', 50, TRUE)
 
 /obj/structure/destructible/clockwork/trap/steam_vent/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM) && opacity)
 		var/mob/living/L = AM
 		L.adjust_fire_stacks(-1) //It's wet!

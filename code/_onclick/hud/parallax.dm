@@ -12,6 +12,8 @@
 	var/parallax_animate_timer
 
 /datum/hud/proc/create_parallax(mob/viewmob)
+	procstart = null
+	src.procstart = null
 	var/mob/screenmob = viewmob || mymob
 	var/client/C = screenmob.client
 	if (!apply_parallax_pref(viewmob)) //don't want shit computers to crash when specing someone with insane parallax, so use the viewer's pref
@@ -43,6 +45,8 @@
 
 
 /datum/hud/proc/remove_parallax(mob/viewmob)
+	procstart = null
+	src.procstart = null
 	var/mob/screenmob = viewmob || mymob
 	var/client/C = screenmob.client
 	C.screen -= (C.parallax_layers_cached)
@@ -54,6 +58,8 @@
 	C.parallax_layers = null
 
 /datum/hud/proc/apply_parallax_pref(mob/viewmob)
+	procstart = null
+	src.procstart = null
 	var/mob/screenmob = viewmob || mymob
 	var/client/C = screenmob.client
 	if(C.prefs)
@@ -86,11 +92,15 @@
 	return TRUE
 
 /datum/hud/proc/update_parallax_pref(mob/viewmob)
+	procstart = null
+	src.procstart = null
 	remove_parallax(viewmob)
 	create_parallax(viewmob)
 
 // This sets which way the current shuttle is moving (returns true if the shuttle has stopped moving so the caller can append their animation)
 /datum/hud/proc/set_parallax_movedir(new_parallax_movedir, skip_windups)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	var/client/C = mymob.client
 	if(new_parallax_movedir == C.parallax_movedir)
@@ -146,6 +156,8 @@
 
 
 /datum/hud/proc/update_parallax_motionblur(client/C, animatedir, new_parallax_movedir, matrix/newtransform)
+	procstart = null
+	src.procstart = null
 	C.parallax_animate_timer = FALSE
 	for(var/thing in C.parallax_layers)
 		var/obj/screen/parallax_layer/L = thing
@@ -171,6 +183,8 @@
 		animate(L, transform = matrix(), time = T, loop = -1, flags = ANIMATION_END_NOW)
 
 /datum/hud/proc/update_parallax()
+	procstart = null
+	src.procstart = null
 	var/client/C = mymob.client
 	var/turf/posobj = get_turf(C.eye)
 	var/area/areaobj = posobj.loc
@@ -223,6 +237,8 @@
 		L.screen_loc = "CENTER-7:[round(L.offset_x,1)],CENTER-7:[round(L.offset_y,1)]"
 
 /atom/movable/proc/update_parallax_contents()
+	procstart = null
+	src.procstart = null
 	if(length(client_mobs_in_contents))
 		for(var/thing in client_mobs_in_contents)
 			var/mob/M = thing
@@ -247,12 +263,16 @@
 
 
 /obj/screen/parallax_layer/Initialize(mapload, view)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (!view)
 		view = world.view
 	update_o(view)
 
 /obj/screen/parallax_layer/proc/update_o(view)
+	procstart = null
+	src.procstart = null
 	if (!view)
 		view = world.view
 	

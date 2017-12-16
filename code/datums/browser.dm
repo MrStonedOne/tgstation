@@ -17,6 +17,8 @@
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, var/atom/nref = null)
 
+	procstart = null
+	src.procstart = null
 	user = nuser
 	window_id = nwindow_id
 	if (ntitle)
@@ -30,29 +32,45 @@
 	add_stylesheet("common", 'html/browser/common.css') // this CSS sheet is common to all UIs
 
 /datum/browser/proc/add_head_content(nhead_content)
+	procstart = null
+	src.procstart = null
 	head_content = nhead_content
 
 /datum/browser/proc/set_window_options(nwindow_options)
+	procstart = null
+	src.procstart = null
 	window_options = nwindow_options
 
 /datum/browser/proc/set_title_image(ntitle_image)
+	procstart = null
+	src.procstart = null
 	//title_image = ntitle_image
 
 /datum/browser/proc/add_stylesheet(name, file)
+	procstart = null
+	src.procstart = null
 	stylesheets["[ckey(name)].css"] = file
 	register_asset("[ckey(name)].css", file)
 
 /datum/browser/proc/add_script(name, file)
+	procstart = null
+	src.procstart = null
 	scripts["[ckey(name)].js"] = file
 	register_asset("[ckey(name)].js", file)
 
 /datum/browser/proc/set_content(ncontent)
+	procstart = null
+	src.procstart = null
 	content = ncontent
 
 /datum/browser/proc/add_content(ncontent)
+	procstart = null
+	src.procstart = null
 	content += ncontent
 
 /datum/browser/proc/get_header()
+	procstart = null
+	src.procstart = null
 	var/file
 	for (file in stylesheets)
 		head_content += "<link rel='stylesheet' type='text/css' href='[file]'>"
@@ -78,6 +96,8 @@
 	"}
 //" This is here because else the rest of the file looks like a string in notepad++.
 /datum/browser/proc/get_footer()
+	procstart = null
+	src.procstart = null
 	return {"
 			</div>
 		</div>
@@ -85,6 +105,8 @@
 </html>"}
 
 /datum/browser/proc/get_content()
+	procstart = null
+	src.procstart = null
 	return {"
 	[get_header()]
 	[content]
@@ -92,6 +114,8 @@
 	"}
 
 /datum/browser/proc/open(use_onclose = 1)
+	procstart = null
+	src.procstart = null
 	if(isnull(window_id))	//null check because this can potentially nuke goonchat
 		WARNING("Browser [title] tried to open with a null ID")
 		to_chat(user, "<span class='userdanger'>The [title] browser you tried to open failed a sanity check! Please report this on github!</span>")
@@ -108,6 +132,8 @@
 		setup_onclose()
 
 /datum/browser/proc/setup_onclose()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0 //winexists sleeps, so we don't need to.
 	for (var/i in 1 to 10)
 		if (user && winexists(user, window_id))
@@ -115,6 +141,8 @@
 			break
 
 /datum/browser/proc/close()
+	procstart = null
+	src.procstart = null
 	if(!isnull(window_id))//null check because this can potentially nuke goonchat
 		user << browse(null, "window=[window_id]")
 	else
@@ -127,6 +155,8 @@
 	var/stealfocus
 
 /datum/browser/alert/New(User,Message,Title,Button1="Ok",Button2,Button3,StealFocus = 1,Timeout=6000)
+	procstart = null
+	src.procstart = null
 	if (!User)
 		return
 
@@ -150,6 +180,8 @@
 	timeout = Timeout
 
 /datum/browser/alert/open()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	opentime = world.time
 
@@ -172,14 +204,20 @@
 		addtimer(CALLBACK(src, .proc/close), timeout)
 
 /datum/browser/alert/close()
+	procstart = null
+	src.procstart = null
 	.=..()
 	opentime = 0
 
 /datum/browser/alert/proc/wait()
+	procstart = null
+	src.procstart = null
 	while (opentime && selectedbutton <= 0 && (!timeout || opentime+timeout > world.time))
 		stoplag(1)
 
 /datum/browser/alert/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	if (href_list["close"] || !user || !user.client)
 		opentime = 0
 		return
@@ -192,6 +230,8 @@
 
 //designed as a drop in replacement for alert(); functions the same. (outside of needing User specified)
 /proc/tgalert(var/mob/User, Message, Title, Button1="Ok", Button2, Button3, StealFocus = 1, Timeout = 6000)
+	procstart = null
+	src.procstart = null
 	if (!User)
 		User = usr
 	switch(askuser(User, Message, Title, Button1, Button2, Button3, StealFocus, Timeout))
@@ -204,6 +244,8 @@
 
 //Same shit, but it returns the button number, could at some point support unlimited button amounts.
 /proc/askuser(var/mob/User,Message, Title, Button1="Ok", Button2, Button3, StealFocus = 1, Timeout = 6000)
+	procstart = null
+	src.procstart = null
 	if (!istype(User))
 		if (istype(User, /client/))
 			var/client/C = User
@@ -237,6 +279,8 @@
 // Otherwise, the user mob's machine var will be reset directly.
 //
 /proc/onclose(mob/user, windowid, atom/ref=null)
+	procstart = null
+	src.procstart = null
 	if(!user.client)
 		return
 	var/param = "null"
@@ -253,6 +297,8 @@
 // otherwise, just reset the client mob's machine var.
 //
 /client/verb/windowclose(atomref as text)
+	procstart = null
+	src.procstart = null
 	set hidden = 1						// hide this verb from the user's panel
 	set name = ".windowclose"			// no autocomplete on cmd line
 

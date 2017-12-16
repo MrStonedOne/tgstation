@@ -191,6 +191,8 @@
 	var/last_event = 0
 
 /obj/machinery/door/airlock/uranium/process()
+	procstart = null
+	src.procstart = null
 	if(world.time > last_event+20)
 		if(prob(50))
 			radiate()
@@ -198,6 +200,8 @@
 	..()
 
 /obj/machinery/door/airlock/uranium/proc/radiate()
+	procstart = null
+	src.procstart = null
 	radiation_pulse(get_turf(src), 150)
 	return
 
@@ -212,14 +216,20 @@
 	assemblytype = /obj/structure/door_assembly/door_assembly_plasma
 
 /obj/machinery/door/airlock/plasma/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
 /obj/machinery/door/airlock/plasma/proc/ignite(exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
 /obj/machinery/door/airlock/plasma/proc/PlasmaBurn(temperature)
+	procstart = null
+	src.procstart = null
 	atmos_spawn_air("plasma=500;TEMP=1000")
 	var/obj/structure/door_assembly/DA
 	DA = new /obj/structure/door_assembly(loc)
@@ -235,6 +245,8 @@
 	return 0
 
 /obj/machinery/door/airlock/plasma/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(C.is_hot() > 300)//If the temperature of the object is over 300, then ignite
 		message_admins("Plasma airlock ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(src)]")
 		log_game("Plasma airlock ignited by [key_name(user)] in [COORD(src)]")
@@ -430,13 +442,19 @@
 	var/friendly = FALSE
 
 /obj/machinery/door/airlock/cult/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new openingoverlaytype(loc)
 
 /obj/machinery/door/airlock/cult/canAIControl(mob/user)
+	procstart = null
+	src.procstart = null
 	return (iscultist(user) && !isAllPowerCut())
 
 /obj/machinery/door/airlock/cult/allowed(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return 1
 	if(friendly || iscultist(L) || istype(L, /mob/living/simple_animal/shade) || isconstruct(L))
@@ -453,6 +471,8 @@
 		return 0
 
 /obj/machinery/door/airlock/cult/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/airlock/cult/friendly
@@ -497,16 +517,22 @@
 	var/construction_state = GEAR_SECURE //Pinion airlocks have custom deconstruction
 
 /obj/machinery/door/airlock/clockwork/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/ratvar/door(loc)
 	new /obj/effect/temp_visual/ratvar/beam/door(loc)
 	change_construction_value(5)
 
 /obj/machinery/door/airlock/clockwork/Destroy()
+	procstart = null
+	src.procstart = null
 	change_construction_value(-5)
 	return ..()
 
 /obj/machinery/door/airlock/clockwork/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/gear_text = "The cogwheel is flickering and twisting wildly. Report this to a coder."
 	switch(construction_state)
@@ -517,16 +543,24 @@
 	to_chat(user, gear_text)
 
 /obj/machinery/door/airlock/clockwork/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(prob(80/severity))
 		open()
 
 /obj/machinery/door/airlock/clockwork/canAIControl(mob/user)
+	procstart = null
+	src.procstart = null
 	return (is_servant_of_ratvar(user) && !isAllPowerCut())
 
 /obj/machinery/door/airlock/clockwork/ratvar_act()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/machinery/door/airlock/clockwork/narsie_act()
+	procstart = null
+	src.procstart = null
 	..()
 	if(src)
 		var/previouscolor = color
@@ -535,21 +569,31 @@
 		addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 8)
 
 /obj/machinery/door/airlock/clockwork/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!attempt_construction(I, user))
 		return ..()
 
 /obj/machinery/door/airlock/clockwork/allowed(mob/M)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(M))
 		return 1
 	return 0
 
 /obj/machinery/door/airlock/clockwork/hasPower()
+	procstart = null
+	src.procstart = null
 	return TRUE //yes we do have power
 
 /obj/machinery/door/airlock/clockwork/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/door/airlock/clockwork/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/items/deconstruct.ogg', 50, 1)
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/turf/T = get_turf(src)
@@ -561,6 +605,8 @@
 	qdel(src)
 
 /obj/machinery/door/airlock/clockwork/proc/attempt_construction(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!I || !user || !user.canUseTopic(src))
 		return 0
 	else if(istype(I, /obj/item/wrench))
@@ -615,4 +661,6 @@
 	bound_width = 64 // 2x1
 
 /obj/machinery/door/airlock/glass_large/narsie_act()
+	procstart = null
+	src.procstart = null
 	return

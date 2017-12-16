@@ -32,6 +32,8 @@
 	var/buckle_message_cooldown = 0
 
 /atom/New(loc, ...)
+	procstart = null
+	src.procstart = null
 	//atom creation method that preloads variables at creation
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
 		GLOB._preloader.load(src)
@@ -59,6 +61,8 @@
 // /turf/open/space/Initialize
 
 /atom/proc/Initialize(mapload, ...)
+	procstart = null
+	src.procstart = null
 	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	initialized = TRUE
@@ -80,13 +84,19 @@
 
 //called if Initialize returns INITIALIZE_HINT_LATELOAD
 /atom/proc/LateInitialize()
+	procstart = null
+	src.procstart = null
 	return
 
 // Put your AddComponent() calls here
 /atom/proc/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/Destroy()
+	procstart = null
+	src.procstart = null
 	if(alternate_appearances)
 		for(var/K in alternate_appearances)
 			var/datum/atom_hud/alternate_appearance/AA = alternate_appearances[K]
@@ -103,12 +113,18 @@
 	return ..()
 
 /atom/proc/handle_ricochet(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	return !density
 
 /atom/proc/onCentCom()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T)
 		return FALSE
@@ -139,6 +155,8 @@
 					return TRUE
 
 /atom/proc/onSyndieBase()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(!T)
 		return 0
@@ -152,6 +170,8 @@
 	return 0
 
 /atom/proc/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_HULK_ATTACK, user)
 	if(does_attack_animation)
 		user.changeNext_move(CLICK_CD_MELEE)
@@ -159,6 +179,8 @@
 		user.do_attack_animation(src, ATTACK_EFFECT_SMASH)
 
 /atom/proc/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	for(var/A in parts_list)
 		if(istype(A, /datum/reagent))
 			if(!reagents)
@@ -174,23 +196,33 @@
 				M.forceMove(src)
 
 /atom/proc/assume_air(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	qdel(giver)
 	return null
 
 /atom/proc/remove_air(amount)
+	procstart = null
+	src.procstart = null
 	return null
 
 /atom/proc/return_air()
+	procstart = null
+	src.procstart = null
 	if(loc)
 		return loc.return_air()
 	else
 		return null
 
 /atom/proc/check_eye(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /atom/proc/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	return
 
@@ -198,12 +230,18 @@
 // returns true if open
 // false if closed
 /atom/proc/is_open_container()
+	procstart = null
+	src.procstart = null
 	return container_type & OPENCONTAINER_1
 
 /atom/proc/is_transparent()
+	procstart = null
+	src.procstart = null
 	return container_type & TRANSPARENT_1
 
 /atom/proc/is_injectable(allowmobs = TRUE)
+	procstart = null
+	src.procstart = null
 	if(isliving(src) && allowmobs)
 		var/mob/living/L = src
 		return L.can_inject()
@@ -212,25 +250,37 @@
 	return container_type & INJECTABLE_1
 
 /atom/proc/is_drawable(allowmobs = TRUE)
+	procstart = null
+	src.procstart = null
 	if(is_injectable(allowmobs)) //Everything that can be injected can also be drawn from, but not vice versa
 		return TRUE
 	return container_type & DRAWABLE_1
 
 /atom/proc/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/proc/CheckExit()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /atom/proc/HasProximity(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_EMP_ACT, severity)
 	if(istype(wires) && !(flags_2 & NO_EMP_WIRES_2))
 		wires.emp_pulse()
 
 /atom/proc/bullet_act(obj/item/projectile/P, def_zone)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_BULLET_ACT, P, def_zone)
 	. = P.on_hit(src, 0, def_zone)
 
@@ -242,6 +292,8 @@
 		return 1
 
 /atom/proc/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	//This reformat names to get a/an properly working on item descriptions when they are bloody
 	var/f_name = "\a [src]."
 	if(src.blood_DNA && !istype(src, /obj/effect/decal))
@@ -272,47 +324,67 @@
 	SendSignal(COMSIG_PARENT_EXAMINE, user)
 
 /atom/proc/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(buckle_message_cooldown <= world.time)
 		buckle_message_cooldown = world.time + 50
 		to_chat(user, "<span class='warning'>You can't move while buckled to [src]!</span>")
 	return
 
 /atom/proc/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	contents_explosion(severity, target)
 	SendSignal(COMSIG_ATOM_EX_ACT, severity, target)
 
 /atom/proc/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_BLOB_ACT, B)
 	return
 
 /atom/proc/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_FIRE_ACT, exposed_temperature, exposed_volume)
 	return
 
 /atom/proc/hitby(atom/movable/AM, skipcatch, hitpush, blocked)
+	procstart = null
+	src.procstart = null
 	if(density && !has_gravity(AM)) //thrown stuff bounces off dense stuff in no grav, unless the thrown stuff ends up inside what it hit(embedding, bola, etc...).
 		addtimer(CALLBACK(src, .proc/hitby_react, AM), 2)
 
 /atom/proc/hitby_react(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(AM && isturf(AM.loc))
 		step(AM, turn(AM.dir, 180))
 
 GLOBAL_LIST_EMPTY(blood_splatter_icons)
 
 /atom/proc/blood_splatter_index()
+	procstart = null
+	src.procstart = null
 	return "[REF(initial(icon))]-[initial(icon_state)]"
 
 //returns the mob's dna info as a list, to be inserted in an object's blood_DNA list
 /mob/living/proc/get_blood_dna_list()
+	procstart = null
+	src.procstart = null
 	if(get_blood_id() != "blood")
 		return
 	return list("ANIMAL DNA" = "Y-")
 
 /mob/living/carbon/get_blood_dna_list()
+	procstart = null
+	src.procstart = null
 	if(get_blood_id() != "blood")
 		return
 	var/list/blood_dna = list()
@@ -323,10 +395,14 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	return blood_dna
 
 /mob/living/carbon/alien/get_blood_dna_list()
+	procstart = null
+	src.procstart = null
 	return list("UNKNOWN DNA" = "X*")
 
 //to add a mob's dna info into an object's blood_DNA list.
 /atom/proc/transfer_mob_blood_dna(mob/living/L)
+	procstart = null
+	src.procstart = null
 	// Returns 0 if we have that blood already
 	var/new_blood_dna = L.get_blood_dna_list()
 	if(!new_blood_dna)
@@ -341,6 +417,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 
 //to add blood dna info to the object's blood_DNA list
 /atom/proc/transfer_blood_dna(list/blood_dna)
+	procstart = null
+	src.procstart = null
 	if(!blood_DNA)
 		blood_DNA = list()
 	var/old_length = blood_DNA.len
@@ -351,6 +429,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 
 //to add blood from a mob onto something, and transfer their dna info
 /atom/proc/add_mob_blood(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/list/blood_dna = M.get_blood_dna_list()
 	if(!blood_dna)
 		return 0
@@ -358,12 +438,18 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 
 //to add blood onto something, with blood dna info to include.
 /atom/proc/add_blood(list/blood_dna)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/add_blood(list/blood_dna)
+	procstart = null
+	src.procstart = null
 	return transfer_blood_dna(blood_dna)
 
 /obj/item/add_blood(list/blood_dna)
+	procstart = null
+	src.procstart = null
 	var/blood_count = !blood_DNA ? 0 : blood_DNA.len
 	if(!..())
 		return 0
@@ -372,6 +458,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	return 1 //we applied blood to the item
 
 /obj/item/proc/add_blood_overlay()
+	procstart = null
+	src.procstart = null
 	if(initial(icon) && initial(icon_state))
 		//try to find a pre-processed blood-splatter. otherwise, make a new one
 		var/index = blood_splatter_index()
@@ -385,10 +473,14 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 		add_overlay(blood_splatter_icon)
 
 /obj/item/clothing/gloves/add_blood(list/blood_dna)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transfer_blood = rand(2, 4)
 
 /turf/add_blood(list/blood_dna, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/decal/cleanable/blood/splatter/B = locate() in src
 	if(!B)
 		B = new /obj/effect/decal/cleanable/blood/splatter(src, diseases)
@@ -396,6 +488,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	return 1 //we bloodied the floor
 
 /mob/living/carbon/human/add_blood(list/blood_dna)
+	procstart = null
+	src.procstart = null
 	if(wear_suit)
 		wear_suit.add_blood(blood_dna)
 		update_inv_wear_suit()
@@ -412,57 +506,89 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	return 1
 
 /atom/proc/clean_blood()
+	procstart = null
+	src.procstart = null
 	if(islist(blood_DNA))
 		blood_DNA = null
 		return 1
 
 /atom/proc/wash_cream()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /atom/proc/isinspace()
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(get_turf(src)))
 		return 1
 	else
 		return 0
 
 /atom/proc/handle_fall()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/handle_slip()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/singularity_pull(obj/singularity/S, current_size)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_SING_PULL, S, current_size)
 
 /atom/proc/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_ACID_ACT, acidpwr, acid_volume)
 
 /atom/proc/emag_act()
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_EMAG_ACT)
 
 /atom/proc/rad_act(strength)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_RAD_ACT)
 
 /atom/proc/narsie_act()
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_NARSIE_ACT)
 
 /atom/proc/ratvar_act()
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_RATVAR_ACT)
 
 /atom/proc/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /atom/proc/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_RCD_ACT, user, the_rcd, passed_mode)
 	return FALSE
 
 /atom/proc/storage_contents_dump_act(obj/item/storage/src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /atom/proc/get_dumping_location(obj/item/storage/source,mob/user)
+	procstart = null
+	src.procstart = null
 	return null
 
 //This proc is called on the location of an atom when the atom is Destroy()'d
@@ -470,19 +596,27 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 
 //called when the turf the atom resides on is ChangeTurfed
 /atom/proc/HandleTurfChange(turf/T)
+	procstart = null
+	src.procstart = null
 	for(var/a in src)
 		var/atom/A = a
 		A.HandleTurfChange(T)
 
 //the vision impairment to give to the mob whose perspective is set to that atom (e.g. an unfocused camera giving you an impaired vision when looking through it)
 /atom/proc/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 //the sight changes to give to the mob whose perspective is set to that atom (e.g. A mob with nightvision loses its nightvision while looking through a normal camera)
 /atom/proc/update_remote_sight(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M, toxvomit = 0)
+	procstart = null
+	src.procstart = null
 	if(isturf(src))
 		var/obj/effect/decal/cleanable/vomit/V = new /obj/effect/decal/cleanable/vomit(src, M.get_static_viruses())
 		// Make toxins vomit look different
@@ -492,6 +626,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 			clear_reagents_to_vomit_pool(M,V)
 
 /atom/proc/clear_reagents_to_vomit_pool(mob/living/carbon/M, obj/effect/decal/cleanable/vomit/V)
+	procstart = null
+	src.procstart = null
 	M.reagents.trans_to(V, M.reagents.total_volume / 10)
 	for(var/datum/reagent/R in M.reagents.reagent_list)                //clears the stomach of anything that might be digested as food
 		if(istype(R, /datum/reagent/consumable))
@@ -502,14 +638,20 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 
 //Hook for running code when a dir change occurs
 /atom/proc/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_DIR_CHANGE, dir, newdir)
 	dir = newdir
 
 /atom/proc/mech_melee_attack(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	return
 
 //If a mob logouts/logins in side of an object you can use this proc
 /atom/proc/on_log(login)
+	procstart = null
+	src.procstart = null
 	if(loc)
 		loc.on_log(login)
 
@@ -526,6 +668,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	Adds an instance of colour_type to the atom's atom_colours list
 */
 /atom/proc/add_atom_colour(coloration, colour_priority)
+	procstart = null
+	src.procstart = null
 	if(!atom_colours || !atom_colours.len)
 		atom_colours = list()
 		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
@@ -541,6 +685,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	Removes an instance of colour_type from the atom's atom_colours list
 */
 /atom/proc/remove_atom_colour(colour_priority, coloration)
+	procstart = null
+	src.procstart = null
 	if(!atom_colours)
 		atom_colours = list()
 		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
@@ -557,6 +703,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	colour available
 */
 /atom/proc/update_atom_colour()
+	procstart = null
+	src.procstart = null
 	if(!atom_colours)
 		atom_colours = list()
 		atom_colours.len = COLOUR_PRIORITY_AMOUNT //four priority levels currently.
@@ -572,6 +720,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 			return
 
 /atom/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.Debug2)
 		admin_spawned = TRUE
 	. = ..()
@@ -580,6 +730,8 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 			add_atom_colour(color, ADMIN_COLOUR_PRIORITY)
 
 /atom/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "---"
 	var/turf/curturf = get_turf(src)
@@ -590,30 +742,46 @@ GLOBAL_LIST_EMPTY(blood_splatter_icons)
 	.["Trigger explosion"] = "?_src_=vars;[HrefToken()];explode=[REF(src)]"
 
 /atom/proc/drop_location()
+	procstart = null
+	src.procstart = null
 	var/atom/L = loc
 	if(!L)
 		return null
 	return L.AllowDrop() ? L : get_turf(L)
 
 /atom/Entered(atom/movable/AM, atom/oldLoc)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ATOM_ENTERED, AM, oldLoc)
 
 /atom/proc/return_temperature()
+	procstart = null
+	src.procstart = null
 	return
 
 // Default tool behaviors proc
 
 /atom/proc/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/multitool_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/wrench_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/proc/wirecutter_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	return

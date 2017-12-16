@@ -5,24 +5,32 @@
 	var/hud_type = null
 
 /obj/item/clothing/glasses/hud/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(hud_type && slot == slot_glasses)
 		var/datum/atom_hud/H = GLOB.huds[hud_type]
 		H.add_hud_to(user)
 
 /obj/item/clothing/glasses/hud/dropped(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(hud_type && istype(user) && user.glasses == src)
 		var/datum/atom_hud/H = GLOB.huds[hud_type]
 		H.remove_hud_from(user)
 
 /obj/item/clothing/glasses/hud/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
 	desc = "[desc] The display is flickering slightly."
 
 /obj/item/clothing/glasses/hud/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
@@ -87,6 +95,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/glasses/hud/security/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/glasses
@@ -95,6 +105,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/clothing/glasses/hud/security/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_action.emp_randomise()
 
@@ -147,6 +159,8 @@
 	actions_types = list(/datum/action/item_action/switch_hud)
 
 /obj/item/clothing/glasses/hud/toggle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/wearer = user
@@ -178,6 +192,8 @@
 	glass_colour_type = /datum/client_colour/glass_colour/red
 
 /obj/item/clothing/glasses/hud/toggle/thermal/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	switch (hud_type)
 		if (DATA_HUD_MEDICAL_ADVANCED)
@@ -192,5 +208,7 @@
 	user.update_inv_glasses()
 
 /obj/item/clothing/glasses/hud/toggle/thermal/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	thermal_overload()
 	..()

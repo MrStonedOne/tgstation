@@ -17,6 +17,8 @@
 	var/list/fields = list()
 
 /datum/data/record/Destroy()
+	procstart = null
+	src.procstart = null
 	if(src in GLOB.data_core.medical)
 		GLOB.data_core.medical -= src
 	if(src in GLOB.data_core.security)
@@ -36,6 +38,8 @@
 	var/dataId = 0
 
 /datum/datacore/proc/createCrimeEntry(cname = "", cdetails = "", author = "", time = "")
+	procstart = null
+	src.procstart = null
 	var/datum/data/crime/c = new /datum/data/crime
 	c.crimeName = cname
 	c.crimeDetails = cdetails
@@ -45,6 +49,8 @@
 	return c
 
 /datum/datacore/proc/addMinorCrime(id = "", datum/data/crime/crime)
+	procstart = null
+	src.procstart = null
 	for(var/datum/data/record/R in security)
 		if(R.fields["id"] == id)
 			var/list/crimes = R.fields["mi_crim"]
@@ -52,6 +58,8 @@
 			return
 
 /datum/datacore/proc/removeMinorCrime(id, cDataId)
+	procstart = null
+	src.procstart = null
 	for(var/datum/data/record/R in security)
 		if(R.fields["id"] == id)
 			var/list/crimes = R.fields["mi_crim"]
@@ -61,6 +69,8 @@
 					return
 
 /datum/datacore/proc/removeMajorCrime(id, cDataId)
+	procstart = null
+	src.procstart = null
 	for(var/datum/data/record/R in security)
 		if(R.fields["id"] == id)
 			var/list/crimes = R.fields["ma_crim"]
@@ -70,6 +80,8 @@
 					return
 
 /datum/datacore/proc/addMajorCrime(id = "", datum/data/crime/crime)
+	procstart = null
+	src.procstart = null
 	for(var/datum/data/record/R in security)
 		if(R.fields["id"] == id)
 			var/list/crimes = R.fields["ma_crim"]
@@ -77,6 +89,8 @@
 			return
 
 /datum/datacore/proc/manifest()
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/new_player/N in GLOB.player_list)
 		if(N.new_character)
 			log_manifest(N.ckey,N.new_character.mind,N.new_character)
@@ -85,11 +99,15 @@
 		CHECK_TICK
 
 /datum/datacore/proc/manifest_modify(name, assignment)
+	procstart = null
+	src.procstart = null
 	var/datum/data/record/foundrecord = find_record("name", name, GLOB.data_core.general)
 	if(foundrecord)
 		foundrecord.fields["rank"] = assignment
 
 /datum/datacore/proc/get_manifest(monochrome, OOC)
+	procstart = null
+	src.procstart = null
 	var/list/heads = list()
 	var/list/sec = list()
 	var/list/eng = list()
@@ -198,6 +216,8 @@
 
 
 /datum/datacore/proc/manifest_inject(mob/living/carbon/human/H, client/C)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(H.mind && (H.mind.assigned_role != H.mind.special_role))
 		var/assignment
@@ -280,6 +300,8 @@
 	return
 
 /datum/datacore/proc/get_id_photo(mob/living/carbon/human/H, client/C)
+	procstart = null
+	src.procstart = null
 	var/datum/job/J = SSjob.GetJob(H.mind.assigned_role)
 	var/datum/preferences/P
 	if(!C)

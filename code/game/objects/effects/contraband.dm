@@ -13,6 +13,8 @@
 	var/obj/structure/sign/poster/poster_structure
 
 /obj/item/poster/Initialize(mapload, obj/structure/sign/poster/new_poster_structure)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	poster_structure = new_poster_structure
 	if(!new_poster_structure && poster_type)
@@ -28,6 +30,8 @@
 		name = "[name] - [poster_structure.original_name]"
 
 /obj/item/poster/Destroy()
+	procstart = null
+	src.procstart = null
 	poster_structure = null
 	. = ..()
 
@@ -59,6 +63,8 @@
 	var/poster_item_icon_state = "rolled_poster"
 
 /obj/structure/sign/poster/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(random_basetype)
 		randomise(random_basetype)
@@ -68,6 +74,8 @@
 		desc = "A large piece of space-resistant printed paper. [desc]"
 
 /obj/structure/sign/poster/proc/randomise(base_type)
+	procstart = null
+	src.procstart = null
 	var/list/poster_types = subtypesof(base_type)
 	var/list/approved_types = list()
 	for(var/t in poster_types)
@@ -87,6 +95,8 @@
 
 
 /obj/structure/sign/poster/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wirecutters))
 		playsound(loc, I.usesound, 100, 1)
 		if(ruined)
@@ -97,6 +107,8 @@
 			roll_and_drop(user.loc)
 
 /obj/structure/sign/poster/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ruined)
 		return
 	visible_message("[user] rips [src] in a single, decisive motion!" )
@@ -109,6 +121,8 @@
 	qdel(src)
 
 /obj/structure/sign/poster/proc/roll_and_drop(loc)
+	procstart = null
+	src.procstart = null
 	pixel_x = 0
 	pixel_y = 0
 	var/obj/item/poster/P = new(loc, src)
@@ -117,6 +131,8 @@
 
 //separated to reduce code duplication. Moved here for ease of reference and to unclutter r_wall/attackby()
 /turf/closed/wall/proc/place_poster(obj/item/poster/P, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!P.poster_structure)
 		to_chat(user, "<span class='warning'>[P] has no poster... inside it? Inform a coder!</span>")
 		return

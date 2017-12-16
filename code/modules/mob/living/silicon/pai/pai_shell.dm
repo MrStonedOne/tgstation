@@ -1,5 +1,7 @@
 
 /mob/living/silicon/pai/proc/fold_out(force = FALSE)
+	procstart = null
+	src.procstart = null
 	if(emitterhealth < 0)
 		to_chat(src, "<span class='warning'>Your holochassis emitters are still too unstable! Please wait for automatic repair.</span>")
 		return FALSE
@@ -40,9 +42,13 @@
 	holoform = TRUE
 
 /mob/living/silicon/pai/proc/emittercool()
+	procstart = null
+	src.procstart = null
 	emittersemicd = FALSE
 
 /mob/living/silicon/pai/proc/fold_in(force = FALSE)
+	procstart = null
+	src.procstart = null
 	emittersemicd = TRUE
 	if(!force)
 		addtimer(CALLBACK(src, .proc/emittercool), emittercd)
@@ -68,6 +74,8 @@
 		lay_down()
 
 /mob/living/silicon/pai/proc/choose_chassis()
+	procstart = null
+	src.procstart = null
 	var/choice = input(src, "What would you like to use for your holochassis composite?") as null|anything in possible_chassis
 	if(!choice)
 		return 0
@@ -78,10 +86,14 @@
 	to_chat(src, "<span class='boldnotice'>You switch your holochassis projection composite to [chassis]</span>")
 
 /mob/living/silicon/pai/lay_down()
+	procstart = null
+	src.procstart = null
 	..()
 	update_resting_icon(resting)
 
 /mob/living/silicon/pai/proc/update_resting_icon(rest)
+	procstart = null
+	src.procstart = null
 	if(rest)
 		icon_state = "[chassis]_rest"
 	else
@@ -90,9 +102,13 @@
 		visible_message("<span class='notice'>[src] [rest? "lays down for a moment..." : "perks up from the ground"]</span>")
 
 /mob/living/silicon/pai/start_pulling(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/proc/toggle_integrated_light()
+	procstart = null
+	src.procstart = null
 	if(!light_range)
 		set_light(brightness_power)
 		to_chat(src, "<span class='notice'>You enable your integrated light.</span>")
@@ -101,5 +117,7 @@
 		to_chat(src, "<span class='notice'>You disable your integrated light.</span>")
 
 /mob/living/silicon/pai/movement_delay()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += 1 //A bit slower than humans, so they're easier to smash

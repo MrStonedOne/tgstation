@@ -6,6 +6,8 @@
 
 
 /mob/living/simple_animal/drone/verb/check_laws()
+	procstart = null
+	src.procstart = null
 	set category = "Drone"
 	set name = "Check Laws"
 
@@ -13,6 +15,8 @@
 	to_chat(src, laws)
 
 /mob/living/simple_animal/drone/verb/drone_ping()
+	procstart = null
+	src.procstart = null
 	set category = "Drone"
 	set name = "Drone ping"
 
@@ -25,6 +29,8 @@
 		alert_drones(msg)
 
 /mob/living/simple_animal/drone/verb/toggle_statics()
+	procstart = null
+	src.procstart = null
 	set name = "Change Vision Filter"
 	set desc = "Change the filter on the system used to remove non drone beings from your viewscreen."
 	set category = "Drone"

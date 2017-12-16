@@ -16,6 +16,8 @@
 	volume = 1000
 
 /obj/machinery/portable_atmospherics/pump/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pump = new(src, FALSE)
 	pump.on = TRUE
@@ -23,6 +25,8 @@
 	pump.build_network()
 
 /obj/machinery/portable_atmospherics/pump/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	T.assume_air(air_contents)
 	air_update_turf()
@@ -30,6 +34,8 @@
 	return ..()
 
 /obj/machinery/portable_atmospherics/pump/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "psiphon:[on]"
 
 	cut_overlays()
@@ -39,6 +45,8 @@
 		add_overlay("siphon-connector")
 
 /obj/machinery/portable_atmospherics/pump/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!on)
 		pump.AIR1 = null
@@ -58,6 +66,8 @@
 		air_update_turf() // Update the environment if needed.
 
 /obj/machinery/portable_atmospherics/pump/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(is_operational())
 		if(prob(50 / severity))
 			on = !on
@@ -76,6 +86,8 @@
 		ui.open()
 
 /obj/machinery/portable_atmospherics/pump/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["direction"] = direction
@@ -93,6 +105,8 @@
 	return data
 
 /obj/machinery/portable_atmospherics/pump/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)

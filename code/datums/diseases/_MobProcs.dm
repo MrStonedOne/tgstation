@@ -1,5 +1,7 @@
 
 /mob/proc/HasDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	for(var/thing in viruses)
 		var/datum/disease/DD = thing
 		if(D.IsSame(DD))
@@ -8,6 +10,8 @@
 
 
 /mob/proc/CanContractDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if(stat == DEAD)
 		return 0
 
@@ -24,12 +28,16 @@
 
 
 /mob/proc/ContactContractDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if(!CanContractDisease(D))
 		return 0
 	AddDisease(D)
 
 
 /mob/proc/AddDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	for(var/datum/disease/advance/P in viruses)
 		if(istype(D, /datum/disease/advance))
 			var/datum/disease/advance/DD = D
@@ -57,6 +65,8 @@
 
 
 /mob/living/carbon/ContactContractDisease(datum/disease/D, target_zone)
+	procstart = null
+	src.procstart = null
 	if(!CanContractDisease(D))
 		return 0
 
@@ -126,15 +136,21 @@
 		AddDisease(D)
 
 /mob/proc/AirborneContractDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if((D.spread_flags & VIRUS_SPREAD_AIRBORNE) && prob((50*D.permeability_mod) - 1))
 		ForceContractDisease(D)
 
 /mob/living/carbon/AirborneContractDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if(internal)
 		return
 	..()
 
 /mob/living/carbon/human/AirborneContractDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if(dna && (NOBREATH in dna.species.species_traits))
 		return
 	..()
@@ -142,6 +158,8 @@
 
 //Proc to use when you 100% want to infect someone, as long as they aren't immune
 /mob/proc/ForceContractDisease(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if(!CanContractDisease(D))
 		return FALSE
 	AddDisease(D)
@@ -149,6 +167,8 @@
 
 /mob/living/carbon/human/CanContractDisease(datum/disease/D)
 
+	procstart = null
+	src.procstart = null
 	if(dna)
 		if((VIRUSIMMUNE in dna.species.species_traits) && !D.bypasses_immunity)
 			return FALSE

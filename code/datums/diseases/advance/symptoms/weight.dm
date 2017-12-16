@@ -32,12 +32,16 @@ Bonus
 	threshold_desc = "<b>Stealth 4:</b> The symptom is less noticeable."
 
 /datum/symptom/weight_loss/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4) //warn less often
 		base_message_chance = 25
 
 /datum/symptom/weight_loss/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

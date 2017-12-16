@@ -23,4 +23,6 @@
 	trigger_guard = TRIGGER_GUARD_ALLOW_ALL
 
 /obj/item/gun/energy/laser/mounted/dropped()
+	procstart = null
+	src.procstart = null
 	..()

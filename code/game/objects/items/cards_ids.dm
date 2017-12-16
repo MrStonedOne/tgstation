@@ -31,6 +31,8 @@
 	righthand_file = 'icons/mob/inhands/equipment/idcards_righthand.dmi'
 
 /obj/item/card/data/verb/label(t as text)
+	procstart = null
+	src.procstart = null
 	set name = "Label Disk"
 	set category = "Object"
 	set src in usr
@@ -65,9 +67,13 @@
 	prox_check = FALSE
 
 /obj/item/card/emag/attack()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/card/emag/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	var/atom/A = target
 	if(!proximity && prox_check)
 		return
@@ -92,11 +98,15 @@
 
 
 /obj/item/card/id/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload && access_txt)
 		access = text2access(access_txt)
 
 /obj/item/card/id/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		switch(var_name)
@@ -104,31 +114,45 @@
 				update_label()
 
 /obj/item/card/id/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='notice'>[user] shows you: [icon2html(src, viewers(user))] [src.name].</span>", \
 					"<span class='notice'>You show \the [src.name].</span>")
 	src.add_fingerprint(user)
 	return
 
 /obj/item/card/id/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(mining_points)
 		to_chat(user, "There's [mining_points] mining equipment redemption point\s loaded onto this card.")
 
 /obj/item/card/id/GetAccess()
+	procstart = null
+	src.procstart = null
 	return access
 
 /obj/item/card/id/GetID()
+	procstart = null
+	src.procstart = null
 	return src
 
 /*
 Usage:
 update_label()
+	procstart = null
+	src.procstart = null
 	Sets the id name to whatever registered_name and assignment is
 
 update_label("John Doe", "Clowny")
+	procstart = null
+	src.procstart = null
 	Properly formats the name and occupation and sets the id name to the arguments
 */
 /obj/item/card/id/proc/update_label(newname, newjob)
+	procstart = null
+	src.procstart = null
 	if(newname || newjob)
 		name = "[(!newname)	? "identification card"	: "[newname]'s ID Card"][(!newjob) ? "" : " ([newjob])"]"
 		return
@@ -157,6 +181,8 @@ update_label("John Doe", "Clowny")
 	var/anyone = FALSE //Can anyone forge the ID or just syndicate?
 
 /obj/item/card/id/syndicate/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/action/item_action/chameleon/change/chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/card/id
@@ -164,6 +190,8 @@ update_label("John Doe", "Clowny")
 	chameleon_action.initialize_disguises()
 
 /obj/item/card/id/syndicate/afterattack(obj/item/O, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(istype(O, /obj/item/card/id))
@@ -174,6 +202,8 @@ update_label("John Doe", "Clowny")
 				to_chat(usr, "<span class='notice'>The card's microscanners activate as you pass it over the ID, copying its access.</span>")
 
 /obj/item/card/id/syndicate/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(user) && user.mind)
 		if(user.mind.special_role || anyone)
 			if(alert(user, "Action", "Agent ID", "Show", "Forge") == "Forge")
@@ -219,6 +249,8 @@ update_label("John Doe", "Clowny")
 	assignment = "Captain"
 
 /obj/item/card/id/captains_spare/Initialize()
+	procstart = null
+	src.procstart = null
 	var/datum/job/captain/J = new/datum/job/captain
 	access = J.get_access()
 	. = ..()
@@ -231,6 +263,8 @@ update_label("John Doe", "Clowny")
 	assignment = "General"
 
 /obj/item/card/id/centcom/Initialize()
+	procstart = null
+	src.procstart = null
 	access = get_all_centcom_access()
 	. = ..()
 
@@ -242,6 +276,8 @@ update_label("John Doe", "Clowny")
 	assignment = "Emergency Response Team Commander"
 
 /obj/item/card/id/ert/Initialize()
+	procstart = null
+	src.procstart = null
 	access = get_all_accesses()+get_ert_access("commander")-ACCESS_CHANGE_IDS
 	. = ..()
 
@@ -250,6 +286,8 @@ update_label("John Doe", "Clowny")
 	assignment = "Security Response Officer"
 
 /obj/item/card/id/ert/Security/Initialize()
+	procstart = null
+	src.procstart = null
 	access = get_all_accesses()+get_ert_access("sec")-ACCESS_CHANGE_IDS
 	. = ..()
 
@@ -258,6 +296,8 @@ update_label("John Doe", "Clowny")
 	assignment = "Engineer Response Officer"
 
 /obj/item/card/id/ert/Engineer/Initialize()
+	procstart = null
+	src.procstart = null
 	access = get_all_accesses()+get_ert_access("eng")-ACCESS_CHANGE_IDS
 	. = ..()
 
@@ -266,6 +306,8 @@ update_label("John Doe", "Clowny")
 	assignment = "Medical Response Officer"
 
 /obj/item/card/id/ert/Medical/Initialize()
+	procstart = null
+	src.procstart = null
 	access = get_all_accesses()+get_ert_access("med")-ACCESS_CHANGE_IDS
 	. = ..()
 
@@ -282,6 +324,8 @@ update_label("John Doe", "Clowny")
 	var/points = 0
 
 /obj/item/card/id/prisoner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(usr, "<span class='notice'>You have accumulated [points] out of the [goal] points you need for freedom.</span>")
 
 /obj/item/card/id/prisoner/one

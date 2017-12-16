@@ -19,6 +19,8 @@
 	var/obj/item/gun/installed_gun = null
 
 /obj/machinery/porta_turret_construct/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	//this is a bit unwieldy but self-explanatory
 	switch(build_step)
 		if(PTURRET_UNSECURED)	//first step
@@ -180,6 +182,8 @@
 
 
 /obj/machinery/porta_turret_construct/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(build_step)
 		if(PTURRET_GUN_EQUIPPED)
 			build_step = PTURRET_INTERNAL_ARMOUR_ON
@@ -194,9 +198,13 @@
 			build_step = PTURRET_GUN_EQUIPPED
 
 /obj/machinery/porta_turret_construct/attack_ai()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/porta_turret_construct/Destroy()
+	procstart = null
+	src.procstart = null
 	if(installed_gun)
 		qdel(installed_gun)
 		installed_gun = null

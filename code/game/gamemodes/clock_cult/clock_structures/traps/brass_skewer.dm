@@ -14,10 +14,14 @@
 	var/mutable_appearance/impale_overlay //This is applied to any mob impaled so that they visibly have the skewer coming through their chest
 
 /obj/structure/destructible/clockwork/trap/brass_skewer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/structure/destructible/clockwork/trap/brass_skewer/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	if(buckled_mobs && buckled_mobs.len)
 		var/mob/living/L = buckled_mobs[1]
@@ -28,24 +32,32 @@
 	return ..()
 
 /obj/structure/destructible/clockwork/trap/brass_skewer/process()
+	procstart = null
+	src.procstart = null
 	if(density)
 		if(buckled_mobs.len)
 			var/mob/living/spitroast = buckled_mobs[1]
 			spitroast.adjustBruteLoss(0.1)
 
 /obj/structure/destructible/clockwork/trap/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(user in buckled_mobs)
 		to_chat(user, "<span class='warning'>You can't reach!</span>")
 		return
 	..()
 
 /obj/structure/destructible/clockwork/trap/brass_skewer/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(buckled_mobs.len)
 		var/mob/living/L = buckled_mobs[1]
 		return L.bullet_act(P)
 	return ..()
 
 /obj/structure/destructible/clockwork/trap/brass_skewer/activate()
+	procstart = null
+	src.procstart = null
 	if(density)
 		return
 	var/mob/living/carbon/squirrel = locate() in get_turf(src)
@@ -66,9 +78,13 @@
 	desc = "A vicious brass spike protruding from the ground like a stala[pick("gm", "ct")]ite. It makes you sick to look at." //is stalagmite the ground one? or the ceiling one? who can ever remember?
 
 /obj/structure/destructible/clockwork/trap/brass_skewer/user_buckle_mob()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/destructible/clockwork/trap/brass_skewer/post_buckle_mob(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(L in buckled_mobs)
 		L.pixel_y = 3
 		impale_overlay = mutable_appearance('icons/obj/clockwork_objects.dmi', "brass_skewer_pokeybit", ABOVE_MOB_LAYER)
@@ -78,6 +94,8 @@
 		L.cut_overlay(impale_overlay)
 
 /obj/structure/destructible/clockwork/trap/brass_skewer/user_unbuckle_mob(mob/living/skewee, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user == skewee)
 		if(wiggle_wiggle)
 			return

@@ -20,6 +20,8 @@
 		+	<span class='notice'>Crew</span>: Resist the lure of sin and remain pure!"
 
 /datum/game_mode/devil/pre_setup()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		restricted_jobs += protected_jobs
 	if(CONFIG_GET(flag/protect_assistant_from_antagonist))
@@ -50,23 +52,33 @@
 
 
 /datum/game_mode/devil/post_setup()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/devil in devils)
 		post_setup_finalize(devil)
 	..()
 	return 1
 
 /datum/game_mode/devil/generate_report()
+	procstart = null
+	src.procstart = null
 	return "Infernal creatures have been seen nearby offering great boons in exchange for souls.  This is considered theft against Nanotrasen, as all employment contracts contain a lien on the \
 			employee's soul.  If anyone sells their soul in error, contact an attorney to overrule the sale.  Be warned that if the devil purchases enough souls, a gateway to hell may open."
 
 /datum/game_mode/devil/proc/post_setup_finalize(datum/mind/devil)
+	procstart = null
+	src.procstart = null
 	add_devil(devil.current, ascendable = TRUE) //Devil gamemode devils are ascendable.
 	add_devil_objectives(devil,2)
 
 /proc/is_devil(mob/living/M)
+	procstart = null
+	src.procstart = null
 	return M && M.mind && M.mind.has_antag_datum(ANTAG_DATUM_DEVIL)
 
 /proc/add_devil(mob/living/L, ascendable = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!L || !L.mind)
 		return FALSE
 	var/datum/antagonist/devil/devil_datum = L.mind.add_antag_datum(ANTAG_DATUM_DEVIL)
@@ -74,6 +86,8 @@
 	return devil_datum
 
 /proc/remove_devil(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!L || !L.mind)
 		return FALSE
 	var/datum/antagonist/devil_datum = L.mind.has_antag_datum(ANTAG_DATUM_DEVIL)

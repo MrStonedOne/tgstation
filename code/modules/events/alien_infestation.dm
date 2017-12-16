@@ -19,11 +19,15 @@
 
 
 /datum/round_event/ghost_role/alien_infestation/setup()
+	procstart = null
+	src.procstart = null
 	announceWhen = rand(announceWhen, announceWhen + 50)
 	if(prob(50))
 		spawncount++
 
 /datum/round_event/ghost_role/alien_infestation/kill()
+	procstart = null
+	src.procstart = null
 	if(!successSpawn && control)
 		// This never happened, so let's not deny the future of this round
 		// some xenolovin
@@ -31,11 +35,15 @@
 	return ..()
 
 /datum/round_event/ghost_role/alien_infestation/announce(fake)
+	procstart = null
+	src.procstart = null
 	if(successSpawn || fake)
 		priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", 'sound/ai/aliens.ogg')
 
 
 /datum/round_event/ghost_role/alien_infestation/spawn_role()
+	procstart = null
+	src.procstart = null
 	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/components/unary/vent_pump/temp_vent in GLOB.machines)
 		if(QDELETED(temp_vent))

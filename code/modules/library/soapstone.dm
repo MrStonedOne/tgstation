@@ -10,15 +10,21 @@
 	var/remaining_uses = 3
 
 /obj/item/soapstone/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	check_name()
 
 /obj/item/soapstone/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(remaining_uses != -1)
 		to_chat(user, "It has [remaining_uses] uses left.")
 
 /obj/item/soapstone/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	if(!proximity)
 		return
@@ -64,21 +70,29 @@
 			remove_use()
 
 /obj/item/soapstone/proc/can_use()
+	procstart = null
+	src.procstart = null
 	return remaining_uses == -1 || remaining_uses >= 0
 
 /obj/item/soapstone/proc/remove_use()
+	procstart = null
+	src.procstart = null
 	if(remaining_uses <= 0)
 		return
 	remaining_uses--
 	check_name()
 
 /obj/item/soapstone/proc/refund_use()
+	procstart = null
+	src.procstart = null
 	if(remaining_uses == -1)
 		return
 	remaining_uses++
 	check_name()
 
 /obj/item/soapstone/proc/check_name()
+	procstart = null
+	src.procstart = null
 	if(remaining_uses)
 		// This will mess up RPG loot names, but w/e
 		name = initial(name)
@@ -99,6 +113,8 @@
 	remaining_uses = 0
 
 /proc/good_chisel_message_location(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		. = FALSE
 	else if(!(isfloorturf(T) || iswallturf(T)))
@@ -129,6 +145,8 @@
 	var/turf/original_turf
 
 /obj/structure/chisel_message/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSpersistence.chisel_messages += src
 	var/turf/T = get_turf(src)
@@ -139,6 +157,8 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/structure/chisel_message/proc/register(mob/user, newmessage)
+	procstart = null
+	src.procstart = null
 	hidden_message = newmessage
 	creator_name = user.real_name
 	creator_key = user.ckey
@@ -147,6 +167,8 @@
 	update_icon()
 
 /obj/structure/chisel_message/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	var/hash = md5(hidden_message)
 	var/newcolor = copytext(hash, 1, 7)
@@ -155,6 +177,8 @@
 	set_light(1)
 
 /obj/structure/chisel_message/proc/pack()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["hidden_message"] = hidden_message
 	data["creator_name"] = creator_name
@@ -169,6 +193,8 @@
 	return data
 
 /obj/structure/chisel_message/proc/unpack(list/data)
+	procstart = null
+	src.procstart = null
 	if(!islist(data))
 		return
 
@@ -192,10 +218,14 @@
 	update_icon()
 
 /obj/structure/chisel_message/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='warning'>[hidden_message]</span>")
 
 /obj/structure/chisel_message/Destroy()
+	procstart = null
+	src.procstart = null
 	if(persists)
 		SSpersistence.SaveChiselMessage(src)
 	SSpersistence.chisel_messages -= src
@@ -203,12 +233,16 @@
 
 /obj/structure/chisel_message/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.always_state)
 
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "engraved_message", name, 600, 300, master_ui, state)
 		ui.open()
 
 /obj/structure/chisel_message/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["hidden_message"] = hidden_message
@@ -227,6 +261,8 @@
 	return data
 
 /obj/structure/chisel_message/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	var/mob/user = usr
 	var/is_admin = check_rights_for(user.client, R_ADMIN)
 	var/is_creator = user.ckey == creator_key

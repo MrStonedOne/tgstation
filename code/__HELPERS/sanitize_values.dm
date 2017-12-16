@@ -1,5 +1,7 @@
 //general stuff
 /proc/sanitize_integer(number, min=0, max=1, default=0)
+	procstart = null
+	src.procstart = null
 	if(isnum(number))
 		number = round(number)
 		if(min <= number && number <= max)
@@ -7,11 +9,15 @@
 	return default
 
 /proc/sanitize_text(text, default="")
+	procstart = null
+	src.procstart = null
 	if(istext(text))
 		return text
 	return default
 
 /proc/sanitize_inlist(value, list/List, default)
+	procstart = null
+	src.procstart = null
 	if(value in List)
 		return value
 	if(default)
@@ -23,6 +29,8 @@
 
 //more specialised stuff
 /proc/sanitize_gender(gender,neuter=0,plural=0, default="male")
+	procstart = null
+	src.procstart = null
 	switch(gender)
 		if(MALE, FEMALE)
 			return gender
@@ -39,6 +47,8 @@
 	return default
 
 /proc/sanitize_hexcolor(color, desired_format=3, include_crunch=0, default)
+	procstart = null
+	src.procstart = null
 	var/crunch = include_crunch ? "#" : ""
 	if(!istext(color))
 		color = ""
@@ -68,6 +78,8 @@
 	return crunch + .
 
 /proc/sanitize_ooccolor(color)
+	procstart = null
+	src.procstart = null
 	var/list/HSL = rgb2hsl(hex2num(copytext(color,2,4)),hex2num(copytext(color,4,6)),hex2num(copytext(color,6,8)))
 	HSL[3] = min(HSL[3],0.4)
 	var/list/RGB = hsl2rgb(arglist(HSL))

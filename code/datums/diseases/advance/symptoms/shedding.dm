@@ -28,6 +28,8 @@ BONUS
 	symptom_delay_max = 90
 
 /datum/symptom/shedding/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -47,6 +49,8 @@ BONUS
 					addtimer(CALLBACK(src, .proc/Shed, H, TRUE), 50)
 
 /datum/symptom/shedding/proc/Shed(mob/living/carbon/human/H, fullbald)
+	procstart = null
+	src.procstart = null
 	if(fullbald)
 		H.facial_hair_style = "Shaved"
 		H.hair_style = "Bald"

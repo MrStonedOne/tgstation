@@ -8,15 +8,21 @@ PROCESSING_SUBSYSTEM_DEF(flightpacks)
 	var/flightsuit_processing = FLIGHTSUIT_PROCESSING_FULL
 
 /datum/controller/subsystem/processing/flightpacks/Initialize()
+	procstart = null
+	src.procstart = null
 	sync_flightsuit_processing()
 
 /datum/controller/subsystem/processing/flightpacks/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(var_name)
 		if("flightsuit_processing")
 			sync_flightsuit_processing()
 
 /datum/controller/subsystem/processing/flightpacks/proc/sync_flightsuit_processing()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/device/flightpack/FP in processing)
 		FP.sync_processing(src)
 	if(flightsuit_processing == FLIGHTSUIT_PROCESSING_NONE)	//Don't even bother firing.

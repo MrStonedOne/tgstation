@@ -7,6 +7,8 @@
 	return 1
 
 /turf/closed/wall/proc/checkForMultipleDoors()
+	procstart = null
+	src.procstart = null
 	if(!src.loc)
 		return 0
 	for(var/obj/machinery/door/D in locate(src.x,src.y,src.z))

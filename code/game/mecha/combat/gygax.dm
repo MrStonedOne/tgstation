@@ -28,6 +28,8 @@
 	max_equip = 4
 
 /obj/mecha/combat/gygax/dark/loaded/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/carbine
 	ME.attach(src)
@@ -40,6 +42,8 @@
 	return
 
 /obj/mecha/combat/gygax/dark/add_cell(obj/item/stock_parts/cell/C=null)
+	procstart = null
+	src.procstart = null
 	if(C)
 		C.forceMove(src)
 		cell = C
@@ -48,19 +52,27 @@
 
 
 /obj/mecha/combat/gygax/GrantActions(mob/living/user, human_occupant = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	overload_action.Grant(user, src)
 
 /obj/mecha/combat/gygax/dark/GrantActions(mob/living/user, human_occupant = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	thrusters_action.Grant(user, src)
 
 
 /obj/mecha/combat/gygax/RemoveActions(mob/living/user, human_occupant = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	overload_action.Remove(user)
 
 /obj/mecha/combat/gygax/dark/RemoveActions(mob/living/user, human_occupant = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	thrusters_action.Remove(user)
 

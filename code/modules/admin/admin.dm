@@ -1,10 +1,14 @@
 
 ////////////////////////////////
 /proc/message_admins(msg)
+	procstart = null
+	src.procstart = null
 	msg = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[msg]</span></span>"
 	to_chat(GLOB.admins, msg)
 
 /proc/relay_msg_admins(msg)
+	procstart = null
+	src.procstart = null
 	msg = "<span class=\"admin\"><span class=\"prefix\">RELAY:</span> <span class=\"message\">[msg]</span></span>"
 	to_chat(GLOB.admins, msg)
 
@@ -12,6 +16,8 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
 
 /datum/admins/proc/show_player_panel(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Show Player Panel"
 	set desc="Edit player (respawn, ban, heal, etc)"
@@ -385,6 +391,8 @@
 
 
 /datum/admins/proc/Game()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(0))
 		return
 
@@ -414,6 +422,8 @@
 
 
 /datum/admins/proc/restart()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set name = "Reboot World"
 	set desc="Restarts the world immediately"
@@ -449,6 +459,8 @@
 					SERVER_TOOLS_REBOOT_BYOND
 
 /datum/admins/proc/end_round()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set name = "End Round"
 	set desc = "Attempts to produce a round end report and then restart the server organically."
@@ -464,6 +476,8 @@
 
 
 /datum/admins/proc/announce()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Announce"
 	set desc="Announce your desires to the world"
@@ -479,6 +493,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Announce") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/set_admin_notice()
+	procstart = null
+	src.procstart = null
 	set category = "Special Verbs"
 	set name = "Set Admin Notice"
 	set desc ="Set an announcement that appears to everyone who joins the server. Only lasts this round"
@@ -502,6 +518,8 @@
 	return
 
 /datum/admins/proc/toggleooc()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set desc="Toggle dis bitch"
 	set name="Toggle OOC"
@@ -511,6 +529,8 @@
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle OOC", "[GLOB.ooc_allowed ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/toggleoocdead()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set desc="Toggle dis bitch"
 	set name="Toggle Dead OOC"
@@ -521,6 +541,8 @@
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Dead OOC", "[GLOB.dooc_allowed ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/startnow()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set desc="Start the round RIGHT NOW"
 	set name="Start Now"
@@ -541,6 +563,8 @@
 	return 0
 
 /datum/admins/proc/toggleenter()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set desc="People can't enter"
 	set name="Toggle Entering"
@@ -555,6 +579,8 @@
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Entering", "[GLOB.enter_allowed ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/toggleAI()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set desc="People can't be AI"
 	set name="Toggle AI"
@@ -569,6 +595,8 @@
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle AI", "[!alai ? "Disabled" : "Enabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/toggleaban()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set desc="Respawn basically"
 	set name="Toggle Respawn"
@@ -584,6 +612,8 @@
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Respawn", "[!new_nores ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/delay()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set desc="Delay the game start"
 	set name="Delay pre-game"
@@ -603,6 +633,8 @@
 		SSblackbox.record_feedback("tally", "admin_verb", 1, "Delay Game Start") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/unprison(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Unprison"
 	if (M.z == ZLEVEL_CENTCOM)
@@ -616,6 +648,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////ADMIN HELPER PROCS
 
 /datum/admins/proc/spawn_atom(object as text)
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set desc = "(atom path) Spawn an atom"
 	set name = "Spawn"
@@ -638,6 +672,8 @@
 
 
 /datum/admins/proc/show_traitor_panel(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set desc = "Edit mobs's memory and role"
 	set name = "Show Traitor Panel"
@@ -654,6 +690,8 @@
 
 
 /datum/admins/proc/toggletintedweldhelmets()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set desc="Reduces view range when wearing welding helmets"
 	set name="Toggle tinted welding helmes"
@@ -667,6 +705,8 @@
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Tinted Welding Helmets", "[GLOB.tinted_weldhelh ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/toggleguests()
+	procstart = null
+	src.procstart = null
 	set category = "Server"
 	set desc="Guests can't enter"
 	set name="Toggle guests"
@@ -681,6 +721,8 @@
 	SSblackbox.record_feedback("nested tally", "admin_toggle", 1, list("Toggle Guests", "[!new_guest_ban ? "Enabled" : "Disabled"]")) //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/output_ai_laws()
+	procstart = null
+	src.procstart = null
 	var/ai_number = 0
 	for(var/i in GLOB.silicon_mobs)
 		var/mob/living/silicon/S = i
@@ -703,6 +745,8 @@
 		to_chat(usr, "<b>No AIs located</b>" )
 
 /datum/admins/proc/output_all_devil_info()
+	procstart = null
+	src.procstart = null
 	var/devil_number = 0
 	for(var/datum/mind/D in SSticker.mode.devils)
 		devil_number++
@@ -712,6 +756,8 @@
 		to_chat(usr, "<b>No Devils located</b>" )
 
 /datum/admins/proc/output_devil_info(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(is_devil(M))
 		var/datum/antagonist/devil/devil = M.mind.has_antag_datum(/datum/antagonist/devil)
 		to_chat(usr, devil.printdevilinfo())
@@ -719,6 +765,8 @@
 		to_chat(usr, "<b>[M] is not a devil.")
 
 /datum/admins/proc/manage_free_slots()
+	procstart = null
+	src.procstart = null
 	if(!check_rights())
 		return
 	var/dat = "<html><head><title>Manage Free Slots</title></head><body>"
@@ -758,6 +806,8 @@
 	usr << browse(dat, "window=players;size=375x[winheight]")
 
 /datum/admins/proc/create_or_modify_area()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Create or modify area"
 	create_area(usr)
@@ -776,6 +826,8 @@
 //defaults to kicking everyone (afk + non afk clients in the lobby)
 //returns a list of ckeys of the kicked clients
 /proc/kick_clients_in_lobby(message, kick_only_afk = 0)
+	procstart = null
+	src.procstart = null
 	var/list/kicked_client_names = list()
 	for(var/client/C in GLOB.clients)
 		if(isnewplayer(C.mob))
@@ -791,6 +843,8 @@
 //returns 0 if we don't plan to trap the event
 /datum/admins/proc/cmd_ghost_drag(mob/dead/observer/frommob, mob/living/tomob)
 
+	procstart = null
+	src.procstart = null
 	//this is the exact two check rights checks required to edit a ckey with vv.
 	if (!check_rights(R_VAREDIT,0) || !check_rights(R_SPAWN|R_DEBUG,0))
 		return 0
@@ -822,6 +876,8 @@
 	return 1
 
 /client/proc/adminGreet(logout)
+	procstart = null
+	src.procstart = null
 	if(SSticker.HasRoundStarted())
 		var/string
 		if(logout && CONFIG_GET(flag/announce_admin_logout))

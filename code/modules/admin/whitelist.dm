@@ -4,6 +4,8 @@ GLOBAL_LIST(whitelist)
 GLOBAL_PROTECT(whitelist)
 
 /proc/load_whitelist()
+	procstart = null
+	src.procstart = null
 	GLOB.whitelist = list()
 	for(var/line in world.file2list(WHITELISTFILE))
 		if(!line)
@@ -16,6 +18,8 @@ GLOBAL_PROTECT(whitelist)
 		GLOB.whitelist = null
 
 /proc/check_whitelist(var/ckey)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.whitelist)
 		return FALSE
 	. = (ckey in GLOB.whitelist)

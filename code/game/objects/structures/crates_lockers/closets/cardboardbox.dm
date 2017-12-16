@@ -19,6 +19,8 @@
 	var/egged = 0
 
 /obj/structure/closet/cardboard/relaymove(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	if(opened || move_delay || user.stat || user.IsStun() || user.IsKnockdown() || user.IsUnconscious() || !isturf(loc) || !has_gravity(loc))
 		return
 	move_delay = TRUE
@@ -28,9 +30,13 @@
 		ResetMoveDelay()
 
 /obj/structure/closet/cardboard/proc/ResetMoveDelay()
+	procstart = null
+	src.procstart = null
 	move_delay = FALSE
 
 /obj/structure/closet/cardboard/open()
+	procstart = null
+	src.procstart = null
 	if(opened || !can_open())
 		return 0
 	var/list/alerted = null
@@ -52,6 +58,8 @@
 		playsound(loc, 'sound/machines/chime.ogg', 50, FALSE, -5)
 
 /mob/living/proc/do_alert_animation(atom/A)
+	procstart = null
+	src.procstart = null
 	var/image/I = image('icons/obj/closet.dmi', A, "cardboard_special", A.layer+1)
 	flick_overlay_view(I, A, 8)
 	I.alpha = 0

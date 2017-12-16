@@ -18,9 +18,13 @@
 	var/shuttle_spawned = FALSE
 
 /datum/round_event/pirates/setup()
+	procstart = null
+	src.procstart = null
 	ship_name = pick(strings(PIRATE_NAMES_FILE, "ship_names"))
 
 /datum/round_event/pirates/announce()
+	procstart = null
+	src.procstart = null
 	priority_announce("Incoming subspace communication. Secure channel opened at all communication consoles.", "Incoming Message", 'sound/ai/commandreport.ogg')
 
 	if(!control) //Means this is false alarm, todo : explicit checks instead of using announceWhen
@@ -34,6 +38,8 @@
 	SScommunications.send_message(threat,unique = TRUE)
 
 /datum/round_event/pirates/proc/answered()
+	procstart = null
+	src.procstart = null
 	if(threat && threat.answered == 1)
 		if(SSshuttle.points >= payoff)
 			SSshuttle.points -= payoff
@@ -48,10 +54,14 @@
 
 
 /datum/round_event/pirates/start()
+	procstart = null
+	src.procstart = null
 	if(!paid_off && !shuttle_spawned)
 		spawn_shuttle()
 
 /datum/round_event/pirates/proc/spawn_shuttle()
+	procstart = null
+	src.procstart = null
 	shuttle_spawned = TRUE
 
 	var/list/candidates = pollGhostCandidates("Do you wish to be considered for pirate crew ?", ROLE_TRAITOR)
@@ -93,12 +103,16 @@
 	var/siphon_per_tick = 5
 
 /obj/machinery/shuttle_scrambler/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gps = new/obj/item/device/gps/internal/pirate(src)
 	gps.tracking = FALSE
 	update_icon()
 
 /obj/machinery/shuttle_scrambler/process()
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(z in GLOB.station_z_levels)
 			var/siphoned = min(SSshuttle.points,siphon_per_tick)
@@ -111,6 +125,8 @@
 		STOP_PROCESSING(SSobj,src)
 
 /obj/machinery/shuttle_scrambler/proc/toggle_on(mob/user)
+	procstart = null
+	src.procstart = null
 	SSshuttle.registerTradeBlockade(src)
 	gps.tracking = TRUE
 	active = TRUE
@@ -119,6 +135,8 @@
 	START_PROCESSING(SSobj,src)
 
 /obj/machinery/shuttle_scrambler/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(alert(user, "Turning the scrambler on will make the shuttle trackable by GPS. Are you sure you want to do it ?", "Scrambler", "Yes", "Cancel") == "Cancel")
 			return
@@ -132,6 +150,8 @@
 
 //interrupt_research
 /obj/machinery/shuttle_scrambler/proc/interrupt_research()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/rnd/server/S in GLOB.machines)
 		if(S.stat & (NOPOWER|BROKEN))
 			continue
@@ -139,6 +159,8 @@
 		new /obj/effect/temp_visual/emp(get_turf(S))
 
 /obj/machinery/shuttle_scrambler/proc/dump_loot(mob/user)
+	procstart = null
+	src.procstart = null
 	if(credits_stored < 200)
 		to_chat(user,"<span class='notice'>Not enough credits to retrieve.</span>")
 		return
@@ -149,21 +171,29 @@
 
 
 /obj/machinery/shuttle_scrambler/proc/send_notification()
+	procstart = null
+	src.procstart = null
 	priority_announce("Data theft signal detected, source registered on local gps units.")
 
 /obj/machinery/shuttle_scrambler/proc/toggle_off(mob/user)
+	procstart = null
+	src.procstart = null
 	SSshuttle.clearTradeBlockade(src)
 	gps.tracking = FALSE
 	active = FALSE
 	STOP_PROCESSING(SSobj,src)
 
 /obj/machinery/shuttle_scrambler/update_icon()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = "dominator-blue"
 	else
 		icon_state = "dominator"
 
 /obj/machinery/shuttle_scrambler/Destroy()
+	procstart = null
+	src.procstart = null
 	toggle_off()
 	QDEL_NULL(gps)
 	return ..()
@@ -202,20 +232,28 @@
 	var/engine_cooldown = 3 MINUTES
 
 /obj/docking_port/mobile/pirate/getStatusText()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(engines_cooling)
 		return "[.] - Engines cooling."
 
 /obj/docking_port/mobile/pirate/dock(obj/docking_port/stationary/new_dock, movement_direction, force=FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == DOCKING_SUCCESS && new_dock.z != ZLEVEL_TRANSIT)
 		engines_cooling = TRUE
 		addtimer(CALLBACK(src,.proc/reset_cooldown),engine_cooldown,TIMER_UNIQUE)
 
 /obj/docking_port/mobile/pirate/proc/reset_cooldown()
+	procstart = null
+	src.procstart = null
 	engines_cooling = FALSE
 
 /obj/docking_port/mobile/pirate/canMove()
+	procstart = null
+	src.procstart = null
 	if(engines_cooling)
 		return FALSE
 	return ..()
@@ -237,6 +275,8 @@
 	var/result_count = 3 //Show X results.
 
 /obj/machinery/proc/display_current_value()
+	procstart = null
+	src.procstart = null
 	var/area/current = get_area(src)
 	var/value = 0
 	for(var/turf/T in current.contents)
@@ -244,6 +284,8 @@
 	say("Current vault value : [value] credits.")
 
 /obj/machinery/loot_locator/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(world.time <= cooldown)
 		to_chat(user,"<span class='warning'>[src] is recharging.</span>")
 		return

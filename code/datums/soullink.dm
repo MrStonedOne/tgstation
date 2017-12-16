@@ -5,6 +5,8 @@
 	var/list/sharedSoullinks //soullinks we are a/the sharer of
 
 /mob/living/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/s in ownedSoullinks)
 		var/datum/soullink/S = s
 		S.ownerDies(FALSE)
@@ -30,6 +32,8 @@
 	var/id //Optional ID, for tagging and finding specific instances
 
 /datum/soullink/Destroy()
+	procstart = null
+	src.procstart = null
 	if(soulowner)
 		LAZYREMOVE(soulowner.ownedSoullinks, src)
 		soulowner = null
@@ -39,6 +43,8 @@
 	return ..()
 
 /datum/soullink/proc/removeSoulsharer(mob/living/sharer)
+	procstart = null
+	src.procstart = null
 	if(soulsharer == sharer)
 		soulsharer = null
 		LAZYREMOVE(sharer.sharedSoullinks, src)
@@ -47,6 +53,8 @@
 //Override this to create more unique soullinks (Eg: 1->Many relationships)
 //Return TRUE/FALSE to return the soullink/null in soullink()
 /datum/soullink/proc/parseArgs(mob/living/owner, mob/living/sharer)
+	procstart = null
+	src.procstart = null
 	if(!owner || !sharer)
 		return FALSE
 	soulowner = owner
@@ -65,6 +73,8 @@
 
 //Quick-use helper
 /proc/soullink(typepath, ...)
+	procstart = null
+	src.procstart = null
 	var/datum/soullink/S = new typepath()
 	if(S.parseArgs(arglist(args.Copy(2, 0))))
 		return S
@@ -79,6 +89,8 @@
 	var/list/soulsharers
 
 /datum/soullink/multisharer/parseArgs(mob/living/owner, list/sharers)
+	procstart = null
+	src.procstart = null
 	if(!owner || !LAZYLEN(sharers))
 		return FALSE
 	soulowner = owner
@@ -90,6 +102,8 @@
 	return TRUE
 
 /datum/soullink/multisharer/removeSoulsharer(mob/living/sharer)
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(soulsharers, sharer)
 
 
@@ -101,10 +115,14 @@
 //This is intended for two players(or AI) and two mobs
 
 /datum/soullink/sharedfate/ownerDies(gibbed, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(soulsharer)
 		soulsharer.death(gibbed)
 
 /datum/soullink/sharedfate/sharerDies(gibbed, mob/living/sharer)
+	procstart = null
+	src.procstart = null
 	if(soulowner)
 		soulowner.death(gibbed)
 
@@ -115,6 +133,8 @@
 //This is intended for two players(or AI) and two mobs
 
 /datum/soullink/oneway/ownerDies(gibbed, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(soulsharer)
 		soulsharer.dust(FALSE)
 
@@ -127,12 +147,16 @@
 //This one is intended for one player moving between many mobs
 
 /datum/soullink/sharedbody/ownerDies(gibbed, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(soulowner && soulsharer)
 		if(soulsharer.mind)
 			soulsharer.mind.transfer_to(soulowner)
 		soulsharer.death(gibbed)
 
 /datum/soullink/sharedbody/sharerDies(gibbed, mob/living/sharer)
+	procstart = null
+	src.procstart = null
 	if(soulowner && soulsharer && soulsharer.mind)
 		soulsharer.mind.transfer_to(soulowner)
 
@@ -146,6 +170,8 @@
 //Gibbing ends it immediately
 
 /datum/soullink/multisharer/replacementpool/ownerDies(gibbed, mob/living/owner)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(soulsharers) && !gibbed) //let's not put them in some gibs
 		var/list/souls = shuffle(soulsharers.Copy())
 		for(var/l in souls)
@@ -157,4 +183,6 @@
 
 //Lose your claim to the throne!
 /datum/soullink/multisharer/replacementpool/sharerDies(gibbed, mob/living/sharer)
+	procstart = null
+	src.procstart = null
 	removeSoulsharer(sharer)

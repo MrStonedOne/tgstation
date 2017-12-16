@@ -12,15 +12,21 @@
 	var/last_change = 0
 
 /datum/stockEvent/process()
+	procstart = null
+	src.procstart = null
 	if (finished)
 		return
 	if (world.time > next_phase)
 		transition()
 
 /datum/stockEvent/proc/transition()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/stockEvent/proc/spacetime(var/ticks)
+	procstart = null
+	src.procstart = null
 	var/seconds = round(ticks / 10)
 	var/minutes = round(seconds / 60)
 	seconds -= minutes * 60
@@ -33,6 +39,8 @@
 	var/effect = 0
 
 /datum/stockEvent/product/New(var/datum/stock/S)
+	procstart = null
+	src.procstart = null
 	company = S
 	var/mins = rand(5*TIME_MULTIPLIER,20*TIME_MULTIPLIER)
 	next_phase = mins * (600*TIME_MULTIPLIER) + world.time
@@ -42,6 +50,8 @@
 
 
 /datum/stockEvent/product/transition()
+	procstart = null
+	src.procstart = null
 	last_change = world.time
 	switch (phase_id)
 		if (0)
@@ -69,6 +79,8 @@
 	var/bailout_millions = 0
 
 /datum/stockEvent/bankruptcy/New(var/datum/stock/S)
+	procstart = null
+	src.procstart = null
 	hidden = 1
 	company = S
 	var/mins = rand(9*TIME_MULTIPLIER,60*TIME_MULTIPLIER)
@@ -79,6 +91,8 @@
 	S.addEvent(src)
 
 /datum/stockEvent/bankruptcy/transition()
+	procstart = null
+	src.procstart = null
 	switch (phase_id)
 		if (0)
 			next_phase = world.time + rand(300*TIME_MULTIPLIER, 600*TIME_MULTIPLIER) * (10*TIME_MULTIPLIER)
@@ -119,6 +133,8 @@
 			company.generateEvent(type)
 
 /datum/stockEvent/bankruptcy/proc/generateBankruptcyArticle()
+	procstart = null
+	src.procstart = null
 	var/datum/article/A = new
 	var/list/bankrupt_reason = list("investor pessimism", "failure of product lines", "economic recession", "overblown inflation", "overblown deflation", "collapsed pyramid schemes", "a Ponzi scheme", "economic terrorism", "extreme hedonism", "unfavourable economic climate", "rampant government corruption", "divine conspiracy", "some total bullshit", "volatile plans")
 	A.about = company
@@ -148,6 +164,8 @@
 	var/effect = 0
 
 /datum/stockEvent/arrest/New(var/datum/stock/S)
+	procstart = null
+	src.procstart = null
 	hidden = 1
 	company = S
 	var/mins = rand(10*TIME_MULTIPLIER, 35*TIME_MULTIPLIER)
@@ -178,6 +196,8 @@
 	S.addEvent(src)
 
 /datum/stockEvent/arrest/transition()
+	procstart = null
+	src.procstart = null
 	switch (phase_id)
 		if (0)
 			tname = "[female ? pick(GLOB.first_names_female) : pick(GLOB.first_names_male)] [pick(GLOB.last_names)]"
@@ -205,6 +225,8 @@
 			company.generateEvent(type)
 
 /datum/stockEvent/arrest/proc/generateArrestArticle()
+	procstart = null
+	src.procstart = null
 	var/datum/article/A = new
 	A.about = company
 	A.headline = company.industry.detokenize(pick( \

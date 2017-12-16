@@ -17,6 +17,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/num2text/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/incoming = get_pin_data(IC_INPUT, 1)
@@ -38,6 +40,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/text2num/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/incoming = get_pin_data(IC_INPUT, 1)
@@ -57,6 +61,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/ref2text/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/atom/A = get_pin_data(IC_INPUT, 1)
@@ -76,6 +82,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/refcode/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/atom/A = get_pin_data(IC_INPUT, 1)
@@ -96,6 +104,8 @@
 	var/dec
 
 /obj/item/integrated_circuit/converter/refdecode/do_work()
+	procstart = null
+	src.procstart = null
 	pull_data()
 	dec=XorEncrypt(hextostr(get_pin_data(IC_INPUT, 1)),SScircuit.cipherkey)
 	set_pin_data(IC_OUTPUT, 1, WEAKREF(locate( dec )))
@@ -111,6 +121,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/lowercase/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/incoming = get_pin_data(IC_INPUT, 1)
@@ -130,6 +142,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/uppercase/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/incoming = get_pin_data(IC_INPUT, 1)
@@ -159,6 +173,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/concatenator/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	for(var/datum/integrated_io/I in inputs)
 		I.pull_data()
@@ -189,6 +205,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/separator/do_work()
+	procstart = null
+	src.procstart = null
 	var/text = get_pin_data(IC_INPUT, 1)
 	var/index = get_pin_data(IC_INPUT, 2)
 
@@ -223,6 +241,8 @@
 
 /obj/item/integrated_circuit/converter/findstring/do_work()
 
+	procstart = null
+	src.procstart = null
 	set_pin_data(IC_OUTPUT, 1, findtext(get_pin_data(IC_INPUT, 1),get_pin_data(IC_INPUT, 2)) )
 	push_data()
 
@@ -246,6 +266,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/exploders/do_work()
+	procstart = null
+	src.procstart = null
 	var/strin = get_pin_data(IC_INPUT, 1)
 	var/delimiter = get_pin_data(IC_INPUT, 2)
 	set_pin_data(IC_OUTPUT, 1, splittext(strin, delimiter))
@@ -261,6 +283,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/radians2degrees/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/incoming = get_pin_data(IC_INPUT, 1)
@@ -279,6 +303,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/degrees2radians/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/incoming = get_pin_data(IC_INPUT, 1)
@@ -308,6 +334,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/abs_to_rel_coords/do_work()
+	procstart = null
+	src.procstart = null
 	var/x1 = get_pin_data(IC_INPUT, 1)
 	var/y1 = get_pin_data(IC_INPUT, 2)
 
@@ -335,6 +363,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/hsv2hex/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/hue = get_pin_data(IC_INPUT, 1)
@@ -361,6 +391,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/converter/rgb2hex/do_work()
+	procstart = null
+	src.procstart = null
 	var/result = null
 	pull_data()
 	var/red = get_pin_data(IC_INPUT, 1)

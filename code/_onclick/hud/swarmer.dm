@@ -9,6 +9,8 @@
 	desc = "Creates a trap that will nonlethally shock any non-swarmer that attempts to cross it. (Costs 5 resources)"
 
 /obj/screen/swarmer/FabricateTrap/Click()
+	procstart = null
+	src.procstart = null
 	if(isswarmer(usr))
 		var/mob/living/simple_animal/hostile/swarmer/S = usr
 		S.CreateTrap()
@@ -19,6 +21,8 @@
 	desc = "Creates a destructible barricade that will stop any non swarmer from passing it. Also allows disabler beams to pass through. (Costs 5 resources)"
 
 /obj/screen/swarmer/Barricade/Click()
+	procstart = null
+	src.procstart = null
 	if(isswarmer(usr))
 		var/mob/living/simple_animal/hostile/swarmer/S = usr
 		S.CreateBarricade()
@@ -29,6 +33,8 @@
 	desc = "Creates another of our kind."
 
 /obj/screen/swarmer/Replicate/Click()
+	procstart = null
+	src.procstart = null
 	if(isswarmer(usr))
 		var/mob/living/simple_animal/hostile/swarmer/S = usr
 		S.CreateSwarmer()
@@ -39,6 +45,8 @@
 	desc = "Repairs damage to our body."
 
 /obj/screen/swarmer/RepairSelf/Click()
+	procstart = null
+	src.procstart = null
 	if(isswarmer(usr))
 		var/mob/living/simple_animal/hostile/swarmer/S = usr
 		S.RepairSelf()
@@ -49,6 +57,8 @@
 	desc = "Toggles our inbuilt light on or off."
 
 /obj/screen/swarmer/ToggleLight/Click()
+	procstart = null
+	src.procstart = null
 	if(isswarmer(usr))
 		var/mob/living/simple_animal/hostile/swarmer/S = usr
 		S.ToggleLight()
@@ -59,11 +69,15 @@
 	desc = "Sends a message to all other swarmers, should they exist."
 
 /obj/screen/swarmer/ContactSwarmers/Click()
+	procstart = null
+	src.procstart = null
 	if(isswarmer(usr))
 		var/mob/living/simple_animal/hostile/swarmer/S = usr
 		S.ContactSwarmers()
 
 /datum/hud/swarmer/New(mob/owner)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/screen/using
 
@@ -93,5 +107,7 @@
 
 
 /mob/living/simple_animal/hostile/swarmer/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/swarmer(src)

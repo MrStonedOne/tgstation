@@ -37,6 +37,8 @@
 	holder = null
 
 /datum/reagent/proc/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message = 1, touch_protection = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return 0
 	if(method == VAPOR) //smoke, foam, spray
@@ -48,71 +50,105 @@
 	return 1
 
 /datum/reagent/proc/reaction_obj(obj/O, volume)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/reagent/proc/reaction_turf(turf/T, volume)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/reagent/proc/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	current_cycle++
 	holder.remove_reagent(src.id, metabolization_rate * M.metabolism_efficiency) //By default it slowly disappears.
 	return
 
 // Called when this reagent is first added to a mob
 /datum/reagent/proc/on_mob_add(mob/M)
+	procstart = null
+	src.procstart = null
 	return
 
 // Called when this reagent is removed while inside a mob
 /datum/reagent/proc/on_mob_delete(mob/M)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/reagent/proc/on_move(mob/M)
+	procstart = null
+	src.procstart = null
 	return
 
 // Called after add_reagents creates a new reagent.
 /datum/reagent/proc/on_new(data)
+	procstart = null
+	src.procstart = null
 	return
 
 // Called when two reagents of the same are mixing.
 /datum/reagent/proc/on_merge(data)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/reagent/proc/on_update(atom/A)
+	procstart = null
+	src.procstart = null
 	return
 
 // Called when the reagent container is hit by an explosion
 /datum/reagent/proc/on_ex_act(severity)
+	procstart = null
+	src.procstart = null
 	return
 
 // Called if the reagent has passed the overdose threshold and is set to be triggering overdose effects
 /datum/reagent/proc/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/reagent/proc/overdose_start(mob/living/M)
+	procstart = null
+	src.procstart = null
 	to_chat(M, "<span class='userdanger'>You feel like you took too much of [name]!</span>")
 	return
 
 /datum/reagent/proc/addiction_act_stage1(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(30))
 		to_chat(M, "<span class='notice'>You feel like some [name] right about now.</span>")
 	return
 
 /datum/reagent/proc/addiction_act_stage2(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(30))
 		to_chat(M, "<span class='notice'>You feel like you need [name]. You just can't get enough.</span>")
 	return
 
 /datum/reagent/proc/addiction_act_stage3(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(30))
 		to_chat(M, "<span class='danger'>You have an intense craving for [name].</span>")
 	return
 
 /datum/reagent/proc/addiction_act_stage4(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(30))
 		to_chat(M, "<span class='boldannounce'>You're not feeling good at all! You really need some [name].</span>")
 	return
 
 /proc/pretty_string_from_reagent_list(var/list/reagent_list)
+	procstart = null
+	src.procstart = null
 	//Convert reagent list to a printable string for logging etc
 	var/result = "| "
 	for (var/datum/reagent/R in reagent_list)

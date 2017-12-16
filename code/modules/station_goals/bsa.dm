@@ -6,6 +6,8 @@
 	name = "Bluespace Artillery"
 
 /datum/station_goal/bluespace_cannon/get_report()
+	procstart = null
+	src.procstart = null
 	return {"Our military presence is inadequate in your sector.
 	 We need you to construct BSA-[rand(1,99)] Artillery position aboard your station.
 
@@ -13,11 +15,15 @@
 	 -Nanotrasen Naval Command"}
 
 /datum/station_goal/bluespace_cannon/on_report()
+	procstart = null
+	src.procstart = null
 	//Unlock BSA parts
 	var/datum/supply_pack/misc/bsa/P = SSshuttle.supply_packs[/datum/supply_pack/misc/bsa]
 	P.special_enabled = TRUE
 
 /datum/station_goal/bluespace_cannon/check_completion()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	var/obj/machinery/bsa/full/B = locate()
@@ -36,6 +42,8 @@
 	icon_state = "power_box"
 
 /obj/machinery/bsa/back/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		var/obj/item/device/multitool/M = W
 		M.buffer = src
@@ -52,6 +60,8 @@
 	icon_state = "emitter_center"
 
 /obj/machinery/bsa/front/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		var/obj/item/device/multitool/M = W
 		M.buffer = src
@@ -70,6 +80,8 @@
 	var/obj/machinery/bsa/front/front
 
 /obj/machinery/bsa/middle/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		var/obj/item/device/multitool/M = W
 		if(M.buffer)
@@ -88,6 +100,8 @@
 		return ..()
 
 /obj/machinery/bsa/middle/proc/check_completion()
+	procstart = null
+	src.procstart = null
 	if(!front || !back)
 		return "No linked parts detected!"
 	if(!front.anchored || !back.anchored || !anchored)
@@ -98,6 +112,8 @@
 		return "Not enough free space!"
 
 /obj/machinery/bsa/middle/proc/has_space()
+	procstart = null
+	src.procstart = null
 	var/cannon_dir = get_cannon_direction()
 	var/x_min
 	var/x_max
@@ -115,6 +131,8 @@
 	return TRUE
 
 /obj/machinery/bsa/middle/proc/get_cannon_direction()
+	procstart = null
+	src.procstart = null
 	if(front.x > x && back.x < x)
 		return EAST
 	else if(front.x < x && back.x > x)
@@ -137,6 +155,8 @@
 	appearance_flags = NONE //Removes default TILE_BOUND
 
 /obj/machinery/bsa/full/proc/get_front_turf()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(WEST)
 			return locate(x - 6,y,z)
@@ -145,6 +165,8 @@
 	return get_turf(src)
 
 /obj/machinery/bsa/full/proc/get_back_turf()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(WEST)
 			return locate(x + 4,y,z)
@@ -153,6 +175,8 @@
 	return get_turf(src)
 
 /obj/machinery/bsa/full/proc/get_target_turf()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(WEST)
 			return locate(1,y,z)
@@ -161,6 +185,8 @@
 	return get_turf(src)
 
 /obj/machinery/bsa/full/Initialize(mapload, cannon_direction = WEST)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	top_layer = top_layer || mutable_appearance(icon, layer = ABOVE_MOB_LAYER)
 	switch(cannon_direction)
@@ -177,6 +203,8 @@
 	reload()
 
 /obj/machinery/bsa/full/proc/fire(mob/user, turf/bullseye)
+	procstart = null
+	src.procstart = null
 	var/turf/point = get_front_turf()
 	for(var/turf/T in getline(get_step(point,dir),get_target_turf()))
 		T.ex_act(EXPLODE_DEVASTATE)
@@ -188,11 +216,15 @@
 	reload()
 
 /obj/machinery/bsa/full/proc/reload()
+	procstart = null
+	src.procstart = null
 	ready = FALSE
 	use_power(power_used_per_shot)
 	addtimer(CALLBACK(src,"ready_cannon"),600)
 
 /obj/machinery/bsa/full/proc/ready_cannon()
+	procstart = null
+	src.procstart = null
 	ready = TRUE
 
 /obj/structure/filler
@@ -203,6 +235,8 @@
 	var/obj/machinery/parent
 
 /obj/structure/filler/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/computer/bsa_control
@@ -224,6 +258,8 @@
 		ui.open()
 
 /obj/machinery/computer/bsa_control/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["ready"] = cannon ? cannon.ready : FALSE
 	data["connected"] = cannon
@@ -234,6 +270,8 @@
 	return data
 
 /obj/machinery/computer/bsa_control/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -249,6 +287,8 @@
 	update_icon()
 
 /obj/machinery/computer/bsa_control/proc/calibrate(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/gps_locators = list()
 	for(var/obj/item/device/gps/G in GLOB.GPS_list) //nulls on the list somehow
 		gps_locators[G.gpstag] = G
@@ -261,6 +301,8 @@
 
 
 /obj/machinery/computer/bsa_control/proc/get_target_name()
+	procstart = null
+	src.procstart = null
 	if(istype(target, /area))
 		var/area/A = target
 		return A.name
@@ -269,12 +311,16 @@
 		return G.gpstag
 
 /obj/machinery/computer/bsa_control/proc/get_impact_turf()
+	procstart = null
+	src.procstart = null
 	if(istype(target, /area))
 		return pick(get_area_turfs(target))
 	else if(istype(target, /obj/item/device/gps))
 		return get_turf(target)
 
 /obj/machinery/computer/bsa_control/proc/fire(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cannon.stat)
 		notice = "Cannon unpowered!"
 		return
@@ -282,6 +328,8 @@
 	cannon.fire(user, get_impact_turf())
 
 /obj/machinery/computer/bsa_control/proc/deploy(force=FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/bsa/full/prebuilt = locate() in range(7) //In case of adminspawn
 	if(prebuilt)
 		return prebuilt

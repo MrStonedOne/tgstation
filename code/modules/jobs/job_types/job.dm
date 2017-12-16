@@ -51,16 +51,22 @@
 //Only override this proc
 //H is usually a human unless an /equip override transformed it
 /datum/job/proc/after_spawn(mob/living/H, mob/M)
+	procstart = null
+	src.procstart = null
 	//do actions on H but send messages to M as the key may not have been transferred_yet
 
 
 /datum/job/proc/announce(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(head_announce)
 		announce_head(H, head_announce)
 
 
 //Don't override this unless the job transforms into a non-human (Silicons do this for example)
 /datum/job/proc/equip(mob/living/carbon/human/H, visualsOnly = FALSE, announce = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!H)
 		return 0
 
@@ -82,6 +88,8 @@
 		announce(H)
 
 /datum/job/proc/get_access()
+	procstart = null
+	src.procstart = null
 	if(!config)	//Needed for robots.
 		return src.minimal_access.Copy()
 
@@ -102,12 +110,16 @@
 
 //If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/job/proc/player_old_enough(client/C)
+	procstart = null
+	src.procstart = null
 	if(available_in_days(C) == 0)
 		return 1	//Available in 0 days = available right now = player is old enough to play.
 	return 0
 
 
 /datum/job/proc/available_in_days(client/C)
+	procstart = null
+	src.procstart = null
 	if(!C)
 		return 0
 	if(!CONFIG_GET(flag/use_age_restriction_for_jobs))
@@ -120,9 +132,13 @@
 	return max(0, minimal_player_age - C.player_age)
 
 /datum/job/proc/config_check()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /datum/job/proc/map_check()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
@@ -146,6 +162,8 @@
 	var/pda_slot = slot_belt
 
 /datum/outfit/job/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	switch(H.backbag)
 		if(GBACKPACK)
 			back = /obj/item/storage/backpack //Grey backpack
@@ -169,6 +187,8 @@
 		backpack_contents[box] = 1
 
 /datum/outfit/job/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	if(visualsOnly)
 		return
 

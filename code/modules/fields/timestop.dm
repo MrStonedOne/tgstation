@@ -31,11 +31,15 @@
 		timestop()
 
 /obj/effect/timestop/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(chronofield)
 	playsound(src, 'sound/magic/timeparadox2.ogg', 75, TRUE, frequency = -1) //reverse!
 	return ..()
 
 /obj/effect/timestop/proc/timestop()
+	procstart = null
+	src.procstart = null
 	target = get_turf(src)
 	playsound(src, 'sound/magic/timeparadox2.ogg', 75, 1, -1)
 	chronofield = make_field(/datum/proximity_monitor/advanced/timestop, list("current_range" = freezerange, "host" = src, "immune" = immune))
@@ -55,13 +59,19 @@
 	var/list/atom/movable/frozen_throws = list()
 
 /datum/proximity_monitor/advanced/timestop/Destroy()
+	procstart = null
+	src.procstart = null
 	unfreeze_all()
 	return ..()
 
 /datum/proximity_monitor/advanced/timestop/field_turf_crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	freeze_atom(AM)
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_atom(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(immune[A] || !istype(A))
 		return FALSE
 	if(A.throwing)
@@ -75,6 +85,8 @@
 	return TRUE
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_all()
+	procstart = null
+	src.procstart = null
 	for(var/i in frozen_projectiles)
 		unfreeze_projectile(i)
 	for(var/i in frozen_mobs)
@@ -83,16 +95,22 @@
 		unfreeze_throw(i)
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_throwing(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/datum/thrownthing/T = AM.throwing
 	T.paused = TRUE
 	frozen_throws[AM] = T
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_throw(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/datum/thrownthing/T = frozen_throws[AM]
 	T.paused = FALSE
 	frozen_throws -= AM
 
 /datum/proximity_monitor/advanced/timestop/process()
+	procstart = null
+	src.procstart = null
 	for(var/i in frozen_mobs)
 		var/mob/living/m = i
 		if(get_dist(get_turf(m), get_turf(host)) > current_range)
@@ -101,19 +119,27 @@
 			m.Stun(20, 1, 1)
 
 /datum/proximity_monitor/advanced/timestop/setup_field_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	for(var/i in T.contents)
 		freeze_atom(i)
 	return ..()
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_projectile(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	frozen_projectiles -= P
 	P.paused = FALSE
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_projectile(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	frozen_projectiles[P] = TRUE
 	P.paused = TRUE
 
 /datum/proximity_monitor/advanced/timestop/proc/freeze_mob(mob/living/L)
+	procstart = null
+	src.procstart = null
 	L.Stun(20, 1, 1)
 	frozen_mobs[L] = L.anchored
 	L.anchored = TRUE
@@ -123,6 +149,8 @@
 		H.LoseTarget()
 
 /datum/proximity_monitor/advanced/timestop/proc/unfreeze_mob(mob/living/L)
+	procstart = null
+	src.procstart = null
 	L.AdjustStun(-20, 1, 1)
 	L.anchored = frozen_mobs[L]
 	frozen_mobs -= L

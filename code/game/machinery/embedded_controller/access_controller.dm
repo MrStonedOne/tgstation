@@ -14,19 +14,29 @@
 	var/idSelf
 
 /obj/machinery/doorButtons/attackby(obj/O, mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/machinery/doorButtons/proc/findObjsByTag()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/doorButtons/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/doorButtons/LateInitialize()
+	procstart = null
+	src.procstart = null
 	findObjsByTag()
 
 /obj/machinery/doorButtons/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
@@ -49,6 +59,8 @@
 	var/busy
 
 /obj/machinery/doorButtons/access_button/findObjsByTag()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/doorButtons/airlock_controller/A in GLOB.machines)
 		if(A.idSelf == idSelf)
 			controller = A
@@ -59,6 +71,8 @@
 			break
 
 /obj/machinery/doorButtons/access_button/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(busy)
@@ -86,6 +100,8 @@
 		update_icon()
 
 /obj/machinery/doorButtons/access_button/update_icon()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		icon_state = "access_button_off"
 	else
@@ -95,10 +111,14 @@
 			icon_state = "access_button_standby"
 
 /obj/machinery/doorButtons/access_button/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/doorButtons/access_button/removeMe(obj/O)
+	procstart = null
+	src.procstart = null
 	if(O == door)
 		door = null
 
@@ -117,18 +137,24 @@
 	var/lostPower
 
 /obj/machinery/doorButtons/airlock_controller/removeMe(obj/O)
+	procstart = null
+	src.procstart = null
 	if(O == interiorAirlock)
 		interiorAirlock = null
 	else if(O == exteriorAirlock)
 		exteriorAirlock = null
 
 /obj/machinery/doorButtons/airlock_controller/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/doorButtons/access_button/A in GLOB.machines)
 		if(A.controller == src)
 			A.controller = null
 	return ..()
 
 /obj/machinery/doorButtons/airlock_controller/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(busy)
@@ -151,17 +177,23 @@
 			onlyOpen(interiorAirlock)
 
 /obj/machinery/doorButtons/airlock_controller/proc/onlyOpen(obj/machinery/door/airlock/A)
+	procstart = null
+	src.procstart = null
 	if(A)
 		busy = CLOSING
 		update_icon()
 		openDoor(A)
 
 /obj/machinery/doorButtons/airlock_controller/proc/onlyClose(obj/machinery/door/airlock/A)
+	procstart = null
+	src.procstart = null
 	if(A)
 		busy = CLOSING
 		closeDoor(A)
 
 /obj/machinery/doorButtons/airlock_controller/proc/closeDoor(obj/machinery/door/airlock/A)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(A.density)
 		goIdle()
@@ -180,6 +212,8 @@
 		goIdle(1)
 
 /obj/machinery/doorButtons/airlock_controller/proc/cycleClose(obj/machinery/door/airlock/A)
+	procstart = null
+	src.procstart = null
 	if(!A || !exteriorAirlock || !interiorAirlock)
 		return
 	if(exteriorAirlock.density == interiorAirlock.density || !A.density)
@@ -194,6 +228,8 @@
 			busy = CYCLE_EXTERIOR
 
 /obj/machinery/doorButtons/airlock_controller/proc/cycleOpen(obj/machinery/door/airlock/A)
+	procstart = null
+	src.procstart = null
 	if(!A)
 		goIdle(1)
 	if(A == exteriorAirlock)
@@ -209,6 +245,8 @@
 		openDoor(A)
 
 /obj/machinery/doorButtons/airlock_controller/proc/openDoor(obj/machinery/door/airlock/A)
+	procstart = null
+	src.procstart = null
 	if(exteriorAirlock && interiorAirlock && (!exteriorAirlock.density || !interiorAirlock.density))
 		goIdle(1)
 		return
@@ -220,6 +258,8 @@
 		goIdle(1)
 
 /obj/machinery/doorButtons/airlock_controller/proc/goIdle(update)
+	procstart = null
+	src.procstart = null
 	lostPower = 0
 	busy = FALSE
 	if(update)
@@ -227,6 +267,8 @@
 	updateUsrDialog()
 
 /obj/machinery/doorButtons/airlock_controller/process()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		return
 	if(busy == CYCLE_EXTERIOR)
@@ -235,6 +277,8 @@
 		cycleOpen(interiorAirlock)
 
 /obj/machinery/doorButtons/airlock_controller/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & NOPOWER)
 		lostPower = 1
@@ -244,6 +288,8 @@
 	update_icon()
 
 /obj/machinery/doorButtons/airlock_controller/findObjsByTag()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/door/airlock/A in GLOB.machines)
 		if(A.id_tag == idInterior)
 			interiorAirlock = A
@@ -251,6 +297,8 @@
 			exteriorAirlock = A
 
 /obj/machinery/doorButtons/airlock_controller/update_icon()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		icon_state = "access_control_off"
 		return
@@ -260,6 +308,8 @@
 		icon_state = "access_control_standby"
 
 /obj/machinery/doorButtons/airlock_controller/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/datum/browser/popup = new(user, "computer", name)
@@ -268,6 +318,8 @@
 	popup.open()
 
 /obj/machinery/doorButtons/airlock_controller/proc/returnText()
+	procstart = null
+	src.procstart = null
 	var/output
 	if(!exteriorAirlock && !interiorAirlock)
 		return "ERROR ERROR ERROR ERROR"

@@ -22,9 +22,13 @@ Captain
 	minimal_access = list() 	//See get_access()
 
 /datum/job/captain/get_access()
+	procstart = null
+	src.procstart = null
 	return get_all_accesses()
 
 /datum/job/captain/announce(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, .proc/minor_announce, "Captain [H.real_name] on deck!"))
 

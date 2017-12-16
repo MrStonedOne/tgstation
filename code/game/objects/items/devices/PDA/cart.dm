@@ -50,6 +50,8 @@
 	var/list/botlist = list()
 
 /obj/item/cartridge/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/device/pda/pda = loc
 	if(istype(pda))
@@ -126,6 +128,8 @@
 	access = CART_REAGENT_SCANNER | CART_ATMOS
 
 /obj/item/cartridge/signal/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio = new(src)
 
@@ -175,6 +179,8 @@
 	bot_access_flags = FLOOR_BOT | CLEAN_BOT | MED_BOT
 
 /obj/item/cartridge/rd/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio = new(src)
 
@@ -187,11 +193,15 @@
 	spam_enabled = 1
 
 /obj/item/cartridge/captain/New()
+	procstart = null
+	src.procstart = null
 	..()
 	radio = new(src)
 
 /obj/item/cartridge/proc/post_status(command, data1, data2)
 
+	procstart = null
+	src.procstart = null
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)
@@ -209,6 +219,8 @@
 
 
 /obj/item/cartridge/proc/generate_menu(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!host_pda)
 		return
 	switch(host_pda.mode)
@@ -541,6 +553,8 @@ Code:
 	return menu
 
 /obj/item/cartridge/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if (!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
@@ -649,6 +663,8 @@ Code:
 /obj/item/cartridge/proc/bot_control()
 
 
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/bot/Bot
 
 	if(active_bot)
@@ -707,10 +723,14 @@ Code:
 
 //If the cartridge adds a special line to the top of the messaging app
 /obj/item/cartridge/proc/message_header()
+	procstart = null
+	src.procstart = null
 	return ""
 
 //If the cartridge adds something to each potetial messaging target
 /obj/item/cartridge/proc/message_special(obj/item/device/pda/target)
+	procstart = null
+	src.procstart = null
 	return ""
 
 //This is called for special abilities of cartridges

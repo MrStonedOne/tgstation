@@ -9,6 +9,8 @@
 	var/notices = 0
 
 /obj/structure/noticeboard/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!mapload)
@@ -24,6 +26,8 @@
 
 //attaching papers!!
 /obj/structure/noticeboard/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo))
 		if(!allowed(user))
 			to_chat(user, "<span class='info'>You are not authorized to add notices</span>")
@@ -40,6 +44,8 @@
 		return ..()
 
 /obj/structure/noticeboard/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	var/auth = allowed(user)
 	var/dat = "<B>[name]</B><BR>"
 	for(var/obj/item/P in src)
@@ -51,6 +57,8 @@
 	onclose(user, "noticeboard")
 
 /obj/structure/noticeboard/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	usr.set_machine(src)
 	if(href_list["remove"])
@@ -81,6 +89,8 @@
 			usr.examinate(I)
 
 /obj/structure/noticeboard/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal (loc, 1)
 	qdel(src)

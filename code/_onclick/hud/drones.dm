@@ -28,6 +28,8 @@
 
 
 /datum/hud/dextrous/drone/persistent_inventory_update()
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	var/mob/living/simple_animal/drone/D = mymob

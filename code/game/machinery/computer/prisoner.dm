@@ -16,6 +16,8 @@
 	light_color = LIGHT_COLOR_RED
 
 /obj/machinery/computer/prisoner/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	user.set_machine(src)
@@ -71,18 +73,24 @@
 	return
 
 /obj/machinery/computer/prisoner/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/card/id))
 		return attack_hand(user)
 	else
 		return ..()
 
 /obj/machinery/computer/prisoner/process()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		src.updateDialog()
 	return
 
 
 /obj/machinery/computer/prisoner/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(usr.contents.Find(src) || (in_range(src, usr) && isturf(loc)) || issilicon(usr))

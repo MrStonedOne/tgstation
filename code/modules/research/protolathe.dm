@@ -32,6 +32,8 @@ Note: Must be placed west/left of and R&D console to function.
 	var/datum/component/material_container/materials			//Store for hyper speed!
 
 /obj/machinery/rnd/protolathe/Initialize()
+	procstart = null
+	src.procstart = null
 	create_reagents(0)
 	materials = AddComponent(/datum/component/material_container,
 		list(MAT_METAL, MAT_GLASS, MAT_SILVER, MAT_GOLD, MAT_DIAMOND, MAT_PLASMA, MAT_URANIUM, MAT_BANANIUM, MAT_TITANIUM, MAT_BLUESPACE), 0,
@@ -41,6 +43,8 @@ Note: Must be placed west/left of and R&D console to function.
 	return ..()
 
 /obj/machinery/rnd/protolathe/RefreshParts()
+	procstart = null
+	src.procstart = null
 	reagents.maximum_volume = 0
 	for(var/obj/item/reagent_containers/glass/G in component_parts)
 		reagents.maximum_volume += G.volume
@@ -68,6 +72,8 @@ Note: Must be placed west/left of and R&D console to function.
 
 //we eject the materials upon deconstruction.
 /obj/machinery/rnd/protolathe/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/reagent_containers/glass/G in component_parts)
 		reagents.trans_to(G, G.reagents.maximum_volume)
 	GET_COMPONENT(materials, /datum/component/material_container)
@@ -76,10 +82,14 @@ Note: Must be placed west/left of and R&D console to function.
 
 
 /obj/machinery/rnd/protolathe/disconnect_console()
+	procstart = null
+	src.procstart = null
 	linked_console.linked_lathe = null
 	..()
 
 /obj/machinery/rnd/protolathe/proc/user_try_print_id(id, amount)
+	procstart = null
+	src.procstart = null
 	if((!istype(linked_console) && requires_console) || !id)
 		return FALSE
 	if(istext(amount))
@@ -124,6 +134,8 @@ Note: Must be placed west/left of and R&D console to function.
 	return TRUE
 
 /obj/machinery/rnd/protolathe/proc/do_print(path, amount, list/matlist, notify_admins)
+	procstart = null
+	src.procstart = null
 	if(notify_admins && usr)
 		investigate_log("[key_name(usr)] built [amount] of [path] at a protolathe.", INVESTIGATE_RESEARCH)
 		message_admins("[ADMIN_LOOKUPFLW(usr)] has built [amount] of [path] at a protolathe")

@@ -6,6 +6,8 @@
 	unit_name = "sheet"
 
 /datum/export/stack/get_amount(obj/O)
+	procstart = null
+	src.procstart = null
 	var/obj/item/stack/S = O
 	if(istype(S))
 		return S.amount

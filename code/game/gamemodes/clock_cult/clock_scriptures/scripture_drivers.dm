@@ -23,6 +23,8 @@
 	quickbind_desc = "Creates a stargazer, which generates power when near starlight."
 
 /datum/clockwork_scripture/create_object/stargazer/check_special_requirements()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(invoker)
 	if(A.outdoors || A.map_name == "Space" || !A.blob_allowed)
 		to_chat(invoker, "<span class='danger'>Stargazers can't be built off-station.</span>")
@@ -153,12 +155,16 @@
 	quickbind_desc = "Allows you to temporarily absorb stuns. All stuns absorbed will affect you when disabled."
 
 /datum/clockwork_scripture/vanguard/check_special_requirements()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.ratvar_awakens && islist(invoker.stun_absorption) && invoker.stun_absorption["vanguard"] && invoker.stun_absorption["vanguard"]["end_time"] > world.time)
 		to_chat(invoker, "<span class='warning'>You are already shielded by a Vanguard!</span>")
 		return FALSE
 	return TRUE
 
 /datum/clockwork_scripture/vanguard/scripture_effects()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		for(var/mob/living/L in view(7, get_turf(invoker)))
 			if(L.stat != DEAD && is_servant_of_ratvar(L))
@@ -209,16 +215,22 @@
 	quickbind_desc = "Returns you to Reebe."
 
 /datum/clockwork_scripture/abscond/check_special_requirements()
+	procstart = null
+	src.procstart = null
 	if(invoker.z == ZLEVEL_CITYOFCOGS)
 		to_chat(invoker, "<span class='danger'>You're already at Reebe.</span>")
 		return
 	return TRUE
 
 /datum/clockwork_scripture/abscond/recital()
+	procstart = null
+	src.procstart = null
 	animate(invoker.client, color = "#AF0AAF", time = 50)
 	. = ..()
 
 /datum/clockwork_scripture/abscond/scripture_effects()
+	procstart = null
+	src.procstart = null
 	var/take_pulling = invoker.pulling && isliving(invoker.pulling) && get_clockwork_power(ABSCOND_ABDUCTION_COST)
 	var/turf/T
 	if(GLOB.ark_of_the_clockwork_justiciar)
@@ -240,6 +252,8 @@
 		animate(invoker.client, color = initial(invoker.client.color), time = 25)
 
 /datum/clockwork_scripture/abscond/scripture_fail()
+	procstart = null
+	src.procstart = null
 	if(invoker && invoker.client)
 		animate(invoker.client, color = initial(invoker.client.color), time = 10)
 

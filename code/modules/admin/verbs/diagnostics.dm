@@ -19,6 +19,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Air Status") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/fix_next_move()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Unfreeze Everyone"
 	var/largest_move_time = 0
@@ -50,6 +52,8 @@
 	return
 
 /client/proc/radio_report()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Radio report"
 
@@ -77,6 +81,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Radio Report") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/reload_admins()
+	procstart = null
+	src.procstart = null
 	set name = "Reload Admins"
 	set category = "Admin"
 

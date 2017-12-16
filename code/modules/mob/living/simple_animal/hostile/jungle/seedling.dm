@@ -73,12 +73,16 @@
 
 
 /datum/status_effect/seedling_beam_indicator/on_creation(mob/living/new_owner, target_plant)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		target = target_plant
 		tick()
 
 /datum/status_effect/seedling_beam_indicator/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.client)
 		seedling_screen_object = new /obj/screen/seedling()
 		owner.client.screen += seedling_screen_object
@@ -86,12 +90,16 @@
 	return ..()
 
 /datum/status_effect/seedling_beam_indicator/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		if(owner.client)
 			owner.client.screen -= seedling_screen_object
 	return ..()
 
 /datum/status_effect/seedling_beam_indicator/tick()
+	procstart = null
+	src.procstart = null
 	var/target_angle = Get_Angle(owner, target)
 	var/matrix/final = matrix()
 	final.Turn(target_angle)
@@ -103,11 +111,15 @@
 	screen_loc = "CENTER:-16,CENTER:-16"
 
 /mob/living/simple_animal/hostile/jungle/seedling/Goto()
+	procstart = null
+	src.procstart = null
 	if(combatant_state != SEEDLING_STATE_NEUTRAL)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/seedling/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		if(ranged_cooldown <= world.time && combatant_state == SEEDLING_STATE_NEUTRAL)
 			OpenFire(target)
@@ -115,9 +127,13 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/seedling/OpenFire()
+	procstart = null
+	src.procstart = null
 	WarmupAttack()
 
 /mob/living/simple_animal/hostile/jungle/seedling/proc/WarmupAttack()
+	procstart = null
+	src.procstart = null
 	if(combatant_state == SEEDLING_STATE_NEUTRAL)
 		combatant_state = SEEDLING_STATE_WARMUP
 		walk(src,0)
@@ -145,6 +161,8 @@
 		addtimer(CALLBACK(src, .proc/Beamu, living_target, solar_beam_identifier), 35)
 
 /mob/living/simple_animal/hostile/jungle/seedling/proc/Beamu(mob/living/living_target, beam_id = 0)
+	procstart = null
+	src.procstart = null
 	if(combatant_state == SEEDLING_STATE_ACTIVE && living_target && beam_id == solar_beam_identifier)
 		if(living_target.z == z)
 			update_icons()
@@ -167,6 +185,8 @@
 	AttackRecovery()
 
 /mob/living/simple_animal/hostile/jungle/seedling/proc/Volley()
+	procstart = null
+	src.procstart = null
 	if(combatant_state == SEEDLING_STATE_WARMUP && target)
 		combatant_state = SEEDLING_STATE_ACTIVE
 		update_icons()
@@ -176,6 +196,8 @@
 		addtimer(CALLBACK(src, .proc/AttackRecovery), 14)
 
 /mob/living/simple_animal/hostile/jungle/seedling/proc/InaccurateShot()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(target) && combatant_state == SEEDLING_STATE_ACTIVE && !stat)
 		if(get_dist(src,target) <= 3)//If they're close enough just aim straight at them so we don't miss at point blank ranges
 			Shoot(target)
@@ -187,6 +209,8 @@
 		playsound(src, projectilesound, 100, 1)
 
 /mob/living/simple_animal/hostile/jungle/seedling/proc/AttackRecovery()
+	procstart = null
+	src.procstart = null
 	if(combatant_state == SEEDLING_STATE_ACTIVE)
 		combatant_state = SEEDLING_STATE_RECOVERY
 		update_icons()
@@ -196,12 +220,16 @@
 		addtimer(CALLBACK(src, .proc/ResetNeutral), 10)
 
 /mob/living/simple_animal/hostile/jungle/seedling/proc/ResetNeutral()
+	procstart = null
+	src.procstart = null
 	combatant_state = SEEDLING_STATE_NEUTRAL
 	if(target && !stat)
 		update_icons()
 		Goto(target, move_to_delay, minimum_distance)
 
 /mob/living/simple_animal/hostile/jungle/seedling/adjustHealth()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(combatant_state == SEEDLING_STATE_ACTIVE && beam_debuff_target)
 		beam_debuff_target.remove_status_effect(/datum/status_effect/seedling_beam_indicator)
@@ -210,6 +238,8 @@
 		AttackRecovery()
 
 /mob/living/simple_animal/hostile/jungle/seedling/update_icons()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!stat)
 		switch(combatant_state)
@@ -223,12 +253,16 @@
 				icon_state = "seedling"
 
 /mob/living/simple_animal/hostile/jungle/seedling/GiveTarget()
+	procstart = null
+	src.procstart = null
 	if(target)
 		if(combatant_state == SEEDLING_STATE_WARMUP || combatant_state == SEEDLING_STATE_ACTIVE)//So it doesn't 180 and blast you in the face while it's firing at someone else
 			return
 	return ..()
 
 /mob/living/simple_animal/hostile/jungle/seedling/LoseTarget()
+	procstart = null
+	src.procstart = null
 	if(combatant_state == SEEDLING_STATE_WARMUP || combatant_state == SEEDLING_STATE_ACTIVE)
 		return
 	return ..()

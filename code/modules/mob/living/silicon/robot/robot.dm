@@ -96,9 +96,13 @@
 	var/static/list/can_ride_typecache = typecacheof(/mob/living/carbon/human)
 
 /mob/living/silicon/robot/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /mob/living/silicon/robot/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	spark_system = new /datum/effect_system/spark_spread()
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
@@ -160,6 +164,8 @@
 
 //If there's an MMI in the robot, have it ejected when the mob goes away. --NEO
 /mob/living/silicon/robot/Destroy()
+	procstart = null
+	src.procstart = null
 	if(mmi && mind)//Safety for when a cyborg gets dust()ed. Or there is no MMI inside.
 		var/turf/T = get_turf(loc)//To hopefully prevent run time errors.
 		if(T)
@@ -191,6 +197,8 @@
 
 
 /mob/living/silicon/robot/proc/pick_module()
+	procstart = null
+	src.procstart = null
 	if(module.type != /obj/item/robot_module)
 		return
 
@@ -217,6 +225,8 @@
 
 
 /mob/living/silicon/robot/proc/updatename()
+	procstart = null
+	src.procstart = null
 	if(shell)
 		return
 	var/changed_name = ""
@@ -233,9 +243,13 @@
 		builtInCamera.c_tag = real_name	//update the camera name too
 
 /mob/living/silicon/robot/proc/get_standard_name()
+	procstart = null
+	src.procstart = null
 	return "[(designation ? "[designation] " : "")][mmi.braintype]-[ident]"
 
 /mob/living/silicon/robot/verb/cmd_robot_alerts()
+	procstart = null
+	src.procstart = null
 	set category = "Robot Commands"
 	set name = "Show Alerts"
 	if(usr.stat == DEAD)
@@ -244,6 +258,8 @@
 	robot_alerts()
 
 /mob/living/silicon/robot/proc/robot_alerts()
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 	for (var/cat in alarms)
 		dat += text("<B>[cat]</B><BR>\n")
@@ -264,6 +280,8 @@
 	alerts.open()
 
 /mob/living/silicon/robot/proc/ionpulse()
+	procstart = null
+	src.procstart = null
 	if(!ionpulse_on)
 		return
 
@@ -275,6 +293,8 @@
 	return 1
 
 /mob/living/silicon/robot/proc/toggle_ionpulse()
+	procstart = null
+	src.procstart = null
 	if(!ionpulse)
 		to_chat(src, "<span class='notice'>No thrusters are installed!</span>")
 		return
@@ -293,6 +313,8 @@
 		thruster_button.icon_state = "ionpulse[ionpulse_on]"
 
 /mob/living/silicon/robot/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		if(cell)
@@ -307,9 +329,13 @@
 			stat("Master AI:", connected_ai.name)
 
 /mob/living/silicon/robot/restrained(ignore_grab)
+	procstart = null
+	src.procstart = null
 	. = 0
 
 /mob/living/silicon/robot/triggerAlarm(class, area/A, O, obj/alarmsource)
+	procstart = null
+	src.procstart = null
 	if(alarmsource.z != z)
 		return
 	if(stat == DEAD)
@@ -335,6 +361,8 @@
 	return 1
 
 /mob/living/silicon/robot/cancelAlarm(class, area/A, obj/origin)
+	procstart = null
+	src.procstart = null
 	var/list/L = alarms[class]
 	var/cleared = 0
 	for (var/I in L)
@@ -351,6 +379,8 @@
 	return !cleared
 
 /mob/living/silicon/robot/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/weldingtool) && (user.a_intent != INTENT_HARM || user == src))
 		user.changeNext_move(CLICK_CD_MELEE)
 		var/obj/item/weldingtool/WT = W
@@ -538,6 +568,8 @@
 		return ..()
 
 /mob/living/silicon/robot/verb/unlock_own_cover()
+	procstart = null
+	src.procstart = null
 	set category = "Robot Commands"
 	set name = "Unlock Cover"
 	set desc = "Unlocks your own cover if it is locked. You can not lock it again. A human will have to lock it for you."
@@ -551,6 +583,8 @@
 				to_chat(usr, "<span class='notice'>You unlock your cover.</span>")
 
 /mob/living/silicon/robot/proc/allowed(mob/M)
+	procstart = null
+	src.procstart = null
 	//check if it doesn't require any access at all
 	if(check_access(null))
 		return 1
@@ -567,6 +601,8 @@
 	return 0
 
 /mob/living/silicon/robot/proc/check_access(obj/item/card/id/I)
+	procstart = null
+	src.procstart = null
 	if(!istype(req_access, /list)) //something's very wrong
 		return 1
 
@@ -585,9 +621,13 @@
 	return 1
 
 /mob/living/silicon/robot/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	return update_icons()
 
 /mob/living/silicon/robot/update_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	icon_state = module.cyborg_base_icon
 	if(stat != DEAD && !(IsUnconscious() || IsStun() || IsKnockdown() || low_power_mode)) //Not dead, not stunned.
@@ -614,6 +654,8 @@
 	update_fire()
 
 /mob/living/silicon/robot/proc/self_destruct()
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		if(mmi)
 			qdel(mmi)
@@ -623,6 +665,8 @@
 	gib()
 
 /mob/living/silicon/robot/proc/UnlinkSelf()
+	procstart = null
+	src.procstart = null
 	if(src.connected_ai)
 		connected_ai.connected_robots -= src
 		src.connected_ai = null
@@ -639,6 +683,8 @@
 		// I could change the network to null but I don't know what would happen, and it seems too hacky for me.
 
 /mob/living/silicon/robot/proc/ResetSecurityCodes()
+	procstart = null
+	src.procstart = null
 	set category = "Robot Commands"
 	set name = "Reset Identity Codes"
 	set desc = "Scrambles your security and identification codes and resets your current buffers. Unlocks you and permanently severs you from your AI and the robotics console and will deactivate your camera system."
@@ -651,6 +697,8 @@
 		src.verbs -= /mob/living/silicon/robot/proc/ResetSecurityCodes
 
 /mob/living/silicon/robot/mode()
+	procstart = null
+	src.procstart = null
 	set name = "Activate Held Object"
 	set category = "IC"
 	set src = usr
@@ -663,6 +711,8 @@
 
 
 /mob/living/silicon/robot/proc/SetLockdown(state = 1)
+	procstart = null
+	src.procstart = null
 	// They stay locked down if their wire is cut.
 	if(wires.is_cut(WIRE_LOCKDOWN))
 		state = 1
@@ -674,6 +724,8 @@
 	update_canmove()
 
 /mob/living/silicon/robot/proc/SetEmagged(new_state)
+	procstart = null
+	src.procstart = null
 	emagged = new_state
 	module.rebuild_modules()
 	update_icons()
@@ -683,6 +735,8 @@
 		clear_alert("hacked")
 
 /mob/living/silicon/robot/verb/outputlaws()
+	procstart = null
+	src.procstart = null
 	set category = "Robot Commands"
 	set name = "State Laws"
 
@@ -700,6 +754,8 @@
 	set_autosay()
 
 /mob/living/silicon/robot/proc/control_headlamp()
+	procstart = null
+	src.procstart = null
 	if(stat || lamp_cooldown > world.time || low_power_mode)
 		to_chat(src, "<span class='danger'>This function is currently offline.</span>")
 		return
@@ -710,6 +766,8 @@
 	update_headlamp()
 
 /mob/living/silicon/robot/proc/update_headlamp(var/turn_off = 0, var/cooldown = 100)
+	procstart = null
+	src.procstart = null
 	set_light(0)
 
 	if(lamp_intensity && (turn_off || stat || low_power_mode))
@@ -725,6 +783,8 @@
 	update_icons()
 
 /mob/living/silicon/robot/proc/deconstruct()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if (robot_suit)
 		robot_suit.forceMove(T)
@@ -771,6 +831,8 @@
 	var/set_module = null
 
 /mob/living/silicon/robot/modules/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	module.transform_to(set_module)
 
@@ -810,6 +872,8 @@
 	set_module = /obj/item/robot_module/syndicate
 
 /mob/living/silicon/robot/modules/syndicate/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new /obj/item/stock_parts/cell/hyper(src, 25000)
 	radio = new /obj/item/device/radio/borg/syndicate(src)
@@ -817,10 +881,14 @@
 	addtimer(CALLBACK(src, .proc/show_playstyle), 5)
 
 /mob/living/silicon/robot/modules/syndicate/proc/show_playstyle()
+	procstart = null
+	src.procstart = null
 	if(playstyle_string)
 		to_chat(src, playstyle_string)
 
 /mob/living/silicon/robot/modules/syndicate/ResetModule()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/silicon/robot/modules/syndicate/medical
@@ -834,6 +902,8 @@
 	set_module = /obj/item/robot_module/syndicate_medical
 
 /mob/living/silicon/robot/proc/notify_ai(notifytype, oldname, newname)
+	procstart = null
+	src.procstart = null
 	if(!connected_ai)
 		return
 	switch(notifytype)
@@ -849,6 +919,8 @@
 			to_chat(connected_ai, "<br><br><span class='notice'>NOTICE - Remote telemetry lost with [name].</span><br>")
 
 /mob/living/silicon/robot/canUseTopic(atom/movable/M, be_close = 0)
+	procstart = null
+	src.procstart = null
 	if(stat || lockcharge || low_power_mode)
 		return
 	if(be_close && !in_range(M, src))
@@ -856,6 +928,8 @@
 	return 1
 
 /mob/living/silicon/robot/updatehealth()
+	procstart = null
+	src.procstart = null
 	..()
 	if(health < maxHealth*0.5) //Gradual break down of modules as more damage is sustained
 		if(uneq_module(held_items[3]))
@@ -868,6 +942,8 @@
 					to_chat(src, "<span class='warning'>CRITICAL ERROR: All modules OFFLINE.</span>")
 
 /mob/living/silicon/robot/update_sight()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	if(stat == DEAD)
@@ -911,6 +987,8 @@
 	sync_lighting_plane_alpha()
 
 /mob/living/silicon/robot/update_stat()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
@@ -935,6 +1013,8 @@
 	update_health_hud()
 
 /mob/living/silicon/robot/revive(full_heal = 0, admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	if(..()) //successfully ressuscitated from death
 		if(!QDELETED(builtInCamera) && !wires.is_cut(WIRE_CAMERA))
 			builtInCamera.toggle_cam(src,0)
@@ -945,6 +1025,8 @@
 		. = 1
 
 /mob/living/silicon/robot/fully_replace_character_name(oldname, newname)
+	procstart = null
+	src.procstart = null
 	..()
 	if(oldname != real_name)
 		notify_ai(RENAME, oldname, newname)
@@ -954,6 +1036,8 @@
 
 
 /mob/living/silicon/robot/proc/ResetModule()
+	procstart = null
+	src.procstart = null
 	uneq_all()
 	shown_robot_modules = FALSE
 	if(hud_used)
@@ -973,12 +1057,16 @@
 	return 1
 
 /mob/living/silicon/robot/proc/has_module()
+	procstart = null
+	src.procstart = null
 	if(!module || module.type == /obj/item/robot_module)
 		. = FALSE
 	else
 		. = TRUE
 
 /mob/living/silicon/robot/proc/update_module_innate()
+	procstart = null
+	src.procstart = null
 	designation = module.name
 	if(hands)
 		hands.icon_state = module.moduleselect_icon
@@ -999,6 +1087,8 @@
 
 
 /mob/living/silicon/robot/proc/place_on_head(obj/item/new_hat)
+	procstart = null
+	src.procstart = null
 	if(hat)
 		hat.forceMove(get_turf(src))
 	hat = new_hat
@@ -1006,6 +1096,8 @@
 	update_icons()
 
 /mob/living/silicon/robot/proc/make_shell(var/obj/item/borg/upgrade/ai/board)
+	procstart = null
+	src.procstart = null
 	if(!board)
 		upgrades |= new /obj/item/borg/upgrade/ai(src)
 	shell = TRUE
@@ -1019,6 +1111,8 @@
 	notify_ai(AI_SHELL)
 
 /mob/living/silicon/robot/proc/revert_shell()
+	procstart = null
+	src.procstart = null
 	if(!shell)
 		return
 	undeploy()
@@ -1034,6 +1128,8 @@
 	diag_hud_set_aishell()
 
 /mob/living/silicon/robot/proc/deploy_init(var/mob/living/silicon/ai/AI)
+	procstart = null
+	src.procstart = null
 	real_name = "[AI.real_name] shell [rand(100, 999)] - [designation]"	//Randomizing the name so it shows up separately in the shells list
 	name = real_name
 	if(!QDELETED(builtInCamera))
@@ -1062,6 +1158,8 @@
  	button_icon_state = "ai_core"
 
 /datum/action/innate/undeployment/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/mob/living/silicon/robot/R = owner
@@ -1072,6 +1170,8 @@
 
 /mob/living/silicon/robot/proc/undeploy()
 
+	procstart = null
+	src.procstart = null
 	if(!deployed || !mind || !mainframe)
 		return
 	mainframe.redeploy_action.Grant(mainframe)
@@ -1091,6 +1191,8 @@
 	mainframe = null
 
 /mob/living/silicon/robot/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(shell && (!connected_ai || connected_ai == user))
 		var/mob/living/silicon/ai/AI = user
 		AI.deploy_to_shell(src)
@@ -1099,11 +1201,15 @@
 	shell = TRUE
 
 /mob/living/silicon/robot/MouseDrop_T(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!(M in buckled_mobs) && isliving(M))
 		buckle_mob(M)
 
 /mob/living/silicon/robot/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!is_type_in_typecache(M, can_ride_typecache))
 		M.visible_message("<span class='warning'>[M] really can't seem to mount [src]...</span>")
 		return
@@ -1129,6 +1235,8 @@
 	. = ..(M, force, check_loc)
 
 /mob/living/silicon/robot/unbuckle_mob(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user))
 		GET_COMPONENT(riding_datum, /datum/component/riding)
 		if(istype(riding_datum))
@@ -1137,6 +1245,8 @@
 	. = ..(user)
 
 /mob/living/silicon/robot/proc/TryConnectToAI()
+	procstart = null
+	src.procstart = null
 	connected_ai = select_active_ai_with_fewest_borgs()
 	if(connected_ai)
 		connected_ai.connected_robots += src

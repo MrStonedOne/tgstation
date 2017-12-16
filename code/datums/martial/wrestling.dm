@@ -17,6 +17,8 @@
 	var/datum/action/drop/drop = new/datum/action/drop()
 
 /datum/martial_art/wrestling/proc/check_streak(var/mob/living/carbon/human/A, var/mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	switch(streak)
 		if("drop")
 			streak = ""
@@ -45,6 +47,8 @@
 	button_icon_state = "wrassle_slam"
 
 /datum/action/slam/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated())
 		to_chat(owner, "<span class='warning'>You can't WRESTLE while you're OUT FOR THE COUNT.</span>")
 		return
@@ -57,6 +61,8 @@
 	button_icon_state = "wrassle_throw"
 
 /datum/action/throw_wrassle/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated())
 		to_chat(owner, "<span class='warning'>You can't WRESTLE while you're OUT FOR THE COUNT.</span>")
 		return
@@ -69,6 +75,8 @@
 	button_icon_state = "wrassle_kick"
 
 /datum/action/kick/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated())
 		to_chat(owner, "<span class='warning'>You can't WRESTLE while you're OUT FOR THE COUNT.</span>")
 		return
@@ -81,6 +89,8 @@
 	button_icon_state = "wrassle_strike"
 
 /datum/action/strike/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated())
 		to_chat(owner, "<span class='warning'>You can't WRESTLE while you're OUT FOR THE COUNT.</span>")
 		return
@@ -93,6 +103,8 @@
 	button_icon_state = "wrassle_drop"
 
 /datum/action/drop/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner.incapacitated())
 		to_chat(owner, "<span class='warning'>You can't WRESTLE while you're OUT FOR THE COUNT.</span>")
 		return
@@ -101,6 +113,8 @@
 	H.mind.martial_art.streak = "drop"
 
 /datum/martial_art/wrestling/teach(mob/living/carbon/human/H,make_temporary=0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		to_chat(H, "<span class = 'userdanger'>SNAP INTO A THIN TIM!</span>")
 		to_chat(H, "<span class = 'danger'>Place your cursor over a move at the top of the screen to see what it does.</span>")
@@ -111,6 +125,8 @@
 		strike.Grant(H)
 
 /datum/martial_art/wrestling/on_remove(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	to_chat(H, "<span class = 'userdanger'>You no longer feel that the tower of power is too sweet to be sour...</span>")
 	drop.Remove(H)
 	kick.Remove(H)
@@ -119,12 +135,16 @@
 	strike.Remove(H)
 
 /datum/martial_art/wrestling/harm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(check_streak(A,D))
 		return 1
 	add_logs(A, D, "punched with wrestling")
 	..()
 
 /datum/martial_art/wrestling/proc/throw_wrassle(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		return
 	if(!A.pulling || A.pulling != D)
@@ -196,6 +216,8 @@
 	return 0
 
 /datum/martial_art/wrestling/proc/FlipAnimation(mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if (D)
 		animate(D, transform = matrix(180, MATRIX_ROTATE), time = 1, loop = 0)
@@ -204,6 +226,8 @@
 		animate(D, transform = null, time = 1, loop = 0)
 
 /datum/martial_art/wrestling/proc/slam(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		return
 	if(!A.pulling || A.pulling != D)
@@ -312,10 +336,14 @@
 	return 0
 
 /datum/martial_art/wrestling/proc/CheckStrikeTurf(mob/living/carbon/human/A, turf/T)
+	procstart = null
+	src.procstart = null
 	if (A && (T && isturf(T) && get_dist(A, T) <= 1))
 		A.forceMove(T)
 
 /datum/martial_art/wrestling/proc/strike(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		return
 	var/turf/T = get_turf(A)
@@ -333,6 +361,8 @@
 	add_logs(A, D, "headbutted")
 
 /datum/martial_art/wrestling/proc/kick(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		return
 	A.emote("scream")
@@ -350,6 +380,8 @@
 	add_logs(A, D, "roundhouse-kicked")
 
 /datum/martial_art/wrestling/proc/drop(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		return
 	var/obj/surface = null
@@ -424,12 +456,16 @@
 	return
 
 /datum/martial_art/wrestling/disarm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(check_streak(A,D))
 		return 1
 	add_logs(A, D, "wrestling-disarmed")
 	..()
 
 /datum/martial_art/wrestling/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(check_streak(A,D))
 		return 1
 	if(A.pulling == D)
@@ -446,6 +482,8 @@
 	var/datum/martial_art/wrestling/style = new
 
 /obj/item/storage/belt/champion/wrestling/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	if(slot == slot_belt)
@@ -454,6 +492,8 @@
 	return
 
 /obj/item/storage/belt/champion/wrestling/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/H = user

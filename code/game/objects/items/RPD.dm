@@ -64,6 +64,8 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 	var/dirtype = PIPE_BENDABLE
 
 /datum/pipe_info/proc/Render(dispenser)
+	procstart = null
+	src.procstart = null
 	var/dat = "<li><a href='?src=[REF(dispenser)]&[Params()]'>[name]</a></li>"
 
 	// Stationary pipe dispensers don't allow you to pre-select pipe directions.
@@ -75,9 +77,13 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 	return dat
 
 /datum/pipe_info/proc/Params()
+	procstart = null
+	src.procstart = null
 	return ""
 
 /datum/pipe_info/proc/get_preview(selected_dir)
+	procstart = null
+	src.procstart = null
 	var/list/dirs
 	switch(dirtype)
 		if(PIPE_STRAIGHT, PIPE_BENDABLE)
@@ -110,6 +116,8 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 	return rows
 
 /datum/pipe_info/pipe/New(label, obj/machinery/atmospherics/path)
+	procstart = null
+	src.procstart = null
 	name = label
 	id = path
 	icon_state = initial(path.pipe_state)
@@ -117,6 +125,8 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 	dirtype = initial(c.RPD_type)
 
 /datum/pipe_info/pipe/Params()
+	procstart = null
+	src.procstart = null
 	return "makepipe=[id]&type=[dirtype]"
 
 /datum/pipe_info/meter
@@ -124,12 +134,18 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 	dirtype = PIPE_ONEDIR
 
 /datum/pipe_info/meter/New(label)
+	procstart = null
+	src.procstart = null
 	name = label
 
 /datum/pipe_info/meter/Params()
+	procstart = null
+	src.procstart = null
 	return "makemeter=[id]&type=[dirtype]"
 
 /datum/pipe_info/disposal/New(label, obj/path, dt=PIPE_UNARY)
+	procstart = null
+	src.procstart = null
 	name = label
 	id = path
 
@@ -140,6 +156,8 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 	dirtype = dt
 
 /datum/pipe_info/disposal/Params()
+	procstart = null
+	src.procstart = null
 	return "dmake=[id]&type=[dirtype]"
 
 
@@ -179,6 +197,8 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 	var/static/datum/pipe_info/first_disposal
 
 /obj/item/pipe_dispenser/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(5, 0, src)
@@ -190,14 +210,20 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 	recipe = first_atmos
 
 /obj/item/pipe_dispenser/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(spark_system)
 	spark_system = null
 	return ..()
 
 /obj/item/pipe_dispenser/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 /obj/item/pipe_dispenser/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] points the end of the RPD down [user.p_their()] throat and presses a button! It looks like [user.p_theyre()] trying to commit suicide...</span>")
 	playsound(get_turf(user), 'sound/machines/click.ogg', 50, 1)
 	playsound(get_turf(user), 'sound/items/deconstruct.ogg', 50, 1)
@@ -214,6 +240,8 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 		ui.open()
 
 /obj/item/pipe_dispenser/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list(
 		"mode" = mode,
 		"screen" = screen,
@@ -243,6 +271,8 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 	return data
 
 /obj/item/pipe_dispenser/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!usr.canUseTopic(src))
@@ -278,6 +308,8 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 		playsound(get_turf(src), 'sound/effects/pop.ogg', 50, 0)
 
 /obj/item/pipe_dispenser/pre_attackby(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.IsAdvancedToolUser() || istype(A, /turf/open/space/transit))
 		return ..()
 
@@ -386,6 +418,8 @@ GLOBAL_LIST_INIT(disposal_pipe_recipes, list(
 
 
 /obj/item/pipe_dispenser/proc/activate()
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(src), 'sound/items/deconstruct.ogg', 50, 1)
 
 #undef PAINT_MODE

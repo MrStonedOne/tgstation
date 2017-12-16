@@ -25,10 +25,14 @@
 	var/active = 1
 
 /obj/structure/firepit/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	toggleFirepit()
 
 /obj/structure/firepit/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		active = 0
 		toggleFirepit()
@@ -36,6 +40,8 @@
 		..()
 
 /obj/structure/firepit/attackby(obj/item/W,mob/living/user,params)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		var/msg = W.ignition_effect(src, user)
 		if(msg)
@@ -48,6 +54,8 @@
 		W.fire_act()
 
 /obj/structure/firepit/proc/toggleFirepit()
+	procstart = null
+	src.procstart = null
 	if(active)
 		set_light(8)
 		icon_state = "firepit-active"
@@ -56,11 +64,15 @@
 		icon_state = "firepit"
 
 /obj/structure/firepit/extinguish()
+	procstart = null
+	src.procstart = null
 	if(active)
 		active = FALSE
 		toggleFirepit()
 
 /obj/structure/firepit/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		active = TRUE
 		toggleFirepit()
@@ -76,6 +88,8 @@
 	item_recycle_sound = 'sound/weapons/chainsawhit.ogg'
 
 /obj/machinery/recycler/lumbermill/recycle_item(obj/item/grown/log/L)
+	procstart = null
+	src.procstart = null
 	if(!istype(L))
 		return
 	else
@@ -103,6 +117,8 @@
 	/datum/mapGeneratorModule/snow/bunnies)
 
 /datum/mapGeneratorModule/snow/checkPlaceAtom(turf/T)
+	procstart = null
+	src.procstart = null
 	if(istype(T, /turf/open/floor/plating/asteroid/snow))
 		return ..(T)
 	return 0
@@ -120,6 +136,8 @@
 	spawnableAtoms = list()
 
 /datum/mapGeneratorModule/snow/randBushes/New()
+	procstart = null
+	src.procstart = null
 	..()
 	spawnableAtoms = typesof(/obj/structure/flora/ausbushes)
 	for(var/i in spawnableAtoms)

@@ -73,6 +73,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 	var/underline_flag = TRUE //flag for underline
 
 /obj/item/device/pda/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!id && !inserted_item)
 		return
@@ -80,6 +82,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 		to_chat(user, "<span class='notice'>Alt-click to remove contents.</span>")
 
 /obj/item/device/pda/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(fon)
 		set_light(f_lum)
@@ -94,6 +98,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 	update_icon()
 
 /obj/item/device/pda/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	if(!equipped)
 		if(user.client)
 			switch(user.client.prefs.pda_style)
@@ -115,18 +121,26 @@ GLOBAL_LIST_EMPTY(PDAs)
 		equipped = TRUE
 
 /obj/item/device/pda/proc/update_label()
+	procstart = null
+	src.procstart = null
 	name = "PDA-[owner] ([ownjob])" //Name generalisation
 
 /obj/item/device/pda/GetAccess()
+	procstart = null
+	src.procstart = null
 	if(id)
 		return id.GetAccess()
 	else
 		return ..()
 
 /obj/item/device/pda/GetID()
+	procstart = null
+	src.procstart = null
 	return id
 
 /obj/item/device/pda/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	var/mutable_appearance/overlay = new()
 	overlay.pixel_x = overlays_x_offset
@@ -148,12 +162,16 @@ GLOBAL_LIST_EMPTY(PDAs)
 			add_overlay(new /mutable_appearance(overlay))
 
 /obj/item/device/pda/MouseDrop(obj/over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	var/mob/M = usr
 	if((!istype(over_object, /obj/screen)) && usr.canUseTopic(src))
 		return attack_self(M)
 	return
 
 /obj/item/device/pda/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
@@ -353,6 +371,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 	onclose(user, "pda", src)
 
 /obj/item/device/pda/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/mob/living/U = usr
 	//Looking for master was kind of pointless since PDAs don't appear to have one.
@@ -572,6 +592,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 	return
 
 /obj/item/device/pda/proc/remove_id()
+	procstart = null
+	src.procstart = null
 	if (id)
 		if (ismob(loc))
 			var/mob/M = loc
@@ -583,6 +605,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 		update_icon()
 
 /obj/item/device/pda/proc/msg_input(mob/living/U = usr)
+	procstart = null
+	src.procstart = null
 	var/t = stripped_input(U, "Please enter message", name, null, MAX_MESSAGE_LEN)
 	if (!t || toff)
 		return
@@ -595,6 +619,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 	return t
 
 /obj/item/device/pda/proc/send_message(mob/living/user = usr,list/obj/item/device/pda/targets)
+	procstart = null
+	src.procstart = null
 	var/message = msg_input(user)
 
 	if(!message || !targets.len)
@@ -633,9 +659,13 @@ GLOBAL_LIST_EMPTY(PDAs)
 		log_talk(user,"[user] (PDA: [initial(name)]) sent \"[message]\" to Everyone",LOGPDA)
 
 /obj/item/device/pda/proc/show_to_sender(datum/data_pda_msg/msg,multiple = 0)
+	procstart = null
+	src.procstart = null
 	tnote += "<i><b>&rarr; To [multiple ? "Everyone" : msg.recipient]:</b></i><br>[msg.message][msg.get_photo_ref()]<br>"
 
 /obj/item/device/pda/proc/show_recieved_message(datum/data_pda_msg/msg,obj/item/device/pda/source)
+	procstart = null
+	src.procstart = null
 	tnote += "<i><b>&larr; From <a href='byond://?src=[REF(src)];choice=Message;target=[REF(source)]'>[source.owner]</a> ([source.ownjob]):</b></i><br>[msg.message][msg.get_photo_ref()]<br>"
 
 	if (!silent)
@@ -663,12 +693,16 @@ GLOBAL_LIST_EMPTY(PDAs)
 	add_overlay(icon_alert)
 
 /obj/item/device/pda/proc/show_to_ghosts(mob/living/user, datum/data_pda_msg/msg,multiple = 0)
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in GLOB.player_list)
 		if(isobserver(M) && M.client && (M.client.prefs.chat_toggles & CHAT_GHOSTPDA))
 			var/link = FOLLOW_LINK(M, user)
 			to_chat(M, "[link] <span class='name'>[msg.sender] </span><span class='game say'>PDA Message</span> --> <span class='name'>[multiple ? "Everyone" : msg.recipient]</span>: <span class='message'>[msg.message][msg.get_photo_ref()]</span></span>")
 
 /obj/item/device/pda/proc/can_send(obj/item/device/pda/P)
+	procstart = null
+	src.procstart = null
 	if(!P || QDELETED(P) || P.toff)
 		return null
 
@@ -700,12 +734,18 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 
 /obj/item/device/pda/proc/send_to_all(mob/living/U = usr)
+	procstart = null
+	src.procstart = null
 	send_message(U,get_viewable_pdas())
 
 /obj/item/device/pda/proc/create_message(mob/living/U = usr, obj/item/device/pda/P)
+	procstart = null
+	src.procstart = null
 	send_message(U,list(P))
 
 /obj/item/device/pda/AltClick()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(issilicon(usr))
@@ -718,6 +758,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 			remove_pen()
 
 /obj/item/device/pda/verb/verb_remove_id()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "Eject ID"
 	set src in usr
@@ -732,6 +774,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 			to_chat(usr, "<span class='warning'>This PDA does not have an ID in it!</span>")
 
 /obj/item/device/pda/verb/verb_remove_pen()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "Remove Pen"
 	set src in usr
@@ -743,6 +787,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 		remove_pen()
 
 /obj/item/device/pda/proc/remove_pen()
+	procstart = null
+	src.procstart = null
 	if(inserted_item)
 		if(ismob(loc))
 			var/mob/M = loc
@@ -757,6 +803,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 //trying to insert or remove an id
 /obj/item/device/pda/proc/id_check(mob/user, obj/item/card/id/I)
+	procstart = null
+	src.procstart = null
 	if(!I)
 		if(id)
 			remove_id()
@@ -778,6 +826,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 // access to status display signals
 /obj/item/device/pda/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(C, /obj/item/cartridge) && !cartridge)
 		if(!user.transferItemToLoc(C, src))
 			return
@@ -829,6 +879,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 		return ..()
 
 /obj/item/device/pda/attack(mob/living/carbon/C, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(C))
 		switch(scanmode)
 
@@ -850,6 +902,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 					user.show_message("<span class='notice'>No radiation detected.</span>")
 
 /obj/item/device/pda/afterattack(atom/A as mob|obj|turf|area, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	switch(scanmode)
@@ -921,6 +975,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 	return
 
 /obj/item/device/pda/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.PDAs -= src
 	if(istype(id))
 		QDEL_NULL(id)
@@ -935,6 +991,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 //AI verb and proc for sending PDA messages.
 
 /mob/living/silicon/ai/proc/cmd_send_pdamesg(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/plist = list()
 	var/list/namecounts = list()
 
@@ -970,6 +1028,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 
 /mob/living/silicon/ai/verb/cmd_toggle_pda_receiver()
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "PDA - Toggle Sender/Receiver"
 	if(usr.stat == DEAD)
@@ -981,6 +1041,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 		to_chat(usr, "You do not have a PDA. You should make an issue report about this.")
 
 /mob/living/silicon/ai/verb/cmd_toggle_pda_silent()
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "PDA - Toggle Ringer"
 	if(usr.stat == DEAD)
@@ -993,6 +1055,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 		to_chat(usr, "You do not have a PDA. You should make an issue report about this.")
 
 /mob/living/silicon/ai/proc/cmd_show_message_log(mob/user)
+	procstart = null
+	src.procstart = null
 	if(incapacitated())
 		return
 	if(!isnull(aiPDA))
@@ -1004,6 +1068,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 
 // Pass along the pulse to atoms in contents, largely added so pAIs are vulnerable to EMP
 /obj/item/device/pda/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	for(var/atom/A in src)
 		A.emp_act(severity)
 	emped += 1
@@ -1011,6 +1077,8 @@ GLOBAL_LIST_EMPTY(PDAs)
 		emped -= 1
 
 /proc/get_viewable_pdas()
+	procstart = null
+	src.procstart = null
 	. = list()
 	// Returns a list of PDAs which can be viewed from another PDA/message monitor.
 	for(var/obj/item/device/pda/P in GLOB.PDAs)

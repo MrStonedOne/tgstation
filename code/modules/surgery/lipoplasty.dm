@@ -4,6 +4,8 @@
 	possible_locs = list("chest")
 
 /datum/surgery/lipoplasty/can_start(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(target.disabilities & FAT)
 		return 1
 	return 0
@@ -16,9 +18,13 @@
 	time = 64
 
 /datum/surgery_step/cut_fat/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] begins to cut away [target]'s excess fat.", "<span class='notice'>You begin to cut away [target]'s excess fat...</span>")
 
 /datum/surgery_step/cut_fat/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] cuts [target]'s excess fat loose!", "<span class='notice'>You cut [target]'s excess fat loose.</span>")
 	return 1
 
@@ -29,9 +35,13 @@
 	time = 32
 
 /datum/surgery_step/remove_fat/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] begins to extract [target]'s loose fat!", "<span class='notice'>You begin to extract [target]'s loose fat...</span>")
 
 /datum/surgery_step/remove_fat/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] extracts [target]'s fat!", "<span class='notice'>You extract [target]'s fat.</span>")
 	target.overeatduration = 0 //patient is unfatted
 	var/removednutriment = target.nutrition

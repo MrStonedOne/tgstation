@@ -26,6 +26,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Jump To Area") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/jumptoturf(turf/T in world)
+	procstart = null
+	src.procstart = null
 	set name = "Jump to Turf"
 	set category = "Admin"
 	if(!src.holder)
@@ -39,6 +41,8 @@
 	return
 
 /client/proc/jumptomob(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Jump to Mob"
 
@@ -58,6 +62,8 @@
 			to_chat(A, "This mob is not located in the game world.")
 
 /client/proc/jumptocoord(tx as num, ty as num, tz as num)
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Jump to Coordinate"
 
@@ -74,6 +80,8 @@
 	message_admins("[key_name_admin(usr)] jumped to coordinates [tx], [ty], [tz]")
 
 /client/proc/jumptokey()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Jump to Key"
 
@@ -97,6 +105,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Jump To Key") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/Getmob(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Get Mob"
 	set desc = "Mob to teleport"
@@ -113,6 +123,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Get Mob") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/Getkey()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Get Key"
 	set desc = "Key to teleport"
@@ -141,6 +153,8 @@
 		SSblackbox.record_feedback("tally", "admin_verb", 1, "Get Key") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/sendmob(mob/M in sortmobs())
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Send Mob"
 	if(!src.holder)

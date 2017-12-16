@@ -7,6 +7,8 @@
 
 
 /mob/living/simple_animal/drone/doUnEquip(obj/item/I, force)
+	procstart = null
+	src.procstart = null
 	if(..())
 		update_inv_hands()
 		if(I == head)
@@ -20,6 +22,8 @@
 
 
 /mob/living/simple_animal/drone/can_equip(obj/item/I, slot)
+	procstart = null
+	src.procstart = null
 	switch(slot)
 		if(slot_head)
 			if(head)
@@ -35,6 +39,8 @@
 
 
 /mob/living/simple_animal/drone/get_item_by_slot(slot_id)
+	procstart = null
+	src.procstart = null
 	switch(slot_id)
 		if(slot_head)
 			return head
@@ -44,6 +50,8 @@
 
 
 /mob/living/simple_animal/drone/equip_to_slot(obj/item/I, slot)
+	procstart = null
+	src.procstart = null
 	if(!slot)
 		return
 	if(!istype(I))
@@ -77,7 +85,11 @@
 	I.equipped(src, slot)
 
 /mob/living/simple_animal/drone/getBackSlot()
+	procstart = null
+	src.procstart = null
 	return slot_generic_dextrous_storage
 
 /mob/living/simple_animal/drone/getBeltSlot()
+	procstart = null
+	src.procstart = null
 	return slot_generic_dextrous_storage

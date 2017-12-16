@@ -1,10 +1,14 @@
 
 /obj/item/bodypart/proc/can_dismember(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(dismemberable)
 		. = (get_damage() >= (max_damage - I.armour_penetration/2))
 
 //Dismember a limb
 /obj/item/bodypart/proc/dismember(dam_type = BRUTE)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return 0
 	var/mob/living/carbon/C = owner
@@ -45,6 +49,8 @@
 
 
 /obj/item/bodypart/chest/dismember()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return 0
 	var/mob/living/carbon/C = owner
@@ -80,6 +86,8 @@
 
 //limb removal. The "special" argument is used for swapping a limb with a new one without the effects of losing a limb kicking in.
 /obj/item/bodypart/proc/drop_limb(special)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	var/turf/T = get_turf(owner)
@@ -141,10 +149,14 @@
 
 //when a limb is dropped, the internal organs are removed from the mob and put into the limb
 /obj/item/organ/proc/transfer_to_limb(obj/item/bodypart/LB, mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	Remove(C)
 	forceMove(LB)
 
 /obj/item/organ/brain/transfer_to_limb(obj/item/bodypart/head/LB, mob/living/carbon/human/C)
+	procstart = null
+	src.procstart = null
 	Remove(C)	//Changeling brain concerns are now handled in Remove
 	forceMove(LB)
 	LB.brain = src
@@ -156,13 +168,19 @@
 		LB.brainmob.stat = DEAD
 
 /obj/item/organ/eyes/transfer_to_limb(obj/item/bodypart/head/LB, mob/living/carbon/human/C)
+	procstart = null
+	src.procstart = null
 	LB.eyes = src
 	..()
 
 /obj/item/bodypart/chest/drop_limb(special)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/bodypart/r_arm/drop_limb(special)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = owner
 	..()
 	if(C && !special)
@@ -181,6 +199,8 @@
 
 
 /obj/item/bodypart/l_arm/drop_limb(special)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = owner
 	..()
 	if(C && !special)
@@ -199,6 +219,8 @@
 
 
 /obj/item/bodypart/r_leg/drop_limb(special)
+	procstart = null
+	src.procstart = null
 	if(owner && !special)
 		if(owner.legcuffed)
 			owner.legcuffed.forceMove(owner.loc)
@@ -221,6 +243,8 @@
 	..()
 
 /obj/item/bodypart/head/drop_limb(special)
+	procstart = null
+	src.procstart = null
 	if(!special)
 		//Drop all worn head items
 		for(var/X in list(owner.glasses, owner.ears, owner.wear_mask, owner.head))
@@ -251,6 +275,8 @@
 
 //Attach a limb to a human and drop any existing limb of that type.
 /obj/item/bodypart/proc/replace_limb(mob/living/carbon/C, special)
+	procstart = null
+	src.procstart = null
 	if(!istype(C))
 		return
 	var/obj/item/bodypart/O = locate(src.type) in C.bodyparts
@@ -259,6 +285,8 @@
 	attach_limb(C, special)
 
 /obj/item/bodypart/head/replace_limb(mob/living/carbon/C, special)
+	procstart = null
+	src.procstart = null
 	if(!istype(C))
 		return
 	var/obj/item/bodypart/head/O = locate(src.type) in C.bodyparts
@@ -270,6 +298,8 @@
 	attach_limb(C, special)
 
 /obj/item/bodypart/proc/attach_limb(mob/living/carbon/C, special)
+	procstart = null
+	src.procstart = null
 	moveToNullspace()
 	owner = C
 	C.bodyparts += src
@@ -307,6 +337,8 @@
 
 
 /obj/item/bodypart/head/attach_limb(mob/living/carbon/C, special)
+	procstart = null
+	src.procstart = null
 	//Transfer some head appearance vars over
 	if(brain)
 		if(brainmob)
@@ -342,9 +374,13 @@
 
 //Regenerates all limbs. Returns amount of limbs regenerated
 /mob/living/proc/regenerate_limbs(noheal, excluded_limbs)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/carbon/regenerate_limbs(noheal, list/excluded_limbs)
+	procstart = null
+	src.procstart = null
 	var/list/limb_list = list("head", "chest", "r_arm", "l_arm", "r_leg", "l_leg")
 	if(excluded_limbs)
 		limb_list -= excluded_limbs
@@ -352,9 +388,13 @@
 		. += regenerate_limb(Z, noheal)
 
 /mob/living/proc/regenerate_limb(limb_zone, noheal)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/regenerate_limb(limb_zone, noheal)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/L
 	if(get_bodypart(limb_zone))
 		return 0

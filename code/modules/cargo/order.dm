@@ -4,6 +4,8 @@
 	var/errors = 0
 
 /obj/item/paper/fluff/jobs/cargo/manifest/New(atom/A, id, cost)
+	procstart = null
+	src.procstart = null
 	..()
 	order_id = id
 	order_cost = cost
@@ -16,9 +18,13 @@
 		errors |= MANIFEST_ERROR_ITEM
 
 /obj/item/paper/fluff/jobs/cargo/manifest/proc/is_approved()
+	procstart = null
+	src.procstart = null
 	return stamped && stamped.len && !is_denied()
 
 /obj/item/paper/fluff/jobs/cargo/manifest/proc/is_denied()
+	procstart = null
+	src.procstart = null
 	return stamped && ("stamp-deny" in stamped)
 
 /datum/supply_order
@@ -30,6 +36,8 @@
 	var/datum/supply_pack/pack
 
 /datum/supply_order/New(datum/supply_pack/pack, orderer, orderer_rank, orderer_ckey, reason)
+	procstart = null
+	src.procstart = null
 	id = SSshuttle.ordernum++
 	src.pack = pack
 	src.orderer = orderer
@@ -38,6 +46,8 @@
 	src.reason = reason
 
 /datum/supply_order/proc/generateRequisition(turf/T)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/P = new(T)
 
 	P.name = "requisition form - #[id] ([pack.name])"
@@ -54,6 +64,8 @@
 	return P
 
 /datum/supply_order/proc/generateManifest(obj/structure/closet/crate/C)
+	procstart = null
+	src.procstart = null
 	var/obj/item/paper/fluff/jobs/cargo/manifest/P = new(C, id, pack.cost)
 
 	var/station_name = (P.errors & MANIFEST_ERROR_NAME) ? new_station_name() : station_name()
@@ -84,6 +96,8 @@
 	return P
 
 /datum/supply_order/proc/generate(turf/T)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/closet/crate/C = pack.generate(T)
 	var/obj/item/paper/fluff/jobs/cargo/manifest/M = generateManifest(C)
 

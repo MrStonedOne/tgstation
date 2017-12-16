@@ -53,6 +53,8 @@
 	)
 
 /obj/machinery/portable_atmospherics/canister/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!allowed(user))
 		to_chat(user, "<span class='warning'>Error - Unauthorized User</span>")
 		playsound(src, 'sound/misc/compiler-failure.ogg', 50, 1)
@@ -138,12 +140,16 @@
 	filled = 1
 
 /obj/machinery/portable_atmospherics/canister/proc/get_time_left()
+	procstart = null
+	src.procstart = null
 	if(timing)
 		. = round(max(0, valve_timer - world.time) / 10, 1)
 	else
 		. = timer_set
 
 /obj/machinery/portable_atmospherics/canister/proc/set_active()
+	procstart = null
+	src.procstart = null
 	timing = !timing
 	if(timing)
 		valve_timer = world.time + (timer_set * 10)
@@ -177,6 +183,8 @@
 
 
 /obj/machinery/portable_atmospherics/canister/New(loc, datum/gas_mixture/existing_mixture)
+	procstart = null
+	src.procstart = null
 	..()
 	if(existing_mixture)
 		air_contents.copy_from(existing_mixture)
@@ -190,11 +198,15 @@
 	update_icon()
 
 /obj/machinery/portable_atmospherics/canister/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(pump)
 	pump = null
 	return ..()
 
 /obj/machinery/portable_atmospherics/canister/proc/create_gas()
+	procstart = null
+	src.procstart = null
 	if(gas_type)
 		ADD_GAS(gas_type, air_contents.gases)
 		if(starter_temp)
@@ -203,6 +215,8 @@
 		if(starter_temp)
 			air_contents.temperature = starter_temp
 /obj/machinery/portable_atmospherics/canister/air/create_gas()
+	procstart = null
+	src.procstart = null
 	air_contents.add_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
 	air_contents.gases[/datum/gas/oxygen][MOLES] = (O2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
 	air_contents.gases[/datum/gas/nitrogen][MOLES] = (N2STANDARD * maximum_pressure * filled) * air_contents.volume / (R_IDEAL_GAS_EQUATION * air_contents.temperature)
@@ -215,6 +229,8 @@
 #define FULL 32
 #define DANGER 64
 /obj/machinery/portable_atmospherics/canister/update_icon()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		cut_overlays()
 		icon_state = "[initial(icon_state)]-1"
@@ -264,11 +280,15 @@
 #undef DANGER
 
 /obj/machinery/portable_atmospherics/canister/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > temperature_resistance)
 		take_damage(5, BURN, 0)
 
 
 /obj/machinery/portable_atmospherics/canister/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(!(stat & BROKEN))
 			canister_break()
@@ -279,6 +299,8 @@
 	qdel(src)
 
 /obj/machinery/portable_atmospherics/canister/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent != INTENT_HARM && istype(W, /obj/item/weldingtool))
 		var/obj/item/weldingtool/WT = W
 		if(stat & BROKEN)
@@ -295,11 +317,15 @@
 		return ..()
 
 /obj/machinery/portable_atmospherics/canister/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if((stat & BROKEN) || (flags_1 & NODECONSTRUCT_1))
 		return
 	canister_break()
 
 /obj/machinery/portable_atmospherics/canister/proc/canister_break()
+	procstart = null
+	src.procstart = null
 	disconnect()
 	var/datum/gas_mixture/expelled_gas = air_contents.remove(air_contents.total_moles())
 	var/turf/T = get_turf(src)
@@ -317,6 +343,8 @@
 		holding = null
 
 /obj/machinery/portable_atmospherics/canister/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & BROKEN)
 		return PROCESS_KILL
@@ -346,6 +374,8 @@
 		ui.open()
 
 /obj/machinery/portable_atmospherics/canister/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["portConnected"] = connected_port ? 1 : 0
 	data["tankPressure"] = round(air_contents.return_pressure() ? air_contents.return_pressure() : 0)
@@ -373,6 +403,8 @@
 	return data
 
 /obj/machinery/portable_atmospherics/canister/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)

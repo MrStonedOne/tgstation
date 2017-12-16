@@ -21,6 +21,8 @@
 	liked_food = VEGETABLES
 
 /datum/species/plasmaman/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/environment = H.loc.return_air()
 	var/atmos_sealed = (H.wear_suit && (H.wear_suit.flags_1 & STOPSPRESSUREDMAGE_1)) && (H.head && (H.head.flags_1 & STOPSPRESSUREDMAGE_1))
 	if((!istype(H.w_uniform, /obj/item/clothing/under/plasmaman) || !istype(H.head, /obj/item/clothing/head/helmet/space/plasmaman)) && !atmos_sealed)
@@ -43,11 +45,15 @@
 	H.update_fire()
 
 /datum/species/plasmaman/handle_fire(mob/living/carbon/human/H, no_protection)
+	procstart = null
+	src.procstart = null
 	if(internal_fire)
 		no_protection = TRUE
 	..()
 
 /datum/species/plasmaman/before_equip_job(datum/job/J, mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	var/datum/outfit/plasmaman/O = new /datum/outfit/plasmaman
 	H.equipOutfit(O, visualsOnly)
 	H.internal = H.get_item_for_held_index(2)
@@ -55,6 +61,8 @@
 	return 0
 
 /datum/species/plasmaman/qualifies_for_rank(rank, list/features)
+	procstart = null
+	src.procstart = null
 	if(rank in GLOB.security_positions)
 		return 0
 	if(rank == "Clown" || rank == "Mime")//No funny bussiness
@@ -62,6 +70,8 @@
 	return ..()
 
 /datum/species/plasmaman/random_name(gender,unique,lastname)
+	procstart = null
+	src.procstart = null
 	if(unique)
 		return random_unique_plasmaman_name()
 

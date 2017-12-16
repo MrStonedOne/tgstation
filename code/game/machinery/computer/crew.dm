@@ -14,11 +14,15 @@
 	icon_keyboard = "syndie_key"
 
 /obj/machinery/computer/crew/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 	GLOB.crewmonitor.show(user)
 
 /obj/machinery/computer/crew/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(stat & (BROKEN|NOPOWER))
@@ -33,6 +37,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	var/list/data
 
 /datum/crewmonitor/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/list/jobs = new/list()
@@ -83,6 +89,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	register_asset("crewmonitor.css",'crew.css')
 
 /datum/crewmonitor/Destroy()
+	procstart = null
+	src.procstart = null
 	if (src.interfaces)
 		for (var/datum/html_interface/hi in interfaces)
 			qdel(hi)
@@ -91,6 +99,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	return ..()
 
 /datum/crewmonitor/proc/show(mob/mob, z)
+	procstart = null
+	src.procstart = null
 	if (mob.client)
 		sendResources(mob.client)
 	if (!z)
@@ -120,6 +130,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		src.updateFor(mob, hi, z)
 
 /datum/crewmonitor/proc/updateFor(hclient_or_mob, datum/html_interface/hi, z)
+	procstart = null
+	src.procstart = null
 	// This check will succeed if updateFor is called after showing to the player, but will fail
 	// on regular updates. Since we only really need this once we don't care if it fails.
 	hi.callJavaScript("clearAll", null, hclient_or_mob)
@@ -130,6 +142,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 	hi.callJavaScript("onAfterUpdate", null, hclient_or_mob)
 
 /datum/crewmonitor/proc/update(z, ignore_unused = FALSE)
+	procstart = null
+	src.procstart = null
 	if (src.interfaces["[z]"])
 		var/datum/html_interface/hi = src.interfaces["[z]"]
 
@@ -210,6 +224,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 			src.updateFor(null, hi, z) // updates for everyone
 
 /datum/crewmonitor/proc/hiIsValidClient(datum/html_interface_client/hclient, datum/html_interface/hi)
+	procstart = null
+	src.procstart = null
 	var/z = ""
 
 	for (z in src.interfaces)
@@ -230,6 +246,8 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		return FALSE
 
 /datum/crewmonitor/Topic(href, href_list[], datum/html_interface_client/hclient)
+	procstart = null
+	src.procstart = null
 	if (istype(hclient))
 		if (hclient && hclient.client && hclient.client.mob && isAI(hclient.client.mob))
 			var/mob/living/silicon/ai/AI = hclient.client.mob
@@ -254,10 +272,14 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 						addtimer(CALLBACK(src, .proc/update_ai, AI, C, AI.eyeobj.loc), min(30, get_dist(get_turf(C), AI.eyeobj) / 4))
 
 /datum/crewmonitor/proc/update_ai(mob/living/silicon/ai/AI, obj/machinery/camera/C, turf/current_loc)
+	procstart = null
+	src.procstart = null
 	if (AI && AI.eyeobj && current_loc == AI.eyeobj.loc)
 		AI.switchCamera(C)
 
 /mob/living/carbon/human/Move()
+	procstart = null
+	src.procstart = null
 	var/old_z = src.z
 	. = ..()
 	if (src.w_uniform)
@@ -266,9 +288,13 @@ GLOBAL_DATUM_INIT(crewmonitor, /datum/crewmonitor, new)
 		GLOB.crewmonitor.queueUpdate(src.z)
 
 /datum/crewmonitor/proc/queueUpdate(z)
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, .proc/update, z), 5, TIMER_UNIQUE)
 
 /datum/crewmonitor/proc/sendResources(var/client/client)
+	procstart = null
+	src.procstart = null
 	send_asset(client, "crewmonitor.js")
 	send_asset(client, "crewmonitor.css")
 	SSminimap.send(client)

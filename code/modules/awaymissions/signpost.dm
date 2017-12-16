@@ -8,14 +8,20 @@
 	var/list/zlevels = list()
 
 /obj/structure/signpost/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(2)
 	zlevels = GLOB.station_z_levels
 
 /obj/structure/signpost/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/structure/signpost/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(alert(question,name,"Yes","No"))
 		if("Yes")
 			var/turf/T = find_safe_turf(zlevels=zlevels)
@@ -40,6 +46,8 @@
 	question = "Leave? You might never come back."
 
 /obj/structure/signpost/exit/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	zlevels = list()
 	for(var/i in 1 to world.maxz)

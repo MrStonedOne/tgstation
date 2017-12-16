@@ -17,6 +17,8 @@
 	var/removing_airlock = FALSE
 
 /obj/item/zombie_hand/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	//these are intentionally inverted
 	var/i = user.get_held_index_of_item(src)
@@ -26,6 +28,8 @@
 		icon_state = icon_right
 
 /obj/item/zombie_hand/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!proximity_flag)
 		return
@@ -36,6 +40,8 @@
 			check_feast(target, user)
 
 /obj/item/zombie_hand/proc/check_infection(mob/living/carbon/human/target, mob/user)
+	procstart = null
+	src.procstart = null
 	CHECK_DNA_AND_SPECIES(target)
 
 	if(NOZOMBIE in target.dna.species.species_traits)
@@ -51,6 +57,8 @@
 
 
 /obj/item/zombie_hand/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is ripping [user.p_their()] brains out! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	if(isliving(user))
 		var/mob/living/L = user
@@ -60,6 +68,8 @@
 	return (BRUTELOSS)
 
 /obj/item/zombie_hand/proc/check_feast(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(target.stat == DEAD)
 		var/hp_gained = target.maxHealth
 		target.gib()

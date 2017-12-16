@@ -1,6 +1,8 @@
 /obj/item/storage/box/syndicate
 
 /obj/item/storage/box/syndicate/PopulateContents()
+	procstart = null
+	src.procstart = null
 	switch (pickweight(list("bloodyspai" = 3, "stealth" = 2, "bond" = 2, "screwed" = 2, "sabotage" = 3, "guns" = 2, "murder" = 2, "implant" = 1, "hacker" = 3, "darklord" = 1, "sniper" = 1, "metaops" = 1, "ninja" = 1)))
 		if("bloodyspai") // 27 tc now this is more right
 			new /obj/item/clothing/under/chameleon(src) // 2 tc since it's not the full set
@@ -140,6 +142,8 @@
 	name = "boxed freedom implant (with injector)"
 
 /obj/item/storage/box/syndie_kit/imp_freedom/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/obj/item/implanter/O = new(src)
 	O.imp = new /obj/item/implant/freedom(O)
 	O.update_icon()
@@ -148,6 +152,8 @@
 	name = "Microbomb Implant (with injector)"
 
 /obj/item/storage/box/syndie_kit/imp_microbomb/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/obj/item/implanter/O = new(src)
 	O.imp = new /obj/item/implant/explosive(O)
 	O.update_icon()
@@ -156,6 +162,8 @@
 	name = "Macrobomb Implant (with injector)"
 
 /obj/item/storage/box/syndie_kit/imp_macrobomb/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/obj/item/implanter/O = new(src)
 	O.imp = new /obj/item/implant/explosive/macro(O)
 	O.update_icon()
@@ -164,6 +172,8 @@
 	name = "boxed uplink implant (with injector)"
 
 /obj/item/storage/box/syndie_kit/imp_uplink/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/implanter/O = new(src)
 	O.imp = new /obj/item/implant/uplink(O)
@@ -173,6 +183,8 @@
 	name = "bioterror syringe box"
 
 /obj/item/storage/box/syndie_kit/bioterror/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/syringe/bioterror(src)
 
@@ -180,6 +192,8 @@
 	name = "boxed adrenal implant (with injector)"
 
 /obj/item/storage/box/syndie_kit/imp_adrenal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/obj/item/implanter/O = new(src)
 	O.imp = new /obj/item/implant/adrenalin(O)
 	O.update_icon()
@@ -188,6 +202,8 @@
 	name = "boxed storage implant (with injector)"
 
 /obj/item/storage/box/syndie_kit/imp_storage/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/implanter/storage(src)
 
 /obj/item/storage/box/syndie_kit/space
@@ -196,6 +212,8 @@
 	max_w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/storage/box/syndie_kit/space/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/suit/space/syndicate/black/red(src) // Black and red is so in right now
 	new /obj/item/clothing/head/helmet/space/syndicate/black/red(src)
 
@@ -203,6 +221,8 @@
 	name = "boxed EMP kit"
 
 /obj/item/storage/box/syndie_kit/emp/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/grenade/empgrenade(src)
 	new /obj/item/grenade/empgrenade(src)
 	new /obj/item/grenade/empgrenade(src)
@@ -215,6 +235,8 @@
 	storage_slots = 14
 
 /obj/item/storage/box/syndie_kit/chemical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/glass/bottle/polonium(src)
 	new /obj/item/reagent_containers/glass/bottle/venom(src)
 	new /obj/item/reagent_containers/glass/bottle/neurotoxin2(src)
@@ -234,6 +256,8 @@
 	name = "box"
 
 /obj/item/storage/box/syndie_kit/nuke/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/screwdriver/nuke(src)
 	new /obj/item/nuke_core_container(src)
 	new /obj/item/paper/guides/antag/nuke_instructions(src)
@@ -242,6 +266,8 @@
 	name = "box"
 
 /obj/item/storage/box/syndie_kit/supermatter/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/scalpel/supermatter(src)
 	new /obj/item/hemostat/supermatter(src)
 	new /obj/item/nuke_core_container/supermatter(src)
@@ -251,6 +277,8 @@
 	name = "boxed virus grenade kit"
 
 /obj/item/storage/box/syndie_kit/tuberculosisgrenade/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/grenade/chem_grenade/tuberculosis(src)
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/hypospray/medipen/tuberculosiscure(src)
@@ -261,6 +289,8 @@
 	name = "chameleon kit"
 
 /obj/item/storage/box/syndie_kit/chameleon/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/under/chameleon(src)
 	new /obj/item/clothing/suit/chameleon(src)
 	new /obj/item/clothing/gloves/chameleon(src)
@@ -277,6 +307,8 @@
 //5*(2*4) = 5*8 = 45, 45 damage if you hit one person with all 5 stars.
 //Not counting the damage it will do while embedded (2*4 = 8, at 15% chance)
 /obj/item/storage/box/syndie_kit/throwing_weapons/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/throwing_star(src)
 	new /obj/item/throwing_star(src)
 	new /obj/item/throwing_star(src)
@@ -286,22 +318,32 @@
 	new /obj/item/restraints/legcuffs/bola/tactical(src)
 
 /obj/item/storage/box/syndie_kit/cutouts/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new/obj/item/cardboard_cutout/adaptive(src)
 	new/obj/item/toy/crayon/rainbow(src)
 
 /obj/item/storage/box/syndie_kit/romerol/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/glass/bottle/romerol(src)
 	new /obj/item/reagent_containers/syringe(src)
 	new /obj/item/reagent_containers/dropper(src)
 
 /obj/item/storage/box/syndie_kit/ez_clean/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new/obj/item/grenade/chem_grenade/ez_clean(src)
 
 /obj/item/storage/box/hug/reverse_revolver/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/gun/ballistic/revolver/reverse(src)
 
 /obj/item/storage/box/syndie_kit/mimery/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/spellbook/oneuse/mimery_blockade(src)
 	new /obj/item/spellbook/oneuse/mimery_guns(src)

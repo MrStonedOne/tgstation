@@ -1,5 +1,7 @@
 
 /datum/hud/guardian/New(mob/living/simple_animal/hostile/guardian/owner)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/screen/using
 
@@ -28,6 +30,8 @@
 
 
 /mob/living/simple_animal/hostile/guardian/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		if(dextrous)
 			..()
@@ -78,6 +82,8 @@
 	static_inventory += using
 
 /datum/hud/dextrous/guardian/persistent_inventory_update()
+	procstart = null
+	src.procstart = null
 	if(!mymob)
 		return
 	if(istype(mymob, /mob/living/simple_animal/hostile/guardian/dextrous))
@@ -102,6 +108,8 @@
 	desc = "Spring forth into battle!"
 
 /obj/screen/guardian/Manifest/Click()
+	procstart = null
+	src.procstart = null
 	if(isguardian(usr))
 		var/mob/living/simple_animal/hostile/guardian/G = usr
 		G.Manifest()
@@ -113,6 +121,8 @@
 	desc = "Return to your user."
 
 /obj/screen/guardian/Recall/Click()
+	procstart = null
+	src.procstart = null
 	if(isguardian(usr))
 		var/mob/living/simple_animal/hostile/guardian/G = usr
 		G.Recall()
@@ -123,6 +133,8 @@
 	desc = "Switch between ability modes."
 
 /obj/screen/guardian/ToggleMode/Click()
+	procstart = null
+	src.procstart = null
 	if(isguardian(usr))
 		var/mob/living/simple_animal/hostile/guardian/G = usr
 		G.ToggleMode()
@@ -141,6 +153,8 @@
 	desc = "Communicate telepathically with your user."
 
 /obj/screen/guardian/Communicate/Click()
+	procstart = null
+	src.procstart = null
 	if(isguardian(usr))
 		var/mob/living/simple_animal/hostile/guardian/G = usr
 		G.Communicate()
@@ -152,6 +166,8 @@
 	desc = "Glow like star dust."
 
 /obj/screen/guardian/ToggleLight/Click()
+	procstart = null
+	src.procstart = null
 	if(isguardian(usr))
 		var/mob/living/simple_animal/hostile/guardian/G = usr
 		G.ToggleLight()

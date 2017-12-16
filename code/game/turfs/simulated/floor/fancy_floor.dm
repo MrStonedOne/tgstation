@@ -14,10 +14,14 @@
 	broken_states = list("wood-broken", "wood-broken2", "wood-broken3", "wood-broken4", "wood-broken5", "wood-broken6", "wood-broken7")
 
 /turf/open/floor/wood/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>There's a few <b>screws</b> and a <b>small crack</b> visible.</span>")
 
 /turf/open/floor/wood/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(istype(C, /obj/item/screwdriver))
@@ -25,6 +29,8 @@
 		return
 
 /turf/open/floor/wood/try_replace_tile(obj/item/stack/tile/T, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(T.turf_type == type)
 		return
 	var/obj/item/tool = user.is_holding_item_of_type(/obj/item/screwdriver)
@@ -38,11 +44,15 @@
 	P.attackby(T, user, params)
 
 /turf/open/floor/wood/pry_tile(obj/item/C, mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/is_screwdriver = istype(C, /obj/item/screwdriver)
 	playsound(src, C.usesound, 80, 1)
 	return remove_tile(user, silent, make_tile = is_screwdriver)
 
 /turf/open/floor/wood/remove_tile(mob/user, silent = FALSE, make_tile = TRUE)
+	procstart = null
+	src.procstart = null
 	if(broken || burnt)
 		broken = 0
 		burnt = 0
@@ -76,10 +86,14 @@
 	var/turfverb = "uproot"
 
 /turf/open/floor/grass/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /turf/open/floor/grass/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(C, /obj/item/shovel) && params)
 		new ore_type(src)
 		new ore_type(src) //Make some sand if you shovel grass
@@ -101,6 +115,8 @@
 	slowdown = 2
 
 /turf/open/floor/grass/snow/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/crowbar))//You need to dig this turf out instead of crowbarring it
 		return
 	..()
@@ -114,6 +130,8 @@
 	slowdown = 0
 
 /turf/open/floor/grass/snow/basalt/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(15))
 		icon_state = "basalt[rand(0, 12)]"
@@ -131,6 +149,8 @@
 	slowdown = 0
 
 /turf/open/floor/grass/fakebasalt/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(15))
 		icon_state = "basalt[rand(0, 12)]"
@@ -149,14 +169,20 @@
 	flags_1 = NONE
 
 /turf/open/floor/carpet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>There's a <b>small crack</b> on the edge of it.</span>")
 
 /turf/open/floor/carpet/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /turf/open/floor/carpet/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	if(!broken && !burnt)
@@ -174,6 +200,8 @@
 
 
 /turf/open/floor/carpet/narsie_act(force, ignore_mobs, probability = 20)
+	procstart = null
+	src.procstart = null
 	. = (prob(probability) || force)
 	for(var/I in src)
 		var/atom/A = I
@@ -183,14 +211,20 @@
 			A.narsie_act()
 
 /turf/open/floor/carpet/break_tile()
+	procstart = null
+	src.procstart = null
 	broken = 1
 	update_icon()
 
 /turf/open/floor/carpet/burn_tile()
+	procstart = null
+	src.procstart = null
 	burnt = 1
 	update_icon()
 
 /turf/open/floor/carpet/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 
@@ -202,6 +236,8 @@
 	icon_state = "smooth"
 
 /turf/open/floor/fakepit/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "basalt"
 	return TRUE
@@ -214,10 +250,14 @@
 	plane = PLANE_SPACE
 
 /turf/open/floor/fakespace/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = SPACE_ICON_STATE
 
 /turf/open/floor/fakespace/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/space.dmi'
 	underlay_appearance.icon_state = SPACE_ICON_STATE
 	underlay_appearance.plane = PLANE_SPACE

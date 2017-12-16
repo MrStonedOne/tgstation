@@ -1,6 +1,8 @@
 #define ROUND_START_MUSIC_LIST "strings/round_start_sounds.txt"
 
 SUBSYSTEM_DEF(ticker)
+	procstart = null
+	src.procstart = null
 	name = "Ticker"
 	init_order = INIT_ORDER_TICKER
 
@@ -65,6 +67,8 @@ SUBSYSTEM_DEF(ticker)
 	var/end_state = "undefined"
 
 /datum/controller/subsystem/ticker/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	load_mode()
 
 	var/list/byond_sound_formats = list(
@@ -130,6 +134,8 @@ SUBSYSTEM_DEF(ticker)
 	start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
 
 /datum/controller/subsystem/ticker/fire()
+	procstart = null
+	src.procstart = null
 	switch(current_state)
 		if(GAME_STATE_STARTUP)
 			if(Master.initializations_finished_with_no_players_logged_in)
@@ -195,6 +201,8 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/setup()
+	procstart = null
+	src.procstart = null
 	to_chat(world, "<span class='boldannounce'>Starting game...</span>")
 	var/init_start = world.timeofday
 		//Create and announce mode
@@ -294,6 +302,8 @@ SUBSYSTEM_DEF(ticker)
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	mode.post_setup()
 	GLOB.start_state = new /datum/station_state()
@@ -310,12 +320,16 @@ SUBSYSTEM_DEF(ticker)
 	setup_done = TRUE
 
 /datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)
+	procstart = null
+	src.procstart = null
 	if(!HasRoundStarted())
 		LAZYADD(round_start_events, cb)
 	else
 		cb.InvokeAsync()
 
 /datum/controller/subsystem/ticker/proc/station_explosion_detonation(atom/bomb)
+	procstart = null
+	src.procstart = null
 	if(bomb)	//BOOM
 		var/turf/epi = bomb.loc
 		qdel(bomb)
@@ -323,6 +337,8 @@ SUBSYSTEM_DEF(ticker)
 			explosion(epi, 0, 256, 512, 0, TRUE, TRUE, 0, TRUE)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/new_player/player in GLOB.player_list)
 		if(player.ready == PLAYER_READY_TO_PLAY && player.mind)
 			GLOB.joined_player_list += player.ckey
@@ -332,6 +348,8 @@ SUBSYSTEM_DEF(ticker)
 		CHECK_TICK
 
 /datum/controller/subsystem/ticker/proc/collect_minds()
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/new_player/P in GLOB.player_list)
 		if(P.new_character && P.new_character.mind)
 			SSticker.minds += P.new_character.mind
@@ -339,6 +357,8 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
+	procstart = null
+	src.procstart = null
 	var/captainless=1
 	for(var/mob/dead/new_player/N in GLOB.player_list)
 		var/mob/living/carbon/human/player = N.new_character
@@ -355,6 +375,8 @@ SUBSYSTEM_DEF(ticker)
 			CHECK_TICK
 
 /datum/controller/subsystem/ticker/proc/transfer_characters()
+	procstart = null
+	src.procstart = null
 	var/list/livings = list()
 	for(var/mob/dead/new_player/player in GLOB.mob_list)
 		var/mob/living = player.transfer_character()
@@ -369,11 +391,15 @@ SUBSYSTEM_DEF(ticker)
 		addtimer(CALLBACK(src, .proc/release_characters, livings), 30, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
+	procstart = null
+	src.procstart = null
 	for(var/I in livings)
 		var/mob/living/L = I
 		L.notransform = FALSE
 
 /datum/controller/subsystem/ticker/proc/send_tip_of_the_round()
+	procstart = null
+	src.procstart = null
 	var/m
 	if(selected_tip)
 		m = selected_tip
@@ -389,6 +415,8 @@ SUBSYSTEM_DEF(ticker)
 		to_chat(world, "<font color='purple'><b>Tip of the round: </b>[html_encode(m)]</font>")
 
 /datum/controller/subsystem/ticker/proc/check_queue()
+	procstart = null
+	src.procstart = null
 	var/hpc = CONFIG_GET(number/hard_popcap)
 	if(!queued_players.len || !hpc)
 		return
@@ -412,6 +440,8 @@ SUBSYSTEM_DEF(ticker)
 			queue_delay = 0
 
 /datum/controller/subsystem/ticker/proc/check_maprotate()
+	procstart = null
+	src.procstart = null
 	if (!CONFIG_GET(flag/maprotation))
 		return
 	if (SSshuttle.emergency && SSshuttle.emergency.mode != SHUTTLE_ESCAPE || SSshuttle.canRecall())
@@ -427,12 +457,18 @@ SUBSYSTEM_DEF(ticker)
 	INVOKE_ASYNC(SSmapping, /datum/controller/subsystem/mapping/.proc/maprotate)
 
 /datum/controller/subsystem/ticker/proc/HasRoundStarted()
+	procstart = null
+	src.procstart = null
 	return current_state >= GAME_STATE_PLAYING
 
 /datum/controller/subsystem/ticker/proc/IsRoundInProgress()
+	procstart = null
+	src.procstart = null
 	return current_state == GAME_STATE_PLAYING
 
 /datum/controller/subsystem/ticker/Recover()
+	procstart = null
+	src.procstart = null
 	current_state = SSticker.current_state
 	force_ending = SSticker.force_ending
 	hide_mode = SSticker.hide_mode
@@ -478,6 +514,8 @@ SUBSYSTEM_DEF(ticker)
 			Master.SetRunLevel(RUNLEVEL_POSTGAME)
 
 /datum/controller/subsystem/ticker/proc/send_news_report()
+	procstart = null
+	src.procstart = null
 	var/news_message
 	var/news_source = "Nanotrasen News Network"
 	switch(news_report)
@@ -526,11 +564,15 @@ SUBSYSTEM_DEF(ticker)
 		send2otherserver(news_source, news_message,"News_Report")
 
 /datum/controller/subsystem/ticker/proc/GetTimeLeft()
+	procstart = null
+	src.procstart = null
 	if(isnull(SSticker.timeLeft))
 		return max(0, start_at - world.time)
 	return timeLeft
 
 /datum/controller/subsystem/ticker/proc/SetTimeLeft(newtime)
+	procstart = null
+	src.procstart = null
 	if(newtime >= 0 && isnull(timeLeft))	//remember, negative means delayed
 		start_at = world.time + newtime
 	else
@@ -538,12 +580,16 @@ SUBSYSTEM_DEF(ticker)
 
 //Everyone who wanted to be an observer gets made one now
 /datum/controller/subsystem/ticker/proc/create_observers()
+	procstart = null
+	src.procstart = null
 	for(var/mob/dead/new_player/player in GLOB.player_list)
 		if(player.ready == PLAYER_READY_TO_OBSERVE && player.mind)
 			//Break chain since this has a sleep input in it
 			addtimer(CALLBACK(player, /mob/dead/new_player.proc/make_me_an_observer), 1)
 
 /datum/controller/subsystem/ticker/proc/load_mode()
+	procstart = null
+	src.procstart = null
 	var/mode = trim(file2text("data/mode.txt"))
 	if(mode)
 		GLOB.master_mode = mode
@@ -552,11 +598,15 @@ SUBSYSTEM_DEF(ticker)
 	log_game("Saved mode is '[GLOB.master_mode]'")
 
 /datum/controller/subsystem/ticker/proc/save_mode(the_mode)
+	procstart = null
+	src.procstart = null
 	var/F = file("data/mode.txt")
 	fdel(F)
 	WRITE_FILE(F, the_mode)
 
 /datum/controller/subsystem/ticker/proc/SetRoundEndSound(the_sound)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	round_end_sound_sent = FALSE
 	round_end_sound = fcopy_rsc(the_sound)
@@ -568,6 +618,8 @@ SUBSYSTEM_DEF(ticker)
 	round_end_sound_sent = TRUE
 
 /datum/controller/subsystem/ticker/proc/Reboot(reason, end_string, delay)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(usr && !check_rights(R_SERVER, TRUE))
 		return
@@ -597,6 +649,8 @@ SUBSYSTEM_DEF(ticker)
 	world.Reboot()
 
 /datum/controller/subsystem/ticker/Shutdown()
+	procstart = null
+	src.procstart = null
 	gather_newscaster() //called here so we ensure the log is created even upon admin reboot
 	if(!round_end_sound)
 		round_end_sound = pick(\

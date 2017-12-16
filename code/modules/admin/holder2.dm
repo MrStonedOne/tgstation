@@ -27,6 +27,8 @@ GLOBAL_PROTECT(href_token)
 	var/deadmined
 
 /datum/admins/New(datum/admin_rank/R, ckey, force_active = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!ckey)
 		QDEL_IN(src, 0)
 		throw EXCEPTION("Admin datum created without a ckey")
@@ -50,6 +52,8 @@ GLOBAL_PROTECT(href_token)
 
 
 /datum/admins/proc/activate()
+	procstart = null
+	src.procstart = null
 	GLOB.deadmins -= target
 	GLOB.admin_datums[target] = src
 	deadmined = FALSE
@@ -58,6 +62,8 @@ GLOBAL_PROTECT(href_token)
 
 
 /datum/admins/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	GLOB.deadmins[target] = src
 	GLOB.admin_datums -= target
 	deadmined = TRUE
@@ -67,6 +73,8 @@ GLOBAL_PROTECT(href_token)
 		C.verbs += /client/proc/readmin
 
 /datum/admins/proc/associate(client/C)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall())
 		var/msg = " has tried to elevate permissions!"
 		message_admins("[key_name_admin(usr)][msg]")
@@ -88,6 +96,8 @@ GLOBAL_PROTECT(href_token)
 		GLOB.admins |= C
 
 /datum/admins/proc/disassociate()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		GLOB.admins -= owner
 		owner.remove_admin_verbs()
@@ -95,12 +105,16 @@ GLOBAL_PROTECT(href_token)
 		owner = null
 
 /datum/admins/proc/check_for_rights(rights_required)
+	procstart = null
+	src.procstart = null
 	if(rights_required && !(rights_required & rank.rights))
 		return 0
 	return 1
 
 
 /datum/admins/proc/check_if_greater_rights_than_holder(datum/admins/other)
+	procstart = null
+	src.procstart = null
 	if(!other)
 		return 1 //they have no rights
 	if(rank.rights == 65535)
@@ -113,6 +127,8 @@ GLOBAL_PROTECT(href_token)
 	return 0
 
 /datum/admins/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return FALSE //nice try trialmin
 
 /*
@@ -122,6 +138,8 @@ if it doesn't return 1 and show_msg=1 it will prints a message explaining why th
 generally it would be used like so:
 
 /proc/admin_proc()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_ADMIN))
 		return
 	to_chat(world, "you have enough rights!")
@@ -130,6 +148,8 @@ NOTE: it checks usr! not src! So if you're checking somebody's rank in a proc wh
 you will have to do something like if(client.rights & R_ADMIN) yourself.
 */
 /proc/check_rights(rights_required, show_msg=1)
+	procstart = null
+	src.procstart = null
 	if(usr && usr.client)
 		if (check_rights_for(usr.client, rights_required))
 			return 1
@@ -140,6 +160,8 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 
 //probably a bit iffy - will hopefully figure out a better solution
 /proc/check_if_greater_rights_than(client/other)
+	procstart = null
+	src.procstart = null
 	if(usr && usr.client)
 		if(usr.client.holder)
 			if(!other || !other.holder)
@@ -149,16 +171,22 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 
 //This proc checks whether subject has at least ONE of the rights specified in rights_required.
 /proc/check_rights_for(client/subject, rights_required)
+	procstart = null
+	src.procstart = null
 	if(subject && subject.holder)
 		return subject.holder.check_for_rights(rights_required)
 	return 0
 
 /proc/GenerateToken()
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/I in 1 to 32)
 		. += "[rand(10)]"
 
 /proc/RawHrefToken(forceGlobal = FALSE)
+	procstart = null
+	src.procstart = null
 	var/tok = GLOB.href_token
 	if(!forceGlobal && usr)
 		var/client/C = usr.client
@@ -170,7 +198,11 @@ you will have to do something like if(client.rights & R_ADMIN) yourself.
 	return tok
 
 /proc/HrefToken(forceGlobal = FALSE)
+	procstart = null
+	src.procstart = null
 	return "admin_token=[RawHrefToken(forceGlobal)]"
 
 /proc/HrefTokenFormField(forceGlobal = FALSE)
+	procstart = null
+	src.procstart = null
 	return "<input type='hidden' name='admin_token' value='[RawHrefToken(forceGlobal)]'>"

@@ -9,6 +9,8 @@
 	var/sound2 = 'sound/weapons/zapbang.ogg'
 
 /obj/effect/proc_holder/spell/targeted/area_teleport/perform(list/targets, recharge = 1,mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	var/thearea = before_cast(targets)
 	if(!thearea || !cast_check(1))
 		revert_cast()
@@ -20,6 +22,8 @@
 	after_cast(targets)
 
 /obj/effect/proc_holder/spell/targeted/area_teleport/before_cast(list/targets)
+	procstart = null
+	src.procstart = null
 	var/A = null
 
 	if(!randomise_selection)
@@ -33,6 +37,8 @@
 	return thearea
 
 /obj/effect/proc_holder/spell/targeted/area_teleport/cast(list/targets,area/thearea,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(user), sound1, 50,1)
 	for(var/mob/living/target in targets)
 		var/list/L = list()
@@ -72,6 +78,8 @@
 	return
 
 /obj/effect/proc_holder/spell/targeted/area_teleport/invocation(area/chosenarea = null,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!invocation_area || !chosenarea)
 		..()
 	else

@@ -10,6 +10,8 @@
 
 
 /obj/machinery/computer/pod/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/machinery/mass_driver/M in range(range, src))
 		if(M.id == id)
@@ -17,6 +19,8 @@
 
 
 /obj/machinery/computer/pod/proc/alarm()
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return
 
@@ -40,6 +44,8 @@
 			M.close()
 
 /obj/machinery/computer/pod/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -71,6 +77,8 @@
 
 
 /obj/machinery/computer/pod/process()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(timing)
@@ -84,6 +92,8 @@
 
 
 /obj/machinery/computer/pod/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(usr.contents.Find(src) || (in_range(src, usr) && isturf(loc)) || issilicon(usr))
@@ -131,6 +141,8 @@
 	req_access = list(ACCESS_SYNDICATE)
 
 /obj/machinery/computer/pod/old/syndicate/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!allowed(user))
 		to_chat(user, "<span class='notice'>Access denied.</span>")
 		return

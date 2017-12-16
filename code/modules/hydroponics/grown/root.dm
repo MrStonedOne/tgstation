@@ -25,6 +25,8 @@
 	juice_results = list("carrotjuice" = 0)
 
 /obj/item/reagent_containers/food/snacks/grown/carrot/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(I.is_sharp())
 		to_chat(user, "<span class='notice'>You sharpen the carrot into a shiv with [I].</span>")
 		var/obj/item/kitchen/knife/carrotshiv/Shiv = new /obj/item/kitchen/knife/carrotshiv

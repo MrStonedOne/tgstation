@@ -10,6 +10,8 @@
 	severity = VIRUS_SEVERITY_NONTHREAT
 
 /datum/disease/cold/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(2)

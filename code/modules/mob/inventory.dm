@@ -3,18 +3,24 @@
 
 //Returns the thing we're currently holding
 /mob/proc/get_active_held_item()
+	procstart = null
+	src.procstart = null
 	return get_item_for_held_index(active_hand_index)
 
 
 //Finds the opposite limb for the active one (eg: upper left arm will find the item in upper right arm)
 //So we're treating each "pair" of limbs as a team, so "both" refers to them
 /mob/proc/get_inactive_held_item()
+	procstart = null
+	src.procstart = null
 	return get_item_for_held_index(get_inactive_hand_index())
 
 
 //Finds the opposite index for the active one (eg: upper left arm will find the item in upper right arm)
 //So we're treating each "pair" of limbs as a team, so "both" refers to them
 /mob/proc/get_inactive_hand_index()
+	procstart = null
+	src.procstart = null
 	var/other_hand = 0
 	if(!(active_hand_index % 2))
 		other_hand = active_hand_index-1 //finding the matching "left" limb
@@ -26,6 +32,8 @@
 
 
 /mob/proc/get_item_for_held_index(i)
+	procstart = null
+	src.procstart = null
 	if(i > 0 && i <= held_items.len)
 		return held_items[i]
 	return FALSE
@@ -33,6 +41,8 @@
 
 //Odd = left. Even = right
 /mob/proc/held_index_to_dir(i)
+	procstart = null
+	src.procstart = null
 	if(!(i % 2))
 		return "r"
 	return "l"
@@ -40,11 +50,15 @@
 
 //Check we have an organ for this hand slot (Dismemberment), Only relevant for humans
 /mob/proc/has_hand_for_held_index(i)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 
 //Check we have an organ for our active hand slot (Dismemberment),Only relevant for humans
 /mob/proc/has_active_hand()
+	procstart = null
+	src.procstart = null
 	return has_hand_for_held_index(active_hand_index)
 
 
@@ -52,6 +66,8 @@
 //Lefts: 1, 3, 5, 7...
 //Rights:2, 4, 6, 8...
 /mob/proc/get_empty_held_index_for_side(side = "left", all = FALSE)
+	procstart = null
+	src.procstart = null
 	var/start = 0
 	var/static/list/lefts = list("l" = TRUE,"L" = TRUE,"LEFT" = TRUE,"left" = TRUE)
 	var/static/list/rights = list("r" = TRUE,"R" = TRUE,"RIGHT" = TRUE,"right" = TRUE) //"to remain silent"
@@ -74,6 +90,8 @@
 
 //Same as the above, but returns the first or ALL held *ITEMS* for the side
 /mob/proc/get_held_items_for_side(side = "left", all = FALSE)
+	procstart = null
+	src.procstart = null
 	var/start = 0
 	var/static/list/lefts = list("l" = TRUE,"L" = TRUE,"LEFT" = TRUE,"left" = TRUE)
 	var/static/list/rights = list("r" = TRUE,"R" = TRUE,"RIGHT" = TRUE,"right" = TRUE) //"to remain silent"
@@ -96,6 +114,8 @@
 
 
 /mob/proc/get_empty_held_indexes()
+	procstart = null
+	src.procstart = null
 	var/list/L
 	for(var/i in 1 to held_items.len)
 		if(!held_items[i])
@@ -105,17 +125,23 @@
 	return L
 
 /mob/proc/get_held_index_of_item(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return held_items.Find(I)
 
 
 //Sad that this will cause some overhead, but the alias seems necessary
 //*I* may be happy with a million and one references to "indexes" but others won't be
 /mob/proc/is_holding(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return get_held_index_of_item(I)
 
 
 //Checks if we're holding an item of type: typepath
 /mob/proc/is_holding_item_of_type(typepath)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in held_items)
 		if(istype(I, typepath))
 			return I
@@ -126,6 +152,8 @@
 //Can be overriden to pass off the fluff to something else (eg: science allowing people to add extra robotic limbs, and having this proc react to that
 // with say "they are holding [I] in their Nanotrasen Brand Utility Arm - Right Edition" or w/e
 /mob/proc/get_held_index_name(i)
+	procstart = null
+	src.procstart = null
 	var/list/hand = list()
 	if(i > 2)
 		hand += "upper "
@@ -146,9 +174,13 @@
 //Returns if a certain item can be equipped to a certain slot.
 // Currently invalid for two-handed items - call obj/item/mob_can_equip() instead.
 /mob/proc/can_equip(obj/item/I, slot, disable_warning = 0)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/proc/can_put_in_hand(I, hand_index)
+	procstart = null
+	src.procstart = null
 	if(!put_in_hand_check(I))
 		return FALSE
 	if(!has_hand_for_held_index(hand_index))
@@ -156,6 +188,8 @@
 	return !held_items[hand_index]
 
 /mob/proc/put_in_hand(obj/item/I, hand_index)
+	procstart = null
+	src.procstart = null
 	if(can_put_in_hand(I, hand_index))
 		I.forceMove(src)
 		held_items[hand_index] = I
@@ -173,15 +207,21 @@
 
 //Puts the item into the first available left hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_l_hand(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return put_in_hand(I, get_empty_held_index_for_side("l"))
 
 
 //Puts the item into the first available right hand if possible and calls all necessary triggers/updates. returns 1 on success.
 /mob/proc/put_in_r_hand(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return put_in_hand(I, get_empty_held_index_for_side("r"))
 
 
 /mob/proc/put_in_hand_check(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(lying && !(I.flags_1&ABSTRACT_1))
 		return FALSE
 	if(!istype(I))
@@ -191,11 +231,15 @@
 
 //Puts the item into our active hand if possible. returns TRUE on success.
 /mob/proc/put_in_active_hand(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return put_in_hand(I, active_hand_index)
 
 
 //Puts the item into our inactive hand if possible, returns TRUE on success
 /mob/proc/put_in_inactive_hand(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return put_in_hand(I, get_inactive_hand_index())
 
 
@@ -203,6 +247,8 @@
 //If both fail it drops it on the floor and returns FALSE.
 //This is probably the main one you need to know :)
 /mob/proc/put_in_hands(obj/item/I, del_on_fail = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!I)
 		return FALSE
 	if(put_in_active_hand(I))
@@ -223,6 +269,8 @@
 	return FALSE
 
 /mob/proc/drop_all_held_items()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	for(var/obj/item/I in held_items)
 		. |= dropItemToGround(I)
@@ -230,6 +278,8 @@
 //Here lie drop_from_inventory and before_item_take, already forgotten and not missed.
 
 /mob/proc/canUnEquip(obj/item/I, force)
+	procstart = null
+	src.procstart = null
 	if(!I)
 		return TRUE
 	if((I.flags_1 & NODROP_1) && !force)
@@ -237,6 +287,8 @@
 	return TRUE
 
 /mob/proc/putItemFromInventoryInHandIfPossible(obj/item/I, hand_index, force_removal = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!can_put_in_hand(I, hand_index))
 		return FALSE
 	if(!temporarilyRemoveItemFromInventory(I, force_removal))
@@ -252,15 +304,21 @@
 //for when you want the item to end up on the ground
 //will force move the item to the ground and call the turf's Entered
 /mob/proc/dropItemToGround(obj/item/I, force = FALSE)
+	procstart = null
+	src.procstart = null
 	return doUnEquip(I, force, drop_location(), FALSE)
 
 //for when the item will be immediately placed in a loc other than the ground
 /mob/proc/transferItemToLoc(obj/item/I, newloc = null, force = FALSE)
+	procstart = null
+	src.procstart = null
 	return doUnEquip(I, force, newloc, FALSE)
 
 //visibly unequips I but it is NOT MOVED AND REMAINS IN SRC
 //item MUST BE FORCEMOVE'D OR QDEL'D
 /mob/proc/temporarilyRemoveItemFromInventory(obj/item/I, force = FALSE, idrop = TRUE)
+	procstart = null
+	src.procstart = null
 	return doUnEquip(I, force, null, TRUE, idrop)
 
 //DO NOT CALL THIS PROC
@@ -293,9 +351,13 @@
 //Outdated but still in use apparently. This should at least be a human proc.
 //Daily reminder to murder this - Remie.
 /mob/living/proc/get_equipped_items()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/get_equipped_items()
+	procstart = null
+	src.procstart = null
 	var/list/items = list()
 	if(back)
 		items += back
@@ -308,6 +370,8 @@
 	return items
 
 /mob/living/carbon/human/get_equipped_items()
+	procstart = null
+	src.procstart = null
 	var/list/items = ..()
 	if(belt)
 		items += belt
@@ -328,6 +392,8 @@
 	return items
 
 /mob/living/proc/unequip_everything()
+	procstart = null
+	src.procstart = null
 	var/list/items = list()
 	items |= get_equipped_items()
 	for(var/I in items)
@@ -335,6 +401,8 @@
 	drop_all_held_items()
 
 /obj/item/proc/equip_to_best_slot(var/mob/M)
+	procstart = null
+	src.procstart = null
 	if(src != M.get_active_held_item())
 		to_chat(M, "<span class='warning'>You are not holding anything to equip!</span>")
 		return FALSE
@@ -374,6 +442,8 @@
 
 
 /mob/verb/quick_equip()
+	procstart = null
+	src.procstart = null
 	set name = "quick-equip"
 	set hidden = 1
 
@@ -383,9 +453,13 @@
 
 //used in code for items usable by both carbon and drones, this gives the proper back slot for each mob.(defibrillator, backpack watertank, ...)
 /mob/proc/getBackSlot()
+	procstart = null
+	src.procstart = null
 	return slot_back
 
 /mob/proc/getBeltSlot()
+	procstart = null
+	src.procstart = null
 	return slot_belt
 
 
@@ -397,6 +471,8 @@
 //This is a very rare proc to call (besides admin fuckery) so
 //any cost it has isn't a worry
 /mob/proc/change_number_of_hands(amt)
+	procstart = null
+	src.procstart = null
 	if(amt < held_items.len)
 		for(var/i in held_items.len to amt step -1)
 			dropItemToGround(held_items[i])
@@ -410,6 +486,8 @@
 
 
 /mob/living/carbon/human/change_number_of_hands(amt)
+	procstart = null
+	src.procstart = null
 	var/old_limbs = held_items.len
 	if(amt < old_limbs)
 		for(var/i in hand_bodyparts.len to amt step -1)

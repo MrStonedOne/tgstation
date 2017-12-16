@@ -10,9 +10,13 @@
 	block_chance = 75
 
 /datum/martial_art/cqc/proc/drop_restraining()
+	procstart = null
+	src.procstart = null
 	restraining = 0
 
 /datum/martial_art/cqc/proc/check_streak(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(findtext(streak,SLAM_COMBO))
 		streak = ""
 		Slam(A,D)
@@ -35,6 +39,8 @@
 	return 0
 
 /datum/martial_art/cqc/proc/Slam(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D.stat || !D.IsKnockdown())
 		D.visible_message("<span class='warning'>[A] slams [D] into the ground!</span>", \
 						  	"<span class='userdanger'>[A] slams you into the ground!</span>")
@@ -45,6 +51,8 @@
 	return 1
 
 /datum/martial_art/cqc/proc/Kick(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D.stat || !D.IsKnockdown())
 		D.visible_message("<span class='warning'>[A] kicks [D] back!</span>", \
 							"<span class='userdanger'>[A] kicks you back!</span>")
@@ -62,12 +70,16 @@
 	return 1
 
 /datum/martial_art/cqc/proc/Pressure(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	D.visible_message("<span class='warning'>[A] forces their arm on [D]'s neck!</span>")
 	D.adjustStaminaLoss(60)
 	playsound(get_turf(A), 'sound/weapons/cqchit1.ogg', 50, 1, -1)
 	return 1
 
 /datum/martial_art/cqc/proc/Restrain(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(restraining)
 		return
 	if(!D.stat)
@@ -80,6 +92,8 @@
 	return 1
 
 /datum/martial_art/cqc/proc/Consecutive(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(!D.stat)
 		D.visible_message("<span class='warning'>[A] strikes [D]'s abdomen, neck and back consecutively</span>", \
 							"<span class='userdanger'>[A] strikes your abdomen, neck and back consecutively!</span>")
@@ -92,6 +106,8 @@
 	return 1
 
 /datum/martial_art/cqc/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	add_to_streak("G",D)
 	if(check_streak(A,D))
 		return 1
@@ -107,6 +123,8 @@
 	return 1
 
 /datum/martial_art/cqc/harm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	add_to_streak("H",D)
 	if(check_streak(A,D))
 		return 1
@@ -135,6 +153,8 @@
 	return 1
 
 /datum/martial_art/cqc/disarm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	add_to_streak("D",D)
 	var/obj/item/I = null
 	if(check_streak(A,D))
@@ -167,6 +187,8 @@
 	return 1
 
 /mob/living/carbon/human/proc/CQC_help()
+	procstart = null
+	src.procstart = null
 	set name = "Remember The Basics"
 	set desc = "You try to remember some of the basics of CQC."
 	set category = "CQC"
@@ -188,6 +210,8 @@
 	icon_state ="cqcmanual"
 
 /obj/item/cqc_manual/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user)
 		return
 	to_chat(user, "<span class='boldannounce'>You remember the basics of CQC.</span>")

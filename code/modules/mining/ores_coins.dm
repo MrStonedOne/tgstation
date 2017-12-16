@@ -13,6 +13,8 @@
 	var/refined_type = null //What this ore defaults to being refined into
 
 /obj/item/ore/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/weldingtool))
 		var/obj/item/weldingtool/W = I
 		if(W.remove_fuel(15) && refined_type)
@@ -23,6 +25,8 @@
 	..()
 
 /obj/item/ore/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/show_message = TRUE
 	for(var/obj/item/ore/O in loc)
@@ -88,6 +92,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/ore/glass/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>You use the sand to make sandstone.</span>")
 	var/sandAmt = 1
 	for(var/obj/item/ore/glass/G in user.loc) // The sand on the floor
@@ -107,6 +113,8 @@
 	return
 
 /obj/item/ore/glass/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(..() || !ishuman(hit_atom))
 		return
 	var/mob/living/carbon/human/C = hit_atom
@@ -137,6 +145,8 @@
 	refined_type = /obj/item/stack/sheet/mineral/plasma
 
 /obj/item/ore/plasma/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/weldingtool))
 		var/obj/item/weldingtool/W = I
 		if(W.welding)
@@ -200,11 +210,15 @@
 	var/det_timer
 
 /obj/item/twohanded/required/gibtonite/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(wires)
 	wires = null
 	return ..()
 
 /obj/item/twohanded/required/gibtonite/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!wires && istype(I, /obj/item/device/assembly/igniter))
 		user.visible_message("[user] attaches [I] to [src].", "<span class='notice'>You attach [I] to [src].</span>")
 		wires = new /datum/wires/explosive/gibtonite(src)
@@ -233,21 +247,29 @@
 	..()
 
 /obj/item/twohanded/required/gibtonite/attack_self(user)
+	procstart = null
+	src.procstart = null
 	if(wires)
 		wires.interact(user)
 	else
 		..()
 
 /obj/item/twohanded/required/gibtonite/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	GibtoniteReaction(P.firer)
 	..()
 
 /obj/item/twohanded/required/gibtonite/ex_act()
+	procstart = null
+	src.procstart = null
 	GibtoniteReaction(null, 1)
 
 
 
 /obj/item/twohanded/required/gibtonite/proc/GibtoniteReaction(mob/user, triggered_by = 0)
+	procstart = null
+	src.procstart = null
 	if(!primed)
 		primed = TRUE
 		playsound(src,'sound/effects/hit_on_shattered_glass.ogg',50,1)
@@ -275,6 +297,8 @@
 		det_timer = addtimer(CALLBACK(src, .proc/detonate, notify_admins), det_time, TIMER_STOPPABLE)
 
 /obj/item/twohanded/required/gibtonite/proc/detonate(notify_admins)
+	procstart = null
+	src.procstart = null
 	if(primed)
 		switch(quality)
 			if(GIBTONITE_QUALITY_HIGH)
@@ -286,11 +310,15 @@
 		qdel(src)
 
 /obj/item/ore/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(0,16)-8
 	pixel_y = rand(0,8)-8
 
 /obj/item/ore/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /*****************************Coin********************************/
@@ -313,11 +341,15 @@
 	var/value = 1
 
 /obj/item/coin/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(0,16)-8
 	pixel_y = rand(0,8)-8
 
 /obj/item/coin/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(value)
 		to_chat(user, "<span class='info'>It's worth [value] credit\s.</span>")
@@ -400,6 +432,8 @@
 	value = 0
 
 /obj/item/coin/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/CC = W
 		if(string_attached)
@@ -429,6 +463,8 @@
 		..()
 
 /obj/item/coin/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cooldown < world.time)
 		if(string_attached) //does the coin have a wire attached
 			to_chat(user, "<span class='warning'>The coin won't flip very well with something attached!</span>" )

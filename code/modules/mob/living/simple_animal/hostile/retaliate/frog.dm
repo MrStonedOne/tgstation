@@ -26,6 +26,8 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 
 /mob/living/simple_animal/hostile/retaliate/frog/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		name = "rare frog"
@@ -36,6 +38,8 @@
 		butcher_results = list(/obj/item/reagent_containers/food/snacks/nugget = 5)
 
 /mob/living/simple_animal/hostile/retaliate/frog/Crossed(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(!stat && isliving(AM))
 		var/mob/living/L = AM
 		if(L.mob_size > MOB_SIZE_TINY)

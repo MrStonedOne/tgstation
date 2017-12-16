@@ -17,6 +17,8 @@
 
 
 /datum/computer_file/program/supermatter_monitor/process_tick()
+	procstart = null
+	src.procstart = null
 	..()
 	var/new_status = get_status()
 	if(last_status != new_status)
@@ -27,16 +29,22 @@
 			computer.update_icon()
 
 /datum/computer_file/program/supermatter_monitor/run_program(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..(user)
 	refresh()
 
 /datum/computer_file/program/supermatter_monitor/kill_program(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	active = null
 	supermatters = null
 	..()
 
 // Refreshes list of active supermatter crystals
 /datum/computer_file/program/supermatter_monitor/proc/refresh()
+	procstart = null
+	src.procstart = null
 	supermatters = list()
 	var/turf/T = get_turf(ui_host())
 	if(!T)
@@ -51,11 +59,15 @@
 		active = null
 
 /datum/computer_file/program/supermatter_monitor/proc/get_status()
+	procstart = null
+	src.procstart = null
 	. = SUPERMATTER_INACTIVE
 	for(var/obj/machinery/power/supermatter_shard/S in supermatters)
 		. = max(., S.get_status())
 
 /datum/computer_file/program/supermatter_monitor/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 
 	if(istype(active))
@@ -108,6 +120,8 @@
 	return data
 
 /datum/computer_file/program/supermatter_monitor/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 

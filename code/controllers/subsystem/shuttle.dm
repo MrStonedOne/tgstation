@@ -2,6 +2,8 @@
 #define MAX_TRANSIT_REQUEST_RETRIES 10
 
 SUBSYSTEM_DEF(shuttle)
+	procstart = null
+	src.procstart = null
 	name = "Shuttle"
 	wait = 10
 	init_order = INIT_ORDER_SHUTTLE
@@ -55,6 +57,8 @@ SUBSYSTEM_DEF(shuttle)
 	var/lockdown = FALSE	//disallow transit after nuke goes off
 
 /datum/controller/subsystem/shuttle/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	if(!arrivals)
 		WARNING("No /obj/docking_port/mobile/arrivals placed on the map!")
 	if(!emergency)
@@ -81,6 +85,8 @@ SUBSYSTEM_DEF(shuttle)
 	..()
 
 /datum/controller/subsystem/shuttle/proc/setup_transit_zone()
+	procstart = null
+	src.procstart = null
 	// transit zone
 	var/turf/A = get_turf(locate(SHUTTLE_TRANSIT_BORDER,SHUTTLE_TRANSIT_BORDER,ZLEVEL_TRANSIT))
 	var/turf/B = get_turf(locate(world.maxx - SHUTTLE_TRANSIT_BORDER,world.maxy - SHUTTLE_TRANSIT_BORDER,ZLEVEL_TRANSIT))
@@ -92,6 +98,8 @@ SUBSYSTEM_DEF(shuttle)
 
 #ifdef HIGHLIGHT_DYNAMIC_TRANSIT
 /datum/controller/subsystem/shuttle/proc/color_space()
+	procstart = null
+	src.procstart = null
 	var/turf/A = get_turf(locate(SHUTTLE_TRANSIT_BORDER,SHUTTLE_TRANSIT_BORDER,ZLEVEL_TRANSIT))
 	var/turf/B = get_turf(locate(world.maxx - SHUTTLE_TRANSIT_BORDER,world.maxy - SHUTTLE_TRANSIT_BORDER,ZLEVEL_TRANSIT))
 	for(var/i in block(A, B))
@@ -106,6 +114,8 @@ SUBSYSTEM_DEF(shuttle)
 #endif
 
 /datum/controller/subsystem/shuttle/fire()
+	procstart = null
+	src.procstart = null
 	for(var/thing in mobile)
 		if(!thing)
 			mobile.Remove(thing)
@@ -156,6 +166,8 @@ SUBSYSTEM_DEF(shuttle)
 			break
 
 /datum/controller/subsystem/shuttle/proc/CheckAutoEvac()
+	procstart = null
+	src.procstart = null
 	if(emergencyNoEscape || emergencyNoRecall || !emergency || !SSticker.HasRoundStarted())
 		return
 
@@ -181,18 +193,24 @@ SUBSYSTEM_DEF(shuttle)
 			emergency.request(null, set_coefficient = 0.4)
 
 /datum/controller/subsystem/shuttle/proc/getShuttle(id)
+	procstart = null
+	src.procstart = null
 	for(var/obj/docking_port/mobile/M in mobile)
 		if(M.id == id)
 			return M
 	WARNING("couldn't find shuttle with id: [id]")
 
 /datum/controller/subsystem/shuttle/proc/getDock(id)
+	procstart = null
+	src.procstart = null
 	for(var/obj/docking_port/stationary/S in stationary)
 		if(S.id == id)
 			return S
 	WARNING("couldn't find dock with id: [id]")
 
 /datum/controller/subsystem/shuttle/proc/requestEvac(mob/user, call_reason)
+	procstart = null
+	src.procstart = null
 	if(!emergency)
 		WARNING("requestEvac(): There is no emergency shuttle, but the \
 			shuttle was called. Using the backup shuttle instead.")
@@ -253,6 +271,8 @@ SUBSYSTEM_DEF(shuttle)
 	message_admins("[key_name_admin(user)] has called the shuttle. (<A HREF='?_src_=holder;[HrefToken()];trigger_centcom_recall=1'>TRIGGER CENTCOM RECALL</A>)")
 
 /datum/controller/subsystem/shuttle/proc/centcom_recall(old_timer, admiral_message)
+	procstart = null
+	src.procstart = null
 	if(emergency.mode != SHUTTLE_CALL || emergency.timer != old_timer)
 		return
 	emergency.cancel()
@@ -275,11 +295,15 @@ SUBSYSTEM_DEF(shuttle)
 // Called when an emergency shuttle mobile docking port is
 // destroyed, which will only happen with admin intervention
 /datum/controller/subsystem/shuttle/proc/emergencyDeregister()
+	procstart = null
+	src.procstart = null
 	// When a new emergency shuttle is created, it will override the
 	// backup shuttle.
 	src.emergency = src.backup_shuttle
 
 /datum/controller/subsystem/shuttle/proc/cancelEvac(mob/user)
+	procstart = null
+	src.procstart = null
 	if(canRecall())
 		emergency.cancel(get_area(user))
 		log_game("[key_name(user)] has recalled the shuttle.")
@@ -287,6 +311,8 @@ SUBSYSTEM_DEF(shuttle)
 		return 1
 
 /datum/controller/subsystem/shuttle/proc/canRecall()
+	procstart = null
+	src.procstart = null
 	if(!emergency || emergency.mode != SHUTTLE_CALL)
 		return
 	if(SSticker.mode.name == "meteor")
@@ -305,6 +331,8 @@ SUBSYSTEM_DEF(shuttle)
 	return 1
 
 /datum/controller/subsystem/shuttle/proc/autoEvac()
+	procstart = null
+	src.procstart = null
 	if (!SSticker.IsRoundInProgress())
 		return
 
@@ -334,24 +362,34 @@ SUBSYSTEM_DEF(shuttle)
 			message_admins("All the communications consoles were destroyed and all AIs are inactive. Shuttle called.")
 
 /datum/controller/subsystem/shuttle/proc/registerHostileEnvironment(datum/bad)
+	procstart = null
+	src.procstart = null
 	hostileEnvironments[bad] = TRUE
 	checkHostileEnvironment()
 
 /datum/controller/subsystem/shuttle/proc/clearHostileEnvironment(datum/bad)
+	procstart = null
+	src.procstart = null
 	hostileEnvironments -= bad
 	checkHostileEnvironment()
 
 
 /datum/controller/subsystem/shuttle/proc/registerTradeBlockade(datum/bad)
+	procstart = null
+	src.procstart = null
 	tradeBlockade[bad] = TRUE
 	checkTradeBlockade()
 
 /datum/controller/subsystem/shuttle/proc/clearTradeBlockade(datum/bad)
+	procstart = null
+	src.procstart = null
 	tradeBlockade -= bad
 	checkTradeBlockade()
 
 
 /datum/controller/subsystem/shuttle/proc/checkTradeBlockade()
+	procstart = null
+	src.procstart = null
 	for(var/datum/d in tradeBlockade)
 		if(!istype(d) || QDELETED(d))
 			tradeBlockade -= d
@@ -366,6 +404,8 @@ SUBSYSTEM_DEF(shuttle)
 		//Make all cargo consoles speak up
 
 /datum/controller/subsystem/shuttle/proc/checkHostileEnvironment()
+	procstart = null
+	src.procstart = null
 	for(var/datum/d in hostileEnvironments)
 		if(!istype(d) || QDELETED(d))
 			hostileEnvironments -= d
@@ -387,6 +427,8 @@ SUBSYSTEM_DEF(shuttle)
 
 //try to move/request to dockHome if possible, otherwise dockAway. Mainly used for admin buttons
 /datum/controller/subsystem/shuttle/proc/toggleShuttle(shuttleId, dockHome, dockAway, timed)
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/M = getShuttle(shuttleId)
 	if(!M)
 		return 1
@@ -404,6 +446,8 @@ SUBSYSTEM_DEF(shuttle)
 
 
 /datum/controller/subsystem/shuttle/proc/moveShuttle(shuttleId, dockId, timed)
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/M = getShuttle(shuttleId)
 	var/obj/docking_port/stationary/D = getDock(dockId)
 
@@ -418,6 +462,8 @@ SUBSYSTEM_DEF(shuttle)
 	return 0	//dock successful
 
 /datum/controller/subsystem/shuttle/proc/request_transit_dock(obj/docking_port/mobile/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		throw EXCEPTION("[M] is not a mobile docking port")
 
@@ -428,6 +474,8 @@ SUBSYSTEM_DEF(shuttle)
 			transit_requesters += M
 
 /datum/controller/subsystem/shuttle/proc/generate_transit_dock(obj/docking_port/mobile/M)
+	procstart = null
+	src.procstart = null
 	// First, determine the size of the needed zone
 	// Because of shuttle rotation, the "width" of the shuttle is not
 	// always x.
@@ -544,6 +592,8 @@ SUBSYSTEM_DEF(shuttle)
 	return TRUE
 
 /datum/controller/subsystem/shuttle/proc/initial_move()
+	procstart = null
+	src.procstart = null
 	for(var/obj/docking_port/mobile/M in mobile)
 		if(!M.roundstart_move)
 			continue
@@ -552,6 +602,8 @@ SUBSYSTEM_DEF(shuttle)
 		CHECK_TICK
 
 /datum/controller/subsystem/shuttle/Recover()
+	procstart = null
+	src.procstart = null
 	if (istype(SSshuttle.mobile))
 		mobile = SSshuttle.mobile
 	if (istype(SSshuttle.stationary))
@@ -611,6 +663,8 @@ SUBSYSTEM_DEF(shuttle)
 
 
 /datum/controller/subsystem/shuttle/proc/is_in_shuttle_bounds(atom/A)
+	procstart = null
+	src.procstart = null
 	var/area/current = get_area(A)
 	if(istype(current, /area/shuttle) && !istype(current, /area/shuttle/transit))
 		return TRUE
@@ -619,6 +673,8 @@ SUBSYSTEM_DEF(shuttle)
 			return TRUE
 
 /datum/controller/subsystem/shuttle/proc/get_containing_shuttle(atom/A)
+	procstart = null
+	src.procstart = null
 	var/list/mobile_cache = mobile
 	for(var/i in 1 to mobile_cache.len)
 		var/obj/docking_port/port = mobile_cache[i]
@@ -626,6 +682,8 @@ SUBSYSTEM_DEF(shuttle)
 			return port
 
 /datum/controller/subsystem/shuttle/proc/get_containing_dock(atom/A)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/stationary_cache = stationary
 	for(var/i in 1 to stationary_cache.len)
@@ -634,6 +692,8 @@ SUBSYSTEM_DEF(shuttle)
 			. += port
 
 /datum/controller/subsystem/shuttle/proc/get_dock_overlap(x0, y0, x1, y1, z)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/list/stationary_cache = stationary
 	for(var/i in 1 to stationary_cache.len)
@@ -648,6 +708,8 @@ SUBSYSTEM_DEF(shuttle)
 			.[port] = overlap
 
 /datum/controller/subsystem/shuttle/proc/update_hidden_docking_ports(list/remove_turfs, list/add_turfs)
+	procstart = null
+	src.procstart = null
 	var/list/remove_images = list()
 	var/list/add_images = list()
 

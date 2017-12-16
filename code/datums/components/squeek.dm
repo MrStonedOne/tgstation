@@ -13,6 +13,8 @@
 	var/use_delay = 20
 
 /datum/component/squeak/Initialize(custom_sounds, volume_override, chance_override, step_delay_override, use_delay_override)
+	procstart = null
+	src.procstart = null
 	if(custom_sounds)
 		override_squeak_sounds = custom_sounds
 	if(chance_override)
@@ -29,6 +31,8 @@
 	RegisterSignal(COMSIG_SHOES_STEP_ACTION, .proc/step_squeak)
 
 /datum/component/squeak/proc/play_squeak()
+	procstart = null
+	src.procstart = null
 	if(prob(squeak_chance))
 		if(!override_squeak_sounds)
 			playsound(parent, pickweight(default_squeak_sounds), volume, 1, -1)
@@ -36,6 +40,8 @@
 			playsound(parent, pickweight(override_squeak_sounds), volume, 1, -1)
 
 /datum/component/squeak/proc/step_squeak()
+	procstart = null
+	src.procstart = null
 	if(steps > step_delay)
 		play_squeak()
 		steps = 0
@@ -43,6 +49,8 @@
 		steps++
 
 /datum/component/squeak/proc/use_squeak()
+	procstart = null
+	src.procstart = null
 	if(last_use + use_delay < world.time)
 		last_use = world.time
 		play_squeak()

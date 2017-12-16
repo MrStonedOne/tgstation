@@ -2,6 +2,8 @@
 	icon = 'icons/mob/screen_ai.dmi'
 
 /obj/screen/ai/Click()
+	procstart = null
+	src.procstart = null
 	if(isobserver(usr) || usr.incapacitated())
 		return TRUE
 
@@ -10,6 +12,8 @@
 	icon_state = "ai_core"
 
 /obj/screen/ai/aicore/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -20,6 +24,8 @@
 	icon_state = "camera"
 
 /obj/screen/ai/camera_list/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -31,6 +37,8 @@
 	icon_state = "track"
 
 /obj/screen/ai/camera_track/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -42,6 +50,8 @@
 	icon_state = "camera_light"
 
 /obj/screen/ai/camera_light/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -52,6 +62,8 @@
 	icon_state = "crew_monitor"
 
 /obj/screen/ai/crew_monitor/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -62,6 +74,8 @@
 	icon_state = "manifest"
 
 /obj/screen/ai/crew_manifest/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -72,6 +86,8 @@
 	icon_state = "alerts"
 
 /obj/screen/ai/alerts/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -82,6 +98,8 @@
 	icon_state = "announcement"
 
 /obj/screen/ai/announcement/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -92,6 +110,8 @@
 	icon_state = "call_shuttle"
 
 /obj/screen/ai/call_shuttle/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -102,6 +122,8 @@
 	icon_state = "state_laws"
 
 /obj/screen/ai/state_laws/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -112,6 +134,8 @@
 	icon_state = "pda_send"
 
 /obj/screen/ai/pda_msg_send/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -122,6 +146,8 @@
 	icon_state = "pda_receive"
 
 /obj/screen/ai/pda_msg_show/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/ai/AI = usr
@@ -132,6 +158,8 @@
 	icon_state = "take_picture"
 
 /obj/screen/ai/image_take/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(isAI(usr))
@@ -146,6 +174,8 @@
 	icon_state = "view_images"
 
 /obj/screen/ai/image_view/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(isAI(usr))
@@ -160,6 +190,8 @@
 	icon_state = "ai_sensor"
 
 /obj/screen/ai/sensors/Click()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/living/silicon/S = usr
@@ -170,6 +202,8 @@
 	ui_style_icon = 'icons/mob/screen_ai.dmi'
 
 /datum/hud/ai/New(mob/owner, ui_style = 'icons/mob/screen_ai.dmi')
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/screen/using
 
@@ -256,5 +290,7 @@
 
 
 /mob/living/silicon/ai/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/ai(src)

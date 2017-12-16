@@ -16,6 +16,8 @@
 /datum/antagonist/traitor/AI
 
 /datum/antagonist/traitor/proc/specialise()
+	procstart = null
+	src.procstart = null
 	silent = TRUE
 	if(owner.current && isAI(owner.current))
 		owner.add_antag_datum(ai_datum)
@@ -24,6 +26,8 @@
 	on_removal()
 
 /datum/antagonist/traitor/on_gain()
+	procstart = null
+	src.procstart = null
 	if(should_specialise)
 		specialise()
 		return
@@ -35,6 +39,8 @@
 	..()
 
 /datum/antagonist/traitor/apply_innate_effects()
+	procstart = null
+	src.procstart = null
 	if(owner.assigned_role == "Clown")
 		var/mob/living/carbon/human/traitor_mob = owner.current
 		if(traitor_mob && istype(traitor_mob))
@@ -43,12 +49,16 @@
 			traitor_mob.dna.remove_mutation(CLOWNMUT)
 
 /datum/antagonist/traitor/remove_innate_effects()
+	procstart = null
+	src.procstart = null
 	if(owner.assigned_role == "Clown")
 		var/mob/living/carbon/human/traitor_mob = owner.current
 		if(traitor_mob && istype(traitor_mob))
 			traitor_mob.dna.add_mutation(CLOWNMUT)
 
 /datum/antagonist/traitor/on_removal()
+	procstart = null
+	src.procstart = null
 	if(should_specialise)
 		return ..()//we never did any of this anyway
 	SSticker.mode.traitors -= owner
@@ -61,6 +71,8 @@
 	..()
 
 /datum/antagonist/traitor/AI/on_removal()
+	procstart = null
+	src.procstart = null
 	if(owner.current && isAI(owner.current))
 		var/mob/living/silicon/ai/A = owner.current
 		A.set_zeroth_law("")
@@ -70,16 +82,24 @@
 	..()
 
 /datum/antagonist/traitor/proc/add_objective(var/datum/objective/O)
+	procstart = null
+	src.procstart = null
 	owner.objectives += O
 	objectives += O
 
 /datum/antagonist/traitor/proc/remove_objective(var/datum/objective/O)
+	procstart = null
+	src.procstart = null
 	owner.objectives -= O
 	objectives -= O
 
 /datum/antagonist/traitor/proc/forge_traitor_objectives()
+	procstart = null
+	src.procstart = null
 	return
 /datum/antagonist/traitor/human/forge_traitor_objectives()
+	procstart = null
+	src.procstart = null
 	var/is_hijacker = prob(10)
 	var/martyr_chance = prob(20)
 	var/objective_count = is_hijacker 			//Hijacking counts towards number of objectives
@@ -123,6 +143,8 @@
 			return
 
 /datum/antagonist/traitor/AI/forge_traitor_objectives()
+	procstart = null
+	src.procstart = null
 	var/objective_count = 0
 
 	if(prob(30))
@@ -138,6 +160,8 @@
 	exist_objective.owner = owner
 	add_objective(exist_objective)
 /datum/antagonist/traitor/proc/forge_single_objective()
+	procstart = null
+	src.procstart = null
 	return 0
 /datum/antagonist/traitor/human/forge_single_objective() //Returns how many objectives are added
 	.=1
@@ -171,6 +195,8 @@
 			add_objective(steal_objective)
 
 /datum/antagonist/traitor/AI/forge_single_objective()
+	procstart = null
+	src.procstart = null
 	.=1
 	var/special_pick = rand(1,4)
 	switch(special_pick)
@@ -199,28 +225,38 @@
 			.=2
 
 /datum/antagonist/traitor/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner.current, "<B><font size=3 color=red>You are the [owner.special_role].</font></B>")
 	owner.announce_objectives()
 	if(should_give_codewords)
 		give_codewords()
 
 /datum/antagonist/traitor/proc/finalize_traitor()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.update_traitor_icons_added(owner)
 	return
 
 /datum/antagonist/traitor/AI/finalize_traitor()
+	procstart = null
+	src.procstart = null
 	..()
 	add_law_zero()
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/malf.ogg', 100, FALSE, pressure_affected = FALSE)
 	owner.current.grant_language(/datum/language/codespeak)
 
 /datum/antagonist/traitor/human/finalize_traitor()
+	procstart = null
+	src.procstart = null
 	..()
 	if(should_equip)
 		equip(silent)
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/tatoralert.ogg', 100, FALSE, pressure_affected = FALSE)
 
 /datum/antagonist/traitor/proc/give_codewords()
+	procstart = null
+	src.procstart = null
 	if(!owner.current)
 		return
 	var/mob/traitor_mob=owner.current
@@ -235,6 +271,8 @@
 	to_chat(traitor_mob, "Use the code words in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe.")
 
 /datum/antagonist/traitor/AI/proc/add_law_zero()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/killer = owner.current
 	if(!killer || !istype(killer))
 		return
@@ -246,12 +284,18 @@
 	killer.add_malf_picker()
 
 /datum/antagonist/traitor/proc/equip(var/silent = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/antagonist/traitor/human/equip(var/silent = FALSE)
+	procstart = null
+	src.procstart = null
 	owner.equip_traitor(employer, silent)
 
 /datum/antagonist/traitor/human/proc/assign_exchange_role()
+	procstart = null
+	src.procstart = null
 	//set faction
 	var/faction = "red"
 	if(owner == SSticker.mode.exchange_blue)
@@ -292,6 +336,8 @@
 
 //TODO Collate
 /datum/antagonist/traitor/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/result = list()
 
 	var/traitorwin = TRUE
@@ -338,5 +384,7 @@
 	return result.Join("<br>")
 
 /datum/antagonist/traitor/roundend_report_footer()
+	procstart = null
+	src.procstart = null
 	return "<br><b>The code phrases were:</b> <span class='codephrase'>[GLOB.syndicate_code_phrase]</span><br>\
 		<b>The code responses were:</b> <span class='codephrase'>[GLOB.syndicate_code_response]</span><br>"

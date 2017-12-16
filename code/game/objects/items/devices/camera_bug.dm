@@ -32,10 +32,14 @@
 	var/last_seen = null
 
 /obj/item/device/camera_bug/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/device/camera_bug/Destroy()
+	procstart = null
+	src.procstart = null
 	get_cameras()
 	for(var/cam_tag in bugged_cameras)
 		var/obj/machinery/camera/camera = bugged_cameras[cam_tag]
@@ -48,15 +52,21 @@
 
 
 /obj/item/device/camera_bug/interact(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	var/datum/browser/popup = new(user, "camerabug","Camera Bug",nref=src)
 	popup.set_content(menu(get_cameras()))
 	popup.open()
 
 /obj/item/device/camera_bug/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	interact(user)
 
 /obj/item/device/camera_bug/check_eye(mob/user)
+	procstart = null
+	src.procstart = null
 	if ( loc != user || user.incapacitated() || user.eye_blind || !current )
 		user.unset_machine()
 		return 0
@@ -68,9 +78,13 @@
 		return 0
 	return 1
 /obj/item/device/camera_bug/on_unset_machine(mob/user)
+	procstart = null
+	src.procstart = null
 	user.reset_perspective(null)
 
 /obj/item/device/camera_bug/proc/get_cameras()
+	procstart = null
+	src.procstart = null
 	if( world.time > (last_net_update + 100))
 		bugged_cameras = list()
 		for(var/obj/machinery/camera/camera in GLOB.cameranet.cameras)
@@ -83,6 +97,8 @@
 
 
 /obj/item/device/camera_bug/proc/menu(list/cameras)
+	procstart = null
+	src.procstart = null
 	if(!cameras || !cameras.len)
 		return "No bugged cameras found."
 
@@ -137,11 +153,15 @@
 	return html
 
 /obj/item/device/camera_bug/proc/get_seens()
+	procstart = null
+	src.procstart = null
 	if(current && current.can_use())
 		var/list/seen = current.can_see()
 		return seen
 
 /obj/item/device/camera_bug/proc/camera_report()
+	procstart = null
+	src.procstart = null
 	// this should only be called if current exists
 	var/dat = ""
 	var/list/seen = get_seens()
@@ -187,6 +207,8 @@
 		return "Camera Offline<br>"
 
 /obj/item/device/camera_bug/Topic(href,list/href_list)
+	procstart = null
+	src.procstart = null
 	if(usr != loc)
 		usr.unset_machine()
 		usr << browse(null, "window=camerabug")
@@ -254,6 +276,8 @@
 	interact()
 
 /obj/item/device/camera_bug/process()
+	procstart = null
+	src.procstart = null
 	if(track_mode == BUGMODE_LIST || (world.time < (last_tracked + refresh_interval)))
 		return
 	last_tracked = world.time

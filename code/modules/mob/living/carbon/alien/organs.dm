@@ -3,6 +3,8 @@
 	var/list/alien_powers = list()
 
 /obj/item/organ/alien/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/A in alien_powers)
 		if(ispath(A))
@@ -10,17 +12,23 @@
 			alien_powers += new A(src)
 
 /obj/item/organ/alien/Insert(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/obj/effect/proc_holder/alien/P in alien_powers)
 		M.AddAbility(P)
 
 
 /obj/item/organ/alien/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/proc_holder/alien/P in alien_powers)
 		M.RemoveAbility(P)
 	..()
 
 /obj/item/organ/alien/prepare_eat()
+	procstart = null
+	src.procstart = null
 	var/obj/S = ..()
 	S.reagents.add_reagent("sacid", 10)
 	return S
@@ -40,6 +48,8 @@
 	var/plasma_rate = 10
 
 /obj/item/organ/alien/plasmavessel/prepare_eat()
+	procstart = null
+	src.procstart = null
 	var/obj/S = ..()
 	S.reagents.add_reagent("plasma", storedPlasma/10)
 	return S
@@ -71,6 +81,8 @@
 	alien_powers = list(/obj/effect/proc_holder/alien/transfer)
 
 /obj/item/organ/alien/plasmavessel/on_life()
+	procstart = null
+	src.procstart = null
 	//If there are alien weeds on the ground then heal if needed or give some plasma
 	if(locate(/obj/structure/alien/weeds) in owner.loc)
 		if(owner.health >= owner.maxHealth)
@@ -88,12 +100,16 @@
 		owner.adjustPlasma(plasma_rate * 0.1)
 
 /obj/item/organ/alien/plasmavessel/Insert(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isalien(M))
 		var/mob/living/carbon/alien/A = M
 		A.updatePlasmaDisplay()
 
 /obj/item/organ/alien/plasmavessel/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isalien(M))
 		var/mob/living/carbon/alien/A = M
@@ -111,15 +127,21 @@
 	alien_powers = list(/obj/effect/proc_holder/alien/whisper)
 
 /obj/item/organ/alien/hivenode/Insert(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	M.faction |= "alien"
 
 /obj/item/organ/alien/hivenode/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	M.faction -= "alien"
 	..()
 
 //When the alien queen dies, all aliens suffer a penalty as punishment for failing to protect her.
 /obj/item/organ/alien/hivenode/proc/queen_death()
+	procstart = null
+	src.procstart = null
 	if(!owner|| owner.stat == DEAD)
 		return
 	if(isalien(owner)) //Different effects for aliens than humans
@@ -143,6 +165,8 @@
 
 
 /obj/item/organ/alien/hivenode/proc/clear_queen_death()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src)) //In case the node is deleted
 		return
 	recent_queen_death = 0

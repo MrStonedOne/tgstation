@@ -32,10 +32,14 @@
 	throw_range = 10
 
 /obj/item/reagent_containers/spray/weedspray/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("weedkiller", 100)
 
 /obj/item/reagent_containers/spray/weedspray/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is huffing [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (TOXLOSS)
 
@@ -56,10 +60,14 @@
 	throw_range = 10
 
 /obj/item/reagent_containers/spray/pestspray/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("pestkiller", 100)
 
 /obj/item/reagent_containers/spray/pestspray/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is huffing [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (TOXLOSS)
 
@@ -99,6 +107,8 @@
 	sharpness = IS_SHARP
 
 /obj/item/hatchet/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is chopping at [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
 	return (BRUTELOSS)
@@ -122,6 +132,8 @@
 	var/swiping = FALSE
 
 /obj/item/scythe/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is beheading [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
@@ -132,6 +144,8 @@
 	return (BRUTELOSS)
 
 /obj/item/scythe/pre_attackby(atom/A, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(swiping || !istype(A, /obj/structure/spacevine) || get_turf(A) == get_turf(user))
 		return ..()
 	else
@@ -160,6 +174,8 @@
 	possible_transfer_amounts = list(1,2,5,10,15,25,50)
 
 /obj/item/reagent_containers/glass/bottle/nutrient/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	src.pixel_x = rand(-5, 5)
 	src.pixel_y = rand(-5, 5)
@@ -171,6 +187,8 @@
 	icon = 'icons/obj/chemical.dmi'
 
 /obj/item/reagent_containers/glass/bottle/nutrient/ez/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("eznutriment", 50)
 
@@ -180,6 +198,8 @@
 	icon = 'icons/obj/chemical.dmi'
 
 /obj/item/reagent_containers/glass/bottle/nutrient/l4z/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("left4zednutriment", 50)
 
@@ -189,6 +209,8 @@
 	icon = 'icons/obj/chemical.dmi'
 
 /obj/item/reagent_containers/glass/bottle/nutrient/rh/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("robustharvestnutriment", 50)
 
@@ -210,6 +232,8 @@
 	icon = 'icons/obj/chemical.dmi'
 
 /obj/item/reagent_containers/glass/bottle/killer/weedkiller/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("weedkiller", 50)
 
@@ -219,5 +243,7 @@
 	icon = 'icons/obj/chemical.dmi'
 
 /obj/item/reagent_containers/glass/bottle/killer/pestkiller/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("pestkiller", 50)

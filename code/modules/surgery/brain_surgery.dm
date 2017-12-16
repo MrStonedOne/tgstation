@@ -18,6 +18,8 @@
 	time = 120 //long and complicated
 
 /datum/surgery/brain_surgery/can_start(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/B = target.getorganslot(ORGAN_SLOT_BRAIN)
 	if(!B)
 		to_chat(user, "<span class='warning'>It's hard to do surgery on someone's brain when they don't have one.</span>")
@@ -25,15 +27,21 @@
 	return TRUE
 
 /datum/surgery_step/fix_brain/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] begins to fix [target]'s brain.", "<span class='notice'>You begin to fix [target]'s brain...</span>")
 
 /datum/surgery_step/fix_brain/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] successfully fixes [target]'s brain!", "<span class='notice'>You succeed in fixing [target]'s brain.</span>")
 	target.adjustBrainLoss(-60)
 	target.cure_all_traumas()
 	return TRUE
 
 /datum/surgery_step/fix_brain/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	if(target.getorganslot(ORGAN_SLOT_BRAIN))
 		user.visible_message("<span class='warning'>[user] screws up, causing more damage!</span>", "<span class='warning'>You screw up, causing more damage!</span>")
 		target.adjustBrainLoss(80)

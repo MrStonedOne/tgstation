@@ -13,6 +13,8 @@
 	var/resist_string = "glows blinding white" //string for when a null rod blocks its effects, "glows [resist_string]"
 
 /obj/effect/clockwork/sigil/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(I.force)
 		if(is_servant_of_ratvar(user) && user.a_intent != INTENT_HARM)
 			return ..()
@@ -22,9 +24,13 @@
 	return ..()
 
 /obj/effect/clockwork/sigil/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	return //you can't tk stomp sigils, but you can hit them with something
 
 /obj/effect/clockwork/sigil/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user) && !user.stat)
 		if(is_servant_of_ratvar(user) && user.a_intent != INTENT_HARM)
 			return ..()
@@ -34,10 +40,14 @@
 	..()
 
 /obj/effect/clockwork/sigil/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>[src] scatters into thousands of particles.</span>")
 	qdel(src)
 
 /obj/effect/clockwork/sigil/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isliving(AM))
 		var/mob/living/L = AM
@@ -69,6 +79,8 @@
 	sigil_name = "Sigil of Transgression"
 
 /obj/effect/clockwork/sigil/transgression/sigil_effects(mob/living/L)
+	procstart = null
+	src.procstart = null
 	var/target_flashed = L.flash_act()
 	for(var/mob/living/M in viewers(5, src))
 		if(!is_servant_of_ratvar(M) && M != L)
@@ -105,6 +117,8 @@
 	var/glow_type = /obj/effect/temp_visual/ratvar/sigil/submission
 
 /obj/effect/clockwork/sigil/submission/sigil_effects(mob/living/L)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/has_sigil = FALSE
 	var/has_servant = FALSE
@@ -173,10 +187,14 @@
 	affects_servants = TRUE
 
 /obj/effect/clockwork/sigil/transmission/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/effect/clockwork/sigil/transmission/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	if(severity == 3)
 		adjust_clockwork_power(500) //Light explosions charge the network!
 		visible_message("<span class='warning'>[src] flares a brilliant orange!</span>")
@@ -184,6 +202,8 @@
 		..()
 
 /obj/effect/clockwork/sigil/transmission/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		var/structure_number = 0
@@ -195,6 +215,8 @@
 			to_chat(user, "<span class='brass'>You can recharge from the [sigil_name] by crossing it.</span>")
 
 /obj/effect/clockwork/sigil/transmission/sigil_effects(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(L))
 		if(iscyborg(L))
 			charge_cyborg(L)
@@ -202,6 +224,8 @@
 		to_chat(L, "<span class='brass'>You feel a slight, static shock.</span>")
 
 /obj/effect/clockwork/sigil/transmission/proc/charge_cyborg(mob/living/silicon/robot/cyborg)
+	procstart = null
+	src.procstart = null
 	if(!cyborg_checks(cyborg))
 		return
 	to_chat(cyborg, "<span class='brass'>You start to charge from the [sigil_name]...</span>")
@@ -217,6 +241,8 @@
 		addtimer(CALLBACK(cyborg, /atom/proc/update_atom_colour), 100)
 
 /obj/effect/clockwork/sigil/transmission/proc/cyborg_checks(mob/living/silicon/robot/cyborg, silent)
+	procstart = null
+	src.procstart = null
 	if(!cyborg.cell)
 		if(!silent)
 			to_chat(cyborg, "<span class='warning'>You have no cell!</span>")
@@ -236,6 +262,8 @@
 	return TRUE
 
 /obj/effect/clockwork/sigil/transmission/update_icon()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		alpha = 255
 	var/power_charge = get_clockwork_power()
@@ -264,6 +292,8 @@
 	var/static/list/damage_heal_order = list(CLONE, TOX, BURN, BRUTE, OXY) //we heal damage in this order
 
 /obj/effect/clockwork/sigil/vitality/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		to_chat(user, "<span class='[GLOB.clockwork_vitality ? "inathneq_small":"alloy"]'>It has access to <b>[GLOB.ratvar_awakens ? "INFINITE":GLOB.clockwork_vitality]</b> units of vitality.</span>")
@@ -273,6 +303,8 @@
 			to_chat(user, "<span class='inathneq_small'>It can revive Servants at a cost of <b>[revive_cost]</b> vitality.</span>")
 
 /obj/effect/clockwork/sigil/vitality/sigil_effects(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if((is_servant_of_ratvar(L) && L.suiciding) || sigil_active)
 		return
 	visible_message("<span class='warning'>[src] begins to glow bright blue!</span>")

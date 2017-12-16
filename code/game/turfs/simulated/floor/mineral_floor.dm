@@ -17,6 +17,8 @@
 
 
 /turf/open/floor/mineral/Initialize()
+	procstart = null
+	src.procstart = null
 	broken_states = list("[initial(icon_state)]_dam")
 	. = ..()
 	if (!icons)
@@ -24,6 +26,8 @@
 
 
 /turf/open/floor/mineral/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	if(!broken && !burnt)
@@ -39,10 +43,14 @@
 	icons = list("plasma","plasma_dam")
 
 /turf/open/floor/mineral/plasma/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
 /turf/open/floor/mineral/plasma/attackby(obj/item/W as obj, mob/user as mob, params)
+	procstart = null
+	src.procstart = null
 	if(W.is_hot() > 300)//If the temperature of the object is over 300, then ignite
 		message_admins("Plasma flooring was ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(src)]",0,1)
 		log_game("Plasma flooring was ignited by [key_name(user)] in [COORD(src)]")
@@ -51,10 +59,14 @@
 	..()
 
 /turf/open/floor/mineral/plasma/proc/PlasmaBurn(temperature)
+	procstart = null
+	src.procstart = null
 	make_plating()
 	atmos_spawn_air("plasma=20;TEMP=[temperature]")
 
 /turf/open/floor/mineral/plasma/proc/ignite(exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
@@ -130,32 +142,44 @@
 	var/spam_flag = 0
 
 /turf/open/floor/mineral/bananium/Entered(var/mob/living/L)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		if(istype(L))
 			squeek()
 
 /turf/open/floor/mineral/bananium/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		honk()
 
 /turf/open/floor/mineral/bananium/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		honk()
 
 /turf/open/floor/mineral/bananium/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		honk()
 
 /turf/open/floor/mineral/bananium/proc/honk()
+	procstart = null
+	src.procstart = null
 	if(spam_flag < world.time)
 		playsound(src, 'sound/items/bikehorn.ogg', 50, 1)
 		spam_flag = world.time + 20
 
 /turf/open/floor/mineral/bananium/proc/squeek()
+	procstart = null
+	src.procstart = null
 	if(spam_flag < world.time)
 		playsound(src, "clownstep", 50, 1)
 		spam_flag = world.time + 10
@@ -182,27 +206,37 @@
 	var/active = null
 
 /turf/open/floor/mineral/uranium/Entered(var/mob/AM)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		if(istype(AM))
 			radiate()
 
 /turf/open/floor/mineral/uranium/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		radiate()
 
 /turf/open/floor/mineral/uranium/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		radiate()
 
 /turf/open/floor/mineral/uranium/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	.=..()
 	if(!.)
 		radiate()
 
 /turf/open/floor/mineral/uranium/proc/radiate()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(world.time > last_event+15)
 			active = 1
@@ -221,14 +255,22 @@
 	icons = list("alienpod1", "alienpod2", "alienpod3", "alienpod4", "alienpod5", "alienpod6", "alienpod7", "alienpod8", "alienpod9")
 
 /turf/open/floor/mineral/abductor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "alienpod[rand(1,9)]"
 
 /turf/open/floor/mineral/abductor/break_tile()
+	procstart = null
+	src.procstart = null
 	return //unbreakable
 
 /turf/open/floor/mineral/abductor/burn_tile()
+	procstart = null
+	src.procstart = null
 	return //unburnable
 
 /turf/open/floor/mineral/abductor/make_plating()
+	procstart = null
+	src.procstart = null
 	return ChangeTurf(/turf/open/floor/plating/abductor2)

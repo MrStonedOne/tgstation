@@ -21,17 +21,23 @@
 	var/device_type
 
 /obj/item/computer_hardware/New(var/obj/L)
+	procstart = null
+	src.procstart = null
 	..()
 	pixel_x = rand(-8, 8)
 	pixel_y = rand(-8, 8)
 
 /obj/item/computer_hardware/Destroy()
+	procstart = null
+	src.procstart = null
 	if(holder)
 		holder.uninstall_component(src)
 	return ..()
 
 
 /obj/item/computer_hardware/attackby(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	// Multitool. Runs diagnostics
 	if(istype(I, /obj/item/device/multitool))
 		to_chat(user, "***** DIAGNOSTICS REPORT *****")
@@ -57,10 +63,14 @@
 
 // Called on multitool click, prints diagnostic information to the user.
 /obj/item/computer_hardware/proc/diagnostics(var/mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "Hardware Integrity Test... (Corruption: [damage]/[max_damage]) [damage > damage_failure ? "FAIL" : damage > damage_malfunction ? "WARN" : "PASS"]")
 
 // Handles damage checks
 /obj/item/computer_hardware/proc/check_functionality()
+	procstart = null
+	src.procstart = null
 	if(!enabled) // Disabled.
 		return FALSE
 
@@ -74,6 +84,8 @@
 	return TRUE // Good to go.
 
 /obj/item/computer_hardware/examine(var/mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(damage > damage_failure)
 		to_chat(user, "<span class='danger'>It seems to be severely damaged!</span>")
@@ -84,20 +96,30 @@
 
 // Component-side compatibility check.
 /obj/item/computer_hardware/proc/can_install(obj/item/device/modular_computer/M, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	return can_install
 
 // Called when component is installed into PC.
 /obj/item/computer_hardware/proc/on_install(obj/item/device/modular_computer/M, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	return
 
 // Called when component is removed from PC.
 /obj/item/computer_hardware/proc/on_remove(obj/item/device/modular_computer/M, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	try_eject(forced = 1)
 
 // Called when someone tries to insert something in it - paper in printer, card in card reader, etc.
 /obj/item/computer_hardware/proc/try_insert(obj/item/I, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 // Called when someone tries to eject something from it - card from card reader, etc.
 /obj/item/computer_hardware/proc/try_eject(slot=0, mob/living/user = null, forced = 0)
+	procstart = null
+	src.procstart = null
 	return FALSE

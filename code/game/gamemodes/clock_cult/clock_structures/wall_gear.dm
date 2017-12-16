@@ -17,13 +17,19 @@
 	anchored = FALSE
 
 /obj/structure/destructible/clockwork/wall_gear/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/ratvar/gear(get_turf(src))
 
 /obj/structure/destructible/clockwork/wall_gear/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/destructible/clockwork/wall_gear/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench))
 		default_unfasten_wrench(user, I, 10)
 		return 1
@@ -70,6 +76,8 @@
 	return ..()
 
 /obj/structure/destructible/clockwork/wall_gear/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1) && disassembled)
 		new /obj/item/stack/tile/brass(loc, 3)
 	return ..()

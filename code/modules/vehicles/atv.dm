@@ -7,6 +7,8 @@
 	var/static/mutable_appearance/atvcover
 
 /obj/vehicle/ridden/atv/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
 	D.vehicle_move_delay = 1
@@ -17,10 +19,14 @@
 	D.set_vehicle_dir_layer(WEST, OBJ_LAYER)
 
 /obj/vehicle/ridden/atv/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	add_overlay(atvcover)
 	return ..()
 
 /obj/vehicle/ridden/atv/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!has_buckled_mobs())
 		cut_overlay(atvcover)
 	return ..()
@@ -36,11 +42,15 @@
 	density = FALSE
 
 /obj/vehicle/ridden/atv/turret/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	turret = new(loc)
 	turret.base = src
 
 /obj/vehicle/ridden/atv/turret/Moved()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(turret)
 		turret.forceMove(get_turf(src))

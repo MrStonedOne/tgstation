@@ -30,6 +30,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/lists/pick/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/input_list = get_pin_data(IC_INPUT, 1) // List pins guarantee that there is a list inside, even if just an empty one.
 	if(input_list.len)
 		set_pin_data(IC_OUTPUT, 1, pick(input_list))
@@ -54,6 +56,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/lists/append/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
 	var/list/output_list = list()
 	var/new_entry = get_pin_data(IC_INPUT, 2)
@@ -85,6 +89,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/lists/search/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
 	var/output = input_list.Find(get_pin_data(IC_INPUT, 2))
 
@@ -117,6 +123,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/lists/at/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
 	var/index = get_pin_data(IC_INPUT, 2)
 
@@ -147,6 +155,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/lists/delete/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
 	var/list/red_list = list()
 	var/index = get_pin_data(IC_INPUT, 2)
@@ -182,6 +192,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/lists/write/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
 	var/index = get_pin_data(IC_INPUT, 2)
 	var/item = get_pin_data(IC_INPUT, 3)
@@ -214,6 +226,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/lists/len/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
 	set_pin_data(IC_OUTPUT, 1, input_list.len)
 	push_data()
@@ -242,6 +256,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/lists/jointext/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
 	var/delimiter = get_pin_data(IC_INPUT, 2)
 	var/start = get_pin_data(IC_INPUT, 3)
@@ -269,12 +285,16 @@
 	var/number_of_pins = 16
 
 /obj/item/integrated_circuit/lists/constructor/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/i = 1 to number_of_pins)
 		inputs["input [i]"] = IC_PINTYPE_ANY // This is just a string since pins don't get built until ..() is called.
 	complexity = number_of_pins / 2
 	. = ..()
 
 /obj/item/integrated_circuit/lists/constructor/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/output_list = list()
 	for(var/i = 1 to number_of_pins)
 		var/data = get_pin_data(IC_INPUT, i)
@@ -315,12 +335,16 @@
 	var/number_of_pins = 4
 
 /obj/item/integrated_circuit/lists/deconstructor/Initialize()
+	procstart = null
+	src.procstart = null
 	for(var/i = 1 to number_of_pins)
 		outputs["output [i]"] = IC_PINTYPE_ANY // This is just a string since pins don't get built until ..() is called.
 	complexity = number_of_pins / 2
 	. = ..()
 
 /obj/item/integrated_circuit/lists/deconstructor/do_work()
+	procstart = null
+	src.procstart = null
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
 	var/start_index = get_pin_data(IC_INPUT, 2)
 

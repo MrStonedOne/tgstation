@@ -37,13 +37,19 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/mask/gas/explorer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjustmask(user)
 
 /obj/item/clothing/mask/gas/explorer/adjustmask(user)
+	procstart = null
+	src.procstart = null
 	..()
 	w_class = mask_adjusted ? WEIGHT_CLASS_NORMAL : WEIGHT_CLASS_SMALL
 
 /obj/item/clothing/mask/gas/explorer/folded/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	adjustmask()
 
@@ -60,15 +66,21 @@
 	allowed = list(/obj/item/device/flashlight, /obj/item/tank/internals, /obj/item/resonator, /obj/item/device/mining_scanner, /obj/item/device/t_scanner/adv_mining_scanner, /obj/item/gun/energy/kinetic_accelerator, /obj/item/pickaxe)
 
 /obj/item/clothing/suit/space/hostile_environment/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/spraycan_paintable)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/space/hostile_environment/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/clothing/suit/space/hostile_environment/process()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = loc
 	if(istype(C) && prob(2)) //cursed by bubblegum
 		if(prob(15))
@@ -89,11 +101,15 @@
 	resistance_flags = FIRE_PROOF | LAVA_PROOF
 
 /obj/item/clothing/head/helmet/space/hostile_environment/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/spraycan_paintable)
 	update_icon()
 
 /obj/item/clothing/head/helmet/space/hostile_environment/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	cut_overlays()
 	var/mutable_appearance/glass_overlay = mutable_appearance(icon, "hostile_env_glass")
@@ -101,6 +117,8 @@
 	add_overlay(glass_overlay)
 
 /obj/item/clothing/head/helmet/space/hostile_environment/worn_overlays(isinhands)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!isinhands)
 		var/mutable_appearance/M = mutable_appearance('icons/mob/head.dmi', "hostile_env_glass")

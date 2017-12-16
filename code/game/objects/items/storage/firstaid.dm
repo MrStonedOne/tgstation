@@ -23,6 +23,8 @@
 	desc = "A first aid kit with the ability to heal common types of injuries."
 
 /obj/item/storage/firstaid/regular/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	new /obj/item/stack/medical/gauze(src)
@@ -39,6 +41,8 @@
 
 
 /obj/item/storage/firstaid/ancient/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	new /obj/item/stack/medical/gauze(src)
@@ -56,10 +60,14 @@
 	item_state = "firstaid-ointment"
 
 /obj/item/storage/firstaid/fire/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = pick("ointment","firefirstaid")
 
 /obj/item/storage/firstaid/fire/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	for(var/i in 1 to 3)
@@ -76,10 +84,14 @@
 	item_state = "firstaid-toxin"
 
 /obj/item/storage/firstaid/toxin/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = pick("antitoxin","antitoxfirstaid","antitoxfirstaid2","antitoxfirstaid3")
 
 /obj/item/storage/firstaid/toxin/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	for(var/i in 1 to 4)
@@ -95,6 +107,8 @@
 	item_state = "firstaid-o2"
 
 /obj/item/storage/firstaid/o2/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	for(var/i in 1 to 4)
@@ -110,6 +124,8 @@
 	item_state = "firstaid-brute"
 
 /obj/item/storage/firstaid/brute/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	for(var/i in 1 to 4)
@@ -125,6 +141,8 @@
 	max_w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/storage/firstaid/tactical/PopulateContents()
+	procstart = null
+	src.procstart = null
 	if(empty)
 		return
 	new /obj/item/stack/medical/gauze(src)
@@ -168,6 +186,8 @@
 			src.show_to(usr)
 
 /obj/item/storage/pill_bottle/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is trying to get the cap off [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (TOXLOSS)
 
@@ -176,6 +196,8 @@
 	desc = "Contains pills used to counter toxins."
 
 /obj/item/storage/pill_bottle/charcoal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/charcoal(src)
 
@@ -184,6 +206,8 @@
 	desc = "Contains pills used to stabilize patients."
 
 /obj/item/storage/pill_bottle/epinephrine/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/epinephrine(src)
 
@@ -192,6 +216,8 @@
 	desc = "Contains pills used to treat genetic abnormalities."
 
 /obj/item/storage/pill_bottle/mutadone/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/mutadone(src)
 
@@ -200,6 +226,8 @@
 	desc = "Contains pills used to treat brain damage."
 
 /obj/item/storage/pill_bottle/mannitol/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 7)
 		new /obj/item/reagent_containers/pill/mannitol(src)
 
@@ -208,6 +236,8 @@
 	desc = "Guaranteed to give you that extra burst of energy during a long shift!"
 
 /obj/item/storage/pill_bottle/stimulant/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/pill/stimulant(src)
 
@@ -216,6 +246,8 @@
 	desc = "Contains patches used to treat brute and burn damage."
 
 /obj/item/storage/pill_bottle/mining/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/pill/patch/silver_sulf(src)
 	for(var/i in 1 to 3)
 		new /obj/item/reagent_containers/pill/patch/styptic(src)

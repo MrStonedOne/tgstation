@@ -1,5 +1,7 @@
 //returns a component spanclass from a component id
 /proc/get_component_span(id)
+	procstart = null
+	src.procstart = null
 	switch(id)
 		if(BELLIGERENT_EYE)
 			return "neovgre"
@@ -16,6 +18,8 @@
 
 //returns a component color from a component id, but with brighter colors for the darkest
 /proc/get_component_color_bright(id)
+	procstart = null
+	src.procstart = null
 	switch(id)
 		if(BELLIGERENT_EYE)
 			return "#880020"
@@ -26,6 +30,8 @@
 
 //returns a component color from a component id
 /proc/get_component_color(id)
+	procstart = null
+	src.procstart = null
 	switch(id)
 		if(BELLIGERENT_EYE)
 			return "#6E001A"

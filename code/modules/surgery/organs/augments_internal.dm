@@ -9,6 +9,8 @@
 	var/syndicate_implant = FALSE //Makes the implant invisible to health analyzers and medical HUDs.
 
 /obj/item/organ/cyberimp/New(var/mob/M = null)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M))
 		src.Insert(M)
 	if(implant_overlay)
@@ -30,6 +32,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/organ/cyberimp/brain/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	var/stun_amount = 200/severity
@@ -48,6 +52,8 @@
 	actions_types = list(/datum/action/item_action/organ_action/toggle)
 
 /obj/item/organ/cyberimp/brain/anti_drop/ui_action_click()
+	procstart = null
+	src.procstart = null
 	active = !active
 	if(active)
 		for(var/obj/item/I in owner.held_items)
@@ -70,6 +76,8 @@
 
 
 /obj/item/organ/cyberimp/brain/anti_drop/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return
 	var/range = severity ? 10 : 5
@@ -85,12 +93,16 @@
 
 
 /obj/item/organ/cyberimp/brain/anti_drop/proc/release_items()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in stored_items)
 		I.flags_1 &= ~NODROP_1
 	stored_items = list()
 
 
 /obj/item/organ/cyberimp/brain/anti_drop/Remove(var/mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	if(active)
 		ui_action_click()
 	..()
@@ -103,6 +115,8 @@
 	slot = ORGAN_SLOT_BRAIN_ANTISTUN
 
 /obj/item/organ/cyberimp/brain/anti_stun/on_life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(crit_fail)
 		return
@@ -113,6 +127,8 @@
 		owner.SetKnockdown(STUN_SET_AMOUNT)
 
 /obj/item/organ/cyberimp/brain/anti_stun/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(crit_fail)
 		return
 	crit_fail = TRUE
@@ -120,6 +136,8 @@
 	..()
 
 /obj/item/organ/cyberimp/brain/anti_stun/proc/reboot()
+	procstart = null
+	src.procstart = null
 	crit_fail = FALSE
 
 
@@ -135,6 +153,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/organ/cyberimp/mouth/breathing_tube/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(prob(60/severity))
 		to_chat(owner, "<span class='warning'>Your breathing tube suddenly closes!</span>")
 		owner.losebreath += 2
@@ -155,6 +175,8 @@
 	var/amount = 5
 
 /obj/item/storage/box/cyber_implants/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/implant
 	while(contents.len <= amount)
 		implant = pick(boxed)

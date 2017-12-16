@@ -33,6 +33,8 @@ Bonus
 					  <b>Stealth 4:</b> The symptom remains hidden until active."
 
 /datum/symptom/visionloss/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 4)
@@ -41,6 +43,8 @@ Bonus
 		remove_eyes = TRUE
 
 /datum/symptom/visionloss/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob
@@ -103,6 +107,8 @@ Bonus
 	symptom_delay_max = 1
 
 /datum/symptom/visionaid/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

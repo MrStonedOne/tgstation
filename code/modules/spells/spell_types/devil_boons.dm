@@ -13,6 +13,8 @@
 
 
 /obj/effect/proc_holder/spell/targeted/summon_wealth/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/C in targets)
 		if(user.dropItemToGround(user.get_active_held_item()))
 			var/obj/item = pick(
@@ -40,6 +42,8 @@
 	var/ranges = list(7,8,9,10)
 
 /obj/effect/proc_holder/spell/targeted/view_range/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/C in targets)
 		if(!C.client)
 			continue
@@ -60,6 +64,8 @@
 	var/obj/effect/mob_spawn/human/demonic_friend/friendShell
 
 /obj/effect/proc_holder/spell/targeted/summon_friend/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(friend))
 		to_chat(friend, "<span class='userdanger'>Your master has deemed you a poor friend.  Your durance in hell will now resume.</span>")
 		friend.dust(TRUE)

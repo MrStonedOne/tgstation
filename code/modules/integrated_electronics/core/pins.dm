@@ -28,6 +28,8 @@ D [1]/  ||
 
 
 /datum/integrated_io/New(loc, _name, _data, _pin_type)
+	procstart = null
+	src.procstart = null
 	name = _name
 	if(_data)
 		data = _data
@@ -40,12 +42,16 @@ D [1]/  ||
 		message_admins("ERROR: An integrated_io ([name]) spawned without a valid holder!  This is a bug.")
 
 /datum/integrated_io/Destroy()
+	procstart = null
+	src.procstart = null
 	disconnect_all()
 	data = null
 	holder = null
 	return ..()
 
 /datum/integrated_io/proc/data_as_type(var/as_type)
+	procstart = null
+	src.procstart = null
 	if(!isweakref(data))
 		return
 	var/datum/weakref/w = data
@@ -53,6 +59,8 @@ D [1]/  ||
 	return istype(output, as_type) ? output : null
 
 /datum/integrated_io/proc/display_data(var/input)
+	procstart = null
+	src.procstart = null
 	if(isnull(input))
 		return "(null)" // Empty data means nothing to show.
 
@@ -82,15 +90,23 @@ D [1]/  ||
 	return "([input])" // Nothing special needed for numbers or other stuff.
 
 /datum/integrated_io/activate/display_data()
+	procstart = null
+	src.procstart = null
 	return "(\[pulse\])"
 
 /datum/integrated_io/proc/display_pin_type()
+	procstart = null
+	src.procstart = null
 	return IC_FORMAT_ANY
 
 /datum/integrated_io/activate/display_pin_type()
+	procstart = null
+	src.procstart = null
 	return IC_FORMAT_PULSE
 
 /datum/integrated_io/proc/scramble()
+	procstart = null
+	src.procstart = null
 	if(isnull(data))
 		return
 	if(isnum(data))
@@ -100,9 +116,13 @@ D [1]/  ||
 	push_data()
 
 /datum/integrated_io/activate/scramble()
+	procstart = null
+	src.procstart = null
 	push_data()
 
 /datum/integrated_io/proc/handle_wire(datum/integrated_io/linked_pin, obj/item/tool, action, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(tool, /obj/item/device/multitool))
 		var/obj/item/device/multitool/multitool = tool
 		switch(action)
@@ -132,6 +152,8 @@ D [1]/  ||
 	return FALSE
 
 /datum/integrated_io/proc/write_data_to_pin(new_data)
+	procstart = null
+	src.procstart = null
 	if(isnull(new_data) || isnum(new_data) || istext(new_data) || isweakref(new_data))
 		data = new_data
 		holder.on_data_written()
@@ -141,41 +163,57 @@ D [1]/  ||
 		holder.on_data_written()
 
 /datum/integrated_io/proc/push_data()
+	procstart = null
+	src.procstart = null
 	for(var/k in 1 to linked.len)
 		var/datum/integrated_io/io = linked[k]
 		io.write_data_to_pin(data)
 
 /datum/integrated_io/activate/push_data()
+	procstart = null
+	src.procstart = null
 	for(var/k in 1 to linked.len)
 		var/datum/integrated_io/io = linked[k]
 		io.holder.check_then_do_work()
 
 /datum/integrated_io/proc/pull_data()
+	procstart = null
+	src.procstart = null
 	for(var/k in 1 to linked.len)
 		var/datum/integrated_io/io = linked[k]
 		write_data_to_pin(io.data)
 
 /datum/integrated_io/proc/get_linked_to_desc()
+	procstart = null
+	src.procstart = null
 	if(linked.len)
 		return "the [english_list(linked)]"
 	return "nothing"
 
 
 /datum/integrated_io/proc/connect_pin(datum/integrated_io/pin)
+	procstart = null
+	src.procstart = null
 	pin.linked |= src
 	linked |= pin
 
 // Iterates over every linked pin and disconnects them.
 /datum/integrated_io/proc/disconnect_all()
+	procstart = null
+	src.procstart = null
 	for(var/pin in linked)
 		disconnect_pin(pin)
 
 /datum/integrated_io/proc/disconnect_pin(datum/integrated_io/pin)
+	procstart = null
+	src.procstart = null
 	pin.linked.Remove(src)
 	linked.Remove(pin)
 
 
 /datum/integrated_io/proc/ask_for_data_type(mob/user, var/default, var/list/allowed_data_types = list("string","number","null"))
+	procstart = null
+	src.procstart = null
 	var/type_to_use = input("Please choose a type to use.","[src] type setting") as null|anything in allowed_data_types
 	if(!holder.check_interactivity(user))
 		return
@@ -199,10 +237,14 @@ D [1]/  ||
 
 // Basically a null check
 /datum/integrated_io/proc/is_valid()
+	procstart = null
+	src.procstart = null
 	return !isnull(data)
 
 // This proc asks for the data to write, then writes it.
 /datum/integrated_io/proc/ask_for_pin_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_data = ask_for_data_type(user)
 	write_data_to_pin(new_data)
 

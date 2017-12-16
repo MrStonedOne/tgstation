@@ -25,6 +25,8 @@
 	var/respawn_sound = 'sound/magic/staff_animation.ogg'
 
 /obj/structure/life_candle/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.mind)
 		return
 	if(user.mind in linked_minds)
@@ -44,12 +46,16 @@
 		set_light(0)
 
 /obj/structure/life_candle/update_icon()
+	procstart = null
+	src.procstart = null
 	if(linked_minds.len)
 		icon_state = icon_state_active
 	else
 		icon_state = icon_state_inactive
 
 /obj/structure/life_candle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(linked_minds.len)
 		to_chat(user, "[src] is active, and linked to [linked_minds.len] souls.")
@@ -57,6 +63,8 @@
 		to_chat(user, "It is static, still, unmoving.")
 
 /obj/structure/life_candle/process()
+	procstart = null
+	src.procstart = null
 	if(!linked_minds.len)
 		STOP_PROCESSING(SSobj, src)
 		return
@@ -67,6 +75,8 @@
 			addtimer(CALLBACK(src, .proc/respawn, mind), respawn_time, TIMER_UNIQUE)
 
 /obj/structure/life_candle/proc/respawn(datum/mind/mind)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/mob/living/body
 	if(mind.current)

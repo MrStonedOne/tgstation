@@ -8,6 +8,8 @@
 	icon_state = "alienpod1"
 
 /turf/open/floor/plating/abductor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "alienpod[rand(1,9)]"
 
@@ -17,9 +19,13 @@
 	icon_state = "alienplating"
 
 /turf/open/floor/plating/abductor2/break_tile()
+	procstart = null
+	src.procstart = null
 	return //unbreakable
 
 /turf/open/floor/plating/abductor2/burn_tile()
+	procstart = null
+	src.procstart = null
 	return //unburnable
 
 
@@ -43,6 +49,8 @@
 	attachment_holes = FALSE
 
 /turf/open/floor/plating/ashplanet/Initialize()
+	procstart = null
+	src.procstart = null
 	if(smooth)
 		pixel_y = -4
 		pixel_x = -4
@@ -50,9 +58,13 @@
 	. = ..()
 
 /turf/open/floor/plating/ashplanet/break_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/plating/ashplanet/burn_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/plating/ashplanet/ash
@@ -74,6 +86,8 @@
 	slowdown = 2
 
 /turf/open/floor/plating/ashplanet/wateryrock/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = "[icon_state][rand(1, 9)]"
 	. = ..()
 
@@ -85,6 +99,8 @@
 	attachment_holes = FALSE
 
 /turf/open/floor/plating/beach/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	contents_explosion(severity, target)
 
 /turf/open/floor/plating/beach/sand
@@ -116,10 +132,14 @@
 	desc = "Like sand, but more <i>metal</i>."
 
 /turf/open/floor/plating/ironsand/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "ironsand[rand(1,15)]"
 
 /turf/open/floor/plating/ironsand/burn_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -141,9 +161,13 @@
 	temperature = 255.37
 
 /turf/open/floor/plating/ice/break_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/plating/ice/burn_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 

@@ -17,6 +17,8 @@
 	pipe_state = "manifold"
 
 /obj/machinery/atmospherics/pipe/manifold/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			initialize_directions = EAST|SOUTH|WEST
@@ -28,6 +30,8 @@
 			initialize_directions = NORTH|EAST|SOUTH
 
 /obj/machinery/atmospherics/pipe/manifold/update_icon()
+	procstart = null
+	src.procstart = null
 	var/invis = invisibility ? "-f" : ""
 
 	icon_state = "manifold_center[invis]"

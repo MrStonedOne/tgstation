@@ -6,6 +6,8 @@
 	planetary_atmos = TRUE
 
 /turf/open/indestructible/reebe_void/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "reebegame"
 
@@ -13,6 +15,8 @@
 	icon_state = "reebespawn"
 
 /turf/open/indestructible/reebe_void/spawning/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		for(var/i in 1 to 3)
@@ -27,6 +31,8 @@
 	icon_state = "reebelattice"
 
 /turf/open/indestructible/reebe_void/spawning/lattices/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		if(prob(2.5))
@@ -35,6 +41,8 @@
 			new /obj/structure/lattice/clockwork(src)
 
 /turf/open/indestructible/reebe_void/Enter(atom/movable/AM, atom/old_loc)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	else

@@ -7,16 +7,22 @@
 	var/area/starting_area
 
 /mob/camera/aiEye/remote/base_construction/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	starting_area = get_area(loc)
 
 /mob/camera/aiEye/remote/base_construction/setLoc(var/t)
+	procstart = null
+	src.procstart = null
 	var/area/curr_area = get_area(t)
 	if(curr_area == starting_area || istype(curr_area, /area/shuttle/auxillary_base))
 		return ..()
 	//While players are only allowed to build in the base area, but consoles starting outside the base can move into the base area to begin work.
 
 /mob/camera/aiEye/remote/base_construction/relaymove(mob/user, direct)
+	procstart = null
+	src.procstart = null
 	dir = direct //This camera eye is visible as a drone, and needs to keep the dir updated
 	..()
 
@@ -50,10 +56,14 @@
 	light_color = LIGHT_COLOR_PINK
 
 /obj/machinery/computer/camera_advanced/base_construction/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	RCD = new(src)
 
 /obj/machinery/computer/camera_advanced/base_construction/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload) //Map spawned consoles have a filled RCD and stocked special structures
 		RCD.matter = RCD.max_matter
@@ -62,6 +72,8 @@
 
 /obj/machinery/computer/camera_advanced/base_construction/CreateEye()
 
+	procstart = null
+	src.procstart = null
 	var/spawn_spot
 	for(var/obj/machinery/computer/auxillary_base/ABC in GLOB.machines)
 		if(istype(get_area(ABC), /area/shuttle/auxillary_base))
@@ -79,16 +91,22 @@
 
 
 /obj/machinery/computer/camera_advanced/base_construction/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/rcd_ammo) || istype(W, /obj/item/stack/sheet))
 		RCD.attackby(W, user, params) //If trying to feed the console more materials, pass it along to the RCD.
 	else
 		return ..()
 
 /obj/machinery/computer/camera_advanced/base_construction/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(RCD)
 	return ..()
 
 /obj/machinery/computer/camera_advanced/base_construction/GrantActions(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(switch_mode_action)
@@ -124,6 +142,8 @@
 	eyeobj.invisibility = 0 //When the eye is in use, make it visible to players so they know when someone is building.
 
 /obj/machinery/computer/camera_advanced/base_construction/remove_eye_control(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	eyeobj.invisibility = INVISIBILITY_MAXIMUM //Hide the eye when not in use.
 
@@ -134,6 +154,8 @@
 	var/obj/machinery/computer/camera_advanced/base_construction/B //Console itself
 
 /datum/action/innate/aux_base/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return TRUE
 	C = owner
@@ -167,6 +189,8 @@
 	button_icon_state = "build"
 
 /datum/action/innate/aux_base/build/Activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -195,6 +219,8 @@
 	button_icon_state = "builder_mode"
 
 /datum/action/innate/aux_base/switch_mode/Activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -208,6 +234,8 @@
 	button_icon_state = "airlock_select"
 
 datum/action/innate/aux_base/airlock_type/Activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -219,6 +247,8 @@ datum/action/innate/aux_base/window_type
 	button_icon_state = "window_select"
 
 datum/action/innate/aux_base/window_type/Activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	B.RCD.toggle_window_type()
@@ -228,6 +258,8 @@ datum/action/innate/aux_base/place_fan
 	button_icon_state = "build_fan"
 
 datum/action/innate/aux_base/place_fan/Activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -254,6 +286,8 @@ datum/action/innate/aux_base/install_turret
 	button_icon_state = "build_turret"
 
 datum/action/innate/aux_base/install_turret/Activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 

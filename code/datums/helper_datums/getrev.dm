@@ -5,6 +5,8 @@
 	var/date
 
 /datum/getrev/New()
+	procstart = null
+	src.procstart = null
 	testmerge = SERVER_TOOLS_PR_LIST
 	log_world("Running /tg/ revision:")
 	var/list/logs = world.file2list(".git/logs/HEAD")
@@ -29,6 +31,8 @@
 		log_world(originmastercommit)
 
 /datum/getrev/proc/GetTestMergeInfo(header = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!testmerge.len)
 		return ""
 	. = header ? "The following pull requests are currently test merged:<br>" : ""
@@ -40,6 +44,8 @@
 		. += "<a href=\"[CONFIG_GET(string/githuburl)]/pull/[line]\">#[line][details]</a><br>"
 
 /client/verb/showrevinfo()
+	procstart = null
+	src.procstart = null
 	set category = "OOC"
 	set name = "Show Server Revision"
 	set desc = "Check the current server code revision"

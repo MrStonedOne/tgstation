@@ -34,6 +34,8 @@
 
 
 /obj/item/storage/wallet/remove_from_storage(obj/item/W, atom/new_location)
+	procstart = null
+	src.procstart = null
 	. = ..(W, new_location)
 	if(.)
 		if(istype(W, /obj/item/card/id))
@@ -43,6 +45,8 @@
 			update_icon()
 
 /obj/item/storage/wallet/proc/refreshID()
+	procstart = null
+	src.procstart = null
 	combined_access.Cut()
 	for(var/obj/item/card/id/I in contents)
 		if(!front_id)
@@ -51,12 +55,16 @@
 		combined_access |= I.access
 
 /obj/item/storage/wallet/handle_item_insertion(obj/item/W, prevent_warning = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(istype(W, /obj/item/card/id))
 			refreshID()
 
 /obj/item/storage/wallet/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "wallet"
 	if(front_id)
 		icon_state = "wallet_[front_id.icon_state]"
@@ -64,9 +72,13 @@
 
 
 /obj/item/storage/wallet/GetID()
+	procstart = null
+	src.procstart = null
 	return front_id
 
 /obj/item/storage/wallet/GetAccess()
+	procstart = null
+	src.procstart = null
 	if(combined_access.len)
 		return combined_access
 	else
@@ -76,6 +88,8 @@
 	icon_state = "random_wallet"
 
 /obj/item/storage/wallet/random/PopulateContents()
+	procstart = null
+	src.procstart = null
 	var/item1_type = pick( /obj/item/stack/spacecash/c10, /obj/item/stack/spacecash/c100, /obj/item/stack/spacecash/c1000, /obj/item/stack/spacecash/c20, /obj/item/stack/spacecash/c200, /obj/item/stack/spacecash/c50, /obj/item/stack/spacecash/c500)
 	var/item2_type
 	if(prob(50))

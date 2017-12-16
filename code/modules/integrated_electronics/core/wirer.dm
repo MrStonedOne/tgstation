@@ -16,9 +16,13 @@
 	var/mode = WIRE
 
 /obj/item/device/integrated_electronics/wirer/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "wirer-[mode]"
 
 /obj/item/device/integrated_electronics/wirer/proc/wire(var/datum/integrated_io/io, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!io.holder.assembly)
 		to_chat(user, "<span class='warning'>\The [io.holder] needs to be secured inside an assembly first.</span>")
 		return
@@ -76,6 +80,8 @@
 			return
 
 /obj/item/device/integrated_electronics/wirer/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(WIRE)
 			mode = UNWIRE

@@ -35,31 +35,45 @@
 	canSmoothWith = list(/obj/structure/table, /obj/structure/table/reinforced)
 
 /obj/structure/table/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	deconstruction_hints(user)
 
 /obj/structure/table/proc/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>The top is <b>screwed</b> on, but the main <b>bolts</b> are also visible.</span>")
 
 /obj/structure/table/update_icon()
+	procstart = null
+	src.procstart = null
 	if(smooth)
 		queue_smooth(src)
 		queue_smooth_neighbors(src)
 
 /obj/structure/table/narsie_act()
+	procstart = null
+	src.procstart = null
 	var/atom/A = loc
 	qdel(src)
 	new /obj/structure/table/wood(A)
 
 /obj/structure/table/ratvar_act()
+	procstart = null
+	src.procstart = null
 	var/atom/A = loc
 	qdel(src)
 	new /obj/structure/table/reinforced/brass(A)
 
 /obj/structure/table/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/structure/table/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_GRAB && user.pulling && isliving(user.pulling))
 		var/mob/living/pushed_mob = user.pulling
 		if(pushed_mob.buckled)
@@ -74,6 +88,8 @@
 		..()
 
 /obj/structure/table/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSTABLE))
 		return 1
 	if(mover.throwing)
@@ -84,12 +100,16 @@
 		return !density
 
 /obj/structure/table/CanAStarPass(ID, dir, caller)
+	procstart = null
+	src.procstart = null
 	. = !density
 	if(ismovableatom(caller))
 		var/atom/movable/mover = caller
 		. = . || (mover.pass_flags & PASSTABLE)
 
 /obj/structure/table/proc/tablepush(mob/living/user, mob/living/pushed_mob)
+	procstart = null
+	src.procstart = null
 	pushed_mob.forceMove(src.loc)
 	pushed_mob.Knockdown(40)
 	pushed_mob.visible_message("<span class='danger'>[user] pushes [pushed_mob] onto [src].</span>", \
@@ -98,6 +118,8 @@
 
 
 /obj/structure/table/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(istype(I, /obj/item/screwdriver) && deconstruction_ready)
 			to_chat(user, "<span class='notice'>You start disassembling [src]...</span>")
@@ -142,6 +164,8 @@
 
 
 /obj/structure/table/deconstruct(disassembled = TRUE, wrench_disassembly = 0)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/turf/T = get_turf(src)
 		new buildstack(T, buildstackamount)
@@ -168,16 +192,22 @@
 	var/list/debris = list()
 
 /obj/structure/table/glass/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	debris += new frame
 	debris += new /obj/item/shard
 
 /obj/structure/table/glass/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/i in debris)
 		qdel(i)
 	. = ..()
 
 /obj/structure/table/glass/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(flags_1 & NODECONSTRUCT_1)
 		return
@@ -190,14 +220,20 @@
 		check_break(AM)
 
 /obj/structure/table/glass/proc/throw_check(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.loc == get_turf(src))
 		check_break(M)
 
 /obj/structure/table/glass/proc/check_break(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.has_gravity() && M.mob_size > MOB_SIZE_SMALL && !(M.movement_type & FLYING))
 		table_shatter(M)
 
 /obj/structure/table/glass/proc/table_shatter(mob/living/L)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>[src] breaks!</span>",
 		"<span class='danger'>You hear breaking glass.</span>")
 	var/turf/T = get_turf(src)
@@ -212,6 +248,8 @@
 	qdel(src)
 
 /obj/structure/table/glass/deconstruct(disassembled = TRUE, wrench_disassembly = 0)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(disassembled)
 			..()
@@ -226,6 +264,8 @@
 	qdel(src)
 
 /obj/structure/table/glass/narsie_act()
+	procstart = null
+	src.procstart = null
 	color = NARSIE_WINDOW_COLOUR
 	for(var/obj/item/shard/S in debris)
 		S.color = NARSIE_WINDOW_COLOUR
@@ -249,6 +289,8 @@
 		/obj/structure/table/wood/bar)
 
 /obj/structure/table/wood/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/table/wood/poker //No specialties, Just a mapping object.
@@ -259,6 +301,8 @@
 	buildstack = /obj/item/stack/tile/carpet
 
 /obj/structure/table/wood/poker/narsie_act()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/table/wood(src.loc)
 
 /obj/structure/table/wood/fancy
@@ -272,6 +316,8 @@
 	canSmoothWith = list(/obj/structure/table/wood/fancy, /obj/structure/table/wood/fancy/black)
 
 /obj/structure/table/wood/fancy/New()
+	procstart = null
+	src.procstart = null
 	icon = 'icons/obj/smooth_structures/fancy_table.dmi' //so that the tables place correctly in the map editor
 	..()
 
@@ -280,6 +326,8 @@
 	buildstack = /obj/item/stack/tile/carpet/black
 
 /obj/structure/table/wood/fancy/black/New()
+	procstart = null
+	src.procstart = null
 	..()
 	icon = 'icons/obj/smooth_structures/fancy_table_black.dmi'
 
@@ -299,12 +347,16 @@
 	armor = list(melee = 10, bullet = 30, laser = 30, energy = 100, bomb = 20, bio = 0, rad = 0, fire = 80, acid = 70)
 
 /obj/structure/table/reinforced/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	if(deconstruction_ready)
 		to_chat(user, "<span class='notice'>The top cover has been <i>welded</i> loose and the main frame's <b>bolts</b> are exposed.</span>")
 	else
 		to_chat(user, "<span class='notice'>The top cover is firmly <b>welded</b> on.</span>")
 
 /obj/structure/table/reinforced/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/weldingtool))
 		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
@@ -340,15 +392,21 @@
 	canSmoothWith = list(/obj/structure/table/reinforced/brass)
 
 /obj/structure/table/reinforced/brass/New()
+	procstart = null
+	src.procstart = null
 	change_construction_value(2)
 	..()
 
 /obj/structure/table/reinforced/brass/Destroy()
+	procstart = null
+	src.procstart = null
 	change_construction_value(-2)
 	return ..()
 
 
 /obj/structure/table/reinforced/brass/narsie_act()
+	procstart = null
+	src.procstart = null
 	take_damage(rand(15, 45), BRUTE)
 	if(src) //do we still exist?
 		var/previouscolor = color
@@ -357,6 +415,8 @@
 		addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 8)
 
 /obj/structure/table/reinforced/brass/ratvar_act()
+	procstart = null
+	src.procstart = null
 	obj_integrity = max_integrity
 
 /*
@@ -377,6 +437,8 @@
 	var/obj/machinery/computer/operating/computer = null
 
 /obj/structure/table/optable/New()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/direction in GLOB.cardinals)
 		computer = locate(/obj/machinery/computer/operating, get_step(src, direction))
@@ -385,6 +447,8 @@
 			break
 
 /obj/structure/table/optable/tablepush(mob/living/user, mob/living/pushed_mob)
+	procstart = null
+	src.procstart = null
 	pushed_mob.forceMove(src.loc)
 	pushed_mob.resting = 1
 	pushed_mob.update_canmove()
@@ -392,6 +456,8 @@
 	check_patient()
 
 /obj/structure/table/optable/proc/check_patient()
+	procstart = null
+	src.procstart = null
 	var/mob/M = locate(/mob/living/carbon/human, loc)
 	if(M)
 		if(M.resting)
@@ -418,10 +484,14 @@
 	max_integrity = 20
 
 /obj/structure/rack/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>It's held together by a couple of <b>bolts</b>.</span>")
 
 /obj/structure/rack/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(src.density == 0) //Because broken racks -Agouri |TODO: SPRITE!|
 		return 1
 	if(istype(mover) && (mover.pass_flags & PASSTABLE))
@@ -430,12 +500,16 @@
 		return 0
 
 /obj/structure/rack/CanAStarPass(ID, dir, caller)
+	procstart = null
+	src.procstart = null
 	. = !density
 	if(ismovableatom(caller))
 		var/atom/movable/mover = caller
 		. = . || (mover.pass_flags & PASSTABLE)
 
 /obj/structure/rack/MouseDrop_T(obj/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if ((!( istype(O, /obj/item) ) || user.get_active_held_item() != O))
 		return
 	if(!user.dropItemToGround(O))
@@ -445,6 +519,8 @@
 
 
 /obj/structure/rack/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(W, /obj/item/wrench) && !(flags_1&NODECONSTRUCT_1))
 		playsound(src.loc, W.usesound, 50, 1)
 		deconstruct(TRUE)
@@ -455,9 +531,13 @@
 		return 1
 
 /obj/structure/rack/attack_paw(mob/living/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/structure/rack/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.IsKnockdown() || user.resting || user.lying || user.get_num_legs() < 2)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -467,6 +547,8 @@
 
 
 /obj/structure/rack/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -481,6 +563,8 @@
  */
 
 /obj/structure/rack/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1&NODECONSTRUCT_1))
 		density = FALSE
 		var/obj/item/rack_parts/newparts = new(loc)
@@ -502,6 +586,8 @@
 	var/building = FALSE
 
 /obj/item/rack_parts/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(W, /obj/item/wrench))
 		new /obj/item/stack/sheet/metal(user.loc)
 		qdel(src)
@@ -509,6 +595,8 @@
 		. = ..()
 
 /obj/item/rack_parts/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(building)
 		return
 	building = TRUE

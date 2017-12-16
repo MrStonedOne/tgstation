@@ -11,6 +11,8 @@
 	max_integrity = 200
 
 /obj/structure/kitchenspike_frame/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(default_unfasten_wrench(user, I))
 		return
@@ -54,10 +56,14 @@
 
 
 /obj/structure/kitchenspike/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(usr)
 
 
 /obj/structure/kitchenspike/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/crowbar))
 		if(!has_buckled_mobs())
 			playsound(loc, I.usesound, 100, 1)
@@ -70,6 +76,8 @@
 		return ..()
 
 /obj/structure/kitchenspike/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(VIABLE_MOB_CHECK(user.pulling) && user.a_intent == INTENT_GRAB && !has_buckled_mobs())
 		var/mob/living/L = user.pulling
 		if(do_mob(user, src, 120))
@@ -103,6 +111,8 @@
 	return
 
 /obj/structure/kitchenspike/user_unbuckle_mob(mob/living/buckled_mob, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(buckled_mob)
 		var/mob/living/M = buckled_mob
 		if(M != user)
@@ -140,6 +150,8 @@
 		M.AdjustKnockdown(20)
 
 /obj/structure/kitchenspike/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(disassembled)
 		var/obj/F = new /obj/structure/kitchenspike_frame(src.loc)
 		transfer_fingerprints_to(F)

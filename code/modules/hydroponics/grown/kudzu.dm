@@ -17,16 +17,22 @@
 	reagents_add = list("charcoal" = 0.04, "nutriment" = 0.02)
 
 /obj/item/seeds/kudzu/Copy()
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/kudzu/S = ..()
 	S.mutations = mutations.Copy()
 	return S
 
 /obj/item/seeds/kudzu/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] swallows the pack of kudzu seeds! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	plant(user)
 	return (BRUTELOSS)
 
 /obj/item/seeds/kudzu/proc/plant(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(user.loc))
 		return
 	if(!isturf(user.loc))
@@ -42,12 +48,16 @@
 	qdel(src)
 
 /obj/item/seeds/kudzu/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='danger'>[user] begins throwing seeds on the ground...</span>")
 	if(do_after(user, 50, needhand = TRUE, target = user.drop_location(), progress = TRUE))
 		plant(user)
 		to_chat(user, "<span class='notice'>You plant the kudzu. You monster.</span>")
 
 /obj/item/seeds/kudzu/get_analyzer_text()
+	procstart = null
+	src.procstart = null
 	var/text = ..()
 	var/text_string = ""
 	for(var/datum/spacevine_mutation/SM in mutations)
@@ -56,6 +66,8 @@
 	return text
 
 /obj/item/seeds/kudzu/on_chem_reaction(datum/reagents/S)
+	procstart = null
+	src.procstart = null
 	var/list/temp_mut_list = list()
 
 	if(S.has_reagent("sterilizine", 5))

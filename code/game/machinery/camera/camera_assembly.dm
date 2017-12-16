@@ -26,16 +26,22 @@
 	*/
 
 /obj/structure/camera_assembly/Initialize(mapload, ndir, building)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(building)
 		setDir(ndir)
 	upgrades = list()
 
 /obj/structure/camera_assembly/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(upgrades)
 	return ..()
 
 /obj/structure/camera_assembly/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(1)
 			// State 1
@@ -76,6 +82,8 @@
 	return ..()
 
 /obj/structure/camera_assembly/crowbar_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(!upgrades.len)
 		return FALSE
 	var/obj/U = locate(/obj) in upgrades
@@ -87,6 +95,8 @@
 	return TRUE
 
 /obj/structure/camera_assembly/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != 3)
 		return FALSE
 
@@ -111,6 +121,8 @@
 	return TRUE
 
 /obj/structure/camera_assembly/wirecutter_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != 3)
 		return FALSE
 
@@ -121,6 +133,8 @@
 	return TRUE
 
 /obj/structure/camera_assembly/wrench_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	if(state != 1)
 		return FALSE
 	playsound(src, tool.usesound, 50, 1)
@@ -130,6 +144,8 @@
 	return TRUE
 
 /obj/structure/camera_assembly/proc/weld(obj/item/weldingtool/WT, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!WT.remove_fuel(0, user))
 		return 0
 	to_chat(user, "<span class='notice'>You start to weld \the [src]...</span>")
@@ -141,6 +157,8 @@
 	return 0
 
 /obj/structure/camera_assembly/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc)
 	qdel(src)

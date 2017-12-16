@@ -8,10 +8,14 @@
 /* DATA HUD DATUMS */
 
 /atom/proc/add_to_all_human_data_huds()
+	procstart = null
+	src.procstart = null
 	for(var/datum/atom_hud/data/human/hud in GLOB.huds)
 		hud.add_to_hud(src)
 
 /atom/proc/remove_from_all_data_huds()
+	procstart = null
+	src.procstart = null
 	for(var/datum/atom_hud/data/hud in GLOB.huds)
 		hud.remove_from_hud(src)
 
@@ -23,6 +27,8 @@
 /datum/atom_hud/data/human/medical/basic
 
 /datum/atom_hud/data/human/medical/basic/proc/check_sensors(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!istype(H))
 		return 0
 	var/obj/item/clothing/under/U = H.w_uniform
@@ -33,10 +39,14 @@
 	return 1
 
 /datum/atom_hud/data/human/medical/basic/add_to_single_hud(mob/M, mob/living/carbon/H)
+	procstart = null
+	src.procstart = null
 	if(check_sensors(H))
 		..()
 
 /datum/atom_hud/data/human/medical/basic/proc/update_suit_sensors(mob/living/carbon/H)
+	procstart = null
+	src.procstart = null
 	check_sensors(H) ? add_to_hud(H) : remove_from_hud(H)
 
 /datum/atom_hud/data/human/medical/advanced
@@ -74,6 +84,8 @@
 
 //called when a carbon changes virus
 /mob/living/carbon/proc/check_virus()
+	procstart = null
+	src.procstart = null
 	var/threat
 	for(var/thing in viruses)
 		var/datum/disease/D = thing
@@ -84,6 +96,8 @@
 
 //helper for getting the appropriate health status
 /proc/RoundHealth(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.stat == DEAD || (M.status_flags & FAKEDEATH))
 		return "health-100" //what's our health? it doesn't matter, we're dead, or faking
 	var/maxi_health = M.maxHealth
@@ -137,6 +151,8 @@
 
 //called when a human changes suit sensors
 /mob/living/carbon/proc/update_suit_sensors()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/data/human/medical/basic/B = GLOB.huds[DATA_HUD_MEDICAL_BASIC]
 	B.update_suit_sensors(src)
 
@@ -146,6 +162,8 @@
 
 //called when a living mob changes health
 /mob/living/proc/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[HEALTH_HUD]
 	holder.icon_state = "hud[RoundHealth(src)]"
 	var/icon/I = icon(icon, icon_state, dir)
@@ -153,6 +171,8 @@
 
 //for carbon suit sensors
 /mob/living/carbon/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	..()
 
 	var/turf/T = get_turf(src)
@@ -161,6 +181,8 @@
 
 //called when a carbon changes stat, virus or XENO_HOST
 /mob/living/proc/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[STATUS_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -170,6 +192,8 @@
 		holder.icon_state = "hudhealthy"
 
 /mob/living/carbon/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[STATUS_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	var/virus_threat = check_virus()
@@ -205,6 +229,8 @@
 //HOOKS
 
 /mob/living/carbon/human/proc/sec_hud_set_ID()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[ID_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -218,6 +244,8 @@
 		GLOB.crewmonitor.queueUpdate(T.z)
 
 /mob/living/carbon/human/proc/sec_hud_set_implants()
+	procstart = null
+	src.procstart = null
 	var/image/holder
 	for(var/i in list(IMPTRACK_HUD, IMPLOYAL_HUD, IMPCHEM_HUD))
 		holder = hud_list[i]
@@ -240,6 +268,8 @@
 			holder.icon_state = "hud_imp_chem"
 
 /mob/living/carbon/human/proc/sec_hud_set_security_status()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[WANTED_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -268,6 +298,8 @@
 
 //For Diag health and cell bars!
 /proc/RoundDiagBar(value)
+	procstart = null
+	src.procstart = null
 	switch(value * 100)
 		if(95 to INFINITY)
 			return "max"
@@ -287,6 +319,8 @@
 
 //Sillycone hooks
 /mob/living/silicon/proc/diag_hud_set_health()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -296,6 +330,8 @@
 		holder.icon_state = "huddiag[RoundDiagBar(health/maxHealth)]"
 
 /mob/living/silicon/proc/diag_hud_set_status()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_STAT_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -309,6 +345,8 @@
 
 //Borgie battery tracking!
 /mob/living/silicon/robot/proc/diag_hud_set_borgcell()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_BATT_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -344,6 +382,8 @@
 	BIG STOMPY MECHS
 ~~~~~~~~~~~~~~~~~~~~~*/
 /obj/mecha/proc/diag_hud_set_mechhealth()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_MECH_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -351,6 +391,8 @@
 
 
 /obj/mecha/proc/diag_hud_set_mechcell()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_BATT_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -362,6 +404,8 @@
 
 
 /obj/mecha/proc/diag_hud_set_mechstat()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_STAT_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -386,6 +430,8 @@
 	Bots!
 ~~~~~~~~~~*/
 /mob/living/simple_animal/bot/proc/diag_hud_set_bothealth()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
@@ -428,6 +474,8 @@
 	Airlocks!
 ~~~~~~~~~~~~~*/
 /obj/machinery/door/airlock/proc/diag_hud_set_electrified()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_AIRLOCK_HUD]
 	if(secondsElectrified != 0)
 		holder.icon_state = "electrified"

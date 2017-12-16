@@ -14,6 +14,8 @@
 	var/created_name = "Cleanbot"
 
 /obj/item/bucket_sensor/attackby(obj/item/W, mob/user as mob, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/bodypart/l_arm/robot) || istype(W, /obj/item/bodypart/r_arm/robot))
 		if(!user.temporarilyRemoveItemFromInventory(W))
@@ -46,6 +48,8 @@
 	var/lasercolor = ""
 
 /obj/item/ed209_assembly/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(istype(W, /obj/item/pen))
@@ -217,6 +221,8 @@
 	var/created_name = "Floorbot"
 
 /obj/item/storage/toolbox/mechanical/attackby(obj/item/stack/tile/plasteel/T, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!istype(T, /obj/item/stack/tile/plasteel))
 		..()
 		return
@@ -235,6 +241,8 @@
 		return
 
 /obj/item/toolbox_tiles/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(isprox(W))
 		qdel(W)
@@ -254,6 +262,8 @@
 		created_name = t
 
 /obj/item/toolbox_tiles_sensor/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/bodypart/l_arm/robot) || istype(W, /obj/item/bodypart/r_arm/robot))
 		qdel(W)
@@ -283,6 +293,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/firstaid_arm_assembly/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawn(5)
 		if(skin)
@@ -290,6 +302,8 @@
 
 /obj/item/storage/firstaid/attackby(obj/item/bodypart/S, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if((!istype(S, /obj/item/bodypart/l_arm/robot)) && (!istype(S, /obj/item/bodypart/r_arm/robot)))
 		return ..()
 
@@ -315,6 +329,8 @@
 
 
 /obj/item/firstaid_arm_assembly/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/pen))
 		var/t = stripped_input(user, "Enter new robot name", name, created_name,MAX_NAME_LEN)
@@ -359,6 +375,8 @@
 
 /obj/item/honkbot_assembly/attackby(obj/item/I, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(isprox(I) && (build_step == ASSEMBLY_FIRST_STEP))
 		if(!user.temporarilyRemoveItemFromInventory(I))
 			return
@@ -403,6 +421,8 @@
 	var/created_name = "Securitron" //To preserve the name if it's a unique securitron I guess
 
 /obj/item/secbot_assembly/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(I, /obj/item/weldingtool))
 		if(!build_step)

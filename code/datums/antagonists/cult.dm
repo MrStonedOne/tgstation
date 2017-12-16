@@ -12,9 +12,13 @@
 	var/datum/objective_team/cult/cult_team
 
 /datum/antagonist/cult/get_team()
+	procstart = null
+	src.procstart = null
 	return cult_team
 
 /datum/antagonist/cult/create_team(datum/objective_team/cult/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		//todo remove this and allow admin buttons to create more than one cult
 		for(var/datum/antagonist/cult/H in GLOB.antagonists)
@@ -29,28 +33,40 @@
 	cult_team = new_team
 
 /datum/antagonist/cult/proc/add_objectives()
+	procstart = null
+	src.procstart = null
 	objectives |= cult_team.objectives
 	owner.objectives |= objectives
 
 /datum/antagonist/cult/proc/remove_objectives()
+	procstart = null
+	src.procstart = null
 	owner.objectives -= objectives
 
 /datum/antagonist/cult/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(communion)
 	QDEL_NULL(vote)
 	return ..()
 
 /datum/antagonist/cult/can_be_owned(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !ignore_implant)
 		. = is_convertable_to_cult(new_owner.current,cult_team)
 
 /datum/antagonist/cult/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<span class='userdanger'>You are a member of the cult!</span>")
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/bloodcult.ogg', 100, FALSE, pressure_affected = FALSE)//subject to change
 	owner.announce_objectives()
 
 /datum/antagonist/cult/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current = owner.current
 	add_objectives()
@@ -65,6 +81,8 @@
 
 
 /datum/antagonist/cult/proc/equip_cultist(tome=FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/H = owner.current
 	if(!istype(H))
 		return
@@ -80,6 +98,8 @@
 
 
 /datum/antagonist/cult/proc/cult_give_item(obj/item/item_path, mob/living/carbon/human/mob)
+	procstart = null
+	src.procstart = null
 	var/list/slots = list(
 		"backpack" = slot_in_backpack,
 		"left pocket" = slot_l_store,
@@ -101,6 +121,8 @@
 		return 1
 
 /datum/antagonist/cult/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current = owner.current
 	if(mob_override)
@@ -114,6 +136,8 @@
 	current.throw_alert("bloodsense", /obj/screen/alert/bloodsense)
 
 /datum/antagonist/cult/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current = owner.current
 	if(mob_override)
@@ -126,6 +150,8 @@
 	current.clear_alert("bloodsense")
 
 /datum/antagonist/cult/on_removal()
+	procstart = null
+	src.procstart = null
 	remove_objectives()
 	owner.wipe_memory()
 	SSticker.mode.cult -= owner
@@ -145,22 +171,30 @@
 	ignore_implant = TRUE
 
 /datum/antagonist/cult/master/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(reckoning)
 	QDEL_NULL(bloodmark)
 	QDEL_NULL(throwing)
 	return ..()
 
 /datum/antagonist/cult/master/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current = owner.current
 	set_antag_hud(current, "cultmaster")
 
 /datum/antagonist/cult/master/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner.current, "<span class='cultlarge'>You are the cult's Master</span>. As the cult's Master, you have a unique title and loud voice when communicating, are capable of marking \
 	targets, such as a location or a noncultist, to direct the cult to them, and, finally, you are capable of summoning the entire living cult to your location <b><i>once</i></b>.")
 	to_chat(owner.current, "Use these abilities to direct the cult to victory at any cost.")
 
 /datum/antagonist/cult/master/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current = owner.current
 	if(mob_override)
@@ -173,6 +207,8 @@
 	current.apply_status_effect(/datum/status_effect/cult_master)
 
 /datum/antagonist/cult/master/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current = owner.current
 	if(mob_override)
@@ -196,6 +232,8 @@
 
 
 /datum/objective_team/cult/proc/setup_objectives()
+	procstart = null
+	src.procstart = null
 	//SAC OBJECTIVE , todo: move this to objective internals
 	var/list/target_candidates = list()
 	var/datum/objective/sacrifice/sac_objective = new
@@ -240,9 +278,13 @@
 	var/sac_image
 
 /datum/objective/sacrifice/check_completion()
+	procstart = null
+	src.procstart = null
 	return sacced || completed
 
 /datum/objective/sacrifice/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target && !sacced)
 		explanation_text = "Sacrifice [target], the [target.assigned_role] via invoking a Sacrifice rune with them on it and three acolytes around it."
 	else
@@ -253,6 +295,8 @@
 	var/list/summon_spots = list()
 
 /datum/objective/eldergod/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/sanity = 0
 	while(summon_spots.len < SUMMON_POSSIBILITIES && sanity < 100)
@@ -263,18 +307,26 @@
 	update_explanation_text()
 
 /datum/objective/eldergod/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Summon Nar-Sie by invoking the rune 'Summon Nar-Sie'. <b>The summoning can only be accomplished in [english_list(summon_spots)] - where the veil is weak enough for the ritual to begin.</b>"
 
 /datum/objective/eldergod/check_completion()
+	procstart = null
+	src.procstart = null
 	return summoned || completed
 
 /datum/objective_team/cult/proc/check_cult_victory()
+	procstart = null
+	src.procstart = null
 	for(var/datum/objective/O in objectives)
 		if(!O.check_completion())
 			return FALSE
 	return TRUE
 
 /datum/objective_team/cult/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	if(check_cult_victory())

@@ -8,6 +8,8 @@
 
 //Fake our own death and fully heal. You will appear to be dead but regenerate fully after a short delay.
 /obj/effect/proc_holder/changeling/fakedeath/sting_action(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>We begin our stasis, preparing energy to arise once more.</span>")
 	if(user.stat != DEAD)
 		user.emote("deathgasp")
@@ -20,6 +22,8 @@
 	return TRUE
 
 /obj/effect/proc_holder/changeling/fakedeath/proc/ready_to_regenerate(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user && user.mind)
 		var/datum/antagonist/changeling/C = user.mind.has_antag_datum(/datum/antagonist/changeling)
 		if(C && C.purchasedpowers)
@@ -27,6 +31,8 @@
 			C.purchasedpowers += new /obj/effect/proc_holder/changeling/revive(null)
 
 /obj/effect/proc_holder/changeling/fakedeath/can_sting(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.status_flags & FAKEDEATH)
 		to_chat(user, "<span class='warning'>We are already reviving.</span>")
 		return

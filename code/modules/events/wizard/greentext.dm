@@ -7,6 +7,8 @@
 
 /datum/round_event/wizard/greentext/start()
 
+	procstart = null
+	src.procstart = null
 	var/list/holder_canadates = GLOB.player_list.Copy()
 	for(var/mob/M in holder_canadates)
 		if(!ishuman(M))
@@ -32,10 +34,14 @@
 	var/quiet = FALSE
 
 /obj/item/greentext/New()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.poi_list |= src
 
 /obj/item/greentext/equipped(mob/living/user as mob)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<font color='green'>So long as you leave this place with greentext in hand you know will be happy...</font>")
 	if(user.mind && user.mind.objectives.len > 0)
 		to_chat(user, "<span class='warning'>... so long as you still perform your other objectives that is!</span>")
@@ -49,6 +55,8 @@
 	..()
 
 /obj/item/greentext/dropped(mob/living/user as mob)
+	procstart = null
+	src.procstart = null
 	if(user in color_altered_mobs)
 		to_chat(user, "<span class='warning'>A sudden wave of failure washes over you...</span>")
 		user.add_atom_colour("#FF0000", ADMIN_COLOUR_PRIORITY) //ya blew it
@@ -58,6 +66,8 @@
 	..()
 
 /obj/item/greentext/process()
+	procstart = null
+	src.procstart = null
 	if(new_holder && new_holder.z == ZLEVEL_CENTCOM)//you're winner!
 		to_chat(new_holder, "<font color='green'>At last it feels like victory is assured!</font>")
 		if(!(new_holder in SSticker.mode.traitors))
@@ -79,6 +89,8 @@
 		last_holder = new_holder //long live the king
 
 /obj/item/greentext/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!(resistance_flags & ON_FIRE) && !force)
 		return QDEL_HINT_LETMELIVE
 

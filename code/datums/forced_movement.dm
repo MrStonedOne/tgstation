@@ -9,6 +9,8 @@
 	var/moved_at_all = FALSE
 															//as fast as ssfastprocess
 /datum/forced_movement/New(atom/movable/_victim, atom/_target, _steps_per_tick = 0.5, _allow_climbing = FALSE, datum/callback/_on_step = null)
+	procstart = null
+	src.procstart = null
 	victim = _victim
 	target = _target
 	steps_per_tick = _steps_per_tick
@@ -25,6 +27,8 @@
 		qdel(src)	//if you want to overwrite the current forced movement, call qdel(victim.force_moving) before creating this
 
 /datum/forced_movement/Destroy()
+	procstart = null
+	src.procstart = null
 	if(victim.force_moving == src)
 		victim.force_moving = null
 		if(moved_at_all)
@@ -35,6 +39,8 @@
 	return ..()
 
 /datum/forced_movement/process()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(victim) || !victim.loc || QDELETED(target) || !target.loc)
 		qdel(src)
 		return
@@ -51,6 +57,8 @@
 		last_processed = world.time
 
 /datum/forced_movement/proc/TryMove(recursive = FALSE)
+	procstart = null
+	src.procstart = null
 	var/atom/movable/vic = victim	//sanic
 	var/atom/tar = target
 
@@ -83,6 +91,8 @@
 	. = . && (vic.loc != tar.loc)
 
 /mob/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(force_moving && force_moving.allow_climbing && isstructure(A))
 		var/obj/structure/S = A

@@ -34,6 +34,8 @@
 	var/brood_type = /mob/living/simple_animal/hostile/asteroid/hivelordbrood
 
 /mob/living/simple_animal/hostile/asteroid/hivelord/OpenFire(the_target)
+	procstart = null
+	src.procstart = null
 	if(world.time >= ranged_cooldown)
 		var/mob/living/simple_animal/hostile/asteroid/hivelordbrood/A = new brood_type(src.loc)
 		A.admin_spawned = admin_spawned
@@ -43,13 +45,19 @@
 		ranged_cooldown = world.time + ranged_cooldown_time
 
 /mob/living/simple_animal/hostile/asteroid/hivelord/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	OpenFire()
 	return TRUE
 
 /mob/living/simple_animal/hostile/asteroid/hivelord/spawn_crusher_loot()
+	procstart = null
+	src.procstart = null
 	loot += crusher_loot //we don't butcher
 
 /mob/living/simple_animal/hostile/asteroid/hivelord/death(gibbed)
+	procstart = null
+	src.procstart = null
 	mouse_opacity = MOUSE_OPACITY_ICON
 	..(gibbed)
 
@@ -84,6 +92,8 @@
 	del_on_death = 1
 
 /mob/living/simple_animal/hostile/asteroid/hivelordbrood/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/death), 100)
 
@@ -114,6 +124,8 @@
 	var/mob/living/carbon/human/stored_mob
 
 /mob/living/simple_animal/hostile/asteroid/hivelord/legion/random/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(5))
 		new /mob/living/simple_animal/hostile/asteroid/hivelord/legion/dwarf(loc)
@@ -133,6 +145,8 @@
 	dwarf_mob = TRUE
 
 /mob/living/simple_animal/hostile/asteroid/hivelord/legion/death(gibbed)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>The skulls on [src] wail in anger as they flee from their dying host!</span>")
 	var/turf/T = get_turf(src)
 	if(T)
@@ -178,6 +192,8 @@
 	var/can_infest_dead = FALSE
 
 /mob/living/simple_animal/hostile/asteroid/hivelordbrood/legion/Life()
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		for(var/mob/living/carbon/human/H in view(src,1)) //Only for corpse right next to/on same tile
 			if(H.stat == UNCONSCIOUS || (can_infest_dead && H.stat == DEAD))
@@ -185,6 +201,8 @@
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/hivelordbrood/legion/proc/infest(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>[name] burrows into the flesh of [H]!</span>")
 	var/mob/living/simple_animal/hostile/asteroid/hivelord/legion/L
 	if(H.dna.check_mutation(DWARFISM)) //dwarf legions aren't just fluff!
@@ -263,10 +281,14 @@
 //Legion infested mobs
 
 /obj/effect/mob_spawn/human/corpse/damaged/legioninfested/dwarf/equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	H.dna.add_mutation(DWARFISM)
 
 /obj/effect/mob_spawn/human/corpse/damaged/legioninfested/Initialize()
+	procstart = null
+	src.procstart = null
 	var/type = pickweight(list("Miner" = 66, "Ashwalker" = 10, "Golem" = 10,"Clown" = 10, pick(list("Shadow", "YeOlde","Operative", "Cultist")) = 4))
 	switch(type)
 		if("Miner")

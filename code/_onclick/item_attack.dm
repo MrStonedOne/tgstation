@@ -1,5 +1,7 @@
 
 /obj/item/proc/melee_attack_chain(mob/user, atom/target, params)
+	procstart = null
+	src.procstart = null
 	if(!tool_check(user, target) && pre_attackby(target, user, params))
 		// Return 1 in attackby() to prevent afterattack() effects (when safely moving items for example)
 		var/resolved = target.attackby(src, user, params)
@@ -9,6 +11,8 @@
 
 //Checks if the item can work as a tool, calling the appropriate tool behavior on the target
 /obj/item/proc/tool_check(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	switch(tool_behaviour)
 		if(TOOL_NONE)
 			return FALSE
@@ -26,6 +30,8 @@
 
 // Called when the item is in the active hand, and clicked; alternately, there is an 'activate held object' verb or you can hit pagedown.
 /obj/item/proc/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ITEM_ATTACK_SELF, user)
 	interact(user)
 
@@ -34,14 +40,20 @@
 
 // No comment
 /atom/proc/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(SendSignal(COMSIG_PARENT_ATTACKBY, W, user, params) & COMPONENT_NO_AFTERATTACK)
 		return TRUE
 	return FALSE
 
 /obj/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	return ..() || (can_be_hit && I.attack_obj(src, user))
 
 /mob/living/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	if(user.a_intent == INTENT_HARM && stat == DEAD && butcher_results) //can we butcher it?
 		var/sharpness = I.is_sharp()
@@ -55,6 +67,8 @@
 
 
 /obj/item/proc/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ITEM_ATTACK, M, user)
 	if(flags_1 & NOBLUDGEON_1)
 		return
@@ -75,6 +89,8 @@
 
 //the equivalent of the standard version of attack() but for object targets.
 /obj/item/proc/attack_obj(obj/O, mob/living/user)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_ITEM_ATTACK_OBJ, O, user)
 	if(flags_1 & NOBLUDGEON_1)
 		return
@@ -83,15 +99,21 @@
 	O.attacked_by(src, user)
 
 /atom/movable/proc/attacked_by()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(I.force)
 		visible_message("<span class='danger'>[user] has hit [src] with [I]!</span>", null, null, COMBAT_MESSAGE_RANGE)
 		//only witnesses close by and the victim see a hit message.
 	take_damage(I.force, I.damtype, "melee", 1)
 
 /mob/living/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	send_item_attack_message(I, user)
 	if(I.force)
 		apply_damage(I.force, I.damtype)
@@ -105,6 +127,8 @@
 		return TRUE //successful attack
 
 /mob/living/simple_animal/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(I.force < force_threshold || I.damtype == STAMINA)
 		playsound(loc, 'sound/weapons/tap.ogg', I.get_clamped_volume(), 1, -1)
 	else
@@ -113,10 +137,14 @@
 // Proximity_flag is 1 if this afterattack was called on something adjacent, in your square, or on your person.
 // Click parameters is the params string from byond Click() code, see that documentation.
 /obj/item/proc/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/item/proc/get_clamped_volume()
+	procstart = null
+	src.procstart = null
 	if(w_class)
 		if(force)
 			return Clamp((force + w_class) * 4, 30, 100)// Add the item's force to its weight class and multiply by 4, then clamp the value between 30 and 100
@@ -124,6 +152,8 @@
 			return Clamp(w_class * 6, 10, 100) // Multiply the item's weight class by 6, then clamp the value between 10 and 100
 
 /mob/living/proc/send_item_attack_message(obj/item/I, mob/living/user, hit_area)
+	procstart = null
+	src.procstart = null
 	var/message_verb = "attacked"
 	if(I.attack_verb && I.attack_verb.len)
 		message_verb = "[pick(I.attack_verb)]"

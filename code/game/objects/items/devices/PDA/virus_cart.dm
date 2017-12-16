@@ -3,17 +3,25 @@
 	var/charges = 5
 
 /obj/item/cartridge/virus/proc/send_virus(obj/item/device/pda/target, mob/living/U)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/cartridge/virus/message_header()
+	procstart = null
+	src.procstart = null
 	return "<b>[charges] viral files left.</b><HR>"
 
 /obj/item/cartridge/virus/message_special(obj/item/device/pda/target)
+	procstart = null
+	src.procstart = null
 	if (!istype(loc, /obj/item/device/pda))
 		return ""  //Sanity check, this shouldn't be possible.
 	return " (<a href='byond://?src=[REF(loc)];choice=cart;special=virus;target=[REF(target)]'>*Send Virus*</a>)"
 
 /obj/item/cartridge/virus/special(mob/living/user, list/params)
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/pda/P = locate(params["target"])//Leaving it alone in case it may do something useful, I guess.
 	send_virus(P,user)
 
@@ -24,6 +32,8 @@
 	access = CART_CLOWN
 
 /obj/item/cartridge/virus/clown/send_virus(obj/item/device/pda/target, mob/living/U)
+	procstart = null
+	src.procstart = null
 	if(charges <= 0)
 		to_chat(U, "<span class='notice'>Out of charges.</span>")
 		return
@@ -40,6 +50,8 @@
 	access = CART_MIME
 
 /obj/item/cartridge/virus/mime/send_virus(obj/item/device/pda/target, mob/living/U)
+	procstart = null
+	src.procstart = null
 	if(charges <= 0)
 		to_chat(U, "<span class='notice'>Out of charges.</span>")
 		return
@@ -59,6 +71,8 @@
 	charges = 4
 
 /obj/item/cartridge/virus/syndicate/send_virus(obj/item/device/pda/target, mob/living/U)
+	procstart = null
+	src.procstart = null
 	if(charges <= 0)
 		to_chat(U, "<span class='notice'>Out of charges.</span>")
 		return
@@ -86,6 +100,8 @@
 	var/telecrystals = 0
 
 /obj/item/cartridge/virus/frame/send_virus(obj/item/device/pda/target, mob/living/U)
+	procstart = null
+	src.procstart = null
 	if(charges <= 0)
 		to_chat(U, "<span class='notice'>Out of charges.</span>")
 		return

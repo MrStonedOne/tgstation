@@ -34,6 +34,8 @@
 	mob_type = /mob/living/simple_animal/hostile/asteroid/hivelord/legion/tendril
 
 /mob/living/simple_animal/hostile/spawner/lavaland/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	emitted_light = new(loc)
 	for(var/F in RANGE_TURFS(1, src))
@@ -43,12 +45,16 @@
 	gps = new /obj/item/device/gps/internal(src)
 
 /mob/living/simple_animal/hostile/spawner/lavaland/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(emitted_light)
 	QDEL_NULL(gps)
 	. = ..()
 
 #define MEDAL_PREFIX "Tendril"
 /mob/living/simple_animal/hostile/spawner/lavaland/death()
+	procstart = null
+	src.procstart = null
 	var/last_tendril = TRUE
 	for(var/mob/living/simple_animal/hostile/spawner/lavaland/other in GLOB.mob_living_list)
 		if(other != src)
@@ -79,6 +85,8 @@
 	var/obj/effect/light_emitter/tendril/emitted_light
 
 /obj/effect/collapse/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	emitted_light = new(loc)
 	visible_message("<span class='boldannounce'>The tendril writhes in fury as the earth around it begins to crack and break apart! Get back!</span>")
@@ -87,10 +95,14 @@
 	addtimer(CALLBACK(src, .proc/collapse), 50)
 
 /obj/effect/collapse/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(emitted_light)
 	return ..()
 
 /obj/effect/collapse/proc/collapse()
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in range(7,src))
 		shake_camera(M, 15, 1)
 	playsound(get_turf(src),'sound/effects/explosionfar.ogg', 200, 1)

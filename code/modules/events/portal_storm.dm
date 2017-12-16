@@ -37,6 +37,8 @@
 	var/mutable_appearance/storm
 
 /datum/round_event/portal_storm/setup()
+	procstart = null
+	src.procstart = null
 	storm = mutable_appearance('icons/obj/tesla_engine/energy_ball.dmi', "energy_ball_fast", FLY_LAYER)
 	storm.color = "#00FF00"
 
@@ -67,6 +69,8 @@
 	next_boss_spawn = startWhen + Ceiling(2 * number_of_hostiles / number_of_bosses)
 
 /datum/round_event/portal_storm/announce(fake)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	sound_to_playing_players('sound/magic/lightning_chargeup.ogg')
 	sleep(80)
@@ -75,6 +79,8 @@
 	sound_to_playing_players('sound/magic/lightningbolt.ogg')
 
 /datum/round_event/portal_storm/tick()
+	procstart = null
+	src.procstart = null
 	spawn_effects()
 
 	if(spawn_hostile())
@@ -94,6 +100,8 @@
 	time_to_end()
 
 /datum/round_event/portal_storm/proc/spawn_mob(type, spawn_list)
+	procstart = null
+	src.procstart = null
 	if(!type)
 		return
 	var/turf/T = pick_n_take(spawn_list)
@@ -103,6 +111,8 @@
 	spawn_effects(T)
 
 /datum/round_event/portal_storm/proc/spawn_effects(turf/T)
+	procstart = null
+	src.procstart = null
 	if(T)
 		T = get_step(T, SOUTHWEST) //align center of image with turf
 		flick_overlay_static(storm, T, 15)
@@ -115,11 +125,15 @@
 			playsound(F, 'sound/magic/lightningbolt.ogg', 80, 1)
 
 /datum/round_event/portal_storm/proc/spawn_hostile()
+	procstart = null
+	src.procstart = null
 	if(!hostile_types || !hostile_types.len)
 		return 0
 	return IsMultiple(activeFor, 2)
 
 /datum/round_event/portal_storm/proc/spawn_boss()
+	procstart = null
+	src.procstart = null
 	if(!boss_types || !boss_types.len)
 		return 0
 
@@ -128,6 +142,8 @@
 		return 1
 
 /datum/round_event/portal_storm/proc/time_to_end()
+	procstart = null
+	src.procstart = null
 	if(!hostile_types.len && !boss_types.len)
 		endWhen = activeFor
 

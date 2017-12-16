@@ -4,6 +4,8 @@
 	activated = 0
 
 /obj/item/implant/mindshield/get_data()
+	procstart = null
+	src.procstart = null
 	var/dat = {"<b>Implant Specifications:</b><BR>
 				<b>Name:</b> Nanotrasen Employee Management Implant<BR>
 				<b>Life:</b> Ten years.<BR>
@@ -17,6 +19,8 @@
 
 
 /obj/item/implant/mindshield/implant(mob/living/target, mob/user, silent = 0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(!target.mind)
 			return TRUE
@@ -39,6 +43,8 @@
 	return FALSE
 
 /obj/item/implant/mindshield/removed(mob/target, silent = 0, special = 0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(target.stat != DEAD && !silent)
 			to_chat(target, "<span class='boldnotice'>Your mind suddenly feels terribly vulnerable. You are no longer safe from brainwashing.</span>")

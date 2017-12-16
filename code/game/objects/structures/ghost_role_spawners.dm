@@ -17,6 +17,8 @@
 	assignedrole = "Lifebringer"
 
 /obj/effect/mob_spawn/human/seed_vault/special(mob/living/new_spawn)
+	procstart = null
+	src.procstart = null
 	var/plant_name = pick("Tomato", "Potato", "Broccoli", "Carrot", "Ambrosia", "Pumpkin", "Ivy", "Kudzu", "Banana", "Moss", "Flower", "Bloom", "Root", "Bark", "Glowshroom", "Petal", "Leaf", \
 	"Venus", "Sprout","Cocoa", "Strawberry", "Citrus", "Oak", "Cactus", "Pepper", "Juniper")
 	new_spawn.real_name = plant_name
@@ -26,6 +28,8 @@
 		H.update_body()
 
 /obj/effect/mob_spawn/human/seed_vault/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/fluff/empty_terrarium(get_turf(src))
 	return ..()
 
@@ -48,6 +52,8 @@
 	assignedrole = "Ash Walker"
 
 /obj/effect/mob_spawn/human/ash_walker/special(mob/living/new_spawn)
+	procstart = null
+	src.procstart = null
 	new_spawn.real_name = random_unique_lizard_name(gender)
 	to_chat(new_spawn, "<b>Drag the corpses of men and beasts to your nest. It will absorb them to create more of your kind. Glory to the Necropolis!</b>")
 
@@ -61,6 +67,8 @@
 		H.update_body()
 
 /obj/effect/mob_spawn/human/ash_walker/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/A = get_area(src)
 	if(A)
@@ -87,10 +95,14 @@
 	assignedrole = "Exile"
 
 /obj/effect/mob_spawn/human/exile/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/fluff/empty_sleeper(get_turf(src))
 	return ..()
 
 /obj/effect/mob_spawn/human/exile/special(mob/living/new_spawn)
+	procstart = null
+	src.procstart = null
 	new_spawn.real_name = "Wish Granter's Victim ([rand(0,999)])"
 	var/wish = rand(1,4)
 	switch(wish)
@@ -123,6 +135,8 @@
 	golems, so that no golem may ever be forced to serve again.</b>"
 
 /obj/effect/mob_spawn/human/golem/Initialize(mapload, datum/species/golem/species = null, mob/creator = null)
+	procstart = null
+	src.procstart = null
 	if(species) //spawners list uses object name to register so this goes before ..()
 		name += " ([initial(species.prefix)])"
 		mob_species = species
@@ -136,6 +150,8 @@
 		owner = creator
 
 /obj/effect/mob_spawn/human/golem/special(mob/living/new_spawn, name)
+	procstart = null
+	src.procstart = null
 	var/datum/species/golem/X = mob_species
 	to_chat(new_spawn, "[initial(X.info_text)]")
 	if(!owner)
@@ -161,6 +177,8 @@
 		new_spawn.mind.assigned_role = "Free Golem"
 
 /obj/effect/mob_spawn/human/golem/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isgolem(user) && can_transfer)
 		var/transfer_choice = alert("Transfer your soul to [src]? (Warning, your old body will die!)",,"Yes","No")
 		if(transfer_choice != "Yes")
@@ -204,6 +222,8 @@
 	assignedrole = "Hermit"
 
 /obj/effect/mob_spawn/human/hermit/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/arrpee = rand(1,4)
 	switch(arrpee)
@@ -237,6 +257,8 @@
 			outfit.back = /obj/item/storage/backpack
 
 /obj/effect/mob_spawn/human/hermit/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/fluff/empty_cryostasis_sleeper(get_turf(src))
 	return ..()
 
@@ -251,6 +273,8 @@
 	assignedrole = "Translocated Vet"
 
 /obj/effect/mob_spawn/human/doctor/alive/lavaland/Destroy()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/fluff/empty_sleeper/S = new(drop_location())
 	S.setDir(dir)
 	return ..()
@@ -270,10 +294,14 @@
 	assignedrole = "Escaped Prisoner"
 
 /obj/effect/mob_spawn/human/prisoner_transport/special(mob/living/L)
+	procstart = null
+	src.procstart = null
 	L.real_name = "NTP #LL-0[rand(111,999)]" //Nanotrasen Prisoner #Lavaland-(numbers)
 	L.name = L.real_name
 
 /obj/effect/mob_spawn/human/prisoner_transport/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/crimes = list("murder", "larceny", "embezzlement", "unionization", "dereliction of duty", "kidnapping", "gross incompetence", "grand theft", "collaboration with the Syndicate", \
 	"worship of a forbidden deity", "interspecies relations", "mutiny")
@@ -289,6 +317,8 @@
 
 
 /obj/effect/mob_spawn/human/prisoner_transport/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/fluff/empty_sleeper/syndicate(get_turf(src))
 	return ..()
 
@@ -334,6 +364,8 @@
 	belt = /obj/item/storage/belt/security/full
 
 /obj/effect/mob_spawn/human/hotel_staff/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/fluff/empty_sleeper/syndicate(get_turf(src))
 	..()
 
@@ -354,6 +386,8 @@
 	assignedrole = "SuperFriend"
 
 /obj/effect/mob_spawn/human/demonic_friend/Initialize(mapload, datum/mind/owner_mind, obj/effect/proc_holder/spell/targeted/summon_friend/summoning_spell)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner = owner_mind
 	flavour_text = "You have been given a reprieve from your eternity of torment, to be [owner.name]'s friend for their short mortal coil.  Be aware that if you do not live up to [owner.name]'s expectations, they can send you back to hell with a single thought.  [owner.name]'s death will also return you to hell."
@@ -365,6 +399,8 @@
 
 
 /obj/effect/mob_spawn/human/demonic_friend/special(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(owner.current) && owner.current.stat != DEAD)
 		L.real_name = "[owner.name]'s best friend"
 		L.name = L.real_name
@@ -411,6 +447,8 @@
 	id = /obj/item/card/id
 
 /datum/outfit/syndicate_empty/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.faction |= "syndicate"
 
 /obj/effect/mob_spawn/human/syndicate/battlecruiser
@@ -479,6 +517,8 @@
 	assignedrole = "Ancient Crew"
 
 /obj/effect/mob_spawn/human/oldsec/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/showcase/machinery/oldpod/used(drop_location())
 	return ..()
 
@@ -503,6 +543,8 @@
 	assignedrole = "Ancient Crew"
 
 /obj/effect/mob_spawn/human/oldeng/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/showcase/machinery/oldpod/used(drop_location())
 	return ..()
 
@@ -526,6 +568,8 @@
 	assignedrole = "Ancient Crew"
 
 /obj/effect/mob_spawn/human/oldsci/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/showcase/machinery/oldpod/used(drop_location())
 	return ..()
 
@@ -551,15 +595,21 @@
 	var/rank = "Mate"
 
 /obj/effect/mob_spawn/human/pirate/special(mob/living/new_spawn)
+	procstart = null
+	src.procstart = null
 	new_spawn.fully_replace_character_name(new_spawn.real_name,generate_pirate_name())
 	new_spawn.mind.add_antag_datum(/datum/antagonist/pirate)
 
 /obj/effect/mob_spawn/human/pirate/proc/generate_pirate_name()
+	procstart = null
+	src.procstart = null
 	var/beggings = strings(PIRATE_NAMES_FILE, "beginnings")
 	var/endings = strings(PIRATE_NAMES_FILE, "endings")
 	return "[rank] [pick(beggings)][pick(endings)]"
 
 /obj/effect/mob_spawn/human/pirate/Destroy()
+	procstart = null
+	src.procstart = null
 	new/obj/structure/showcase/machinery/oldpod/used(drop_location())
 	return ..()
 

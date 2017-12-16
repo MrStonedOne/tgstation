@@ -2,6 +2,8 @@
 	var/list/enemies = list()
 
 /mob/living/simple_animal/hostile/retaliate/Found(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isliving(A))
 		var/mob/living/L = A
 		if(!L.stat)
@@ -14,6 +16,8 @@
 			return A
 
 /mob/living/simple_animal/hostile/retaliate/ListTargets()
+	procstart = null
+	src.procstart = null
 	if(!enemies.len)
 		return list()
 	var/list/see = ..()
@@ -21,6 +25,8 @@
 	return see
 
 /mob/living/simple_animal/hostile/retaliate/proc/Retaliate()
+	procstart = null
+	src.procstart = null
 	var/list/around = view(src, vision_range)
 
 	for(var/atom/movable/A in around)
@@ -42,6 +48,8 @@
 	return 0
 
 /mob/living/simple_animal/hostile/retaliate/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. > 0 && stat == CONSCIOUS)
 		Retaliate()

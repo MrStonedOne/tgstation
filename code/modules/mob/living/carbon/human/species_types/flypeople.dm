@@ -11,6 +11,8 @@
 	liked_food = GROSS
 
 /datum/species/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(chem.id == "pestkiller")
 		H.adjustToxLoss(3)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
@@ -18,6 +20,8 @@
 
 
 /datum/species/fly/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(istype(chem, /datum/reagent/consumable))
 		var/datum/reagent/consumable/nutri_check = chem
 		if(nutri_check.nutriment_factor > 0)
@@ -29,6 +33,8 @@
 	..()
 
 /datum/species/fly/check_weakness(obj/item/weapon, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if(istype(weapon, /obj/item/melee/flyswatter))
 		return 29 //Flyswatters deal 30x damage to flypeople.
 	return 0

@@ -9,6 +9,8 @@ again.
 	var/list/spawn_list
 
 /obj/effect/spawner/structure/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(spawn_list && spawn_list.len)
 		for(var/I in spawn_list)
@@ -34,6 +36,8 @@ again.
 	icon_state = "hwindow_spawner_end"
 
 /obj/effect/spawner/structure/window/hollow/end/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/spawner/north, /obj/structure/window/spawner/east, /obj/structure/window/spawner/west)
@@ -49,6 +53,8 @@ again.
 	icon_state = "hwindow_spawner_middle"
 
 /obj/effect/spawner/structure/window/hollow/middle/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH,SOUTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window, /obj/structure/window/spawner/north)
@@ -60,6 +66,8 @@ again.
 	icon_state = "hwindow_spawner_directional"
 
 /obj/effect/spawner/structure/window/hollow/directional/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/spawner/north)
@@ -95,6 +103,8 @@ again.
 	icon_state = "hrwindow_spawner_end"
 
 /obj/effect/spawner/structure/window/hollow/reinforced/end/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/spawner/north, /obj/structure/window/reinforced/spawner/east, /obj/structure/window/reinforced/spawner/west)
@@ -110,6 +120,8 @@ again.
 	icon_state = "hrwindow_spawner_middle"
 
 /obj/effect/spawner/structure/window/hollow/reinforced/middle/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH,SOUTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced, /obj/structure/window/reinforced/spawner/north)
@@ -121,6 +133,8 @@ again.
 	icon_state = "hrwindow_spawner_directional"
 
 /obj/effect/spawner/structure/window/hollow/reinforced/directional/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/reinforced/spawner/north)
@@ -172,6 +186,8 @@ again.
 	icon_state = "phwindow_spawner_end"
 
 /obj/effect/spawner/structure/window/hollow/plasma/end/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma/spawner/north, /obj/structure/window/plasma/spawner/east, /obj/structure/window/plasma/spawner/west)
@@ -187,6 +203,8 @@ again.
 	icon_state = "phwindow_spawner_middle"
 
 /obj/effect/spawner/structure/window/hollow/plasma/middle/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH,SOUTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma, /obj/structure/window/plasma/spawner/north)
@@ -198,6 +216,8 @@ again.
 	icon_state = "phwindow_spawner_directional"
 
 /obj/effect/spawner/structure/window/hollow/plasma/directional/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma/spawner/north)
@@ -233,6 +253,8 @@ again.
 	icon_state = "phrwindow_spawner_end"
 
 /obj/effect/spawner/structure/window/hollow/plasma/reinforced/end/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma/reinforced/spawner/north, /obj/structure/window/plasma/reinforced/spawner/east, /obj/structure/window/plasma/reinforced/spawner/west)
@@ -248,6 +270,8 @@ again.
 	icon_state = "phrwindow_spawner_middle"
 
 /obj/effect/spawner/structure/window/hollow/plasma/reinforced/middle/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH,SOUTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma/reinforced, /obj/structure/window/plasma/reinforced/spawner/north)
@@ -259,6 +283,8 @@ again.
 	icon_state = "phrwindow_spawner_directional"
 
 /obj/effect/spawner/structure/window/hollow/plasma/reinforced/directional/Initialize()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			spawn_list = list(/obj/structure/grille, /obj/structure/window/plasma/reinforced/spawner/north)

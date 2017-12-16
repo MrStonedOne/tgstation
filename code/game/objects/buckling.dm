@@ -10,6 +10,8 @@
 
 //Interaction
 /atom/movable/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_buckle && has_buckled_mobs())
 		if(buckled_mobs.len > 1)
@@ -21,12 +23,16 @@
 				return 1
 
 /atom/movable/MouseDrop_T(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(can_buckle && istype(M) && istype(user))
 		if(user_buckle_mob(M, user))
 			return 1
 
 /atom/movable/proc/has_buckled_mobs()
+	procstart = null
+	src.procstart = null
 	if(!buckled_mobs)
 		return FALSE
 	if(buckled_mobs.len)
@@ -34,6 +40,8 @@
 
 //procs that handle the actual buckling and unbuckling
 /atom/movable/proc/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!buckled_mobs)
 		buckled_mobs = list()
 
@@ -69,6 +77,8 @@
 	return TRUE
 
 /obj/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(resistance_flags & ON_FIRE) //Sets the mob on fire if you buckle them to a burning atom/movableect
@@ -76,6 +86,8 @@
 			M.IgniteMob()
 
 /atom/movable/proc/unbuckle_mob(mob/living/buckled_mob, force=FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(buckled_mob) && buckled_mob.buckled == src && (buckled_mob.can_unbuckle() || force))
 		. = buckled_mob
 		buckled_mob.buckled = null
@@ -88,6 +100,8 @@
 		post_unbuckle_mob(.)
 
 /atom/movable/proc/unbuckle_all_mobs(force=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!has_buckled_mobs())
 		return
 	for(var/m in buckled_mobs)
@@ -102,6 +116,8 @@
 
 //Wrapper procs that handle sanity and user feedback
 /atom/movable/proc/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!in_range(user, src) || !isturf(user.loc) || user.incapacitated())
 		return FALSE
 
@@ -120,6 +136,8 @@
 				"<span class='italics'>You hear metal clanking.</span>")
 
 /atom/movable/proc/user_unbuckle_mob(mob/living/buckled_mob, mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = unbuckle_mob(buckled_mob)
 	if(M)
 		if(M != user)

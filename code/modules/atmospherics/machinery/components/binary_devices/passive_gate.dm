@@ -25,10 +25,14 @@ Passive gate is similar to the regular pump except:
 	pipe_state = "passivegate"
 
 /obj/machinery/atmospherics/components/binary/passive_gate/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 	return ..()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	if(!on)
 		icon_state = "passgate_off"
 		cut_overlays()
@@ -37,6 +41,8 @@ Passive gate is similar to the regular pump except:
 	add_overlay(getpipeimage('icons/obj/atmospherics/components/binary_devices.dmi', "passgate_on"))
 
 /obj/machinery/atmospherics/components/binary/passive_gate/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!on)
 		return
@@ -69,12 +75,16 @@ Passive gate is similar to the regular pump except:
 //Radio remote control
 
 /obj/machinery/atmospherics/components/binary/passive_gate/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
 		radio_connection = SSradio.add_object(src, frequency, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/binary/passive_gate/proc/broadcast_status()
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return
 
@@ -95,6 +105,8 @@ Passive gate is similar to the regular pump except:
 		ui.open()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["pressure"] = round(target_pressure)
@@ -102,6 +114,8 @@ Passive gate is similar to the regular pump except:
 	return data
 
 /obj/machinery/atmospherics/components/binary/passive_gate/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -127,11 +141,15 @@ Passive gate is similar to the regular pump except:
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/atmosinit()
+	procstart = null
+	src.procstart = null
 	..()
 	if(frequency)
 		set_frequency(frequency)
 
 /obj/machinery/atmospherics/components/binary/passive_gate/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
@@ -157,10 +175,14 @@ Passive gate is similar to the regular pump except:
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/passive_gate/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on)
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")

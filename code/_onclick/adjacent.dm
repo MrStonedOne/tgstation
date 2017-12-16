@@ -15,6 +15,8 @@
 
 // Not a sane use of the function and (for now) indicative of an error elsewhere
 /area/Adjacent(var/atom/neighbor)
+	procstart = null
+	src.procstart = null
 	CRASH("Call to /area/Adjacent(), unimplemented proc")
 
 
@@ -26,6 +28,8 @@
 		* Passing through in this case ignores anything with the LETPASSTHROW pass flag, such as tables, racks, and morgue trays.
 */
 /turf/Adjacent(atom/neighbor, atom/target = null, atom/movable/mover = null)
+	procstart = null
+	src.procstart = null
 	var/turf/T0 = get_turf(neighbor)
 
 	if(T0 == src) //same turf
@@ -66,6 +70,8 @@
 	* Must be on a turf
 */
 /atom/movable/Adjacent(var/atom/neighbor)
+	procstart = null
+	src.procstart = null
 	if(neighbor == loc)
 		return TRUE
 	if(!isturf(loc))
@@ -76,6 +82,8 @@
 
 // This is necessary for storage items not on your person.
 /obj/item/Adjacent(var/atom/neighbor, var/recurse = 1)
+	procstart = null
+	src.procstart = null
 	if(neighbor == loc)
 		return 1
 	if(isitem(loc))
@@ -90,6 +98,8 @@
 	The border_only flag allows you to not objects (for source and destination squares)
 */
 /turf/proc/ClickCross(target_dir, border_only, target_atom = null, atom/movable/mover = null)
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in src)
 		if((mover && O.CanPass(mover,get_step(src,target_dir))) || (!mover && !O.density))
 			continue

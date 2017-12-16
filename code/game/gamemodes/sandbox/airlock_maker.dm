@@ -8,6 +8,8 @@
 	var/datum/airlock_maker/maker = null
 
 /obj/structure/door_assembly/attack_hand()
+	procstart = null
+	src.procstart = null
 	..()
 	if(maker)
 		maker.interact()
@@ -24,6 +26,8 @@
 	var/doorname = "airlock"
 
 /datum/airlock_maker/New(var/atom/target_loc)
+	procstart = null
+	src.procstart = null
 	linked = new(target_loc)
 	linked.maker = src
 	linked.anchored = FALSE
@@ -32,6 +36,8 @@
 	interact()
 
 /datum/airlock_maker/proc/linkpretty(href,desc,active)
+	procstart = null
+	src.procstart = null
 	if(!desc)
 		var/static/list/defaults = list("No","Yes")
 		desc = defaults[active+1]
@@ -40,6 +46,8 @@
 	return "<a href='?src=[REF(src)];[href]'><i>[desc]</i></a>"
 
 /datum/airlock_maker/proc/interact()
+	procstart = null
+	src.procstart = null
 	var/list/leftcolumn = list()
 	var/list/rightcolumn = list()
 	leftcolumn += "<u><b>Required Access</b></u>"
@@ -69,6 +77,8 @@
 	usr << browse(dat,"window=airlockmaker")
 
 /datum/airlock_maker/Topic(var/href,var/list/href_list)
+	procstart = null
+	src.procstart = null
 	if(!usr)
 		return
 	if(!src || !linked || !linked.loc)

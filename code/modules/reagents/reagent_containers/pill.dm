@@ -15,6 +15,8 @@
 	var/self_delay = 0 //pills are instant, this is because patches inheret their aplication from pills
 
 /obj/item/reagent_containers/pill/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!icon_state)
 		icon_state = "pill[rand(1,20)]"
@@ -23,10 +25,14 @@
 
 
 /obj/item/reagent_containers/pill/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/item/reagent_containers/pill/attack(mob/M, mob/user, def_zone)
+	procstart = null
+	src.procstart = null
 	if(!canconsume(M, user))
 		return 0
 
@@ -55,6 +61,8 @@
 
 
 /obj/item/reagent_containers/pill/afterattack(obj/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(target.is_open_container() != 0 && target.reagents)

@@ -1,6 +1,8 @@
 
 
 /mob/living/carbon/apply_damage(damage, damagetype = BRUTE, def_zone = null, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	var/hit_percent = (100-blocked)/100
 	if(!damage || hit_percent <= 0)
 		return 0
@@ -43,6 +45,8 @@
 
 //These procs fetch a cumulative total damage from all bodyparts
 /mob/living/carbon/getBruteLoss()
+	procstart = null
+	src.procstart = null
 	var/amount = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
@@ -50,6 +54,8 @@
 	return amount
 
 /mob/living/carbon/getFireLoss()
+	procstart = null
+	src.procstart = null
 	var/amount = 0
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
@@ -58,6 +64,8 @@
 
 
 /mob/living/carbon/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
@@ -67,6 +75,8 @@
 	return amount
 
 /mob/living/carbon/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (status_flags & GODMODE))
 		return FALSE
 	if(amount > 0)
@@ -77,6 +87,8 @@
 
 
 /mob/living/carbon/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && has_dna() && TOXINLOVER in dna.species.species_traits) //damage becomes healing and healing becomes damage
 		amount = -amount
 		if(amount > 0)
@@ -89,6 +101,8 @@
 
 //Returns a list of damaged bodyparts
 /mob/living/carbon/proc/get_damaged_bodyparts(brute, burn)
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/bodypart/parts = list()
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
@@ -98,6 +112,8 @@
 
 //Returns a list of damageable bodyparts
 /mob/living/carbon/proc/get_damageable_bodyparts()
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/bodypart/parts = list()
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
@@ -109,6 +125,8 @@
 //It automatically updates damage overlays if necessary
 //It automatically updates health status
 /mob/living/carbon/heal_bodypart_damage(brute, burn, only_robotic = 0, only_organic = 1)
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/bodypart/parts = get_damaged_bodyparts(brute,burn)
 	if(!parts.len)
 		return
@@ -120,6 +138,8 @@
 //It automatically updates damage overlays if necessary
 //It automatically updates health status
 /mob/living/carbon/take_bodypart_damage(brute, burn)
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/bodypart/parts = get_damageable_bodyparts()
 	if(!parts.len)
 		return
@@ -130,6 +150,8 @@
 
 //Heal MANY bodyparts, in random order
 /mob/living/carbon/heal_overall_damage(brute, burn, only_robotic = 0, only_organic = 1, updating_health = 1)
+	procstart = null
+	src.procstart = null
 	var/list/obj/item/bodypart/parts = get_damaged_bodyparts(brute,burn)
 
 	var/update = 0
@@ -152,6 +174,8 @@
 
 // damage MANY bodyparts, in random order
 /mob/living/carbon/take_overall_damage(brute, burn, updating_health = 1)
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return	//godmode
 
@@ -180,6 +204,8 @@
 
 
 /mob/living/carbon/adjustStaminaLoss(amount, updating_stamina = 1)
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return 0
 	staminaloss = Clamp(staminaloss + amount, 0, maxHealth*2)
@@ -188,6 +214,8 @@
 
 
 /mob/living/carbon/setStaminaLoss(amount, updating_stamina = 1)
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return 0
 	staminaloss = amount
@@ -195,6 +223,8 @@
 		update_stamina()
 
 /mob/living/carbon/getBrainLoss()
+	procstart = null
+	src.procstart = null
 	. = BRAIN_DAMAGE_DEATH
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
@@ -202,6 +232,8 @@
 
 //Some sources of brain damage shouldn't be deadly
 /mob/living/carbon/adjustBrainLoss(amount, maximum = BRAIN_DAMAGE_DEATH)
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return 0
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
@@ -222,6 +254,8 @@
 				gain_trauma_type(BRAIN_TRAUMA_SEVERE)
 
 /mob/living/carbon/setBrainLoss(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		var/adjusted_amount = amount - B.get_brain_damage()

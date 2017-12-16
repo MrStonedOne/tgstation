@@ -13,6 +13,8 @@
 	var/obj/item/clockwork/weapon/weapon
 
 /datum/action/innate/call_weapon/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(owner))
 		qdel(src)
 		return
@@ -21,6 +23,8 @@
 	return ..()
 
 /datum/action/innate/call_weapon/Activate()
+	procstart = null
+	src.procstart = null
 	if(!owner.get_empty_held_indexes())
 		to_chat(usr, "<span class='warning'>You need an empty hand to call forth your [initial(weapon_type.name)]!</span>")
 		return
@@ -43,6 +47,8 @@
 	return TRUE
 
 /datum/action/innate/call_weapon/proc/weapon_reset(cooldown_time)
+	procstart = null
+	src.procstart = null
 	cooldown = world.time + cooldown_time
 	addtimer(CALLBACK(owner, /mob.proc/update_action_buttons_icon), cooldown_time)
 	owner.update_action_buttons_icon()

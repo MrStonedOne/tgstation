@@ -11,6 +11,8 @@
 	var/id
 
 /obj/screen/movable/action_button/Click(location,control,params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(modifiers["shift"])
 		if(locked)
@@ -43,6 +45,8 @@
 	var/show_state = "show"
 
 /obj/screen/movable/action_button/hide_toggle/Click(location,control,params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(modifiers["shift"])
 		if(locked)
@@ -83,6 +87,8 @@
 	usr.update_action_buttons()
 
 /obj/screen/movable/action_button/hide_toggle/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/V in user.actions)
 		var/datum/action/A = V
 		var/obj/screen/movable/action_button/B = A.button
@@ -94,6 +100,8 @@
 
 
 /obj/screen/movable/action_button/hide_toggle/proc/InitialiseIcon(datum/hud/owner_hud)
+	procstart = null
+	src.procstart = null
 	var/settings = owner_hud.get_action_buttons_icons()
 	icon = settings["bg_icon"]
 	icon_state = settings["bg_state"]
@@ -103,18 +111,26 @@
 	UpdateIcon()
 
 /obj/screen/movable/action_button/hide_toggle/proc/UpdateIcon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	add_overlay(mutable_appearance(hide_icon, hidden ? show_state : hide_state))
 
 
 /obj/screen/movable/action_button/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	openToolTip(usr,src,params,title = name,content = desc,theme = actiontooltipstyle)
 
 
 /obj/screen/movable/action_button/MouseExited()
+	procstart = null
+	src.procstart = null
 	closeToolTip(usr)
 
 /datum/hud/proc/get_action_buttons_icons()
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["bg_icon"] = ui_style_icon
 	.["bg_state"] = "template"
@@ -127,12 +143,16 @@
 //see human and alien hud for specific implementations.
 
 /mob/proc/update_action_buttons_icon(status_only = FALSE)
+	procstart = null
+	src.procstart = null
 	for(var/X in actions)
 		var/datum/action/A = X
 		A.UpdateButtonIcon(status_only)
 
 //This is the proc used to update all the action buttons.
 /mob/proc/update_action_buttons(reload_screen)
+	procstart = null
+	src.procstart = null
 	if(!hud_used || !client)
 		return
 
@@ -185,6 +205,8 @@
 	return "WEST[coord_col]:[coord_col_offset],NORTH[coord_row]:-6"
 
 /datum/hud/proc/SetButtonCoords(obj/screen/button,number)
+	procstart = null
+	src.procstart = null
 	var/row = round((number-1)/AB_MAX_COLUMNS)
 	var/col = ((number - 1)%(AB_MAX_COLUMNS)) + 1
 	var/x_offset = 32*(col-1) + 4 + 2*col

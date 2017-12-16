@@ -36,6 +36,8 @@
 
 /obj/item/integrated_circuit/power/transmitter/do_work()
 
+	procstart = null
+	src.procstart = null
 	var/atom/movable/AM = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
 	if(!AM)
 		return FALSE
@@ -72,6 +74,8 @@
 		return FALSE
 
 /obj/item/integrated_circuit/power/transmitter/large/do_work()
+	procstart = null
+	src.procstart = null
 	if(..()) // If the above code succeeds, do this below.
 		if(prob(20))
 			var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread

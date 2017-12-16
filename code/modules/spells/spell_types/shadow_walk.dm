@@ -14,6 +14,8 @@
 	action_background_icon_state = "bg_alien"
 
 /obj/effect/proc_holder/spell/targeted/shadowwalk/cast(list/targets,mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	var/L = user.loc
 	if(istype(user.loc, /obj/effect/dummy/shadow))
 		var/obj/effect/dummy/shadow/S = L
@@ -46,6 +48,8 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/effect/dummy/shadow/relaymove(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	var/turf/newLoc = get_step(src,direction)
 	if(isspaceturf(newLoc))
 		to_chat(user, "<span class='warning'>It really would not be wise to go into space.</span>")
@@ -54,6 +58,8 @@
 	check_light_level()
 
 /obj/effect/dummy/shadow/proc/check_light_level()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/light_amount = T.get_lumcount()
 	if(light_amount > 0.2) // jaunt ends
@@ -62,6 +68,8 @@
 		jaunter.heal_overall_damage(1,1)
 
 /obj/effect/dummy/shadow/proc/end_jaunt(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(jaunter)
 		if(forced)
 			visible_message("<span class='boldwarning'>[jaunter] is revealed by the light!</span>")
@@ -73,14 +81,20 @@
 	qdel(src)
 
 /obj/effect/dummy/shadow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/dummy/shadow/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/effect/dummy/shadow/process()
+	procstart = null
+	src.procstart = null
 	if(!jaunter)
 		qdel(src)
 	if(jaunter.loc != src)
@@ -88,11 +102,17 @@
 	check_light_level()
 
 /obj/effect/dummy/shadow/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/dummy/shadow/bullet_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/dummy/shadow/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 

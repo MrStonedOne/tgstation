@@ -9,6 +9,8 @@
 
 
 /obj/item/reagent_containers/glass/attack(mob/M, mob/user, obj/target)
+	procstart = null
+	src.procstart = null
 	if(!canconsume(M, user))
 		return
 
@@ -53,6 +55,8 @@
 			playsound(M.loc,'sound/items/drink.ogg', rand(10,50), 1)
 
 /obj/item/reagent_containers/glass/afterattack(obj/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if((!proximity) || !check_allowed_items(target,target_self=1))
 		return
 
@@ -90,6 +94,8 @@
 			reagents.clear_reagents()
 
 /obj/item/reagent_containers/glass/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/hotness = I.is_hot()
 	if(hotness && reagents)
 		reagents.expose_temperature(hotness)
@@ -117,13 +123,19 @@
 	materials = list(MAT_GLASS=500)
 
 /obj/item/reagent_containers/glass/beaker/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/reagent_containers/glass/beaker/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	update_icon()
 
 /obj/item/reagent_containers/glass/beaker/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	if(reagents.total_volume)
@@ -176,6 +188,8 @@
 	flags_1 = OPENCONTAINER_1
 
 /obj/item/reagent_containers/glass/beaker/noreact/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.set_reacting(FALSE)
 
@@ -249,6 +263,8 @@
 	)
 
 /obj/item/reagent_containers/glass/bucket/attackby(obj/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/mop))
 		if(reagents.total_volume < 1)
 			to_chat(user, "<span class='warning'>[src] is out of water!</span>")
@@ -265,6 +281,8 @@
 		..()
 
 /obj/item/reagent_containers/glass/bucket/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot == slot_head && reagents.total_volume)
 		to_chat(user, "<span class='userdanger'>[src]'s contents spill all over you!</span>")
@@ -272,6 +290,8 @@
 		reagents.clear_reagents()
 
 /obj/item/reagent_containers/glass/bucket/equip_to_best_slot(var/mob/M)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume) //If there is water in a bucket, don't quick equip it to the head
 		var/index = slot_equipment_priority.Find(slot_head)
 		slot_equipment_priority.Remove(slot_head)

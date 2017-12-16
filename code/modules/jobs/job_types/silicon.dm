@@ -16,9 +16,13 @@ AI
 	exp_type = EXP_TYPE_CREW
 
 /datum/job/ai/equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return H.AIize(FALSE)
 
 /datum/job/ai/after_spawn(mob/living/silicon/ai/AI, mob/M)
+	procstart = null
+	src.procstart = null
 	AI.rename_self("ai", M.client)
 
 	//we may have been created after our borg
@@ -29,6 +33,8 @@ AI
 
 
 /datum/job/ai/config_check()
+	procstart = null
+	src.procstart = null
 	return CONFIG_GET(flag/allow_ai)
 
 /*
@@ -48,8 +54,12 @@ Cyborg
 	exp_type = EXP_TYPE_CREW
 
 /datum/job/cyborg/equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return H.Robotize(FALSE, FALSE)
 
 /datum/job/cyborg/after_spawn(mob/living/silicon/robot/R, mob/M)
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/rename_cyborg))	//name can't be set in robot/New without the client
 		R.rename_self("cyborg", M.client)

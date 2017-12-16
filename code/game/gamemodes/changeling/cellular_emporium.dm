@@ -6,20 +6,28 @@
 	var/datum/antagonist/changeling/changeling
 
 /datum/cellular_emporium/New(my_changeling)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	changeling = my_changeling
 
 /datum/cellular_emporium/Destroy()
+	procstart = null
+	src.procstart = null
 	changeling = null
 	. = ..()
 
 /datum/cellular_emporium/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.always_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "cellular_emporium", name, 900, 480, master_ui, state)
 		ui.open()
 
 /datum/cellular_emporium/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	var/can_readapt = changeling.canrespec
@@ -55,6 +63,8 @@
 	return data
 
 /datum/cellular_emporium/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -74,6 +84,8 @@
 	var/datum/cellular_emporium/cellular_emporium
 
 /datum/action/innate/cellular_emporium/New(our_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	button.name = name
 	if(istype(our_target, /datum/cellular_emporium))
@@ -82,4 +94,6 @@
 		throw EXCEPTION("cellular_emporium action created with non emporium")
 
 /datum/action/innate/cellular_emporium/Activate()
+	procstart = null
+	src.procstart = null
 	cellular_emporium.ui_interact(owner)

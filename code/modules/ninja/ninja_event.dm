@@ -26,16 +26,22 @@ Contents:
 	var/give_objectives = TRUE
 
 /datum/round_event/ghost_role/ninja/setup()
+	procstart = null
+	src.procstart = null
 	helping_station = rand(0,1)
 
 
 /datum/round_event/ghost_role/ninja/kill()
+	procstart = null
+	src.procstart = null
 	if(!success_spawn && control)
 		control.occurrences--
 	return ..()
 
 
 /datum/round_event/ghost_role/ninja/spawn_role()
+	procstart = null
+	src.procstart = null
 	//selecting a spawn_loc
 	if(!spawn_loc)
 		var/list/spawn_locs = list()
@@ -83,6 +89,8 @@ Contents:
 //=======//NINJA CREATION PROCS//=======//
 
 /proc/create_space_ninja(spawn_loc)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/new_ninja = new(spawn_loc)
 	var/datum/preferences/A = new()//Randomize appearance for the ninja.
 	A.real_name = "[pick(GLOB.ninja_titles)] [pick(GLOB.ninja_names)]"
@@ -92,6 +100,8 @@ Contents:
 
 
 /proc/create_ninja_mind(key)
+	procstart = null
+	src.procstart = null
 	var/datum/mind/Mind = new /datum/mind(key)
 	Mind.assigned_role = "Space Ninja"
 	Mind.special_role = "Space Ninja"
@@ -100,11 +110,15 @@ Contents:
 
 
 /datum/game_mode/proc/update_ninja_icons_added(var/mob/living/carbon/human/ninja)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/ninjahud = GLOB.huds[ANTAG_HUD_NINJA]
 	ninjahud.join_hud(ninja)
 	set_antag_hud(ninja, "ninja")
 
 /datum/game_mode/proc/update_ninja_icons_removed(datum/mind/ninja_mind)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/ninjahud = GLOB.huds[ANTAG_HUD_NINJA]
 	ninjahud.leave_hud(ninja_mind.current)
 	set_antag_hud(ninja_mind.current, null)

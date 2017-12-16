@@ -24,11 +24,15 @@
 	immunity_type = "rad"
 
 /datum/weather/rad_storm/telegraph()
+	procstart = null
+	src.procstart = null
 	..()
 	status_alarm(TRUE)
 
 
 /datum/weather/rad_storm/weather_act(mob/living/L)
+	procstart = null
+	src.procstart = null
 	var/resist = L.getarmor(null, "rad")
 	if(prob(40))
 		if(ishuman(L))
@@ -46,6 +50,8 @@
 		L.rad_act(20)
 
 /datum/weather/rad_storm/end()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	priority_announce("The radiation threat has passed. Please return to your workplaces.", "Anomaly Alert")

@@ -16,6 +16,8 @@
 	var/turf/start = null
 
 /datum/mapGenerator/ca/defineRegion(turf/Start, turf/End, replace = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/min_x = min(Start.x,End.x)
@@ -29,6 +31,8 @@
 	start = locate(min_x,min_y,Start.z)
 
 /datum/mapGenerator/ca/proc/initialize()
+	procstart = null
+	src.procstart = null
 	old_state = new/list(width)
 	for(var/i = 1,i<=width,i++)
 		old_state[i] = new/list(height)
@@ -38,6 +42,8 @@
 	current_state = old_state.Copy()
 
 /datum/mapGenerator/ca/generate()
+	procstart = null
+	src.procstart = null
 	set background = 1
 
 	//Abandon all hope for efficency all who enter here
@@ -58,6 +64,8 @@
 				T.ChangeTurf(type_map[current_state[i][j]+1])
 
 /datum/mapGenerator/ca/proc/apply_rule(i,j)
+	procstart = null
+	src.procstart = null
 	var/value = 0
 	for(var/dx=-1,dx<=1,dx++)
 		for(var/dy=-1,dy<=1,dy++)

@@ -6,6 +6,8 @@
 	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
 
 /obj/item/grenade/flashbang/prime()
+	procstart = null
+	src.procstart = null
 	update_mob()
 	var/flashbang_turf = get_turf(src)
 	if(!flashbang_turf)
@@ -15,6 +17,8 @@
 	qdel(src)
 
 /obj/item/grenade/flashbang/proc/bang(turf/T , mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.stat == DEAD)	//They're dead!
 		return
 	M.show_message("<span class='warning'>BANG</span>", 2)

@@ -14,6 +14,8 @@
 	CanAtmosPass = ATMOS_PASS_DENSITY
 
 /obj/structure/statue/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	user.changeNext_move(CLICK_CD_MELEE)
 	if(istype(W, /obj/item/wrench))
@@ -76,12 +78,16 @@
 		return ..()
 
 /obj/structure/statue/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	add_fingerprint(user)
 	user.visible_message("[user] rubs some dust off from the [name]'s surface.", \
 						 "<span class='notice'>You rub some dust off from the [name]'s surface.</span>")
 
 /obj/structure/statue/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(material_drop_type)
 			var/drop_amt = oreAmount
@@ -112,22 +118,32 @@
 	icon_state = "eng"
 
 /obj/structure/statue/uranium/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	radiate()
 	return ..()
 
 /obj/structure/statue/uranium/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	radiate()
 	..()
 
 /obj/structure/statue/uranium/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	radiate()
 	..()
 
 /obj/structure/statue/uranium/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	radiate()
 	..()
 
 /obj/structure/statue/uranium/proc/radiate()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(world.time > last_event+15)
 			active = 1
@@ -149,11 +165,15 @@
 	icon_state = "sci"
 
 /obj/structure/statue/plasma/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
 
 /obj/structure/statue/plasma/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	var/burn = FALSE
 	if(!(Proj.nodamage) && Proj.damage_type == BURN)
 		PlasmaBurn(2500)
@@ -169,6 +189,8 @@
 	..()
 
 /obj/structure/statue/plasma/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.is_hot() > 300)//If the temperature of the object is over 300, then ignite
 		var/turf/T = get_turf(src)
 		message_admins("Plasma statue ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(T)]",0,1)
@@ -178,10 +200,14 @@
 		return ..()
 
 /obj/structure/statue/plasma/proc/PlasmaBurn(exposed_temperature)
+	procstart = null
+	src.procstart = null
 	atmos_spawn_air("plasma=[oreAmount*10];TEMP=[exposed_temperature]")
 	deconstruct(FALSE)
 
 /obj/structure/statue/plasma/proc/ignite(exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
@@ -271,22 +297,32 @@
 	icon_state = "clown"
 
 /obj/structure/statue/bananium/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	honk()
 	..()
 
 /obj/structure/statue/bananium/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	honk()
 	return ..()
 
 /obj/structure/statue/bananium/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	honk()
 	..()
 
 /obj/structure/statue/bananium/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	honk()
 	..()
 
 /obj/structure/statue/bananium/proc/honk()
+	procstart = null
+	src.procstart = null
 	if(!spam_flag)
 		spam_flag = 1
 		playsound(src.loc, 'sound/items/bikehorn.ogg', 50, 1)

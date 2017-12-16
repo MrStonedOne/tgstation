@@ -22,10 +22,14 @@
 
 //This is fine right now, if we're adding organ specific damage this needs to be updated
 /mob/living/carbon/alien/humanoid/Initialize()
+	procstart = null
+	src.procstart = null
 	AddAbility(new/obj/effect/proc_holder/alien/regurgitate(null))
 	. = ..()
 
 /mob/living/carbon/alien/humanoid/movement_delay()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/config_alien_delay
 	if(isnull(config_alien_delay))
@@ -33,10 +37,14 @@
 	. += move_delay_add + config_alien_delay + sneaking //move_delay_add is used to slow aliens with stun
 
 /mob/living/carbon/alien/humanoid/restrained(ignore_grab)
+	procstart = null
+	src.procstart = null
 	. = handcuffed
 
 
 /mob/living/carbon/alien/humanoid/show_inv(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/list/dat = list()
 	dat += {"
@@ -62,6 +70,8 @@
 
 
 /mob/living/carbon/alien/humanoid/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	//strip panel
 	if(usr.canUseTopic(src, BE_CLOSE, NO_DEXTERY))
@@ -73,16 +83,22 @@
 				dropItemToGround(l_store)
 
 /mob/living/carbon/alien/humanoid/cuff_resist(obj/item/I)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/voice/hiss5.ogg', 40, 1, 1)  //Alien roars when starting to break free
 	..(I, cuff_break = INSTANT_CUFFBREAK)
 
 /mob/living/carbon/alien/humanoid/resist_grab(moving_resist)
+	procstart = null
+	src.procstart = null
 	if(pulledby.grab_state)
 		visible_message("<span class='danger'>[src] has broken free of [pulledby]'s grip!</span>")
 	pulledby.stop_pulling()
 	. = 0
 
 /mob/living/carbon/alien/humanoid/get_standard_pixel_y_offset(lying = 0)
+	procstart = null
+	src.procstart = null
 	if(leaping)
 		return -32
 	else if(custom_pixel_y_offset)
@@ -91,6 +107,8 @@
 		return initial(pixel_y)
 
 /mob/living/carbon/alien/humanoid/get_standard_pixel_x_offset(lying = 0)
+	procstart = null
+	src.procstart = null
 	if(leaping)
 		return -32
 	else if(custom_pixel_x_offset)
@@ -99,9 +117,13 @@
 		return initial(pixel_x)
 
 /mob/living/carbon/alien/humanoid/get_permeability_protection()
+	procstart = null
+	src.procstart = null
 	return 0.8
 
 /mob/living/carbon/alien/humanoid/alien_evolve(mob/living/carbon/alien/humanoid/new_xeno)
+	procstart = null
+	src.procstart = null
 	drop_all_held_items()
 	for(var/atom/movable/A in stomach_contents)
 		stomach_contents.Remove(A)
@@ -111,6 +133,8 @@
 
 //For alien evolution/promotion/queen finder procs. Checks for an active alien of that type
 /proc/get_alien_type(var/alienpath)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/alien/humanoid/A in GLOB.alive_mob_list)
 		if(!istype(A, alienpath))
 			continue
@@ -121,6 +145,8 @@
 
 
 /mob/living/carbon/alien/humanoid/check_breath(datum/gas_mixture/breath)
+	procstart = null
+	src.procstart = null
 	if(breath && breath.total_moles() > 0 && !sneaking)
 		playsound(get_turf(src), pick('sound/voice/lowHiss2.ogg', 'sound/voice/lowHiss3.ogg', 'sound/voice/lowHiss4.ogg'), 50, 0, -5)
 	..()

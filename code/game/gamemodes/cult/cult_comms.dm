@@ -8,6 +8,8 @@
 	check_flags = AB_CHECK_RESTRAINED|AB_CHECK_STUN|AB_CHECK_CONSCIOUS
 
 /datum/action/innate/cult/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!iscultist(owner))
 		return FALSE
 	return ..()
@@ -17,6 +19,8 @@
 	button_icon_state = "cult_comms"
 
 /datum/action/innate/cult/comm/Activate()
+	procstart = null
+	src.procstart = null
 	var/input = stripped_input(usr, "Please choose a message to tell to the other acolytes.", "Voice of Blood", "")
 	if(!input || !IsAvailable())
 		return
@@ -24,6 +28,8 @@
 	cultist_commune(usr, input)
 
 /proc/cultist_commune(mob/living/user, message)
+	procstart = null
+	src.procstart = null
 	var/my_message
 	if(!message)
 		return
@@ -51,6 +57,8 @@
 	log_talk(user,"CULT:[key_name(user)] : [message]",LOGSAY)
 
 /mob/living/proc/cult_help()
+	procstart = null
+	src.procstart = null
 	set category = "Cultist"
 	set name = "How to Play Cult"
 	var/text = ""
@@ -88,12 +96,16 @@
 	button_icon_state = "cultvote"
 
 /datum/action/innate/cult/mastervote/IsAvailable()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/cult/C = owner.mind.has_antag_datum(/datum/antagonist/cult,TRUE)
 	if(!C || C.cult_team.cult_vote_called || !ishuman(owner))
 		return FALSE
 	return ..()
 
 /datum/action/innate/cult/mastervote/Activate()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/cult/C = owner.mind.has_antag_datum(/datum/antagonist/cult,TRUE)
 	pollCultists(owner,C.cult_team)
 
@@ -151,6 +163,8 @@
 	return TRUE
 
 /datum/action/innate/cult/master/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!owner.mind || !owner.mind.has_antag_datum(ANTAG_DATUM_CULT_MASTER) || GLOB.cult_narsie)
 		return 0
 	return ..()
@@ -161,6 +175,8 @@
 	button_icon_state = "sintouch"
 
 /datum/action/innate/cult/master/finalreck/Activate()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/cult/antag = owner.mind.has_antag_datum(/datum/antagonist/cult,TRUE)
 	if(!antag)
 		return
@@ -203,10 +219,14 @@
 	Remove(owner)
 
 /mob/proc/reckon(turf/final)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/cult/blood/out(get_turf(src))
 	forceMove(final)
 
 /datum/action/innate/cult/master/finalreck/proc/chant(chant_number)
+	procstart = null
+	src.procstart = null
 	switch(chant_number)
 		if(1)
 			owner.say("C'arta forbici!", language = /datum/language/common)
@@ -229,11 +249,15 @@
 	var/base_cooldown = 1200
 
 /datum/action/innate/cult/master/cultmark/New()
+	procstart = null
+	src.procstart = null
 	CM = new()
 	CM.attached_action = src
 	..()
 
 /datum/action/innate/cult/master/cultmark/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!owner.mind || !owner.mind.has_antag_datum(ANTAG_DATUM_CULT_MASTER))
 		return FALSE
 	if(cooldown > world.time)
@@ -243,10 +267,14 @@
 	return ..()
 
 /datum/action/innate/cult/master/cultmark/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(CM)
 	return ..()
 
 /datum/action/innate/cult/master/cultmark/Activate()
+	procstart = null
+	src.procstart = null
 	CM.toggle(owner) //the important bit
 	return TRUE
 
@@ -256,16 +284,22 @@
 	var/datum/action/innate/cult/master/cultmark/attached_action
 
 /obj/effect/proc_holder/cultmark/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_action = null
 	return ..()
 
 /obj/effect/proc_holder/cultmark/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		remove_ranged_ability("<span class='cult'>You cease the marking ritual.</span>")
 	else
 		add_ranged_ability(user, "<span class='cult'>You prepare to mark a target for your cult...</span>")
 
 /obj/effect/proc_holder/cultmark/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(ranged_ability_user.incapacitated())
@@ -298,6 +332,8 @@
 	return FALSE
 
 /proc/reset_blood_target(datum/objective_team/cult/team)
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/B in team.members)
 		if(B.current && B.current.stat != DEAD && B.current.client)
 			if(team.blood_target)
@@ -324,11 +360,15 @@
 	var/mob/living/throwee
 
 /datum/action/innate/cult/master/pulse/New()
+	procstart = null
+	src.procstart = null
 	PM = new()
 	PM.attached_action = src
 	..()
 
 /datum/action/innate/cult/master/pulse/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!owner.mind || !owner.mind.has_antag_datum(ANTAG_DATUM_CULT_MASTER))
 		return FALSE
 	if(cooldown > world.time)
@@ -338,10 +378,14 @@
 	return ..()
 
 /datum/action/innate/cult/master/pulse/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(PM)
 	return ..()
 
 /datum/action/innate/cult/master/pulse/Activate()
+	procstart = null
+	src.procstart = null
 	PM.toggle(owner) //the important bit
 	return TRUE
 
@@ -351,10 +395,14 @@
 	var/datum/action/innate/cult/master/pulse/attached_action
 
 /obj/effect/proc_holder/pulse/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(attached_action)
 	return ..()
 
 /obj/effect/proc_holder/pulse/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		remove_ranged_ability("<span class='cult'>You cease your preparations...</span>")
 		attached_action.throwing = FALSE
@@ -362,6 +410,8 @@
 		add_ranged_ability(user, "<span class='cult'>You prepare to tear through the fabric of reality...</span>")
 
 /obj/effect/proc_holder/pulse/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(ranged_ability_user.incapacitated())

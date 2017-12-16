@@ -6,26 +6,36 @@
 	. += ..() + config_human_delay + dna.species.movement_delay(src)
 
 /mob/living/carbon/human/slip(knockdown_amount, obj/O, lube)
+	procstart = null
+	src.procstart = null
 	if(isobj(shoes) && (shoes.flags_1&NOSLIP_1) && !(lube&GALOSHES_DONT_HELP))
 		return 0
 	return ..()
 
 /mob/living/carbon/human/experience_pressure_difference()
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/space_wind.ogg', 50, 1)
 	if(shoes && shoes.flags_1&NOSLIP_1)
 		return 0
 	return ..()
 
 /mob/living/carbon/human/mob_has_gravity()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		if(mob_negates_gravity())
 			. = 1
 
 /mob/living/carbon/human/mob_negates_gravity()
+	procstart = null
+	src.procstart = null
 	return ((shoes && shoes.negates_gravity()) || (dna.species.negates_gravity(src)))
 
 /mob/living/carbon/human/Move(NewLoc, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/datum/mutation/human/HM in dna.mutations)
 		HM.on_move(src, NewLoc)

@@ -8,6 +8,8 @@
 	var/bursting = FALSE
 
 /obj/item/organ/body_egg/alien_embryo/on_find(mob/living/finder)
+	procstart = null
+	src.procstart = null
 	..()
 	if(stage < 4)
 		to_chat(finder, "It's small and weak, barely the size of a foetus.")
@@ -17,11 +19,15 @@
 			AttemptGrow(0)
 
 /obj/item/organ/body_egg/alien_embryo/prepare_eat()
+	procstart = null
+	src.procstart = null
 	var/obj/S = ..()
 	S.reagents.add_reagent("sacid", 10)
 	return S
 
 /obj/item/organ/body_egg/alien_embryo/on_life()
+	procstart = null
+	src.procstart = null
 	switch(stage)
 		if(2, 3)
 			if(prob(2))
@@ -50,6 +56,8 @@
 			owner.adjustToxLoss(10)
 
 /obj/item/organ/body_egg/alien_embryo/egg_process()
+	procstart = null
+	src.procstart = null
 	if(stage < 5 && prob(3))
 		stage++
 		INVOKE_ASYNC(src, .proc/RefreshInfectionImage)
@@ -64,6 +72,8 @@
 
 
 /obj/item/organ/body_egg/alien_embryo/proc/AttemptGrow(gib_on_success=TRUE)
+	procstart = null
+	src.procstart = null
 	if(!owner || bursting)
 		return
 
@@ -117,6 +127,8 @@ Proc: AddInfectionImages(C)
 Des: Adds the infection image to all aliens for this embryo
 ----------------------------------------*/
 /obj/item/organ/body_egg/alien_embryo/AddInfectionImages()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/alien/alien in GLOB.player_list)
 		if(alien.client)
 			var/I = image('icons/mob/alien.dmi', loc = owner, icon_state = "infected[stage]")
@@ -127,6 +139,8 @@ Proc: RemoveInfectionImage(C)
 Des: Removes all images from the mob infected by this embryo
 ----------------------------------------*/
 /obj/item/organ/body_egg/alien_embryo/RemoveInfectionImages()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/alien/alien in GLOB.player_list)
 		if(alien.client)
 			for(var/image/I in alien.client.images)

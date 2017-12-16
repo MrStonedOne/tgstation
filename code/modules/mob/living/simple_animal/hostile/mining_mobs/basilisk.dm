@@ -44,11 +44,15 @@
 	temperature = 50
 
 /mob/living/simple_animal/hostile/asteroid/basilisk/GiveTarget(new_target)
+	procstart = null
+	src.procstart = null
 	if(..()) //we have a target
 		if(isliving(target) && !target.Adjacent(targets_from) && ranged_cooldown <= world.time)//No more being shot at point blank or spammed with RNG beams
 			OpenFire(target)
 
 /mob/living/simple_animal/hostile/asteroid/basilisk/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			gib()
@@ -82,6 +86,8 @@
 	butcher_results = list(/obj/item/ore/diamond = 2, /obj/item/stack/sheet/sinew = 2, /obj/item/stack/sheet/bone = 1)
 
 /mob/living/simple_animal/hostile/asteroid/basilisk/watcher/random/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		if(prob(75))
@@ -129,6 +135,8 @@
 	temperature = 500 //Heats you up!
 
 /obj/item/projectile/temp/basilisk/magmawing/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/mob/living/L = target
@@ -142,6 +150,8 @@
 	nodamage = FALSE
 
 /obj/item/projectile/temp/basilisk/icewing/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/mob/living/L = target

@@ -24,6 +24,8 @@
 	light_color = LIGHT_COLOR_RED
 
 /obj/machinery/computer/secure_data/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(scan)
 		to_chat(user, "<span class='notice'>Alt-click to eject the ID card.</span>")
@@ -40,6 +42,8 @@
 	clockwork = TRUE //it'd look weird
 
 /obj/machinery/computer/secure_data/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/card/id))
 		if(!scan)
 			if(!user.transferItemToLoc(O, src))
@@ -55,6 +59,8 @@
 
 //Someone needs to break down the dat += into chunks instead of long ass lines.
 /obj/machinery/computer/secure_data/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(src.z > 6)
@@ -275,6 +281,8 @@
 I can't be bothered to look more of the actual code outside of switch but that probably needs revising too.
 What a mess.*/
 /obj/machinery/computer/secure_data/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return .
@@ -728,6 +736,8 @@ What a mess.*/
 	return
 
 /obj/machinery/computer/secure_data/proc/get_photo(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/photo/P = null
 	if(issilicon(user))
 		var/mob/living/silicon/tempAI = user
@@ -740,6 +750,8 @@ What a mess.*/
 	return P
 
 /obj/machinery/computer/secure_data/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		..(severity)
 		return
@@ -777,6 +789,8 @@ What a mess.*/
 	..(severity)
 
 /obj/machinery/computer/secure_data/proc/canUseSecurityRecordsConsole(mob/user, message1 = 0, record1, record2)
+	procstart = null
+	src.procstart = null
 	if(user)
 		if(authenticated)
 			if(user.canUseTopic(src))
@@ -788,10 +802,14 @@ What a mess.*/
 	return 0
 
 /obj/machinery/computer/secure_data/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.canUseTopic(src) && scan)
 		eject_id(user)
 
 /obj/machinery/computer/secure_data/proc/eject_id(mob/user)
+	procstart = null
+	src.procstart = null
 	if(scan)
 		user.put_in_hands(scan)
 		scan = null

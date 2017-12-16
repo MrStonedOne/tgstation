@@ -52,6 +52,8 @@
 	use_cyborg_cell = 1
 
 /obj/item/gun/energy/laser/cyborg/emp_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/scatter
@@ -96,6 +98,8 @@
 	damage = 6
 
 /obj/item/projectile/beam/laser/accelerator/Range()
+	procstart = null
+	src.procstart = null
 	..()
 	damage += 7
 	transform *= 1 + ((damage/7) * 0.2)//20% larger per tile

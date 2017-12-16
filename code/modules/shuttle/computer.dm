@@ -11,6 +11,8 @@
 	var/no_destination_swap = 0
 
 /obj/machinery/computer/shuttle/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..(user))
 		return
 	add_fingerprint(usr)
@@ -39,6 +41,8 @@
 	popup.open()
 
 /obj/machinery/computer/shuttle/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -65,6 +69,8 @@
 				to_chat(usr, "<span class='notice'>Unable to comply.</span>")
 
 /obj/machinery/computer/shuttle/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	req_access = list()

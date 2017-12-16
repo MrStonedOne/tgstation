@@ -4,6 +4,8 @@
 	icon_state = "cap"
 
 /obj/structure/closet/secure_closet/captains/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/suit/hooded/wintercoat/captain(src)
 	if(prob(50))
@@ -38,6 +40,8 @@
 	icon_state = "hop"
 
 /obj/structure/closet/secure_closet/hop/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/neck/cloak/hop(src)
 	new /obj/item/clothing/under/rank/head_of_personnel(src)
@@ -64,6 +68,8 @@
 	icon_state = "hos"
 
 /obj/structure/closet/secure_closet/hos/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/neck/cloak/hos(src)
 	new /obj/item/cartridge/hos(src)
@@ -96,6 +102,8 @@
 	icon_state = "warden"
 
 /obj/structure/closet/secure_closet/warden/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/device/radio/headset/headset_sec(src)
 	new /obj/item/clothing/suit/armor/vest/warden(src)
@@ -120,6 +128,8 @@
 	icon_state = "sec"
 
 /obj/structure/closet/secure_closet/security/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/suit/armor/vest(src)
 	new /obj/item/clothing/head/helmet/sec(src)
@@ -131,12 +141,16 @@
 /obj/structure/closet/secure_closet/security/sec
 
 /obj/structure/closet/secure_closet/security/sec/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/belt/security/full(src)
 
 /obj/structure/closet/secure_closet/security/cargo
 
 /obj/structure/closet/secure_closet/security/cargo/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/accessory/armband/cargo(src)
 	new /obj/item/device/encryptionkey/headset_cargo(src)
@@ -144,6 +158,8 @@
 /obj/structure/closet/secure_closet/security/engine
 
 /obj/structure/closet/secure_closet/security/engine/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/accessory/armband/engine(src)
 	new /obj/item/device/encryptionkey/headset_eng(src)
@@ -151,6 +167,8 @@
 /obj/structure/closet/secure_closet/security/science
 
 /obj/structure/closet/secure_closet/security/science/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/accessory/armband/science(src)
 	new /obj/item/device/encryptionkey/headset_sci(src)
@@ -158,6 +176,8 @@
 /obj/structure/closet/secure_closet/security/med
 
 /obj/structure/closet/secure_closet/security/med/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/accessory/armband/medblue(src)
 	new /obj/item/device/encryptionkey/headset_med(src)
@@ -170,6 +190,8 @@
 	max_integrity = 70
 
 /obj/structure/closet/secure_closet/detective/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/under/rank/det(src)
 	new /obj/item/clothing/suit/det_suit(src)
@@ -195,6 +217,8 @@
 	req_access = list(ACCESS_HOS)
 
 /obj/structure/closet/secure_closet/injection/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/syringe/lethal/execution(src)
@@ -212,6 +236,8 @@
 	req_one_access_txt = list(ACCESS_ARMORY, ACCESS_FORENSICS_LOCKERS)
 
 /obj/structure/closet/secure_closet/brig/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/under/rank/prisoner( src )
 	new /obj/item/clothing/shoes/sneakers/orange( src )
@@ -221,6 +247,8 @@
 	req_access = list(ACCESS_COURT)
 
 /obj/structure/closet/secure_closet/courtroom/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/shoes/sneakers/brown(src)
 	for(var/i in 1 to 3)
@@ -246,6 +274,8 @@
 	icon_state = "armory"
 
 /obj/structure/closet/secure_closet/armory1/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/suit/armor/laserproof(src)
 	for(var/i in 1 to 3)
@@ -261,6 +291,8 @@
 	icon_state = "armory"
 
 /obj/structure/closet/secure_closet/armory2/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/firingpins(src)
 	for(var/i in 1 to 3)
@@ -274,6 +306,8 @@
 	icon_state = "armory"
 
 /obj/structure/closet/secure_closet/armory3/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/storage/box/firingpins(src)
 	new /obj/item/gun/energy/ionrifle(src)
@@ -288,6 +322,8 @@
 	icon_state = "tac"
 
 /obj/structure/closet/secure_closet/tac/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/gun/ballistic/automatic/wt550(src)
 	new /obj/item/clothing/head/helmet/alt(src)
@@ -300,6 +336,8 @@
 	icon_state = "tac"
 
 /obj/structure/closet/secure_closet/lethalshots/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/storage/box/lethalshot(src)

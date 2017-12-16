@@ -5,6 +5,8 @@
 GLOBAL_DATUM_INIT(language_menu_state, /datum/ui_state/language_menu, new)
 
 /datum/ui_state/language_menu/can_use_topic(src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	. = UI_CLOSE
 	if(check_rights_for(user.client, R_ADMIN))
 		. = UI_INTERACTIVE

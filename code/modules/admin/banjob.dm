@@ -1,5 +1,7 @@
 //returns a reason if M is banned from rank, returns FALSE otherwise
 /proc/jobban_isbanned(mob/M, rank)
+	procstart = null
+	src.procstart = null
 	if(!M || !istype(M) || !M.ckey)
 		return FALSE
 
@@ -22,6 +24,8 @@
 	return FALSE
 
 /proc/jobban_buildcache(client/C)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return
 	if(C && istype(C))
@@ -33,4 +37,6 @@
 			C.jobbancache[query_jobban_build_cache.item[1]] = query_jobban_build_cache.item[2]
 
 /proc/ban_unban_log_save(var/formatted_log)
+	procstart = null
+	src.procstart = null
 	text2file(formatted_log,"data/ban_unban_log.txt")

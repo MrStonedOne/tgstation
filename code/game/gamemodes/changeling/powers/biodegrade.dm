@@ -7,6 +7,8 @@
 	req_human = 1
 
 /obj/effect/proc_holder/changeling/biodegrade/sting_action(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/used = FALSE // only one form of shackles removed per use
 	if(!user.restrained() && isopenturf(user.loc))
 		to_chat(user, "<span class='warning'>We are already free!</span>")
@@ -53,18 +55,24 @@
 	return used
 
 /obj/effect/proc_holder/changeling/biodegrade/proc/dissolve_handcuffs(mob/living/carbon/human/user, obj/O)
+	procstart = null
+	src.procstart = null
 	if(O && user.handcuffed == O)
 		user.visible_message("<span class='warning'>[O] dissolve[O.gender==PLURAL?"":"s"] into a puddle of sizzling goop.</span>")
 		new /obj/effect/decal/cleanable/greenglow(O.drop_location())
 		qdel(O)
 
 /obj/effect/proc_holder/changeling/biodegrade/proc/dissolve_straightjacket(mob/living/carbon/human/user, obj/S)
+	procstart = null
+	src.procstart = null
 	if(S && user.wear_suit == S)
 		user.visible_message("<span class='warning'>[S] dissolves into a puddle of sizzling goop.</span>")
 		new /obj/effect/decal/cleanable/greenglow(S.drop_location())
 		qdel(S)
 
 /obj/effect/proc_holder/changeling/biodegrade/proc/open_closet(mob/living/carbon/human/user, obj/structure/closet/C)
+	procstart = null
+	src.procstart = null
 	if(C && user.loc == C)
 		C.visible_message("<span class='warning'>[C]'s door breaks and opens!</span>")
 		new /obj/effect/decal/cleanable/greenglow(C.drop_location())
@@ -75,6 +83,8 @@
 		to_chat(user, "<span class='warning'>We open the container restraining us!</span>")
 
 /obj/effect/proc_holder/changeling/biodegrade/proc/dissolve_cocoon(mob/living/carbon/human/user, obj/structure/spider/cocoon/C)
+	procstart = null
+	src.procstart = null
 	if(C && user.loc == C)
 		new /obj/effect/decal/cleanable/greenglow(C.drop_location())
 		qdel(C) //The cocoon's destroy will move the changeling outside of it without interference

@@ -17,12 +17,16 @@
 	var/rating_amount = 1
 
 /obj/machinery/processor/RefreshParts()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		rating_amount = B.rating
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		rating_speed = M.rating
 
 /obj/machinery/processor/process()
+	procstart = null
+	src.procstart = null
 	..()
 	if(processing)
 		return
@@ -44,6 +48,8 @@
 	picked_slime.forceMove(src)
 
 /obj/machinery/processor/proc/process_food(datum/food_processor_process/recipe, atom/movable/what)
+	procstart = null
+	src.procstart = null
 	if (recipe.output && loc && !QDELETED(src))
 		for(var/i = 0, i < rating_amount, i++)
 			new recipe.output(drop_location())
@@ -55,6 +61,8 @@
 
 
 /obj/machinery/processor/slime/process_food(datum/food_processor_process/recipe, atom/movable/what)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/slime/S = what
 	if (istype(S))
 		var/C = S.cores
@@ -70,6 +78,8 @@
 
 
 /obj/machinery/processor/proc/select_recipe(X)
+	procstart = null
+	src.procstart = null
 	for (var/type in subtypesof(/datum/food_processor_process) - /datum/food_processor_process/mob)
 		var/datum/food_processor_process/recipe = new type()
 		if (!istype(X, recipe.input) || !istype(src, recipe.required_machine))
@@ -77,6 +87,8 @@
 		return recipe
 
 /obj/machinery/processor/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(src.processing)
 		to_chat(user, "<span class='warning'>[src] is in the process of processing!</span>")
 		return 1
@@ -122,6 +134,8 @@
 			return ..()
 
 /obj/machinery/processor/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(src.processing)
@@ -166,6 +180,8 @@
 	src.visible_message("\The [src] finishes processing.")
 
 /obj/machinery/processor/verb/eject()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "Eject Contents"
 	set src in oview(1)
@@ -177,6 +193,8 @@
 	return
 
 /obj/machinery/processor/proc/empty()
+	procstart = null
+	src.procstart = null
 	for (var/obj/O in src)
 		O.forceMove(drop_location())
 	for (var/mob/M in src)
@@ -188,11 +206,15 @@
 	desc = "An industrial grinder with a sticker saying appropriated for science department. Keep hands clear of intake area while operating."
 
 /obj/machinery/processor/slime/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuitboard/machine/B = new /obj/item/circuitboard/machine/processor/slime(null)
 	B.apply_default_parts(src)
 
 /obj/machinery/processor/slime/adjust_item_drop_location(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/static/list/slimecores = subtypesof(/obj/item/slime_extract)
 	var/i = 0
 	if(!(i = slimecores.Find(AM.type))) // If the item is not found

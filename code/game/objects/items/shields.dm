@@ -22,6 +22,8 @@
 
 
 /obj/item/shield/riot/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/melee/baton))
 		if(cooldown < world.time - 25)
 			user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
@@ -31,6 +33,8 @@
 		return ..()
 
 /obj/item/shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(attack_type == THROWN_PROJECTILE_ATTACK)
 		final_block_chance += 30
 	if(attack_type == LEAP_ATTACK)
@@ -72,12 +76,18 @@
 	var/active = 0
 
 /obj/item/shield/energy/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/shield/energy/IsReflect()
+	procstart = null
+	src.procstart = null
 	return (active)
 
 /obj/item/shield/energy/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(user.disabilities & CLUMSY && prob(50))
 		to_chat(user, "<span class='warning'>You beat yourself in the head with [src].</span>")
 		user.take_bodypart_damage(5)
@@ -116,11 +126,15 @@
 	var/active = 0
 
 /obj/item/shield/riot/tele/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return ..()
 	return 0
 
 /obj/item/shield/riot/tele/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	active = !active
 	icon_state = "teleriot[active]"
 	playsound(src.loc, 'sound/weapons/batonextend.ogg', 50, 1)

@@ -23,15 +23,21 @@
 	var/crusher_drop_mod = 5
 
 /mob/living/simple_animal/hostile/asteroid/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	apply_status_effect(STATUS_EFFECT_CRUSHERDAMAGETRACKING)
 
 /mob/living/simple_animal/hostile/asteroid/Aggro()
+	procstart = null
+	src.procstart = null
 	..()
 	if(vision_range != aggro_vision_range)
 		icon_state = icon_aggro
 
 /mob/living/simple_animal/hostile/asteroid/LoseAggro()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat == DEAD)
 		return
@@ -56,6 +62,8 @@
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/death(gibbed)
+	procstart = null
+	src.procstart = null
 	SSblackbox.record_feedback("tally", "mobs_killed_mining", 1, type)
 	var/datum/status_effect/crusher_damage/C = has_status_effect(STATUS_EFFECT_CRUSHERDAMAGETRACKING)
 	if(C && crusher_loot && prob((C.total_damage/maxHealth) * crusher_drop_mod)) //on average, you'll need to kill 20 creatures before getting the item
@@ -63,9 +71,13 @@
 	..(gibbed)
 
 /mob/living/simple_animal/hostile/asteroid/proc/spawn_crusher_loot()
+	procstart = null
+	src.procstart = null
 	butcher_results[crusher_loot] = 1
 
 /mob/living/simple_animal/hostile/asteroid/handle_temperature_damage()
+	procstart = null
+	src.procstart = null
 	if(bodytemperature < minbodytemp)
 		adjustBruteLoss(2)
 	else if(bodytemperature > maxbodytemp)

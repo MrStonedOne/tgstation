@@ -12,6 +12,8 @@
 
 
 /mob/living/simple_animal/hostile/boss/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	atb = new()
@@ -29,6 +31,8 @@
 
 
 /mob/living/simple_animal/hostile/boss/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(atb)
 	atb = null
 	for(var/ab in boss_abilities)
@@ -52,6 +56,8 @@
 	var/say_when_triggered = "" //What does the boss Say() when the ability triggers?
 
 /datum/action/boss/Trigger()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(!istype(boss, boss_type))
@@ -72,6 +78,8 @@
 //Example:
 /*
 /datum/action/boss/selfgib/Trigger()
+	procstart = null
+	src.procstart = null
 	if(..())
 		boss.gib()
 */
@@ -89,11 +97,15 @@
 
 
 /datum/boss_active_timed_battle/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 
 /datum/boss_active_timed_battle/proc/assign_abilities(list/L)
+	procstart = null
+	src.procstart = null
 	if(!L)
 		return 0
 	abilities = L
@@ -104,6 +116,8 @@
 
 
 /datum/boss_active_timed_battle/proc/spend(cost)
+	procstart = null
+	src.procstart = null
 	if(cost <= points)
 		points = max(0,points-cost)
 		return 1
@@ -111,10 +125,14 @@
 
 
 /datum/boss_active_timed_battle/proc/refund(cost)
+	procstart = null
+	src.procstart = null
 	points = min(points+cost, 100)
 
 
 /datum/boss_active_timed_battle/process()
+	procstart = null
+	src.procstart = null
 	if(world.time >= next_point_time)
 		next_point_time = world.time + point_regen_delay
 		points = min(100, ++points) //has to be out of 100
@@ -132,6 +150,8 @@
 
 
 /datum/boss_active_timed_battle/Destroy()
+	procstart = null
+	src.procstart = null
 	abilities = null
 	SSobj.processing.Remove(src)
 	return ..()

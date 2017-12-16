@@ -32,18 +32,26 @@ GLOBAL_LIST_INIT(marker_beacon_colors, list(
 	amount = 30
 
 /obj/item/stack/marker_beacon/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/stack/marker_beacon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Use in-hand to place a [singular_name].</span>")
 	to_chat(user, "<span class='notice'>Alt-click to select a color. Current color is [picked_color].</span>")
 
 /obj/item/stack/marker_beacon/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][lowertext(picked_color)]"
 
 /obj/item/stack/marker_beacon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isturf(user.loc))
 		to_chat(user, "<span class='warning'>You need more space to place a [singular_name] here.</span>")
 		return
@@ -57,6 +65,8 @@ GLOBAL_LIST_INIT(marker_beacon_colors, list(
 		transfer_fingerprints_to(M)
 
 /obj/item/stack/marker_beacon/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated() || !istype(user))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
 		return
@@ -84,11 +94,15 @@ GLOBAL_LIST_INIT(marker_beacon_colors, list(
 	var/picked_color
 
 /obj/structure/marker_beacon/Initialize(mapload, set_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	picked_color = set_color
 	update_icon()
 
 /obj/structure/marker_beacon/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/obj/item/stack/marker_beacon/M = new(loc)
 		M.picked_color = picked_color
@@ -96,16 +110,22 @@ GLOBAL_LIST_INIT(marker_beacon_colors, list(
 	qdel(src)
 
 /obj/structure/marker_beacon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to select a color. Current color is [picked_color].</span>")
 
 /obj/structure/marker_beacon/update_icon()
+	procstart = null
+	src.procstart = null
 	while(!picked_color || !GLOB.marker_beacon_colors[picked_color])
 		picked_color = pick(GLOB.marker_beacon_colors)
 	icon_state = "[initial(icon_state)][lowertext(picked_color)]-on"
 	set_light(light_range, light_power, GLOB.marker_beacon_colors[picked_color])
 
 /obj/structure/marker_beacon/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>You start picking [src] up...</span>")
 	if(do_after(user, remove_speed, target = src))
 		var/obj/item/stack/marker_beacon/M = new(loc)
@@ -117,6 +137,8 @@ GLOBAL_LIST_INIT(marker_beacon_colors, list(
 			qdel(src) //otherwise delete us
 
 /obj/structure/marker_beacon/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/stack/marker_beacon))
 		var/obj/item/stack/marker_beacon/M = I
 		to_chat(user, "<span class='notice'>You start picking [src] up...</span>")
@@ -128,6 +150,8 @@ GLOBAL_LIST_INIT(marker_beacon_colors, list(
 		return ..()
 
 /obj/structure/marker_beacon/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.incapacitated() || !istype(user))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")

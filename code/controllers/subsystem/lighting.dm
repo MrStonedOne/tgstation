@@ -3,16 +3,22 @@ GLOBAL_LIST_EMPTY(lighting_update_corners) // List of lighting corners  queued f
 GLOBAL_LIST_EMPTY(lighting_update_objects) // List of lighting objects queued for update.
 
 SUBSYSTEM_DEF(lighting)
+	procstart = null
+	src.procstart = null
 	name = "Lighting"
 	wait = 2
 	init_order = INIT_ORDER_LIGHTING
 	flags = SS_TICKER
 
 /datum/controller/subsystem/lighting/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("L:[GLOB.lighting_update_lights.len]|C:[GLOB.lighting_update_corners.len]|O:[GLOB.lighting_update_objects.len]")
 
 
 /datum/controller/subsystem/lighting/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	if(!initialized)
 		if (CONFIG_GET(flag/starlight))
 			for(var/I in GLOB.sortedAreas)
@@ -28,6 +34,8 @@ SUBSYSTEM_DEF(lighting)
 	..()
 
 /datum/controller/subsystem/lighting/fire(resumed, init_tick_checks)
+	procstart = null
+	src.procstart = null
 	MC_SPLIT_TICK_INIT(3)
 	if(!init_tick_checks)
 		MC_SPLIT_TICK
@@ -84,11 +92,15 @@ SUBSYSTEM_DEF(lighting)
 
 
 /datum/controller/subsystem/lighting/Recover()
+	procstart = null
+	src.procstart = null
 	initialized = SSlighting.initialized
 	..()
 
 
 /datum/controller/subsystem/lighting/proc/initialize_lighting_objects(list/turfs)
+	procstart = null
+	src.procstart = null
 	for(var/turf/T in turfs)
 		if(!IS_DYNAMIC_LIGHTING(T))
 			continue

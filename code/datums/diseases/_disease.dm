@@ -34,11 +34,15 @@
 	var/process_dead = FALSE //if this ticks while the host is dead
 
 /datum/disease/Destroy()
+	procstart = null
+	src.procstart = null
 	affected_mob = null
 	SSdisease.active_diseases.Remove(src)
 	return ..()
 
 /datum/disease/proc/stage_act()
+	procstart = null
+	src.procstart = null
 	var/cure = has_cure()
 
 	if(carrier && !cure)
@@ -59,6 +63,8 @@
 
 
 /datum/disease/proc/has_cure()
+	procstart = null
+	src.procstart = null
 	if(!(disease_flags & CURABLE))
 		return 0
 
@@ -71,6 +77,8 @@
 
 //Airborne spreading
 /datum/disease/proc/spread(force_spread = 0)
+	procstart = null
+	src.procstart = null
 	if(!affected_mob)
 		return
 
@@ -101,6 +109,8 @@
 
 
 /datum/disease/proc/cure(add_resistance = TRUE)
+	procstart = null
+	src.procstart = null
 	if(affected_mob)
 		if(disease_flags & CAN_RESIST)
 			var/id = GetDiseaseID()
@@ -110,21 +120,29 @@
 	qdel(src)
 
 /datum/disease/proc/IsSame(datum/disease/D)
+	procstart = null
+	src.procstart = null
 	if(istype(src, D.type))
 		return 1
 	return 0
 
 
 /datum/disease/proc/Copy()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/D = new type()
 	D.strain_data = strain_data.Copy()
 	return D
 
 
 /datum/disease/proc/GetDiseaseID()
+	procstart = null
+	src.procstart = null
 	return "[type]"
 
 //don't use this proc directly. this should only ever be called by cure()
 /datum/disease/proc/remove_virus()
+	procstart = null
+	src.procstart = null
 	affected_mob.viruses -= src		//remove the datum from the list
 	affected_mob.med_hud_set_status()

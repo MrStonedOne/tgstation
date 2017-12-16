@@ -8,10 +8,14 @@
 	ttone = "honk"
 
 /obj/item/device/pda/clown/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 120, NO_SLIP_WHEN_WALKING, CALLBACK(src, .proc/AfterSlip))
 
 /obj/item/device/pda/clown/proc/AfterSlip(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if (istype(M) && (M.real_name != owner))
 		var/obj/item/cartridge/virus/clown/cart = cartridge
 		if(istype(cart) && cart.charges < 5)
@@ -25,6 +29,8 @@
 	detonatable = FALSE
 
 /obj/item/device/pda/ai/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if ((honkamt > 0) && (prob(60)))//For clown virus.
 		honkamt--
 		playsound(loc, 'sound/items/bikehorn.ogg', 30, 1)

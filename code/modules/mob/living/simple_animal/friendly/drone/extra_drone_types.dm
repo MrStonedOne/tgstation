@@ -33,11 +33,15 @@
 	flavortext = null
 
 /mob/living/simple_animal/drone/syndrone/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GET_COMPONENT_FROM(hidden_uplink, /datum/component/uplink, internal_storage)
 	hidden_uplink.telecrystals = 10
 
 /mob/living/simple_animal/drone/syndrone/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(src, "<span class='notice'>You can kill and eat other drones to increase your health!</span>" )
 
@@ -47,6 +51,8 @@
 	default_storage = /obj/item/device/radio/uplink/nuclear
 
 /mob/living/simple_animal/drone/syndrone/badass/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GET_COMPONENT_FROM(hidden_uplink, /datum/component/uplink, internal_storage)
 	hidden_uplink.telecrystals = 30
@@ -57,6 +63,8 @@
 	default_hatmask = /obj/item/clothing/head/chameleon/drone
 
 /mob/living/simple_animal/drone/snowflake/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	desc += " This drone appears to have a complex holoprojector built on its 'head'."
 
@@ -81,6 +89,8 @@
 	picked = TRUE
 
 /mob/living/simple_animal/drone/polymorphed/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	liberate()
 	visualAppearence = pick(MAINTDRONE, REPAIRDRONE, SCOUTDRONE)
@@ -143,6 +153,8 @@
 	default_storage = /obj/item/storage/toolbox/brass/prefilled/ratvar/admin
 
 /mob/living/simple_animal/drone/cogscarab/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(2, 0.5)
 	qdel(access_card) //we don't have free access
@@ -151,14 +163,20 @@
 	verbs -= /mob/living/simple_animal/drone/verb/drone_ping
 
 /mob/living/simple_animal/drone/cogscarab/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	add_servant_of_ratvar(src, TRUE, GLOB.servants_active)
 	to_chat(src,"<b>You yourself are one of these servants, and will be able to utilize almost anything they can[GLOB.ratvar_awakens ? "":", <i>excluding a clockwork slab</i>"].</b>") // this can't go with flavortext because i'm assuming it requires them to be ratvar'd
 
 /mob/living/simple_animal/drone/cogscarab/binarycheck()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/simple_animal/drone/cogscarab/alert_drones(msg, dead_can_hear = FALSE)
+	procstart = null
+	src.procstart = null
 	if(msg == DRONE_NET_CONNECT)
 		msg = "<span class='brass'><i>Hierophant Network:</i> [name] activated.</span>"
 	else if(msg == DRONE_NET_DISCONNECT)
@@ -166,41 +184,61 @@
 	..()
 
 /mob/living/simple_animal/drone/attackby(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver) && stat == DEAD)
 		try_reactivate(user)
 	else
 		..()
 
 /mob/living/simple_animal/drone/cogscarab/try_reactivate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		to_chat(user, "<span class='warning'>You fiddle around with [src] to no avail.</span>")
 	else
 		..()
 
 /mob/living/simple_animal/drone/cogscarab/can_use_guns(obj/item/G)
+	procstart = null
+	src.procstart = null
 	return GLOB.ratvar_awakens
 
 /mob/living/simple_animal/drone/cogscarab/get_armor_effectiveness()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		return 1
 	return ..()
 
 /mob/living/simple_animal/drone/cogscarab/triggerAlarm(class, area/A, O, obj/alarmsource)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/drone/cogscarab/cancelAlarm(class, area/A, obj/origin)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/drone/cogscarab/update_drone_hack()
+	procstart = null
+	src.procstart = null
 	return //we don't get hacked or give a shit about it
 
 /mob/living/simple_animal/drone/cogscarab/drone_chat(msg)
+	procstart = null
+	src.procstart = null
 	titled_hierophant_message(src, msg, "nezbere", "brass", "Construct") //HIEROPHANT DRONES
 
 /mob/living/simple_animal/drone/cogscarab/ratvar_act()
+	procstart = null
+	src.procstart = null
 	fully_heal(TRUE)
 
 /mob/living/simple_animal/drone/cogscarab/update_icons()
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD)
 		if(incapacitated())
 			icon_state = "[visualAppearence]_flipped"
@@ -210,36 +248,50 @@
 		icon_state = "[visualAppearence]_dead"
 
 /mob/living/simple_animal/drone/cogscarab/Stun(amount, updating = 1, ignore_canstun = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_icons()
 
 /mob/living/simple_animal/drone/cogscarab/SetStun(amount, updating = 1, ignore_canstun = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_icons()
 
 /mob/living/simple_animal/drone/cogscarab/AdjustStun(amount, updating = 1, ignore_canstun = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_icons()
 
 /mob/living/simple_animal/drone/cogscarab/Knockdown(amount, updating = 1, ignore_canknockdown = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_icons()
 
 /mob/living/simple_animal/drone/cogscarab/SetKnockdown(amount, updating = 1, ignore_canknockdown = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_icons()
 
 /mob/living/simple_animal/drone/cogscarab/AdjustKnockdown(amount, updating = 1, ignore_canknockdown = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_icons()
 
 /mob/living/simple_animal/drone/cogscarab/update_canmove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_icons()

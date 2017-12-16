@@ -3,6 +3,8 @@
 /atom/var/list/suit_fibers
 
 /atom/proc/add_fibers(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if(M.gloves && istype(M.gloves, /obj/item/clothing/))
 		var/obj/item/clothing/gloves/G = M.gloves
 		if(G.transfer_blood > 1) //bloodied gloves transfer blood to touched objects
@@ -45,6 +47,8 @@
 
 
 /atom/proc/add_hiddenprint(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!M || !M.key)
 		return
 
@@ -71,6 +75,8 @@
 
 //Set ignoregloves to add prints irrespective of the mob having gloves on.
 /atom/proc/add_fingerprint(mob/living/M, ignoregloves = 0)
+	procstart = null
+	src.procstart = null
 	if(!M || !M.key)
 		return
 
@@ -100,6 +106,8 @@
 
 /atom/proc/transfer_fingerprints_to(atom/A)
 
+	procstart = null
+	src.procstart = null
 	// Make sure everything are lists.
 	if(!islist(A.fingerprints))
 		A.fingerprints = list()

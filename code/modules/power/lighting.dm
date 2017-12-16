@@ -26,6 +26,8 @@
 	materials = list(MAT_METAL=MINERAL_MATERIAL_AMOUNT)
 
 /obj/item/wallframe/light_fixture/try_build(turf/on_wall, user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/area/A = get_area(user)
@@ -54,18 +56,26 @@
 	var/cell_connectors = TRUE
 
 /obj/structure/light_construct/Initialize(mapload, ndir, building)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(building)
 		setDir(ndir)
 
 /obj/structure/light_construct/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cell)
 	return ..()
 
 /obj/structure/light_construct/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/structure/light_construct/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(src.stage)
 		if(1)
@@ -84,6 +94,8 @@
 		return
 
 /obj/structure/light_construct/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(W, /obj/item/stock_parts/cell))
 		if(!cell_connectors)
@@ -172,11 +184,15 @@
 	return ..()
 
 /obj/structure/light_construct/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(B && B.loc == loc)
 		qdel(src)
 
 
 /obj/structure/light_construct/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc, sheets_refunded)
 	qdel(src)
@@ -234,6 +250,8 @@
 
 
 /obj/machinery/light/Move()
+	procstart = null
+	src.procstart = null
 	if(status != LIGHT_BROKEN)
 		break_light_tube(1)
 	return ..()
@@ -243,6 +261,8 @@
 	start_with_cell = FALSE
 
 /obj/machinery/light/built/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	status = LIGHT_EMPTY
 	update(0)
@@ -251,6 +271,8 @@
 	icon_state = "bulb-empty"
 
 /obj/machinery/light/small/built/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	status = LIGHT_EMPTY
 	update(0)
@@ -259,6 +281,8 @@
 
 // create a new lighting fixture
 /obj/machinery/light/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(start_with_cell && !no_emergency)
 		cell = new/obj/item/stock_parts/cell/emergency_light(src)
@@ -276,6 +300,8 @@
 			update(0)
 
 /obj/machinery/light/Destroy()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	if(A)
 		on = FALSE
@@ -284,6 +310,8 @@
 	return ..()
 
 /obj/machinery/light/update_icon()
+	procstart = null
+	src.procstart = null
 	switch(status)		// set icon_states
 		if(LIGHT_OK)
 			if(emergency_mode)
@@ -300,6 +328,8 @@
 
 // update the icon_state and luminosity of the light depending on its state
 /obj/machinery/light/proc/update(trigger = 1)
+	procstart = null
+	src.procstart = null
 	switch(status)
 		if(LIGHT_BROKEN,LIGHT_BURNED,LIGHT_EMPTY)
 			on = FALSE
@@ -335,12 +365,16 @@
 
 
 /obj/machinery/light/process()
+	procstart = null
+	src.procstart = null
 	if(has_power() && cell)
 		cell.charge = min(cell.maxcharge, cell.charge + LIGHT_EMERGENCY_POWER_USE) //Recharge emergency power automatically while not using it
 	if(emergency_mode && !use_emergency_power(LIGHT_EMERGENCY_POWER_USE))
 		update(FALSE) //Disables emergency mode and sets the color to normal
 
 /obj/machinery/light/proc/burn_out()
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_OK)
 		status = LIGHT_BURNED
 		icon_state = "[base_state]-burned"
@@ -350,14 +384,20 @@
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
 /obj/machinery/light/proc/seton(s)
+	procstart = null
+	src.procstart = null
 	on = (s && status == LIGHT_OK)
 	update()
 
 /obj/machinery/light/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 // examine verb
 /obj/machinery/light/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(status)
 		if(LIGHT_OK)
@@ -377,6 +417,8 @@
 
 /obj/machinery/light/attackby(obj/item/W, mob/living/user, params)
 
+	procstart = null
+	src.procstart = null
 	//Light replacer code
 	if(istype(W, /obj/item/device/lightreplacer))
 		var/obj/item/device/lightreplacer/LR = W
@@ -430,6 +472,8 @@
 		return ..()
 
 /obj/machinery/light/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/obj/structure/light_construct/newlight = null
 		var/cur_stage = 2
@@ -460,6 +504,8 @@
 	qdel(src)
 
 /obj/machinery/light/attacked_by(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(status == LIGHT_BROKEN || status == LIGHT_EMPTY)
 		if(on && (I.flags_1 & CONDUCT_1))
@@ -467,6 +513,8 @@
 				electrocute_mob(user, get_area(src), src, 0.3, TRUE)
 
 /obj/machinery/light/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !QDELETED(src))
 		if(prob(damage_amount * 5))
@@ -476,6 +524,8 @@
 
 
 /obj/machinery/light/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			switch(status)
@@ -491,18 +541,24 @@
 // returns if the light has power /but/ is manually turned off
 // if a light is turned off, it won't activate emergency power
 /obj/machinery/light/proc/turned_off()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	return !A.lightswitch && A.power_light || !flickering
 
 // returns whether this light has power
 // true if area has power and lightswitch is on
 /obj/machinery/light/proc/has_power()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	return A.lightswitch && A.power_light
 
 // returns whether this light has emergency power
 // can also return if it has access to a certain amount of that power
 /obj/machinery/light/proc/has_emergency_power(pwr)
+	procstart = null
+	src.procstart = null
 	if(no_emergency || !cell)
 		return FALSE
 	if(pwr ? cell.charge >= pwr : cell.charge)
@@ -510,6 +566,8 @@
 
 // attempts to use power from the installed emergency cell, returns true if it does and false if it doesn't
 /obj/machinery/light/proc/use_emergency_power(pwr = LIGHT_EMERGENCY_POWER_USE)
+	procstart = null
+	src.procstart = null
 	if(!has_emergency_power(pwr))
 		return FALSE
 	if(cell.charge > 300) //it's meant to handle 120 W, ya doofus
@@ -522,6 +580,8 @@
 
 
 /obj/machinery/light/proc/flicker(var/amount = rand(10, 20))
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	if(flickering)
 		return
@@ -540,6 +600,8 @@
 // ai attack - make lights flicker, because why not
 
 /obj/machinery/light/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	no_emergency = !no_emergency
 	to_chat(user, "<span class='notice'>Emergency lights for this fixture have been [no_emergency ? "disabled" : "enabled"].</span>")
 	update(FALSE)
@@ -549,6 +611,8 @@
 // if hands aren't protected and the light is on, burn the player
 
 /obj/machinery/light/attack_hand(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	add_fingerprint(user)
 
@@ -587,6 +651,8 @@
 	drop_light_tube(user)
 
 /obj/machinery/light/proc/drop_light_tube(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/light/L = new light_type()
 	L.status = status
 	L.rigged = rigged
@@ -608,6 +674,8 @@
 	return L
 
 /obj/machinery/light/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_EMPTY)
 		to_chat(user, "There is no [fitting] in this light.")
 		return
@@ -621,6 +689,8 @@
 // break the light and make sparks if was on
 
 /obj/machinery/light/proc/break_light_tube(skip_sound_and_sparks = 0)
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_EMPTY || status == LIGHT_BROKEN)
 		return
 
@@ -633,6 +703,8 @@
 	update()
 
 /obj/machinery/light/proc/fix()
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_OK)
 		return
 	status = LIGHT_OK
@@ -641,24 +713,32 @@
 	update()
 
 /obj/machinery/light/tesla_act(power, explosive = FALSE)
+	procstart = null
+	src.procstart = null
 	if(explosive)
 		explosion(src.loc,0,0,0,flame_range = 5, adminlog = 0)
 	qdel(src)
 
 // called when area power state changes
 /obj/machinery/light/power_change()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	seton(A.lightswitch && A.power_light)
 
 // called when on fire
 
 /obj/machinery/light/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(prob(max(0, exposed_temperature - 673)))   //0% at <400C, 100% at >500C
 		break_light_tube()
 
 // explode the light
 
 /obj/machinery/light/proc/explode()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	var/turf/T = get_turf(src.loc)
 	break_light_tube()	// break it first to give a warning
@@ -709,12 +789,16 @@
 	status = LIGHT_BROKEN
 
 /obj/item/light/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..()) //not caught by a mob
 		shatter()
 
 // update the icon state and description of the light
 
 /obj/item/light/proc/update()
+	procstart = null
+	src.procstart = null
 	switch(status)
 		if(LIGHT_OK)
 			icon_state = base_state
@@ -728,6 +812,8 @@
 
 
 /obj/item/light/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update()
 
@@ -735,6 +821,8 @@
 // attack bulb/tube with object
 // if a syringe, can inject plasma to make it explode
 /obj/item/light/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(I, /obj/item/reagent_containers/syringe))
 		var/obj/item/reagent_containers/syringe/S = I
@@ -751,14 +839,20 @@
 	return
 
 /obj/item/light/attack(mob/living/M, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	..()
 	shatter()
 
 /obj/item/light/attack_obj(obj/O, mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	shatter()
 
 /obj/item/light/proc/shatter()
+	procstart = null
+	src.procstart = null
 	if(status == LIGHT_OK || status == LIGHT_BURNED)
 		visible_message("<span class='danger'>[name] shatters.</span>","<span class='italics'>You hear a small glass object shatter.</span>")
 		status = LIGHT_BROKEN

@@ -28,6 +28,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/head/welding/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	weldingvisortoggle(user)
 
 
@@ -48,6 +50,8 @@
 	heat = 1000
 
 /obj/item/clothing/head/hardhat/cakehat/process()
+	procstart = null
+	src.procstart = null
 	var/turf/location = src.loc
 	if(ishuman(location))
 		var/mob/living/carbon/human/M = location
@@ -58,6 +62,8 @@
 		location.hotspot_expose(700, 1)
 
 /obj/item/clothing/head/hardhat/cakehat/turn_on()
+	procstart = null
+	src.procstart = null
 	..()
 	force = 15
 	throwforce = 15
@@ -66,6 +72,8 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/head/hardhat/cakehat/turn_off()
+	procstart = null
+	src.procstart = null
 	..()
 	force = 0
 	throwforce = 0
@@ -74,6 +82,8 @@
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/head/hardhat/cakehat/is_hot()
+	procstart = null
+	src.procstart = null
 	return on * heat
 /*
  * Ushanka
@@ -91,6 +101,8 @@
 	dog_fashion = /datum/dog_fashion/head/ushanka
 
 /obj/item/clothing/head/ushanka/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(earflaps)
 		src.icon_state = "ushankaup"
 		src.item_state = "ushankaup"
@@ -129,12 +141,16 @@
 	dog_fashion = /datum/dog_fashion/head/kitty
 
 /obj/item/clothing/head/kitty/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user) && slot == slot_head)
 		update_icon(user)
 		user.update_inv_head() //Color might have been changed by update_icon.
 	..()
 
 /obj/item/clothing/head/kitty/update_icon(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		add_atom_colour("#[user.hair_color]", FIXED_COLOUR_PRIORITY)
 
@@ -166,6 +182,8 @@
 	dog_fashion = /datum/dog_fashion/head/cardborg
 
 /obj/item/clothing/head/cardborg/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(user) && slot == slot_head)
 		var/mob/living/carbon/human/H = user
@@ -174,6 +192,8 @@
 			CB.disguise(user, src)
 
 /obj/item/clothing/head/cardborg/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	user.remove_alt_appearance("standard_borg_disguise")
 
@@ -189,10 +209,14 @@
 	var/hair_color = "#000"
 
 /obj/item/clothing/head/wig/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/clothing/head/wig/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	var/datum/sprite_accessory/S = GLOB.hair_styles_list[hair_style]
 	if(!S)
@@ -204,6 +228,8 @@
 		add_overlay(M)
 
 /obj/item/clothing/head/wig/worn_overlays(isinhands = FALSE, file2use)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands)
 		var/datum/sprite_accessory/S = GLOB.hair_styles_list[hair_style]
@@ -215,6 +241,8 @@
 		. += M
 
 /obj/item/clothing/head/wig/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	hair_style = pick(GLOB.hair_styles_list - "Bald") //Don't want invisible wig
 	hair_color = "#[random_short_color()]"
 	. = ..()

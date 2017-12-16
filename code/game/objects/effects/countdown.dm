@@ -15,33 +15,47 @@
 	layer = GHOST_LAYER
 
 /obj/effect/countdown/New(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	attach(A)
 
 /obj/effect/countdown/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, "This countdown is displaying: [displayed_text].")
 
 /obj/effect/countdown/proc/attach(atom/A)
+	procstart = null
+	src.procstart = null
 	attached_to = A
 	forceMove(get_turf(A))
 
 /obj/effect/countdown/proc/start()
+	procstart = null
+	src.procstart = null
 	if(!started)
 		START_PROCESSING(SSfastprocess, src)
 		started = TRUE
 
 /obj/effect/countdown/proc/stop()
+	procstart = null
+	src.procstart = null
 	if(started)
 		maptext = null
 		STOP_PROCESSING(SSfastprocess, src)
 		started = FALSE
 
 /obj/effect/countdown/proc/get_value()
+	procstart = null
+	src.procstart = null
 	// Get the value from our atom
 	return
 
 /obj/effect/countdown/process()
+	procstart = null
+	src.procstart = null
 	if(!attached_to || QDELETED(attached_to))
 		qdel(src)
 	forceMove(get_turf(attached_to))
@@ -56,6 +70,8 @@
 		maptext = null
 
 /obj/effect/countdown/Destroy()
+	procstart = null
+	src.procstart = null
 	attached_to = null
 	STOP_PROCESSING(SSfastprocess, src)
 	. = ..()
@@ -67,6 +83,8 @@
 	name = "syndicate bomb countdown"
 
 /obj/effect/countdown/syndicatebomb/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/syndicatebomb/S = attached_to
 	if(!istype(S))
 		return
@@ -78,6 +96,8 @@
 	color = "#81FF14"
 
 /obj/effect/countdown/nuclearbomb/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/nuclearbomb/N = attached_to
 	if(!istype(N))
 		return
@@ -90,6 +110,8 @@
 	text_size = 1
 
 /obj/effect/countdown/clonepod/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/clonepod/C = attached_to
 	if(!istype(C))
 		return
@@ -104,6 +126,8 @@
 	layer = POINT_LAYER
 
 /obj/effect/countdown/clockworkgate/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/destructible/clockwork/massive/celestial_gateway/G = attached_to
 	if(!istype(G))
 		return
@@ -116,6 +140,8 @@
 	color = "#00ff80"
 
 /obj/effect/countdown/supermatter/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/supermatter_shard/S = attached_to
 	if(!istype(S))
 		return
@@ -126,6 +152,8 @@
 	color = "#4C5866"
 
 /obj/effect/countdown/transformer/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/transformer/T = attached_to
 	if(!istype(T))
 		return
@@ -138,6 +166,8 @@
 	text_size = 3
 
 /obj/effect/countdown/doomsday/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/doomsday_device/DD = attached_to
 	if(!istype(DD))
 		return
@@ -148,6 +178,8 @@
 	name = "anomaly countdown"
 
 /obj/effect/countdown/anomaly/get_value()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/anomaly/A = attached_to
 	if(!istype(A))
 		return
@@ -156,7 +188,11 @@
 		return round(time_left)
 
 /obj/effect/countdown/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/countdown/singularity_act()
+	procstart = null
+	src.procstart = null
 	return

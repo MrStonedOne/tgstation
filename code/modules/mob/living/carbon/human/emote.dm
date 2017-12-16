@@ -73,6 +73,8 @@
 	message = "wags their tail."
 
 /datum/emote/living/carbon/human/wag/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/H = user
 	if(!H.is_wagging_tail())
@@ -81,9 +83,13 @@
 		H.endTailWag()
 
 /mob/living/carbon/human/proc/is_wagging_tail()
+	procstart = null
+	src.procstart = null
 	return (dna && dna.species && ("waggingtail_lizard" in dna.species.mutant_bodyparts || "waggingtail_human" in dna.species.mutant_bodyparts))
 
 /datum/emote/living/carbon/human/wag/can_run_emote(mob/user, status_check = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/mob/living/carbon/human/H = user
@@ -91,6 +97,8 @@
 		return TRUE
 
 /datum/emote/living/carbon/human/wag/select_message_type(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/H = user
 	if(("waggingtail_lizard" in H.dna.species.mutant_bodyparts) || ("waggingtail_human" in H.dna.species.mutant_bodyparts))
@@ -98,6 +106,8 @@
 
 //Don't know where else to put this, it's basically an emote
 /mob/living/carbon/human/proc/startTailWag()
+	procstart = null
+	src.procstart = null
 	if(!dna || !dna.species)
 		return
 	if("tail_lizard" in dna.species.mutant_bodyparts)
@@ -111,6 +121,8 @@
 	update_body()
 
 /mob/living/carbon/human/proc/endTailWag()
+	procstart = null
+	src.procstart = null
 	if(!dna || !dna.species)
 		return
 	if("waggingtail_lizard" in dna.species.mutant_bodyparts)
@@ -129,6 +141,8 @@
 	message = "their wings."
 
 /datum/emote/living/carbon/human/wing/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/mob/living/carbon/human/H = user
@@ -138,6 +152,8 @@
 			H.CloseWings()
 
 /datum/emote/living/carbon/human/wing/select_message_type(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/carbon/human/H = user
 	if("wings" in H.dna.species.mutant_bodyparts)
@@ -146,6 +162,8 @@
 		. = "closes " + message
 
 /datum/emote/living/carbon/human/wing/can_run_emote(mob/user, status_check = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	var/mob/living/carbon/human/H = user
@@ -153,6 +171,8 @@
 		return TRUE
 
 /mob/living/carbon/human/proc/OpenWings()
+	procstart = null
+	src.procstart = null
 	if(!dna || !dna.species)
 		return
 	if("wings" in dna.species.mutant_bodyparts)
@@ -161,6 +181,8 @@
 	update_body()
 
 /mob/living/carbon/human/proc/CloseWings()
+	procstart = null
+	src.procstart = null
 	if(!dna || !dna.species)
 		return
 	if("wingsopen" in dna.species.mutant_bodyparts)

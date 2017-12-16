@@ -17,6 +17,8 @@
 	action_icon_state = "barn"
 
 /obj/effect/proc_holder/spell/targeted/barnyardcurse/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!targets.len)
 		to_chat(user, "<span class='notice'>No target found in range.</span>")
 		return

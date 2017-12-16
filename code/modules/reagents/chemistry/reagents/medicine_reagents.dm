@@ -11,6 +11,8 @@
 	taste_description = "bitterness"
 
 /datum/reagent/medicine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	current_cycle++
 	holder.remove_reagent(src.id, metabolization_rate / M.metabolism_efficiency) //medicine reagents stay longer if you have a better metabolism
 
@@ -21,6 +23,8 @@
 	color = "#C8A5DC" // rgb: 200, 165, 220
 
 /datum/reagent/medicine/leporazine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.bodytemperature > 310)
 		M.bodytemperature = max(310, M.bodytemperature - (40 * TEMPERATURE_DAMAGE_COEFFICIENT))
 	else if(M.bodytemperature < 311)
@@ -36,6 +40,8 @@
 	taste_description = "badmins"
 
 /datum/reagent/medicine/adminordrazine/on_mob_life(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	M.reagents.remove_all_type(/datum/reagent/toxin, 5*REM, 0, 1)
 	M.setCloneLoss(0, 0)
 	M.setOxyLoss(0, 0)
@@ -81,6 +87,8 @@
 	color = "#FF00FF"
 
 /datum/reagent/medicine/synaptizine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.drowsyness = max(M.drowsyness-5, 0)
 	M.AdjustStun(-20, 0)
 	M.AdjustKnockdown(-20, 0)
@@ -100,6 +108,8 @@
 	color = "#EC536D" // rgb: 236, 83, 109
 
 /datum/reagent/medicine/synaphydramine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.drowsyness = max(M.drowsyness-5, 0)
 	if(holder.has_reagent("mindbreaker"))
 		holder.remove_reagent("mindbreaker", 5)
@@ -118,6 +128,8 @@
 	color = "#6600FF" // rgb: 100, 165, 255
 
 /datum/reagent/medicine/inacusiate/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.restoreEars()
 	..()
 
@@ -129,6 +141,8 @@
 	taste_description = "sludge"
 
 /datum/reagent/medicine/cryoxadone/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/power = -0.00003 * (M.bodytemperature ** 2) + 3
 	if(M.bodytemperature < T0C)
 		M.adjustOxyLoss(-3 * power, 0)
@@ -150,6 +164,8 @@
 	metabolization_rate = 1.5 * REAGENTS_METABOLISM
 
 /datum/reagent/medicine/clonexadone/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.bodytemperature < T0C)
 		M.adjustCloneLoss(0.00006 * (M.bodytemperature ** 2) - 6, 0)
 		M.status_flags &= ~DISFIGURED
@@ -167,6 +183,8 @@
 	taste_description = "fish"
 
 /datum/reagent/medicine/rezadone/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.setCloneLoss(0) //Rezadone is almost never used in favor of cryoxadone. Hopefully this will change that.
 	M.heal_bodypart_damage(1,1, 0)
 	M.status_flags &= ~DISFIGURED
@@ -174,6 +192,8 @@
 	. = 1
 
 /datum/reagent/medicine/rezadone/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(1, 0)
 	M.Dizzy(5)
 	M.Jitter(5)
@@ -196,6 +216,8 @@
 	color = "#C8A5DC"
 
 /datum/reagent/medicine/silver_sulfadiazine/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message = 1)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M) && M.stat != DEAD)
 		if(method in list(INGEST, VAPOR, INJECT))
 			M.adjustToxLoss(0.5*reac_volume)
@@ -209,6 +231,8 @@
 	..()
 
 /datum/reagent/medicine/silver_sulfadiazine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustFireLoss(-2*REM, 0)
 	..()
 	. = 1
@@ -223,6 +247,8 @@
 	overdose_threshold = 25
 
 /datum/reagent/medicine/oxandrolone/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.getFireLoss() > 50)
 		M.adjustFireLoss(-4*REM, 0) //Twice as effective as silver sulfadiazine for severe burns
 	else
@@ -231,6 +257,8 @@
 	. = 1
 
 /datum/reagent/medicine/oxandrolone/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.getFireLoss()) //It only makes existing burns worse
 		M.adjustFireLoss(4.5*REM, 0) // it's going to be healing either 4 or 0.5
 		. = 1
@@ -244,6 +272,8 @@
 	color = "#FF9696"
 
 /datum/reagent/medicine/styptic_powder/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message = 1)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M) && M.stat != DEAD)
 		if(method in list(INGEST, VAPOR, INJECT))
 			M.adjustToxLoss(0.5*reac_volume)
@@ -258,6 +288,8 @@
 
 
 /datum/reagent/medicine/styptic_powder/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBruteLoss(-2*REM, 0)
 	..()
 	. = 1
@@ -275,6 +307,8 @@
 	var/maximum_reachable = BLOOD_VOLUME_NORMAL - 10	//So that normal blood regeneration can continue with salglu active
 
 /datum/reagent/medicine/salglu_solution/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(last_added)
 		M.blood_volume -= last_added
 		last_added = 0
@@ -290,6 +324,8 @@
 	..()
 
 /datum/reagent/medicine/salglu_solution/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(3))
 		to_chat(M, "<span class = 'warning'>You feel salty.</span>")
 		holder.add_reagent("sodiumchloride", 1)
@@ -313,6 +349,8 @@
 	metabolization_rate = 0.4 * REAGENTS_METABOLISM
 
 /datum/reagent/medicine/mine_salve/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M))
 		var/mob/living/carbon/N = M
 		N.hal_screwyhud = SCREWYHUD_HEALTHY
@@ -322,6 +360,8 @@
 	. = 1
 
 /datum/reagent/medicine/mine_salve/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message = 1)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M) && M.stat != DEAD)
 		if(method in list(INGEST, VAPOR, INJECT))
 			M.nutrition -= 5
@@ -339,6 +379,8 @@
 	..()
 
 /datum/reagent/medicine/mine_salve/on_mob_delete(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M))
 		var/mob/living/carbon/N = M
 		N.hal_screwyhud = SCREWYHUD_NONE
@@ -352,6 +394,8 @@
 	color = "#FFEBEB"
 
 /datum/reagent/medicine/synthflesh/reaction_mob(mob/living/M, method=TOUCH, reac_volume,show_message = 1)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M))
 		if (M.stat == DEAD)
 			show_message = 0
@@ -372,6 +416,8 @@
 	taste_description = "ash"
 
 /datum/reagent/medicine/charcoal/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(-2*REM, 0)
 	. = 1
 	for(var/datum/reagent/R in M.reagents.reagent_list)
@@ -389,6 +435,8 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/omnizine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(-0.5*REM, 0)
 	M.adjustOxyLoss(-0.5*REM, 0)
 	M.adjustBruteLoss(-0.5*REM, 0)
@@ -397,6 +445,8 @@
 	. = 1
 
 /datum/reagent/medicine/omnizine/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(1.5*REM, 0)
 	M.adjustOxyLoss(1.5*REM, 0)
 	M.adjustBruteLoss(1.5*REM, 0)
@@ -414,6 +464,8 @@
 	taste_description = "acid"
 
 /datum/reagent/medicine/calomel/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/R in M.reagents.reagent_list)
 		if(R != src)
 			M.reagents.remove_reagent(R.id,2.5)
@@ -431,6 +483,8 @@
 	metabolization_rate = 2 * REAGENTS_METABOLISM
 
 /datum/reagent/medicine/potass_iodide/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.radiation > 0)
 		M.radiation -= min(M.radiation, 8)
 	..()
@@ -444,6 +498,8 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 
 /datum/reagent/medicine/pen_acid/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.radiation -= max(M.radiation-RAD_MOB_SAFE, 0)/50
 	M.adjustToxLoss(-2*REM, 0)
 	for(var/datum/reagent/R in M.reagents.reagent_list)
@@ -463,6 +519,8 @@
 
 
 /datum/reagent/medicine/sal_acid/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.getBruteLoss() > 50)
 		M.adjustBruteLoss(-4*REM, 0) //Twice as effective as styptic powder for severe bruising
 	else
@@ -471,6 +529,8 @@
 	. = 1
 
 /datum/reagent/medicine/sal_acid/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.getBruteLoss()) //It only makes existing bruises worse
 		M.adjustBruteLoss(4.5*REM, 0) // it's going to be healing either 4 or 0.5
 		. = 1
@@ -485,6 +545,8 @@
 	metabolization_rate = 0.25 * REAGENTS_METABOLISM
 
 /datum/reagent/medicine/salbutamol/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustOxyLoss(-3*REM, 0)
 	if(M.losebreath >= 4)
 		M.losebreath -= 2
@@ -500,6 +562,8 @@
 	metabolization_rate = 0.25 * REAGENTS_METABOLISM
 
 /datum/reagent/medicine/perfluorodecalin/on_mob_life(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	M.adjustOxyLoss(-12*REM, 0)
 	M.silent = max(M.silent, 5)
 	if(prob(33))
@@ -519,6 +583,8 @@
 	addiction_threshold = 30
 
 /datum/reagent/medicine/ephedrine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.status_flags |= GOTTAGOFAST
 	M.AdjustStun(-20, 0)
 	M.AdjustKnockdown(-20, 0)
@@ -528,6 +594,8 @@
 	. = 1
 
 /datum/reagent/medicine/ephedrine/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.adjustToxLoss(0.5*REM, 0)
 		M.losebreath++
@@ -535,6 +603,8 @@
 	..()
 
 /datum/reagent/medicine/ephedrine/addiction_act_stage1(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.adjustToxLoss(2*REM, 0)
 		M.losebreath += 2
@@ -542,6 +612,8 @@
 	..()
 
 /datum/reagent/medicine/ephedrine/addiction_act_stage2(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.adjustToxLoss(3*REM, 0)
 		M.losebreath += 3
@@ -549,6 +621,8 @@
 	..()
 
 /datum/reagent/medicine/ephedrine/addiction_act_stage3(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.adjustToxLoss(4*REM, 0)
 		M.losebreath += 4
@@ -556,6 +630,8 @@
 	..()
 
 /datum/reagent/medicine/ephedrine/addiction_act_stage4(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.adjustToxLoss(5*REM, 0)
 		M.losebreath += 5
@@ -571,6 +647,8 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 
 /datum/reagent/medicine/diphenhydramine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		M.drowsyness += 1
 	M.jitteriness -= 1
@@ -588,6 +666,8 @@
 	addiction_threshold = 25
 
 /datum/reagent/medicine/morphine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.status_flags |= IGNORESLOWDOWN
 	switch(current_cycle)
 		if(11)
@@ -600,6 +680,8 @@
 	..()
 
 /datum/reagent/medicine/morphine/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.drop_all_held_items()
 		M.Dizzy(2)
@@ -607,12 +689,16 @@
 	..()
 
 /datum/reagent/medicine/morphine/addiction_act_stage1(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.drop_all_held_items()
 		M.Jitter(2)
 	..()
 
 /datum/reagent/medicine/morphine/addiction_act_stage2(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.drop_all_held_items()
 		M.adjustToxLoss(1*REM, 0)
@@ -622,6 +708,8 @@
 	..()
 
 /datum/reagent/medicine/morphine/addiction_act_stage3(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.drop_all_held_items()
 		M.adjustToxLoss(2*REM, 0)
@@ -631,6 +719,8 @@
 	..()
 
 /datum/reagent/medicine/morphine/addiction_act_stage4(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.drop_all_held_items()
 		M.adjustToxLoss(3*REM, 0)
@@ -649,6 +739,8 @@
 	taste_description = "dull toxin"
 
 /datum/reagent/medicine/oculine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = M.getorganslot(ORGAN_SLOT_EYES)
 	if (!eyes)
 		return
@@ -680,6 +772,8 @@
 	overdose_threshold = 35
 
 /datum/reagent/medicine/atropine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.health < 0)
 		M.adjustToxLoss(-2*REM, 0)
 		M.adjustBruteLoss(-2*REM, 0)
@@ -693,6 +787,8 @@
 	..()
 
 /datum/reagent/medicine/atropine/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(0.5*REM, 0)
 	. = 1
 	M.Dizzy(1)
@@ -709,6 +805,8 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/epinephrine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.health < 0)
 		M.adjustToxLoss(-0.5*REM, 0)
 		M.adjustBruteLoss(-0.5*REM, 0)
@@ -728,6 +826,8 @@
 	..()
 
 /datum/reagent/medicine/epinephrine/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.adjustStaminaLoss(2.5*REM, 0)
 		M.adjustToxLoss(1*REM, 0)
@@ -745,6 +845,8 @@
 	taste_description = "magnets"
 
 /datum/reagent/medicine/strange_reagent/reaction_mob(mob/living/carbon/human/M, method=TOUCH, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(M.stat == DEAD)
 		if(M.getBruteLoss() >= 100 || M.getFireLoss() >= 100)
 			M.visible_message("<span class='warning'>[M]'s body convulses a bit, and then falls still once more.</span>")
@@ -766,6 +868,8 @@
 	..()
 
 /datum/reagent/medicine/strange_reagent/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBruteLoss(0.5*REM, 0)
 	M.adjustFireLoss(0.5*REM, 0)
 	..()
@@ -778,6 +882,8 @@
 	color = "#DCDCFF"
 
 /datum/reagent/medicine/mannitol/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBrainLoss(-2*REM)
 	if(iscarbon(M))
 		var/mob/living/carbon/C = M
@@ -795,6 +901,8 @@
 	taste_description = "acid"
 
 /datum/reagent/medicine/mutadone/on_mob_life(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	M.jitteriness = 0
 	if(M.has_dna())
 		M.dna.remove_all_mutations()
@@ -809,6 +917,8 @@
 	taste_description = "raw egg"
 
 /datum/reagent/medicine/antihol/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.dizziness = 0
 	M.drowsyness = 0
 	M.slurring = 0
@@ -830,6 +940,8 @@
 	overdose_threshold = 60
 
 /datum/reagent/medicine/stimulants/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.status_flags |= GOTTAGOFAST
 	if(M.health < 50 && M.health > 0)
 		M.adjustOxyLoss(-1*REM, 0)
@@ -844,6 +956,8 @@
 	. = 1
 
 /datum/reagent/medicine/stimulants/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(33))
 		M.adjustStaminaLoss(2.5*REM, 0)
 		M.adjustToxLoss(1*REM, 0)
@@ -860,6 +974,8 @@
 	metabolization_rate = 0.5 * REAGENTS_METABOLISM
 
 /datum/reagent/medicine/insulin/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.AdjustSleeping(-20, FALSE))
 		. = 1
 	M.reagents.remove_reagent("sugar", 3)
@@ -875,11 +991,15 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/bicaridine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBruteLoss(-2*REM, 0)
 	..()
 	. = 1
 
 /datum/reagent/medicine/bicaridine/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBruteLoss(4*REM, 0)
 	..()
 	. = 1
@@ -893,11 +1013,15 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/dexalin/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustOxyLoss(-2*REM, 0)
 	..()
 	. = 1
 
 /datum/reagent/medicine/dexalin/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustOxyLoss(4*REM, 0)
 	..()
 	. = 1
@@ -911,11 +1035,15 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/kelotane/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustFireLoss(-2*REM, 0)
 	..()
 	. = 1
 
 /datum/reagent/medicine/kelotane/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustFireLoss(4*REM, 0)
 	..()
 	. = 1
@@ -930,6 +1058,8 @@
 	taste_description = "a roll of gauze"
 
 /datum/reagent/medicine/antitoxin/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(-2*REM, 0)
 	for(var/datum/reagent/toxin/R in M.reagents.reagent_list)
 		M.reagents.remove_reagent(R.id,1)
@@ -937,6 +1067,8 @@
 	. = 1
 
 /datum/reagent/medicine/antitoxin/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(4*REM, 0) // End result is 2 toxin loss taken, because it heals 2 and then removes 4.
 	..()
 	. = 1
@@ -949,6 +1081,8 @@
 	color = "#C8A5DC"
 
 /datum/reagent/medicine/inaprovaline/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.losebreath >= 5)
 		M.losebreath -= 5
 	..()
@@ -963,6 +1097,8 @@
 	taste_description = "grossness"
 
 /datum/reagent/medicine/tricordrazine/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(80))
 		M.adjustBruteLoss(-1*REM, 0)
 		M.adjustFireLoss(-1*REM, 0)
@@ -972,6 +1108,8 @@
 	..()
 
 /datum/reagent/medicine/tricordrazine/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(2*REM, 0)
 	M.adjustOxyLoss(2*REM, 0)
 	M.adjustBruteLoss(2*REM, 0)
@@ -987,6 +1125,8 @@
 	color = "#555555"
 
 /datum/reagent/medicine/syndicate_nanites/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBruteLoss(-5*REM, 0) //A ton of healing - this is a 50 telecrystal investment.
 	M.adjustFireLoss(-5*REM, 0)
 	M.adjustOxyLoss(-15, 0)
@@ -1004,6 +1144,8 @@
 	overdose_threshold = 25
 
 /datum/reagent/medicine/earthsblood/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBruteLoss(-3 * REM, 0)
 	M.adjustFireLoss(-3 * REM, 0)
 	M.adjustOxyLoss(-15 * REM, 0)
@@ -1017,6 +1159,8 @@
 	. = 1
 
 /datum/reagent/medicine/earthsblood/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.hallucination = min(max(0, M.hallucination + 10), 50)
 	M.adjustToxLoss(5 * REM, 0)
 	..()
@@ -1031,6 +1175,8 @@
 	metabolization_rate = 0.4 * REAGENTS_METABOLISM
 
 /datum/reagent/medicine/haloperidol/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	for(var/datum/reagent/drug/R in M.reagents.reagent_list)
 		M.reagents.remove_reagent(R.id,5)
 	M.drowsyness += 2
@@ -1053,11 +1199,15 @@
 	can_synth = 0
 
 /datum/reagent/medicine/miningnanites/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.heal_bodypart_damage(5,5, 0)
 	..()
 	. = 1
 
 /datum/reagent/medicine/miningnanites/overdose_process(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBruteLoss(3*REM, 0)
 	M.adjustFireLoss(3*REM, 0)
 	M.adjustToxLoss(3*REM, 0)
@@ -1073,6 +1223,8 @@
 	overdose_threshold = 30
 
 /datum/reagent/medicine/changelingAdrenaline/on_mob_life(mob/living/M as mob)
+	procstart = null
+	src.procstart = null
 	M.AdjustUnconscious(-20, 0)
 	M.AdjustStun(-20, 0)
 	M.AdjustKnockdown(-20, 0)
@@ -1081,6 +1233,8 @@
 	..()
 
 /datum/reagent/medicine/changelingAdrenaline/overdose_process(mob/living/M as mob)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(1, 0)
 	. = 1
 	..()
@@ -1093,6 +1247,8 @@
 	metabolization_rate = 1
 
 /datum/reagent/medicine/changelingAdrenaline2/on_mob_life(mob/living/M as mob)
+	procstart = null
+	src.procstart = null
 	M.status_flags |= GOTTAGOREALLYFAST
 	M.adjustToxLoss(2, 0)
 	. = 1

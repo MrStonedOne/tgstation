@@ -1,5 +1,7 @@
 //Easter start
 /datum/holiday/easter/greet()
+	procstart = null
+	src.procstart = null
 	return "Greetings! Have a Happy Easter and keep an eye out for Easter Bunnies!"
 
 /datum/round_event_control/easter
@@ -11,6 +13,8 @@
 	earliest_start = 0
 
 /datum/round_event/easter/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce(pick("Hip-hop into Easter!","Find some Bunny's stash!","Today is National 'Hunt a Wabbit' Day.","Be kind, give Chocolate Eggs!"))
 
 
@@ -22,10 +26,14 @@
 	max_occurrences = 10
 
 /datum/round_event/rabbitrelease/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Unidentified furry objects detected coming aboard [station_name()]. Beware of Adorable-ness.", "Fluffy Alert", 'sound/ai/aliens.ogg')
 
 
 /datum/round_event/rabbitrelease/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/landmark/R in GLOB.landmarks_list)
 		if(R.name != "blobspawn")
 			if(prob(35))
@@ -72,15 +80,21 @@
 	can_hold = list(/obj/item/reagent_containers/food/snacks/egg, /obj/item/reagent_containers/food/snacks/chocolateegg, /obj/item/reagent_containers/food/snacks/boiledegg)
 
 /obj/item/storage/bag/easterbasket/proc/countEggs()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	add_overlay("basket-grass")
 	add_overlay("basket-egg[min(contents.len, 5)]")
 
 /obj/item/storage/bag/easterbasket/remove_from_storage(obj/item/W as obj, atom/new_location)
+	procstart = null
+	src.procstart = null
 	..()
 	countEggs()
 
 /obj/item/storage/bag/easterbasket/handle_item_insertion(obj/item/I, prevent_warning = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	countEggs()
 
@@ -110,12 +124,16 @@
 	containsPrize = TRUE
 
 /obj/item/reagent_containers/food/snacks/egg/loaded/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/eggcolor = pick("blue","green","mime","orange","purple","rainbow","red","yellow")
 	icon_state = "egg-[eggcolor]"
 	item_color = "[eggcolor]"
 
 /obj/item/reagent_containers/food/snacks/egg/proc/dispensePrize(turf/where)
+	procstart = null
+	src.procstart = null
 	var/won = pick(/obj/item/clothing/head/bunnyhead,
 	/obj/item/clothing/suit/bunnysuit,
 	/obj/item/reagent_containers/food/snacks/grown/carrot,
@@ -133,6 +151,8 @@
 	new/obj/item/reagent_containers/food/snacks/chocolateegg(where)
 
 /obj/item/reagent_containers/food/snacks/egg/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(containsPrize)
 		to_chat(user, "<span class='notice'>You unwrap [src] and find a prize inside!</span>")

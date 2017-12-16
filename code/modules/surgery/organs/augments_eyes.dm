@@ -15,12 +15,16 @@
 	var/HUD_type = 0
 
 /obj/item/organ/cyberimp/eyes/hud/Insert(var/mob/living/carbon/M, var/special = 0, drop_if_replaced = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(HUD_type)
 		var/datum/atom_hud/H = GLOB.huds[HUD_type]
 		H.add_hud_to(M)
 
 /obj/item/organ/cyberimp/eyes/hud/Remove(var/mob/living/carbon/M, var/special = 0)
+	procstart = null
+	src.procstart = null
 	if(HUD_type)
 		var/datum/atom_hud/H = GLOB.huds[HUD_type]
 		H.remove_hud_from(M)

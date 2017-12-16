@@ -19,6 +19,8 @@
 
 
 /obj/item/storage/lockbox/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.GetID())
 		if(broken)
 			to_chat(user, "<span class='danger'>It appears to be broken.</span>")
@@ -43,6 +45,8 @@
 		to_chat(user, "<span class='danger'>It's locked!</span>")
 
 /obj/item/storage/lockbox/MouseDrop(over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	if (locked)
 		src.add_fingerprint(usr)
 		to_chat(usr, "<span class='warning'>It's locked!</span>")
@@ -50,6 +54,8 @@
 	..()
 
 /obj/item/storage/lockbox/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!broken)
 		broken = TRUE
 		locked = FALSE
@@ -60,6 +66,8 @@
 			return
 
 /obj/item/storage/lockbox/show_to(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		to_chat(user, "<span class='warning'>It's locked!</span>")
 	else
@@ -68,6 +76,8 @@
 
 //Check the destination item type for contentto.
 /obj/item/storage/lockbox/storage_contents_dump_act(obj/item/storage/src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		to_chat(user, "<span class='warning'>It's locked!</span>")
 		return null
@@ -75,15 +85,21 @@
 	return ..()
 
 /obj/item/storage/lockbox/can_be_inserted(obj/item/W, stop_messages = 0)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		return 0
 	return ..()
 
 /obj/item/storage/lockbox/handle_item_insertion(obj/item/W, prevent_warning = 0, mob/user)
+	procstart = null
+	src.procstart = null
 	open = TRUE
 	update_icon()
 	return ..()
 /obj/item/storage/lockbox/remove_from_storage(obj/item/W, atom/new_location, burn = 0)
+	procstart = null
+	src.procstart = null
 	open = TRUE
 	update_icon()
 	return ..()
@@ -93,6 +109,8 @@
 	req_access = list(ACCESS_SECURITY)
 
 /obj/item/storage/lockbox/loyalty/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/implantcase/mindshield(src)
 	new /obj/item/implanter/mindshield(src)
@@ -104,6 +122,8 @@
 	req_access = list(ACCESS_SECURITY)
 
 /obj/item/storage/lockbox/clusterbang/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/grenade/clusterbuster(src)
 
 /obj/item/storage/lockbox/medal
@@ -124,11 +144,15 @@
 	can_hold = list(/obj/item/clothing/accessory/medal)
 
 /obj/item/storage/lockbox/medal/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!locked)
 		to_chat(user, "<span class='notice'>Alt-click to [open ? "close":"open"] it.</span>")
 
 /obj/item/storage/lockbox/medal/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.canUseTopic(src, be_close=TRUE))
 		if(!locked)
 			open = (open ? FALSE : TRUE)
@@ -136,6 +160,8 @@
 		..()
 
 /obj/item/storage/lockbox/medal/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/accessory/medal/gold/captain(src)
 	new /obj/item/clothing/accessory/medal/silver/valor(src)
 	new /obj/item/clothing/accessory/medal/silver/valor(src)
@@ -147,6 +173,8 @@
 		new /obj/item/clothing/accessory/medal/conduct(src)
 
 /obj/item/storage/lockbox/medal/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(locked)
 		icon_state = "medalbox+l"
@@ -175,6 +203,8 @@
 	req_access = list(ACCESS_HOS)
 
 /obj/item/storage/lockbox/medal/sec/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/accessory/medal/silver/security(src)
 
@@ -184,6 +214,8 @@
 	req_access = list(ACCESS_QM)
 
 /obj/item/storage/lockbox/medal/cargo/PopulateContents()
+		procstart = null
+		src.procstart = null
 		new /obj/item/clothing/accessory/medal/ribbon/cargo(src)
 
 /obj/item/storage/lockbox/medal/sci
@@ -192,5 +224,7 @@
 	req_access = list(ACCESS_RD)
 
 /obj/item/storage/lockbox/medal/sci/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/clothing/accessory/medal/plasma/nobel_science(src)

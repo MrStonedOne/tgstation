@@ -7,6 +7,8 @@
 	equip_delay_other = 40
 
 /obj/item/clothing/neck/worn_overlays(isinhands = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands)
 		if(body_parts_covered & HEAD)
@@ -52,6 +54,8 @@
 	item_color = "stethoscope"
 
 /obj/item/clothing/neck/stethoscope/attack(mob/living/carbon/human/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M) && isliving(user))
 		if(user.a_intent == INTENT_HELP)
 			var/body_part = parse_zone(user.zone_selected)
@@ -170,6 +174,8 @@
 	var/tagname = null
 
 /obj/item/clothing/neck/petcollar/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	tagname = copytext(sanitize(input(user, "Would you like to change the name on the tag?", "Name your new pet", "Spot") as null|text),1,MAX_NAME_LEN)
 	name = "[initial(name)] - [tagname]"
 

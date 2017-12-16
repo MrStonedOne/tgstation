@@ -19,6 +19,8 @@
 	resistance_flags = NONE
 
 /obj/item/clothing/gloves/color/fyellow/New()
+	procstart = null
+	src.procstart = null
 	..()
 	siemens_coefficient = pick(0,0.5,0.5,0.5,0.5,0.75,1.5)
 
@@ -27,6 +29,8 @@
 	name = "worn out insulated gloves"
 
 /obj/item/clothing/gloves/color/fyellow/old/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	siemens_coefficient = pick(0,0,0,0.5,0.5,0.5,0.75)
 
@@ -50,6 +54,8 @@
 	item_color = "chief"		//Exists for washing machines. Is not different from black gloves in any way.
 
 /obj/item/clothing/gloves/color/black/attackby(obj/item/W as obj, mob/user as mob, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wirecutters))
 		if(can_be_cut && icon_state == initial(icon_state))//only if not dyed
 			to_chat(user, "<span class='notice'>You snip the fingertips off of [src].</span>")
@@ -193,6 +199,8 @@
 	item_color = "mime"
 
 /obj/item/clothing/gloves/color/random/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/gloves = list(
 		/obj/item/clothing/gloves/color/orange = 1,

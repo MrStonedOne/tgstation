@@ -27,11 +27,15 @@
 	del_on_death = 1
 
 /mob/living/simple_animal/cockroach/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(SSticker.mode && SSticker.mode.station_was_nuked) //If the nuke is going off, then cockroaches are invincible. Keeps the nuke from killing them, cause cockroaches are immune to nukes.
 		return
 	..()
 
 /mob/living/simple_animal/cockroach/Crossed(var/atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(ismob(AM))
 		if(isliving(AM))
 			var/mob/living/A = AM

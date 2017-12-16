@@ -65,6 +65,8 @@
 	var/datum/action/toggle_scope_zoom/azoom
 
 /obj/item/gun/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pin)
 		pin = new pin(src)
@@ -74,6 +76,8 @@
 
 
 /obj/item/gun/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/gun/G = locate(/obj/item/gun) in contents
 	if(G)
@@ -83,6 +87,8 @@
 		qdel(src)
 
 /obj/item/gun/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(pin)
 		to_chat(user, "It has \a [pin] installed.")
@@ -90,25 +96,35 @@
 		to_chat(user, "It doesn't have a firing pin installed, and won't fire.")
 
 /obj/item/gun/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(zoomed && user.get_active_held_item() != src)
 		zoom(user, FALSE) //we can only stay zoomed in if it's in our hands	//yeah and we only unzoom if we're actually zoomed using the gun!!
 
 //called after the gun has successfully fired its chambered ammo.
 /obj/item/gun/proc/process_chamber()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //check if there's enough ammo/energy/whatever to shoot one time
 //i.e if clicking would make it shoot
 /obj/item/gun/proc/can_shoot()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/gun/proc/shoot_with_empty_chamber(mob/living/user as mob|obj)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='danger'>*click*</span>")
 	playsound(src, "gun_dry_fire", 50, 1)
 
 
 /obj/item/gun/proc/shoot_live_shot(mob/living/user as mob|obj, pointblank = 0, mob/pbtarget = null, message = 1)
+	procstart = null
+	src.procstart = null
 	if(recoil)
 		shake_camera(user, recoil + 1, recoil)
 
@@ -123,11 +139,15 @@
 				user.visible_message("<span class='danger'>[user] fires [src]!</span>", null, null, COMBAT_MESSAGE_RANGE)
 
 /obj/item/gun/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in contents)
 		O.emp_act(severity)
 
 
 /obj/item/gun/afterattack(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(firing_burst)
 		return
 	if(flag) //It's adjacent, is the user, or is on the user's person
@@ -185,11 +205,15 @@
 
 
 /obj/item/gun/can_trigger_gun(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!handle_pins(user))
 		return FALSE
 
 /obj/item/gun/proc/handle_pins(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(pin)
 		if(pin.pin_auth(user) || pin.emagged)
 			return TRUE
@@ -201,9 +225,13 @@
 	return FALSE
 
 /obj/item/gun/proc/recharge_newshot()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/proc/process_burst(mob/living/user, atom/target, message = TRUE, params, zone_override, sprd = 0, randomized_gun_spread = 0, randomized_bonus_spread = 0, rand_spr = 0, iteration = 0)
+	procstart = null
+	src.procstart = null
 	if(!user || !firing_burst)
 		firing_burst = FALSE
 		return FALSE
@@ -237,6 +265,8 @@
 	return TRUE
 
 /obj/item/gun/proc/process_fire(atom/target as mob|obj|turf, mob/living/user as mob|obj, message = TRUE, params, zone_override, bonus_spread = 0)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 
 	if(semicd)
@@ -278,9 +308,13 @@
 	return TRUE
 
 /obj/item/gun/proc/reset_semicd()
+	procstart = null
+	src.procstart = null
 	semicd = FALSE
 
 /obj/item/gun/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	cut_overlays()
 	if(gun_light && can_flashlight)
@@ -301,6 +335,8 @@
 		add_overlay(knife_overlay)
 
 /obj/item/gun/attack(mob/M as mob, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM) //Flogging
 		if(bayonet)
 			M.attackby(bayonet, user)
@@ -310,6 +346,8 @@
 	return
 
 /obj/item/gun/attack_obj(obj/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		if(bayonet)
 			O.attackby(bayonet, user)
@@ -317,6 +355,8 @@
 	return ..()
 
 /obj/item/gun/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	else if(istype(I, /obj/item/device/flashlight/seclite))
@@ -364,6 +404,8 @@
 		return ..()
 
 /obj/item/gun/proc/toggle_gunlight()
+	procstart = null
+	src.procstart = null
 	if(!gun_light)
 		return
 
@@ -376,6 +418,8 @@
 	return
 
 /obj/item/gun/proc/update_gunlight(mob/user = null)
+	procstart = null
+	src.procstart = null
 	if(gun_light)
 		if(gun_light.on)
 			set_light(gun_light.brightness_on)
@@ -390,6 +434,8 @@
 
 
 /obj/item/gun/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(azoom)
 		azoom.Grant(user)
@@ -397,6 +443,8 @@
 		alight.Grant(user)
 
 /obj/item/gun/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	zoom(user,FALSE)
 	if(azoom)
@@ -405,6 +453,8 @@
 		alight.Remove(user)
 
 /obj/item/gun/proc/handle_suicide(mob/living/carbon/human/user, mob/living/carbon/human/target, params)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user) || !ishuman(target))
 		return
 
@@ -455,19 +505,27 @@
 	var/obj/item/gun/gun = null
 
 /datum/action/toggle_scope_zoom/Trigger()
+	procstart = null
+	src.procstart = null
 	gun.zoom(owner)
 
 /datum/action/toggle_scope_zoom/IsAvailable()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!. && gun)
 		gun.zoom(owner, FALSE)
 
 /datum/action/toggle_scope_zoom/Remove(mob/living/L)
+	procstart = null
+	src.procstart = null
 	gun.zoom(L, FALSE)
 	..()
 
 
 /obj/item/gun/proc/zoom(mob/living/user, forced_zoom)
+	procstart = null
+	src.procstart = null
 	if(!user || !user.client)
 		return
 
@@ -503,6 +561,8 @@
 
 //Proc, so that gun accessories/scopes/etc. can easily add zooming.
 /obj/item/gun/proc/build_zooming()
+	procstart = null
+	src.procstart = null
 	if(azoom)
 		return
 

@@ -7,6 +7,8 @@
 	var/datum/martial_art/krav_maga/style = new
 
 /obj/item/implant/krav_maga/get_data()
+	procstart = null
+	src.procstart = null
 	var/dat = {"<b>Implant Specifications:</b><BR>
 				<b>Name:</b> Krav Maga Implant<BR>
 				<b>Life:</b> 4 hours after death of host<BR>
@@ -15,6 +17,8 @@
 	return dat
 
 /obj/item/implant/krav_maga/activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = imp_in
 	if(!ishuman(H))
 		return

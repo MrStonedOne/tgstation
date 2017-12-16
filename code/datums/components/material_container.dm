@@ -22,6 +22,8 @@
 	var/datum/callback/after_insert
 
 /datum/component/material_container/Initialize(list/mat_list, max_amt = 0, _show_on_examine = FALSE, list/allowed_types, datum/callback/_precondition, datum/callback/_after_insert)
+	procstart = null
+	src.procstart = null
 	materials = list()
 	max_amount = max(0, max_amt)
 	show_on_examine = _show_on_examine
@@ -43,6 +45,8 @@
 			materials[id] = new mat_path()
 
 /datum/component/material_container/proc/OnExamine(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/I in materials)
 		var/datum/material/M = materials[I]
 		var/amt = amount(M.id)
@@ -50,6 +54,8 @@
 			to_chat(user, "<span class='notice'>It has [amt] units of [lowertext(M.name)] stored.</span>")
 
 /datum/component/material_container/proc/OnAttackBy(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/list/tc = allowed_typecache
 	if(user.a_intent == INTENT_HARM)
 		return
@@ -70,6 +76,8 @@
 	user_insert(I, user)
 
 /datum/component/material_container/proc/user_insert(obj/item/I, mob/living/user)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/requested_amount
 	var/Itype = I.type
@@ -99,6 +107,8 @@
 
 //For inserting an amount of material
 /datum/component/material_container/proc/insert_amount(amt, id = null)
+	procstart = null
+	src.procstart = null
 	if(amt > 0 && has_space(amt))
 		var/total_amount_saved = total_amount
 		if(id)
@@ -115,6 +125,8 @@
 	return FALSE
 
 /datum/component/material_container/proc/insert_stack(obj/item/stack/S, amt)
+	procstart = null
+	src.procstart = null
 	if(isnull(amt))
 		amt = S.amount
 
@@ -137,6 +149,8 @@
 	return amt
 
 /datum/component/material_container/proc/insert_item(obj/item/I, multiplier = 1, stack_amt)
+	procstart = null
+	src.procstart = null
 	if(!I)
 		return FALSE
 	if(istype(I, /obj/item/stack))
@@ -164,6 +178,8 @@
 //For consuming material
 //mats is a list of types of material to use and the corresponding amounts, example: list(MAT_METAL=100, MAT_GLASS=200)
 /datum/component/material_container/proc/use_amount(list/mats, multiplier=1)
+	procstart = null
+	src.procstart = null
 	if(!mats || !mats.len)
 		return FALSE
 
@@ -183,6 +199,8 @@
 
 
 /datum/component/material_container/proc/use_amount_type(amt, id)
+	procstart = null
+	src.procstart = null
 	var/datum/material/M = materials[id]
 	if(M)
 		if(M.amount >= amt)
@@ -192,6 +210,8 @@
 	return FALSE
 
 /datum/component/material_container/proc/can_use_amount(amt, id, list/mats)
+	procstart = null
+	src.procstart = null
 	if(amt && id)
 		var/datum/material/M = materials[id]
 		if(M && M.amount >= amt)
@@ -207,6 +227,8 @@
 
 //For spawning mineral sheets; internal use only
 /datum/component/material_container/proc/retrieve(sheet_amt, datum/material/M, target = null)
+	procstart = null
+	src.procstart = null
 	if(!M.sheet_type)
 		return FALSE
 	if(sheet_amt > 0)
@@ -228,14 +250,20 @@
 	return FALSE
 
 /datum/component/material_container/proc/retrieve_sheets(sheet_amt, id, target = null)
+	procstart = null
+	src.procstart = null
 	if(materials[id])
 		return retrieve(sheet_amt, materials[id], target)
 	return FALSE
 
 /datum/component/material_container/proc/retrieve_amount(amt, id, target)
+	procstart = null
+	src.procstart = null
 	return retrieve_sheets(amount2sheet(amt), id, target)
 
 /datum/component/material_container/proc/retrieve_all(target = null)
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	var/datum/material/M
 	for(var/MAT in materials)
@@ -244,9 +272,13 @@
 	return result
 
 /datum/component/material_container/proc/has_space(amt = 0)
+	procstart = null
+	src.procstart = null
 	return (total_amount + amt) <= max_amount
 
 /datum/component/material_container/proc/has_materials(list/mats, multiplier=1)
+	procstart = null
+	src.procstart = null
 	if(!mats || !mats.len)
 		return FALSE
 
@@ -258,22 +290,30 @@
 	return TRUE
 
 /datum/component/material_container/proc/amount2sheet(amt)
+	procstart = null
+	src.procstart = null
 	if(amt >= MINERAL_MATERIAL_AMOUNT)
 		return round(amt / MINERAL_MATERIAL_AMOUNT)
 	return FALSE
 
 /datum/component/material_container/proc/sheet2amount(sheet_amt)
+	procstart = null
+	src.procstart = null
 	if(sheet_amt > 0)
 		return sheet_amt * MINERAL_MATERIAL_AMOUNT
 	return FALSE
 
 /datum/component/material_container/proc/amount(id)
+	procstart = null
+	src.procstart = null
 	var/datum/material/M = materials[id]
 	return M ? M.amount : 0
 
 //returns the amount of material relevant to this container;
 //if this container does not support glass, any glass in 'I' will not be taken into account
 /datum/component/material_container/proc/get_item_material_amount(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(!istype(I))
 		return FALSE
 	var/material_amount = 0

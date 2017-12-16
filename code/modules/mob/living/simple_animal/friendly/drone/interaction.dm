@@ -7,6 +7,8 @@
 
 
 /mob/living/simple_animal/drone/attack_drone(mob/living/simple_animal/drone/D)
+	procstart = null
+	src.procstart = null
 	if(D != src && stat == DEAD)
 		var/d_input = alert(D,"Perform which action?","Drone Interaction","Reactivate","Cannibalize","Nothing")
 		if(d_input)
@@ -31,6 +33,8 @@
 
 
 /mob/living/simple_animal/drone/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		if(stat == DEAD || status_flags & GODMODE || !can_be_held)
 			..()
@@ -56,6 +60,8 @@
 		forceMove(DH)
 
 /mob/living/simple_animal/drone/proc/try_reactivate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = get_ghost()
 	if(!client && (!G || !G.client))
 		var/list/faux_gadgets = list("hypertext inflator","failsafe directory","DRM switch","stack initializer",\
@@ -81,6 +87,8 @@
 
 
 /mob/living/simple_animal/drone/attackby(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver) && stat != DEAD)
 		if(health < maxHealth)
 			to_chat(user, "<span class='notice'>You start to tighten loose screws on [src]...</span>")
@@ -106,6 +114,8 @@
 		..()
 
 /mob/living/simple_animal/drone/getarmor(def_zone, type)
+	procstart = null
+	src.procstart = null
 	var/armorval = 0
 
 	if(head)
@@ -113,9 +123,13 @@
 	return (armorval * get_armor_effectiveness()) //armor is reduced for tiny fragile drones
 
 /mob/living/simple_animal/drone/proc/get_armor_effectiveness()
+	procstart = null
+	src.procstart = null
 	return 0 //multiplier for whatever head armor you wear as a drone
 
 /mob/living/simple_animal/drone/proc/update_drone_hack(hack, clockwork)
+	procstart = null
+	src.procstart = null
 	if(!istype(src) || !mind)
 		return
 	if(hack)
@@ -164,6 +178,8 @@
 	updateSeeStaticMobs()
 
 /mob/living/simple_animal/drone/proc/liberate()
+	procstart = null
+	src.procstart = null
 	// F R E E D R O N E
 	laws = "1. You are a Free Drone."
 	to_chat(src, laws)
@@ -171,6 +187,8 @@
 	updateSeeStaticMobs()
 
 /mob/living/simple_animal/drone/proc/update_drone_icon()
+	procstart = null
+	src.procstart = null
 	//Different icons for different hack states
 	if(!hacked)
 		if(visualAppearence == SCOUTDRONE_HACKED)

@@ -15,12 +15,16 @@
 	heat = 1000
 
 /obj/item/candle/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(start_lit)
 		// No visible message
 		light(show_message = FALSE)
 
 /obj/item/candle/update_icon()
+	procstart = null
+	src.procstart = null
 	var/i
 	if(wax>150)
 		i = 1
@@ -31,17 +35,23 @@
 
 
 /obj/item/candle/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	var/msg = W.ignition_effect(src, user)
 	if(msg)
 		light(msg)
 
 /obj/item/candle/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(!src.lit)
 		light() //honk
 	..()
 
 /obj/item/candle/proc/light(show_message)
+	procstart = null
+	src.procstart = null
 	if(!src.lit)
 		src.lit = TRUE
 		//src.damtype = "fire"
@@ -53,6 +63,8 @@
 
 
 /obj/item/candle/process()
+	procstart = null
+	src.procstart = null
 	if(!lit)
 		return
 	if(!infinite)
@@ -64,6 +76,8 @@
 	open_flame()
 
 /obj/item/candle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(lit)
 		user.visible_message(
 			"<span class='notice'>[user] snuffs [src].</span>")
@@ -72,6 +86,8 @@
 		set_light(0)
 
 /obj/item/candle/is_hot()
+	procstart = null
+	src.procstart = null
 	return lit * heat
 
 

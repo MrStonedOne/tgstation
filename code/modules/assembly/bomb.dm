@@ -15,9 +15,13 @@
 
 
 /obj/item/device/onetankbomb/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	bombtank.examine(user)
 
 /obj/item/device/onetankbomb/update_icon()
+	procstart = null
+	src.procstart = null
 	if(bombtank)
 		icon = bombtank.icon
 		icon_state = bombtank.icon_state
@@ -27,6 +31,8 @@
 		add_overlay("bomb_assembly")
 
 /obj/item/device/onetankbomb/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/analyzer))
 		bombtank.attackby(W, user)
 		return
@@ -82,6 +88,8 @@
 
 //Bomb assembly proc. This turns assembly+tank into a bomb
 /obj/item/tank/proc/bomb_assemble(obj/item/device/assembly_holder/assembly, mob/living/user)
+	procstart = null
+	src.procstart = null
 	//Check if either part of the assembly has an igniter, but if both parts are igniters, then fuck it
 	if(isigniter(assembly.a_left) == isigniter(assembly.a_right))
 		return

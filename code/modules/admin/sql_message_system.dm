@@ -60,6 +60,8 @@
 			browse_messages(target_ckey = target_ckey, agegate = TRUE)
 
 /proc/delete_message(message_id, logged = 1, browse)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, "<span class='danger'>Failed to establish database connection.</span>")
 		return
@@ -88,6 +90,8 @@
 			browse_messages(target_ckey = target_ckey, agegate = TRUE)
 
 /proc/edit_message(message_id, browse)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, "<span class='danger'>Failed to establish database connection.</span>")
 		return
@@ -119,6 +123,8 @@
 			browse_messages(target_ckey = target_ckey, agegate = TRUE)
 
 /proc/toggle_message_secrecy(message_id)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, "<span class='danger'>Failed to establish database connection.</span>")
 		return
@@ -143,6 +149,8 @@
 		browse_messages(target_ckey = target_ckey, agegate = TRUE)
 
 /proc/browse_messages(type, target_ckey, index, linkless = FALSE, filter, agegate = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, "<span class='danger'>Failed to establish database connection.</span>")
 		return
@@ -307,6 +315,8 @@
 	usr << browse({"<!DOCTYPE html><html><head><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /></head><body>[output]</body></html>"}, "window=browse_messages;size=900x500")
 
 proc/get_message_output(type, target_ckey)
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		to_chat(usr, "<span class='danger'>Failed to establish database connection.</span>")
 		return
@@ -347,6 +357,8 @@ proc/get_message_output(type, target_ckey)
 #define NOTESFILE "data/player_notes.sav"
 //if the AUTOCONVERT_NOTES is turned on, anytime a player connects this will be run to try and add all their notes to the databas
 /proc/convert_notes_sql(ckey)
+	procstart = null
+	src.procstart = null
 	var/savefile/notesfile = new(NOTESFILE)
 	if(!notesfile)
 		log_game("Error: Cannot access [NOTESFILE]")
@@ -377,6 +389,8 @@ proc/get_message_output(type, target_ckey)
 /*alternatively this proc can be run once to pass through every note and attempt to convert it before deleting the file, if done then AUTOCONVERT_NOTES should be turned off
 this proc can take several minutes to execute fully if converting and cause DD to hang if converting a lot of notes; it's not advised to do so while a server is live
 /proc/mass_convert_notes()
+	procstart = null
+	src.procstart = null
 	to_chat(world, "Beginning mass note conversion")
 	var/savefile/notesfile = new(NOTESFILE)
 	if(!notesfile)

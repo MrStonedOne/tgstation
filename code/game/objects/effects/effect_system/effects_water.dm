@@ -8,10 +8,14 @@
 
 
 /obj/effect/particle_effect/water/New()
+	procstart = null
+	src.procstart = null
 	..()
 	QDEL_IN(src, 70)
 
 /obj/effect/particle_effect/water/Move(turf/newloc)
+	procstart = null
+	src.procstart = null
 	if (--src.life < 1)
 		qdel(src)
 		return 0
@@ -20,6 +24,8 @@
 	.=..()
 
 /obj/effect/particle_effect/water/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		reagents.reaction(A)
 	return ..()
@@ -46,6 +52,8 @@ steam.start() -- spawns the effect
 	density = FALSE
 
 /obj/effect/particle_effect/steam/New()
+	procstart = null
+	src.procstart = null
 	..()
 	QDEL_IN(src, 20)
 

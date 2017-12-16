@@ -4,12 +4,16 @@
 	icon_state = "scooter"
 
 /obj/vehicle/ridden/scooter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
 	D.set_riding_offsets(RIDING_OFFSET_ALL, list(TEXT_NORTH = list(0), TEXT_SOUTH = list(-2), TEXT_EAST = list(0), TEXT_WEST = list( 2)))
 
 
 /obj/vehicle/ridden/scooter/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench))
 		to_chat(user, "<span class='notice'>You begin to remove the handlebars...</span>")
 		playsound(get_turf(user), 'sound/items/ratchet.ogg', 50, 1)
@@ -24,6 +28,8 @@
 			qdel(src)
 
 /obj/vehicle/ridden/scooter/Moved()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/m in buckled_mobs)
 		var/mob/living/buckled_mob = m
@@ -33,6 +39,8 @@
 			buckled_mob.pixel_y = -4
 
 /obj/vehicle/ridden/scooter/buckle_mob(mob/living/M, force = 0, check_loc = 1)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return 0
 	if(M.get_num_legs() < 2 && M.get_num_arms() <= 0)
@@ -47,6 +55,8 @@
 	density = FALSE
 
 /obj/vehicle/ridden/scooter/skateboard/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
 	D.vehicle_move_delay = 0
@@ -60,11 +70,15 @@
 	return ..()
 
 /obj/vehicle/ridden/scooter/skateboard/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!has_buckled_mobs())
 		density = FALSE
 	return ..()
 
 /obj/vehicle/ridden/scooter/skateboard/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(A.density && has_buckled_mobs())
 		var/mob/living/carbon/H = buckled_mobs[1]
@@ -80,6 +94,8 @@
 		playsound(src, 'sound/effects/bang.ogg', 50, 1)
 
 /obj/vehicle/ridden/scooter/skateboard/MouseDrop(atom/over_object)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/M = usr
 	if(!istype(M) || M.incapacitated() || !Adjacent(M))
 		return
@@ -100,6 +116,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/scooter_frame/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench))
 		to_chat(user, "<span class='notice'>You deconstruct [src].</span>")
 		new /obj/item/stack/rods(get_turf(src),10)
@@ -122,6 +140,8 @@
 			qdel(src)
 
 /obj/vehicle/ridden/scooter/skateboard/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		to_chat(user, "<span class='notice'>You begin to deconstruct and remove the wheels on [src]...</span>")
 		playsound(get_turf(user), I.usesound, 50, 1)

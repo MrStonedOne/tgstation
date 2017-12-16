@@ -29,6 +29,8 @@
 	var/max_dist = 20 // absolute value of center_x,y cannot exceed this integer
 
 /obj/machinery/magnetic_module/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/T = loc
 	hide(T.intact)
@@ -37,20 +39,28 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/magnetic_module/LateInitialize()
+	procstart = null
+	src.procstart = null
 	magnetic_process()
 
 /obj/machinery/magnetic_module/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, freq)
 	center = null
 	return ..()
 
 // update the invisibility and icon
 /obj/machinery/magnetic_module/hide(intact)
+	procstart = null
+	src.procstart = null
 	invisibility = intact ? INVISIBILITY_MAXIMUM : 0
 	updateicon()
 
 // update the icon_state
 /obj/machinery/magnetic_module/proc/updateicon()
+	procstart = null
+	src.procstart = null
 	var/state="floor_magnet"
 	var/onstate=""
 	if(!on)
@@ -64,6 +74,8 @@
 
 /obj/machinery/magnetic_module/receive_signal(datum/signal/signal)
 
+	procstart = null
+	src.procstart = null
 	var/command = signal.data["command"]
 	var/modifier = signal.data["modifier"]
 	var/signal_code = signal.data["code"]
@@ -75,6 +87,8 @@
 
 /obj/machinery/magnetic_module/proc/Cmd(command, modifier)
 
+	procstart = null
+	src.procstart = null
 	if(command)
 		switch(command)
 			if("set-electriclevel")
@@ -135,6 +149,8 @@
 
 
 /obj/machinery/magnetic_module/process()
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		on = FALSE
 
@@ -216,6 +232,8 @@
 
 
 /obj/machinery/magnetic_controller/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(autolink)
 		for(var/obj/machinery/magnetic_module/M in GLOB.machines)
@@ -227,12 +245,16 @@
 	radio_connection = SSradio.add_object(src, frequency, RADIO_MAGNETS)
 
 /obj/machinery/magnetic_controller/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	magnets = null
 	rpath = null
 	return ..()
 
 /obj/machinery/magnetic_controller/process()
+	procstart = null
+	src.procstart = null
 	if(magnets.len == 0 && autolink)
 		for(var/obj/machinery/magnetic_module/M in GLOB.machines)
 			if(M.freq == frequency && M.code == code)
@@ -240,9 +262,13 @@
 
 
 /obj/machinery/magnetic_controller/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/magnetic_controller/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 	user.set_machine(src)
@@ -271,6 +297,8 @@
 	onclose(user, "magnet")
 
 /obj/machinery/magnetic_controller/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -330,6 +358,8 @@
 	updateUsrDialog()
 
 /obj/machinery/magnetic_controller/proc/MagnetMove()
+	procstart = null
+	src.procstart = null
 	if(looping)
 		return
 
@@ -373,6 +403,8 @@
 
 
 /obj/machinery/magnetic_controller/proc/filter_path()
+	procstart = null
+	src.procstart = null
 	// Generates the rpath variable using the path string, think of this as "string2list"
 	// Doesn't use params2list() because of the akward way it stacks entities
 	rpath = list() //  clear rpath

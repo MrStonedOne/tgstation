@@ -19,17 +19,25 @@
 	var/allowed_department_flags = ALL
 
 /obj/machinery/rnd/proc/reset_busy()
+	procstart = null
+	src.procstart = null
 	busy = FALSE
 
 /obj/machinery/rnd/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires = new /datum/wires/rnd(src)
 
 /obj/machinery/rnd/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(wires)
 	return ..()
 
 /obj/machinery/rnd/proc/shock(mob/user, prb)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))		// unpowered, no shock
 		return FALSE
 	if(!prob(prb))
@@ -41,6 +49,8 @@
 		return FALSE
 
 /obj/machinery/rnd/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(shocked)
 		if(shock(user,50))
 			return
@@ -50,6 +60,8 @@
 
 
 /obj/machinery/rnd/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (shocked)
 		if(shock(user,50))
 			return TRUE
@@ -70,14 +82,20 @@
 
 //to disconnect the machine from the r&d console it's linked to
 /obj/machinery/rnd/proc/disconnect_console()
+	procstart = null
+	src.procstart = null
 	linked_console = null
 
 //proc used to handle inserting items or reagents into rnd machines
 /obj/machinery/rnd/proc/Insert_Item(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 //whether the machine can have an item inserted in its current state.
 /obj/machinery/rnd/proc/is_insertion_ready(mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		to_chat(user, "<span class='warning'>You can't load [src] while it's opened!</span>")
 		return FALSE
@@ -102,11 +120,15 @@
 
 //we eject the loaded item when deconstructing the machine
 /obj/machinery/rnd/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	if(loaded_item)
 		loaded_item.forceMove(loc)
 	..()
 
 /obj/machinery/rnd/proc/AfterMaterialInsert(type_inserted, id_inserted, amount_inserted)
+	procstart = null
+	src.procstart = null
 	var/stack_name
 	if(ispath(type_inserted, /obj/item/ore/bluespace_crystal))
 		stack_name = "bluespace"

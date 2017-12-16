@@ -12,6 +12,8 @@
 	armor = list(melee = 30, bullet = 30, laser = 30, energy = 10, bomb = 25, bio = 0, rad = 0, fire = 50, acid = 50)
 
 /obj/item/clothing/suit/armor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!allowed)
 		allowed = GLOB.security_vest_allowed
@@ -149,6 +151,8 @@
 	var/hit_reflect_chance = 40
 
 /obj/item/clothing/suit/armor/laserproof/IsReflect(def_zone)
+	procstart = null
+	src.procstart = null
 	if(!(def_zone in list("chest", "groin"))) //If not shot where ablative is covering you, you don't get the reflection bonus!
 		return 0
 	if (prob(hit_reflect_chance))
@@ -162,6 +166,8 @@
 	dog_fashion = null
 
 /obj/item/clothing/suit/armor/vest/det_suit/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.detective_vest_allowed
 
@@ -182,6 +188,8 @@
 
 
 /obj/item/clothing/suit/armor/reactive/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	src.active = !( src.active )
 	if (src.active)
 		to_chat(user, "<span class='notice'>[src] is now active.</span>")
@@ -195,6 +203,8 @@
 	return
 
 /obj/item/clothing/suit/armor/reactive/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	active = 0
 	src.icon_state = "reactiveoff"
 	src.item_state = "reactiveoff"
@@ -210,6 +220,8 @@
 	reactivearmor_cooldown_duration = 100
 
 /obj/item/clothing/suit/armor/reactive/teleport/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return 0
 	if(prob(hit_reaction_chance))
@@ -243,6 +255,8 @@
 	desc = "An experimental suit of armor with a reactive sensor array rigged to a flame emitter. For the stylish pyromaniac."
 
 /obj/item/clothing/suit/armor/reactive/fire/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return 0
 	if(prob(hit_reaction_chance))
@@ -265,6 +279,8 @@
 	desc = "An experimental suit of armor that renders the wearer invisible on detection of imminent harm, and creates a decoy that runs away from the owner. You can't fight what you can't see."
 
 /obj/item/clothing/suit/armor/reactive/stealth/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return 0
 	if(prob(hit_reaction_chance))
@@ -292,6 +308,8 @@
 	var/tesla_stun = FALSE
 
 /obj/item/clothing/suit/armor/reactive/tesla/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return 0
 	if(prob(hit_reaction_chance))
@@ -312,6 +330,8 @@
 	var/tele_range = 10
 
 /obj/item/clothing/suit/armor/reactive/table/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return 0
 	if(prob(hit_reaction_chance))
@@ -343,6 +363,8 @@
 	return 0
 
 /obj/item/clothing/suit/armor/reactive/table/emp_act()
+	procstart = null
+	src.procstart = null
 	return
 
 //All of the armor below is mostly unused

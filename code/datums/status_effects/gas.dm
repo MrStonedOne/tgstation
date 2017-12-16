@@ -12,6 +12,8 @@
 	icon_state = "frozen"
 
 /datum/status_effect/freon/on_apply()
+	procstart = null
+	src.procstart = null
 	if(!owner.stat)
 		to_chat(owner, "<span class='userdanger'>You become frozen in a cube!</span>")
 	cube = icon('icons/effects/freeze.dmi', "ice_cube")
@@ -20,11 +22,15 @@
 	return ..()
 
 /datum/status_effect/freon/tick()
+	procstart = null
+	src.procstart = null
 	owner.update_canmove()
 	if(can_melt && owner.bodytemperature >= 310.055)
 		qdel(src)
 
 /datum/status_effect/freon/on_remove()
+	procstart = null
+	src.procstart = null
 	if(!owner.stat)
 		to_chat(owner, "The cube melts!")
 	owner.cut_overlay(cube)

@@ -26,6 +26,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Possess Object") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /proc/release()
+	procstart = null
+	src.procstart = null
 	set name = "Release Obj"
 	set category = "Object"
 	//usr.loc = get_turf(usr)
@@ -45,6 +47,8 @@
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Release Object") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /proc/givetestverbs(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set desc = "Give this guy possess/release verbs"
 	set category = "Debug"
 	set name = "Give Possessing Verbs"

@@ -186,6 +186,8 @@
 	bitesize = 2
 
 /obj/item/reagent_containers/food/snacks/deepfryholder/Initialize(mapload, obj/item/fried)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = fried.name //We'll determine the other stuff when it's actually removed
 	icon = fried.icon
@@ -199,6 +201,8 @@
 		fried.forceMove(src)
 
 /obj/item/reagent_containers/food/snacks/deepfryholder/proc/fry(cook_time = 30)
+	procstart = null
+	src.procstart = null
 	switch(cook_time)
 		if(0 to 15)
 			add_atom_colour(rgb(166,103,54), FIXED_COLOUR_PRIORITY)
@@ -252,5 +256,7 @@
 	tastes = list("butter", "exotic butter")
 
 /obj/item/reagent_containers/food/snacks/butterdog/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/slippery, 80)

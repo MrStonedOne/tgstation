@@ -30,6 +30,8 @@ Thus, the two variables affect pump operation are set in New():
 	pipe_state = "volumepump"
 
 /obj/machinery/atmospherics/components/binary/volume_pump/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,frequency)
 	return ..()
 
@@ -37,6 +39,8 @@ Thus, the two variables affect pump operation are set in New():
 	on = TRUE
 
 /obj/machinery/atmospherics/components/binary/volume_pump/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		icon_state = "volpump_off"
 		return
@@ -68,12 +72,16 @@ Thus, the two variables affect pump operation are set in New():
 	update_parents()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	if(frequency)
 		radio_connection = SSradio.add_object(src, frequency)
 
 /obj/machinery/atmospherics/components/binary/volume_pump/proc/broadcast_status()
+	procstart = null
+	src.procstart = null
 	if(!radio_connection)
 		return
 
@@ -94,6 +102,8 @@ Thus, the two variables affect pump operation are set in New():
 		ui.open()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["rate"] = round(transfer_rate)
@@ -101,11 +111,15 @@ Thus, the two variables affect pump operation are set in New():
 	return data
 
 /obj/machinery/atmospherics/components/binary/volume_pump/atmosinit()
+	procstart = null
+	src.procstart = null
 	..()
 
 	set_frequency(frequency)
 
 /obj/machinery/atmospherics/components/binary/volume_pump/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -131,6 +145,8 @@ Thus, the two variables affect pump operation are set in New():
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 		return
 
@@ -157,10 +173,14 @@ Thus, the two variables affect pump operation are set in New():
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")

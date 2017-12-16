@@ -23,6 +23,8 @@
 	var/customname = "custom"
 
 /obj/item/reagent_containers/food/snacks/customizable/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/ingredients_listed = ""
 	for(var/obj/item/reagent_containers/food/snacks/ING in ingredients)
@@ -37,6 +39,8 @@
 	to_chat(user, "It contains [ingredients.len?"[ingredients_listed]":"no ingredient, "]making a [size]-sized [initial(name)].")
 
 /obj/item/reagent_containers/food/snacks/customizable/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!istype(I, /obj/item/reagent_containers/food/snacks/customizable) && istype(I, /obj/item/reagent_containers/food/snacks))
 		var/obj/item/reagent_containers/food/snacks/S = I
 		if(I.w_class > WEIGHT_CLASS_SMALL)
@@ -62,6 +66,8 @@
 
 
 /obj/item/reagent_containers/food/snacks/customizable/proc/update_name(obj/item/reagent_containers/food/snacks/S)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in ingredients)
 		if(!istype(S, I.type))
 			customname = "custom"
@@ -80,6 +86,8 @@
 	name = "[customname] [initial(name)]"
 
 /obj/item/reagent_containers/food/snacks/customizable/proc/initialize_custom_food(obj/item/BASE, obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(BASE, /obj/item/reagent_containers))
 		var/obj/item/reagent_containers/RC = BASE
 		RC.reagents.trans_to(src,RC.reagents.total_volume)
@@ -90,6 +98,8 @@
 	qdel(BASE)
 
 /obj/item/reagent_containers/food/snacks/customizable/proc/mix_filling_color(obj/item/reagent_containers/food/snacks/S)
+	procstart = null
+	src.procstart = null
 	if(ingredients.len == 1)
 		filling_color = S.filling_color
 	else
@@ -103,6 +113,8 @@
 		filling_color = rgb(rgbcolor[1], rgbcolor[2], rgbcolor[3], rgbcolor[4])
 
 /obj/item/reagent_containers/food/snacks/customizable/update_overlays(obj/item/reagent_containers/food/snacks/S)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/filling = mutable_appearance(icon, "[initial(icon_state)]_filling")
 	if(S.filling_color == "#FFFFFF")
 		filling.color = pick("#FF0000","#0000FF","#008000","#FFFF00")
@@ -136,12 +148,16 @@
 
 
 /obj/item/reagent_containers/food/snacks/customizable/initialize_slice(obj/item/reagent_containers/food/snacks/slice, reagents_per_slice)
+	procstart = null
+	src.procstart = null
 	..()
 	slice.filling_color = filling_color
 	slice.update_overlays(src)
 
 
 /obj/item/reagent_containers/food/snacks/customizable/Destroy()
+	procstart = null
+	src.procstart = null
 	for(. in ingredients)
 		qdel(.)
 	return ..()
@@ -241,10 +257,14 @@
 	foodtype = GRAIN
 
 /obj/item/reagent_containers/food/snacks/customizable/sandwich/initialize_custom_food(obj/item/reagent_containers/BASE, obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	icon_state = BASE.icon_state
 	..()
 
 /obj/item/reagent_containers/food/snacks/customizable/sandwich/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/reagent_containers/food/snacks/breadslice)) //we're finishing the custom food.
 		var/obj/item/reagent_containers/food/snacks/breadslice/BS = I
 		if(finished)
@@ -277,6 +297,8 @@
 	icon_state = "wishsoup"
 
 /obj/item/reagent_containers/food/snacks/customizable/soup/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eatverb = pick("slurp","sip","suck","inhale","drink")
 
@@ -296,6 +318,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/reagent_containers/glass/bowl/attackby(obj/item/I,mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/reagent_containers/food/snacks))
 		var/obj/item/reagent_containers/food/snacks/S = I
 		if(I.w_class > WEIGHT_CLASS_SMALL)
@@ -314,10 +338,14 @@
 	return
 
 /obj/item/reagent_containers/glass/bowl/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/item/reagent_containers/glass/bowl/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(reagents && reagents.total_volume)
 		var/mutable_appearance/filling = mutable_appearance('icons/obj/food/soupsalad.dmi', "fullbowl")

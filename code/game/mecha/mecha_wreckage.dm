@@ -17,6 +17,8 @@
 	var/mob/living/silicon/ai/AI //AIs to be salvaged
 
 /obj/structure/mecha_wreckage/New(loc, mob/living/silicon/ai/AI_pilot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(AI_pilot) //Type-checking for this is already done in mecha/Destroy()
 		AI = AI_pilot
@@ -28,11 +30,15 @@
 		AI.remote_control = null
 
 /obj/structure/mecha_wreckage/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(AI)
 		to_chat(user, "<span class='notice'>The AI recovery beacon is active.</span>")
 
 /obj/structure/mecha_wreckage/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/weldingtool))
 		if(salvage_num <= 0)
 			to_chat(user, "<span class='warning'>You don't see anything that can be cut with [I]!</span>")
@@ -77,6 +83,8 @@
 
 
 /obj/structure/mecha_wreckage/transfer_ai(interaction, mob/user, null, obj/item/device/aicard/card)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -103,6 +111,8 @@
 	icon_state = "gygax-broken"
 
 /obj/structure/mecha_wreckage/gygax/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/parts = list(/obj/item/mecha_parts/part/gygax_torso,
 								/obj/item/mecha_parts/part/gygax_head,
@@ -146,6 +156,8 @@
 	icon_state = "ripley-broken"
 
 /obj/structure/mecha_wreckage/ripley/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/parts = list(/obj/item/mecha_parts/part/ripley_torso,
 								/obj/item/mecha_parts/part/ripley_left_arm,
@@ -164,6 +176,8 @@
 	icon_state = "firefighter-broken"
 
 /obj/structure/mecha_wreckage/ripley/firefighter/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/parts = list(/obj/item/mecha_parts/part/ripley_torso,
 								/obj/item/mecha_parts/part/ripley_left_arm,
@@ -189,6 +203,8 @@
 	desc = "All is right in the universe."
 
 /obj/structure/mecha_wreckage/honker/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/parts = list(
 							/obj/item/mecha_parts/chassis/honker,
@@ -210,6 +226,8 @@
 	icon_state = "durand-broken"
 
 /obj/structure/mecha_wreckage/durand/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/parts = list(
 								/obj/item/mecha_parts/part/durand_torso,
@@ -235,6 +253,8 @@
 	icon_state = "odysseus-broken"
 
 /obj/structure/mecha_wreckage/odysseus/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/parts = list(
 								/obj/item/mecha_parts/part/odysseus_torso,

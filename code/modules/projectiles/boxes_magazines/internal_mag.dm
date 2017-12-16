@@ -5,6 +5,8 @@
 
 //internals magazines are accessible, so replace spent ammo if full when trying to put a live one in
 /obj/item/ammo_box/magazine/internal/give_round(obj/item/ammo_casing/R)
+	procstart = null
+	src.procstart = null
 	return ..(R,1)
 
 
@@ -17,6 +19,8 @@
 	max_ammo = 7
 
 /obj/item/ammo_box/magazine/internal/cylinder/ammo_count(countempties = 1)
+	procstart = null
+	src.procstart = null
 	var/boolets = 0
 	for(var/obj/item/ammo_casing/bullet in stored_ammo)
 		if(bullet && (bullet.BB || countempties))
@@ -25,6 +29,8 @@
 	return boolets
 
 /obj/item/ammo_box/magazine/internal/cylinder/get_round(keep = 0)
+	procstart = null
+	src.procstart = null
 	rotate()
 
 	var/b = stored_ammo[1]
@@ -34,16 +40,22 @@
 	return b
 
 /obj/item/ammo_box/magazine/internal/cylinder/proc/rotate()
+	procstart = null
+	src.procstart = null
 	var/b = stored_ammo[1]
 	stored_ammo.Cut(1,2)
 	stored_ammo.Insert(0, b)
 
 /obj/item/ammo_box/magazine/internal/cylinder/proc/spin()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to rand(0, max_ammo*2))
 		rotate()
 
 
 /obj/item/ammo_box/magazine/internal/cylinder/give_round(obj/item/ammo_casing/R, replace_spent = 0)
+	procstart = null
+	src.procstart = null
 	if(!R || (caliber && R.caliber != caliber) || (!caliber && R.type != ammo_type))
 		return 0
 
@@ -86,6 +98,8 @@
 	multiload = 0
 
 /obj/item/ammo_box/magazine/internal/shot/ammo_count(countempties = 1)
+	procstart = null
+	src.procstart = null
 	if (!countempties)
 		var/boolets = 0
 		for(var/obj/item/ammo_casing/bullet in stored_ammo)
@@ -157,6 +171,8 @@
 	multiload = 0
 
 /obj/item/ammo_box/magazine/internal/rus357/Initialize()
+	procstart = null
+	src.procstart = null
 	stored_ammo += new ammo_type(src)
 	. = ..()
 

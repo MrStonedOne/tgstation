@@ -13,6 +13,8 @@
 	var/suffix = null
 
 /datum/map_template/ruin/New()
+	procstart = null
+	src.procstart = null
 	if(!name && id)
 		name = id
 

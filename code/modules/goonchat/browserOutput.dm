@@ -16,11 +16,15 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 	var/adminMusicVolume = 25 //This is for the Play Global Sound verb
 
 /datum/chatOutput/New(client/C)
+	procstart = null
+	src.procstart = null
 	owner = C
 	messageQueue = list()
 	connectionHistory = list()
 
 /datum/chatOutput/proc/start()
+	procstart = null
+	src.procstart = null
 	//Check for existing chat
 	if(!owner)
 		return FALSE
@@ -42,6 +46,8 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 	return TRUE
 
 /datum/chatOutput/proc/load()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!owner)
 		return
@@ -53,6 +59,8 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 	owner << browse(file('code/modules/goonchat/browserassets/html/browserOutput.html'), "window=browseroutput")
 
 /datum/chatOutput/Topic(href, list/href_list)
+	procstart = null
+	src.procstart = null
 	if(usr.client != owner)
 		return TRUE
 
@@ -89,6 +97,8 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 
 //Called on chat output done-loading by JS.
 /datum/chatOutput/proc/doneLoading()
+	procstart = null
+	src.procstart = null
 	if(loaded)
 		return
 
@@ -109,10 +119,14 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 	pingLoop()
 
 /datum/chatOutput/proc/showChat()
+	procstart = null
+	src.procstart = null
 	winset(owner, "output", "is-visible=false")
 	winset(owner, "browseroutput", "is-disabled=false;is-visible=true")
 
 /datum/chatOutput/proc/pingLoop()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	while (owner)
@@ -120,22 +134,30 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 		sleep(30)
 
 /datum/chatOutput/proc/ehjax_send(client/C = owner, window = "browseroutput", data)
+	procstart = null
+	src.procstart = null
 	if(islist(data))
 		data = json_encode(data)
 	C << output("[data]", "[window]:ehjaxCallback")
 
 /datum/chatOutput/proc/sendMusic(music, pitch)
+	procstart = null
+	src.procstart = null
 	var/list/music_data = list("adminMusic" = url_encode(url_encode(music)))
 	if(pitch)
 		music_data["musicRate"] = pitch
 	ehjax_send(data = music_data)
 
 /datum/chatOutput/proc/setMusicVolume(volume = "")
+	procstart = null
+	src.procstart = null
 	if(volume)
 		adminMusicVolume = Clamp(text2num(volume), 0, 100)
 
 //Sends client connection details to the chat to handle and save
 /datum/chatOutput/proc/sendClientData()
+	procstart = null
+	src.procstart = null
 	//Get dem deets
 	var/list/deets = list("clientData" = list())
 	deets["clientData"]["ckey"] = owner.ckey
@@ -146,6 +168,8 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 
 //Called by client, sent data to investigate (cookie history so far)
 /datum/chatOutput/proc/analyzeClientData(cookie = "")
+	procstart = null
+	src.procstart = null
 	if(!cookie)
 		return
 
@@ -172,15 +196,21 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 
 //Called by js client every 60 seconds
 /datum/chatOutput/proc/ping()
+	procstart = null
+	src.procstart = null
 	return "pong"
 
 //Called by js client on js error
 /datum/chatOutput/proc/debug(error)
+	procstart = null
+	src.procstart = null
 	log_world("\[[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]\] Client: [(src.owner.key ? src.owner.key : src.owner)] triggered JS error: [error]")
 
 //Global chat procs
 
 /proc/to_chat(target, message)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 
@@ -231,6 +261,8 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/iconCache.sav")) //Cache of ic
 		C << output(url_encode(url_encode(message)), "browseroutput:output")
 
 /proc/grab_client(target)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /client))
 		return target
 	else if(ismob(target))

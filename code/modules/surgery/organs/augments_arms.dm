@@ -14,6 +14,8 @@
 	// You can use this var for item path, it would be converted into an item on New()
 
 /obj/item/organ/cyberimp/arm/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ispath(holder))
 		holder = new holder(src)
@@ -23,6 +25,8 @@
 	items_list = contents.Copy()
 
 /obj/item/organ/cyberimp/arm/proc/SetSlotFromZone()
+	procstart = null
+	src.procstart = null
 	switch(zone)
 		if("l_arm")
 			slot = ORGAN_SLOT_LEFT_ARM_AUG
@@ -32,16 +36,22 @@
 			CRASH("Invalid zone for [type]")
 
 /obj/item/organ/cyberimp/arm/update_icon()
+	procstart = null
+	src.procstart = null
 	if(zone == "r_arm")
 		transform = null
 	else // Mirroring the icon
 		transform = matrix(-1, 0, 0, 0, 1, 0)
 
 /obj/item/organ/cyberimp/arm/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='info'>[src] is assembled in the [zone == "r_arm" ? "right" : "left"] arm configuration. You can use a screwdriver to reassemble it.</span>")
 
 /obj/item/organ/cyberimp/arm/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/screwdriver))
 		if(zone == "r_arm")
@@ -55,13 +65,19 @@
 		emag_act()
 
 /obj/item/organ/cyberimp/arm/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	Retract()
 	..()
 
 /obj/item/organ/cyberimp/arm/emag_act()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/organ/cyberimp/arm/gun/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(prob(15/severity) && owner)
 		to_chat(owner, "<span class='warning'>[src] is hit by EMP!</span>")
 		// give the owner an idea about why his implant is glitching
@@ -69,6 +85,8 @@
 	..()
 
 /obj/item/organ/cyberimp/arm/proc/Retract()
+	procstart = null
+	src.procstart = null
 	if(!holder || (holder in src))
 		return
 
@@ -85,6 +103,8 @@
 	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 50, 1)
 
 /obj/item/organ/cyberimp/arm/proc/Extend(var/obj/item/item)
+	procstart = null
+	src.procstart = null
 	if(!(item in src))
 		return
 
@@ -122,6 +142,8 @@
 	playsound(get_turf(owner), 'sound/mecha/mechmove03.ogg', 50, 1)
 
 /obj/item/organ/cyberimp/arm/ui_action_click()
+	procstart = null
+	src.procstart = null
 	if(crit_fail || (!holder && !contents.len))
 		to_chat(owner, "<span class='warning'>The implant doesn't respond. It seems to be broken...</span>")
 		return
@@ -144,6 +166,8 @@
 
 
 /obj/item/organ/cyberimp/arm/gun/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(prob(30/severity) && owner && !crit_fail)
 		Retract()
 		owner.visible_message("<span class='danger'>A loud bang comes from [owner]\'s [zone == "r_arm" ? "right" : "left"] arm!</span>")
@@ -187,6 +211,8 @@
 	zone = "l_arm"
 
 /obj/item/organ/cyberimp/arm/toolset/emag_act()
+	procstart = null
+	src.procstart = null
 	if(!(locate(/obj/item/kitchen/knife/combat/cyborg) in items_list))
 		to_chat(usr, "<span class='notice'>You unlock [src]'s integrated knife!</span>")
 		items_list += new /obj/item/kitchen/knife/combat/cyborg(src)
@@ -210,6 +236,8 @@
 	contents = newlist(/obj/item/device/assembly/flash/armimplant)
 
 /obj/item/organ/cyberimp/arm/flash/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(locate(/obj/item/device/assembly/flash/armimplant) in items_list)
 		var/obj/item/device/assembly/flash/armimplant/F = locate(/obj/item/device/assembly/flash/armimplant) in items_list
@@ -226,6 +254,8 @@
 	contents = newlist(/obj/item/melee/transforming/energy/blade/hardlight, /obj/item/gun/medbeam, /obj/item/borg/stun, /obj/item/device/assembly/flash/armimplant)
 
 /obj/item/organ/cyberimp/arm/combat/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(locate(/obj/item/device/assembly/flash/armimplant) in items_list)
 		var/obj/item/device/assembly/flash/armimplant/F = locate(/obj/item/device/assembly/flash/armimplant) in items_list

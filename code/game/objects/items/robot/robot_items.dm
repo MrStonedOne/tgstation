@@ -11,6 +11,8 @@
 	var/charge_cost = 30
 
 /obj/item/borg/stun/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.check_shields(src, 0, "[M]'s [name]", MELEE_ATTACK))
@@ -43,6 +45,8 @@
 	var/boop = FALSE
 
 /obj/item/borg/cyborghug/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/P = user
 		if(P.emagged&&shockallowed == 1)
@@ -65,6 +69,8 @@
 			to_chat(user, "ERROR: ARM ACTUATORS OVERLOADED.")
 
 /obj/item/borg/cyborghug/attack(mob/living/M, mob/living/silicon/robot/user)
+	procstart = null
+	src.procstart = null
 	if(M == user)
 		return
 	switch(mode)
@@ -157,13 +163,19 @@
 	var/static/list/charge_items = typecacheof(list(/obj/item/stock_parts/cell, /obj/item/gun/energy))
 
 /obj/item/borg/charger/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /obj/item/borg/charger/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "charger_[mode]"
 
 /obj/item/borg/charger/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(mode == "draw")
 		mode = "charge"
 	else
@@ -172,6 +184,8 @@
 	update_icon()
 
 /obj/item/borg/charger/afterattack(obj/item/target, mob/living/silicon/robot/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(!proximity_flag || !iscyborg(user))
 		return
 	if(mode == "draw")
@@ -280,6 +294,8 @@
 	var/cooldown = 0
 
 /obj/item/device/harmalarm/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	emagged = !emagged
 	if(emagged)
 		to_chat(user, "<font color='red'>You short out the safeties on [src]!</font>")
@@ -287,6 +303,8 @@
 		to_chat(user, "<font color='red'>You reset the safeties on [src]!</font>")
 
 /obj/item/device/harmalarm/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/safety = !emagged
 	if(cooldown > world.time)
 		to_chat(user, "<font color='red'>The device is still recharging!</font>")
@@ -351,9 +369,13 @@
 	var/emaggedhitdamage = 3
 
 /obj/item/borg/lollipop/equipped()
+	procstart = null
+	src.procstart = null
 	check_amount()
 
 /obj/item/borg/lollipop/dropped()
+	procstart = null
+	src.procstart = null
 	check_amount()
 
 /obj/item/borg/lollipop/proc/check_amount()	//Doesn't even use processing ticks.
@@ -364,11 +386,15 @@
 		charging = TRUE
 
 /obj/item/borg/lollipop/proc/charge_lollipops()
+	procstart = null
+	src.procstart = null
 	candy++
 	charging = FALSE
 	check_amount()
 
 /obj/item/borg/lollipop/proc/dispense(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(candy <= 0)
 		to_chat(user, "<span class='warning'>No lollipops left in storage!</span>")
 		return FALSE
@@ -387,6 +413,8 @@
 	return TRUE
 
 /obj/item/borg/lollipop/proc/shootL(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(candy <= 0)
 		to_chat(user, "<span class='warning'>Not enough lollipops left!</span>")
 		return FALSE
@@ -418,6 +446,8 @@
 	check_amount()
 
 /obj/item/borg/lollipop/afterattack(atom/target, mob/living/user, proximity, click_params)
+	procstart = null
+	src.procstart = null
 	check_amount()
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/R = user
@@ -438,6 +468,8 @@
 	hitdamage = initial(hitdamage)
 
 /obj/item/borg/lollipop/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(1)
 			mode++
@@ -465,6 +497,8 @@
 	nodamage = TRUE
 
 /obj/item/projectile/bullet/reusable/gumball/handle_drop()
+	procstart = null
+	src.procstart = null
 	if(!dropped)
 		var/turf/T = get_turf(src)
 		var/obj/item/reagent_containers/food/snacks/gumball/S = new ammo_type(T)
@@ -486,6 +520,8 @@
 	nodamage = TRUE
 
 /obj/item/projectile/bullet/reusable/lollipop/New()
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/food/snacks/lollipop/S = new ammo_type(src)
 	color2 = S.headcolor
 	var/mutable_appearance/head = mutable_appearance('icons/obj/projectiles.dmi', "lollipop_2")
@@ -493,6 +529,8 @@
 	add_overlay(head)
 
 /obj/item/projectile/bullet/reusable/lollipop/handle_drop()
+	procstart = null
+	src.procstart = null
 	if(!dropped)
 		var/turf/T = get_turf(src)
 		var/obj/item/reagent_containers/food/snacks/lollipop/S = new ammo_type(T)
@@ -530,6 +568,8 @@
 	energy_recharge = 5000
 
 /obj/item/borg/projectile_dampen/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	projectile_effect = image('icons/effects/fields.dmi', "projectile_dampen_effect")
 	tracked = list()
@@ -538,10 +578,14 @@
 	host = loc
 
 /obj/item/borg/projectile_dampen/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/item/borg/projectile_dampen/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(cycle_delay > world.time)
 		to_chat(user, "<span class='boldwarning'>[src] is still recycling its projectors!</span>")
 		return
@@ -557,9 +601,13 @@
 	to_chat(user, "<span class='boldnotice'>You [active? "activate":"deactivate"] [src].</span>")
 
 /obj/item/borg/projectile_dampen/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "[initial(icon_state)][active]"
 
 /obj/item/borg/projectile_dampen/proc/activate_field()
+	procstart = null
+	src.procstart = null
 	if(istype(dampening_field))
 		QDEL_NULL(dampening_field)
 	dampening_field = make_field(/datum/proximity_monitor/advanced/peaceborg_dampener, list("current_range" = field_radius, "host" = src, "projector" = src))
@@ -569,6 +617,8 @@
 	active = TRUE
 
 /obj/item/borg/projectile_dampen/proc/deactivate_field()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(dampening_field)
 	visible_message("<span class='warning'>\The [src] shuts off!</span>")
 	for(var/P in tracked)
@@ -580,6 +630,8 @@
 		owner.module.allow_riding = TRUE
 
 /obj/item/borg/projectile_dampen/proc/get_host()
+	procstart = null
+	src.procstart = null
 	if(istype(host))
 		return host
 	else
@@ -588,27 +640,39 @@
 	return null
 
 /obj/item/borg/projectile_dampen/dropped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	host = loc
 
 /obj/item/borg/projectile_dampen/equipped()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	host = loc
 
 /obj/item/borg/projectile_dampen/on_mob_death()
+	procstart = null
+	src.procstart = null
 	deactivate_field()
 	. = ..()
 
 /obj/item/borg/projectile_dampen/process()
+	procstart = null
+	src.procstart = null
 	process_recharge()
 	process_usage()
 	update_location()
 
 /obj/item/borg/projectile_dampen/proc/update_location()
+	procstart = null
+	src.procstart = null
 	if(dampening_field)
 		dampening_field.HandleMove()
 
 /obj/item/borg/projectile_dampen/proc/process_usage()
+	procstart = null
+	src.procstart = null
 	var/usage = 0
 	for(var/I in tracked)
 		var/obj/item/projectile/P = I
@@ -622,6 +686,8 @@
 		visible_message("<span class='warning'>[src] blinks \"ENERGY DEPLETED\".</span>")
 
 /obj/item/borg/projectile_dampen/proc/process_recharge()
+	procstart = null
+	src.procstart = null
 	if(!istype(host))
 		if(iscyborg(host.loc))
 			host = host.loc
@@ -633,6 +699,8 @@
 		energy += energy_recharge
 
 /obj/item/borg/projectile_dampen/proc/dampen_projectile(obj/item/projectile/P, track_projectile = TRUE)
+	procstart = null
+	src.procstart = null
 	if(tracked[P])
 		return
 	if(track_projectile)
@@ -642,6 +710,8 @@
 	P.add_overlay(projectile_effect)
 
 /obj/item/borg/projectile_dampen/proc/restore_projectile(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	tracked -= P
 	P.damage *= (1/projectile_damage_coefficient)
 	P.speed *= (1/projectile_speed_coefficient)
@@ -691,6 +761,8 @@
 	icon_state = "healthhud"
 
 /obj/item/borg/sight/hud/med/New()
+	procstart = null
+	src.procstart = null
 	..()
 	hud = new /obj/item/clothing/glasses/hud/health(src)
 	return
@@ -701,6 +773,8 @@
 	icon_state = "securityhud"
 
 /obj/item/borg/sight/hud/sec/New()
+	procstart = null
+	src.procstart = null
 	..()
 	hud = new /obj/item/clothing/glasses/hud/security(src)
 	return

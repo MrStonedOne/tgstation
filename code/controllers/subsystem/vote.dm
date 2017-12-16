@@ -35,6 +35,8 @@ SUBSYSTEM_DEF(vote)
 
 
 /datum/controller/subsystem/vote/proc/reset()
+	procstart = null
+	src.procstart = null
 	initiator = null
 	time_remaining = 0
 	mode = null
@@ -45,6 +47,8 @@ SUBSYSTEM_DEF(vote)
 	remove_action_buttons()
 
 /datum/controller/subsystem/vote/proc/get_result()
+	procstart = null
+	src.procstart = null
 	//get the highest number of votes
 	var/greatest_votes = 0
 	var/total_votes = 0
@@ -80,6 +84,8 @@ SUBSYSTEM_DEF(vote)
 	return .
 
 /datum/controller/subsystem/vote/proc/announce_result()
+	procstart = null
+	src.procstart = null
 	var/list/winners = get_result()
 	var/text
 	if(winners.len > 0)
@@ -109,6 +115,8 @@ SUBSYSTEM_DEF(vote)
 	return .
 
 /datum/controller/subsystem/vote/proc/result()
+	procstart = null
+	src.procstart = null
 	. = announce_result()
 	var/restart = 0
 	if(.)
@@ -138,6 +146,8 @@ SUBSYSTEM_DEF(vote)
 	return .
 
 /datum/controller/subsystem/vote/proc/submit_vote(vote)
+	procstart = null
+	src.procstart = null
 	if(mode)
 		if(CONFIG_GET(flag/no_dead_vote) && usr.stat == DEAD && !usr.client.holder)
 			return 0
@@ -149,6 +159,8 @@ SUBSYSTEM_DEF(vote)
 	return 0
 
 /datum/controller/subsystem/vote/proc/initiate_vote(vote_type, initiator_key)
+	procstart = null
+	src.procstart = null
 	if(!mode)
 		if(started_time)
 			var/next_allowed_time = (started_time + CONFIG_GET(number/vote_delay))
@@ -204,6 +216,8 @@ SUBSYSTEM_DEF(vote)
 	return 0
 
 /datum/controller/subsystem/vote/proc/interface(client/C)
+	procstart = null
+	src.procstart = null
 	if(!C)
 		return
 	var/admin = 0
@@ -258,6 +272,8 @@ SUBSYSTEM_DEF(vote)
 
 
 /datum/controller/subsystem/vote/Topic(href,href_list[],hsrc)
+	procstart = null
+	src.procstart = null
 	if(!usr || !usr.client)
 		return	//not necessary but meh...just in-case somebody does something stupid
 	switch(href_list["vote"])
@@ -288,6 +304,8 @@ SUBSYSTEM_DEF(vote)
 	usr.vote()
 
 /datum/controller/subsystem/vote/proc/remove_action_buttons()
+	procstart = null
+	src.procstart = null
 	for(var/v in generated_actions)
 		var/datum/action/vote/V = v
 		if(!QDELETED(V))
@@ -296,6 +314,8 @@ SUBSYSTEM_DEF(vote)
 	generated_actions = list()
 
 /mob/verb/vote()
+	procstart = null
+	src.procstart = null
 	set category = "OOC"
 	set name = "Vote"
 
@@ -309,15 +329,21 @@ SUBSYSTEM_DEF(vote)
 	button_icon_state = "vote"
 
 /datum/action/vote/Trigger()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.vote()
 		remove_from_client()
 		Remove(owner)
 
 /datum/action/vote/IsAvailable()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /datum/action/vote/proc/remove_from_client()
+	procstart = null
+	src.procstart = null
 	if(owner.client)
 		owner.client.player_details.player_actions -= src
 	else if(owner.ckey)

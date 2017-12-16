@@ -15,15 +15,21 @@
 	pipe_state = "layer_manifold"
 
 /obj/machinery/atmospherics/pipe/layer_manifold/Initialize()
+	procstart = null
+	src.procstart = null
 	front_nodes = list()
 	back_nodes = list()
 	return ..()
 
 /obj/machinery/atmospherics/pipe/layer_manifold/Destroy()
+	procstart = null
+	src.procstart = null
 	nullifyAllNodes()
 	return ..()
 
 /obj/machinery/atmospherics/pipe/layer_manifold/proc/nullifyAllNodes()
+	procstart = null
+	src.procstart = null
 	var/list/obj/machinery/atmospherics/needs_nullifying = get_all_connected_nodes()
 	front_nodes = null
 	back_nodes = null
@@ -33,6 +39,8 @@
 		A.build_network()
 
 /obj/machinery/atmospherics/pipe/layer_manifold/proc/get_all_connected_nodes()
+	procstart = null
+	src.procstart = null
 	return front_nodes + back_nodes + nodes
 
 /obj/machinery/atmospherics/pipe/layer_manifold/update_icon()	//HEAVILY WIP FOR UPDATE ICONS!!
@@ -46,6 +54,8 @@
 		add_attached_image(A)
 
 /obj/machinery/atmospherics/pipe/layer_manifold/proc/add_attached_image(obj/machinery/atmospherics/A)
+	procstart = null
+	src.procstart = null
 	var/invis = A.invisibility ? "-f" : ""
 	if(istype(A, /obj/machinery/atmospherics/pipe/layer_manifold))
 		for(var/i = PIPING_LAYER_MIN, i <= PIPING_LAYER_MAX, i++)
@@ -62,6 +72,8 @@
 		add_overlay(I)
 
 /obj/machinery/atmospherics/pipe/layer_manifold/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH || SOUTH)
 			initialize_directions = NORTH|SOUTH
@@ -69,11 +81,15 @@
 			initialize_directions = EAST|WEST
 
 /obj/machinery/atmospherics/pipe/layer_manifold/isConnectable(obj/machinery/atmospherics/target, given_layer)
+	procstart = null
+	src.procstart = null
 	if(!given_layer)
 		return TRUE
 	. = ..()
 
 /obj/machinery/atmospherics/pipe/layer_manifold/proc/findAllConnections()
+	procstart = null
+	src.procstart = null
 	front_nodes = list()
 	back_nodes = list()
 	var/list/new_nodes = list()
@@ -90,18 +106,26 @@
 	return new_nodes
 
 /obj/machinery/atmospherics/pipe/layer_manifold/atmosinit()
+	procstart = null
+	src.procstart = null
 	normalize_cardinal_directions()
 	findAllConnections()
 	var/turf/T = loc			// hide if turf is not intact
 	hide(T.intact)
 
 /obj/machinery/atmospherics/pipe/layer_manifold/setPipingLayer()
+	procstart = null
+	src.procstart = null
 	piping_layer = PIPING_LAYER_DEFAULT
 
 /obj/machinery/atmospherics/pipe/layer_manifold/pipeline_expansion()
+	procstart = null
+	src.procstart = null
 	return get_all_connected_nodes()
 
 /obj/machinery/atmospherics/pipe/layer_manifold/disconnect(obj/machinery/atmospherics/reference)
+	procstart = null
+	src.procstart = null
 	if(istype(reference, /obj/machinery/atmospherics/pipe))
 		var/obj/machinery/atmospherics/pipe/P = reference
 		P.destroy_network()
@@ -118,6 +142,8 @@
 	update_icon()
 
 /obj/machinery/atmospherics/pipe/layer_manifold/relaymove(mob/living/user, dir)
+	procstart = null
+	src.procstart = null
 	if(initialize_directions & dir)
 		return ..()
 	if((NORTH|EAST) & dir)

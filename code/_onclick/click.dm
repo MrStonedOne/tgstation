@@ -18,6 +18,8 @@
 // DOES NOT EFFECT THE BASE 1 DECISECOND DELAY OF NEXT_CLICK
 
 /mob/proc/changeNext_move(num)
+	procstart = null
+	src.procstart = null
 	next_move = world.time + ((num+next_move_adjust)*next_move_modifier)
 
 
@@ -31,15 +33,21 @@
 	Note that this proc can be overridden, and is in the case of screen objects.
 */
 /atom/Click(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(initialized)
 		SendSignal(COMSIG_CLICK, location, control, params)
 		usr.ClickOn(src, params)
 
 /atom/DblClick(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(initialized)
 		usr.DblClickOn(src,params)
 
 /atom/MouseWheel(delta_x,delta_y,location,control,params)
+	procstart = null
+	src.procstart = null
 	if(initialized)
 		usr.MouseWheelOn(src, delta_x, delta_y, params)
 
@@ -57,6 +65,8 @@
 	* mob/RangedAttack(atom,params) - used only ranged, only used for tk and laser eyes but could be changed
 */
 /mob/proc/ClickOn( atom/A, params )
+	procstart = null
+	src.procstart = null
 	if(world.time <= next_click)
 		return
 	next_click = world.time + 1
@@ -147,6 +157,8 @@
 
 //Is the atom obscured by a PREVENT_CLICK_UNDER_1 object above it
 /atom/proc/IsObscured()
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc)) //This only makes sense for things directly on turfs for now
 		return FALSE
 	var/turf/T = get_turf_pixel(src)
@@ -158,12 +170,16 @@
 	return FALSE
 
 /turf/IsObscured()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/AM in src)
 		if(AM.flags_1 & PREVENT_CLICK_UNDER_1 && AM.density)
 			return TRUE
 	return FALSE
 
 /atom/movable/proc/CanReach(atom/target,obj/item/tool,view_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(isturf(target) || isturf(target.loc) || DirectAccess(target)) //Directly accessible atoms
 		if(Adjacent(target) || (tool && CheckToolReach(src, target, tool.reach))) //Adjacent or reaching attacks
 			return TRUE
@@ -179,9 +195,13 @@
 
 //Can [target] in this container be reached by [user], can't be more than [depth] levels deep
 /atom/proc/CanReachStorage(atom/target,user,depth)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/storage/CanReachStorage(atom/target,user,depth)
+	procstart = null
+	src.procstart = null
 	while(target && depth > 0)
 		target = target.loc
 		depth--
@@ -190,12 +210,16 @@
 	return FALSE
 
 /atom/movable/proc/DirectAccess(atom/target)
+	procstart = null
+	src.procstart = null
 	if(target == src)
 		return TRUE
 	if(target == loc)
 		return TRUE
 
 /mob/DirectAccess(atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(target in contents) //This could probably use moving down and restricting to inventory only
@@ -203,18 +227,26 @@
 	return FALSE
 
 /mob/living/DirectAccess(atom/target)
+	procstart = null
+	src.procstart = null
 	if(..()) //Lightweight checks first
 		return TRUE
 	if(target in GetAllContents())
 		return TRUE
 
 /atom/proc/AllowClick()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/AllowClick()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /proc/CheckToolReach(atom/movable/here, atom/movable/there, reach)
+	procstart = null
+	src.procstart = null
 	if(!here || !there)
 		return
 	switch(reach)
@@ -238,6 +270,8 @@
 
 // Default behavior: ignore double clicks (the second click that makes the doubleclick call already calls for a normal click)
 /mob/proc/DblClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -252,6 +286,8 @@
 	in human click code to allow glove touches only at melee range.
 */
 /mob/proc/UnarmedAttack(atom/A, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(ismob(A))
 		changeNext_move(CLICK_CD_MELEE)
 	return
@@ -272,6 +308,8 @@
 	Not currently used by anything but could easily be.
 */
 /mob/proc/RestrainedClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	return
 
 /*
@@ -279,9 +317,13 @@
 	Only used for swapping hands
 */
 /mob/proc/MiddleClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/MiddleClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!stat && mind && iscarbon(A) && A != src)
 		var/datum/antagonist/changeling/C = mind.has_antag_datum(/datum/antagonist/changeling)
 		if(C && C.chosen_sting)
@@ -291,11 +333,15 @@
 	swap_hand()
 
 /mob/living/simple_animal/drone/MiddleClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	swap_hand()
 
 // In case of use break glass
 /*
 /atom/proc/MiddleClick(mob/M as mob)
+	procstart = null
+	src.procstart = null
 	return
 */
 
@@ -305,9 +351,13 @@
 	This is overridden in ai.dm
 */
 /mob/proc/ShiftClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	A.ShiftClick(src)
 	return
 /atom/proc/ShiftClick(mob/user)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_CLICK_SHIFT, user)
 	if(user.client && user.client.eye == user || user.client.eye == user.loc)
 		user.examinate(src)
@@ -319,16 +369,22 @@
 */
 
 /mob/proc/CtrlClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	A.CtrlClick(src)
 	return
 
 /atom/proc/CtrlClick(mob/user)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_CLICK_CTRL, user)
 	var/mob/living/ML = user
 	if(istype(ML))
 		ML.pulled(src)
 
 /mob/living/carbon/human/CtrlClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user) && Adjacent(user) && !user.incapacitated())
 		if(world.time < user.next_move)
 			return FALSE
@@ -342,10 +398,14 @@
 	Unused except for AI
 */
 /mob/proc/AltClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	A.AltClick(src)
 	return
 
 /mob/living/carbon/AltClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!stat && mind && iscarbon(A) && A != src)
 		var/datum/antagonist/changeling/C = mind.has_antag_datum(/datum/antagonist/changeling)
 		if(C && C.chosen_sting)
@@ -355,6 +415,8 @@
 	..()
 
 /atom/proc/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_CLICK_ALT, user)
 	var/turf/T = get_turf(src)
 	if(T && user.TurfAdjacent(T))
@@ -365,6 +427,8 @@
 			user.client.statpanel = T.name
 
 /mob/proc/TurfAdjacent(turf/T)
+	procstart = null
+	src.procstart = null
 	return T.Adjacent(src)
 
 /*
@@ -372,14 +436,20 @@
 	Unused except for AI
 */
 /mob/proc/CtrlShiftClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	A.CtrlShiftClick(src)
 	return
 
 /mob/proc/ShiftMiddleClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	src.pointed(A)
 	return
 
 /atom/proc/CtrlShiftClick(mob/user)
+	procstart = null
+	src.procstart = null
 	SendSignal(COMSIG_CLICK_CTRL_SHIFT)
 	return
 
@@ -390,9 +460,13 @@
 	face_atom: turns the mob towards what you clicked on
 */
 /mob/proc/LaserEyes(atom/A, params)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/LaserEyes(atom/A, params)
+	procstart = null
+	src.procstart = null
 	changeNext_move(CLICK_CD_RANGE)
 
 	var/obj/item/projectile/beam/LE = new /obj/item/projectile/beam( loc )
@@ -407,6 +481,8 @@
 
 // Simple helper to face what you clicked on, in case it should be needed in more than one place
 /mob/proc/face_atom(atom/A)
+	procstart = null
+	src.procstart = null
 	if( buckled || stat != CONSCIOUS || !A || !x || !y || !A.x || !A.y )
 		return
 	var/dx = A.x - x
@@ -435,6 +511,8 @@
 
 //debug
 /obj/screen/proc/scale_to(x1,y1)
+	procstart = null
+	src.procstart = null
 	if(!y1)
 		y1 = x1
 	var/matrix/M = new
@@ -452,6 +530,8 @@
 #define MAX_SAFE_BYOND_ICON_SCALE_PX 33 * 32			//Not using world.icon_size on purpose.
 
 /obj/screen/click_catcher/proc/UpdateGreed(view_size_x = 15, view_size_y = 15)
+	procstart = null
+	src.procstart = null
 	var/icon/newicon = icon('icons/mob/screen_gen.dmi', "catcher")
 	var/ox = min(MAX_SAFE_BYOND_ICON_SCALE_TILES, view_size_x)
 	var/oy = min(MAX_SAFE_BYOND_ICON_SCALE_TILES, view_size_y)
@@ -467,6 +547,8 @@
 	transform = M
 
 /obj/screen/click_catcher/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(modifiers["middle"] && iscarbon(usr))
 		var/mob/living/carbon/C = usr
@@ -481,9 +563,13 @@
 /* MouseWheelOn */
 
 /mob/proc/MouseWheelOn(atom/A, delta_x, delta_y, params)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/dead/observer/MouseWheelOn(atom/A, delta_x, delta_y, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifier = params2list(params)
 	if(modifier["shift"])
 		var/view = 0

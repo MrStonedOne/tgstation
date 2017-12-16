@@ -5,6 +5,8 @@
 	var/list/debris = null //Parts left behind when a structure breaks, takes the form of list(path = amount_to_spawn)
 
 /obj/structure/destructible/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		if(!(flags_1 & NODECONSTRUCT_1))
 			if(islist(debris))

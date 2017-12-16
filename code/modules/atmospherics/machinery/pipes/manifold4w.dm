@@ -16,9 +16,13 @@
 	pipe_state = "manifold4w"
 
 /obj/machinery/atmospherics/pipe/manifold4w/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	initialize_directions = initial(initialize_directions)
 
 /obj/machinery/atmospherics/pipe/manifold4w/update_icon()
+	procstart = null
+	src.procstart = null
 	var/invis = invisibility ? "-f" : ""
 
 	icon_state = "manifold4w_center[invis]"

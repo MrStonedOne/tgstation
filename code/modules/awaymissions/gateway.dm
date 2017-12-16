@@ -16,6 +16,8 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 	var/can_link = FALSE	//Is this the centerpiece?
 
 /obj/machinery/gateway/Initialize()
+	procstart = null
+	src.procstart = null
 	randomspawns = GLOB.awaydestinations
 	update_icon()
 	if(!istype(src, /obj/machinery/gateway/centerstation) && !istype(src, /obj/machinery/gateway/centeraway))
@@ -25,6 +27,8 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 	return ..()
 
 /obj/machinery/gateway/proc/toggleoff()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/gateway/G in linked)
 		G.active = 0
 		G.update_icon()
@@ -32,6 +36,8 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 	update_icon()
 
 /obj/machinery/gateway/proc/detect()
+	procstart = null
+	src.procstart = null
 	if(!can_link)
 		return FALSE
 	linked = list()	//clear the list
@@ -55,12 +61,16 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 	return ready
 
 /obj/machinery/gateway/update_icon()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = "on"
 		return
 	icon_state = "off"
 
 /obj/machinery/gateway/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!detect())
 		return
 	if(!active)
@@ -69,9 +79,13 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 	toggleoff()
 
 /obj/machinery/gateway/proc/toggleon(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/gateway/centerstation/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!GLOB.the_gateway)
 		GLOB.the_gateway = src
@@ -80,6 +94,8 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 	awaygate = locate(/obj/machinery/gateway/centeraway)
 
 /obj/machinery/gateway/centerstation/Destroy()
+	procstart = null
+	src.procstart = null
 	if(GLOB.the_gateway == src)
 		GLOB.the_gateway = null
 	return ..()
@@ -96,12 +112,16 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 	can_link = TRUE
 
 /obj/machinery/gateway/centerstation/update_icon()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = "oncenter"
 		return
 	icon_state = "offcenter"
 
 /obj/machinery/gateway/centerstation/process()
+	procstart = null
+	src.procstart = null
 	if((stat & (NOPOWER)) && use_power)
 		if(active)
 			toggleoff()
@@ -111,6 +131,8 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 		use_power(5000)
 
 /obj/machinery/gateway/centerstation/toggleon(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!detect())
 		return
 	if(!powered())
@@ -130,6 +152,8 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 
 //okay, here's the good teleporting stuff
 /obj/machinery/gateway/centerstation/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return
 	if(!detect())
@@ -154,6 +178,8 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 		return
 
 /obj/machinery/gateway/centeraway/attackby(obj/item/device/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		if(calibrated)
 			to_chat(user, "\black The gate is already calibrated, there is no work for you to do here.")
@@ -175,18 +201,24 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 
 
 /obj/machinery/gateway/centeraway/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 	stationgate = locate(/obj/machinery/gateway/centerstation)
 
 
 /obj/machinery/gateway/centeraway/update_icon()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = "oncenter"
 		return
 	icon_state = "offcenter"
 
 /obj/machinery/gateway/centeraway/toggleon(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!detect())
 		return
 	if(!stationgate)
@@ -200,12 +232,16 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 	update_icon()
 
 /obj/machinery/gateway/centeraway/proc/check_exile_implant(mob/living/L)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/implant/exile/E in L.implants)//Checking that there is an exile implant
 		to_chat(L, "\black The station gate has detected your exile implant and is blocking your entry.")
 		return TRUE
 	return FALSE
 
 /obj/machinery/gateway/centeraway/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!detect())
 		return
 	if(!active)
@@ -237,11 +273,15 @@ GLOBAL_DATUM(the_gateway, /obj/machinery/gateway/centerstation)
 	desc = "A mysterious gateway built by unknown hands, this one seems more compact."
 
 /obj/machinery/gateway/centeraway/admin/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stationgate && !stationgate.awaygate)
 		stationgate.awaygate = src
 
 /obj/machinery/gateway/centeraway/admin/detect()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 

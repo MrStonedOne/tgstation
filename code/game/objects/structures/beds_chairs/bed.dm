@@ -22,19 +22,27 @@
 	var/buildstackamount = 2
 
 /obj/structure/bed/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>It's held together by a couple of <b>bolts</b>.</span>")
 
 /obj/structure/bed/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(buildstacktype)
 			new buildstacktype(loc,buildstackamount)
 	..()
 
 /obj/structure/bed/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/structure/bed/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench) && !(flags_1&NODECONSTRUCT_1))
 		playsound(src.loc, W.usesound, 50, 1)
 		deconstruct(TRUE)
@@ -53,6 +61,8 @@
 	var/foldabletype = /obj/item/roller
 
 /obj/structure/bed/roller/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/roller/robo))
 		var/obj/item/roller/robo/R = W
 		if(R.loaded)
@@ -74,6 +84,8 @@
 		return ..()
 
 /obj/structure/bed/roller/MouseDrop(over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(over_object == usr && Adjacent(usr))
 		if(!ishuman(usr))
@@ -89,16 +101,22 @@
 		qdel(src)
 
 /obj/structure/bed/roller/post_buckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	density = TRUE
 	icon_state = "up"
 	M.pixel_y = initial(M.pixel_y)
 
 /obj/structure/bed/roller/Moved()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(has_gravity())
 		playsound(src, 'sound/effects/roll.ogg', 100, 1)
 
 /obj/structure/bed/roller/post_unbuckle_mob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	icon_state = "down"
 	M.pixel_x = M.get_standard_pixel_x_offset(M.lying)
@@ -112,6 +130,8 @@
 	w_class = WEIGHT_CLASS_NORMAL // No more excuses, stop getting blood everywhere
 
 /obj/item/roller/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/roller/robo))
 		var/obj/item/roller/robo/R = I
 		if(R.loaded)
@@ -125,15 +145,21 @@
 		return ..()
 
 /obj/item/roller/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	deploy_roller(user, user.loc)
 
 /obj/item/roller/afterattack(obj/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(isopenturf(target))
 		deploy_roller(user, target)
 
 /obj/item/roller/proc/deploy_roller(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/bed/roller/R = new /obj/structure/bed/roller(location)
 	R.add_fingerprint(user)
 	qdel(src)
@@ -143,15 +169,21 @@
 	var/loaded = null
 
 /obj/item/roller/robo/New()
+	procstart = null
+	src.procstart = null
 	loaded = new /obj/structure/bed/roller(src)
 	desc = "A collapsed roller bed that can be ejected for emergency use. Must be collected or replaced after use."
 	..()
 
 /obj/item/roller/robo/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "The dock is [loaded ? "loaded" : "empty"].")
 
 /obj/item/roller/robo/deploy_roller(mob/user, atom/location)
+	procstart = null
+	src.procstart = null
 	if(loaded)
 		var/obj/structure/bed/roller/R = loaded
 		R.forceMove(location)
@@ -192,11 +224,15 @@
 	anchored = TRUE
 
 /obj/structure/bed/dogbed/proc/update_owner(mob/living/M)
+	procstart = null
+	src.procstart = null
 	owner = M
 	name = "[M]'s bed"
 	desc = "[M]'s bed! Looks comfy."
 
 /obj/structure/bed/dogbed/buckle_mob(mob/living/M, force, check_loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_owner(M)
 

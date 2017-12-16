@@ -23,6 +23,8 @@
 	name = "Safecode hint spawner"
 
 /obj/effect/landmark/sc_bible_spawner/New()
+	procstart = null
+	src.procstart = null
 	var/obj/item/storage/book/bible/B = new /obj/item/storage/book/bible/booze(src.loc)
 	B.name = "The Holy book of the Geometer"
 	B.deity_name = "Narsie"
@@ -49,6 +51,8 @@
 /obj/item/gun/ballistic/automatic/c20r/sc_c20r
 
 /obj/item/gun/ballistic/automatic/c20r/sc_c20r/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/ammo in magazine.stored_ammo)
 		if(prob(95)) //95% chance
@@ -58,6 +62,8 @@
 /obj/item/gun/ballistic/shotgun/sc_pump
 
 /obj/item/gun/ballistic/shotgun/sc_pump/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/ammo in magazine.stored_ammo)
 		if(prob(95)) //95% chance
@@ -85,11 +91,15 @@ GLOBAL_VAR_INIT(sc_safecode5, "[rand(0,9)]")
 	name = "smudged paper"
 
 /obj/item/paper/fluff/awaymissions/stationcollision/safehint_paper_prison/New()
+	procstart = null
+	src.procstart = null
 	info = "<i>The ink is smudged, you can only make out a couple numbers:</i> '[GLOB.sc_safecode1]**[GLOB.sc_safecode4]*'"
 
 /obj/item/paper/fluff/awaymissions/stationcollision/safehint_paper_hydro
 	name = "shredded paper"
 /obj/item/paper/fluff/awaymissions/stationcollision/safehint_paper_hydro/New()
+	procstart = null
+	src.procstart = null
 	info = "<i>Although the paper is shredded, you can clearly see the number:</i> '[GLOB.sc_safecode2]'"
 
 /obj/item/paper/fluff/awaymissions/stationcollision/safehint_paper_caf
@@ -100,6 +110,8 @@ GLOBAL_VAR_INIT(sc_safecode5, "[rand(0,9)]")
 /obj/item/paper/fluff/awaymissions/stationcollision/safehint_paper_bible
 	name = "hidden paper"
 /obj/item/paper/fluff/awaymissions/stationcollision/safehint_paper_bible/New()
+	procstart = null
+	src.procstart = null
 	info = {"<i>It would appear that the pen hidden with the paper had leaked ink over the paper.
 			However you can make out the last three digits:</i>'[GLOB.sc_safecode3][GLOB.sc_safecode4][GLOB.sc_safecode5]'
 			"}
@@ -124,6 +136,8 @@ GLOBAL_VAR_INIT(sc_safecode5, "[rand(0,9)]")
 	name = "Captain's secure safe"
 
 /obj/item/storage/secure/safe/sc_ssafe/New()
+	procstart = null
+	src.procstart = null
 	..()
 	l_code = "[GLOB.sc_safecode1][GLOB.sc_safecode2][GLOB.sc_safecode3][GLOB.sc_safecode4][GLOB.sc_safecode5]"
 	l_set = 1
@@ -142,12 +156,18 @@ GLOBAL_VAR_INIT(sc_safecode5, "[rand(0,9)]")
 	grav_pull = 0 //Contained narsie does not pull stuff in!
 //Override this to prevent no adminlog runtimes and admin warnings about a singularity without containment
 /obj/singularity/narsie/mini/admin_investigate_setup()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/singularity/narsie/mini/process()
+	procstart = null
+	src.procstart = null
 	eat()
 	if(prob(25))
 		mezzer()
 
 /obj/singularity/narsie/mini/ex_act()
+	procstart = null
+	src.procstart = null
 	return

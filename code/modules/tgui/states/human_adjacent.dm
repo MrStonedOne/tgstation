@@ -9,6 +9,8 @@
 GLOBAL_DATUM_INIT(human_adjacent_state, /datum/ui_state/human_adjacent_state, new)
 
 /datum/ui_state/human_adjacent_state/can_use_topic(src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	. = user.default_can_use_topic(src_object)
 
 	var/dist = get_dist(src_object, user)

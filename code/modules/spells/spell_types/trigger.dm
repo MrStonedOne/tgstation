@@ -6,6 +6,8 @@
 	var/list/starting_spells = list() //those are added on New() to contents from default spells and are deleted when the trigger spell is deleted to prevent memory leaks
 
 /obj/effect/proc_holder/spell/targeted/trigger/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	for(var/spell in starting_spells)
@@ -13,6 +15,8 @@
 		new spell_to_add(src) //should result in adding to contents, needs testing
 
 /obj/effect/proc_holder/spell/targeted/trigger/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/spell in contents)
 		qdel(spell)
 	linked_spells = null
@@ -20,6 +24,8 @@
 	return ..()
 
 /obj/effect/proc_holder/spell/targeted/trigger/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	playMagSound()
 	for(var/mob/living/target in targets)
 		for(var/obj/effect/proc_holder/spell/spell in contents)

@@ -26,6 +26,8 @@ GLOBAL_LIST_INIT(LIGHTING_CORNER_DIAGONAL, list(NORTHEAST, SOUTHEAST, SOUTHWEST,
 	var/cache_mx = 0
 
 /datum/lighting_corner/New(var/turf/new_turf, var/diagonal)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	masters = list()
 	masters[new_turf] = turn(diagonal, 180)
@@ -76,6 +78,8 @@ GLOBAL_LIST_INIT(LIGHTING_CORNER_DIAGONAL, list(NORTHEAST, SOUTHEAST, SOUTHWEST,
 	update_active()
 
 /datum/lighting_corner/proc/update_active()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	var/turf/T
 	var/thing
@@ -86,6 +90,8 @@ GLOBAL_LIST_INIT(LIGHTING_CORNER_DIAGONAL, list(NORTHEAST, SOUTHEAST, SOUTHWEST,
 
 // God that was a mess, now to do the rest of the corner code! Hooray!
 /datum/lighting_corner/proc/update_lumcount(var/delta_r, var/delta_g, var/delta_b)
+	procstart = null
+	src.procstart = null
 	lum_r += delta_r
 	lum_g += delta_g
 	lum_b += delta_b
@@ -98,6 +104,8 @@ GLOBAL_LIST_INIT(LIGHTING_CORNER_DIAGONAL, list(NORTHEAST, SOUTHEAST, SOUTHWEST,
 		GLOB.lighting_update_corners += src
 
 /datum/lighting_corner/proc/update_objects()
+	procstart = null
+	src.procstart = null
 	// Cache these values a head of time so 4 individual lighting objects don't all calculate them individually.
 	var/lum_r = src.lum_r
 	var/lum_g = src.lum_g
@@ -130,10 +138,14 @@ GLOBAL_LIST_INIT(LIGHTING_CORNER_DIAGONAL, list(NORTHEAST, SOUTHEAST, SOUTHWEST,
 
 
 /datum/lighting_corner/dummy/New()
+	procstart = null
+	src.procstart = null
 	return
 
 
 /datum/lighting_corner/Destroy(var/force)
+	procstart = null
+	src.procstart = null
 	if (!force)
 		return QDEL_HINT_LETMELIVE
 

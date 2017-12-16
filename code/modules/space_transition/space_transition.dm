@@ -11,6 +11,8 @@ GLOBAL_LIST_EMPTY(z_levels_list)
 	var/yi   //imaginary placements on the grid
 
 /datum/space_level/New(transition_type)
+	procstart = null
+	src.procstart = null
 	linked = transition_type
 	if(linked == SELFLOOPING)
 		neigbours = list()
@@ -19,6 +21,8 @@ GLOBAL_LIST_EMPTY(z_levels_list)
 			neigbours[A] = src
 
 /datum/space_level/proc/set_neigbours(list/L)
+	procstart = null
+	src.procstart = null
 	for(var/datum/point/P in L)
 		if(P.x == xi)
 			if(P.y == yi+1)
@@ -42,6 +46,8 @@ GLOBAL_LIST_EMPTY(z_levels_list)
 	var/datum/space_level/spl
 
 /datum/point/New(nx, ny, list/point_grid)
+	procstart = null
+	src.procstart = null
 	if(!point_grid)
 		qdel(src)
 		return
@@ -56,6 +62,8 @@ GLOBAL_LIST_EMPTY(z_levels_list)
 	point_grid[x][y] = src
 
 /datum/point/proc/set_neigbours(list/grid)
+	procstart = null
+	src.procstart = null
 	var/max_X = grid.len
 	var/list/max_Y = grid[1]
 	max_Y = max_Y.len

@@ -11,6 +11,8 @@
 	var/pixel_shift //The amount of pixels
 
 /obj/item/wallframe/proc/try_build(turf/on_wall, mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(on_wall,user)>1)
 		return
 	var/ndir = get_dir(on_wall, user)
@@ -31,6 +33,8 @@
 	return TRUE
 
 /obj/item/wallframe/proc/attach(turf/on_wall, mob/user)
+	procstart = null
+	src.procstart = null
 	if(result_path)
 		playsound(src.loc, 'sound/machines/click.ogg', 75, 1)
 		user.visible_message("[user.name] attaches [src] to the wall.",
@@ -56,9 +60,13 @@
 	qdel(src)
 
 /obj/item/wallframe/proc/after_attach(var/obj/O)
+	procstart = null
+	src.procstart = null
 	transfer_fingerprints_to(O)
 
 /obj/item/wallframe/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/screwdriver))
 		// For camera-building borgs
@@ -89,6 +97,8 @@
 
 
 /obj/item/wallframe/apc/try_build(turf/on_wall, user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/turf/T = get_turf(user)

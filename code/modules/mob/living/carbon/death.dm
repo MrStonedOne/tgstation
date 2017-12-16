@@ -13,6 +13,8 @@
 		SSticker.mode.check_win() //Calls the rounds wincheck, mainly for wizard, malf, and changeling now
 
 /mob/living/carbon/gib(no_brain, no_organs, no_bodyparts)
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in src)
 		if(M in stomach_contents)
 			stomach_contents.Remove(M)
@@ -21,6 +23,8 @@
 	..()
 
 /mob/living/carbon/spill_organs(no_brain, no_organs, no_bodyparts)
+	procstart = null
+	src.procstart = null
 	if(!no_bodyparts)
 		if(no_organs)//so the organs don't get transfered inside the bodyparts we'll drop.
 			for(var/X in internal_organs)
@@ -52,6 +56,8 @@
 
 
 /mob/living/carbon/spread_bodyparts()
+	procstart = null
+	src.procstart = null
 	for(var/X in bodyparts)
 		var/obj/item/bodypart/BP = X
 		BP.drop_limb()

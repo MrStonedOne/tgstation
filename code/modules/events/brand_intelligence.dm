@@ -22,6 +22,8 @@
 
 
 /datum/round_event/brand_intelligence/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/source = "unknown machine"
 	if(fake)
 		var/obj/machinery/vending/cola/example = /obj/machinery/vending/cola
@@ -31,6 +33,8 @@
 	priority_announce("Rampant brand intelligence has been detected aboard [station_name()]. Please stand by. The origin is believed to be \a [source].", "Machine Learning Alert")
 
 /datum/round_event/brand_intelligence/start()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/vending/V in GLOB.machines)
 		if(!(V.z in GLOB.station_z_levels))
 			continue
@@ -45,6 +49,8 @@
 
 
 /datum/round_event/brand_intelligence/tick()
+	procstart = null
+	src.procstart = null
 	if(!originMachine || QDELETED(originMachine) || originMachine.shut_up || originMachine.wires.is_all_cut())	//if the original vending machine is missing or has it's voice switch flipped
 		for(var/obj/machinery/vending/saved in infectedMachines)
 			saved.shoot_inventory = 0

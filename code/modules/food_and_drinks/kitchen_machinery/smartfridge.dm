@@ -19,6 +19,8 @@
 	var/list/initial_contents
 
 /obj/machinery/smartfridge/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents()
 	reagents.set_reacting(FALSE)
@@ -32,14 +34,20 @@
 				load(new typekey(src))
 
 /obj/machinery/smartfridge/RefreshParts()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		max_n_of_items = 1500 * B.rating
 
 /obj/machinery/smartfridge/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/smartfridge/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!stat)
 		icon_state = icon_on
 	else
@@ -52,6 +60,8 @@
 ********************/
 
 /obj/machinery/smartfridge/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "smartfridge_open", "smartfridge", O))
 		return
 
@@ -116,11 +126,15 @@
 
 
 /obj/machinery/smartfridge/proc/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/reagent_containers/food/snacks/grown/) || istype(O, /obj/item/seeds/) || istype(O, /obj/item/grown/))
 		return TRUE
 	return FALSE
 
 /obj/machinery/smartfridge/proc/load(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(ismob(O.loc))
 		var/mob/M = O.loc
 		if(!M.transferItemToLoc(O, src))
@@ -133,18 +147,26 @@
 		O.forceMove(src)
 
 /obj/machinery/smartfridge/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/smartfridge/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/smartfridge/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	interact(user)
 
 
 
 /obj/machinery/smartfridge/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "smartvend", name, 440, 550, master_ui, state)
@@ -152,6 +174,8 @@
 		ui.open()
 
 /obj/machinery/smartfridge/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	var/listofitems = list()
@@ -174,6 +198,8 @@
 	SStgui.update_uis(src)
 
 /obj/machinery/smartfridge/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -216,12 +242,16 @@
 	var/drying = FALSE
 
 /obj/machinery/smartfridge/drying_rack/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(component_parts && component_parts.len)
 		component_parts.Cut()
 	component_parts = null
 
 /obj/machinery/smartfridge/drying_rack/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood(loc, 10)
 	..()
 
@@ -231,9 +261,13 @@
 /obj/machinery/smartfridge/drying_rack/spawn_frame()
 
 /obj/machinery/smartfridge/drying_rack/default_deconstruction_crowbar(obj/item/crowbar/C, ignore_panel = 1)
+	procstart = null
+	src.procstart = null
 	..()
 
 /obj/machinery/smartfridge/drying_rack/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["isdryer"] = TRUE
 	.["verb"] = "Take"
@@ -241,6 +275,8 @@
 
 
 /obj/machinery/smartfridge/drying_rack/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		update_icon() // This is to handle a case where the last item is taken out manually instead of through drying pop-out
@@ -252,6 +288,8 @@
 	return FALSE
 
 /obj/machinery/smartfridge/drying_rack/power_change()
+	procstart = null
+	src.procstart = null
 	if(powered() && anchored)
 		stat &= ~NOPOWER
 	else
@@ -264,6 +302,8 @@
 	update_icon()
 
 /obj/machinery/smartfridge/drying_rack/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	cut_overlays()
 	if(drying)
@@ -272,6 +312,8 @@
 		add_overlay("drying_rack_filled")
 
 /obj/machinery/smartfridge/drying_rack/process()
+	procstart = null
+	src.procstart = null
 	..()
 	if(drying)
 		if(rack_dry())//no need to update unless something got dried
@@ -279,6 +321,8 @@
 			update_icon()
 
 /obj/machinery/smartfridge/drying_rack/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/reagent_containers/food/snacks/))
 		var/obj/item/reagent_containers/food/snacks/S = O
 		if(S.dried_type)
@@ -288,6 +332,8 @@
 	return FALSE
 
 /obj/machinery/smartfridge/drying_rack/proc/toggle_drying(forceoff)
+	procstart = null
+	src.procstart = null
 	if(drying || forceoff)
 		drying = FALSE
 		use_power = IDLE_POWER_USE
@@ -297,6 +343,8 @@
 	update_icon()
 
 /obj/machinery/smartfridge/drying_rack/proc/rack_dry()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/reagent_containers/food/snacks/S in contents)
 		if(S.dried_type == S.type)//if the dried type is the same as the object's type, don't bother creating a whole new item...
 			S.add_atom_colour("#ad7257", FIXED_COLOUR_PRIORITY)
@@ -315,6 +363,8 @@
 	return FALSE
 
 /obj/machinery/smartfridge/drying_rack/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	..()
 	atmos_spawn_air("TEMP=1000")
 
@@ -327,6 +377,8 @@
 	desc = "A refrigerated storage unit for tasty tasty alcohol."
 
 /obj/machinery/smartfridge/drinks/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(!istype(O, /obj/item/reagent_containers) || !O.reagents || !O.reagents.reagent_list.len)
 		return FALSE
 	if(istype(O, /obj/item/reagent_containers/glass) || istype(O, /obj/item/reagent_containers/food/drinks) || istype(O, /obj/item/reagent_containers/food/condiment))
@@ -339,6 +391,8 @@
 	desc = "A refrigerated storage unit for food."
 
 /obj/machinery/smartfridge/food/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/reagent_containers/food/snacks/))
 		return TRUE
 	return FALSE
@@ -351,6 +405,8 @@
 	desc = "A refrigerated storage unit for slime extracts."
 
 /obj/machinery/smartfridge/extract/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/slime_extract))
 		return TRUE
 	if(istype(O, /obj/item/device/slime_scanner))
@@ -368,6 +424,8 @@
 	desc = "A refrigerated storage unit for medicine storage."
 
 /obj/machinery/smartfridge/chemistry/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/storage/pill_bottle))
 		if(O.contents.len)
 			for(var/obj/item/I in O)
@@ -417,6 +475,8 @@
 	desc = "A machine capable of storing a variety of disks. Denoted by most as the DSU (disk storage unit)."
 
 /obj/machinery/smartfridge/disks/accept_check(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/disk/))
 		return TRUE
 	else

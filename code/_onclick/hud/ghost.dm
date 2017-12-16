@@ -2,6 +2,8 @@
 	icon = 'icons/mob/screen_ghost.dmi'
 
 /obj/screen/ghost/MouseEntered()
+	procstart = null
+	src.procstart = null
 	flick(icon_state + "_anim", src)
 
 /obj/screen/ghost/jumptomob
@@ -9,6 +11,8 @@
 	icon_state = "jumptomob"
 
 /obj/screen/ghost/jumptomob/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = usr
 	G.jumptomob()
 
@@ -17,6 +21,8 @@
 	icon_state = "orbit"
 
 /obj/screen/ghost/orbit/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = usr
 	G.follow()
 
@@ -25,6 +31,8 @@
 	icon_state = "reenter_corpse"
 
 /obj/screen/ghost/reenter_corpse/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = usr
 	G.reenter_corpse()
 
@@ -33,6 +41,8 @@
 	icon_state = "teleport"
 
 /obj/screen/ghost/teleport/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = usr
 	G.dead_tele()
 
@@ -41,10 +51,14 @@
 	icon_state = "pai"
 
 /obj/screen/ghost/pai/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/dead/observer/G = usr
 	G.register_pai()
 
 /datum/hud/ghost/New(mob/owner, ui_style = 'icons/mob/screen_midnight.dmi')
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/screen/using
 
@@ -73,6 +87,8 @@
 	static_inventory += using
 
 /datum/hud/ghost/show_hud(version = 0, mob/viewmob)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!mymob.client.prefs.ghost_hud)
 		mymob.client.screen -= static_inventory
@@ -80,5 +96,7 @@
 		mymob.client.screen += static_inventory
 
 /mob/dead/observer/create_mob_hud()
+	procstart = null
+	src.procstart = null
 	if(client && !hud_used)
 		hud_used = new /datum/hud/ghost(src, ui_style2icon(client.prefs.UI_style))

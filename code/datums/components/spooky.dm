@@ -2,9 +2,13 @@
 	var/too_spooky = TRUE //will it spawn a new instrument?
 
 /datum/component/spooky/Initialize()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(COMSIG_ITEM_ATTACK, .proc/spectral_attack)
 
 /datum/component/spooky/proc/spectral_attack(mob/living/carbon/C, mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user)) //this weapon wasn't meant for mortals.
 		var/mob/living/carbon/human/U = user
 		if(!istype(U.dna.species, /datum/species/skeleton))
@@ -35,6 +39,8 @@
 		C.stuttering = 20
 
 /datum/component/spooky/proc/spectral_change(mob/living/carbon/human/H, mob/user)
+	procstart = null
+	src.procstart = null
 	if((H.getStaminaLoss() > 95) && (!istype(H.dna.species, /datum/species/skeleton)) && (!istype(H.dna.species, /datum/species/golem)) && (!istype(H.dna.species, /datum/species/android)) && (!istype(H.dna.species, /datum/species/jelly)))
 		H.Knockdown(20)
 		H.set_species(/datum/species/skeleton)
@@ -54,6 +60,8 @@
 		change_name(H)	//time for a new name!
 
 /datum/component/spooky/proc/change_name(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/t = stripped_input(H, "Enter your new skeleton name", H.real_name, null, MAX_NAME_LEN)
 	if(!t)
 		t = "spooky skeleton"

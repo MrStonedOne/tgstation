@@ -12,6 +12,8 @@ SUBSYSTEM_DEF(persistence)
 	var/list/saved_trophies = list()
 
 /datum/controller/subsystem/persistence/Initialize()
+	procstart = null
+	src.procstart = null
 	LoadSatchels()
 	LoadPoly()
 	LoadChiselMessages()
@@ -20,6 +22,8 @@ SUBSYSTEM_DEF(persistence)
 	..()
 
 /datum/controller/subsystem/persistence/proc/LoadSatchels()
+	procstart = null
+	src.procstart = null
 	var/placed_satchel = 0
 	var/path
 	if(fexists("data/npc_saves/SecretSatchels.sav")) //legacy conversion. Will only ever run once.
@@ -73,11 +77,15 @@ SUBSYSTEM_DEF(persistence)
 				break
 
 /datum/controller/subsystem/persistence/proc/LoadPoly()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/simple_animal/parrot/Poly/P in GLOB.alive_mob_list)
 		twitterize(P.speech_buffer, "polytalk")
 		break //Who's been duping the bird?!
 
 /datum/controller/subsystem/persistence/proc/LoadChiselMessages()
+	procstart = null
+	src.procstart = null
 	var/list/saved_messages = list()
 	if(fexists("data/npc_saves/ChiselMessages.sav")) //legacy compatability to convert old format to new
 		var/savefile/chisel_messages_sav = new /savefile("data/npc_saves/ChiselMessages.sav")
@@ -123,6 +131,8 @@ SUBSYSTEM_DEF(persistence)
 	log_world("Loaded [saved_messages.len] engraved messages on map [SSmapping.config.map_name]")
 
 /datum/controller/subsystem/persistence/proc/LoadTrophies()
+	procstart = null
+	src.procstart = null
 	if(fexists("data/npc_saves/TrophyItems.sav")) //legacy compatability to convert old format to new
 		var/savefile/S = new /savefile("data/npc_saves/TrophyItems.sav")
 		var/saved_json
@@ -142,6 +152,8 @@ SUBSYSTEM_DEF(persistence)
 	SetUpTrophies(saved_trophies.Copy())
 
 /datum/controller/subsystem/persistence/proc/LoadRecentModes()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/RecentModes.json")
 	if(!fexists(json_file))
 		return
@@ -152,6 +164,8 @@ SUBSYSTEM_DEF(persistence)
 
 
 /datum/controller/subsystem/persistence/proc/SetUpTrophies(list/trophy_items)
+	procstart = null
+	src.procstart = null
 	for(var/A in GLOB.trophy_cases)
 		var/obj/structure/displaycase/trophy/T = A
 		T.added_roundstart = TRUE
@@ -177,12 +191,16 @@ SUBSYSTEM_DEF(persistence)
 
 
 /datum/controller/subsystem/persistence/proc/CollectData()
+	procstart = null
+	src.procstart = null
 	CollectChiselMessages()
 	CollectSecretSatchels()
 	CollectTrophies()
 	CollectRoundtype()
 
 /datum/controller/subsystem/persistence/proc/CollectSecretSatchels()
+	procstart = null
+	src.procstart = null
 	satchel_blacklist = typecacheof(list(/obj/item/stack/tile/plasteel, /obj/item/crowbar))
 	var/list/satchels_to_add = list()
 	for(var/A in new_secret_satchels)
@@ -212,6 +230,8 @@ SUBSYSTEM_DEF(persistence)
 	WRITE_FILE(json_file, json_encode(file_data))
 
 /datum/controller/subsystem/persistence/proc/CollectChiselMessages()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/npc_saves/ChiselMessages[SSmapping.config.map_name].json")
 
 	for(var/obj/structure/chisel_message/M in chisel_messages)
@@ -224,10 +244,14 @@ SUBSYSTEM_DEF(persistence)
 	WRITE_FILE(json_file, json_encode(file_data))
 
 /datum/controller/subsystem/persistence/proc/SaveChiselMessage(obj/structure/chisel_message/M)
+	procstart = null
+	src.procstart = null
 	saved_messages += list(M.pack()) // dm eats one list
 
 
 /datum/controller/subsystem/persistence/proc/CollectTrophies()
+	procstart = null
+	src.procstart = null
 	var/json_file = file("data/npc_saves/TrophyItems.json")
 	var/list/file_data = list()
 	file_data["data"] = saved_trophies
@@ -235,6 +259,8 @@ SUBSYSTEM_DEF(persistence)
 	WRITE_FILE(json_file, json_encode(file_data))
 
 /datum/controller/subsystem/persistence/proc/SaveTrophy(obj/structure/displaycase/trophy/T)
+	procstart = null
+	src.procstart = null
 	if(!T.added_roundstart && T.showpiece)
 		var/list/data = list()
 		data["path"] = T.showpiece.type
@@ -243,6 +269,8 @@ SUBSYSTEM_DEF(persistence)
 		saved_trophies += list(data)
 
 /datum/controller/subsystem/persistence/proc/CollectRoundtype()
+	procstart = null
+	src.procstart = null
 	saved_modes[3] = saved_modes[2]
 	saved_modes[2] = saved_modes[1]
 	saved_modes[1] = SSticker.mode.config_tag

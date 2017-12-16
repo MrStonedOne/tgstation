@@ -26,9 +26,13 @@
 	var/obj/structure/cable/attached		// the attached cable
 
 /obj/item/device/powersink/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "powersink[mode == OPERATING]"
 
 /obj/item/device/powersink/proc/set_mode(value)
+	procstart = null
+	src.procstart = null
 	if(value == mode)
 		return
 	switch(value)
@@ -56,6 +60,8 @@
 	set_light(0)
 
 /obj/item/device/powersink/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		if(mode == DISCONNECTED)
 			var/turf/T = loc
@@ -81,12 +87,18 @@
 		return ..()
 
 /obj/item/device/powersink/attack_paw()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/device/powersink/attack_ai()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/device/powersink/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(DISCONNECTED)
 			..()
@@ -108,6 +120,8 @@
 			set_mode(CLAMPED_OFF)
 
 /obj/item/device/powersink/process()
+	procstart = null
+	src.procstart = null
 	if(!attached)
 		set_mode(DISCONNECTED)
 		return

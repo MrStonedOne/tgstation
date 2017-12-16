@@ -190,6 +190,8 @@
 	pockets = /obj/item/storage/internal/pocket/small
 
 /obj/item/clothing/head/fedora/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.gender == FEMALE)
 		return 0
 	var/mob/living/carbon/human/H = user

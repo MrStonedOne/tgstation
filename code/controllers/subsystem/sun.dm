@@ -9,15 +9,21 @@ SUBSYSTEM_DEF(sun)
 	var/list/solars	= list()
 
 /datum/controller/subsystem/sun/PreInit()
+	procstart = null
+	src.procstart = null
 	angle = rand (0,360)			// the station position to the sun is randomised at round start
 	rate = rand(50,200)/100			// 50% - 200% of standard rotation
 	if(prob(50))					// same chance to rotate clockwise than counter-clockwise
 		rate = -rate
 
 /datum/controller/subsystem/sun/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	..("P:[solars.len]")
 
 /datum/controller/subsystem/sun/fire()
+	procstart = null
+	src.procstart = null
 	angle = (360 + angle + rate * 6) % 360	 // increase/decrease the angle to the sun, adjusted by the rate
 
 	// now calculate and cache the (dx,dy) increments for line drawing

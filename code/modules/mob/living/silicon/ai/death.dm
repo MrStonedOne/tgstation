@@ -32,6 +32,8 @@
 				loc.icon_state = "aicard-404"
 
 /mob/living/silicon/ai/proc/ShutOffDoomsdayDevice()
+	procstart = null
+	src.procstart = null
 	if(nuking)
 		set_security_level("red")
 		nuking = FALSE

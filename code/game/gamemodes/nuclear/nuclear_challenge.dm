@@ -15,6 +15,8 @@
 	var/declaring_war = FALSE
 
 /obj/item/device/nuclear_challenge/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!check_allowed(user))
 		return
 
@@ -61,6 +63,8 @@
 	qdel(src)
 
 /obj/item/device/nuclear_challenge/proc/check_allowed(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(declaring_war)
 		to_chat(user, "You are already in the process of declaring war! Make your mind up.")
 		return FALSE

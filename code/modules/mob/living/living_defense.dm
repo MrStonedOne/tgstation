@@ -1,5 +1,7 @@
 
 /mob/living/proc/run_armor_check(def_zone = null, attack_flag = "melee", absorb_text = null, soften_text = null, armour_penetration, penetrated_text)
+	procstart = null
+	src.procstart = null
 	var/armor = getarmor(def_zone, attack_flag)
 
 	//the if "armor" check is because this is used for everything on /living, including humans
@@ -23,26 +25,40 @@
 
 
 /mob/living/proc/getarmor(def_zone, type)
+	procstart = null
+	src.procstart = null
 	return 0
 
 //this returns the mob's protection against eye damage (number between -1 and 2) from bright lights
 /mob/living/proc/get_eye_protection()
+	procstart = null
+	src.procstart = null
 	return 0
 
 //this returns the mob's protection against ear damage (0:no protection; 1: some ear protection; 2: has no ears)
 /mob/living/proc/get_ear_protection()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/proc/is_mouth_covered(head_only = 0, mask_only = 0)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/proc/is_eyes_covered(check_glasses = 1, check_head = 1, check_mask = 1)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/proc/on_hit(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/bullet_act(obj/item/projectile/P, def_zone)
+	procstart = null
+	src.procstart = null
 	var/armor = run_armor_check(def_zone, P.flag, "","",P.armour_penetration)
 	if(!P.nodamage)
 		apply_damage(P.damage, P.damage_type, def_zone, armor)
@@ -51,9 +67,13 @@
 	return P.on_hit(src, armor)
 
 /mob/living/proc/check_projectile_dismemberment(obj/item/projectile/P, def_zone)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/proc/get_volume_by_throwforce_and_or_w_class()
+		procstart = null
+		src.procstart = null
 		if(throwforce && w_class)
 				return Clamp((throwforce + w_class) * 5, 30, 100)// Add the item's throwforce to its weight class and multiply by 5, then clamp the value between 30 and 100
 		else if(w_class)
@@ -62,6 +82,8 @@
 				return 0
 
 /mob/living/hitby(atom/movable/AM, skipcatch, hitpush = TRUE, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/item))
 		var/obj/item/I = AM
 		var/zone = ran_zone("chest", 65)//Hits a random part of the body, geared towards the chest
@@ -96,6 +118,8 @@
 
 
 /mob/living/mech_melee_attack(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	if(M.occupant.a_intent == INTENT_HARM)
 		M.do_attack_animation(src)
 		if(M.damtype == "brute")
@@ -122,10 +146,14 @@
 		visible_message("<span class='warning'>[M] pushes [src] out of the way.</span>", null, null, 5)
 
 /mob/living/fire_act()
+	procstart = null
+	src.procstart = null
 	adjust_fire_stacks(3)
 	IgniteMob()
 
 /mob/living/proc/grabbedby(mob/living/carbon/user, supress_message = 0)
+	procstart = null
+	src.procstart = null
 	if(user == src || anchored || !isturf(user.loc))
 		return 0
 	if(!user.pulling || user.pulling != src)
@@ -139,6 +167,8 @@
 
 //proc to upgrade a simple pull into a more aggressive grab.
 /mob/living/proc/grippedby(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(user.grab_state < GRAB_KILL)
 		user.changeNext_move(CLICK_CD_GRABBING)
 		playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
@@ -179,6 +209,8 @@
 
 
 /mob/living/attack_slime(mob/living/simple_animal/slime/M)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		to_chat(M, "You cannot attack people before the game has started.")
 		return
@@ -196,6 +228,8 @@
 		return 1
 
 /mob/living/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	M.face_atom(src)
 	if(M.melee_damage_upper == 0)
 		M.visible_message("<span class='notice'>\The [M] [M.friendly] [src]!</span>")
@@ -211,6 +245,8 @@
 
 
 /mob/living/attack_paw(mob/living/carbon/monkey/M)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc) && istype(loc.loc, /area/start))
 		to_chat(M, "No attacking people at spawn, you jackass.")
 		return 0
@@ -232,6 +268,8 @@
 	return 0
 
 /mob/living/attack_larva(mob/living/carbon/alien/larva/L)
+	procstart = null
+	src.procstart = null
 	switch(L.a_intent)
 		if("help")
 			visible_message("<span class='notice'>[L.name] rubs its head against [src].</span>")
@@ -251,6 +289,8 @@
 	return 0
 
 /mob/living/attack_alien(mob/living/carbon/alien/humanoid/M)
+	procstart = null
+	src.procstart = null
 	switch(M.a_intent)
 		if ("help")
 			visible_message("<span class='notice'>[M] caresses [src] with its scythe like arm.</span>")
@@ -267,6 +307,8 @@
 			return 1
 
 /mob/living/ex_act(severity, target, origin)
+	procstart = null
+	src.procstart = null
 	if(origin && istype(origin, /datum/spacevine_mutation) && isvineimmune(src))
 		return
 	..()
@@ -274,10 +316,14 @@
 //Looking for irradiate()? It's been moved to radiation.dm under the rad_act() for mobs.
 
 /mob/living/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	take_bodypart_damage(acidpwr * min(1, acid_volume * 0.1))
 	return 1
 
 /mob/living/proc/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
+	procstart = null
+	src.procstart = null
 	if(tesla_shock && (flags_2 & TESLA_IGNORE_2))
 		return FALSE
 	if(shock_damage > 0)
@@ -291,18 +337,24 @@
 		return shock_damage
 
 /mob/living/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	var/list/L = src.get_contents()
 	for(var/obj/O in L)
 		O.emp_act(severity)
 	..()
 
 /mob/living/singularity_act()
+	procstart = null
+	src.procstart = null
 	var/gain = 20
 	investigate_log("([key_name(src)]) has been consumed by the singularity.", INVESTIGATE_SINGULO) //Oh that's where the clown ended up!
 	gib()
 	return(gain)
 
 /mob/living/narsie_act()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 
@@ -336,6 +388,8 @@
 
 
 /mob/living/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD && !is_servant_of_ratvar(src))
@@ -347,6 +401,8 @@
 
 //called when the mob receives a bright flash
 /mob/living/proc/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /obj/screen/fullscreen/flash)
+	procstart = null
+	src.procstart = null
 	if(get_eye_protection() < intensity && (override_blindness_check || !(disabilities & BLIND)))
 		overlay_fullscreen("flash", type)
 		addtimer(CALLBACK(src, .proc/clear_fullscreen, "flash", 25), 25)
@@ -354,14 +410,20 @@
 
 //called when the mob receives a loud bang
 /mob/living/proc/soundbang_act()
+	procstart = null
+	src.procstart = null
 	return 0
 
 //to damage the clothes worn by a mob
 /mob/living/proc/damage_clothes(damage_amount, damage_type = BRUTE, damage_flag = 0, def_zone)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /mob/living/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect, end_pixel_y)
+	procstart = null
+	src.procstart = null
 	if(A != src)
 		end_pixel_y = get_standard_pixel_y_offset(lying)
 	if(!used_item)

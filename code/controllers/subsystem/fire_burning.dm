@@ -8,10 +8,14 @@ SUBSYSTEM_DEF(fire_burning)
 	var/list/processing = list()
 
 /datum/controller/subsystem/fire_burning/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("P:[processing.len]")
 
 
 /datum/controller/subsystem/fire_burning/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = processing.Copy()
 

@@ -14,10 +14,14 @@
 	var/mob/living/holder
 
 /datum/dna/New(mob/living/new_holder)
+	procstart = null
+	src.procstart = null
 	if(new_holder)
 		holder = new_holder
 
 /datum/dna/proc/transfer_identity(mob/living/carbon/destination, transfer_SE = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(destination))
 		return
 	destination.dna.unique_enzymes = unique_enzymes
@@ -31,6 +35,8 @@
 		destination.dna.struc_enzymes = struc_enzymes
 
 /datum/dna/proc/copy_dna(datum/dna/new_dna)
+	procstart = null
+	src.procstart = null
 	new_dna.unique_enzymes = unique_enzymes
 	new_dna.struc_enzymes = struc_enzymes
 	new_dna.uni_identity = uni_identity
@@ -41,27 +47,39 @@
 	new_dna.mutations = mutations.Copy()
 
 /datum/dna/proc/add_mutation(mutation_name)
+	procstart = null
+	src.procstart = null
 	var/datum/mutation/human/HM = GLOB.mutations_list[mutation_name]
 	HM.on_acquiring(holder)
 
 /datum/dna/proc/remove_mutation(mutation_name)
+	procstart = null
+	src.procstart = null
 	var/datum/mutation/human/HM = GLOB.mutations_list[mutation_name]
 	HM.on_losing(holder)
 
 /datum/dna/proc/check_mutation(mutation_name)
+	procstart = null
+	src.procstart = null
 	var/datum/mutation/human/HM = GLOB.mutations_list[mutation_name]
 	return mutations.Find(HM)
 
 /datum/dna/proc/remove_all_mutations()
+	procstart = null
+	src.procstart = null
 	remove_mutation_group(mutations)
 
 /datum/dna/proc/remove_mutation_group(list/group)
+	procstart = null
+	src.procstart = null
 	if(!group)
 		return
 	for(var/datum/mutation/human/HM in group)
 		HM.force_lose(holder)
 
 /datum/dna/proc/generate_uni_identity()
+	procstart = null
+	src.procstart = null
 	. = ""
 	var/list/L = new /list(DNA_UNI_IDENTITY_BLOCKS)
 
@@ -87,6 +105,8 @@
 	return .
 
 /datum/dna/proc/generate_struc_enzymes()
+	procstart = null
+	src.procstart = null
 	var/list/sorting = new /list(DNA_STRUC_ENZYMES_BLOCKS)
 	var/result = ""
 	for(var/datum/mutation/human/A in GLOB.good_mutations + GLOB.bad_mutations + GLOB.not_good_mutations)
@@ -101,6 +121,8 @@
 	return result
 
 /datum/dna/proc/generate_unique_enzymes()
+	procstart = null
+	src.procstart = null
 	. = ""
 	if(istype(holder))
 		real_name = holder.real_name
@@ -110,6 +132,8 @@
 	return .
 
 /datum/dna/proc/update_ui_block(blocknumber)
+	procstart = null
+	src.procstart = null
 	if(!blocknumber || !ishuman(holder))
 		return
 	var/mob/living/carbon/human/H = holder
@@ -130,18 +154,24 @@
 			setblock(uni_identity, blocknumber, construct_block(GLOB.hair_styles_list.Find(H.hair_style), GLOB.hair_styles_list.len))
 
 /datum/dna/proc/mutations_say_mods(message)
+	procstart = null
+	src.procstart = null
 	if(message)
 		for(var/datum/mutation/human/M in mutations)
 			message = M.say_mod(message)
 		return message
 
 /datum/dna/proc/mutations_get_spans()
+	procstart = null
+	src.procstart = null
 	var/list/spans = list()
 	for(var/datum/mutation/human/M in mutations)
 		spans |= M.get_spans()
 	return spans
 
 /datum/dna/proc/species_get_spans()
+	procstart = null
+	src.procstart = null
 	var/list/spans = list()
 	if(species)
 		spans |= species.get_spans()
@@ -149,6 +179,8 @@
 
 
 /datum/dna/proc/is_same_as(datum/dna/D)
+	procstart = null
+	src.procstart = null
 	if(uni_identity == D.uni_identity && struc_enzymes == D.struc_enzymes && real_name == D.real_name)
 		if(species.type == D.species.type && features == D.features && blood_type == D.blood_type)
 			return 1
@@ -156,10 +188,14 @@
 
 //used to update dna UI, UE, and dna.real_name.
 /datum/dna/proc/update_dna_identity()
+	procstart = null
+	src.procstart = null
 	uni_identity = generate_uni_identity()
 	unique_enzymes = generate_unique_enzymes()
 
 /datum/dna/proc/initialize_dna(newblood_type)
+	procstart = null
+	src.procstart = null
 	if(newblood_type)
 		blood_type = newblood_type
 	unique_enzymes = generate_unique_enzymes()
@@ -174,23 +210,35 @@
 	return
 
 /datum/dna/stored/remove_mutation(mutation_name)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/dna/stored/check_mutation(mutation_name)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/dna/stored/remove_all_mutations()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/dna/stored/remove_mutation_group(list/group)
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////// DNA MOB-PROCS //////////////////////
 
 /mob/proc/set_species(datum/species/mrace, icon_update = 1)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/brain/set_species(datum/species/mrace, icon_update = 1)
+	procstart = null
+	src.procstart = null
 	if(mrace)
 		if(ispath(mrace))
 			stored_dna.species = new mrace()
@@ -199,6 +247,8 @@
 
 
 /mob/living/carbon/set_species(datum/species/mrace, icon_update = 1)
+	procstart = null
+	src.procstart = null
 	if(mrace && has_dna())
 		dna.species.on_species_loss(src)
 		var/old_species = dna.species
@@ -209,6 +259,8 @@
 		dna.species.on_species_gain(src, old_species)
 
 /mob/living/carbon/human/set_species(datum/species/mrace, icon_update = 1)
+	procstart = null
+	src.procstart = null
 	..()
 	if(icon_update)
 		update_body()
@@ -218,14 +270,20 @@
 
 
 /mob/proc/has_dna()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/has_dna()
+	procstart = null
+	src.procstart = null
 	return dna
 
 
 /mob/living/carbon/human/proc/hardset_dna(ui, se, newreal_name, newblood_type, datum/species/mrace, newfeatures)
 
+	procstart = null
+	src.procstart = null
 	if(newfeatures)
 		dna.features = newfeatures
 
@@ -257,6 +315,8 @@
 
 
 /mob/living/carbon/proc/create_dna()
+	procstart = null
+	src.procstart = null
 	dna = new /datum/dna(src)
 	if(!dna.species)
 		var/rando_race = pick(GLOB.roundstart_races)
@@ -264,11 +324,15 @@
 
 //proc used to update the mob's appearance after its dna UI has been changed
 /mob/living/carbon/proc/updateappearance(icon_update=1, mutcolor_update=0, mutations_overlay_update=0)
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return
 	gender = (deconstruct_block(getblock(dna.uni_identity, DNA_GENDER_BLOCK), 2)-1) ? FEMALE : MALE
 
 /mob/living/carbon/human/updateappearance(icon_update=1, mutcolor_update=0, mutations_overlay_update=0)
+	procstart = null
+	src.procstart = null
 	..()
 	var/structure = dna.uni_identity
 	hair_color = sanitize_hexcolor(getblock(structure, DNA_HAIR_COLOR_BLOCK))
@@ -287,6 +351,8 @@
 
 
 /mob/proc/domutcheck()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/domutcheck(force_powers=0) //Set force_powers to 1 to bypass the power chance
@@ -303,46 +369,64 @@
 
 /////////////////////////// DNA HELPER-PROCS //////////////////////////////
 /proc/getleftblocks(input,blocknumber,blocksize)
+	procstart = null
+	src.procstart = null
 	if(blocknumber > 1)
 		return copytext(input,1,((blocksize*blocknumber)-(blocksize-1)))
 
 /proc/getrightblocks(input,blocknumber,blocksize)
+	procstart = null
+	src.procstart = null
 	if(blocknumber < (length(input)/blocksize))
 		return copytext(input,blocksize*blocknumber+1,length(input)+1)
 
 /proc/getblock(input, blocknumber, blocksize=DNA_BLOCK_SIZE)
+	procstart = null
+	src.procstart = null
 	return copytext(input, blocksize*(blocknumber-1)+1, (blocksize*blocknumber)+1)
 
 /proc/setblock(istring, blocknumber, replacement, blocksize=DNA_BLOCK_SIZE)
+	procstart = null
+	src.procstart = null
 	if(!istring || !blocknumber || !replacement || !blocksize)
 		return 0
 	return getleftblocks(istring, blocknumber, blocksize) + replacement + getrightblocks(istring, blocknumber, blocksize)
 
 /mob/living/carbon/proc/randmut(list/candidates, difficulty = 2)
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return
 	var/datum/mutation/human/num = pick(candidates)
 	. = num.force_give(src)
 
 /mob/living/carbon/proc/randmutb()
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return
 	var/datum/mutation/human/HM = pick((GLOB.bad_mutations | GLOB.not_good_mutations) - GLOB.mutations_list[RACEMUT])
 	. = HM.force_give(src)
 
 /mob/living/carbon/proc/randmutg()
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return
 	var/datum/mutation/human/HM = pick(GLOB.good_mutations)
 	. = HM.force_give(src)
 
 /mob/living/carbon/proc/randmutvg()
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return
 	var/datum/mutation/human/HM = pick((GLOB.good_mutations) - GLOB.mutations_list[HULK] - GLOB.mutations_list[DWARFISM])
 	. = HM.force_give(src)
 
 /mob/living/carbon/proc/randmuti()
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return
 	var/num = rand(1, DNA_UNI_IDENTITY_BLOCKS)
@@ -351,15 +435,21 @@
 	updateappearance(mutations_overlay_update=1)
 
 /mob/living/carbon/proc/clean_dna()
+	procstart = null
+	src.procstart = null
 	if(!has_dna())
 		return
 	dna.remove_all_mutations()
 
 /mob/living/carbon/proc/clean_randmut(list/candidates, difficulty = 2)
+	procstart = null
+	src.procstart = null
 	clean_dna()
 	randmut(candidates, difficulty)
 
 /proc/scramble_dna(mob/living/carbon/M, ui=FALSE, se=FALSE, probability)
+	procstart = null
+	src.procstart = null
 	if(!M.has_dna())
 		return 0
 	if(se)
@@ -377,6 +467,8 @@
 //value in range 1 to values. values must be greater than 0
 //all arguments assumed to be positive integers
 /proc/construct_block(value, values, blocksize=DNA_BLOCK_SIZE)
+	procstart = null
+	src.procstart = null
 	var/width = round((16**blocksize)/values)
 	if(value < 1)
 		value = 1
@@ -385,6 +477,8 @@
 
 //value is hex
 /proc/deconstruct_block(value, values, blocksize=DNA_BLOCK_SIZE)
+	procstart = null
+	src.procstart = null
 	var/width = round((16**blocksize)/values)
 	value = round(hex2num(value) / width) + 1
 	if(value > values)

@@ -28,6 +28,8 @@
 	card_text_file = "strings/cas_black.txt"
 
 /obj/item/toy/cards/deck/cas/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/static/list/cards_against_space = list("cas_white" = world.file2list("strings/cas_white.txt"),"cas_black" = world.file2list("strings/cas_black.txt"))
 	allcards = cards_against_space[card_face]
@@ -55,6 +57,8 @@
 	shuffle_inplace(cards) // distribute blank cards throughout deck
 
 /obj/item/toy/cards/deck/cas/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.lying)
 		return
 	if(cards.len == 0)
@@ -76,6 +80,8 @@
 	update_icon()
 
 /obj/item/toy/cards/deck/cas/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/toy/cards/singlecard/cas))
 		var/obj/item/toy/cards/singlecard/cas/SC = I
 		if(!user.temporarilyRemoveItemFromInventory(SC))
@@ -91,6 +97,8 @@
 	update_icon()
 
 /obj/item/toy/cards/deck/cas/update_icon()
+	procstart = null
+	src.procstart = null
 	if(cards.len < 26)
 		icon_state = "deck_[deckstyle]_low"
 
@@ -104,6 +112,8 @@
 	var/buffertext = "A funny bit of text."
 
 /obj/item/toy/cards/singlecard/cas/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (flipped)
 		to_chat(user, "<span class='notice'>The card is face down.</span>")
@@ -114,6 +124,8 @@
 	to_chat(user, "<span class='notice'>Alt-click to flip it.</span>")
 
 /obj/item/toy/cards/singlecard/cas/Flip()
+	procstart = null
+	src.procstart = null
 	set name = "Flip Card"
 	set category = "Object"
 	set src in range(1)
@@ -127,17 +139,23 @@
 	update_icon()
 
 /obj/item/toy/cards/singlecard/cas/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.canUseTopic(src,1))
 		return
 	Flip()
 
 /obj/item/toy/cards/singlecard/cas/update_icon()
+	procstart = null
+	src.procstart = null
 	if(flipped)
 		icon_state = "[card_face]_flipped"
 	else
 		icon_state = "[card_face]"
 
 /obj/item/toy/cards/singlecard/cas/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/pen))
 		if(!blank)
 			to_chat(user, "You cannot write on that card.")

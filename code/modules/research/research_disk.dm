@@ -7,6 +7,8 @@
 	var/datum/techweb/stored_research
 
 /obj/item/disk/tech_disk/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)
@@ -18,5 +20,7 @@
 	materials = list()
 
 /obj/item/disk/tech_disk/debug/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	stored_research = new /datum/techweb/admin

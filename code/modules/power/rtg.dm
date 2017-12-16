@@ -21,16 +21,22 @@
 	var/irradiate = TRUE // RTGs irradiate surroundings, but only when panel is open.
 
 /obj/machinery/power/rtg/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	connect_to_network()
 
 /obj/machinery/power/rtg/process()
+	procstart = null
+	src.procstart = null
 	..()
 	add_avail(power_gen)
 	if(panel_open && irradiate)
 		radiation_pulse(src, 60)
 
 /obj/machinery/power/rtg/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/part_level = 0
 	for(var/obj/item/stock_parts/SP in component_parts)
 		part_level += SP.rating
@@ -38,6 +44,8 @@
 	power_gen = initial(power_gen) * part_level
 
 /obj/machinery/power/rtg/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(exchange_parts(user, I))
 		return
 	else if(default_deconstruction_screwdriver(user, "[initial(icon_state)]-open", initial(icon_state), I))
@@ -47,6 +55,8 @@
 	return ..()
 
 /obj/machinery/power/rtg/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_GRAB && user_buckle_mob(user.pulling, user, check_loc = 0))
 		return
 	..()
@@ -73,6 +83,8 @@
 	var/going_kaboom = FALSE // Is it about to explode?
 
 /obj/machinery/power/rtg/abductor/proc/overload()
+	procstart = null
+	src.procstart = null
 	if(going_kaboom)
 		return
 	going_kaboom = TRUE
@@ -83,6 +95,8 @@
 	addtimer(CALLBACK(GLOBAL_PROC, .proc/explosion, get_turf(src), 2, 3, 4, 8), 100) // Not a normal explosion.
 
 /obj/machinery/power/rtg/abductor/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!going_kaboom && istype(Proj) && !Proj.nodamage && ((Proj.damage_type == BURN) || (Proj.damage_type == BRUTE)))
 		message_admins("[key_name_admin(Proj.firer)] triggered an Abductor Core explosion via projectile.")
@@ -90,17 +104,25 @@
 		overload()
 
 /obj/machinery/power/rtg/abductor/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	overload()
 
 /obj/machinery/power/rtg/abductor/ex_act()
+	procstart = null
+	src.procstart = null
 	if(going_kaboom)
 		qdel(src)
 	else
 		overload()
 
 /obj/machinery/power/rtg/abductor/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	overload()
 
 /obj/machinery/power/rtg/abductor/tesla_act()
+	procstart = null
+	src.procstart = null
 	..() //extend the zap
 	overload()

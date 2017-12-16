@@ -19,16 +19,22 @@
 	var/datum/looping_sound/geiger/soundloop
 
 /obj/item/clothing/head/helmet/space/hardsuit/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	soundloop = new(list(), FALSE, TRUE)
 	soundloop.volume = 5
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/head/helmet/space/hardsuit/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/head/helmet/space/hardsuit/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	icon_state = "[basestate][on]-[item_color]"
 	user.update_inv_head()	//so our mob-overlays update
@@ -42,16 +48,22 @@
 		A.UpdateButtonIcon()
 
 /obj/item/clothing/head/helmet/space/hardsuit/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(suit)
 		suit.RemoveHelmet()
 		soundloop.stop(user)
 
 /obj/item/clothing/head/helmet/space/hardsuit/item_action_slot_check(slot)
+	procstart = null
+	src.procstart = null
 	if(slot == slot_head)
 		return 1
 
 /obj/item/clothing/head/helmet/space/hardsuit/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot != slot_head)
 		if(suit)
@@ -63,15 +75,21 @@
 		soundloop.start(user)
 
 /obj/item/clothing/head/helmet/space/hardsuit/proc/display_visor_message(var/msg)
+	procstart = null
+	src.procstart = null
 	var/mob/wearer = loc
 	if(msg && ishuman(wearer))
 		wearer.show_message("[icon2html(src, wearer)]<b><span class='robot'>[msg]</span></b>", 1)
 
 /obj/item/clothing/head/helmet/space/hardsuit/rad_act(severity)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	rad_count += severity
 
 /obj/item/clothing/head/helmet/space/hardsuit/process()
+	procstart = null
+	src.procstart = null
 	if(!rad_count)
 		grace_count++
 		if(grace_count == 2)
@@ -86,6 +104,8 @@
 	soundloop.last_radiation = rad_record
 
 /obj/item/clothing/head/helmet/space/hardsuit/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	..()
 	display_visor_message("[severity > 1 ? "Light" : "Strong"] electromagnetic pulse detected!")
 
@@ -106,15 +126,21 @@
 
 
 /obj/item/clothing/suit/space/hardsuit/New()
+	procstart = null
+	src.procstart = null
 	if(jetpack && ispath(jetpack))
 		jetpack = new jetpack(src)
 	..()
 
 /obj/item/clothing/suit/space/hardsuit/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	..()
 
 /obj/item/clothing/suit/space/hardsuit/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/tank/jetpack/suit))
 		if(jetpack)
 			to_chat(user, "<span class='warning'>[src] already has a jetpack installed.</span>")
@@ -142,6 +168,8 @@
 
 
 /obj/item/clothing/suit/space/hardsuit/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(jetpack)
 		if(slot == slot_wear_suit)
@@ -150,6 +178,8 @@
 				A.Grant(user)
 
 /obj/item/clothing/suit/space/hardsuit/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(jetpack)
 		for(var/X in jetpack.actions)
@@ -157,6 +187,8 @@
 			A.Remove(user)
 
 /obj/item/clothing/suit/space/hardsuit/item_action_slot_check(slot)
+	procstart = null
+	src.procstart = null
 	if(slot == slot_wear_suit) //we only give the mob the ability to toggle the helmet if he's wearing the hardsuit.
 		return 1
 
@@ -266,9 +298,13 @@
 	visor_flags = STOPSPRESSUREDMAGE_1
 
 /obj/item/clothing/head/helmet/space/hardsuit/syndi/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "hardsuit[on]-[item_color]"
 
 /obj/item/clothing/head/helmet/space/hardsuit/syndi/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(loc, /obj/item/clothing/suit/space/hardsuit/syndi))
 		linkedsuit = loc
@@ -451,16 +487,22 @@
 	actions_types = list(/datum/action/item_action/toggle_helmet_light, /datum/action/item_action/toggle_research_scanner)
 
 /obj/item/clothing/head/helmet/space/hardsuit/rd/New()
+	procstart = null
+	src.procstart = null
 	..()
 	bomb_radar = new /obj/machinery/doppler_array/integrated(src)
 
 /obj/item/clothing/head/helmet/space/hardsuit/rd/equipped(mob/living/carbon/human/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if (slot == slot_head)
 		var/datum/atom_hud/DHUD = GLOB.huds[DATA_HUD_DIAGNOSTIC_BASIC]
 		DHUD.add_hud_to(user)
 
 /obj/item/clothing/head/helmet/space/hardsuit/rd/dropped(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (user.head == src)
 		var/datum/atom_hud/DHUD = GLOB.huds[DATA_HUD_DIAGNOSTIC_BASIC]
@@ -499,6 +541,8 @@
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/security
 
 /obj/item/clothing/suit/space/hardsuit/security/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.security_hardsuit_allowed
 
@@ -533,6 +577,8 @@
 	actions_types = list()
 
 /obj/item/clothing/head/helmet/space/hardsuit/captain/attack_self()
+	procstart = null
+	src.procstart = null
 	return //Sprites required for flashlight
 
 /obj/item/clothing/suit/space/hardsuit/captain
@@ -547,6 +593,8 @@
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/captain
 
 /obj/item/clothing/suit/space/hardsuit/captain/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed = GLOB.security_hardsuit_allowed
 
@@ -568,6 +616,8 @@
 	helmettype = /obj/item/clothing/head/helmet/space/hardsuit/clown
 
 /obj/item/clothing/suit/space/hardsuit/clown/mob_can_equip(mob/M, slot)
+	procstart = null
+	src.procstart = null
 	if(!..() || !ishuman(M))
 		return FALSE
 	var/mob/living/carbon/human/H = M
@@ -598,6 +648,8 @@
 	var/footstep = 1
 
 /obj/item/clothing/suit/space/hardsuit/ancient/on_mob_move()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = loc
 	if(!istype(H) || H.wear_suit != src)
 		return
@@ -626,11 +678,15 @@
 	var/shield_on = "shield-old"
 
 /obj/item/clothing/suit/space/hardsuit/shielded/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!allowed)
 		allowed = GLOB.advanced_hardsuit_allowed
 
 /obj/item/clothing/suit/space/hardsuit/shielded/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	recharge_cooldown = world.time + recharge_delay
 	if(current_charges > 0)
 		var/datum/effect_system/spark_spread/s = new
@@ -649,10 +705,14 @@
 
 
 /obj/item/clothing/suit/space/hardsuit/shielded/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/clothing/suit/space/hardsuit/shielded/process()
+	procstart = null
+	src.procstart = null
 	if(world.time > recharge_cooldown && current_charges < max_charges)
 		current_charges = Clamp((current_charges + recharge_rate), 0, max_charges)
 		playsound(loc, 'sound/magic/charge.ogg', 50, 1)
@@ -665,6 +725,8 @@
 			C.update_inv_wear_suit()
 
 /obj/item/clothing/suit/space/hardsuit/shielded/worn_overlays(isinhands)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands)
 		. += mutable_appearance('icons/effects/effects.dmi', shield_state, MOB_LAYER + 0.01)
@@ -744,6 +806,8 @@
 
 
 /obj/item/clothing/suit/space/hardsuit/shielded/syndi/New()
+	procstart = null
+	src.procstart = null
 	jetpack = new /obj/item/tank/jetpack/suit(src)
 	..()
 

@@ -10,6 +10,8 @@
 	layer = POINT_LAYER
 
 /obj/effect/baseturf_helper/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/thearea = get_area(src)
 	for(var/turf/T in get_area_turfs(thearea, z))
@@ -61,6 +63,8 @@ GLOBAL_LIST_EMPTY(z_is_planet)
 	layer = POINT_LAYER
 
 /obj/effect/mapping_helpers/planet_z/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(src)
 	if(!turf_z_is_planet(T))

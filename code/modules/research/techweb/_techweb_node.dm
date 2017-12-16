@@ -20,9 +20,13 @@
 	var/category = "Misc"				//Category
 
 /datum/techweb_node/New()
+	procstart = null
+	src.procstart = null
 	actual_cost = research_cost
 
 /datum/techweb_node/proc/get_price(datum/techweb/host)
+	procstart = null
+	src.procstart = null
 	if(host)
 		actual_cost = research_cost - host.boosted_nodes[src]
 	return actual_cost

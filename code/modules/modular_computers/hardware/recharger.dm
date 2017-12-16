@@ -5,11 +5,15 @@
 	device_type = MC_CHARGE
 
 /obj/item/computer_hardware/recharger/proc/use_power(amount, charging=0)
+	procstart = null
+	src.procstart = null
 	if(charging)
 		return 1
 	return 0
 
 /obj/item/computer_hardware/recharger/process()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/computer_hardware/battery/battery_module = holder.all_components[MC_CELL]
 	if(!holder || !battery_module || !battery_module.battery)
@@ -30,6 +34,8 @@
 	w_class = WEIGHT_CLASS_SMALL // Can't be installed into tablets/PDAs
 
 /obj/item/computer_hardware/recharger/APC/use_power(amount, charging=0)
+	procstart = null
+	src.procstart = null
 	if(ismachinery(holder.physical))
 		var/obj/machinery/M = holder.physical
 		if(M.powered())
@@ -53,12 +59,16 @@
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/computer_hardware/recharger/wired/can_install(obj/item/device/modular_computer/M, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	if(ismachinery(M.physical) && M.physical.anchored)
 		return ..()
 	to_chat(user, "<span class='warning'>\The [src] is incompatible with portable computers!</span>")
 	return 0
 
 /obj/item/computer_hardware/recharger/wired/use_power(amount, charging=0)
+	procstart = null
+	src.procstart = null
 	if(ismachinery(holder.physical) && holder.physical.anchored)
 		var/obj/machinery/M = holder.physical
 		var/turf/T = M.loc
@@ -88,4 +98,6 @@
 	charge_rate = 100000
 
 /obj/item/computer_hardware/recharger/lambda/use_power(amount, charging=0)
+	procstart = null
+	src.procstart = null
 	return 1

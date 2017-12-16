@@ -7,6 +7,8 @@
 	text_gain_indication = "<span class='danger'>You get a headache.</span>"
 
 /datum/mutation/human/epilepsy/on_life(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(prob(1) && owner.stat == CONSCIOUS)
 		owner.visible_message("<span class='danger'>[owner] starts having a seizure!</span>", "<span class='userdanger'>You have a seizure!</span>")
 		owner.Unconscious(200)
@@ -14,6 +16,8 @@
 		addtimer(CALLBACK(src, .proc/jitter_less, owner), 90)
 
 /datum/mutation/human/epilepsy/proc/jitter_less(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.jitteriness = 10
 
@@ -25,6 +29,8 @@
 	text_gain_indication = "<span class='danger'>You feel strange.</span>"
 
 /datum/mutation/human/bad_dna/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	to_chat(owner, text_gain_indication)
 	var/mob/new_mob
 	if(prob(95))
@@ -47,6 +53,8 @@
 	text_gain_indication = "<span class='danger'>You start coughing.</span>"
 
 /datum/mutation/human/cough/on_life(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(prob(5) && owner.stat == CONSCIOUS)
 		owner.drop_all_held_items()
 		owner.emote("cough")
@@ -60,6 +68,8 @@
 	lowest_value = 256 * 12
 
 /datum/mutation/human/dwarfism/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.resize = 0.8
@@ -68,6 +78,8 @@
 	owner.visible_message("<span class='danger'>[owner] suddenly shrinks!</span>", "<span class='notice'>Everything around you seems to grow..</span>")
 
 /datum/mutation/human/dwarfism/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.resize = 1.25
@@ -83,11 +95,15 @@
 	text_gain_indication = "<span class='danger'>You feel lightheaded.</span>"
 
 /datum/mutation/human/clumsy/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.disabilities |= CLUMSY
 
 /datum/mutation/human/clumsy/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.disabilities &= ~CLUMSY
@@ -100,6 +116,8 @@
 	text_gain_indication = "<span class='danger'>You twitch.</span>"
 
 /datum/mutation/human/tourettes/on_life(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(prob(10) && owner.stat == CONSCIOUS)
 		owner.Stun(200)
 		switch(rand(1, 3))
@@ -122,11 +140,15 @@
 	text_gain_indication = "<span class='danger'>You can't seem to hear anything.</span>"
 
 /datum/mutation/human/deaf/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.disabilities |= DEAF
 
 /datum/mutation/human/deaf/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.disabilities &= ~DEAF
@@ -139,10 +161,14 @@
 	time_coeff = 2
 
 /datum/mutation/human/race/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	. = owner.monkeyize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPORGANS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE)
 
 /datum/mutation/human/race/on_losing(mob/living/carbon/monkey/owner)
+	procstart = null
+	src.procstart = null
 	if(owner && istype(owner) && owner.stat != DEAD && (owner.dna.mutations.Remove(src)))
 		. = owner.humanize(TR_KEEPITEMS | TR_KEEPIMPLANTS | TR_KEEPORGANS | TR_KEEPDAMAGE | TR_KEEPVIRUS | TR_KEEPSE)

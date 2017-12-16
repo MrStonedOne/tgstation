@@ -14,10 +14,14 @@
 	explosion_block = 2
 
 /turf/closed/wall/r_wall/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_HEAVY_INSULATION)
 
 /turf/closed/wall/r_wall/deconstruction_hints(mob/user)
+	procstart = null
+	src.procstart = null
 	switch(d_state)
 		if(INTACT)
 			to_chat(user, "<span class='notice'>The outer <b>grille</b> is fully intact.</span>")
@@ -35,10 +39,14 @@
 			to_chat(user, "<span class='notice'>The support rods have been <i>sliced through</i>, and the outer sheath is <b>connected loosely</b> to the girder.</span>")
 
 /turf/closed/wall/r_wall/devastate_wall()
+	procstart = null
+	src.procstart = null
 	new sheet_type(src, sheet_amount)
 	new /obj/item/stack/sheet/metal(src, 2)
 
 /turf/closed/wall/r_wall/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	M.changeNext_move(CLICK_CD_MELEE)
 	M.do_attack_animation(src)
 	if(!M.environment_smash)
@@ -51,6 +59,8 @@
 		to_chat(M, "<span class='warning'>This wall is far too strong for you to destroy.</span>")
 
 /turf/closed/wall/r_wall/try_destroy(obj/item/W, mob/user, turf/T)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/pickaxe/drill/jackhammer))
 		var/obj/item/pickaxe/drill/jackhammer/D = W
 		to_chat(user, "<span class='notice'>You begin to smash though the [name]...</span>")
@@ -64,6 +74,8 @@
 	return 0
 
 /turf/closed/wall/r_wall/try_decon(obj/item/W, mob/user, turf/T)
+	procstart = null
+	src.procstart = null
 	//DECONSTRUCTION
 	switch(d_state)
 		if(INTACT)
@@ -239,6 +251,8 @@
 	return 0
 
 /turf/closed/wall/r_wall/proc/update_icon()
+	procstart = null
+	src.procstart = null
 	if(d_state != INTACT)
 		smooth = SMOOTH_FALSE
 		clear_smooth_overlays()
@@ -250,16 +264,22 @@
 		icon_state = "r_wall"
 
 /turf/closed/wall/r_wall/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		if(prob(30))
 			dismantle_wall()
 
 /turf/closed/wall/r_wall/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.canRturf)
 		return ..()
 
 
 /turf/closed/wall/r_wall/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	procstart = null
+	src.procstart = null
 	if(the_rcd.canRturf)
 		return ..()

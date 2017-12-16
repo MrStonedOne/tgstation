@@ -21,6 +21,8 @@
 
 /obj/effect/proc_holder/spell/targeted/inflict_handler/cast(list/targets,mob/user = usr)
 
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/target in targets)
 		playsound(target,sound, 50,1)
 		switch(destroys)

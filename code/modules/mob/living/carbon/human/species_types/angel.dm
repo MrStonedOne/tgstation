@@ -14,6 +14,8 @@
 	var/datum/action/innate/flight/fly
 
 /datum/species/angel/on_species_gain(mob/living/carbon/human/H, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	..()
 	if(H.dna && H.dna.species &&((H.dna.features["wings"] != "Angel") && ("wings" in H.dna.species.mutant_bodyparts)))
 		H.dna.features["wings"] = "Angel"
@@ -23,6 +25,8 @@
 		fly.Grant(H)
 
 /datum/species/angel/on_species_loss(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(fly)
 		fly.Remove(H)
 	if(H.movement_type & FLYING)
@@ -34,9 +38,13 @@
 	..()
 
 /datum/species/angel/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	HandleFlight(H)
 
 /datum/species/angel/proc/HandleFlight(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.movement_type & FLYING)
 		if(!CanFly(H))
 			ToggleFlight(H,0)
@@ -46,6 +54,8 @@
 		return 0
 
 /datum/species/angel/proc/CanFly(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.stat || H.IsStun() || H.IsKnockdown())
 		return 0
 	if(H.wear_suit && ((H.wear_suit.flags_inv & HIDEJUMPSUIT) && (!H.wear_suit.species_exception || !is_type_in_list(src, H.wear_suit.species_exception))))	//Jumpsuits have tail holes, so it makes sense they have wing holes too
@@ -69,6 +79,8 @@
 	button_icon_state = "flight"
 
 /datum/action/innate/flight/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	var/datum/species/angel/A = H.dna.species
 	if(A.CanFly(H))
@@ -83,6 +95,8 @@
 			H.update_canmove()
 
 /datum/species/angel/proc/flyslip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/obj/buckled_obj
 	if(H.buckled)
 		buckled_obj = H.buckled
@@ -109,20 +123,28 @@
 
 
 /datum/species/angel/spec_stun(mob/living/carbon/human/H,amount)
+	procstart = null
+	src.procstart = null
 	if(H.movement_type & FLYING)
 		ToggleFlight(H,0)
 		flyslip(H)
 	. = ..()
 
 /datum/species/angel/negates_gravity(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.movement_type & FLYING)
 		return 1
 
 /datum/species/angel/space_move(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.movement_type & FLYING)
 		return 1
 
 /datum/species/angel/proc/ToggleFlight(mob/living/carbon/human/H,flight)
+	procstart = null
+	src.procstart = null
 	if(flight && CanFly(H))
 		stunmod = 2
 		speedmod = -0.35

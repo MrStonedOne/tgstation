@@ -11,12 +11,16 @@
 	var/bomb_cooldown = 0
 
 /mob/living/simple_animal/hostile/guardian/bomb/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		if(bomb_cooldown >= world.time)
 			stat(null, "Bomb Cooldown Remaining: [DisplayTimeText(bomb_cooldown - world.time)]")
 
 /mob/living/simple_animal/hostile/guardian/bomb/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && prob(40) && isliving(target))
 		var/mob/living/M = target
@@ -31,6 +35,8 @@
 			new /obj/effect/temp_visual/explosion(get_turf(M))
 
 /mob/living/simple_animal/hostile/guardian/bomb/AltClickOn(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(!istype(A))
 		return
 	if(src.loc == summoner)
@@ -54,6 +60,8 @@
 
 
 /obj/guardian_bomb/proc/disguise(obj/A)
+	procstart = null
+	src.procstart = null
 	A.forceMove(src)
 	stored_obj = A
 	opacity = A.opacity
@@ -63,11 +71,15 @@
 	addtimer(CALLBACK(src, .proc/disable), 600)
 
 /obj/guardian_bomb/proc/disable()
+	procstart = null
+	src.procstart = null
 	stored_obj.forceMove(get_turf(src))
 	to_chat(spawner, "<span class='danger'><B>Failure! Your trap didn't catch anyone this time.</span></B>")
 	qdel(src)
 
 /obj/guardian_bomb/proc/detonate(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isliving(user))
 		if(user != spawner && user != spawner.summoner && !spawner.hasmatchingsummoner(user))
 			to_chat(user, "<span class='danger'><B>[src] was boobytrapped!</span></B>")
@@ -82,16 +94,24 @@
 			to_chat(user, "<span class='holoparasite'>[src] glows with a strange <font color=\"[spawner.namedatum.colour]\">light</font>, and you don't touch it.</span>")
 
 /obj/guardian_bomb/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	detonate(A)
 	..()
 
 /obj/guardian_bomb/attackby(mob/living/user)
+	procstart = null
+	src.procstart = null
 	detonate(user)
 
 /obj/guardian_bomb/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	detonate(user)
 
 /obj/guardian_bomb/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	stored_obj.examine(user)
 	if(get_dist(user,src)<=2)
 		to_chat(user, "<span class='holoparasite'>It glows with a strange <font color=\"[spawner.namedatum.colour]\">light</font>!</span>")

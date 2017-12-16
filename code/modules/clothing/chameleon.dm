@@ -6,6 +6,8 @@
 	button_icon_state = "random"
 
 /datum/action/item_action/chameleon/drone/randomise/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!IsAvailable())
 		return
 
@@ -25,6 +27,8 @@
 	icon_icon = 'icons/mob/actions/actions_silicon.dmi'
 
 /datum/action/item_action/chameleon/drone/togglehatmask/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if (istype(target, /obj/item/clothing/head/chameleon/drone))
@@ -33,6 +37,8 @@
 		button_icon_state = "drone_camogear_mask"
 
 /datum/action/item_action/chameleon/drone/togglehatmask/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!IsAvailable())
 		return
 
@@ -78,6 +84,8 @@
 	var/emp_timer
 
 /datum/action/item_action/chameleon/change/proc/initialize_disguises()
+	procstart = null
+	src.procstart = null
 	if(button)
 		button.name = "Change [chameleon_name] Appearance"
 
@@ -94,6 +102,8 @@
 
 
 /datum/action/item_action/chameleon/change/proc/select_look(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/picked_item
 	var/picked_name
 	picked_name = input("Select [chameleon_name] to change into", "Chameleon [chameleon_name]", picked_name) as null|anything in chameleon_list
@@ -105,6 +115,8 @@
 	update_look(user, picked_item)
 
 /datum/action/item_action/chameleon/change/proc/random_look(mob/user)
+	procstart = null
+	src.procstart = null
 	var/picked_name = pick(chameleon_list)
 	// If a user is provided, then this item is in use, and we
 	// need to update our icons and stuff
@@ -119,6 +131,8 @@
 		update_item(chameleon_list[picked_name])
 
 /datum/action/item_action/chameleon/change/proc/update_look(mob/user, obj/item/picked_item)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/gun/energy/laser/chameleon))
 		var/obj/item/gun/energy/laser/chameleon/CG = target
 		CG.get_chameleon_projectile(picked_item)
@@ -132,6 +146,8 @@
 	UpdateButtonIcon()
 
 /datum/action/item_action/chameleon/change/proc/update_item(obj/item/picked_item)
+	procstart = null
+	src.procstart = null
 	target.name = initial(picked_item.name)
 	target.desc = initial(picked_item.desc)
 	target.icon_state = initial(picked_item.icon_state)
@@ -146,6 +162,8 @@
 	target.icon = initial(picked_item.icon)
 
 /datum/action/item_action/chameleon/change/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!IsAvailable())
 		return
 
@@ -153,6 +171,8 @@
 	return 1
 
 /datum/action/item_action/chameleon/change/proc/emp_randomise()
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/gun/energy/laser/chameleon))
 		return	//Please no crash!
 	START_PROCESSING(SSprocessing, src)
@@ -161,12 +181,16 @@
 	emp_timer = world.time + EMP_RANDOMISE_TIME
 
 /datum/action/item_action/chameleon/change/process()
+	procstart = null
+	src.procstart = null
 	if(world.time > emp_timer)
 		STOP_PROCESSING(SSprocessing, src)
 		return
 	random_look(owner)
 
 /datum/action/item_action/chameleon/change/proc/update_item_icon()
+	procstart = null
+	src.procstart = null
 	var/obj/item/I = target
 	var/mob/living/M = owner
 
@@ -218,6 +242,8 @@
 	item_color = "engine"
 
 /obj/item/clothing/under/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/under
@@ -226,6 +252,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/clothing/under/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/clothing/suit/chameleon
@@ -240,6 +268,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/suit/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/suit
@@ -248,6 +278,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/clothing/suit/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/clothing/glasses/chameleon
@@ -261,6 +293,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/glasses/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/glasses
@@ -269,6 +303,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/clothing/glasses/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/clothing/gloves/chameleon
@@ -283,6 +319,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/gloves/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/gloves
@@ -291,6 +329,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/clothing/gloves/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/clothing/head/chameleon
@@ -305,6 +345,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/head/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/head
@@ -313,6 +355,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/clothing/head/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/clothing/head/chameleon/drone
@@ -323,6 +367,8 @@
 	// which means it offers no protection, it's just air and light
 
 /obj/item/clothing/head/chameleon/drone/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action.random_look()
 	var/datum/action/item_action/chameleon/drone/togglehatmask/togglehatmask_action = new(src)
@@ -349,6 +395,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/mask/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/mask
@@ -357,9 +405,13 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/clothing/mask/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/clothing/mask/chameleon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	vchange = !vchange
 	to_chat(user, "<span class='notice'>The voice changer is now [vchange ? "on" : "off"]!</span>")
 
@@ -372,6 +424,8 @@
 	vchange = 0
 
 /obj/item/clothing/mask/chameleon/drone/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action.random_look()
 	var/datum/action/item_action/chameleon/drone/togglehatmask/togglehatmask_action = new(src)
@@ -380,6 +434,8 @@
 	randomise_action.UpdateButtonIcon()
 
 /obj/item/clothing/mask/chameleon/drone/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>[src] does not have a voice changer.</span>")
 
 /obj/item/clothing/shoes/chameleon
@@ -396,6 +452,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/clothing/shoes/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/clothing/shoes
@@ -404,6 +462,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/clothing/shoes/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/gun/energy/laser/chameleon
@@ -426,6 +486,8 @@
 	var/static/list/blacklisted_vars = list("locs", "loc", "contents", "x", "y", "z")
 
 /obj/item/gun/energy/laser/chameleon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/gun
@@ -434,6 +496,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/gun/energy/laser/chameleon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	projectile_copy_vars = list("name", "icon", "icon_state", "item_state", "speed", "color", "hitsound", "forcedodge", "impact_effect_type", "range", "suppressed", "hitsound_wall", "impact_effect_type", "pass_flags")
 	chameleon_projectile_vars = list("name" = "practice laser", "icon" = 'icons/obj/projectiles.dmi', "icon_state" = "laser")
@@ -445,9 +509,13 @@
 	get_chameleon_projectile(/obj/item/gun/energy/laser)
 
 /obj/item/gun/energy/laser/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/laser/chameleon/proc/reset_chameleon_vars()
+	procstart = null
+	src.procstart = null
 	chameleon_ammo_vars = list()
 	chameleon_gun_vars = list()
 	chameleon_projectile_vars = list()
@@ -464,6 +532,8 @@
 	chambered.newshot()
 
 /obj/item/gun/energy/laser/chameleon/proc/set_chameleon_ammo(obj/item/ammo_casing/AC, passthrough = TRUE, reset = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!istype(AC))
 		CRASH("[AC] is not /obj/item/ammo_casing!")
 		return FALSE
@@ -477,6 +547,8 @@
 		set_chameleon_projectile(P)
 
 /obj/item/gun/energy/laser/chameleon/proc/set_chameleon_projectile(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(!istype(P))
 		CRASH("[P] is not /obj/item/projectile!")
 		return FALSE
@@ -493,6 +565,8 @@
 		chambered.newshot()
 
 /obj/item/gun/energy/laser/chameleon/proc/set_chameleon_gun(obj/item/gun/G , passthrough = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(G))
 		CRASH("[G] is not /obj/item/gun!")
 		return FALSE
@@ -524,6 +598,8 @@
 			set_chameleon_ammo(AC)
 
 /obj/item/gun/energy/laser/chameleon/proc/get_chameleon_projectile(guntype)
+	procstart = null
+	src.procstart = null
 	reset_chameleon_vars()
 	var/obj/item/gun/G = new guntype(src)
 	set_chameleon_gun(G)
@@ -534,6 +610,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/storage/backpack/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/storage/backpack
@@ -541,6 +619,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/storage/backpack/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/storage/belt/chameleon
@@ -550,6 +630,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/storage/belt/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/storage/belt
@@ -557,6 +639,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/storage/belt/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/device/radio/headset/chameleon
@@ -564,6 +648,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/device/radio/headset/chameleon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/device/radio/headset
@@ -571,6 +657,8 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/device/radio/headset/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 
 /obj/item/device/pda/chameleon
@@ -578,6 +666,8 @@
 	var/datum/action/item_action/chameleon/change/chameleon_action
 
 /obj/item/device/pda/chameleon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chameleon_action = new(src)
 	chameleon_action.chameleon_type = /obj/item/device/pda
@@ -586,5 +676,7 @@
 	chameleon_action.initialize_disguises()
 
 /obj/item/device/pda/chameleon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chameleon_action.emp_randomise()
 

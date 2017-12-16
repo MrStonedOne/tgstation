@@ -40,6 +40,8 @@
 	del_on_death = 1
 
 /mob/living/simple_animal/hostile/tree/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(isopenturf(loc))
 		var/turf/open/T = src.loc
@@ -52,6 +54,8 @@
 					T.atmos_spawn_air("o2=[amt]")
 
 /mob/living/simple_animal/hostile/tree/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target

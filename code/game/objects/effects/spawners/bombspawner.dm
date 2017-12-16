@@ -7,6 +7,8 @@
 	var/assembly_type
 
 /obj/effect/spawner/newbomb/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/device/transfer_valve/V = new(src.loc)
 	var/obj/item/tank/internals/plasma/full/PT = new(V)

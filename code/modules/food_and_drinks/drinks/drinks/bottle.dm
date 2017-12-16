@@ -17,6 +17,8 @@
 
 
 /obj/item/reagent_containers/food/drinks/bottle/smash(mob/living/target, mob/thrower, ranged = FALSE)
+	procstart = null
+	src.procstart = null
 	//Creates a shattering noise and replaces the bottle with a broken_bottle
 	if(bartender_check(target) && ranged)
 		return
@@ -45,6 +47,8 @@
 
 /obj/item/reagent_containers/food/drinks/bottle/attack(mob/living/target, mob/living/user)
 
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 
@@ -233,10 +237,14 @@
 	list_reagents = list("absinthe" = 100)
 
 /obj/item/reagent_containers/food/drinks/bottle/absinthe/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	redact()
 
 /obj/item/reagent_containers/food/drinks/bottle/absinthe/proc/redact()
+	procstart = null
+	src.procstart = null
 	// There was a large fight in the coderbus about a player reference
 	// in absinthe. Ergo, this is why the name generation is now so
 	// complicated. Judge us kindly.
@@ -277,6 +285,8 @@
 	icon_state = "absinthepremium"
 
 /obj/item/reagent_containers/food/drinks/bottle/absinthe/premium/redact()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/reagent_containers/food/drinks/bottle/lizardwine
@@ -357,6 +367,8 @@
 	var/active = 0
 
 /obj/item/reagent_containers/food/drinks/bottle/molotov/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/reagent_containers/food/drinks/bottle/B = locate() in contents
 	if(B)
@@ -368,6 +380,8 @@
 	return
 
 /obj/item/reagent_containers/food/drinks/bottle/molotov/throw_impact(atom/target,mob/thrower)
+	procstart = null
+	src.procstart = null
 	var/firestarter = 0
 	for(var/datum/reagent/R in reagents.reagent_list)
 		for(var/A in accelerants)
@@ -380,6 +394,8 @@
 	..()
 
 /obj/item/reagent_containers/food/drinks/bottle/molotov/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(I.is_hot() && !active)
 		active = 1
 		var/turf/bombturf = get_turf(src)
@@ -407,6 +423,8 @@
 					qdel(src)
 
 /obj/item/reagent_containers/food/drinks/bottle/molotov/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(!isGlass)
 			to_chat(user, "<span class='danger'>The flame's spread too far on it!</span>")

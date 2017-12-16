@@ -2,6 +2,8 @@
 // Only way to do that is to tie the behavior into the focus's keyLoop().
 
 /atom/movable/keyLoop(client/user)
+	procstart = null
+	src.procstart = null
 	if(!user.keys_held["Ctrl"])
 		var/movement_dir = NONE
 		for(var/_key in user.keys_held)

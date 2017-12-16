@@ -26,6 +26,8 @@
 
 
 /obj/structure/bookcase/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!anchored)
 		to_chat(user, "<span class='notice'>The <i>bolts</i> on the bottom are unsecured.</span>")
@@ -41,6 +43,8 @@
 
 
 /obj/structure/bookcase/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		return
@@ -54,6 +58,8 @@
 
 
 /obj/structure/bookcase/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(0)
 			if(istype(I, /obj/item/wrench))
@@ -114,6 +120,8 @@
 
 
 /obj/structure/bookcase/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(contents.len)
 		var/obj/item/book/choice = input("Which book would you like to remove from the shelf?") as null|obj in contents
 		if(choice)
@@ -128,6 +136,8 @@
 
 
 /obj/structure/bookcase/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/mineral/wood(loc, 4)
 	for(var/obj/item/book/B in contents)
 		B.forceMove(get_turf(src))
@@ -135,6 +145,8 @@
 
 
 /obj/structure/bookcase/update_icon()
+	procstart = null
+	src.procstart = null
 	if(contents.len < 5)
 		icon_state = "book-[contents.len]"
 	else
@@ -145,6 +157,8 @@
 	name = "medical manuals bookcase"
 
 /obj/structure/bookcase/manuals/medical/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/book/manual/medical_cloning(src)
 	update_icon()
@@ -154,6 +168,8 @@
 	name = "engineering manuals bookcase"
 
 /obj/structure/bookcase/manuals/engineering/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/book/manual/wiki/engineering_construction(src)
 	new /obj/item/book/manual/engineering_particle_accelerator(src)
@@ -168,6 +184,8 @@
 	name = "\improper R&D manuals bookcase"
 
 /obj/structure/bookcase/manuals/research_and_development/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/book/manual/research_and_development(src)
 	update_icon()
@@ -194,6 +212,8 @@
 	var/window_size = null // Specific window size for the book, i.e: "1920x1080", Size x Width
 
 /obj/item/book/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_blind(user))
 		to_chat(user, "<span class='warning'>As you are trying to read, you suddenly feel very stupid!</span>")
 		return
@@ -209,6 +229,8 @@
 
 
 /obj/item/book/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/pen))
 		if(is_blind(user))
 			to_chat(user, "<span class='warning'> As you are trying to write on the book, you suddenly feel very stupid!</span>")
@@ -313,6 +335,8 @@
 	var/mode = 0							//0 - Scan only, 1 - Scan and Set Buffer, 2 - Scan and Attempt to Check In, 3 - Scan and Attempt to Add to Inventory
 
 /obj/item/barcodescanner/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	mode += 1
 	if(mode > 3)
 		mode = 0

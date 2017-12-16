@@ -39,6 +39,8 @@
 	icon_state = "hydrotray3"
 
 /obj/machinery/hydroponics/constructable/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/tmp_capacity = 0
 	for (var/obj/item/stock_parts/matter_bin/M in component_parts)
 		tmp_capacity += M.rating
@@ -50,12 +52,16 @@
 	nutrilevel = 3
 
 /obj/machinery/hydroponics/Destroy()
+	procstart = null
+	src.procstart = null
 	if(myseed)
 		qdel(myseed)
 		myseed = null
 	return ..()
 
 /obj/machinery/hydroponics/constructable/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "hydrotray3", "hydrotray3", I))
 		return
 
@@ -77,6 +83,8 @@
 		return ..()
 
 /obj/machinery/hydroponics/proc/FindConnected()
+	procstart = null
+	src.procstart = null
 	var/list/connected = list()
 	var/list/processing_atoms = list(src)
 
@@ -105,6 +113,8 @@
 		return ..()
 
 /obj/machinery/hydroponics/process()
+	procstart = null
+	src.procstart = null
 	var/needs_update = 0 // Checks if the icon needs updating so we don't redraw empty trays every time
 
 	if(myseed && (myseed.loc != src))
@@ -222,6 +232,8 @@
 	return
 
 /obj/machinery/hydroponics/proc/nutrimentMutation()
+	procstart = null
+	src.procstart = null
 	if (mutmod == 0)
 		return
 	if (mutmod == 1)
@@ -241,6 +253,8 @@
 	return
 
 /obj/machinery/hydroponics/update_icon()
+	procstart = null
+	src.procstart = null
 	//Refreshes the icon and sets the luminosity
 	cut_overlays()
 
@@ -267,6 +281,8 @@
 	return
 
 /obj/machinery/hydroponics/proc/update_icon_hoses()
+	procstart = null
+	src.procstart = null
 	var/n = 0
 	for(var/Dir in GLOB.cardinals)
 		var/obj/machinery/hydroponics/t = locate() in get_step(src,Dir)
@@ -276,6 +292,8 @@
 	icon_state = "hoses-[n]"
 
 /obj/machinery/hydroponics/proc/update_icon_plant()
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/plant_overlay = mutable_appearance(myseed.growing_icon, layer = OBJ_LAYER + 0.01)
 	if(dead)
 		plant_overlay.icon_state = myseed.icon_dead
@@ -290,6 +308,8 @@
 	add_overlay(plant_overlay)
 
 /obj/machinery/hydroponics/proc/update_icon_lights()
+	procstart = null
+	src.procstart = null
 	if(waterlevel <= 10)
 		add_overlay(mutable_appearance('icons/obj/hydroponics/equipment.dmi', "over_lowwater3"))
 	if(nutrilevel <= 2)
@@ -303,6 +323,8 @@
 
 
 /obj/machinery/hydroponics/examine(user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(myseed)
 		to_chat(user, "<span class='info'>It has <span class='name'>[myseed.plantname]</span> planted.</span>")
@@ -373,6 +395,8 @@
 	myseed.mutate(lifemut, endmut, productmut, yieldmut, potmut, wrmut, wcmut, traitmut)
 
 /obj/machinery/hydroponics/proc/hardmutate()
+	procstart = null
+	src.procstart = null
 	mutate(4, 10, 2, 4, 50, 4, 10, 3)
 
 
@@ -434,6 +458,8 @@
 
 
 /obj/machinery/hydroponics/proc/mutatepest(mob/user)
+	procstart = null
+	src.procstart = null
 	if(pestlevel > 5)
 		message_admins("[ADMIN_LOOKUPFLW(user)] caused spiderling pests to spawn in a hydro tray")
 		log_game("[key_name(user)] caused spiderling pests to spawn in a hydro tray")
@@ -443,6 +469,8 @@
 		to_chat(user, "<span class='warning'>The pests seem to behave oddly, but quickly settle down...</span>")
 
 /obj/machinery/hydroponics/proc/applyChemicals(datum/reagents/S, mob/user)
+	procstart = null
+	src.procstart = null
 	if(myseed)
 		myseed.on_chem_reaction(S) //In case seeds have some special interactions with special chems, currently only used by vines
 
@@ -675,6 +703,8 @@
 				to_chat(user, "<span class='warning'>Nothing happens...</span>")
 
 /obj/machinery/hydroponics/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	//Called when mob user "attacks" it with object O
 	if(istype(O, /obj/item/reagent_containers) )  // Syringe stuff (and other reagent containers now too)
 		var/obj/item/reagent_containers/reagent_source = O
@@ -851,6 +881,8 @@
 		return ..()
 
 /obj/machinery/hydroponics/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(issilicon(user)) //How does AI know what plant is?
 		return
 	if(harvest)
@@ -865,6 +897,8 @@
 		examine(user)
 
 /obj/machinery/hydroponics/proc/update_tray(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	harvest = 0
 	lastproduce = age
 	if(istype(myseed, /obj/item/seeds/replicapod))
@@ -881,25 +915,37 @@
 
 /// Tray Setters - The following procs adjust the tray or plants variables, and make sure that the stat doesn't go out of bounds.///
 /obj/machinery/hydroponics/proc/adjustNutri(adjustamt)
+	procstart = null
+	src.procstart = null
 	nutrilevel = Clamp(nutrilevel + adjustamt, 0, maxnutri)
 
 /obj/machinery/hydroponics/proc/adjustWater(adjustamt)
+	procstart = null
+	src.procstart = null
 	waterlevel = Clamp(waterlevel + adjustamt, 0, maxwater)
 
 	if(adjustamt>0)
 		adjustToxic(-round(adjustamt/4))//Toxicity dilutation code. The more water you put in, the lesser the toxin concentration.
 
 /obj/machinery/hydroponics/proc/adjustHealth(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(myseed && !dead)
 		plant_health = Clamp(plant_health + adjustamt, 0, myseed.endurance)
 
 /obj/machinery/hydroponics/proc/adjustToxic(adjustamt)
+	procstart = null
+	src.procstart = null
 	toxic = Clamp(toxic + adjustamt, 0, 100)
 
 /obj/machinery/hydroponics/proc/adjustPests(adjustamt)
+	procstart = null
+	src.procstart = null
 	pestlevel = Clamp(pestlevel + adjustamt, 0, 10)
 
 /obj/machinery/hydroponics/proc/adjustWeeds(adjustamt)
+	procstart = null
+	src.procstart = null
 	weedlevel = Clamp(weedlevel + adjustamt, 0, 10)
 
 /obj/machinery/hydroponics/proc/spawnplant() // why would you put strange reagent in a hydro tray you monster I bet you also feed them blood
@@ -926,12 +972,18 @@
 	unwrenchable = FALSE
 
 /obj/machinery/hydroponics/soil/update_icon_hoses()
+	procstart = null
+	src.procstart = null
 	return // Has no hoses
 
 /obj/machinery/hydroponics/soil/update_icon_lights()
+	procstart = null
+	src.procstart = null
 	return // Has no lights
 
 /obj/machinery/hydroponics/soil/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/shovel) && !istype(O, /obj/item/shovel/spade)) //Doesn't include spades because of uprooting plants
 		to_chat(user, "<span class='notice'>You clear up [src]!</span>")
 		qdel(src)

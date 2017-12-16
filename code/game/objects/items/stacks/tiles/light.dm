@@ -9,6 +9,8 @@
 	var/state = 0
 
 /obj/item/stack/tile/light/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(5))
 		state = 3 //broken
@@ -20,6 +22,8 @@
 		state = 0 //fine
 
 /obj/item/stack/tile/light/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/crowbar))
 		new/obj/item/stack/sheet/metal(user.loc)
 		amount--

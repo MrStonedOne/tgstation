@@ -18,6 +18,8 @@
 	var/new_form = /mob/living/carbon/human
 
 /datum/disease/transformation/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(1)
@@ -36,6 +38,8 @@
 			do_disease_transformation(affected_mob)
 
 /datum/disease/transformation/proc/do_disease_transformation(mob/living/affected_mob)
+	procstart = null
+	src.procstart = null
 	if(istype(affected_mob, /mob/living/carbon) && affected_mob.stat != DEAD)
 		if(stage5)
 			to_chat(affected_mob, pick(stage5))
@@ -88,6 +92,8 @@
 	stage5	= list("<span class='warning'>You feel like monkeying around.</span>")
 
 /datum/disease/transformation/jungle_fever/do_disease_transformation(mob/living/carbon/affected_mob)
+	procstart = null
+	src.procstart = null
 	if(affected_mob.mind && !is_monkey(affected_mob))
 		add_monkey(affected_mob.mind)
 	if(ishuman(affected_mob))
@@ -96,6 +102,8 @@
 
 
 /datum/disease/transformation/jungle_fever/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(2)
@@ -110,6 +118,8 @@
 				affected_mob.say(pick("Eeek, ook ook!", "Eee-eeek!", "Eeee!", "Ungh, ungh."))
 
 /datum/disease/transformation/jungle_fever/cure()
+	procstart = null
+	src.procstart = null
 	remove_monkey(affected_mob.mind)
 	..()
 
@@ -133,6 +143,8 @@
 	infectable_hosts = list(SPECIES_ORGANIC, SPECIES_UNDEAD, SPECIES_ROBOTIC)
 
 /datum/disease/transformation/robot/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(3)
@@ -164,6 +176,8 @@
 	new_form = /mob/living/carbon/alien/humanoid/hunter
 
 /datum/disease/transformation/xeno/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(3)
@@ -192,6 +206,8 @@
 	new_form = /mob/living/simple_animal/slime/random
 
 /datum/disease/transformation/slime/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(1)
@@ -219,6 +235,8 @@
 	new_form = /mob/living/simple_animal/pet/dog/corgi
 
 /datum/disease/transformation/corgi/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(3)

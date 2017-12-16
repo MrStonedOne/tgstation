@@ -21,6 +21,8 @@
 
 //Returns a list in plain english as a string
 /proc/english_list(list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "" )
+	procstart = null
+	src.procstart = null
 	var/total = input.len
 	if (!total)
 		return "[nothing_text]"
@@ -42,6 +44,8 @@
 
 //Returns list element or null. Should prevent "index out of bounds" error.
 /proc/listgetindex(list/L, index)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(L))
 		if(isnum(index) && IsInteger(index))
 			if(IsInRange(index,1,L.len))
@@ -52,17 +56,23 @@
 
 //Return either pick(list) or null if list is not of type /list or is empty
 /proc/safepick(list/L)
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(L))
 		return pick(L)
 
 //Checks if the list is empty
 /proc/isemptylist(list/L)
+	procstart = null
+	src.procstart = null
 	if(!L.len)
 		return TRUE
 	return FALSE
 
 //Checks for specific types in a list
 /proc/is_type_in_list(atom/A, list/L)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(L) || !A)
 		return FALSE
 	for(var/type in L)
@@ -72,6 +82,8 @@
 
 //Checks for specific types in specifically structured (Assoc "type" = TRUE) lists ('typecaches')
 /proc/is_type_in_typecache(atom/A, list/L)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(L) || !A)
 
 		return FALSE
@@ -82,6 +94,8 @@
 
 //Checks for a string in a list
 /proc/is_string_in_list(string, list/L)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(L) || !string)
 		return
 	for(var/V in L)
@@ -91,6 +105,8 @@
 
 //Removes a string from a list
 /proc/remove_strings_from_list(string, list/L)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(L) || !string)
 		return
 	for(var/V in L)
@@ -100,6 +116,8 @@
 
 //returns a new list with only atoms that are in typecache L
 /proc/typecache_filter_list(list/atoms, list/typecache)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/thing in atoms)
 		var/atom/A = thing
@@ -107,6 +125,8 @@
 			. += A
 
 /proc/typecache_filter_list_reverse(list/atoms, list/typecache)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/thing in atoms)
 		var/atom/A = thing
@@ -114,6 +134,8 @@
 			. += A
 
 /proc/typecache_filter_multi_list_exclusion(list/atoms, list/typecache_include, list/typecache_exclude)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/thing in atoms)
 		var/atom/A = thing
@@ -122,6 +144,8 @@
 
 //Like typesof() or subtypesof(), but returns a typecache instead of a list
 /proc/typecacheof(path, ignore_root_path, only_root_path = FALSE)
+	procstart = null
+	src.procstart = null
 	if(ispath(path))
 		var/list/types = list()
 		if(only_root_path)
@@ -150,6 +174,8 @@
 
 //Empties the list by setting the length to 0. Hopefully the elements get garbage collected
 /proc/clearlist(list/list)
+	procstart = null
+	src.procstart = null
 	if(istype(list))
 		list.len = 0
 	return
@@ -157,6 +183,8 @@
 //Removes any null entries from the list
 //Returns TRUE if the list had nulls, FALSE otherwise
 /proc/listclearnulls(list/L)
+	procstart = null
+	src.procstart = null
 	var/start_len = L.len
 	var/list/N = new(start_len)
 	L -= N
@@ -168,6 +196,8 @@
  * If either of arguments is not a list, returns null
  */
 /proc/difflist(list/first, list/second, skiprep=0)
+	procstart = null
+	src.procstart = null
 	if(!islist(first) || !islist(second))
 		return
 	var/list/result = new
@@ -185,6 +215,8 @@
  * If either of arguments is not a list, returns null
  */
 /proc/uniquemergelist(list/first, list/second, skiprep=0)
+	procstart = null
+	src.procstart = null
 	if(!islist(first) || !islist(second))
 		return
 	var/list/result = new
@@ -200,6 +232,8 @@
 //3. For each element in the list, subtracts its weighting from that number
 //4. If that makes the number 0 or less, return that element.
 /proc/pickweight(list/L)
+	procstart = null
+	src.procstart = null
 	var/total = 0
 	var/item
 	for (item in L)
@@ -233,6 +267,8 @@
 
 //Pick a random element from the list and remove it from the list.
 /proc/pick_n_take(list/L)
+	procstart = null
+	src.procstart = null
 	if(L.len)
 		var/picked = rand(1,L.len)
 		. = L[picked]
@@ -240,16 +276,22 @@
 
 //Returns the top(last) element from the list and removes it from the list (typical stack function)
 /proc/pop(list/L)
+	procstart = null
+	src.procstart = null
 	if(L.len)
 		. = L[L.len]
 		L.len--
 
 /proc/popleft(list/L)
+	procstart = null
+	src.procstart = null
 	if(L.len)
 		. = L[1]
 		L.Cut(1,2)
 
 /proc/sorted_insert(list/L, thing, comparator)
+	procstart = null
+	src.procstart = null
 	var/pos = L.len
 	while(pos > 0 && call(comparator)(thing, L[pos]) > 0)
 		pos--
@@ -257,6 +299,8 @@
 
 // Returns the next item in a list
 /proc/next_list_item(item, list/L)
+	procstart = null
+	src.procstart = null
 	var/i
 	i = L.Find(item)
 	if(i == L.len)
@@ -267,6 +311,8 @@
 
 // Returns the previous item in a list
 /proc/previous_list_item(item, list/L)
+	procstart = null
+	src.procstart = null
 	var/i
 	i = L.Find(item)
 	if(i == 1)
@@ -277,6 +323,8 @@
 
 //Randomize: Return the list in a random order
 /proc/shuffle(list/L)
+	procstart = null
+	src.procstart = null
 	if(!L)
 		return
 	L = L.Copy()
@@ -288,6 +336,8 @@
 
 //same, but returns nothing and acts on list in place
 /proc/shuffle_inplace(list/L)
+	procstart = null
+	src.procstart = null
 	if(!L)
 		return
 
@@ -296,12 +346,16 @@
 
 //Return a list with no duplicate entries
 /proc/uniqueList(list/L)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/i in L)
 		. |= i
 
 //same, but returns nothing and acts on list in place (also handles associated values properly)
 /proc/uniqueList_inplace(list/L)
+	procstart = null
+	src.procstart = null
 	var/temp = L.Copy()
 	L.len = 0
 	for(var/key in temp)
@@ -312,24 +366,34 @@
 
 //for sorting clients or mobs by ckey
 /proc/sortKey(list/L, order=1)
+	procstart = null
+	src.procstart = null
 	return sortTim(L, order >= 0 ? /proc/cmp_ckey_asc : /proc/cmp_ckey_dsc)
 
 //Specifically for record datums in a list.
 /proc/sortRecord(list/L, field = "name", order = 1)
+	procstart = null
+	src.procstart = null
 	GLOB.cmp_field = field
 	return sortTim(L, order >= 0 ? /proc/cmp_records_asc : /proc/cmp_records_dsc)
 
 //any value in a list
 /proc/sortList(list/L, cmp=/proc/cmp_text_asc)
+	procstart = null
+	src.procstart = null
 	return sortTim(L.Copy(), cmp)
 
 //uses sortList() but uses the var's name specifically. This should probably be using mergeAtom() instead
 /proc/sortNames(list/L, order=1)
+	procstart = null
+	src.procstart = null
 	return sortTim(L, order >= 0 ? /proc/cmp_name_asc : /proc/cmp_name_dsc)
 
 
 //Converts a bitfield to a list of numbers (or words if a wordlist is provided)
 /proc/bitfield2list(bitfield = 0, list/wordlist)
+	procstart = null
+	src.procstart = null
 	var/list/r = list()
 	if(islist(wordlist))
 		var/max = min(wordlist.len,16)
@@ -349,6 +413,8 @@
 #define KEYBYINDEX(L, index) (((index <= length(L)) && (index > 0)) ? L[index] : null)
 
 /proc/count_by_type(list/L, type)
+	procstart = null
+	src.procstart = null
 	var/i = 0
 	for(var/T in L)
 		if(istype(T, type))
@@ -356,6 +422,8 @@
 	return i
 
 /proc/find_record(field, value, list/L)
+	procstart = null
+	src.procstart = null
 	for(var/datum/data/record/R in L)
 		if(R.fields[field] == value)
 			return R
@@ -368,6 +436,8 @@
 //fromIndex and toIndex must be in the range [1,L.len+1]
 //This will preserve associations ~Carnie
 /proc/moveElement(list/L, fromIndex, toIndex)
+	procstart = null
+	src.procstart = null
 	if(fromIndex == toIndex || fromIndex+1 == toIndex)	//no need to move
 		return
 	if(fromIndex > toIndex)
@@ -382,6 +452,8 @@
 //Same as moveElement but for ranges of elements
 //This will preserve associations ~Carnie
 /proc/moveRange(list/L, fromIndex, toIndex, len=1)
+	procstart = null
+	src.procstart = null
 	var/distance = abs(toIndex - fromIndex)
 	if(len >= distance)	//there are more elements to be moved than the distance to be moved. Therefore the same result can be achieved (with fewer operations) by moving elements between where we are and where we are going. The result being, our range we are moving is shifted left or right by dist elements
 		if(fromIndex <= toIndex)
@@ -405,6 +477,8 @@
 //Move any elements being overwritten by the move to the now-empty elements, preserving order
 //Note: if the two ranges overlap, only the destination order will be preserved fully, since some elements will be within both ranges ~Carnie
 /proc/swapRange(list/L, fromIndex, toIndex, len=1)
+	procstart = null
+	src.procstart = null
 	var/distance = abs(toIndex - fromIndex)
 	if(len > distance)	//there is an overlap, therefore swapping each element will require more swaps than inserting new elements
 		if(fromIndex < toIndex)
@@ -427,6 +501,8 @@
 
 //replaces reverseList ~Carnie
 /proc/reverseRange(list/L, start=1, end=0)
+	procstart = null
+	src.procstart = null
 	if(L.len)
 		start = start % L.len
 		end = end % (L.len+1)
@@ -446,6 +522,8 @@
 //this is typecaste as list/L, but you could actually feed it an atom instead.
 //completely safe to use
 /proc/getElementByVar(list/L, varname, value)
+	procstart = null
+	src.procstart = null
 	varname = "[varname]"
 	for(var/datum/D in L)
 		if(D.vars.Find(varname))
@@ -454,6 +532,8 @@
 
 //remove all nulls from a list
 /proc/removeNullsFromList(list/L)
+	procstart = null
+	src.procstart = null
 	while(L.Remove(null))
 		continue
 	return L
@@ -461,6 +541,8 @@
 //Copies a list, and all lists inside it recusively
 //Does not copy any other reference type
 /proc/deepCopyList(list/l)
+	procstart = null
+	src.procstart = null
 	if(!islist(l))
 		return l
 	. = l.Copy()
@@ -471,6 +553,8 @@
 //takes an input_key, as text, and the list of keys already used, outputting a replacement key in the format of "[input_key] ([number_of_duplicates])" if it finds a duplicate
 //use this for lists of things that might have the same name, like mobs or objects, that you plan on giving to a player as input
 /proc/avoid_assoc_duplicate_keys(input_key, list/used_key_list)
+	procstart = null
+	src.procstart = null
 	if(!input_key || !istype(used_key_list))
 		return
 	if(used_key_list[input_key])
@@ -487,6 +571,8 @@
 #endif
 //Flattens a keyed list into a list of it's contents
 /proc/flatten_list(list/key_list)
+	procstart = null
+	src.procstart = null
 	if(!islist(key_list))
 		return null
 	. = list()
@@ -502,17 +588,23 @@
 */
 
 /proc/counterlist_scale(list/L, scalar)
+	procstart = null
+	src.procstart = null
 	var/list/out = list()
 	for(var/key in L)
 		out[key] = L[key] * scalar
 	. = out
 
 /proc/counterlist_sum(list/L)
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/key in L)
 		. += L[key]
 
 /proc/counterlist_normalise(list/L)
+	procstart = null
+	src.procstart = null
 	var/avg = counterlist_sum(L)
 	if(avg != 0)
 		. = counterlist_scale(L, 1 / avg)
@@ -520,6 +612,8 @@
 		. = L
 
 /proc/counterlist_combine(list/L1, list/L2)
+	procstart = null
+	src.procstart = null
 	for(var/key in L2)
 		var/other_value = L2[key]
 		if(key in L1)

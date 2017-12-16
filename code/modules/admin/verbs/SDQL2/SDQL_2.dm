@@ -19,6 +19,8 @@
 */
 
 /client/proc/SDQL2_query(query_text as message)
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	if(!check_rights(R_DEBUG))  //Shouldn't happen... but just to be safe.
 		message_admins("<span class='danger'>ERROR: Non-admin [key_name(usr, usr.client)] attempted to execute a SDQL query!</span>")
@@ -29,6 +31,8 @@
 		to_chat(usr, results[I])
 
 /world/proc/SDQL2_query(query_text, log_entry1, log_entry2)
+	procstart = null
+	src.procstart = null
 	var/query_log = "executed SDQL query: \"[query_text]\"."
 	message_admins("[log_entry1] [query_log]")
 	query_log = "[log_entry2] [query_log]"
@@ -123,9 +127,13 @@
 		"<span class='admin'>SDQL query took [DisplayTimeText(end_time)] to complete.</span>") + refs
 
 /proc/SDQL_qdel_datum(datum/d)
+	procstart = null
+	src.procstart = null
 	qdel(d)
 
 /proc/SDQL_gen_vv_href(t)
+	procstart = null
+	src.procstart = null
 	var/text = ""
 	text += "<A HREF='?_src_=vars;[HrefToken()];Vars=[REF(t)]'>[REF(t)]</A>"
 	if(istype(t, /atom))
@@ -143,6 +151,8 @@
 	return text
 
 /proc/SDQL_internal_vv(d, list/set_list)
+	procstart = null
+	src.procstart = null
 	for(var/list/sets in set_list)
 		var/datum/temp = d
 		var/i = 0
@@ -156,6 +166,8 @@
 				break
 
 /proc/SDQL_parse(list/query_list)
+	procstart = null
+	src.procstart = null
 	var/datum/SDQL_parser/parser = new()
 	var/list/querys = list()
 	var/list/query_tree = list()
@@ -193,6 +205,8 @@
 
 
 /proc/SDQL_testout(list/query_tree, indent = 0)
+	procstart = null
+	src.procstart = null
 	var/spaces = ""
 	for(var/s = 0, s < indent, s++)
 		spaces += "    "
@@ -219,11 +233,15 @@
 
 
 /world/proc/SDQL_from_objs(list/tree)
+	procstart = null
+	src.procstart = null
 	if("world" in tree)
 		return src
 	return SDQL_expression(src, tree)
 
 /proc/SDQL_get_all(type, location)
+	procstart = null
+	src.procstart = null
 	var/list/out = list()
 
 // If only a single object got returned, wrap it into a list so the for loops run on it.
@@ -278,6 +296,8 @@
 
 
 /proc/SDQL_expression(datum/object, list/expression, start = 1)
+	procstart = null
+	src.procstart = null
 	var/result = 0
 	var/val
 
@@ -333,6 +353,8 @@
 	return result
 
 /proc/SDQL_value(datum/object, list/expression, start = 1)
+	procstart = null
+	src.procstart = null
 	var/i = start
 	var/val = null
 
@@ -387,6 +409,8 @@
 	return list("val" = val, "i" = i)
 
 /world/proc/SDQL_var(datum/object, list/expression, start = 1, source)
+	procstart = null
+	src.procstart = null
 	var/v
 	var/long = start < expression.len
 	if(object == world && long && expression[start + 1] == ".")
@@ -442,6 +466,8 @@
 	return v
 
 /proc/SDQL_function(var/datum/object, var/procname, var/list/arguments, source)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	var/list/new_args = list()
 	for(var/arg in arguments)
@@ -453,6 +479,8 @@
 
 /proc/SDQL2_tokenize(query_text)
 
+	procstart = null
+	src.procstart = null
 	var/list/whitespace = list(" ", "\n", "\t")
 	var/list/single = list("(", ")", ",", "+", "-", ".", ";", "{", "}", "\[", "]", ":")
 	var/list/multi = list(

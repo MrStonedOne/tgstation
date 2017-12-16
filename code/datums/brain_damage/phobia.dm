@@ -15,6 +15,8 @@
 	var/list/trigger_species
 
 /datum/brain_trauma/mild/phobia/New(mob/living/carbon/C, _permanent, specific_type)
+	procstart = null
+	src.procstart = null
 	phobia_type = specific_type
 	if(!phobia_type)
 		phobia_type = pick(SStraumas.phobia_types)
@@ -30,6 +32,8 @@
 	..()
 
 /datum/brain_trauma/mild/phobia/on_life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(owner.eye_blind)
 		return
@@ -68,6 +72,8 @@
 							return
 
 /datum/brain_trauma/mild/phobia/on_hear(message, speaker, message_language, raw_message, radio_freq)
+	procstart = null
+	src.procstart = null
 	if(owner.disabilities & DEAF || world.time < next_scare) //words can't trigger you if you can't hear them *taps head*
 		return message
 	for(var/word in trigger_words)
@@ -77,6 +83,8 @@
 	return message
 
 /datum/brain_trauma/mild/phobia/on_say(message)
+	procstart = null
+	src.procstart = null
 	for(var/word in trigger_words)
 		if(findtext(message, word))
 			to_chat(owner, "<span class='warning'>You can't bring yourself to say the word \"[word]\"!</span>")
@@ -84,6 +92,8 @@
 	return message
 
 /datum/brain_trauma/mild/phobia/proc/freak_out(atom/reason, trigger_word)
+	procstart = null
+	src.procstart = null
 	next_scare = world.time + 120
 	var/message = pick("spooks you to the bone", "shakes you up", "terrifies you", "sends you into a panic", "sends chills down your spine")
 	if(reason)

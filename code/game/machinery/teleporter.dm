@@ -17,22 +17,30 @@
 	var/calibrated //Calibration prevents mutation
 
 /obj/machinery/teleport/hub/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	link_power_station()
 
 /obj/machinery/teleport/hub/Destroy()
+	procstart = null
+	src.procstart = null
 	if (power_station)
 		power_station.teleporter_hub = null
 		power_station = null
 	return ..()
 
 /obj/machinery/teleport/hub/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/A = 0
 	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		A += M.rating
 	accurate = A
 
 /obj/machinery/teleport/hub/proc/link_power_station()
+	procstart = null
+	src.procstart = null
 	if(power_station)
 		return
 	for(var/direction in GLOB.cardinals)
@@ -42,6 +50,8 @@
 	return power_station
 
 /obj/machinery/teleport/hub/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(z == ZLEVEL_CENTCOM)
 		to_chat(AM, "You can't use this here.")
 		return
@@ -50,6 +60,8 @@
 		use_power(5000)
 
 /obj/machinery/teleport/hub/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "tele-o", "tele0", W))
 		if(power_station && power_station.engaged)
 			power_station.engaged = 0 //hub with panel open is off, so the station must be informed.
@@ -62,6 +74,8 @@
 	return ..()
 
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj, turf/T)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/teleporter/com = power_station.teleporter_console
 	if (!com)
 		return
@@ -82,6 +96,8 @@
 	return
 
 /obj/machinery/teleport/hub/update_icon()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "tele-o"
 	else if(is_ready())
@@ -90,13 +106,19 @@
 		icon_state = "tele0"
 
 /obj/machinery/teleport/hub/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/teleport/hub/proc/is_ready()
+	procstart = null
+	src.procstart = null
 	. = !panel_open && !(stat & (BROKEN|NOPOWER)) && power_station && power_station.engaged && !(power_station.stat & (BROKEN|NOPOWER))
 
 /obj/machinery/teleport/hub/syndicate/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	component_parts += new /obj/item/stock_parts/matter_bin/super(null)
 	RefreshParts()
@@ -117,16 +139,22 @@
 	var/efficiency = 0
 
 /obj/machinery/teleport/station/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	link_console_and_hub()
 
 /obj/machinery/teleport/station/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/E
 	for(var/obj/item/stock_parts/capacitor/C in component_parts)
 		E += C.rating
 	efficiency = E - 1
 
 /obj/machinery/teleport/station/proc/link_console_and_hub()
+	procstart = null
+	src.procstart = null
 	for(var/direction in GLOB.cardinals)
 		teleporter_hub = locate(/obj/machinery/teleport/hub, get_step(src, direction))
 		if(teleporter_hub)
@@ -141,6 +169,8 @@
 
 
 /obj/machinery/teleport/station/Destroy()
+	procstart = null
+	src.procstart = null
 	if(teleporter_hub)
 		teleporter_hub.power_station = null
 		teleporter_hub.update_icon()
@@ -151,6 +181,8 @@
 	return ..()
 
 /obj/machinery/teleport/station/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		var/obj/item/device/multitool/M = W
 		if(panel_open)
@@ -184,16 +216,24 @@
 		return ..()
 
 /obj/machinery/teleport/station/attack_paw()
+	procstart = null
+	src.procstart = null
 	src.attack_hand()
 
 /obj/machinery/teleport/station/attack_ai()
+	procstart = null
+	src.procstart = null
 	src.attack_hand()
 
 /obj/machinery/teleport/station/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		toggle(user)
 
 /obj/machinery/teleport/station/proc/toggle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER) || !teleporter_hub || !teleporter_console )
 		return
 	if (teleporter_console.target)
@@ -211,12 +251,16 @@
 	return
 
 /obj/machinery/teleport/station/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 	if(teleporter_hub)
 		teleporter_hub.update_icon()
 
 /obj/machinery/teleport/station/update_icon()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		icon_state = "controller-o"
 	else if(stat & (BROKEN|NOPOWER))

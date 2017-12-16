@@ -10,9 +10,13 @@
 	fakeable = FALSE
 
 /datum/round_event/ghost_role/start()
+	procstart = null
+	src.procstart = null
 	try_spawning()
 
 /datum/round_event/ghost_role/proc/try_spawning(sanity = 0, retry = 0)
+	procstart = null
+	src.procstart = null
 	// The event does not run until the spawning has been attempted
 	// to prevent us from getting gc'd halfway through
 	processing = FALSE
@@ -47,11 +51,15 @@
 	processing = TRUE
 
 /datum/round_event/ghost_role/proc/spawn_role()
+	procstart = null
+	src.procstart = null
 	// Return true if role was successfully spawned, false if insufficent
 	// players could be found, and just runtime if anything else happens
 	return TRUE
 
 /datum/round_event/ghost_role/proc/get_candidates(jobban, gametypecheck, be_special)
+	procstart = null
+	src.procstart = null
 	// Returns a list of candidates in priority order, with candidates from
 	// `priority_candidates` first, and ghost roles randomly shuffled and
 	// appended after

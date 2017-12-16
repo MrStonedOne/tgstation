@@ -29,18 +29,24 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	var/picked_name
 
 /obj/item/device/mmi/posibrain/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["activate"])
 		var/mob/dead/observer/ghost = usr
 		if(istype(ghost))
 			activate(ghost)
 
 /obj/item/device/mmi/posibrain/proc/ping_ghosts(msg, newlymade)
+	procstart = null
+	src.procstart = null
 	if(newlymade || GLOB.posibrain_notify_cooldown <= world.time)
 		notify_ghosts("[name] [msg] in [get_area(src)]!", ghost_sound = !newlymade ? 'sound/effects/ghost2.ogg':null, enter_link = "<a href=?src=[REF(src)];activate=1>(Click to enter)</a>", source = src, action = NOTIFY_ATTACK, flashwindow = FALSE)
 		if(!newlymade)
 			GLOB.posibrain_notify_cooldown = world.time + askDelay
 
 /obj/item/device/mmi/posibrain/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!brainmob)
 		brainmob = new(src)
 	if(is_occupied())
@@ -58,6 +64,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	addtimer(CALLBACK(src, .proc/check_success), askDelay)
 
 /obj/item/device/mmi/posibrain/proc/check_success()
+	procstart = null
+	src.procstart = null
 	searching = FALSE
 	update_icon()
 	if(QDELETED(brainmob))
@@ -68,9 +76,13 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		visible_message(fail_message)
 
 /obj/item/device/mmi/posibrain/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	activate(user)
 
 /obj/item/device/mmi/posibrain/proc/is_occupied()
+	procstart = null
+	src.procstart = null
 	if(brainmob.key)
 		return TRUE
 	if(iscyborg(loc))
@@ -81,6 +93,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 
 //Two ways to activate a positronic brain. A clickable link in the ghost notif, or simply clicking the object itself.
 /obj/item/device/mmi/posibrain/proc/activate(mob/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(brainmob))
 		return
 	if(is_occupied() || jobban_isbanned(user,"posibrain"))
@@ -92,6 +106,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	transfer_personality(user)
 
 /obj/item/device/mmi/posibrain/transfer_identity(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	name = "[initial(name)] ([C])"
 	brainmob.name = C.real_name
 	brainmob.real_name = C.real_name
@@ -111,6 +127,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	update_icon()
 
 /obj/item/device/mmi/posibrain/proc/transfer_personality(mob/candidate)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(brainmob))
 		return
 	if(is_occupied()) //Prevents hostile takeover if two ghosts get the prompt or link for the same brain.
@@ -133,6 +151,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 
 
 /obj/item/device/mmi/posibrain/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/msg
 	if(brainmob && brainmob.key)
@@ -148,6 +168,8 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 	to_chat(user, msg)
 
 /obj/item/device/mmi/posibrain/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	brainmob = new(src)
 	var/new_name
@@ -163,10 +185,14 @@ GLOBAL_VAR(posibrain_notify_cooldown)
 		ping_ghosts("created", TRUE)
 
 /obj/item/device/mmi/posibrain/attackby(obj/item/O, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/item/device/mmi/posibrain/update_icon()
+	procstart = null
+	src.procstart = null
 	if(searching)
 		icon_state = "[initial(icon_state)]-searching"
 		return

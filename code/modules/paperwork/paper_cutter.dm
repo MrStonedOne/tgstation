@@ -13,12 +13,16 @@
 
 
 /obj/item/papercutter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	storedcutter = new /obj/item/hatchet/cutterblade(src)
 	update_icon()
 
 
 /obj/item/papercutter/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(storedcutter)
 		user.visible_message("<span class='suicide'>[user] is beheading [user.p_them()]self with [src.name]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 		if(iscarbon(user))
@@ -35,6 +39,8 @@
 
 
 /obj/item/papercutter/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	cut_overlays()
 	icon_state = (storedcutter ? "[initial(icon_state)]-cutter" : "[initial(icon_state)]")
@@ -43,6 +49,8 @@
 
 
 /obj/item/papercutter/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/paper) && !storedpaper)
 		if(!user.transferItemToLoc(P, src))
 			return
@@ -68,6 +76,8 @@
 
 
 /obj/item/papercutter/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(!storedcutter)
 		to_chat(user, "<span class='notice'>The cutting blade is gone! You can't use [src] now.</span>")
@@ -90,6 +100,8 @@
 
 
 /obj/item/papercutter/MouseDrop(atom/over_object)
+	procstart = null
+	src.procstart = null
 	var/mob/M = usr
 	if(M.incapacitated() || !Adjacent(M))
 		return
@@ -112,6 +124,8 @@
 	max_integrity = 50
 
 /obj/item/paperslip/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-5, 5)
 	pixel_y = rand(-5, 5)

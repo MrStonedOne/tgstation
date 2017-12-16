@@ -18,18 +18,24 @@
 	bumpsmash = 1
 
 /obj/mecha/combat/marauder/GrantActions(mob/living/user, human_occupant = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	smoke_action.Grant(user, src)
 	thrusters_action.Grant(user, src)
 	zoom_action.Grant(user, src)
 
 /obj/mecha/combat/marauder/RemoveActions(mob/living/user, human_occupant = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	smoke_action.Remove(user)
 	thrusters_action.Remove(user)
 	zoom_action.Remove(user)
 
 /obj/mecha/combat/marauder/loaded/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/weapon/energy/pulse(src)
 	ME.attach(src)
@@ -53,6 +59,8 @@
 	max_equip = 5
 
 /obj/mecha/combat/marauder/seraph/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/mecha_parts/mecha_equipment/ME
 	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/scattershot(src)
@@ -75,6 +83,8 @@
 	max_equip = 5
 
 /obj/mecha/combat/marauder/mauler/loaded/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/lmg(src)
 	ME.attach(src)

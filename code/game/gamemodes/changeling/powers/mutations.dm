@@ -22,12 +22,16 @@
 	var/weapon_name_simple
 
 /obj/effect/proc_holder/changeling/weapon/try_to_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in user.held_items)
 		if(check_weapon(user, I))
 			return
 	..(user, target)
 
 /obj/effect/proc_holder/changeling/weapon/proc/check_weapon(mob/user, obj/item/hand_item)
+	procstart = null
+	src.procstart = null
 	if(istype(hand_item, weapon_type))
 		user.temporarilyRemoveItemFromInventory(hand_item, TRUE) //DROPDEL_1 will delete the item
 		if(!silent)
@@ -37,6 +41,8 @@
 		return 1
 
 /obj/effect/proc_holder/changeling/weapon/sting_action(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/held = user.get_active_held_item()
 	if(held && !user.dropItemToGround(held))
 		to_chat(user, "<span class='warning'>[held] is stuck to your hand, you cannot grow a [weapon_name_simple] over it!</span>")
@@ -56,6 +62,8 @@
 	return W
 
 /obj/effect/proc_holder/changeling/weapon/on_refund(mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in user.held_items)
 		check_weapon(user, I)
 
@@ -76,6 +84,8 @@
 	var/blood_on_castoff = 0
 
 /obj/effect/proc_holder/changeling/suit/try_to_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(check_suit(user))
 		return
 	var/mob/living/carbon/human/H = user
@@ -83,6 +93,8 @@
 
 //checks if we already have an organic suit and casts it off.
 /obj/effect/proc_holder/changeling/suit/proc/check_suit(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	if(!ishuman(user) || !changeling)
 		return 1
@@ -103,12 +115,16 @@
 		return 1
 
 /obj/effect/proc_holder/changeling/suit/on_refund(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/H = user
 	check_suit(H)
 
 /obj/effect/proc_holder/changeling/suit/sting_action(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!user.canUnEquip(user.wear_suit))
 		to_chat(user, "\the [user.wear_suit] is stuck to your body, you cannot grow a [suit_name_simple] over it!")
 		return
@@ -161,6 +177,8 @@
 	var/can_drop = FALSE
 
 /obj/item/melee/arm_blade/Initialize(mapload,silent,synthetic)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(loc) && !silent)
 		loc.visible_message("<span class='warning'>A grotesque blade forms around [loc.name]\'s arm!</span>", "<span class='warning'>Our arm twists and mutates, transforming it into a deadly blade.</span>", "<span class='italics'>You hear organic matter ripping and tearing!</span>")
@@ -168,6 +186,8 @@
 		can_drop = TRUE
 
 /obj/item/melee/arm_blade/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(istype(target, /obj/structure/table))
@@ -199,6 +219,8 @@
 		A.open(2)
 
 /obj/item/melee/arm_blade/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(can_drop)
 		new /obj/item/melee/synthetic_arm_blade(get_turf(user))
@@ -239,6 +261,8 @@
 	throw_speed = 0
 
 /obj/item/gun/magic/tentacle/Initialize(mapload, silent)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(loc))
 		if(!silent)
@@ -248,9 +272,13 @@
 
 
 /obj/item/gun/magic/tentacle/shoot_with_empty_chamber(mob/living/user as mob|obj)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='warning'>The [name] is not ready yet.</span>")
 
 /obj/item/gun/magic/tentacle/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] coils [src] tightly around [user.p_their()] neck! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (OXYLOSS)
 
@@ -265,10 +293,14 @@
 	var/obj/item/gun/magic/tentacle/gun //the item that shot it
 
 /obj/item/ammo_casing/magic/tentacle/Initialize()
+	procstart = null
+	src.procstart = null
 	gun = loc
 	. = ..()
 
 /obj/item/ammo_casing/magic/tentacle/Destroy()
+	procstart = null
+	src.procstart = null
 	gun = null
 	return ..()
 
@@ -284,24 +316,34 @@
 	var/obj/item/ammo_casing/magic/tentacle/source //the item that shot it
 
 /obj/item/projectile/tentacle/Initialize()
+	procstart = null
+	src.procstart = null
 	source = loc
 	. = ..()
 
 /obj/item/projectile/tentacle/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(firer)
 		chain = firer.Beam(src, icon_state = "tentacle", time = INFINITY, maxdistance = INFINITY, beam_sleep_time = 1)
 	..()
 
 /obj/item/projectile/tentacle/proc/reset_throw(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.in_throw_mode)
 		H.throw_mode_off() //Don't annoy the changeling if he doesn't catch the item
 
 /obj/item/projectile/tentacle/proc/tentacle_grab(mob/living/carbon/human/H, mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(H.Adjacent(C))
 		C.grabbedby(H)
 		C.grippedby(H) //instant aggro grab
 
 /obj/item/projectile/tentacle/proc/tentacle_stab(mob/living/carbon/human/H, mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(H.Adjacent(C))
 		for(var/obj/item/I in H.held_items)
 			if(I.is_sharp())
@@ -313,6 +355,8 @@
 				return
 
 /obj/item/projectile/tentacle/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = firer
 	H.dropItemToGround(source.gun, TRUE) //Unequip thus delete the tentacle on hit
 	if(blocked >= 100)
@@ -365,6 +409,8 @@
 				. = 1
 
 /obj/item/projectile/tentacle/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(chain)
 	source = null
 	return ..()
@@ -385,6 +431,8 @@
 	weapon_name_simple = "shield"
 
 /obj/effect/proc_holder/changeling/weapon/shield/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling) //So we can read the absorbedcount.
 	if(!changeling)
 		return
@@ -406,11 +454,15 @@
 	var/remaining_uses //Set by the changeling ability.
 
 /obj/item/shield/changeling/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(loc))
 		loc.visible_message("<span class='warning'>The end of [loc.name]\'s hand inflates rapidly, forming a huge shield-like mass!</span>", "<span class='warning'>We inflate our hand into a strong shield.</span>", "<span class='italics'>You hear organic matter ripping and tearing!</span>")
 
 /obj/item/shield/changeling/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(remaining_uses < 1)
 		if(ishuman(loc))
 			var/mob/living/carbon/human/H = loc
@@ -449,12 +501,16 @@
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0, fire = 90, acid = 90) //No armor at all.
 
 /obj/item/clothing/suit/space/changeling/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(loc))
 		loc.visible_message("<span class='warning'>[loc.name]\'s flesh rapidly inflates, forming a bloated mass around their body!</span>", "<span class='warning'>We inflate our flesh, creating a spaceproof suit!</span>", "<span class='italics'>You hear organic matter ripping and tearing!</span>")
 	START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/space/changeling/process()
+	procstart = null
+	src.procstart = null
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
 		H.reagents.add_reagent("salbutamol", REAGENTS_METABOLISM)
@@ -496,6 +552,8 @@
 	heat_protection = 0
 
 /obj/item/clothing/suit/armor/changeling/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(loc))
 		loc.visible_message("<span class='warning'>[loc.name]\'s flesh turns black, quickly transforming into a hard, chitinous mass!</span>", "<span class='warning'>We harden our flesh, creating a suit of armor!</span>", "<span class='italics'>You hear organic matter ripping and tearing!</span>")

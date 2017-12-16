@@ -30,6 +30,8 @@
 	icon_state = "mfoam"
 
 /obj/effect/particle_effect/foam/metal/MakeSlippery()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/particle_effect/foam/metal/smart
@@ -45,6 +47,8 @@
 
 
 /obj/effect/particle_effect/foam/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	MakeSlippery()
 	create_reagents(1000) //limited by the size of the reagent holder anyway.
@@ -52,14 +56,20 @@
 	playsound(src, 'sound/effects/bubbles2.ogg', 80, 1, -3)
 
 /obj/effect/particle_effect/foam/proc/MakeSlippery()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/slippery, 100)
 
 /obj/effect/particle_effect/foam/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 
 /obj/effect/particle_effect/foam/proc/kill_foam()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	switch(metal)
 		if(ALUMINUM_FOAM)
@@ -86,6 +96,8 @@
 	QDEL_IN(src, 5)
 
 /obj/effect/particle_effect/foam/process()
+	procstart = null
+	src.procstart = null
 	lifetime--
 	if(lifetime < 1)
 		kill_foam()
@@ -115,6 +127,8 @@
 	spread_foam()
 
 /obj/effect/particle_effect/foam/proc/foam_mob(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(lifetime<1)
 		return 0
 	if(!istype(L))
@@ -126,6 +140,8 @@
 	return 1
 
 /obj/effect/particle_effect/foam/proc/spread_foam()
+	procstart = null
+	src.procstart = null
 	var/turf/t_loc = get_turf(src)
 	for(var/turf/T in t_loc.GetAtmosAdjacentTurfs())
 		var/obj/effect/particle_effect/foam/foundfoam = locate() in T //Don't spread foam where there's already foam!
@@ -145,11 +161,15 @@
 
 
 /obj/effect/particle_effect/foam/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(prob(max(0, exposed_temperature - 475))) //foam dissolves when heated
 		kill_foam()
 
 
 /obj/effect/particle_effect/foam/metal/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -171,6 +191,8 @@
 
 
 /datum/effect_system/foam_spread/New()
+	procstart = null
+	src.procstart = null
 	..()
 	chemholder = new /obj()
 	var/datum/reagents/R = new/datum/reagents(1000)
@@ -178,11 +200,15 @@
 	R.my_atom = chemholder
 
 /datum/effect_system/foam_spread/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(chemholder)
 	chemholder = null
 	return ..()
 
 /datum/effect_system/foam_spread/set_up(amt=5, loca, datum/reagents/carry = null)
+	procstart = null
+	src.procstart = null
 	if(isturf(loca))
 		location = loca
 	else
@@ -192,10 +218,14 @@
 	carry.copy_to(chemholder, 4*carry.total_volume) //The foam holds 4 times the total reagents volume for balance purposes.
 
 /datum/effect_system/foam_spread/metal/set_up(amt=5, loca, datum/reagents/carry = null, metaltype)
+	procstart = null
+	src.procstart = null
 	..()
 	metal = metaltype
 
 /datum/effect_system/foam_spread/start()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/particle_effect/foam/foundfoam = locate() in location
 	if(foundfoam)//If there was already foam where we start, we add our foaminess to it.
 		foundfoam.amount += amount
@@ -225,33 +255,47 @@
 	CanAtmosPass = ATMOS_PASS_DENSITY
 
 /obj/structure/foamedmetal/New()
+	procstart = null
+	src.procstart = null
 	..()
 	air_update_turf(1)
 
 
 /obj/structure/foamedmetal/Destroy()
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	air_update_turf(1)
 	return ..()
 
 /obj/structure/foamedmetal/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
 
 /obj/structure/foamedmetal/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/structure/foamedmetal/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/weapons/tap.ogg', 100, 1)
 
 /obj/structure/foamedmetal/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 	to_chat(user, "<span class='warning'>You hit [src] but bounce off it!</span>")
 	playsound(src.loc, 'sound/weapons/tap.ogg', 100, 1)
 
 /obj/structure/foamedmetal/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	return !density
 
 /obj/structure/foamedmetal/iron
@@ -268,6 +312,8 @@
 	max_integrity = 10
 
 /obj/structure/foamedmetal/resin/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isopenturf(loc))
 		var/turf/open/O = loc
@@ -295,6 +341,8 @@
 			Item.extinguish()
 
 /obj/structure/foamedmetal/resin/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return TRUE
 	. = ..()

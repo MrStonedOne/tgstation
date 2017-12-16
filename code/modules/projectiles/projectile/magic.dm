@@ -12,6 +12,8 @@
 	icon_state = "pulse1_bl"
 
 /obj/item/projectile/magic/death/on_hit(target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ismob(target))
 		var/mob/M = target
@@ -25,6 +27,8 @@
 	nodamage = 1
 
 /obj/item/projectile/magic/resurrection/on_hit(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isliving(target))
 		if(target.hellbound)
@@ -49,6 +53,8 @@
 	var/outer_tele_radius = 6
 
 /obj/item/projectile/magic/teleport/on_hit(mob/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/teleammount = 0
 	var/teleloc = target
@@ -71,6 +77,8 @@
 	var/list/door_types = list(/obj/structure/mineral_door/wood, /obj/structure/mineral_door/iron, /obj/structure/mineral_door/silver, /obj/structure/mineral_door/gold, /obj/structure/mineral_door/uranium, /obj/structure/mineral_door/sandstone, /obj/structure/mineral_door/transparent/plasma, /obj/structure/mineral_door/transparent/diamond)
 
 /obj/item/projectile/magic/door/on_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(target, /obj/machinery/door))
 		OpenDoor(target)
@@ -80,12 +88,16 @@
 			CreateDoor(T)
 
 /obj/item/projectile/magic/door/proc/CreateDoor(turf/T)
+	procstart = null
+	src.procstart = null
 	var/door_type = pick(door_types)
 	var/obj/structure/mineral_door/D = new door_type(T)
 	T.ChangeTurf(/turf/open/floor/plating)
 	D.Open()
 
 /obj/item/projectile/magic/door/proc/OpenDoor(var/obj/machinery/door/D)
+	procstart = null
+	src.procstart = null
 	if(istype(D, /obj/machinery/door/airlock))
 		var/obj/machinery/door/airlock/A = D
 		A.locked = FALSE
@@ -99,11 +111,15 @@
 	nodamage = 1
 
 /obj/item/projectile/magic/change/on_hit(atom/change)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wabbajack(change)
 	qdel(src)
 
 /proc/wabbajack(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || M.stat == DEAD || M.notransform || (GODMODE & M.status_flags))
 		return
 
@@ -297,10 +313,14 @@
 	nodamage = 1
 
 /obj/item/projectile/magic/animate/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	target.animate_atom_living(firer)
 	..()
 
 /atom/proc/animate_atom_living(var/mob/living/owner = null)
+	procstart = null
+	src.procstart = null
 	if((isitem(src) || isstructure(src)) && !is_type_in_list(src, GLOB.protected_objects))
 		if(istype(src, /obj/structure/statue/petrified))
 			var/obj/structure/statue/petrified/P = src
@@ -359,6 +379,8 @@
 	var/proxdet = TRUE
 
 /obj/item/projectile/magic/aoe/Range()
+	procstart = null
+	src.procstart = null
 	if(proxdet)
 		for(var/mob/living/L in range(1, get_turf(src)))
 			if(L.stat != DEAD && L != firer)
@@ -381,16 +403,22 @@
 	var/mob/living/caster
 
 /obj/item/projectile/magic/aoe/lightning/fire(setAngle)
+	procstart = null
+	src.procstart = null
 	if(caster)
 		chain = caster.Beam(src, icon_state = "lightning[rand(1, 12)]", time = INFINITY, maxdistance = INFINITY)
 	..()
 
 /obj/item/projectile/magic/aoe/lightning/on_hit(target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tesla_zap(src, tesla_range, tesla_power, tesla_boom)
 	qdel(src)
 
 /obj/item/projectile/magic/aoe/lightning/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(chain)
 	. = ..()
 
@@ -408,6 +436,8 @@
 	var/exp_fire = 2
 
 /obj/item/projectile/magic/aoe/fireball/on_hit(target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(target)
 	explosion(T, -1, exp_heavy, exp_light, exp_flash, 0, flame_range = exp_fire)
@@ -423,6 +453,8 @@
 	exp_fire= 5
 
 /obj/item/projectile/magic/aoe/fireball/infernal/on_hit(target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = get_turf(target)
 	for(var/i=0, i<50, i+=10)

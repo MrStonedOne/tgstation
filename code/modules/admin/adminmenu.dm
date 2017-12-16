@@ -3,6 +3,8 @@
 		. = ..()
 
 /datum/verbs/menu/Admin/verb/playerpanel()
+	procstart = null
+	src.procstart = null
 	set name = "Player Panel"
 	set desc = "Player Panel"
 	set category = "Admin"

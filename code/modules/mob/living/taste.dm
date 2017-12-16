@@ -5,9 +5,13 @@
 	var/last_taste_text
 
 /mob/living/proc/get_taste_sensitivity()
+	procstart = null
+	src.procstart = null
 	return DEFAULT_TASTE_SENSITIVITY
 
 /mob/living/carbon/get_taste_sensitivity()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/tongue = getorganslot(ORGAN_SLOT_TONGUE)
 	if(istype(tongue))
 		. = tongue.taste_sensitivity
@@ -16,6 +20,8 @@
 
 // non destructively tastes a reagent container
 /mob/living/proc/taste(datum/reagents/from)
+	procstart = null
+	src.procstart = null
 	if(last_taste_time + 50 < world.time)
 		var/taste_sensitivity = get_taste_sensitivity()
 		var/text_output = from.generate_taste_message(taste_sensitivity)

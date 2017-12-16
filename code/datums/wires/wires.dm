@@ -1,6 +1,8 @@
 #define MAXIMUM_EMP_WIRES 3
 
 /proc/is_wire_tool(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/multitool))
 		return TRUE
 	if(istype(I, /obj/item/wirecutters))
@@ -27,6 +29,8 @@
 					  // Prevents wires from showing up in station blueprints
 
 /datum/wires/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!istype(holder, holder_type))
 		CRASH("Wire holder is not of the expected type!")
@@ -44,11 +48,15 @@
 			colors = GLOB.wire_color_directory[holder_type]
 
 /datum/wires/Destroy()
+	procstart = null
+	src.procstart = null
 	holder = null
 	assemblies = list()
 	return ..()
 
 /datum/wires/proc/add_duds(duds)
+	procstart = null
+	src.procstart = null
 	while(duds)
 		var/dud = WIRE_DUD_PREFIX + "[--duds]"
 		if(dud in wires)
@@ -56,6 +64,8 @@
 		wires += dud
 
 /datum/wires/proc/randomize()
+	procstart = null
+	src.procstart = null
 	var/static/list/possible_colors = list(
 	"blue",
 	"brown",
@@ -81,35 +91,53 @@
 		colors[pick_n_take(my_possible_colors)] = wire
 
 /datum/wires/proc/shuffle_wires()
+	procstart = null
+	src.procstart = null
 	colors.Cut()
 	randomize()
 
 /datum/wires/proc/repair()
+	procstart = null
+	src.procstart = null
 	cut_wires.Cut()
 
 /datum/wires/proc/get_wire(color)
+	procstart = null
+	src.procstart = null
 	return colors[color]
 
 /datum/wires/proc/get_attached(color)
+	procstart = null
+	src.procstart = null
 	if(assemblies[color])
 		return assemblies[color]
 	return null
 
 /datum/wires/proc/is_attached(color)
+	procstart = null
+	src.procstart = null
 	if(assemblies[color])
 		return TRUE
 
 /datum/wires/proc/is_cut(wire)
+	procstart = null
+	src.procstart = null
 	return (wire in cut_wires)
 
 /datum/wires/proc/is_color_cut(color)
+	procstart = null
+	src.procstart = null
 	return is_cut(get_wire(color))
 
 /datum/wires/proc/is_all_cut()
+	procstart = null
+	src.procstart = null
 	if(cut_wires.len == wires.len)
 		return TRUE
 
 /datum/wires/proc/cut(wire)
+	procstart = null
+	src.procstart = null
 	if(is_cut(wire))
 		cut_wires -= wire
 		on_cut(wire, mend = TRUE)
@@ -118,30 +146,44 @@
 		on_cut(wire, mend = FALSE)
 
 /datum/wires/proc/cut_color(color)
+	procstart = null
+	src.procstart = null
 	cut(get_wire(color))
 
 /datum/wires/proc/cut_random()
+	procstart = null
+	src.procstart = null
 	cut(wires[rand(1, wires.len)])
 
 /datum/wires/proc/cut_all()
+	procstart = null
+	src.procstart = null
 	for(var/wire in wires)
 		cut(wire)
 
 /datum/wires/proc/pulse(wire, user)
+	procstart = null
+	src.procstart = null
 	if(is_cut(wire))
 		return
 	on_pulse(wire, user)
 
 /datum/wires/proc/pulse_color(color, mob/living/user)
+	procstart = null
+	src.procstart = null
 	pulse(get_wire(color), user)
 
 /datum/wires/proc/pulse_assembly(obj/item/device/assembly/S)
+	procstart = null
+	src.procstart = null
 	for(var/color in assemblies)
 		if(S == assemblies[color])
 			pulse_color(color)
 			return TRUE
 
 /datum/wires/proc/attach_assembly(color, obj/item/device/assembly/S)
+	procstart = null
+	src.procstart = null
 	if(S && istype(S) && S.attachable && !is_attached(color))
 		assemblies[color] = S
 		S.forceMove(holder)
@@ -149,6 +191,8 @@
 		return S
 
 /datum/wires/proc/detach_assembly(color)
+	procstart = null
+	src.procstart = null
 	var/obj/item/device/assembly/S = get_attached(color)
 	if(S && istype(S))
 		assemblies -= color
@@ -157,6 +201,8 @@
 		return S
 
 /datum/wires/proc/emp_pulse()
+	procstart = null
+	src.procstart = null
 	var/list/possible_wires = shuffle(wires)
 	var/remaining_pulses = MAXIMUM_EMP_WIRES
 
@@ -169,19 +215,29 @@
 
 // Overridable Procs
 /datum/wires/proc/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /datum/wires/proc/get_status()
+	procstart = null
+	src.procstart = null
 	return list()
 
 /datum/wires/proc/on_cut(wire, mend = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/wires/proc/on_pulse(wire, user)
+	procstart = null
+	src.procstart = null
 	return
 // End Overridable Procs
 
 /datum/wires/proc/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!interactable(user))
 		return
 	ui_interact(user)
@@ -191,9 +247,13 @@
 			return
 
 /datum/wires/ui_host()
+	procstart = null
+	src.procstart = null
 	return holder
 
 /datum/wires/ui_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(interactable(user))
 		return ..()
 	return UI_CLOSE
@@ -206,6 +266,8 @@
 		ui.open()
 
 /datum/wires/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/payload = list()
 	for(var/color in colors)
@@ -220,6 +282,8 @@
 	return data
 
 /datum/wires/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..() || !interactable(usr))
 		return
 	var/target_wire = params["wire"]

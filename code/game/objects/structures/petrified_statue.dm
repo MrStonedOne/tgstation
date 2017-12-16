@@ -9,6 +9,8 @@
 	var/mob/living/petrified_mob
 
 /obj/structure/statue/petrified/New(loc, mob/living/L, statue_timer)
+	procstart = null
+	src.procstart = null
 	if(statue_timer)
 		timer = statue_timer
 	if(L)
@@ -26,6 +28,8 @@
 	..()
 
 /obj/structure/statue/petrified/process()
+	procstart = null
+	src.procstart = null
 	if(!petrified_mob)
 		STOP_PROCESSING(SSobj, src)
 	timer--
@@ -35,14 +39,20 @@
 		qdel(src)
 
 /obj/structure/statue/petrified/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/statue/petrified/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == petrified_mob)
 		petrified_mob = null
 
 /obj/structure/statue/petrified/Destroy()
 
+	procstart = null
+	src.procstart = null
 	if(istype(src.loc, /mob/living/simple_animal/hostile/statue))
 		var/mob/living/simple_animal/hostile/statue/S = src.loc
 		forceMove(S.loc)
@@ -66,6 +76,8 @@
 	return ..()
 
 /obj/structure/statue/petrified/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!disassembled)
 		if(petrified_mob)
 			petrified_mob.dust()
@@ -76,6 +88,8 @@
 /mob/proc/petrify(statue_timer)
 
 /mob/living/carbon/human/petrify(statue_timer)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return 0
 	var/obj/structure/statue/petrified/S = new(loc, src, statue_timer)
@@ -87,6 +101,8 @@
 	return 1
 
 /mob/living/carbon/monkey/petrify(statue_timer)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return 0
 	var/obj/structure/statue/petrified/S = new(loc, src, statue_timer)
@@ -95,6 +111,8 @@
 	return 1
 
 /mob/living/simple_animal/pet/dog/corgi/petrify(statue_timer)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		return 0
 	var/obj/structure/statue/petrified/S = new (loc, src, statue_timer)

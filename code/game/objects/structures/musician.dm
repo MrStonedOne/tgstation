@@ -21,12 +21,16 @@
 	var/list/hearing_mobs
 
 /datum/song/New(dir, obj, ext = "ogg")
+	procstart = null
+	src.procstart = null
 	tempo = sanitize_tempo(tempo)
 	instrumentDir = dir
 	instrumentObj = obj
 	instrumentExt = ext
 
 /datum/song/Destroy()
+	procstart = null
+	src.procstart = null
 	instrumentObj = null
 	return ..()
 
@@ -34,6 +38,8 @@
 // acc is either "b", "n", or "#"
 // oct is 1-8 (or 9 for C)
 /datum/song/proc/playnote(note, acc as text, oct)
+	procstart = null
+	src.procstart = null
 	// handle accidental -> B<>C of E<>F
 	if(acc == "b" && (note == 3 || note == 6)) // C or F
 		if(note == 3)
@@ -78,9 +84,13 @@
 		M.playsound_local(source, null, 100, falloff = 5, S = music_played)
 
 /datum/song/proc/updateDialog(mob/user)
+	procstart = null
+	src.procstart = null
 	instrumentObj.updateDialog()		// assumes it's an object in world, override if otherwise
 
 /datum/song/proc/shouldStopPlaying(mob/user)
+	procstart = null
+	src.procstart = null
 	if(instrumentObj)
 		if(!user.canUseTopic(instrumentObj))
 			return TRUE
@@ -89,6 +99,8 @@
 		return TRUE
 
 /datum/song/proc/playsong(mob/user)
+	procstart = null
+	src.procstart = null
 	while(repeat >= 0)
 		var/cur_oct[7]
 		var/cur_acc[7]
@@ -139,6 +151,8 @@
 	updateDialog(user)
 
 /datum/song/proc/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = ""
 
 	if(lines.len > 0)
@@ -195,6 +209,8 @@
 	popup.open()
 
 /datum/song/proc/ParseSong(text)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	//split into lines
 	lines = splittext(text, "\n")
@@ -217,6 +233,8 @@
 		updateDialog(usr)		// make sure updates when complete
 
 /datum/song/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!usr.canUseTopic(instrumentObj))
 		usr << browse(null, "window=instrument")
 		usr.unset_machine()
@@ -301,6 +319,8 @@
 	return
 
 /datum/song/proc/sanitize_tempo(new_tempo)
+	procstart = null
+	src.procstart = null
 	new_tempo = abs(new_tempo)
 	return max(round(new_tempo, world.tick_lag), world.tick_lag)
 
@@ -308,9 +328,13 @@
 /datum/song/handheld
 
 /datum/song/handheld/updateDialog(mob/user)
+	procstart = null
+	src.procstart = null
 	instrumentObj.interact(user)
 
 /datum/song/handheld/shouldStopPlaying()
+	procstart = null
+	src.procstart = null
 	if(instrumentObj)
 		return !isliving(instrumentObj.loc)
 	else
@@ -332,6 +356,8 @@
 	anchored = FALSE
 
 /obj/structure/piano/New()
+	procstart = null
+	src.procstart = null
 	..()
 	song = new("piano", src)
 
@@ -345,25 +371,35 @@
 		icon_state = "piano"
 
 /obj/structure/piano/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(song)
 	song = null
 	return ..()
 
 /obj/structure/piano/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		song.tempo = song.sanitize_tempo(song.tempo) // tick_lag isn't set when the map is loaded
 
 /obj/structure/piano/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return 1
 	interact(user)
 
 /obj/structure/piano/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/structure/piano/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user || !anchored)
 		return
 
@@ -371,6 +407,8 @@
 	song.interact(user)
 
 /obj/structure/piano/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(O, /obj/item/wrench))
 		if (!anchored && !isinspace())
 			playsound(src, O.usesound, 50, 1)

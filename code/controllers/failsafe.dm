@@ -23,6 +23,8 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 	var/running = TRUE
 
 /datum/controller/failsafe/New()
+	procstart = null
+	src.procstart = null
 	// Highlander-style: there can only be one! Kill off the old and replace it with the new.
 	if(Failsafe != src)
 		if(istype(Failsafe))
@@ -31,17 +33,23 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 	Initialize()
 
 /datum/controller/failsafe/Initialize()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	Failsafe.Loop()
 	if(!QDELETED(src))
 		qdel(src) //when Loop() returns, we delete ourselves and let the mc recreate us
 
 /datum/controller/failsafe/Destroy()
+	procstart = null
+	src.procstart = null
 	running = FALSE
 	..()
 	return QDEL_HINT_HARDDEL_NOW
 
 /datum/controller/failsafe/proc/Loop()
+	procstart = null
+	src.procstart = null
 	while(running)
 		lasttick = world.time
 		if(!Master)
@@ -93,9 +101,13 @@ GLOBAL_REAL(Failsafe, /datum/controller/failsafe)
 			sleep(initial(processing_interval))
 
 /datum/controller/failsafe/proc/defcon_pretty()
+	procstart = null
+	src.procstart = null
 	return defcon
 
 /datum/controller/failsafe/stat_entry()
+	procstart = null
+	src.procstart = null
 	if(!statclick)
 		statclick = new/obj/effect/statclick/debug(null, "Initializing...", src)
 

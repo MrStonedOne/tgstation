@@ -1,5 +1,7 @@
 //The code execution of the emote datum is located at code/datums/emotes.dm
 /mob/living/emote(act, m_type = null, message = null)
+	procstart = null
+	src.procstart = null
 	act = lowertext(act)
 	var/param = message
 	var/custom_param = findchar(act, " ")
@@ -62,6 +64,8 @@
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/collapse/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && isliving(user))
 		var/mob/living/L = user
@@ -92,6 +96,8 @@
 	stat_allowed = UNCONSCIOUS
 
 /datum/emote/living/deathgasp/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/S = user
 	if(istype(S) && S.deathmessage)
 		message_simple = S.deathmessage
@@ -111,6 +117,8 @@
 	message = "faints."
 
 /datum/emote/living/faint/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && isliving(user))
 		var/mob/living/L = user
@@ -124,6 +132,8 @@
 	var/wing_time = 20
 
 /datum/emote/living/flap/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -149,6 +159,8 @@
 	restraint_check = TRUE
 
 /datum/emote/living/flip/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		user.SpinAnimation(7,1)
@@ -221,12 +233,16 @@
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/laugh/can_run_emote(mob/living/user, status_check = TRUE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && iscarbon(user))
 		var/mob/living/carbon/C = user
 		return !C.silent
 
 /datum/emote/living/laugh/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -350,6 +366,8 @@
 	emote_type = EMOTE_AUDIBLE
 
 /datum/emote/living/surrender/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && isliving(user))
 		var/mob/living/L = user
@@ -402,6 +420,8 @@
 	message = null
 
 /datum/emote/living/custom/proc/check_invalid(mob/user, input)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(copytext(input,1,5) == "says")
 		to_chat(user, "<span class='danger'>Invalid emote.</span>")
@@ -415,6 +435,8 @@
 		. = FALSE
 
 /datum/emote/living/custom/run_emote(mob/user, params, type_override = null)
+	procstart = null
+	src.procstart = null
 	if(jobban_isbanned(user, "emote"))
 		to_chat(user, "You cannot send custom emotes (banned).")
 		return FALSE
@@ -443,12 +465,16 @@
 	emote_type = EMOTE_VISIBLE
 
 /datum/emote/living/custom/replace_pronoun(mob/user, message)
+	procstart = null
+	src.procstart = null
 	return message
 
 /datum/emote/living/help
 	key = "help"
 
 /datum/emote/living/help/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/list/keys = list()
 	var/list/message = list("Available emotes, you can use them with say \"*emote\": ")
 
@@ -488,6 +514,8 @@
 	restraint_check = TRUE
 
 /datum/emote/living/spin/run_emote(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		user.spin(20, 1)
@@ -507,6 +535,8 @@
 	restraint_check = TRUE
 
 /datum/emote/living/circle/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circlegame/N = new(user)
 	if(user.put_in_hands(N))
@@ -521,6 +551,8 @@
 	restraint_check = TRUE
 
 /datum/emote/living/slap/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return

@@ -20,16 +20,22 @@
 	var/no_splash = FALSE //If the grenade deletes even if it has no reagents to splash with. Used for slime core reactions.
 
 /obj/item/grenade/chem_grenade/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(1000)
 	stage_change() // If no argument is set, it will change the stage to the current stage, useful for stock grenades that start READY.
 
 /obj/item/grenade/chem_grenade/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	display_timer = (stage == READY && !nadeassembly)	//show/hide the timer based on assembly state
 	..()
 
 
 /obj/item/grenade/chem_grenade/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stage == READY &&  !active)
 		if(nadeassembly)
 			nadeassembly.attack_self(user)
@@ -50,6 +56,8 @@
 
 
 /obj/item/grenade/chem_grenade/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver))
 		if(stage == WIRED)
 			if(beakers.len)
@@ -126,6 +134,8 @@
 		return ..()
 
 /obj/item/grenade/chem_grenade/proc/stage_change(N)
+	procstart = null
+	src.procstart = null
 	if(N)
 		stage = N
 	if(stage == EMPTY)
@@ -144,18 +154,26 @@
 
 //assembly stuff
 /obj/item/grenade/chem_grenade/receive_signal()
+	procstart = null
+	src.procstart = null
 	prime()
 
 
 /obj/item/grenade/chem_grenade/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(nadeassembly)
 		nadeassembly.Crossed(AM)
 
 /obj/item/grenade/chem_grenade/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(nadeassembly)
 		nadeassembly.on_found(finder)
 
 /obj/item/grenade/chem_grenade/prime()
+	procstart = null
+	src.procstart = null
 	if(stage != READY)
 		return
 
@@ -200,6 +218,8 @@
 	threatscale = 1.1	// 10% more effective.
 
 /obj/item/grenade/chem_grenade/large/prime()
+	procstart = null
+	src.procstart = null
 	if(stage != READY)
 		return
 
@@ -225,6 +245,8 @@
 	//if you do that it must have reagents.  If you're going to
 	//make a special case you might as well do it explicitly. -Sayu
 /obj/item/grenade/chem_grenade/large/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/slime_extract) && stage == WIRED)
 		if(!user.transferItemToLoc(I, src))
 			return
@@ -254,6 +276,8 @@
 	var/unit_spread = 10 // Amount of units per repeat. Can be altered with a multitool.
 
 /obj/item/grenade/chem_grenade/adv_release/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/multitool))
 		switch(unit_spread)
 			if(0 to 24)
@@ -267,6 +291,8 @@
 	..()
 
 /obj/item/grenade/chem_grenade/adv_release/prime()
+	procstart = null
+	src.procstart = null
 	if(stage != READY)
 		return
 
@@ -311,6 +337,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/metalfoam/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
@@ -329,6 +357,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/smart_metal_foam/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/large/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
@@ -347,6 +377,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/incendiary/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
@@ -365,6 +397,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/antiweed/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
@@ -384,6 +418,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/cleaner/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
@@ -402,6 +438,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/ez_clean/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/large/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/large/B2 = new(src)
@@ -421,6 +459,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/teargas/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/large/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/large/B2 = new(src)
@@ -440,6 +480,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/facid/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/bluespace/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/bluespace/B2 = new(src)
@@ -460,6 +502,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/colorful/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
@@ -479,6 +523,8 @@
 	var/glitter_type = "glitter"
 
 /obj/item/grenade/chem_grenade/glitter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
@@ -512,6 +558,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/clf3/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/bluespace/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/bluespace/B2 = new(src)
@@ -530,6 +578,8 @@
 	stage = READY
 
 /obj/item/grenade/chem_grenade/bioterrorfoam/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/bluespace/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/bluespace/B2 = new(src)
@@ -550,6 +600,8 @@
  	stage = READY
 
 /obj/item/grenade/chem_grenade/tuberculosis/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/reagent_containers/glass/beaker/bluespace/B1 = new(src)
 	var/obj/item/reagent_containers/glass/beaker/bluespace/B2 = new(src)

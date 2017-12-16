@@ -11,6 +11,8 @@ On top of that, now people can add component-speciic procs/vars if they want!
 	var/list/datum/gas_mixture/airs
 
 /obj/machinery/atmospherics/components/New()
+	procstart = null
+	src.procstart = null
 	parents = new(device_type)
 	airs = new(device_type)
 	..()
@@ -24,9 +26,13 @@ Iconnery
 */
 
 /obj/machinery/atmospherics/components/proc/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/components/update_icon()
+	procstart = null
+	src.procstart = null
 	update_icon_nopipes()
 
 	underlays.Cut()
@@ -54,6 +60,8 @@ Pipenet stuff; housekeeping
 */
 
 /obj/machinery/atmospherics/components/nullifyNode(I)
+	procstart = null
+	src.procstart = null
 	..()
 	if(NODE_I)
 		nullifyPipenet(PARENT_I)
@@ -61,10 +69,14 @@ Pipenet stuff; housekeeping
 		AIR_I = null
 
 /obj/machinery/atmospherics/components/on_construction()
+	procstart = null
+	src.procstart = null
 	..()
 	update_parents()
 
 /obj/machinery/atmospherics/components/build_network()
+	procstart = null
+	src.procstart = null
 	for(DEVICE_TYPE_LOOP)
 		if(!PARENT_I)
 			PARENT_I = new /datum/pipeline()
@@ -72,16 +84,22 @@ Pipenet stuff; housekeeping
 			P.build_pipeline(src)
 
 /obj/machinery/atmospherics/components/proc/nullifyPipenet(datum/pipeline/reference)
+	procstart = null
+	src.procstart = null
 	var/I = parents.Find(reference)
 	reference.other_airs -= AIR_I
 	reference.other_atmosmch -= src
 	PARENT_I = null
 
 /obj/machinery/atmospherics/components/returnPipenetAir(datum/pipeline/reference)
+	procstart = null
+	src.procstart = null
 	var/I = parents.Find(reference)
 	return AIR_I
 
 /obj/machinery/atmospherics/components/pipeline_expansion(datum/pipeline/reference)
+	procstart = null
+	src.procstart = null
 	if(reference)
 		var/I = parents.Find(reference)
 		return list(NODE_I)
@@ -89,6 +107,8 @@ Pipenet stuff; housekeeping
 		return ..()
 
 /obj/machinery/atmospherics/components/setPipenet(datum/pipeline/reference, obj/machinery/atmospherics/A)
+	procstart = null
+	src.procstart = null
 	var/I = nodes.Find(A)
 	PARENT_I = reference
 
@@ -97,10 +117,14 @@ Pipenet stuff; housekeeping
 	return PARENT_I
 
 /obj/machinery/atmospherics/components/replacePipenet(datum/pipeline/Old, datum/pipeline/New)
+	procstart = null
+	src.procstart = null
 	var/I = parents.Find(Old)
 	PARENT_I = New
 
 /obj/machinery/atmospherics/components/unsafe_pressure_release(var/mob/user, var/pressures)
+	procstart = null
+	src.procstart = null
 	..()
 
 	var/turf/T = get_turf(src)
@@ -126,6 +150,8 @@ Pipenet stuff; housekeeping
 		air_update_turf(1)
 
 /obj/machinery/atmospherics/components/proc/safe_input(var/title, var/text, var/default_set)
+	procstart = null
+	src.procstart = null
 	var/new_value = input(usr,text,title,default_set) as num
 	if(usr.canUseTopic(src))
 		return new_value
@@ -136,6 +162,8 @@ Helpers
 */
 
 /obj/machinery/atmospherics/components/proc/update_parents()
+	procstart = null
+	src.procstart = null
 	for(DEVICE_TYPE_LOOP)
 		var/datum/pipeline/parent = PARENT_I
 		if(!parent)
@@ -144,6 +172,8 @@ Helpers
 		parent.update = 1
 
 /obj/machinery/atmospherics/components/returnPipenets()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(DEVICE_TYPE_LOOP)
 		. += returnPipenet(NODE_I)
@@ -153,6 +183,8 @@ UI Stuff
 */
 
 /obj/machinery/atmospherics/components/ui_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(allowed(user))
 		return ..()
 	to_chat(user, "<span class='danger'>Access denied.</span>")

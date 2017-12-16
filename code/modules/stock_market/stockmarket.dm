@@ -8,17 +8,23 @@
 	var/list/logs = list()
 
 /datum/stockMarket/New()
+		procstart = null
+		src.procstart = null
 		..()
 		generateBrokers()
 		generateStocks()
 		START_PROCESSING(SSobj, src)
 
 /datum/stockMarket/proc/balanceLog(var/whose, var/net)
+	procstart = null
+	src.procstart = null
 	if (!(whose in balances))
 		balances[whose] = net
 	else
 		balances[whose] += net
 /datum/stockMarket/proc/generateBrokers()
+	procstart = null
+	src.procstart = null
 	stockBrokers = list()
 	var/list/fnames = list("Goldman", "Edward", "James", "Luis", "Alexander", "Walter", "Eugene", "Mary", "Morgan", "Jane", "Elizabeth", "Xavier", "Hayden", "Samuel", "Lee")
 	var/list/names = list("Johnson", "Rothschild", "Sachs", "Stanley", "Hepburn", "Brown", "McColl", "Fischer", "Edwards", "Becker", "Witter", "Walker", "Lambert", "Smith", "Montgomery", "Lynch", "Roosevelt", "Lehman")
@@ -44,6 +50,8 @@
 		stockBrokers += pname
 
 /datum/stockMarket/proc/generateDesignation(var/name)
+	procstart = null
+	src.procstart = null
 	if (length(name) <= 4)
 		return uppertext(name)
 	var/list/w = splittext(name, " ")
@@ -60,6 +68,8 @@
 		return d
 
 /datum/stockMarket/proc/generateStocks(var/amt = 15)
+	procstart = null
+	src.procstart = null
 	var/list/fruits = list("Banana", "Mimana", "Watermelon", "Ambrosia", "Pomegranate", "Reishi", "Papaya", "Mango", "Tomato", "Conkerberry", "Wood", "Lychee", "Mandarin", "Harebell", "Pumpkin", "Rhubarb", "Tamarillo", "Yantok", "Ziziphus", "Oranges", "Gatfruit", "Daisy", "Kudzu")
 	var/list/tech_prefix = list("Nano", "Cyber", "Funk", "Astro", "Fusion", "Tera", "Exo", "Star", "Virtual", "Plasma", "Robust", "Bit", "Future", "Hugbox", "Carbon", "Nerf", "Buff", "Nova", "Space", "Meta", "Cyber")
 	var/list/tech_short = list("soft", "tech", "prog", "tec", "tek", "ware", "", "gadgets", "nics", "tric", "trasen", "tronic", "coin")
@@ -109,11 +119,15 @@
 		last_read[S] = list()
 
 /datum/stockMarket/process()
+	procstart = null
+	src.procstart = null
 	for (var/stock in stocks)
 		var/datum/stock/S = stock
 		S.process()
 
 /datum/stockMarket/proc/add_log(var/log_type, var/user, var/company_name, var/stocks, var/shareprice, var/money)
+	procstart = null
+	src.procstart = null
 	var/datum/stock_log/L = new log_type
 	L.user_name = user
 	L.company_name = company_name
@@ -126,6 +140,8 @@
 GLOBAL_DATUM_INIT(stockExchange, /datum/stockMarket, new)
 
 /proc/plotBarGraph(var/list/points, var/base_text, var/width=400, var/height=400)
+	procstart = null
+	src.procstart = null
 	var/output = "<table style='border:1px solid black; border-collapse: collapse; width: [width]px; height: [height]px'>"
 	if (points.len && height > 20 && width > 20)
 		var/min = points[1]

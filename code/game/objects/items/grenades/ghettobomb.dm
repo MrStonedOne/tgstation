@@ -20,6 +20,8 @@
 	var/list/times
 
 /obj/item/grenade/iedcasing/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	add_overlay("improvised_grenade_filled")
 	add_overlay("improvised_grenade_wired")
@@ -32,6 +34,8 @@
 		range = pick(2,2,2,3,3,3,4)
 
 /obj/item/grenade/iedcasing/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/reagent_containers/food/drinks/soda_cans/can = locate() in contents
 	if(can)
@@ -56,5 +60,7 @@
 	qdel(src)
 
 /obj/item/grenade/iedcasing/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "You can't tell when it will explode!")

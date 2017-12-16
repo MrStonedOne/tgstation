@@ -11,6 +11,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 	src.target = target
 
 /obj/effect/statclick/proc/update(text)
+	procstart = null
+	src.procstart = null
 	name = text
 	return src
 
@@ -18,6 +20,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 	var/class
 
 /obj/effect/statclick/debug/Click()
+	procstart = null
+	src.procstart = null
 	if(!usr.client.holder || !target)
 		return
 	if(!class)
@@ -36,6 +40,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/statclick)
 
 // Debug verbs.
 /client/proc/restart_controller(controller in list("Master", "Failsafe"))
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Restart Controller"
 	set desc = "Restart one of the various periodic loop controllers for the game (be careful!)"

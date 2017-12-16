@@ -40,11 +40,15 @@
 	dog_fashion = null
 
 /obj/item/extinguisher/New()
+	procstart = null
+	src.procstart = null
 	..()
 	create_reagents(max_water)
 	reagents.add_reagent("water", max_water)
 
 /obj/item/extinguisher/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	safety = !safety
 	src.icon_state = "[sprite_name][!safety]"
 	src.desc = "The safety is [safety ? "on" : "off"]."
@@ -52,12 +56,16 @@
 	return
 
 /obj/item/extinguisher/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HELP && !safety) //If we're on help intent and going to spray people, don't bash them.
 		return FALSE
 	else
 		return ..()
 
 /obj/item/extinguisher/attack_obj(obj/O, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(AttemptRefill(O, user))
 		refilling = TRUE
 		return FALSE
@@ -65,6 +73,8 @@
 		return ..()
 
 /obj/item/extinguisher/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(reagents.total_volume)
 		to_chat(user, "It contains [round(reagents.total_volume)] unit\s.")
@@ -73,6 +83,8 @@
 		to_chat(user, "It is empty.")
 
 /obj/item/extinguisher/proc/AttemptRefill(atom/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/structure/reagent_dispensers/watertank) && target.Adjacent(user))
 		var/safety_save = safety
 		safety = TRUE
@@ -95,6 +107,8 @@
 		return 0
 
 /obj/item/extinguisher/afterattack(atom/target, mob/user , flag)
+	procstart = null
+	src.procstart = null
 	// Make it so the extinguisher doesn't spray yourself when you click your inventory items
 	if (target.loc == user)
 		return
@@ -180,9 +194,13 @@
 		return ..()
 
 /obj/item/extinguisher/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	EmptyExtinguisher(user)
 
 /obj/item/extinguisher/proc/EmptyExtinguisher(var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc == user && reagents.total_volume)
 		reagents.clear_reagents()
 

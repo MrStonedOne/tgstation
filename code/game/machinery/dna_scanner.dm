@@ -18,6 +18,8 @@
 	var/breakout_time = 1200
 
 /obj/machinery/dna_scannernew/RefreshParts()
+	procstart = null
+	src.procstart = null
 	scan_level = 0
 	damage_coeff = 0
 	precision_coeff = 0
@@ -30,6 +32,8 @@
 
 /obj/machinery/dna_scannernew/update_icon()
 
+	procstart = null
+	src.procstart = null
 	//no power or maintenance
 	if(stat & (NOPOWER|BROKEN))
 		icon_state = initial(icon_state)+ (state_open ? "_open" : "") + "_unpowered"
@@ -48,10 +52,14 @@
 	icon_state = initial(icon_state)+ (state_open ? "_open" : "")
 
 /obj/machinery/dna_scannernew/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/dna_scannernew/proc/toggle_open(mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
 		return
@@ -67,6 +75,8 @@
 	open_machine()
 
 /obj/machinery/dna_scannernew/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!locked)
 		open_machine()
 		return
@@ -84,6 +94,8 @@
 		open_machine()
 
 /obj/machinery/dna_scannernew/proc/locate_computer(type_)
+	procstart = null
+	src.procstart = null
 	for(var/direction in GLOB.cardinals)
 		var/C = locate(type_, get_step(src, direction))
 		if(C)
@@ -91,6 +103,8 @@
 	return null
 
 /obj/machinery/dna_scannernew/close_machine(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!state_open)
 		return FALSE
 
@@ -112,6 +126,8 @@
 	return TRUE
 
 /obj/machinery/dna_scannernew/open_machine()
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		return FALSE
 
@@ -120,6 +136,8 @@
 	return TRUE
 
 /obj/machinery/dna_scannernew/relaymove(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if(user.stat || locked)
 		if(message_cooldown <= world.time)
 			message_cooldown = world.time + 50
@@ -129,6 +147,8 @@
 
 /obj/machinery/dna_scannernew/attackby(obj/item/I, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(!occupant && default_deconstruction_screwdriver(user, icon_state, icon_state, I))//sent icon_state is irrelevant...
 		update_icon()//..since we're updating the icon here, since the scanner can be unpowered when opened/closed
 		return
@@ -145,12 +165,16 @@
 	return ..()
 
 /obj/machinery/dna_scannernew/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..(user,1,0)) //don't set the machine, since there's no dialog
 		return
 
 	toggle_open(user)
 
 /obj/machinery/dna_scannernew/MouseDrop_T(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || user.lying || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !user.IsAdvancedToolUser())
 		return
 	close_machine(target)

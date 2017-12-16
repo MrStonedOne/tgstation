@@ -27,6 +27,8 @@
 	var/turftype = /turf/open/space
 
 /obj/machinery/door/poddoor/shuttledock/proc/check()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_step(src, checkdir)
 	if(!istype(T, turftype))
 		INVOKE_ASYNC(src, .proc/open)
@@ -34,6 +36,8 @@
 		INVOKE_ASYNC(src, .proc/close)
 
 /obj/machinery/door/poddoor/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(density)
 		return 0
 	else
@@ -41,11 +45,15 @@
 
 //"BLAST" doors are obviously stronger than regular doors when it comes to BLASTS.
 /obj/machinery/door/poddoor/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity == 3)
 		return
 	..()
 
 /obj/machinery/door/poddoor/do_animate(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if("opening")
 			flick("opening", src)
@@ -53,6 +61,8 @@
 			flick("closing", src)
 
 /obj/machinery/door/poddoor/update_icon()
+	procstart = null
+	src.procstart = null
 	if(density)
 		icon_state = "closed"
 	else
@@ -62,5 +72,7 @@
  	return
 
 /obj/machinery/door/poddoor/try_to_crowbar(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & NOPOWER)
 		open(1)

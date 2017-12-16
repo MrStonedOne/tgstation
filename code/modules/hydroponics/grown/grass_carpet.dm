@@ -29,6 +29,8 @@
 	var/tile_coefficient = 0.02 // 1/50
 
 /obj/item/reagent_containers/food/snacks/grown/grass/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>You prepare the astroturf.</span>")
 	var/grassAmt = 1 + round(seed.potency * tile_coefficient) // The grass we're holding
 	for(var/obj/item/reagent_containers/food/snacks/grown/grass/G in user.loc) // The grass on the floor

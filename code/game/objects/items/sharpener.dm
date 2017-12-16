@@ -12,6 +12,8 @@
 
 
 /obj/item/sharpener/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(used)
 		to_chat(user, "<span class='warning'>The sharpening block is too worn to use again!</span>")
 		return

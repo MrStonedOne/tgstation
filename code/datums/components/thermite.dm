@@ -21,6 +21,8 @@
 		)
 
 /datum/component/thermite/Initialize(_amount)
+	procstart = null
+	src.procstart = null
 	if(!istype(parent, /turf))
 		. = COMPONENT_INCOMPATIBLE
 		CRASH("A thermite component has been applied to an incorrect object. parent: [parent]")
@@ -42,16 +44,22 @@
 	RegisterSignal(COMSIG_ATOM_FIRE_ACT, .proc/flame_react)
 
 /datum/component/thermite/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/master = parent
 	master.cut_overlay(overlay)
 	return ..()
 
 /datum/component/thermite/InheritComponent(datum/component/thermite/newC, i_am_original)
+	procstart = null
+	src.procstart = null
 	if(!i_am_original)
 		return
 	amount += newC.amount
 
 /datum/component/thermite/proc/thermite_melt(mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/master = parent
 	master.cut_overlay(overlay)
 	var/obj/effect/overlay/thermite/fakefire = new(master)
@@ -69,13 +77,19 @@
 		QDEL_IN(fakefire, 50)
 
 /datum/component/thermite/proc/clean_react(strength)
+	procstart = null
+	src.procstart = null
 	//Thermite is just some loose powder, you could probably clean it with your hands. << todo?
 	qdel(src)
 
 /datum/component/thermite/proc/flame_react(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 1922) // This is roughly the real life requirement to ignite thermite
 		thermite_melt()
 
 /datum/component/thermite/proc/attackby_react(obj/item/thing, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(thing.is_hot())
 		thermite_melt(user)

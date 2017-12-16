@@ -13,6 +13,8 @@
 	range = RANGED
 
 /obj/item/mecha_parts/mecha_equipment/teleporter/action(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target) || src.loc.z == ZLEVEL_CENTCOM)
 		return
 	var/turf/T = get_turf(target)
@@ -34,6 +36,8 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/wormhole_generator/action(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target) || src.loc.z == ZLEVEL_CENTCOM)
 		return
 	var/list/theareas = get_areas_in_range(100, chassis)
@@ -79,6 +83,8 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/gravcatapult/action(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(!action_checks(target))
 		return
 	switch(mode)
@@ -123,9 +129,13 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/gravcatapult/get_equip_info()
+	procstart = null
+	src.procstart = null
 	return "[..()] [mode==1?"([locked||"Nothing"])":null] \[<a href='?src=[REF(src)];mode=1'>S</a>|<a href='?src=[REF(src)];mode=2'>P</a>\]"
 
 /obj/item/mecha_parts/mecha_equipment/gravcatapult/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["mode"])
 		mode = text2num(href_list["mode"])
@@ -150,6 +160,8 @@
 	selectable = 0
 
 /obj/item/mecha_parts/mecha_equipment/anticcw_armor_booster/proc/attack_react()
+	procstart = null
+	src.procstart = null
 	if(action_checks(src))
 		start_cooldown()
 		return 1
@@ -168,6 +180,8 @@
 	selectable = 0
 
 /obj/item/mecha_parts/mecha_equipment/antiproj_armor_booster/proc/projectile_react()
+	procstart = null
+	src.procstart = null
 	if(action_checks(src))
 		start_cooldown()
 		return 1
@@ -188,28 +202,38 @@
 	selectable = 0
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	if(chassis)
 		chassis.cut_overlay(droid_overlay)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/attach(obj/mecha/M as obj)
+	procstart = null
+	src.procstart = null
 	..()
 	droid_overlay = new(src.icon, icon_state = "repair_droid")
 	M.add_overlay(droid_overlay)
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/detach()
+	procstart = null
+	src.procstart = null
 	chassis.cut_overlay(droid_overlay)
 	STOP_PROCESSING(SSobj, src)
 	..()
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/get_equip_info()
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return
 	return "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp; [src.name] - <a href='?src=[REF(src)];toggle_repairs=1'>[equip_ready?"A":"Dea"]ctivate</a>"
 
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["toggle_repairs"])
 		chassis.cut_overlay(droid_overlay)
@@ -228,6 +252,8 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/process()
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		STOP_PROCESSING(SSobj, src)
 		set_ready_state(1)
@@ -272,15 +298,21 @@
 	selectable = 0
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/detach()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	..()
 	return
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/proc/get_charge()
+	procstart = null
+	src.procstart = null
 	if(equip_ready) //disabled
 		return
 	var/area/A = get_area(chassis)
@@ -290,6 +322,8 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/proc/get_power_channel(var/area/A)
+	procstart = null
+	src.procstart = null
 	var/pow_chan
 	if(A)
 		for(var/c in use_channels)
@@ -299,6 +333,8 @@
 	return pow_chan
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["toggle_relay"])
 		if(equip_ready) //inactive
@@ -311,12 +347,16 @@
 			log_message("Deactivated.")
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/get_equip_info()
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return
 	return "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp; [src.name] - <a href='?src=[REF(src)];toggle_relay=1'>[equip_ready?"A":"Dea"]ctivate</a>"
 
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/process()
+	procstart = null
+	src.procstart = null
 	if(!chassis || chassis.internal_damage & MECHA_INT_SHORT_CIRCUIT)
 		STOP_PROCESSING(SSobj, src)
 		set_ready_state(1)
@@ -359,22 +399,32 @@
 	var/power_per_cycle = 20
 
 /obj/item/mecha_parts/mecha_equipment/generator/New()
+	procstart = null
+	src.procstart = null
 	..()
 	generator_init()
 
 /obj/item/mecha_parts/mecha_equipment/generator/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/generator/proc/generator_init()
+	procstart = null
+	src.procstart = null
 	fuel = new /obj/item/stack/sheet/mineral/plasma(src)
 	fuel.amount = 0
 
 /obj/item/mecha_parts/mecha_equipment/generator/detach()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	..()
 
 /obj/item/mecha_parts/mecha_equipment/generator/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["toggle"])
 		if(equip_ready) //inactive
@@ -387,17 +437,23 @@
 			log_message("Deactivated.")
 
 /obj/item/mecha_parts/mecha_equipment/generator/get_equip_info()
+	procstart = null
+	src.procstart = null
 	var/output = ..()
 	if(output)
 		return "[output] \[[fuel]: [round(fuel.amount*fuel.perunit,0.1)] cm<sup>3</sup>\] - <a href='?src=[REF(src)];toggle=1'>[equip_ready?"A":"Dea"]ctivate</a>"
 
 /obj/item/mecha_parts/mecha_equipment/generator/action(target)
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		var/result = load_fuel(target)
 		if(result)
 			send_byjax(chassis.occupant,"exosuit.browser","[REF(src)]",src.get_equip_info())
 
 /obj/item/mecha_parts/mecha_equipment/generator/proc/load_fuel(var/obj/item/stack/sheet/P)
+	procstart = null
+	src.procstart = null
 	if(P.type == fuel.type && P.amount > 0)
 		var/to_load = max(max_fuel - fuel.amount*fuel.perunit,0)
 		if(to_load)
@@ -414,9 +470,13 @@
 		return
 
 /obj/item/mecha_parts/mecha_equipment/generator/attackby(weapon,mob/user, params)
+	procstart = null
+	src.procstart = null
 	load_fuel(weapon)
 
 /obj/item/mecha_parts/mecha_equipment/generator/critfail()
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/open/T = get_turf(src)
 	if(!istype(T))
@@ -436,6 +496,8 @@
 	return
 
 /obj/item/mecha_parts/mecha_equipment/generator/process()
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		STOP_PROCESSING(SSobj, src)
 		set_ready_state(1)
@@ -472,12 +534,18 @@
 	var/rad_per_cycle = 3
 
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear/generator_init()
+	procstart = null
+	src.procstart = null
 	fuel = new /obj/item/stack/sheet/mineral/uranium(src)
 	fuel.amount = 0
 
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear/critfail()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear/process()
+	procstart = null
+	src.procstart = null
 	if(..())
 		radiation_pulse(get_turf(src), rad_per_cycle)

@@ -24,6 +24,8 @@
 	var/trashtype = null //for disposable cuffs
 
 /obj/item/restraints/handcuffs/attack(mob/living/carbon/C, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(C))
 		return
 	if(user.disabilities & CLUMSY && prob(50))
@@ -55,6 +57,8 @@
 			to_chat(user, "<span class='warning'>[C] doesn't have two hands...</span>")
 
 /obj/item/restraints/handcuffs/proc/apply_cuffs(mob/living/carbon/target, mob/user, var/dispense = 0)
+	procstart = null
+	src.procstart = null
 	if(target.handcuffed)
 		return
 
@@ -99,6 +103,8 @@
 	var/datum/robot_energy_storage/wirestorage = null
 
 /obj/item/restraints/handcuffs/cable/Initialize(mapload, param_color)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/list/cable_colors = GLOB.cable_colors
@@ -108,10 +114,14 @@
 	update_icon()
 
 /obj/item/restraints/handcuffs/cable/update_icon()
+	procstart = null
+	src.procstart = null
 	color = null
 	add_atom_colour(item_color, FIXED_COLOUR_PRIORITY)
 
 /obj/item/restraints/handcuffs/cable/attack(mob/living/carbon/C, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(C))
 		return
 	if(wirestorage && wirestorage.energy < 15)
@@ -120,6 +130,8 @@
 	return ..()
 
 /obj/item/restraints/handcuffs/cable/apply_cuffs(mob/living/carbon/target, mob/user, var/dispense = 0)
+	procstart = null
+	src.procstart = null
 	if(wirestorage)
 		if(!wirestorage.use_charge(15))
 			to_chat(user, "<span class='warning'>You need at least 15 wire to restrain [target]!</span>")
@@ -168,6 +180,8 @@
 	breakouttime = 10 //Deciseconds = 1s
 
 /obj/item/restraints/handcuffs/cable/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(I, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = I
@@ -199,6 +213,8 @@
 		return ..()
 
 /obj/item/restraints/handcuffs/cable/zipties/cyborg/attack(mob/living/carbon/C, mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		if(!C.handcuffed)
 			playsound(loc, 'sound/weapons/cablecuff.ogg', 30, 1, -2)
@@ -230,6 +246,8 @@
 	item_state = "cuff"
 
 /obj/item/restraints/handcuffs/cable/zipties/used/attack()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -259,15 +277,21 @@
 	var/trap_damage = 20
 
 /obj/item/restraints/legcuffs/beartrap/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[initial(icon_state)][armed]"
 
 /obj/item/restraints/legcuffs/beartrap/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is sticking [user.p_their()] head in the [src.name]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
 	return (BRUTELOSS)
 
 /obj/item/restraints/legcuffs/beartrap/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(user) && !user.stat && !user.restrained())
 		armed = !armed
@@ -275,6 +299,8 @@
 		to_chat(user, "<span class='notice'>[src] is now [armed ? "armed" : "disarmed"]</span>")
 
 /obj/item/restraints/legcuffs/beartrap/Crossed(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(armed && isturf(src.loc))
 		if(isliving(AM))
 			var/mob/living/L = AM
@@ -313,15 +339,21 @@
 	flags_1 = DROPDEL_1
 
 /obj/item/restraints/legcuffs/beartrap/energy/New()
+	procstart = null
+	src.procstart = null
 	..()
 	addtimer(CALLBACK(src, .proc/dissipate), 100)
 
 /obj/item/restraints/legcuffs/beartrap/energy/proc/dissipate()
+	procstart = null
+	src.procstart = null
 	if(!ismob(loc))
 		do_sparks(1, TRUE, src)
 		qdel(src)
 
 /obj/item/restraints/legcuffs/beartrap/energy/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	Crossed(user) //honk
 
 /obj/item/restraints/legcuffs/beartrap/energy/cyborg
@@ -336,11 +368,15 @@
 	var/knockdown = 0
 
 /obj/item/restraints/legcuffs/bola/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	playsound(src.loc,'sound/weapons/bolathrow.ogg', 75, 1)
 
 /obj/item/restraints/legcuffs/bola/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(..() || !iscarbon(hit_atom))//if it gets caught or the target can't be cuffed,
 		return//abort
 	var/mob/living/carbon/C = hit_atom
@@ -369,6 +405,8 @@
 	breakouttime = 60
 
 /obj/item/restraints/legcuffs/bola/energy/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(hit_atom))
 		var/obj/item/restraints/legcuffs/beartrap/B = new /obj/item/restraints/legcuffs/beartrap/energy/cyborg(get_turf(hit_atom))
 		B.Crossed(hit_atom)

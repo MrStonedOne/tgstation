@@ -1,6 +1,8 @@
 GLOBAL_LIST_INIT(hardcoded_gases, list(/datum/gas/oxygen, /datum/gas/nitrogen, /datum/gas/carbon_dioxide, /datum/gas/plasma)) //the main four gases, which were at one time hardcoded
 
 /proc/meta_gas_list()
+	procstart = null
+	src.procstart = null
 	. = subtypesof(/datum/gas)
 	for(var/gas_path in .)
 		var/list/gas_info = new(6)
@@ -16,6 +18,8 @@ GLOBAL_LIST_INIT(hardcoded_gases, list(/datum/gas/oxygen, /datum/gas/nitrogen, /
 		.[gas_path] = gas_info
 
 /proc/gas_id2path(id)
+	procstart = null
+	src.procstart = null
 	var/list/meta_gas = GLOB.meta_gas_info
 	if(id in meta_gas)
 		return id
@@ -126,5 +130,7 @@ GLOBAL_LIST_INIT(hardcoded_gases, list(/datum/gas/oxygen, /datum/gas/nitrogen, /
 	appearance_flags = TILE_BOUND
 
 /obj/effect/overlay/gas/New(state)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = state

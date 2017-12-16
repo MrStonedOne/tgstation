@@ -24,6 +24,8 @@
 
 // If new NTNet datum is spawned, it replaces the old one.
 /datum/ntnet/New(_netid)
+	procstart = null
+	src.procstart = null
 	build_software_lists()
 	add_log("NTNet logging system activated.")
 	if(_netid)
@@ -33,17 +35,25 @@
 		qdel(src)
 
 /datum/ntnet/proc/interface_connect(datum/component/ntnet_interface/I)
+	procstart = null
+	src.procstart = null
 	connected_interfaces_by_id[I.hardware_id] = I
 	return TRUE
 
 /datum/ntnet/proc/interface_disconnect(datum/component/ntnet_interface/I)
+	procstart = null
+	src.procstart = null
 	connected_interfaces_by_id -= I.hardware_id
 	return TRUE
 
 /datum/ntnet/proc/find_interface_id(id)
+	procstart = null
+	src.procstart = null
 	return connected_interfaces_by_id[id]
 
 /datum/ntnet/proc/process_data_transmit(datum/component/ntnet_interface/sender, datum/netdata/data)
+	procstart = null
+	src.procstart = null
 	data.network_id = src
 	log_data_transfer(data)
 	if(!check_relay_operation())
@@ -64,11 +74,15 @@
 	return FALSE
 
 /datum/ntnet/proc/log_data_transfer(datum/netdata/data)
+	procstart = null
+	src.procstart = null
 	logs += "[worldtime2text()] - [data.generate_netlog()]"
 	return
 
 // Simplified logging: Adds a log. log_string is mandatory parameter, source is optional.
 /datum/ntnet/proc/add_log(log_string, obj/item/computer_hardware/network_card/source = null)
+	procstart = null
+	src.procstart = null
 	var/log_text = "[worldtime2text()] - "
 	if(source)
 		log_text += "[source.get_network_tag()] - "
@@ -84,6 +98,8 @@
 
 // Checks whether NTNet operates. If parameter is passed checks whether specific function is enabled.
 /datum/ntnet/proc/check_function(specific_action = 0)
+	procstart = null
+	src.procstart = null
 	if(!relays || !relays.len) // No relays found. NTNet is down
 		return FALSE
 
@@ -107,6 +123,8 @@
 
 // Builds lists that contain downloadable software.
 /datum/ntnet/proc/build_software_lists()
+	procstart = null
+	src.procstart = null
 	available_station_software = list()
 	available_antag_software = list()
 	for(var/F in typesof(/datum/computer_file/program))
@@ -122,6 +140,8 @@
 
 // Attempts to find a downloadable file according to filename var
 /datum/ntnet/proc/find_ntnet_file_by_name(filename)
+	procstart = null
+	src.procstart = null
 	for(var/N in available_station_software)
 		var/datum/computer_file/program/P = N
 		if(filename == P.filename)
@@ -133,19 +153,27 @@
 
 // Resets the IDS alarm
 /datum/ntnet/proc/resetIDS()
+	procstart = null
+	src.procstart = null
 	intrusion_detection_alarm = FALSE
 
 /datum/ntnet/proc/toggleIDS()
+	procstart = null
+	src.procstart = null
 	resetIDS()
 	intrusion_detection_enabled = !intrusion_detection_enabled
 
 // Removes all logs
 /datum/ntnet/proc/purge_logs()
+	procstart = null
+	src.procstart = null
 	logs = list()
 	add_log("-!- LOGS DELETED BY SYSTEM OPERATOR -!-")
 
 // Updates maximal amount of stored logs. Use this instead of setting the number, it performs required checks.
 /datum/ntnet/proc/update_max_log_count(lognumber)
+	procstart = null
+	src.procstart = null
 	if(!lognumber)
 		return FALSE
 	// Trim the value if necessary
@@ -154,6 +182,8 @@
 	add_log("Configuration Updated. Now keeping [setting_maxlogcount] logs in system memory.")
 
 /datum/ntnet/proc/toggle_function(function)
+	procstart = null
+	src.procstart = null
 	if(!function)
 		return
 	function = text2num(function)

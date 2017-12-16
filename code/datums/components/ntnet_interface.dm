@@ -1,8 +1,12 @@
 //Thing meant for allowing datums and objects to access a NTnet network datum.
 /datum/proc/ntnet_recieve(datum/netdata/data)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/proc/ntnet_send(datum/netdata/data, netid)
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(NIC, /datum/component/ntnet_interface)
 	if(!NIC)
 		return FALSE
@@ -24,6 +28,8 @@
 		register_connection(SSnetworks.station_network)
 
 /datum/component/ntnet_interface/Destroy()
+	procstart = null
+	src.procstart = null
 	unregister_all_connections()
 	SSnetworks.unregister_interface(src)
 	return ..()
@@ -44,16 +50,22 @@
 	return TRUE
 
 /datum/component/ntnet_interface/proc/register_connection(datum/ntnet/net)
+	procstart = null
+	src.procstart = null
 	if(net.interface_connect(src))
 		networks_connected_by_id[net.network_id] = net
 	return TRUE
 
 /datum/component/ntnet_interface/proc/unregister_all_connections()
+	procstart = null
+	src.procstart = null
 	for(var/i in networks_connected_by_id)
 		unregister_connection(networks_connected_by_id[i])
 	return TRUE
 
 /datum/component/ntnet_interface/proc/unregister_connection(datum/ntnet/net)
+	procstart = null
+	src.procstart = null
 	net.interface_disconnect(src)
 	networks_connected_by_id -= net.network_id
 	return TRUE

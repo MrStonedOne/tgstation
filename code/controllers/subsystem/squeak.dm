@@ -3,6 +3,8 @@
 // mice - the computer peripheral
 
 SUBSYSTEM_DEF(squeak)
+	procstart = null
+	src.procstart = null
 	name = "Squeak"
 	init_order = INIT_ORDER_SQUEAK
 	flags = SS_NO_FIRE
@@ -10,10 +12,14 @@ SUBSYSTEM_DEF(squeak)
 	var/list/exposed_wires = list()
 
 /datum/controller/subsystem/squeak/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	trigger_migration(CONFIG_GET(number/mice_roundstart))
 	return ..()
 
 /datum/controller/subsystem/squeak/proc/trigger_migration(num_mice=10)
+	procstart = null
+	src.procstart = null
 	if(!num_mice)
 		return
 	find_exposed_wires()
@@ -32,6 +38,8 @@ SUBSYSTEM_DEF(squeak)
 			M = null
 
 /datum/controller/subsystem/squeak/proc/find_exposed_wires()
+	procstart = null
+	src.procstart = null
 	exposed_wires.Cut()
 	var/list/all_turfs
 	for (var/z in GLOB.station_z_levels)

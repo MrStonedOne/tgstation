@@ -8,18 +8,28 @@
 	return
 
 /mob/living/brain/adjust_blindness()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/brain/set_blindness()
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////////////// EYE_BLURRY ////////////////////////////////////
 
 /mob/living/brain/blur_eyes()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/brain/adjust_blurriness()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/brain/set_blurriness()
+	procstart = null
+	src.procstart = null
 	return

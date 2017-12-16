@@ -7,10 +7,14 @@
 	var/cacherealtime = 0
 
 /datum/ipintel/New()
+	procstart = null
+	src.procstart = null
 	cachedate = SQLtime()
 	cacherealtime = world.realtime
 
 /datum/ipintel/proc/is_valid()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if (intel < 0)
 		return
@@ -22,6 +26,8 @@
 			return TRUE
 
 /proc/get_ip_intel(ip, bypasscache = FALSE, updatecache = TRUE)
+	procstart = null
+	src.procstart = null
 	var/datum/ipintel/res = new()
 	res.ip = ip
 	. = res
@@ -70,6 +76,8 @@
 
 
 /proc/ip_intel_query(ip, var/retryed=0)
+	procstart = null
+	src.procstart = null
 	. = -1 //default
 	if (!ip)
 		return
@@ -117,6 +125,8 @@
 
 
 /proc/ipintel_handle_error(error, ip, retryed)
+	procstart = null
+	src.procstart = null
 	if (retryed)
 		SSipintel.errors++
 		error += " Could not check [ip]. Disabling IPINTEL for [SSipintel.errors] minute[( SSipintel.errors == 1 ? "" : "s" )]"
@@ -126,6 +136,8 @@
 	log_ipintel(error)
 
 /proc/log_ipintel(text)
+	procstart = null
+	src.procstart = null
 	log_game("IPINTEL: [text]")
 	debug_admins("IPINTEL: [text]")
 

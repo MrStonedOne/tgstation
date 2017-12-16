@@ -15,10 +15,14 @@
 
 
 /obj/machinery/mineral/mint/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/material_container, list(MAT_METAL, MAT_PLASMA, MAT_SILVER, MAT_GOLD, MAT_URANIUM, MAT_DIAMOND, MAT_BANANIUM), MINERAL_MATERIAL_AMOUNT * 50)
 
 /obj/machinery/mineral/mint/process()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_step(src, input_dir)
 	if(!T)
 		return
@@ -28,6 +32,8 @@
 		materials.insert_stack(O, O.amount)
 
 /obj/machinery/mineral/mint/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = "<b>Coin Press</b><br>"
 
 	GET_COMPONENT(materials, /datum/component/material_container)
@@ -56,6 +62,8 @@
 	user << browse(dat, "window=mint")
 
 /obj/machinery/mineral/mint/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -93,6 +101,8 @@
 	return
 
 /obj/machinery/mineral/mint/proc/create_coins(P)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_step(src,output_dir)
 	if(T)
 		var/obj/item/O = new P(src)

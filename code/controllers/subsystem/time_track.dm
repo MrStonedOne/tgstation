@@ -18,6 +18,8 @@ SUBSYSTEM_DEF(time_track)
 
 /datum/controller/subsystem/time_track/fire()
 
+	procstart = null
+	src.procstart = null
 	var/current_realtime = REALTIMEOFDAY
 	var/current_byondtime = world.time
 	var/current_tickcount = world.time/world.tick_lag

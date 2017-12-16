@@ -5,6 +5,8 @@
 
 
 /mob/verb/ChooseDMI(dmi as file)
+	procstart = null
+	src.procstart = null
 	var/dmifile = file(dmi)
 	if(isfile(dmifile) && (copytext("[dmifile]",-4) == ".dmi"))
 		SliceNDice(dmifile)
@@ -13,6 +15,8 @@
 
 
 /proc/SliceNDice(dmifile as file)
+	procstart = null
+	src.procstart = null
 	var/icon/sourceIcon = icon(dmifile)
 	var/list/states = sourceIcon.IconStates()
 	world << "<B>[dmifile] - states: [states.len]</B>"

@@ -14,19 +14,27 @@
 	var/value = 0
 
 /obj/item/stack/spacecash/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_desc()
 
 /obj/item/stack/spacecash/proc/update_desc()
+	procstart = null
+	src.procstart = null
 	var/total_worth = amount*value
 	desc = "It's worth [total_worth] credit[( total_worth > 1 ) ? "s" : ""]"
 
 
 /obj/item/stack/spacecash/merge(obj/item/stack/S)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_desc()
 
 /obj/item/stack/spacecash/use(used, transfer = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_desc()
 

@@ -18,6 +18,8 @@
 	var/folder_path = /obj/item/folder //this is the path of the folder that gets spawned in New()
 
 /obj/item/storage/briefcase/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/pen(src)
 	var/obj/item/folder/folder = new folder_path(src)
 	for(var/i in 1 to 6)
@@ -27,6 +29,8 @@
 	folder_path = /obj/item/folder/blue
 
 /obj/item/storage/briefcase/lawyer/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/stamp/law(src)
 	..()
 
@@ -47,6 +51,8 @@
 	max_integrity = 150
 
 /obj/item/storage/briefcase/sniperbundle/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..() // in case you need any paperwork done after your rampage
 	new /obj/item/gun/ballistic/automatic/sniper_rifle/syndicate(src)
 	new /obj/item/clothing/neck/tie/red(src)

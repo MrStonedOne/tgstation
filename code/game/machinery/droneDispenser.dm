@@ -50,6 +50,8 @@
 	var/break_sound = 'sound/machines/warning-buzzer.ogg'
 
 /obj/machinery/droneDispenser/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/material_container/materials = AddComponent(/datum/component/material_container, list(MAT_METAL, MAT_GLASS), MINERAL_MATERIAL_AMOUNT * MAX_STACK_SIZE * 2, TRUE)
 	materials.insert_amount(starting_amount)
@@ -130,11 +132,15 @@
 	break_message = "slowly falls dark, lights stuttering."
 
 /obj/machinery/droneDispenser/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if((mode == DRONE_RECHARGING) && !stat && recharging_text)
 		to_chat(user, "<span class='warning'>[recharging_text]</span>")
 
 /obj/machinery/droneDispenser/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	if(powered())
 		stat &= ~NOPOWER
@@ -143,6 +149,8 @@
 	update_icon()
 
 /obj/machinery/droneDispenser/process()
+	procstart = null
+	src.procstart = null
 	..()
 	if((stat & (NOPOWER|BROKEN)) || !anchored)
 		return
@@ -195,12 +203,16 @@
 			update_icon()
 
 /obj/machinery/droneDispenser/proc/count_shells()
+	procstart = null
+	src.procstart = null
 	. = 0
 	for(var/a in loc)
 		if(istype(a, dispense_type))
 			.++
 
 /obj/machinery/droneDispenser/update_icon()
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		icon_state = icon_off
 	else if(mode == DRONE_RECHARGING)
@@ -211,6 +223,8 @@
 		icon_state = icon_on
 
 /obj/machinery/droneDispenser/attackby(obj/item/O, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/crowbar))
 		GET_COMPONENT(materials, /datum/component/material_container)
 		materials.retrieve_all()
@@ -252,6 +266,8 @@
 		return ..()
 
 /obj/machinery/droneDispenser/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(!(stat & BROKEN))
 			if(break_message)
@@ -262,6 +278,8 @@
 			update_icon()
 
 /obj/machinery/droneDispenser/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc, 5)
 	qdel(src)

@@ -22,6 +22,8 @@
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
 
 /obj/item/twohanded/rcl/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/C = W
 
@@ -77,17 +79,23 @@
 		..()
 
 /obj/item/twohanded/rcl/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(loaded)
 		to_chat(user, "<span class='info'>It contains [loaded.amount]/[max_amount] cables.</span>")
 
 /obj/item/twohanded/rcl/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(loaded)
 	last = null
 	active = FALSE
 	return ..()
 
 /obj/item/twohanded/rcl/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!loaded)
 		icon_state = "rcl-0"
 		item_state = "rcl-0"
@@ -107,6 +115,8 @@
 			item_state = "rcl-0"
 
 /obj/item/twohanded/rcl/proc/is_empty(mob/user, loud = 1)
+	procstart = null
+	src.procstart = null
 	update_icon()
 	if(!loaded || !loaded.amount)
 		if(loud)
@@ -120,11 +130,15 @@
 	return FALSE
 
 /obj/item/twohanded/rcl/dropped(mob/wearer)
+	procstart = null
+	src.procstart = null
 	..()
 	active = FALSE
 	last = null
 
 /obj/item/twohanded/rcl/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	active = wielded
 	if(!active)
@@ -136,10 +150,14 @@
 				break
 
 /obj/item/twohanded/rcl/on_mob_move(direct, mob/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		trigger(user)
 
 /obj/item/twohanded/rcl/proc/trigger(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isturf(user.loc))
 		return
 	if(is_empty(user, 0))
@@ -180,10 +198,14 @@
 	update_icon()
 
 /obj/item/twohanded/rcl/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/twohanded/rcl/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/rcl))
 		current_color_index++;
 		if (current_color_index > colors.len)
@@ -198,6 +220,8 @@
 	ghetto = TRUE
 
 /obj/item/twohanded/rcl/ghetto/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!loaded)
 		icon_state = "rclg-0"
 		item_state = "rclg-0"

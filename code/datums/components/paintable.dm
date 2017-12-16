@@ -2,17 +2,25 @@
 	var/current_paint
 
 /datum/component/spraycan_paintable/Initialize()
+	procstart = null
+	src.procstart = null
 	RegisterSignal(COMSIG_PARENT_ATTACKBY, .proc/Repaint)
 
 /datum/component/spraycan_paintable/Destroy()
+	procstart = null
+	src.procstart = null
 	RemoveCurrentCoat()
 	return ..()
 
 /datum/component/spraycan_paintable/proc/RemoveCurrentCoat()
+	procstart = null
+	src.procstart = null
 	var/atom/A = parent
 	A.remove_atom_colour(FIXED_COLOUR_PRIORITY, current_paint)
 
 /datum/component/spraycan_paintable/proc/Repaint(obj/item/toy/crayon/spraycan/spraycan, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(spraycan) || user.a_intent == INTENT_HARM)
 		return
 	. = COMPONENT_NO_AFTERATTACK

@@ -6,6 +6,8 @@
 	var/sample_color = "#FFFFFF"
 
 /obj/item/seeds/sample/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(sample_color)
 		var/mutable_appearance/filling = mutable_appearance(icon, "sample-filling")
@@ -13,6 +15,8 @@
 		add_overlay(filling)
 
 /obj/item/seeds/sample/get_analyzer_text()
+	procstart = null
+	src.procstart = null
 	return " The DNA of this sample is damaged beyond recovery, it can't support life on its own.\n*---------*"
 
 /obj/item/seeds/sample/alienweed

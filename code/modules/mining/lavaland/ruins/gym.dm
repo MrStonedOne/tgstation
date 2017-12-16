@@ -9,6 +9,8 @@
 	'sound/weapons/punch1.ogg', 'sound/weapons/punch2.ogg', 'sound/weapons/punch3.ogg', 'sound/weapons/punch4.ogg')
 
 /obj/structure/punching_bag/attack_hand(mob/user as mob)
+		procstart = null
+		src.procstart = null
 		flick("[icon_state]2", src)
 		playsound(src.loc, pick(src.hit_sounds), 25, 1, -1)
 
@@ -21,6 +23,8 @@
 	anchored = TRUE
 
 /obj/structure/stacklifter/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(in_use)
 		to_chat(user, "It's already in use - wait a bit.")
 		return
@@ -59,6 +63,8 @@
 	anchored = TRUE
 
 /obj/structure/weightlifter/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(in_use)
 		to_chat(user, "It's already in use - wait a bit.")
 		return

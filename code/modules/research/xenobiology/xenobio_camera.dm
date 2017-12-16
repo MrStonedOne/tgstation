@@ -6,11 +6,15 @@
 	var/allowed_area = null
 
 /mob/camera/aiEye/remote/xenobio/Initialize()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(loc)
 	allowed_area = A.name
 	. = ..()
 
 /mob/camera/aiEye/remote/xenobio/setLoc(var/t)
+	procstart = null
+	src.procstart = null
 	var/area/new_area = get_area(t)
 	if(new_area && new_area.name == allowed_area || new_area && new_area.xenobiology_compatible)
 		return ..()
@@ -37,6 +41,8 @@
 	light_color = LIGHT_COLOR_PINK
 
 /obj/machinery/computer/camera_advanced/xenobio/CreateEye()
+	procstart = null
+	src.procstart = null
 	eyeobj = new /mob/camera/aiEye/remote/xenobio(get_turf(src))
 	eyeobj.origin = src
 	eyeobj.visible_icon = 1
@@ -44,6 +50,8 @@
 	eyeobj.icon_state = "camera_target"
 
 /obj/machinery/computer/camera_advanced/xenobio/GrantActions(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(slime_up_action)
@@ -67,6 +75,8 @@
 		actions += monkey_recycle_action
 
 /obj/machinery/computer/camera_advanced/xenobio/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/reagent_containers/food/snacks/monkeycube))
 		monkeys++
 		to_chat(user, "<span class='notice'>You feed [O] to [src]. It now has [monkeys] monkey cubes stored.</span>")
@@ -91,6 +101,8 @@
 	button_icon_state = "slime_down"
 
 /datum/action/innate/slime_place/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 	var/mob/living/C = owner
@@ -111,6 +123,8 @@
 	button_icon_state = "slime_up"
 
 /datum/action/innate/slime_pick_up/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 	var/mob/living/C = owner
@@ -137,6 +151,8 @@
 	button_icon_state = "monkey_down"
 
 /datum/action/innate/feed_slime/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 	var/mob/living/C = owner
@@ -159,6 +175,8 @@
 	button_icon_state = "monkey_up"
 
 /datum/action/innate/monkey_recycle/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(owner))
 		return
 	var/mob/living/C = owner

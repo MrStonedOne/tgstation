@@ -43,6 +43,8 @@
     return ..()
 
 /obj/machinery/mecha_part_fabricator/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/T = 0
 
 	//maximum stocking amount (default 300000, 600000 at T4)
@@ -65,6 +67,8 @@
 
 
 /obj/machinery/mecha_part_fabricator/check_access(obj/item/card/id/I)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/pda))
 		var/obj/item/device/pda/pda = I
 		I = pda.id
@@ -76,6 +80,8 @@
 	return TRUE
 
 /obj/machinery/mecha_part_fabricator/emag_act()
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
@@ -90,6 +96,8 @@
 
 
 /obj/machinery/mecha_part_fabricator/proc/output_parts_list(set_name)
+	procstart = null
+	src.procstart = null
 	var/output = ""
 	for(var/v in stored_research.researched_designs)
 		var/datum/design/D = stored_research.researched_designs[v]
@@ -103,10 +111,14 @@
 	return output
 
 /obj/machinery/mecha_part_fabricator/proc/output_part_info(datum/design/D)
+	procstart = null
+	src.procstart = null
 	var/output = "[initial(D.name)] (Cost: [output_part_cost(D)]) [get_construction_time_w_coeff(D)/10]sec"
 	return output
 
 /obj/machinery/mecha_part_fabricator/proc/output_part_cost(datum/design/D)
+	procstart = null
+	src.procstart = null
 	var/i = 0
 	var/output
 	for(var/c in D.materials)
@@ -115,6 +127,8 @@
 	return output
 
 /obj/machinery/mecha_part_fabricator/proc/output_available_resources()
+	procstart = null
+	src.procstart = null
 	var/output
 	GET_COMPONENT(materials, /datum/component/material_container)
 	for(var/mat_id in materials.materials)
@@ -129,12 +143,16 @@
 	return output
 
 /obj/machinery/mecha_part_fabricator/proc/get_resources_w_coeff(datum/design/D)
+	procstart = null
+	src.procstart = null
 	var/list/resources = list()
 	for(var/R in D.materials)
 		resources[R] = get_resource_cost_w_coeff(D, R)
 	return resources
 
 /obj/machinery/mecha_part_fabricator/proc/check_resources(datum/design/D)
+	procstart = null
+	src.procstart = null
 	if(D.reagents_list.len) // No reagents storage - no reagent designs.
 		return FALSE
 	GET_COMPONENT(materials, /datum/component/material_container)
@@ -143,6 +161,8 @@
 	return FALSE
 
 /obj/machinery/mecha_part_fabricator/proc/build_part(datum/design/D)
+	procstart = null
+	src.procstart = null
 	being_built = D
 	desc = "It's building \a [initial(D.name)]."
 	var/list/res_coef = get_resources_w_coeff(D)
@@ -167,10 +187,14 @@
 	return TRUE
 
 /obj/machinery/mecha_part_fabricator/proc/update_queue_on_page()
+	procstart = null
+	src.procstart = null
 	send_byjax(usr,"mecha_fabricator.browser","queue",list_queue())
 	return
 
 /obj/machinery/mecha_part_fabricator/proc/add_part_set_to_queue(set_name)
+	procstart = null
+	src.procstart = null
 	if(set_name in part_sets)
 		for(var/v in stored_research.researched_designs)
 			var/datum/design/D = stored_research.researched_designs[v]
@@ -179,6 +203,8 @@
 					add_to_queue(D)
 
 /obj/machinery/mecha_part_fabricator/proc/add_to_queue(D)
+	procstart = null
+	src.procstart = null
 	if(!istype(queue))
 		queue = list()
 	if(D)
@@ -186,12 +212,16 @@
 	return queue.len
 
 /obj/machinery/mecha_part_fabricator/proc/remove_from_queue(index)
+	procstart = null
+	src.procstart = null
 	if(!isnum(index) || !IsInteger(index) || !istype(queue) || (index<1 || index>queue.len))
 		return FALSE
 	queue.Cut(index,++index)
 	return TRUE
 
 /obj/machinery/mecha_part_fabricator/proc/process_queue()
+	procstart = null
+	src.procstart = null
 	var/datum/design/D = queue[1]
 	if(!D)
 		remove_from_queue(1)
@@ -214,6 +244,8 @@
 	say("Queue processing finished successfully.")
 
 /obj/machinery/mecha_part_fabricator/proc/list_queue()
+	procstart = null
+	src.procstart = null
 	var/output = "<b>Queue contains:</b>"
 	if(!istype(queue) || !queue.len)
 		output += "<br>Nothing"
@@ -234,6 +266,8 @@
 	return output
 
 /obj/machinery/mecha_part_fabricator/proc/sync()
+	procstart = null
+	src.procstart = null
 	temp = "Updating local R&D database..."
 	updateUsrDialog()
 	sleep(30) //only sleep if called by user
@@ -253,16 +287,22 @@
 	return
 
 /obj/machinery/mecha_part_fabricator/proc/get_resource_cost_w_coeff(datum/design/D, resource, roundto = 1)
+	procstart = null
+	src.procstart = null
 	return round(D.materials[resource]*component_coeff, roundto)
 
 /obj/machinery/mecha_part_fabricator/proc/get_construction_time_w_coeff(datum/design/D, roundto = 1) //aran
 	return round(initial(D.construction_time)*time_coeff, roundto)
 
 /obj/machinery/mecha_part_fabricator/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(..()))
 		return interact(user)
 
 /obj/machinery/mecha_part_fabricator/interact(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	var/dat, left_part
 	if (..())
 		return
@@ -322,6 +362,8 @@
 	return
 
 /obj/machinery/mecha_part_fabricator/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/datum/topic_input/afilter = new /datum/topic_input(href,href_list)
@@ -403,17 +445,23 @@
 	return
 
 /obj/machinery/mecha_part_fabricator/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(materials, /datum/component/material_container)
 	materials.retrieve_all()
 	..()
 
 /obj/machinery/mecha_part_fabricator/proc/AfterMaterialInsert(type_inserted, id_inserted, amount_inserted)
+	procstart = null
+	src.procstart = null
 	var/stack_name = material2name(id_inserted)
 	add_overlay("fab-load-[stack_name]")
 	addtimer(CALLBACK(src, /atom/proc/cut_overlay, "fab-load-[stack_name]"), 10)
 	updateUsrDialog()
 
 /obj/machinery/mecha_part_fabricator/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "fab-o", "fab-idle", W))
 		return TRUE
 
@@ -426,9 +474,13 @@
 	return ..()
 
 /obj/machinery/mecha_part_fabricator/proc/material2name(ID)
+	procstart = null
+	src.procstart = null
 	return copytext(ID,2)
 
 /obj/machinery/mecha_part_fabricator/proc/is_insertion_ready(mob/user)
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		to_chat(user, "<span class='warning'>You can't load [src] while it's opened!</span>")
 		return FALSE

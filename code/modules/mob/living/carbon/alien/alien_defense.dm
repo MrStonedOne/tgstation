@@ -1,11 +1,17 @@
 
 /mob/living/carbon/alien/get_eye_protection()
+	procstart = null
+	src.procstart = null
 	return ..() + 2 //potential cyber implants + natural eye protection
 
 /mob/living/carbon/alien/get_ear_protection()
+	procstart = null
+	src.procstart = null
 	return 2 //no ears
 
 /mob/living/carbon/alien/hitby(atom/movable/AM, skipcatch, hitpush)
+	procstart = null
+	src.procstart = null
 	..(AM, skipcatch = TRUE, hitpush = FALSE)
 
 
@@ -14,6 +20,8 @@ As such, they can either help or harm other aliens. Help works like the human he
 In all, this is a lot like the monkey code. /N
 */
 /mob/living/carbon/alien/attack_alien(mob/living/carbon/alien/M)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc) && istype(loc.loc, /area/start))
 		to_chat(M, "No attacking people at spawn, you jackass.")
 		return
@@ -45,10 +53,14 @@ In all, this is a lot like the monkey code. /N
 
 
 /mob/living/carbon/alien/attack_larva(mob/living/carbon/alien/larva/L)
+	procstart = null
+	src.procstart = null
 	return attack_alien(L)
 
 
 /mob/living/carbon/alien/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if(..())	//to allow surgery to return properly.
 		return 0
 
@@ -67,6 +79,8 @@ In all, this is a lot like the monkey code. /N
 
 
 /mob/living/carbon/alien/attack_paw(mob/living/carbon/monkey/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if (stat != DEAD)
 			var/obj/item/bodypart/affecting = get_bodypart(ran_zone(M.zone_selected))
@@ -74,6 +88,8 @@ In all, this is a lot like the monkey code. /N
 
 
 /mob/living/carbon/alien/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
@@ -92,6 +108,8 @@ In all, this is a lot like the monkey code. /N
 				adjustStaminaLoss(damage)
 
 /mob/living/carbon/alien/attack_slime(mob/living/simple_animal/slime/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful slime attack
 		var/damage = rand(5, 35)
 		if(M.is_adult)
@@ -101,6 +119,8 @@ In all, this is a lot like the monkey code. /N
 		updatehealth()
 
 /mob/living/carbon/alien/ex_act(severity, target, origin)
+	procstart = null
+	src.procstart = null
 	if(origin && istype(origin, /datum/spacevine_mutation) && isvineimmune(src))
 		return
 	..()
@@ -120,7 +140,11 @@ In all, this is a lot like the monkey code. /N
 			adjustEarDamage(15,60)
 
 /mob/living/carbon/alien/soundbang_act(intensity = 1, stun_pwr = 20, damage_pwr = 5, deafen_pwr = 15)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/carbon/alien/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	return 0//aliens are immune to acid.

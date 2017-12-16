@@ -28,11 +28,15 @@
 	var/combat_armor = list(melee = 50, bullet = 50, laser = 50, energy = 50, bomb = 50, bio = 50, rad = 50, fire = 90, acid = 90)
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/toggle_nodrop()
+	procstart = null
+	src.procstart = null
 	flags_1 ^= NODROP_1
 	if(ismob(loc))
 		to_chat(loc, "<span class='notice'>Your vest is now [flags_1 & NODROP_1 ? "locked" : "unlocked"].</span>")
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/flip_mode()
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(VEST_STEALTH)
 			mode = VEST_COMBAT
@@ -51,13 +55,19 @@
 		A.UpdateButtonIcon()
 
 /obj/item/clothing/suit/armor/abductor/vest/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot == slot_wear_suit) //we only give the mob the ability to activate the vest if he's actually wearing it.
 		return 1
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/SetDisguise(datum/icon_snapshot/entry)
+	procstart = null
+	src.procstart = null
 	disguise = entry
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/ActivateStealth()
+	procstart = null
+	src.procstart = null
 	if(disguise == null)
 		return
 	stealth_active = 1
@@ -72,6 +82,8 @@
 		M.update_inv_hands()
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/DeactivateStealth()
+	procstart = null
+	src.procstart = null
 	if(!stealth_active)
 		return
 	stealth_active = 0
@@ -83,14 +95,20 @@
 		M.regenerate_icons()
 
 /obj/item/clothing/suit/armor/abductor/vest/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	DeactivateStealth()
 	return 0
 
 /obj/item/clothing/suit/armor/abductor/vest/IsReflect()
+	procstart = null
+	src.procstart = null
 	DeactivateStealth()
 	return 0
 
 /obj/item/clothing/suit/armor/abductor/vest/ui_action_click()
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(VEST_COMBAT)
 			Adrenaline()
@@ -101,6 +119,8 @@
 				ActivateStealth()
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/Adrenaline()
+	procstart = null
+	src.procstart = null
 	if(ishuman(loc))
 		if(combat_cooldown != initial(combat_cooldown))
 			to_chat(loc, "<span class='warning'>Combat injection is still recharging.</span>")
@@ -114,11 +134,15 @@
 		START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/armor/abductor/vest/process()
+	procstart = null
+	src.procstart = null
 	combat_cooldown++
 	if(combat_cooldown==initial(combat_cooldown))
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/armor/abductor/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	for(var/obj/machinery/abductor/console/C in GLOB.machines)
 		if(C.vest == src)
@@ -131,12 +155,16 @@
 	icon = 'icons/obj/abductor.dmi'
 
 /obj/item/device/abductor/proc/AbductorCheck(user)
+	procstart = null
+	src.procstart = null
 	if(isabductor(user))
 		return TRUE
 	to_chat(user, "<span class='warning'>You can't figure how this works!</span>")
 	return FALSE
 
 /obj/item/device/abductor/proc/ScientistCheck(user)
+	procstart = null
+	src.procstart = null
 	if(!AbductorCheck(user))
 		return FALSE
 
@@ -159,6 +187,8 @@
 	var/obj/machinery/abductor/console/console
 
 /obj/item/device/abductor/gizmo/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ScientistCheck(user))
 		return
 	if(!console)
@@ -174,6 +204,8 @@
 	to_chat(user, "<span class='notice'>You switch the device to [mode==GIZMO_SCAN? "SCAN": "MARK"] MODE</span>")
 
 /obj/item/device/abductor/gizmo/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ScientistCheck(user))
 		return
 	if(!console)
@@ -188,6 +220,8 @@
 
 
 /obj/item/device/abductor/gizmo/afterattack(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(flag)
 		return
 	if(!ScientistCheck(user))
@@ -203,11 +237,15 @@
 			mark(target, user)
 
 /obj/item/device/abductor/gizmo/proc/scan(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(target))
 		console.AddSnapshot(target)
 		to_chat(user, "<span class='notice'>You scan [target] and add them to the database.</span>")
 
 /obj/item/device/abductor/gizmo/proc/mark(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(marked == target)
 		to_chat(user, "<span class='warning'>This specimen is already marked!</span>")
 		return
@@ -221,6 +259,8 @@
 		prepare(target,user)
 
 /obj/item/device/abductor/gizmo/proc/prepare(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(target,user)>1)
 		to_chat(user, "<span class='warning'>You need to be next to the specimen to prepare it for transport!</span>")
 		return
@@ -230,6 +270,8 @@
 		to_chat(user, "<span class='notice'>You finish preparing [target] for transport.</span>")
 
 /obj/item/device/abductor/gizmo/Destroy()
+	procstart = null
+	src.procstart = null
 	if(console)
 		console.gizmo = null
 	. = ..()
@@ -244,11 +286,15 @@
 	righthand_file = 'icons/mob/inhands/antag/abductor_righthand.dmi'
 
 /obj/item/device/abductor/silencer/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!AbductorCheck(user))
 		return
 	radio_off(M, user)
 
 /obj/item/device/abductor/silencer/afterattack(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(flag)
 		return
 	if(!AbductorCheck(user))
@@ -256,6 +302,8 @@
 	radio_off(target, user)
 
 /obj/item/device/abductor/silencer/proc/radio_off(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if( !(user in (viewers(7,target))) )
 		return
 
@@ -269,6 +317,8 @@
 		radio_off_mob(M)
 
 /obj/item/device/abductor/silencer/proc/radio_off_mob(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	var/list/all_items = M.GetAllContents()
 
 	for(var/obj/I in all_items)
@@ -287,6 +337,8 @@
 		Firing error, please contact Command.</span>"
 
 /obj/item/device/firing_pin/abductor/pin_auth(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = isabductor(user)
 
 /obj/item/gun/energy/alien
@@ -321,9 +373,13 @@
 Congratulations! You are now trained for invasive xenobiology research!"}
 
 /obj/item/paper/guides/antag/abductor/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/paper/guides/antag/abductor/AltClick()
+	procstart = null
+	src.procstart = null
 	return //otherwise it would fold into a paperplane.
 
 #define BATON_STUN 0
@@ -347,6 +403,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	actions_types = list(/datum/action/item_action/toggle_mode)
 
 /obj/item/abductor_baton/proc/toggle(mob/living/user=usr)
+	procstart = null
+	src.procstart = null
 	mode = (mode+1)%BATON_MODES
 	var/txt
 	switch(mode)
@@ -363,6 +421,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	update_icon()
 
 /obj/item/abductor_baton/update_icon()
+	procstart = null
+	src.procstart = null
 	switch(mode)
 		if(BATON_STUN)
 			icon_state = "wonderprodStun"
@@ -378,6 +438,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			item_state = "wonderprodProbe"
 
 /obj/item/abductor_baton/attack(mob/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isabductor(user))
 		return
 
@@ -409,10 +471,14 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			ProbeAttack(L,user)
 
 /obj/item/abductor_baton/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	toggle(user)
 
 /obj/item/abductor_baton/proc/StunAttack(mob/living/L,mob/living/user)
 
+	procstart = null
+	src.procstart = null
 	L.lastattacker = user.real_name
 	L.lastattackerckey = user.ckey
 
@@ -430,6 +496,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	add_logs(user, L, "stunned")
 
 /obj/item/abductor_baton/proc/SleepAttack(mob/living/L,mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(L.incapacitated(TRUE, TRUE))
 		L.visible_message("<span class='danger'>[user] has induced sleep in [L] with [src]!</span>", \
 							"<span class='userdanger'>You suddenly feel very drowsy!</span>")
@@ -443,6 +511,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 							"<span class='userdanger'>You suddenly feel drowsy!</span>")
 
 /obj/item/abductor_baton/proc/CuffAttack(mob/living/L,mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(L))
 		return
 	var/mob/living/carbon/C = L
@@ -463,6 +533,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			to_chat(user, "<span class='warning'>[C] doesn't have two hands...</span>")
 
 /obj/item/abductor_baton/proc/ProbeAttack(mob/living/L,mob/living/user)
+	procstart = null
+	src.procstart = null
 	L.visible_message("<span class='danger'>[user] probes [L] with [src]!</span>", \
 						"<span class='userdanger'>[user] probes you!</span>")
 
@@ -496,6 +568,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	flags_1 = DROPDEL_1
 
 /obj/item/restraints/handcuffs/energy/used/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='danger'>[user]'s [src] break in a discharge of energy!</span>", \
 							"<span class='userdanger'>[user]'s [src] break in a discharge of energy!</span>")
 	var/datum/effect_system/spark_spread/S = new
@@ -504,6 +578,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	. = ..()
 
 /obj/item/abductor_baton/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(mode)
 		if(BATON_STUN)
@@ -525,10 +601,14 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	flags_2 = BANG_PROTECT_2
 
 /obj/item/device/radio/headset/abductor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_syndie()
 
 /obj/item/device/radio/headset/abductor/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver))
 		return // Stops humans from disassembling abductor headsets.
 	return ..()
@@ -597,6 +677,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	density = TRUE
 
 /obj/structure/table_frame/abductor/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench))
 		to_chat(user, "<span class='notice'>You start disassembling [src]...</span>")
 		playsound(src.loc, I.usesound, 50, 1)
@@ -656,12 +738,16 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	var/static/list/injected_reagents = list("corazone")
 
 /obj/structure/table/optable/abductor/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(iscarbon(AM))
 		START_PROCESSING(SSobj, src)
 		to_chat(AM, "<span class='danger'>You feel a series of tiny pricks!</span>")
 
 /obj/structure/table/optable/abductor/process()
+	procstart = null
+	src.procstart = null
 	. = PROCESS_KILL
 	for(var/mob/living/carbon/C in get_turf(src))
 		. = TRUE
@@ -670,6 +756,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 				C.reagents.add_reagent(chemical, 1)
 
 /obj/structure/table/optable/abductor/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 

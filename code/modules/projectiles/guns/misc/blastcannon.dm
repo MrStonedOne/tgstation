@@ -14,17 +14,23 @@
 	var/obj/item/device/transfer_valve/bomb
 
 /obj/item/gun/blastcannon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!pin)
 		pin = new
 
 /obj/item/gun/blastcannon/Destroy()
+	procstart = null
+	src.procstart = null
 	if(bomb)
 		qdel(bomb)
 		bomb = null
 	return ..()
 
 /obj/item/gun/blastcannon/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(bomb)
 		bomb.forceMove(user.loc)
 		user.put_in_hands(bomb)
@@ -34,6 +40,8 @@
 	return ..()
 
 /obj/item/gun/blastcannon/update_icon()
+	procstart = null
+	src.procstart = null
 	if(bomb)
 		icon_state = icon_state_loaded
 		name = "blast cannon"
@@ -44,6 +52,8 @@
 		desc = initial(desc)
 
 /obj/item/gun/blastcannon/attackby(obj/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/device/transfer_valve))
 		var/obj/item/device/transfer_valve/T = O
 		if(!T.tank_one || !T.tank_two)
@@ -59,6 +69,8 @@
 	return ..()
 
 /obj/item/gun/blastcannon/proc/calculate_bomb()
+	procstart = null
+	src.procstart = null
 	if(!istype(bomb)||!istype(bomb.tank_one)||!istype(bomb.tank_two))
 		return 0
 	var/datum/gas_mixture/temp = new(60)	//directional buff.
@@ -73,6 +85,8 @@
 	return (pressure/TANK_FRAGMENT_SCALE)
 
 /obj/item/gun/blastcannon/afterattack(atom/target, mob/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if((!bomb) || (!target) || (get_dist(get_turf(target), get_turf(user)) <= 2))
 		return ..()
 	var/power = calculate_bomb()
@@ -105,12 +119,16 @@
 	range = 150
 
 /obj/item/projectile/blastwave/Initialize(mapload, _h, _m, _l)
+	procstart = null
+	src.procstart = null
 	heavyr = _h
 	mediumr = _m
 	lightr = _l
 	return ..()
 
 /obj/item/projectile/blastwave/Range()
+	procstart = null
+	src.procstart = null
 	..()
 	if(heavyr)
 		loc.ex_act(EXPLODE_DEVASTATE)
@@ -125,4 +143,6 @@
 	lightr--
 
 /obj/item/projectile/blastwave/ex_act()
+	procstart = null
+	src.procstart = null
 	return

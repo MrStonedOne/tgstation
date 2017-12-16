@@ -18,6 +18,8 @@
 		update_parallax_contents()
 
 /mob/dead/observer/ClickOn(var/atom/A, var/params)
+	procstart = null
+	src.procstart = null
 	if(client.click_intercept)
 		if(call(client.click_intercept,"InterceptClickOn")(src,params,A))
 			return
@@ -50,6 +52,8 @@
 
 // Oh by the way this didn't work with old click code which is why clicking shit didn't spam you
 /atom/proc/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(user.client)
 		if(IsAdminGhost(user))
 			attack_ai(user)
@@ -57,6 +61,8 @@
 			user.examinate(src)
 
 /mob/living/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(user.client && user.health_scan)
 		healthscan(user, src, 1, TRUE)
 		return
@@ -67,21 +73,29 @@
 // Now you can click through portals, wormholes, gateways, and teleporters while observing. -Sayu
 
 /obj/machinery/gateway/centerstation/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(awaygate)
 		user.forceMove(awaygate.loc)
 	else
 		to_chat(user, "[src] has no destination.")
 
 /obj/machinery/gateway/centeraway/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stationgate)
 		user.forceMove(stationgate.loc)
 	else
 		to_chat(user, "[src] has no destination.")
 
 /obj/item/storage/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	orient2hud(user)
 	show_to(user)
 
 /obj/machinery/teleport/hub/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(power_station && power_station.engaged && power_station.teleporter_console && power_station.teleporter_console.target)
 		user.forceMove(get_turf(power_station.teleporter_console.target))

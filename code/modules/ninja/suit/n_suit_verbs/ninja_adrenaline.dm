@@ -2,6 +2,8 @@
 //Movement impairing would indicate drugs and the like.
 /obj/item/clothing/suit/space/space_ninja/proc/ninjaboost()
 
+	procstart = null
+	src.procstart = null
 	if(!ninjacost(0,N_ADRENALINE))
 		var/mob/living/carbon/human/H = affecting
 		H.SetUnconscious(0)
@@ -16,6 +18,8 @@
 		addtimer(CALLBACK(src, .proc/ninjaboost_after), 70)
 
 /obj/item/clothing/suit/space/space_ninja/proc/ninjaboost_after()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = affecting
 	H.reagents.add_reagent("radium", a_transfer)
 	to_chat(H, "<span class='danger'>You are beginning to feel the after-effect of the injection.</span>")

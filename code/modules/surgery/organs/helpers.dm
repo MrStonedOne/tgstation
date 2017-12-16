@@ -2,15 +2,23 @@
 	return
 
 /mob/proc/getorganszone(zone)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/getorganslot(slot)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/getorgan(typepath)
+	procstart = null
+	src.procstart = null
 	return (locate(typepath) in internal_organs)
 
 /mob/living/carbon/getorganszone(zone, subzones = 0)
+	procstart = null
+	src.procstart = null
 	var/list/returnorg = list()
 	if(subzones)
 		// Include subzones - groin for chest, eyes and mouth for head
@@ -26,4 +34,6 @@
 	return returnorg
 
 /mob/living/carbon/getorganslot(slot)
+	procstart = null
+	src.procstart = null
 	return internal_organs_slot[slot]

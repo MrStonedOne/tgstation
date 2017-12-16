@@ -16,6 +16,8 @@ Assistant
 
 
 /datum/job/assistant/get_access()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/assistants_have_maint_access) || !CONFIG_GET(flag/jobs_have_minimal_access)) //Config has assistant maint access set
 		. = ..()
 		. |= list(ACCESS_MAINT_TUNNELS)
@@ -23,6 +25,8 @@ Assistant
 		return ..()
 
 /datum/job/assistant/config_check()
+	procstart = null
+	src.procstart = null
 	var/ac = CONFIG_GET(number/assistant_cap)
 	if(ac != 0)
 		total_positions = ac
@@ -36,6 +40,8 @@ Assistant
 	jobtype = /datum/job/assistant
 
 /datum/outfit/job/assistant/pre_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	if (CONFIG_GET(flag/grey_assistants))
 		uniform = /obj/item/clothing/under/color/grey

@@ -114,6 +114,8 @@ Class Procs:
 	var/obj/item/circuitboard/circuit // Circuit to be created and inserted when the machinery is created
 
 /obj/machinery/Initialize()
+	procstart = null
+	src.procstart = null
 	if(!armor)
 		armor = list(melee = 25, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0, fire = 50, acid = 70)
 	. = ..()
@@ -133,6 +135,8 @@ Class Procs:
 		occupant_typecache = typecacheof(occupant_typecache)
 
 /obj/machinery/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.machines.Remove(src)
 	if(!speed_process)
 		STOP_PROCESSING(SSmachines, src)
@@ -142,6 +146,8 @@ Class Procs:
 	return ..()
 
 /obj/machinery/proc/locate_machinery()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/process()//If you dont use process or power why are you here
@@ -151,12 +157,16 @@ Class Procs:
 	return PROCESS_KILL
 
 /obj/machinery/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(use_power && !stat)
 		use_power(7500/severity)
 		new /obj/effect/temp_visual/emp(loc)
 	..()
 
 /obj/machinery/proc/open_machine(drop = 1)
+	procstart = null
+	src.procstart = null
 	state_open = TRUE
 	density = FALSE
 	if(drop)
@@ -165,6 +175,8 @@ Class Procs:
 	updateUsrDialog()
 
 /obj/machinery/proc/dropContents()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	for(var/atom/movable/A in contents)
 		A.forceMove(T)
@@ -174,6 +186,8 @@ Class Procs:
 	occupant = null
 
 /obj/machinery/proc/close_machine(atom/movable/target = null)
+	procstart = null
+	src.procstart = null
 	state_open = FALSE
 	density = TRUE
 	if(!target)
@@ -197,6 +211,8 @@ Class Procs:
 	update_icon()
 
 /obj/machinery/proc/auto_use_power()
+	procstart = null
+	src.procstart = null
 	if(!powered(power_channel))
 		return 0
 	if(use_power == 1)
@@ -206,9 +222,13 @@ Class Procs:
 	return 1
 
 /obj/machinery/proc/is_operational()
+	procstart = null
+	src.procstart = null
 	return !(stat & (NOPOWER|BROKEN|MAINT))
 
 /obj/machinery/proc/is_interactable()
+	procstart = null
+	src.procstart = null
 	if((stat & (NOPOWER|BROKEN)) && !interact_offline)
 		return FALSE
 	if(panel_open && !interact_open)
@@ -219,6 +239,8 @@ Class Procs:
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /obj/machinery/interact(mob/user, special_state)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(special_state)
 		ui_interact(user, state = special_state)
@@ -226,15 +248,21 @@ Class Procs:
 		ui_interact(user)
 
 /obj/machinery/ui_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_interactable())
 		return ..()
 	return UI_CLOSE
 
 /obj/machinery/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(usr)
 	return ..()
 
 /obj/machinery/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!is_interactable())
 		return 1
@@ -249,6 +277,8 @@ Class Procs:
 
 
 /obj/machinery/attack_paw(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent != INTENT_HARM)
 		return attack_hand(user)
 	else
@@ -259,6 +289,8 @@ Class Procs:
 
 
 /obj/machinery/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))// For some reason attack_robot doesn't work
 		var/mob/living/silicon/robot/R = user
 		if(R.client && R.client.eye == R && !R.low_power_mode)// This is to stop robots from using cameras to remotely control machines; and from using machines when the borg has no power.
@@ -269,6 +301,8 @@ Class Procs:
 
 //set_machine must be 0 if clicking the machinery doesn't bring up a dialog
 /obj/machinery/attack_hand(mob/user, check_power = 1, set_machine = 1)
+	procstart = null
+	src.procstart = null
 	if(..())// unbuckling etc
 		return 1
 	if((user.lying || user.stat) && !IsAdminGhost(user))
@@ -285,6 +319,8 @@ Class Procs:
 	return 0
 
 /obj/machinery/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	RefreshParts()
 
@@ -292,6 +328,8 @@ Class Procs:
 	return
 
 /obj/machinery/proc/default_pry_open(obj/item/crowbar/C)
+	procstart = null
+	src.procstart = null
 	. = !(state_open || panel_open || is_operational() || (flags_1 & NODECONSTRUCT_1)) && istype(C)
 	if(.)
 		playsound(loc, C.usesound, 50, 1)
@@ -300,12 +338,16 @@ Class Procs:
 		return 1
 
 /obj/machinery/proc/default_deconstruction_crowbar(obj/item/crowbar/C, ignore_panel = 0)
+	procstart = null
+	src.procstart = null
 	. = istype(C) && (panel_open || ignore_panel) &&  !(flags_1 & NODECONSTRUCT_1)
 	if(.)
 		playsound(loc, C.usesound, 50, 1)
 		deconstruct(TRUE)
 
 /obj/machinery/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		on_deconstruction()
 		if(component_parts && component_parts.len)
@@ -315,6 +357,8 @@ Class Procs:
 	qdel(src)
 
 /obj/machinery/proc/spawn_frame(disassembled)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/frame/machine/M = new /obj/structure/frame/machine(loc)
 	. = M
 	M.anchored = anchored
@@ -325,20 +369,28 @@ Class Procs:
 	M.icon_state = "box_1"
 
 /obj/machinery/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		stat |= BROKEN
 
 /obj/machinery/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	if(occupant)
 		occupant.ex_act(severity, target)
 
 /obj/machinery/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == occupant)
 		occupant = null
 		update_icon()
 		updateUsrDialog()
 
 /obj/machinery/proc/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/screwdriver/S)
+	procstart = null
+	src.procstart = null
 	if(istype(S) &&  !(flags_1 & NODECONSTRUCT_1))
 		playsound(loc, S.usesound, 50, 1)
 		if(!panel_open)
@@ -353,6 +405,8 @@ Class Procs:
 	return 0
 
 /obj/machinery/proc/default_change_direction_wrench(mob/user, obj/item/wrench/W)
+	procstart = null
+	src.procstart = null
 	if(panel_open && istype(W))
 		playsound(loc, W.usesound, 50, 1)
 		setDir(turn(dir,-90))
@@ -392,6 +446,8 @@ Class Procs:
 	return TRUE
 
 /obj/machinery/proc/exchange_parts(mob/user, obj/item/storage/part_replacer/W)
+	procstart = null
+	src.procstart = null
 	if(!istype(W))
 		return
 	if((flags_1 & NODECONSTRUCT_1) && !W.works_from_distance)
@@ -428,11 +484,15 @@ Class Procs:
 	return 0
 
 /obj/machinery/proc/display_parts(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>It contains the following parts:</span>")
 	for(var/obj/item/C in component_parts)
 		to_chat(user, "<span class='notice'>[icon2html(C, user)] \A [C].</span>")
 
 /obj/machinery/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & BROKEN)
 		to_chat(user, "<span class='notice'>It looks broken and non-functional.</span>")
@@ -452,14 +512,20 @@ Class Procs:
 
 //called on machinery construction (i.e from frame to machinery) but not on initialization
 /obj/machinery/proc/on_construction()
+	procstart = null
+	src.procstart = null
 	return
 
 //called on deconstruction before the final deletion
 /obj/machinery/proc/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	return
 
 // Hook for html_interface module to prevent updates to clients who don't have this as their active machine.
 /obj/machinery/proc/hiIsValidClient(datum/html_interface_client/hclient, datum/html_interface/hi)
+	procstart = null
+	src.procstart = null
 	if (hclient.client.mob && (hclient.client.mob.stat == 0 || IsAdminGhost(hclient.client.mob)))
 		if (isAI(hclient.client.mob) || IsAdminGhost(hclient.client.mob))
 			return TRUE
@@ -470,14 +536,20 @@ Class Procs:
 
 // Hook for html_interface module to unset the active machine when the window is closed by the player.
 /obj/machinery/proc/hiOnHide(datum/html_interface_client/hclient)
+	procstart = null
+	src.procstart = null
 	if (hclient.client.mob && hclient.client.mob.machine == src)
 		hclient.client.mob.unset_machine()
 
 /obj/machinery/proc/can_be_overridden()
+	procstart = null
+	src.procstart = null
 	. = 1
 
 
 /obj/machinery/tesla_act(power, explosive = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(85) && explosive)
 		explosion(src.loc,1,2,4,flame_range = 2, adminlog = 0, smoke = 0)
@@ -487,6 +559,8 @@ Class Procs:
 		ex_act(EXPLODE_HEAVY)
 
 /obj/machinery/Exited(atom/movable/AM, atom/newloc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (AM == occupant)
 		occupant = null

@@ -12,6 +12,8 @@
 	fakeable = FALSE //Nothing to fake here
 
 /datum/round_event/ghost_role/abductor/spawn_role()
+	procstart = null
+	src.procstart = null
 	var/list/mob/dead/observer/candidates = get_candidates("abductor", null, ROLE_ABDUCTOR)
 
 	if(candidates.len < 2)

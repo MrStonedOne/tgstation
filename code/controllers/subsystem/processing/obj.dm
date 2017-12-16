@@ -7,9 +7,13 @@ SUBSYSTEM_DEF(obj)
 	var/list/currentrun = list()
 
 /datum/controller/subsystem/obj/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("P:[processing.len]")
 
 /datum/controller/subsystem/obj/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = processing.Copy()
 	//cache for sanic speed (lists are references anyways)
@@ -26,4 +30,6 @@ SUBSYSTEM_DEF(obj)
 			return
 
 /datum/controller/subsystem/obj/Recover()
+	procstart = null
+	src.procstart = null
 	processing = SSobj.processing

@@ -77,6 +77,8 @@
 	treatment_tox = "sodium_thiopental"
 
 /mob/living/simple_animal/bot/medbot/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(skin)
 		add_overlay("medskin_[skin]")
@@ -95,6 +97,8 @@
 		icon_state = "medibot1"
 
 /mob/living/simple_animal/bot/medbot/Initialize(mapload, new_skin)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/job/doctor/J = new /datum/job/doctor
 	access_card.access += J.get_access()
@@ -104,10 +108,14 @@
 	update_icon()
 
 /mob/living/simple_animal/bot/medbot/update_canmove()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /mob/living/simple_animal/bot/medbot/bot_reset()
+	procstart = null
+	src.procstart = null
 	..()
 	patient = null
 	oldpatient = null
@@ -125,14 +133,20 @@
 
 /mob/living/simple_animal/bot/medbot/set_custom_texts()
 
+	procstart = null
+	src.procstart = null
 	text_hack = "You corrupt [name]'s reagent processor circuits."
 	text_dehack = "You reset [name]'s reagent processor circuits."
 	text_dehack_fail = "[name] seems damaged and does not respond to reprogramming!"
 
 /mob/living/simple_animal/bot/medbot/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /mob/living/simple_animal/bot/medbot/get_controls(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += hack(user)
 	dat += showpai(user)
@@ -172,6 +186,8 @@
 	return dat
 
 /mob/living/simple_animal/bot/medbot/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -216,6 +232,8 @@
 	return
 
 /mob/living/simple_animal/bot/medbot/attackby(obj/item/W as obj, mob/user as mob, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/reagent_containers/glass))
 		. = 1 //no afterattack
 		if(locked)
@@ -238,6 +256,8 @@
 			step_to(src, (get_step_away(src,user)))
 
 /mob/living/simple_animal/bot/medbot/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(emagged == 2)
 		declare_crit = 0
@@ -250,6 +270,8 @@
 			oldpatient = user
 
 /mob/living/simple_animal/bot/medbot/process_scan(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.stat == DEAD)
 		return
 
@@ -269,6 +291,8 @@
 		return
 
 /mob/living/simple_animal/bot/medbot/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -340,6 +364,8 @@
 	return
 
 /mob/living/simple_animal/bot/medbot/proc/assess_patient(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	//Time to see if they need medical help!
 	if(C.stat == DEAD || (C.status_flags & FAKEDEATH))
 		return FALSE	//welp too late for them!
@@ -387,6 +413,8 @@
 	return FALSE
 
 /mob/living/simple_animal/bot/medbot/UnarmedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(A))
 		var/mob/living/carbon/C = A
 		patient = C
@@ -398,11 +426,15 @@
 		..()
 
 /mob/living/simple_animal/bot/medbot/examinate(atom/A as mob|obj|turf in view())
+	procstart = null
+	src.procstart = null
 	..()
 	if(!is_blind(src))
 		chemscan(src, A)
 
 /mob/living/simple_animal/bot/medbot/proc/medicate_patient(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 
@@ -506,6 +538,8 @@
 	return
 
 /mob/living/simple_animal/bot/medbot/proc/check_overdose(mob/living/carbon/patient,reagent_id,injection_amount)
+	procstart = null
+	src.procstart = null
 	var/datum/reagent/R  = GLOB.chemical_reagents_list[reagent_id]
 	if(!R.overdose_threshold) //Some chems do not have an OD threshold
 		return FALSE
@@ -515,6 +549,8 @@
 	return FALSE
 
 /mob/living/simple_animal/bot/medbot/explode()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	visible_message("<span class='boldannounce'>[src] blows apart!</span>")
 	var/atom/Tsec = drop_location()
@@ -539,6 +575,8 @@
 	..()
 
 /mob/living/simple_animal/bot/medbot/proc/declare(crit_patient)
+	procstart = null
+	src.procstart = null
 	if(declare_cooldown > world.time)
 		return
 	var/area/location = get_area(src)

@@ -34,6 +34,8 @@
 	var/allow_riding = TRUE
 
 /obj/item/robot_module/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i in basic_modules)
 		var/obj/item/I = new i(src)
@@ -49,6 +51,8 @@
 		ratvar_modules -= i
 
 /obj/item/robot_module/Destroy()
+	procstart = null
+	src.procstart = null
 	basic_modules.Cut()
 	emag_modules.Cut()
 	ratvar_modules.Cut()
@@ -58,14 +62,20 @@
 	return ..()
 
 /obj/item/robot_module/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in modules)
 		O.emp_act(severity)
 	..()
 
 /obj/item/robot_module/proc/get_usable_modules()
+	procstart = null
+	src.procstart = null
 	. = modules.Copy()
 
 /obj/item/robot_module/proc/get_inactive_modules()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/mob/living/silicon/robot/R = loc
 	for(var/m in get_usable_modules())
@@ -73,6 +83,8 @@
 			. += m
 
 /obj/item/robot_module/proc/get_or_create_estorage(var/storage_type)
+	procstart = null
+	src.procstart = null
 	for(var/datum/robot_energy_storage/S in storages)
 		if(istype(S, storage_type))
 			return S
@@ -80,6 +92,8 @@
 	return new storage_type(src)
 
 /obj/item/robot_module/proc/add_module(obj/item/I, nonstandard, requires_rebuild)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/stack))
 		var/obj/item/stack/S = I
 
@@ -129,6 +143,8 @@
 	return I
 
 /obj/item/robot_module/proc/remove_module(obj/item/I, delete_after)
+	procstart = null
+	src.procstart = null
 	basic_modules -= I
 	modules -= I
 	emag_modules -= I
@@ -139,6 +155,8 @@
 		qdel(I)
 
 /obj/item/robot_module/proc/respawn_consumable(mob/living/silicon/robot/R, coeff = 1)
+	procstart = null
+	src.procstart = null
 	for(var/datum/robot_energy_storage/st in storages)
 		st.energy = min(st.max_energy, st.energy + coeff * st.recharge_rate)
 
@@ -181,6 +199,8 @@
 		R.hud_used.update_robot_modules_display()
 
 /obj/item/robot_module/proc/transform_to(new_module_type)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/R = loc
 	var/obj/item/robot_module/RM = new new_module_type(R)
 	if(!RM.be_transformed_to(src))
@@ -194,6 +214,8 @@
 	return RM
 
 /obj/item/robot_module/proc/be_transformed_to(obj/item/robot_module/old_module)
+	procstart = null
+	src.procstart = null
 	for(var/i in old_module.added_modules)
 		added_modules += i
 		old_module.added_modules -= i
@@ -201,6 +223,8 @@
 	return TRUE
 
 /obj/item/robot_module/proc/do_transform_animation()
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/R = loc
 	R.notransform = TRUE
 	var/obj/effect/temp_visual/decoy/fading/fivesecond/ANM = new /obj/effect/temp_visual/decoy/fading/fivesecond(R.loc, R)
@@ -337,11 +361,15 @@
 	hat_offset = 3
 
 /obj/item/robot_module/security/do_transform_animation()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(loc, "<span class='userdanger'>While you have picked the security module, you still have to follow your laws, NOT Space Law. \
 	For Asimov, this means you must follow criminals' orders unless there is a law 1 reason not to.</span>")
 
 /obj/item/robot_module/security/respawn_consumable(mob/living/silicon/robot/R, coeff = 1)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/gun/energy/e_gun/advtaser/cyborg/T = locate(/obj/item/gun/energy/e_gun/advtaser/cyborg) in basic_modules
 	if(T)
@@ -373,6 +401,8 @@
 	hat_offset = -2
 
 /obj/item/robot_module/peacekeeper/do_transform_animation()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(loc, "<span class='userdanger'>Under ASIMOV, you are an enforcer of the PEACE and preventer of HUMAN HARM. \
 	You are not a security module and you are expected to follow orders and prevent harm above all else. Space law means nothing to you.</span>")
@@ -410,6 +440,8 @@
 	list_reagents = list("lube" = 250)
 
 /obj/item/robot_module/janitor/respawn_consumable(mob/living/silicon/robot/R, coeff = 1)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/device/lightreplacer/LR = locate(/obj/item/device/lightreplacer) in basic_modules
 	if(LR)
@@ -451,12 +483,16 @@
 	hat_offset = 0
 
 /obj/item/robot_module/butler/respawn_consumable(mob/living/silicon/robot/R, coeff = 1)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/reagent_containers/O = locate(/obj/item/reagent_containers/food/condiment/enzyme) in basic_modules
 	if(O)
 		O.reagents.add_reagent("enzyme", 2 * coeff)
 
 /obj/item/robot_module/butler/be_transformed_to(obj/item/robot_module/old_module)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/robot/R = loc
 	var/borg_icon = input(R, "Select an icon!", "Robot Icon", null) as null|anything in list("Waitress", "Butler", "Tophat", "Kent", "Bro")
 	if(!borg_icon)
@@ -558,12 +594,16 @@
 	var/energy
 
 /datum/robot_energy_storage/New(var/obj/item/robot_module/R = null)
+	procstart = null
+	src.procstart = null
 	energy = max_energy
 	if(R)
 		R.storages |= src
 	return
 
 /datum/robot_energy_storage/proc/use_charge(amount)
+	procstart = null
+	src.procstart = null
 	if (energy >= amount)
 		energy -= amount
 		if (energy == 0)
@@ -573,6 +613,8 @@
 		return 0
 
 /datum/robot_energy_storage/proc/add_charge(amount)
+	procstart = null
+	src.procstart = null
 	energy = min(energy + amount, max_energy)
 
 /datum/robot_energy_storage/metal

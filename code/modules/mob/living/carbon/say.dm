@@ -17,11 +17,15 @@
 	return message
 
 /mob/living/carbon/can_speak_vocal(message)
+	procstart = null
+	src.procstart = null
 	if(silent)
 		return 0
 	return ..()
 
 /mob/living/carbon/get_spans()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/organ/tongue/T = getorganslot(ORGAN_SLOT_TONGUE)
 	if(T)
@@ -32,6 +36,8 @@
 		. |= I.get_held_item_speechspans(src)
 
 /mob/living/carbon/could_speak_in_language(datum/language/dt)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/tongue/T = getorganslot(ORGAN_SLOT_TONGUE)
 	if(T)
 		. = T.could_speak_in_language(dt)
@@ -39,6 +45,8 @@
 		. = initial(dt.flags) & TONGUELESS_SPEECH
 
 /mob/living/carbon/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	for(var/T in get_traumas())

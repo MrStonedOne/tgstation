@@ -130,6 +130,8 @@
 	sharpness = IS_SHARP_ACCURATE
 
 /obj/item/scalpel/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is slitting [user.p_their()] [pick("wrists", "throat", "stomach")] with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS)
 
@@ -180,6 +182,8 @@
 	attack_verb = list("slapped")
 
 /obj/item/surgical_drapes/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!attempt_initiate_surgery(src, M, user))
 		..()
 
@@ -190,6 +194,8 @@
 	icon_state = "evidenceobj"
 
 /obj/item/organ_storage/afterattack(obj/item/I, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(contents.len)
@@ -216,6 +222,8 @@
 	w_class = I.w_class
 
 /obj/item/organ_storage/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(contents.len)
 		var/obj/item/I = contents[1]
 		user.visible_message("[user] dumps [I] from [src].", "<span class='notice'>You dump [I] from [src].</span>")

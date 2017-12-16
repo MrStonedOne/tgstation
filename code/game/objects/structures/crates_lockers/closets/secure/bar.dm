@@ -6,6 +6,8 @@
 	max_integrity = 70
 
 /obj/structure/closet/secure_closet/bar/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 10)
 		new /obj/item/reagent_containers/food/drinks/beer( src )

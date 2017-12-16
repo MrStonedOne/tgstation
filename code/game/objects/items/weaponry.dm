@@ -15,10 +15,14 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/banhammer/suicide_act(mob/user)
+		procstart = null
+		src.procstart = null
 		user.visible_message("<span class='suicide'>[user] is hitting [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to ban [user.p_them()]self from life.</span>")
 		return (BRUTELOSS|FIRELOSS|TOXLOSS|OXYLOSS)
 
 /obj/item/banhammer/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.zone_selected == "head")
 		M.visible_message("<span class='danger'>[user] are stroking the head of [M] with a bangammer</span>", "<span class='userdanger'>[user] are stroking the head with a bangammer</span>", "you hear a bangammer stroking a head");
 	else
@@ -42,6 +46,8 @@
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
 /obj/item/sord/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is trying to impale [user.p_them()]self with [src]! It might be a suicide attempt if it weren't so shitty.</span>", \
 	"<span class='suicide'>You try to impale yourself with [src], but it's USELESS...</span>")
 	return SHAME
@@ -67,6 +73,8 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/item/claymore/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is falling on [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return(BRUTELOSS)
 
@@ -81,10 +89,14 @@
 	var/obj/item/disk/nuclear/nuke_disk //OUR STORED NUKE DISK
 
 /obj/item/claymore/highlander/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/claymore/highlander/Destroy()
+	procstart = null
+	src.procstart = null
 	if(nuke_disk)
 		nuke_disk.forceMove(get_turf(src))
 		nuke_disk.visible_message("<span class='warning'>The nuke disk is vulnerable!</span>")
@@ -93,6 +105,8 @@
 	return ..()
 
 /obj/item/claymore/highlander/process()
+	procstart = null
+	src.procstart = null
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
 		loc.layer = LARGE_MOB_LAYER //NO HIDING BEHIND PLANTS FOR YOU, DICKWEED (HA GET IT, BECAUSE WEEDS ARE PLANTS)
@@ -103,21 +117,29 @@
 
 
 /obj/item/claymore/highlander/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>The power of Scotland protects you! You are shielded from all stuns and knockdowns.</span>")
 	user.add_stun_absorption("highlander", INFINITY, 1, " is protected by the power of Scotland!", "The power of Scotland absorbs the stun!", " is protected by the power of Scotland!")
 	user.status_flags += IGNORESLOWDOWN
 
 /obj/item/claymore/highlander/dropped(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.status_flags -= IGNORESLOWDOWN
 	qdel(src) //If this ever happens, it's because you lost an arm
 
 /obj/item/claymore/highlander/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "It has [!notches ? "nothing" : "[notches] notches"] scratched into the blade.")
 	if(nuke_disk)
 		to_chat(user, "<span class='boldwarning'>It's holding the nuke disk!</span>")
 
 /obj/item/claymore/highlander/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!QDELETED(target) && iscarbon(target) && target.stat == DEAD && target.mind && target.mind.special_role == "highlander")
 		user.fully_heal() //STEAL THE LIFE OF OUR FALLEN FOES
@@ -126,6 +148,8 @@
 		target.dust()
 
 /obj/item/claymore/highlander/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/closest_victim
 	var/closest_distance = 255
 	for(var/mob/living/carbon/human/H in GLOB.player_list - user)
@@ -137,6 +161,8 @@
 	to_chat(user, "<span class='danger'>[src] thrums and points to the [dir2text(get_dir(user, closest_victim))].</span>")
 
 /obj/item/claymore/highlander/IsReflect()
+	procstart = null
+	src.procstart = null
 	return 1 //YOU THINK YOUR PUNY LASERS CAN STOP ME?
 
 /obj/item/claymore/highlander/proc/add_notch(mob/living/user) //DYNAMIC CLAYMORE PROGRESSION SYSTEM - THIS IS THE FUTURE
@@ -216,6 +242,8 @@
 	slot_flags = null
 
 /obj/item/katana/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is slitting [user.p_their()] stomach open with [src]! It looks like [user.p_theyre()] trying to commit seppuku!</span>")
 	return(BRUTELOSS)
 
@@ -232,6 +260,8 @@
 	attack_verb = list("hit", "bludgeoned", "whacked", "bonked")
 
 /obj/item/wirerod/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/shard))
 		var/obj/item/twohanded/spear/S = new /obj/item/twohanded/spear
 
@@ -295,6 +325,8 @@
 	var/extended = 0
 
 /obj/item/switchblade/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	extended = !extended
 	playsound(src.loc, 'sound/weapons/batonextend.ogg', 50, 1)
 	if(extended)
@@ -315,6 +347,8 @@
 		sharpness = IS_BLUNT
 
 /obj/item/switchblade/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is slitting [user.p_their()] own throat with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS)
 
@@ -332,6 +366,8 @@
 	hitsound = 'sound/weapons/ring.ogg'
 
 /obj/item/phone/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/chair/stool) in user.loc)
 		user.visible_message("<span class='suicide'>[user] begins to tie a noose with [src]'s cord! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	else
@@ -397,6 +433,8 @@
 	icon_state = "ectoplasm"
 
 /obj/item/ectoplasm/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is inhaling [src]! It looks like [user.p_theyre()] trying to visit the astral plane!</span>")
 	return (OXYLOSS)
 
@@ -418,6 +456,8 @@
 	hitsound = 'sound/weapons/chainsawhit.ogg'
 
 /obj/item/mounted_chainsaw/Destroy()
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/part
 	new /obj/item/twohanded/required/chainsaw(get_turf(src))
 	if(iscarbon(loc))
@@ -472,6 +512,8 @@
 	attack_verb = list("smacked", "whacked", "slammed", "smashed")
 
 /obj/item/melee/skateboard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	new /obj/vehicle/ridden/scooter/skateboard(get_turf(user))
 	qdel(src)
 
@@ -496,6 +538,8 @@
 	homerun_able = 1
 
 /obj/item/melee/baseball_bat/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!homerun_able)
 		..()
 		return
@@ -511,6 +555,8 @@
 	..()
 
 /obj/item/melee/baseball_bat/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/throw_target = get_edge_target_turf(target, user.dir)
 	if(homerun_ready)
@@ -557,6 +603,8 @@
 	var/list/strong_against
 
 /obj/item/melee/flyswatter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	strong_against = typecacheof(list(
 					/mob/living/simple_animal/hostile/poison/bees/,
@@ -567,6 +615,8 @@
 
 
 /obj/item/melee/flyswatter/afterattack(atom/target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(proximity_flag)
 		if(is_type_in_typecache(target, strong_against))
 			new /obj/effect/decal/cleanable/deadcockroach(get_turf(target))
@@ -598,6 +648,8 @@
 	hitsound = 'sound/effects/snap.ogg'
 
 /obj/item/slapper/attack(mob/M, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M))
 		var/mob/living/carbon/human/L = M
 		L.endTailWag()
@@ -612,6 +664,8 @@
 		..()
 
 /obj/item/proc/can_trigger_gun(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user.can_use_guns(src))
 		return FALSE
 	return TRUE

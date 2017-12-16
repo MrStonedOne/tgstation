@@ -9,13 +9,19 @@
 	var/set_cap = 0
 
 /obj/effect/light_emitter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(set_luminosity, set_cap)
 
 /obj/effect/light_emitter/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/light_emitter/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /**********************Miner Lockers**************************/
@@ -25,6 +31,8 @@
 	icon_door = "mixed"
 
 /obj/structure/closet/wardrobe/miner/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/storage/backpack/duffelbag(src)
 	new /obj/item/storage/backpack/explorer(src)
 	new /obj/item/storage/backpack/satchel/explorer(src)
@@ -47,6 +55,8 @@
 	locked = FALSE
 
 /obj/structure/closet/secure_closet/miner/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/stack/sheet/mineral/sandbags(src, 5)
 	new /obj/item/storage/box/emptysandbags(src)
@@ -75,6 +85,8 @@
 	var/global/list/dumb_rev_heads = list()
 
 /obj/machinery/computer/shuttle/mining/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if((user.z in GLOB.station_z_levels) && user.mind && is_head_revolutionary(user) && !(user.mind in dumb_rev_heads))
 		to_chat(user, "<span class='warning'>You get a feeling that leaving the station might be a REALLY dumb idea...</span>")
 		dumb_rev_heads += user.mind

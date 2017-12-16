@@ -16,12 +16,16 @@
 
 
 /obj/machinery/mineral/labor_claim_console/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	Radio = new/obj/item/device/radio(src)
 	Radio.listening = FALSE
 	locate_stacking_machine()
 
 /obj/machinery/mineral/labor_claim_console/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/card/id/prisoner))
 		if(!inserted_id)
 			if(!user.transferItemToLoc(I, src))
@@ -41,6 +45,8 @@
 		ui.open()
 
 /obj/machinery/mineral/labor_claim_console/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/can_go_home = FALSE
 
@@ -68,6 +74,8 @@
 	return data
 
 /obj/machinery/mineral/labor_claim_console/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -107,11 +115,15 @@
 						to_chat(usr, "<span class='notice'>Shuttle received message and will be sent shortly.</span>")
 
 /obj/machinery/mineral/labor_claim_console/proc/check_auth()
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return 1 //Shuttle is emagged, let any ol' person through
 	return (istype(inserted_id) && inserted_id.points >= inserted_id.goal) //Otherwise, only let them out if the prisoner's reached his quota.
 
 /obj/machinery/mineral/labor_claim_console/proc/locate_stacking_machine()
+	procstart = null
+	src.procstart = null
 	stacking_machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, machinedir))
 	if(stacking_machine)
 		stacking_machine.CONSOLE = src
@@ -119,6 +131,8 @@
 		qdel(src)
 
 /obj/machinery/mineral/labor_claim_console/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!emagged)
 		emagged = TRUE
 		to_chat(user, "<span class='warning'>PZZTTPFFFT</span>")
@@ -132,6 +146,8 @@
 	var/list/ore_values = list("glass" = 1, "metal" = 2, "reinforced glass" = 4, "gold" = 20, "silver" = 20, "uranium" = 20, "titanium" = 20, "solid plasma" = 20, "plasteel" = 23, "plasma glass" = 23, "diamond" = 25, "bluespace polycrystal" = 30, "plastitanium" = 45, "bananium" = 50)
 
 /obj/machinery/mineral/stacking_machine/laborstacker/process_sheet(obj/item/stack/sheet/inp)
+	procstart = null
+	src.procstart = null
 	if(istype(inp))
 		var/n = inp.name
 		var/a = inp.amount
@@ -150,9 +166,13 @@
 	anchored = TRUE
 
 /obj/machinery/mineral/labor_points_checker/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.examinate(src)
 
 /obj/machinery/mineral/labor_points_checker/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/card/id))
 		if(istype(I, /obj/item/card/id/prisoner))
 			var/obj/item/card/id/prisoner/prisoner_id = I

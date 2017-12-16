@@ -19,6 +19,8 @@
 	var/rotation_angle = -1
 
 /obj/structure/reflector/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "reflector_base"
 	allowed_projectile_typecache = typecacheof(allowed_projectile_typecache)
@@ -35,6 +37,8 @@
 		can_rotate = FALSE
 
 /obj/structure/reflector/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(finished)
 		to_chat(user, "It is set to [rotation_angle] degrees, and the rotation is [can_rotate ? "unlocked" : "locked"].")
@@ -45,6 +49,8 @@
 				to_chat(user, "<span class='notice'>Use screwdriver to unlock the rotation.</span>")
 
 /obj/structure/reflector/proc/setAngle(new_angle)
+	procstart = null
+	src.procstart = null
 	if(can_rotate)
 		rotation_angle = new_angle
 		if(deflector_overlay)
@@ -54,13 +60,19 @@
 
 
 /obj/structure/reflector/setDir(new_dir)
+	procstart = null
+	src.procstart = null
 	setAngle(dir_map_to_angle(new_dir))
 	return ..(NORTH)
 
 /obj/structure/reflector/proc/dir_map_to_angle(dir)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/structure/reflector/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	var/pdir = P.dir
 	var/pangle = P.Angle
 	var/ploc = get_turf(P)
@@ -71,10 +83,14 @@
 	return -1
 
 /obj/structure/reflector/proc/auto_reflect(obj/item/projectile/P, pdir, turf/ploc, pangle)
+	procstart = null
+	src.procstart = null
 	P.ignore_source_check = TRUE
 	return -1
 
 /obj/structure/reflector/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(admin)
 		return
 
@@ -157,6 +173,8 @@
 		return ..()
 
 /obj/structure/reflector/proc/rotate(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!can_rotate || admin)
 		to_chat(user, "<span class='warning'>The rotation is locked!</span>")
 		return FALSE
@@ -169,6 +187,8 @@
 	return TRUE
 
 /obj/structure/reflector/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.canUseTopic(src, be_close=TRUE))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
 		return
@@ -197,6 +217,8 @@
 	anchored = TRUE
 
 /obj/structure/reflector/single/auto_reflect(obj/item/projectile/P, pdir, turf/ploc, pangle)
+	procstart = null
+	src.procstart = null
 	var/incidence = get_angle_of_incidence(rotation_angle, P.Angle)
 	var/incidence_norm = get_angle_of_incidence(rotation_angle, P.Angle, FALSE)
 	if((incidence_norm > -90) && (incidence_norm < 90))
@@ -228,6 +250,8 @@
 	anchored = TRUE
 
 /obj/structure/reflector/double/auto_reflect(obj/item/projectile/P, pdir, turf/ploc, pangle)
+	procstart = null
+	src.procstart = null
 	var/incidence = get_angle_of_incidence(rotation_angle, P.Angle)
 	var/incidence_norm = get_angle_of_incidence(rotation_angle, P.Angle, FALSE)
 	var/invert = ((incidence_norm > -90) && (incidence_norm < 90))
@@ -260,19 +284,27 @@
 	anchored = TRUE
 
 /obj/structure/reflector/box/auto_reflect(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	P.Angle = rotation_angle
 	return ..()
 
 /obj/structure/reflector/ex_act()
+	procstart = null
+	src.procstart = null
 	if(admin)
 		return
 	else
 		return ..()
 
 /obj/structure/reflector/dir_map_to_angle(dir)
+	procstart = null
+	src.procstart = null
 	return dir2angle(dir)
 
 /obj/structure/reflector/singularity_act()
+	procstart = null
+	src.procstart = null
 	if(admin)
 		return
 	else

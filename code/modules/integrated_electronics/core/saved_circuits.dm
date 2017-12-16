@@ -4,6 +4,8 @@
 // Saves type, modified name and modified inputs (if any) to a list
 // The list is converted to JSON down the line.
 /obj/item/integrated_circuit/proc/save()
+	procstart = null
+	src.procstart = null
 	var/list/component_params = list()
 
 	// Save initial name used for differentiating assemblies
@@ -43,6 +45,8 @@
 // Verifies a list of component parameters
 // Returns null on success, error name on failure
 /obj/item/integrated_circuit/proc/verify_save(list/component_params)
+	procstart = null
+	src.procstart = null
 	// Validate name
 	if(component_params["name"] && !reject_bad_name(component_params["name"], TRUE))
 		return "Bad component name at [name]."
@@ -80,6 +84,8 @@
 // Loads component parameters from a list
 // Doesn't verify any of the parameters it loads, this is the job of verify_save()
 /obj/item/integrated_circuit/proc/load(list/component_params)
+	procstart = null
+	src.procstart = null
 	// Load name
 	if(component_params["name"])
 		displayed_name = component_params["name"]
@@ -103,6 +109,8 @@
 // Saves type and modified name (if any) to a list
 // The list is converted to JSON down the line.
 /obj/item/device/electronic_assembly/proc/save()
+	procstart = null
+	src.procstart = null
 	var/list/assembly_params = list()
 
 	// Save initial name used for differentiating assemblies
@@ -122,6 +130,8 @@
 // Verifies a list of assembly parameters
 // Returns null on success, error name on failure
 /obj/item/device/electronic_assembly/proc/verify_save(list/assembly_params)
+	procstart = null
+	src.procstart = null
 	// Validate name
 	if(assembly_params["name"] && !reject_bad_name(assembly_params["name"], TRUE))
 		return "Bad assembly name."
@@ -130,6 +140,8 @@
 // Loads assembly parameters from a list
 // Doesn't verify any of the parameters it loads, this is the job of verify_save()
 /obj/item/device/electronic_assembly/proc/load(list/assembly_params)
+	procstart = null
+	src.procstart = null
 	// Load modified name, if any.
 	if(assembly_params["name"])
 		name = assembly_params["name"]
@@ -144,6 +156,8 @@
 // Attempts to save an assembly into a save file format.
 // Returns null if assembly is not complete enough to be saved.
 /datum/controller/subsystem/processing/circuit/proc/save_electronic_assembly(obj/item/device/electronic_assembly/assembly)
+	procstart = null
+	src.procstart = null
 	// No components? Don't even try to save it.
 	if(!length(assembly.assembly_components))
 		return
@@ -204,6 +218,8 @@
 // The following parameters area calculated during validation and added to the returned save list:
 // "requires_upgrades", "metal_cost", "complexity", "max_complexity", "used_space", "max_space"
 /datum/controller/subsystem/processing/circuit/proc/validate_electronic_assembly(program)
+	procstart = null
+	src.procstart = null
 	var/list/blocks = json_decode(program)
 	if(!blocks)
 		return
@@ -307,6 +323,8 @@
 // No sanity checks are performed, save file is expected to be validated by validate_electronic_assembly
 /datum/controller/subsystem/processing/circuit/proc/load_electronic_assembly(loc, list/blocks)
 
+	procstart = null
+	src.procstart = null
 	// Block 1. Assembly.
 	var/list/assembly_params = blocks["assembly"]
 	var/obj/item/device/electronic_assembly/assembly_path = all_assemblies[assembly_params["type"]]

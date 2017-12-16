@@ -41,16 +41,22 @@
 
 
 /datum/antagonist/changeling/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generate_name()
 	create_actions()
 
 /datum/antagonist/changeling/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cellular_emporium)
 	QDEL_NULL(emporium_action)
 	. = ..()
 
 /datum/antagonist/changeling/proc/generate_name()
+	procstart = null
+	src.procstart = null
 	var/honorific
 	if(owner.current.gender == FEMALE)
 		honorific = "Ms."
@@ -64,10 +70,14 @@
 		changelingID = "[honorific] [rand(1,999)]"
 
 /datum/antagonist/changeling/proc/create_actions()
+	procstart = null
+	src.procstart = null
 	cellular_emporium = new(src)
 	emporium_action = new(cellular_emporium)
 
 /datum/antagonist/changeling/on_gain()
+	procstart = null
+	src.procstart = null
 	reset_powers()
 	create_initial_profile()
 	if(give_objectives)
@@ -78,11 +88,15 @@
 	. = ..()
 
 /datum/antagonist/changeling/on_removal()
+	procstart = null
+	src.procstart = null
 	remove_changeling_powers()
 	owner.objectives -= objectives
 	. = ..()
 
 /datum/antagonist/changeling/proc/remove_clownmut()
+	procstart = null
+	src.procstart = null
 	if (owner)
 		var/mob/living/carbon/human/H = owner.current
 		if(istype(H) && owner.assigned_role == "Clown")
@@ -90,6 +104,8 @@
 			H.dna.remove_mutation(CLOWNMUT)
 
 /datum/antagonist/changeling/proc/reset_properties()
+	procstart = null
+	src.procstart = null
 	changeling_speak = 0
 	chosen_sting = null
 	geneticpoints = initial(geneticpoints)
@@ -101,6 +117,8 @@
 	mimicing = ""
 
 /datum/antagonist/changeling/proc/remove_changeling_powers()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner.current) || ismonkey(owner.current))
 		reset_properties()
 		for(var/obj/effect/proc_holder/changeling/p in purchasedpowers)
@@ -115,6 +133,8 @@
 		owner.current.hud_used.lingstingdisplay.invisibility = INVISIBILITY_ABSTRACT
 
 /datum/antagonist/changeling/proc/reset_powers()
+	procstart = null
+	src.procstart = null
 	if(purchasedpowers)
 		remove_changeling_powers()
 	//Repurchase free powers.
@@ -126,6 +146,8 @@
 				S.on_purchase(owner.current,TRUE)
 
 /datum/antagonist/changeling/proc/has_sting(obj/effect/proc_holder/changeling/power)
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/proc_holder/changeling/P in purchasedpowers)
 		if(initial(power.name) == P.name)
 			return TRUE
@@ -133,6 +155,8 @@
 
 
 /datum/antagonist/changeling/proc/purchase_power(sting_name)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/proc_holder/changeling/thepower = null
 
 	for(var/path in all_powers)
@@ -170,6 +194,8 @@
 	thepower.on_purchase(owner.current)
 
 /datum/antagonist/changeling/proc/readapt()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner.current))
 		to_chat(owner.current, "<span class='danger'>We can't remove our evolutions in this form!</span>")
 		return
@@ -185,6 +211,8 @@
 
 //Called in life()
 /datum/antagonist/changeling/proc/regenerate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/the_ling = owner.current
 	if(istype(the_ling))
 		emporium_action.Grant(the_ling)
@@ -197,17 +225,23 @@
 
 
 /datum/antagonist/changeling/proc/get_dna(dna_owner)
+	procstart = null
+	src.procstart = null
 	for(var/datum/changelingprofile/prof in stored_profiles)
 		if(dna_owner == prof.name)
 			return prof
 
 /datum/antagonist/changeling/proc/has_dna(datum/dna/tDNA)
+	procstart = null
+	src.procstart = null
 	for(var/datum/changelingprofile/prof in stored_profiles)
 		if(tDNA.is_same_as(prof.dna))
 			return TRUE
 	return FALSE
 
 /datum/antagonist/changeling/proc/can_absorb_dna(mob/living/carbon/human/target, var/verbose=1)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/user = owner.current
 	if(!istype(user))
 		return
@@ -243,6 +277,8 @@
 
 
 /datum/antagonist/changeling/proc/create_profile(mob/living/carbon/human/H, protect = 0)
+	procstart = null
+	src.procstart = null
 	var/datum/changelingprofile/prof = new
 
 	H.dna.real_name = H.real_name //Set this again, just to be sure that it's properly set.
@@ -274,6 +310,8 @@
 	return prof
 
 /datum/antagonist/changeling/proc/add_profile(datum/changelingprofile/prof)
+	procstart = null
+	src.procstart = null
 	if(stored_profiles.len > dna_max)
 		if(!push_out_profile())
 			return
@@ -285,11 +323,15 @@
 	absorbedcount++
 
 /datum/antagonist/changeling/proc/add_new_profile(mob/living/carbon/human/H, protect = 0)
+	procstart = null
+	src.procstart = null
 	var/datum/changelingprofile/prof = create_profile(H, protect)
 	add_profile(prof)
 	return prof
 
 /datum/antagonist/changeling/proc/remove_profile(mob/living/carbon/human/H, force = 0)
+	procstart = null
+	src.procstart = null
 	for(var/datum/changelingprofile/prof in stored_profiles)
 		if(H.real_name == prof.name)
 			if(prof.protected && !force)
@@ -298,11 +340,15 @@
 			qdel(prof)
 
 /datum/antagonist/changeling/proc/get_profile_to_remove()
+	procstart = null
+	src.procstart = null
 	for(var/datum/changelingprofile/prof in stored_profiles)
 		if(!prof.protected)
 			return prof
 
 /datum/antagonist/changeling/proc/push_out_profile()
+	procstart = null
+	src.procstart = null
 	var/datum/changelingprofile/removeprofile = get_profile_to_remove()
 	if(removeprofile)
 		stored_profiles -= removeprofile
@@ -311,11 +357,15 @@
 
 
 /datum/antagonist/changeling/proc/create_initial_profile()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = owner.current	//only carbons have dna now, so we have to typecaste
 	if(ishuman(C))
 		add_new_profile(C)
 
 /datum/antagonist/changeling/apply_innate_effects()
+	procstart = null
+	src.procstart = null
 	//Brains optional.
 	var/mob/living/carbon/C = owner.current
 	if(istype(C))
@@ -327,11 +377,15 @@
 	return
 
 /datum/antagonist/changeling/remove_innate_effects()
+	procstart = null
+	src.procstart = null
 	update_changeling_icons_removed()
 	return
 
 
 /datum/antagonist/changeling/greet()
+	procstart = null
+	src.procstart = null
 	if (you_are_greet)
 		to_chat(owner.current, "<span class='boldannounce'>You are [changelingID], a changeling! You have absorbed and taken the form of a human.</span>")
 	to_chat(owner.current, "<span class='boldannounce'>Use say \":g message\" to communicate with your fellow changelings.</span>")
@@ -341,6 +395,8 @@
 	owner.announce_objectives()
 
 /datum/antagonist/changeling/proc/forge_team_objectives()
+	procstart = null
+	src.procstart = null
 	if(GLOB.changeling_team_objective_type)
 		var/datum/objective/changeling_team_objective/team_objective = new GLOB.changeling_team_objective_type
 		team_objective.owner = owner
@@ -348,6 +404,8 @@
 	return
 
 /datum/antagonist/changeling/proc/forge_objectives()
+	procstart = null
+	src.procstart = null
 	//OBJECTIVES - random traitor objectives. Unique objectives "steal brain" and "identity theft".
 	//No escape alone because changelings aren't suited for it and it'd probably just lead to rampant robusting
 	//If it seems like they'd be able to do it in play, add a 10% chance to have to escape alone
@@ -427,11 +485,15 @@
 	owner.objectives |= objectives
 
 /datum/antagonist/changeling/proc/update_changeling_icons_added()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/hud = GLOB.huds[ANTAG_HUD_CHANGELING]
 	hud.join_hud(owner.current)
 	set_antag_hud(owner.current, "changling")
 
 /datum/antagonist/changeling/proc/update_changeling_icons_removed()
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/hud = GLOB.huds[ANTAG_HUD_CHANGELING]
 	hud.leave_hud(owner.current)
 	set_antag_hud(owner.current, null)
@@ -456,10 +518,14 @@
 	var/socks
 
 /datum/changelingprofile/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(dna)
 	. = ..()
 
 /datum/changelingprofile/proc/copy_profile(datum/changelingprofile/newprofile)
+	procstart = null
+	src.procstart = null
 	newprofile.name = name
 	newprofile.protected = protected
 	newprofile.dna = new dna.type
@@ -482,6 +548,8 @@
 	you_are_greet = FALSE
 
 /datum/antagonist/changeling/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 
 	var/changelingwin = 1

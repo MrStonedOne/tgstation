@@ -12,25 +12,35 @@
 	dog_fashion = null
 
 /obj/item/device/radio/headset/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>To speak on the general radio frequency, use ; before speaking.</span>")
 	if (command)
 		to_chat(user, "<span class='notice'>Alt-click to toggle the high-volume mode.</span>")
 
 /obj/item/device/radio/headset/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	recalculateChannels()
 
 /obj/item/device/radio/headset/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(keyslot2)
 	return ..()
 
 /obj/item/device/radio/headset/talk_into(mob/living/M, message, channel, list/spans,datum/language/language)
+	procstart = null
+	src.procstart = null
 	if (!listening)
 		return ITALICS | REDUCE_RANGE
 	return ..()
 
 /obj/item/device/radio/headset/can_receive(freq, level, AIuser)
+	procstart = null
+	src.procstart = null
 	if(ishuman(src.loc))
 		var/mob/living/carbon/human/H = src.loc
 		if(H.ears == src)
@@ -53,11 +63,15 @@
 	command = TRUE
 
 /obj/item/device/radio/headset/syndicate/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	make_syndie()
 
 /obj/item/device/radio/headset/binary
 /obj/item/device/radio/headset/binary/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(keyslot)
 	keyslot = new /obj/item/device/encryptionkey/binary
@@ -207,9 +221,13 @@
 	command = TRUE
 
 /obj/item/device/radio/headset/ai/can_receive(freq, level)
+	procstart = null
+	src.procstart = null
 	return ..(freq, level, TRUE)
 
 /obj/item/device/radio/headset/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 
 	if(istype(W, /obj/item/screwdriver))
@@ -255,6 +273,8 @@
 
 
 /obj/item/device/radio/headset/recalculateChannels()
+	procstart = null
+	src.procstart = null
 	..()
 	if(keyslot2)
 		for(var/ch_name in keyslot2.channels)
@@ -272,6 +292,8 @@
 		secure_radio_connections[ch_name] = add_radio(src, GLOB.radiochannels[ch_name])
 
 /obj/item/device/radio/headset/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !Adjacent(user) || user.incapacitated())
 		return
 	if (command)

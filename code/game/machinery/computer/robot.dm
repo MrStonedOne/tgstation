@@ -13,6 +13,8 @@
 	light_color = LIGHT_COLOR_PINK
 
 /obj/machinery/computer/robotics/proc/can_control(mob/user, mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(!istype(R))
 		return 0
 	if(isAI(user))
@@ -26,11 +28,15 @@
 	return 1
 
 /obj/machinery/computer/robotics/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/computer/robotics/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if (src.z > 6)
 		to_chat(user, "<span class='boldannounce'>Unable to establish a connection</span>: \black You're too far away from the station!")
 		return
@@ -95,6 +101,8 @@
 	return
 
 /obj/machinery/computer/robotics/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 

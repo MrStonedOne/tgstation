@@ -10,23 +10,31 @@
 	var/obj/item/holosign_creator/projector
 
 /obj/structure/holosign/New(loc, source_projector)
+	procstart = null
+	src.procstart = null
 	if(source_projector)
 		projector = source_projector
 		projector.signs += src
 	..()
 
 /obj/structure/holosign/Destroy()
+	procstart = null
+	src.procstart = null
 	if(projector)
 		projector.signs -= src
 		projector = null
 	return ..()
 
 /obj/structure/holosign/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.do_attack_animation(src, ATTACK_EFFECT_PUNCH)
 	user.changeNext_move(CLICK_CD_MELEE)
 	take_damage(5 , BRUTE, "melee", 1)
 
 /obj/structure/holosign/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(loc, 'sound/weapons/egloves.ogg', 80, 1)
@@ -49,6 +57,8 @@
 	var/allow_walk = 1 //can we pass through it on walk intent
 
 /obj/structure/holosign/barrier/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return 1
 	if(mover.pass_flags & (PASSGLASS|PASSTABLE|PASSGRILLE))
@@ -62,6 +72,8 @@
 	icon_state = "holosign_engi"
 
 /obj/structure/holosign/barrier/engineering/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_LIGHT_INSULATION)
 
@@ -77,10 +89,14 @@
 	alpha = 150
 
 /obj/structure/holosign/barrier/atmos/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	air_update_turf(TRUE)
 
 /obj/structure/holosign/barrier/atmos/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	. = ..()
 	T.air_update_turf(TRUE)
@@ -93,6 +109,8 @@
 	allow_walk = 0
 
 /obj/structure/holosign/barrier/cyborg/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	take_damage((P.damage / 5) , BRUTE, "melee", 1)	//Doesn't really matter what damage flag it is.
 	if(istype(P, /obj/item/projectile/energy/electrode))
 		take_damage(10, BRUTE, "melee", 1)	//Tasers aren't harmful.
@@ -106,12 +124,18 @@
 	var/shockcd = 0
 
 /obj/structure/holosign/barrier/cyborg/hacked/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	take_damage(P.damage, BRUTE, "melee", 1)	//Yeah no this doesn't get projectile resistance.
 
 /obj/structure/holosign/barrier/cyborg/hacked/proc/cooldown()
+	procstart = null
+	src.procstart = null
 	shockcd = FALSE
 
 /obj/structure/holosign/barrier/cyborg/hacked/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!shockcd)
 		if(ismob(user))
 			var/mob/living/M = user
@@ -120,6 +144,8 @@
 			addtimer(CALLBACK(src, .proc/cooldown), 5)
 
 /obj/structure/holosign/barrier/cyborg/hacked/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(shockcd)
 		return
 

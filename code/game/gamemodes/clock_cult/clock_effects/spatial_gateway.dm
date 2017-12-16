@@ -16,14 +16,20 @@
 	var/timerid
 
 /obj/effect/clockwork/spatial_gateway/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/check_setup), 1)
 
 /obj/effect/clockwork/spatial_gateway/Destroy()
+	procstart = null
+	src.procstart = null
 	deltimer(timerid)
 	return ..()
 
 /obj/effect/clockwork/spatial_gateway/proc/check_setup()
+	procstart = null
+	src.procstart = null
 	if(!linked_gateway)
 		qdel(src)
 		return
@@ -35,6 +41,8 @@
 
 //set up a gateway with another gateway
 /obj/effect/clockwork/spatial_gateway/proc/setup_gateway(obj/effect/clockwork/spatial_gateway/gatewayB, set_duration, set_uses, two_way)
+	procstart = null
+	src.procstart = null
 	if(!gatewayB || !set_duration || !uses)
 		return FALSE
 	linked_gateway = gatewayB
@@ -53,16 +61,22 @@
 	return TRUE
 
 /obj/effect/clockwork/spatial_gateway/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		to_chat(user, "<span class='brass'>It has [uses] use\s remaining.</span>")
 
 /obj/effect/clockwork/spatial_gateway/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(linked_gateway)
 		user.forceMove(get_turf(linked_gateway))
 	..()
 
 /obj/effect/clockwork/spatial_gateway/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!uses)
 		return FALSE
 	if(user.pulling && user.a_intent == INTENT_GRAB && isliving(user.pulling))
@@ -80,6 +94,8 @@
 	return TRUE
 
 /obj/effect/clockwork/spatial_gateway/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/nullrod))
 		user.visible_message("<span class='warning'>[user] dispels [src] with [I]!</span>", "<span class='danger'>You close [src] with [I]!</span>")
 		qdel(linked_gateway)
@@ -95,6 +111,8 @@
 	return ..()
 
 /obj/effect/clockwork/spatial_gateway/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	if(severity == 1 && uses)
 		uses = 0
 		visible_message("<span class='warning'>[src] is disrupted!</span>")
@@ -111,18 +129,26 @@
 
 
 /obj/effect/clockwork/spatial_gateway/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/spatial_gateway/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/effect/clockwork/spatial_gateway/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!QDELETED(AM))
 		pass_through_gateway(AM, FALSE)
 
 /obj/effect/clockwork/spatial_gateway/proc/pass_through_gateway(atom/movable/A, no_cost)
+	procstart = null
+	src.procstart = null
 	if(!linked_gateway)
 		qdel(src)
 		return FALSE
@@ -155,12 +181,16 @@
 	return TRUE
 
 /obj/effect/clockwork/spatial_gateway/proc/check_uses()
+	procstart = null
+	src.procstart = null
 	if(!uses)
 		qdel(src)
 		qdel(linked_gateway)
 
 //This proc creates and sets up a gateway from invoker input.
 /atom/movable/proc/procure_gateway(mob/living/invoker, time_duration, gateway_uses, two_way)
+	procstart = null
+	src.procstart = null
 	var/list/possible_targets = list()
 	var/list/teleportnames = list()
 

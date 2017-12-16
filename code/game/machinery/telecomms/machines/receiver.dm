@@ -20,6 +20,8 @@
 
 /obj/machinery/telecomms/receiver/receive_signal(datum/signal/signal)
 
+	procstart = null
+	src.procstart = null
 	if(!on) // has to be on to receive messages
 		return
 	if(!signal)
@@ -39,6 +41,8 @@
 
 /obj/machinery/telecomms/receiver/proc/check_receive_level(datum/signal/signal)
 
+	procstart = null
+	src.procstart = null
 	if(signal.data["level"] != listening_level)
 		for(var/obj/machinery/telecomms/hub/H in links)
 			var/list/connected_levels = list()
@@ -71,6 +75,8 @@
 
 	//Common and other radio frequencies for people to freely use
 /obj/machinery/telecomms/receiver/preset_right/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/i = MIN_FREQ, i <= MAX_FREQ, i += 2)
 		freq_listening |= i

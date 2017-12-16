@@ -29,15 +29,21 @@
 	var/const/BOMB_TIMER_MAX = 10
 
 /obj/item/pizzabox/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 	
 
 /obj/item/pizzabox/Destroy()
+	procstart = null
+	src.procstart = null
 	unprocess()
 	return ..()
 
 /obj/item/pizzabox/update_icon()
+	procstart = null
+	src.procstart = null
 	// Description
 	desc = initial(desc)
 	if(open)
@@ -86,6 +92,8 @@
 			add_overlay(tag_overlay)
 
 /obj/item/pizzabox/worn_overlays(isinhands, icon_file)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/current_offset = 2
 	if(isinhands)
@@ -96,6 +104,8 @@
 			. += M
 
 /obj/item/pizzabox/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(boxes.len > 0)
 		return
 	open = !open
@@ -106,6 +116,8 @@
 	update_icon()
 
 /obj/item/pizzabox/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.get_inactive_held_item() != src)
 		..()
 		return
@@ -149,6 +161,8 @@
 	..()
 
 /obj/item/pizzabox/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/pizzabox))
 		var/obj/item/pizzabox/newbox = I
 		if(!open && !newbox.open)
@@ -209,6 +223,8 @@
 	..()
 
 /obj/item/pizzabox/process()
+	procstart = null
+	src.procstart = null
 	if(bomb_active && !bomb_defused && (bomb_timer > 0))
 		playsound(loc, 'sound/items/timer.ogg', 50, 0)
 		bomb_timer--
@@ -225,15 +241,21 @@
 	return
 
 /obj/item/pizzabox/attack(mob/living/target, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(boxes.len >= 3 && prob(25 * boxes.len))
 		disperse_pizzas()
 
 /obj/item/pizzabox/throw_impact(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(boxes.len >= 2 && prob(20 * boxes.len))
 		disperse_pizzas()
 
 /obj/item/pizzabox/proc/disperse_pizzas()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>The pizzas fall everywhere!</span>")
 	for(var/V in boxes)
 		var/obj/item/pizzabox/P = V
@@ -253,12 +275,16 @@
 		L.regenerate_icons()
 
 /obj/item/pizzabox/proc/unprocess()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	qdel(wires)
 	wires = null
 	update_icon()
 
 /obj/item/pizzabox/bomb/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/randompizza = pick(subtypesof(/obj/item/reagent_containers/food/snacks/pizza))
 	pizza = new randompizza(src)
@@ -266,23 +292,31 @@
 	wires = new /datum/wires/explosive/pizza(src)
 
 /obj/item/pizzabox/margherita/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pizza = new /obj/item/reagent_containers/food/snacks/pizza/margherita(src)
 	boxtag = "Margherita Deluxe"
 
 
 /obj/item/pizzabox/vegetable/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pizza = new /obj/item/reagent_containers/food/snacks/pizza/vegetable(src)
 	boxtag = "Gourmet Vegatable"
 
 
 /obj/item/pizzabox/mushroom/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pizza = new /obj/item/reagent_containers/food/snacks/pizza/mushroom(src)
 	boxtag = "Mushroom Special"
 
 /obj/item/pizzabox/meat/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pizza = new /obj/item/reagent_containers/food/snacks/pizza/meat(src)
 	boxtag = "Meatlover's Supreme"

@@ -11,9 +11,13 @@
 	announceWhen = 3
 
 /datum/round_event/anomaly/anomaly_vortex/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Localized high-intensity vortex anomaly detected on long range scanners. Expected location: [impact_area.name]", "Anomaly Alert")
 
 /datum/round_event/anomaly/anomaly_vortex/start()
+	procstart = null
+	src.procstart = null
 	var/turf/T = safepick(get_area_turfs(impact_area))
 	if(T)
 		newAnomaly = new /obj/effect/anomaly/bhole(T)

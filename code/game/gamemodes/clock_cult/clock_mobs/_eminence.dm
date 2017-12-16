@@ -15,9 +15,13 @@
 	var/static/superheated_walls = 0
 
 /mob/camera/eminence/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/camera/eminence/Move(NewLoc, direct)
+	procstart = null
+	src.procstart = null
 	var/OldLoc = loc
 	if(NewLoc && !istype(NewLoc, /turf/open/indestructible/reebe_void))
 		forceMove(get_turf(NewLoc))
@@ -28,6 +32,8 @@
 				T.ratvar_act() //Causes moving to leave a swath of proselytized area behind the Eminence
 
 /mob/camera/eminence/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/antagonist/clockcult/C = mind.has_antag_datum(/datum/antagonist/clockcult,TRUE)
 	if(!C)
@@ -53,6 +59,8 @@
 		E.Grant(src)
 
 /mob/camera/eminence/say(message)
+	procstart = null
+	src.procstart = null
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 	if(!message)
 		return
@@ -63,12 +71,16 @@
 	hierophant_message("<span class='large_brass'><b>The Eminence:</b> \"[message]\"</span>")
 
 /mob/camera/eminence/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(z == ZLEVEL_CITYOFCOGS || is_servant_of_ratvar(speaker) || GLOB.ratvar_approaches || GLOB.ratvar_awakens) //Away from Reebe, the Eminence can't hear anything
 		to_chat(src, message)
 		return
 	to_chat(src, "<i>[speaker] says something, but you can't understand any of it...</i>")
 
 /mob/camera/eminence/ClickOn(atom/A, params)
+	procstart = null
+	src.procstart = null
 	var/list/modifiers = params2list(params)
 	if(modifiers["shift"])
 		A.examine(src)
@@ -96,6 +108,8 @@
 		T.activate()
 
 /mob/camera/eminence/ratvar_act()
+	procstart = null
+	src.procstart = null
 	name = "\improper Radiance"
 	real_name = "\improper Radiance"
 	desc = "The light, forgotten."
@@ -103,6 +117,8 @@
 	invisibility = SEE_INVISIBLE_MINIMUM
 
 /mob/camera/eminence/proc/issue_command(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	var/list/commands
 	var/atom/movable/command_location
 	if(A == src)
@@ -163,6 +179,8 @@
 			M.playsound_local(M, 'sound/machines/clockcult/eminence_command.ogg', 75, FALSE, pressure_affected = FALSE)
 
 /mob/camera/eminence/proc/superheat_wall(turf/closed/wall/clockwork/wall)
+	procstart = null
+	src.procstart = null
 	if(!istype(wall))
 		return
 	if(superheated_walls >= SUPERHEATED_CLOCKWORK_WALL_LIMIT && !wall.heated)
@@ -177,6 +195,8 @@
 		to_chat(src, "<span class='neovgre_small'>You cool [wall]. <b>Superheated walls:</b> [superheated_walls]/[SUPERHEATED_CLOCKWORK_WALL_LIMIT]")
 
 /mob/camera/eminence/proc/eminence_help()
+	procstart = null
+	src.procstart = null
 	to_chat(src, "<span class='bold alloy'>You can make use of certain shortcuts to perform different actions:</span>")
 	to_chat(src, "<span class='alloy'><b>Alt-Click a clockwork wall</b> to superheat or cool it down. \
 	Superheated walls can't be destroyed by hulks or mechs and are much slower to deconstruct, and are marked by a bright red glow. \
@@ -196,6 +216,8 @@
 	buttontooltipstyle = "clockcult"
 
 /datum/action/innate/eminence/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!iseminence(owner))
 		qdel(src)
 		return
@@ -208,6 +230,8 @@
 	button_icon_state = "eminence_rally"
 
 /datum/action/innate/eminence/power_list/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/camera/eminence/E = owner
 	E.eminence_help()
 
@@ -218,6 +242,8 @@
 	button_icon_state = "Abscond"
 
 /datum/action/innate/eminence/ark_jump/Activate()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/destructible/clockwork/massive/celestial_gateway/G = GLOB.ark_of_the_clockwork_justiciar
 	if(G)
 		owner.forceMove(get_turf(G))
@@ -233,6 +259,8 @@
 	button_icon_state = "warp_down"
 
 /datum/action/innate/eminence/station_jump/Activate()
+	procstart = null
+	src.procstart = null
 	if(owner.z == ZLEVEL_CITYOFCOGS)
 		owner.forceMove(get_turf(pick(GLOB.generic_event_spawns)))
 		owner.playsound_local(owner, 'sound/magic/magic_missile.ogg', 50, TRUE)
@@ -247,6 +275,8 @@
 	button_icon_state = "Spatial Gateway"
 
 /datum/action/innate/eminence/mass_recall/IsAvailable()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/obj/structure/destructible/clockwork/massive/celestial_gateway/G = GLOB.ark_of_the_clockwork_justiciar
@@ -255,6 +285,8 @@
 		return FALSE
 
 /datum/action/innate/eminence/mass_recall/Activate()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/destructible/clockwork/massive/celestial_gateway/G = GLOB.ark_of_the_clockwork_justiciar
 	if(G && !G.recalling && G.recalls_remaining)
 		if(alert(owner, "Initiate mass recall?", "Mass Recall", "Yes", "No") != "Yes" || QDELETED(owner) || QDELETED(G) || !G.obj_integrity)

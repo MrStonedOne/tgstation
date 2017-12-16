@@ -29,15 +29,21 @@
 	"}
 
 /obj/effect/mob_spawn/swarmer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/A = get_area(src)
 	if(A)
 		notify_ghosts("A swarmer shell has been created in [A.name].", 'sound/effects/bin_close.ogg', source = src, action = NOTIFY_ATTACK, flashwindow = FALSE)
 
 /obj/effect/mob_spawn/swarmer/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>Picking up the swarmer may cause it to activate. You should be careful about this.</span>")
 
 /obj/effect/mob_spawn/swarmer/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver) && user.a_intent != INTENT_HARM)
 		user.visible_message("<span class='warning'>[usr.name] deactivates [src].</span>",
 			"<span class='notice'>After some fiddling, you find a way to disable [src]'s power source.</span>",
@@ -98,38 +104,52 @@
 	var/max_resources = 100
 
 /mob/living/simple_animal/hostile/swarmer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	verbs -= /mob/living/verb/pulled
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
 		diag_hud.add_to_hud(src)
 
 /mob/living/simple_animal/hostile/swarmer/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
 	holder.icon_state = "huddiag[RoundDiagBar(health/maxHealth)]"
 
 /mob/living/simple_animal/hostile/swarmer/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	var/image/holder = hud_list[DIAG_STAT_HUD]
 	var/icon/I = icon(icon, icon_state, dir)
 	holder.pixel_y = I.Height() - world.icon_size
 	holder.icon_state = "hudstat"
 
 /mob/living/simple_animal/hostile/swarmer/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		stat("Resources:",resources)
 
 /mob/living/simple_animal/hostile/swarmer/get_spans()
+	procstart = null
+	src.procstart = null
 	return ..() | SPAN_ROBOT
 
 /mob/living/simple_animal/hostile/swarmer/emp_act()
+	procstart = null
+	src.procstart = null
 	if(health > 1)
 		adjustHealth(health-1)
 	else
 		death()
 
 /mob/living/simple_animal/hostile/swarmer/CanPass(atom/movable/O)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/projectile/beam/disabler))//Allows for swarmers to fight as a group without wasting their shots hitting each other
 		return 1
 	if(isswarmer(O))
@@ -138,12 +158,16 @@
 
 ////CTRL CLICK FOR SWARMERS AND SWARMER_ACT()'S////
 /mob/living/simple_animal/hostile/swarmer/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(!isliving(target))
 		return target.swarmer_act(src)
 	else
 		return ..()
 
 /mob/living/simple_animal/hostile/swarmer/CtrlClickOn(atom/A)
+	procstart = null
+	src.procstart = null
 	face_atom(A)
 	if(!isturf(loc))
 		return
@@ -154,20 +178,30 @@
 	A.swarmer_act(src)
 
 /atom/proc/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DisIntegrate(src)
 	return TRUE //return TRUE/FALSE whether or not an AI swarmer should try this swarmer_act() again, NOT whether it succeeded.
 
 /obj/effect/mob_spawn/swarmer/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.Integrate(src)
 	return FALSE //would logically be TRUE, but we don't want AI swarmers eating player spawn chances.
 
 /obj/effect/mob_spawn/swarmer/IntegrateAmount()
+	procstart = null
+	src.procstart = null
 	return 50
 
 /turf/closed/indestructible/swarmer_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & INDESTRUCTIBLE)
 		return FALSE
 	for(var/mob/living/L in contents)
@@ -177,9 +211,13 @@
 	return ..()
 
 /obj/item/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	return S.Integrate(src)
 
 /atom/movable/proc/IntegrateAmount()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/IntegrateAmount() //returns the amount of resources gained when eating this item
@@ -191,66 +229,100 @@
 	return FALSE
 
 /obj/item/clockwork/alloy_shards/IntegrateAmount()
+	procstart = null
+	src.procstart = null
 	return 10
 
 /obj/item/stack/tile/brass/IntegrateAmount()
+	procstart = null
+	src.procstart = null
 	return 5
 
 /obj/item/clockwork/alloy_shards/medium/gear_bit/large/IntegrateAmount()
+	procstart = null
+	src.procstart = null
 	return 4
 
 /obj/item/clockwork/alloy_shards/large/IntegrateAmount()
+	procstart = null
+	src.procstart = null
 	return 3
 
 /obj/item/clockwork/alloy_shards/medium/IntegrateAmount()
+	procstart = null
+	src.procstart = null
 	return 2
 
 /obj/item/clockwork/alloy_shards/small/IntegrateAmount()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /turf/open/floor/swarmer_act()//ex_act() on turf calls it on its contents, this is to prevent attacking mobs by DisIntegrate()'ing the floor
 	return FALSE
 
 /obj/structure/lattice/catwalk/swarmer_catwalk/swarmer_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/swarmer/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	if(S.AIStatus == AI_ON)
 		return FALSE
 	else
 		return ..()
 
 /obj/effect/swarmer_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/effect/decal/cleanable/robot_debris/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DisIntegrate(src)
 	qdel(src)
 	return TRUE
 
 /obj/structure/flora/swarmer_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/lava/swarmer_act()
+	procstart = null
+	src.procstart = null
 	if(!is_safe())
 		new /obj/structure/lattice/catwalk/swarmer_catwalk(src)
 	return FALSE
 
 /obj/machinery/atmospherics/swarmer_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/structure/disposalpipe/swarmer_act()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DismantleMachine(src)
 	return TRUE
 
 /obj/machinery/light/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DisIntegrate(src)
 	return TRUE
 
 /obj/machinery/door/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	var/isonshuttle = istype(get_area(src), /area/shuttle)
 	for(var/turf/T in range(1, src))
 		var/area/A = get_area(T)
@@ -266,19 +338,27 @@
 	return TRUE
 
 /obj/machinery/camera/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DisIntegrate(src)
 	toggle_cam(S, 0)
 	return TRUE
 
 /obj/machinery/particle_accelerator/control_box/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DisIntegrate(src)
 	return TRUE
 
 /obj/machinery/field/generator/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DisIntegrate(src)
 	return TRUE
 
 /obj/machinery/gravity_generator/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DisIntegrate(src)
 	return TRUE
 
@@ -287,58 +367,86 @@
 	return TRUE
 
 /obj/machinery/turretid/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DisIntegrate(src)
 	return TRUE
 
 /obj/machinery/chem_dispenser/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>The volatile chemicals in this machine would destroy us. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/nuclearbomb/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This device's destruction would result in the extermination of everything in the area. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/dominator/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This device is attempting to corrupt our entire network; attempting to interact with it is too risky. Aborting.</span>")
 	return FALSE
 
 /obj/effect/rune/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>Searching... sensor malfunction! Target lost. Aborting.</span>")
 	return FALSE
 
 /obj/structure/reagent_dispensers/fueltank/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>Destroying this object would cause a chain reaction. Aborting.</span>")
 	return FALSE
 
 /obj/structure/cable/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>Disrupting the power grid would bring no benefit to us. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/portable_atmospherics/canister/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>An inhospitable area may be created as a result of destroying this object. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/telecomms/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This communications relay should be preserved, it will be a useful resource to our masters in the future. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/message_server/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This communications relay should be preserved, it will be a useful resource to our masters in the future. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/deepfryer/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This kitchen appliance should be preserved, it will make delicious unhealthy snacks for our masters in the future. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/power/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>Disrupting the power grid would bring no benefit to us. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/gateway/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This bluespace source will be important to us later. Aborting.</span>")
 	return FALSE
 
 /turf/closed/wall/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	var/isonshuttle = istype(loc, /area/shuttle)
 	for(var/turf/T in range(1, src))
 		var/area/A = get_area(T)
@@ -353,6 +461,8 @@
 	return ..()
 
 /obj/structure/window/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	var/isonshuttle = istype(get_area(src), /area/shuttle)
 	for(var/turf/T in range(1, src))
 		var/area/A = get_area(T)
@@ -371,26 +481,38 @@
 	return FALSE
 
 /obj/machinery/porta_turret/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>Attempting to dismantle this machine would result in an immediate counterattack. Aborting.</span>")
 	return FALSE
 
 /mob/living/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	S.DisperseTarget(src)
 	return TRUE
 
 /mob/living/simple_animal/slime/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This biological resource is somehow resisting our bluespace transceiver. Aborting.</span>")
 	return FALSE
 
 /obj/machinery/droneDispenser/swarmer/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This object is receiving unactivated swarmer shells to help us. Aborting.</span>")
 	return FALSE
 
 /obj/structure/destructible/clockwork/massive/celestial_gateway/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This object is multiplying existing resources. Aborting.</span>")
 	return FALSE
 
 /obj/structure/lattice/catwalk/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/here = get_turf(src)
 	for(var/A in here.contents)
@@ -400,15 +522,21 @@
 			return FALSE
 
 /obj/item/device/deactivated_swarmer/IntegrateAmount()
+	procstart = null
+	src.procstart = null
 	return 50
 
 /obj/machinery/hydroponics/soil/swarmer_act(mob/living/simple_animal/hostile/swarmer/S)
+	procstart = null
+	src.procstart = null
 	to_chat(S, "<span class='warning'>This object does not contain enough materials to work with.</span>")
 	return FALSE
 
 ////END CTRL CLICK FOR SWARMERS////
 
 /mob/living/simple_animal/hostile/swarmer/proc/Fabricate(atom/fabrication_object,fabrication_cost = 0)
+	procstart = null
+	src.procstart = null
 	if(!isturf(loc))
 		to_chat(src, "<span class='warning'>This is not a suitable location for fabrication. We need more space.</span>")
 	if(resources >= fabrication_cost)
@@ -419,6 +547,8 @@
 	return new fabrication_object(loc)
 
 /mob/living/simple_animal/hostile/swarmer/proc/Integrate(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	var/resource_gain = target.IntegrateAmount()
 	if(resources + resource_gain > max_resources)
 		to_chat(src, "<span class='warning'>We cannot hold more materials!</span>")
@@ -444,6 +574,8 @@
 
 
 /mob/living/simple_animal/hostile/swarmer/proc/DisIntegrate(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/swarmer/disintegration(get_turf(target))
 	do_attack_animation(target)
 	changeNext_move(CLICK_CD_MELEE)
@@ -451,6 +583,8 @@
 
 
 /mob/living/simple_animal/hostile/swarmer/proc/DisperseTarget(mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target == src)
 		return
 
@@ -484,6 +618,8 @@
 	do_teleport(target, F, 0)
 
 /mob/living/simple_animal/hostile/swarmer/proc/DismantleMachine(obj/machinery/target)
+	procstart = null
+	src.procstart = null
 	do_attack_animation(target)
 	to_chat(src, "<span class='info'>We begin to dismantle this machine. We will need to be uninterrupted.</span>")
 	var/obj/effect/temp_visual/swarmer/dismantle/D = new /obj/effect/temp_visual/swarmer/dismantle(get_turf(target))
@@ -517,6 +653,8 @@
 	duration = 10
 
 /obj/effect/temp_visual/swarmer/disintegration/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	playsound(loc, "sparks", 100, 1)
 
@@ -542,10 +680,14 @@
 	var/lon_range = 1
 
 /obj/structure/swarmer/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(lon_range)
 
 /obj/structure/swarmer/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src, 'sound/weapons/egloves.ogg', 80, 1)
@@ -553,6 +695,8 @@
 			playsound(src, 'sound/items/welder.ogg', 100, 1)
 
 /obj/structure/swarmer/emp_act()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/structure/swarmer/trap
@@ -563,6 +707,8 @@
 	density = FALSE
 
 /obj/structure/swarmer/trap/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!istype(L, /mob/living/simple_animal/hostile/swarmer))
@@ -574,6 +720,8 @@
 	..()
 
 /mob/living/simple_animal/hostile/swarmer/proc/CreateTrap()
+	procstart = null
+	src.procstart = null
 	set name = "Create trap"
 	set category = "Swarmer"
 	set desc = "Creates a simple trap that will non-lethally electrocute anything that steps on it. Costs 5 resources"
@@ -584,6 +732,8 @@
 
 
 /mob/living/simple_animal/hostile/swarmer/proc/CreateBarricade()
+	procstart = null
+	src.procstart = null
 	set name = "Create barricade"
 	set category = "Swarmer"
 	set desc = "Creates a barricade that will stop anything but swarmers and disabler beams from passing through."
@@ -605,12 +755,16 @@
 	max_integrity = 50
 
 /obj/structure/swarmer/blockade/CanPass(atom/movable/O)
+	procstart = null
+	src.procstart = null
 	if(isswarmer(O))
 		return 1
 	if(istype(O, /obj/item/projectile/beam/disabler))
 		return 1
 
 /mob/living/simple_animal/hostile/swarmer/proc/CreateSwarmer()
+	procstart = null
+	src.procstart = null
 	set name = "Replicate"
 	set category = "Swarmer"
 	set desc = "Creates a shell for a new swarmer. Swarmers will self activate."
@@ -628,10 +782,14 @@
 
 
 /mob/living/simple_animal/hostile/swarmer/proc/SwarmerTypeToCreate()
+	procstart = null
+	src.procstart = null
 	return /obj/effect/mob_spawn/swarmer
 
 
 /mob/living/simple_animal/hostile/swarmer/proc/RepairSelf()
+	procstart = null
+	src.procstart = null
 	set name = "Self Repair"
 	set category = "Swarmer"
 	set desc = "Attempts to repair damage to our body. You will have to remain motionless until repairs are complete."
@@ -643,12 +801,16 @@
 		to_chat(src, "<span class='info'>We successfully repaired ourselves.</span>")
 
 /mob/living/simple_animal/hostile/swarmer/proc/ToggleLight()
+	procstart = null
+	src.procstart = null
 	if(!light_range)
 		set_light(3)
 	else
 		set_light(0)
 
 /mob/living/simple_animal/hostile/swarmer/proc/swarmer_chat(msg)
+	procstart = null
+	src.procstart = null
 	var/rendered = "<B>Swarm communication - [src]</b> [say_quote(msg, get_spans())]"
 	for(var/i in GLOB.mob_list)
 		var/mob/M = i
@@ -659,6 +821,8 @@
 			to_chat(M, "[link] [rendered]")
 
 /mob/living/simple_animal/hostile/swarmer/proc/ContactSwarmers()
+	procstart = null
+	src.procstart = null
 	var/message = stripped_input(src, "Announce to other swarmers", "Swarmer contact")
 	// TODO get swarmers their own colour rather than just boldtext
 	if(message)

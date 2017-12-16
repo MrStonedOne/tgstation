@@ -14,14 +14,20 @@
 	var/reskinned = FALSE
 
 /obj/item/nullrod/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is killing [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to get closer to god!</span>")
 	return (BRUTELOSS|FIRELOSS)
 
 /obj/item/nullrod/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.mind && (user.mind.isholy) && !reskinned)
 		reskin_holy_weapon(user)
 
 /obj/item/nullrod/proc/reskin_holy_weapon(mob/M)
+	procstart = null
+	src.procstart = null
 	if(SSreligion.holy_weapon_type)
 		return
 	var/obj/item/nullrod/holy_weapon
@@ -76,6 +82,8 @@
 	var/shield_icon = "shield-red"
 
 /obj/item/nullrod/staff/worn_overlays(isinhands)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(isinhands)
 		. += mutable_appearance('icons/effects/effects.dmi', shield_icon, MOB_LAYER + 0.01)
@@ -101,6 +109,8 @@
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
 /obj/item/nullrod/claymore/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK)
 		final_block_chance = 0 //Don't bring a sword to a gunfight
 	return ..()
@@ -148,6 +158,8 @@
 	slot_flags = SLOT_BELT
 
 /obj/item/nullrod/claymore/multiverse/attack(mob/living/carbon/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	force = rand(1, 30)
 	..()
 
@@ -230,6 +242,8 @@
 	var/possessed = FALSE
 
 /obj/item/nullrod/scythe/talking/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(possessed)
 		return
 
@@ -259,6 +273,8 @@
 		possessed = FALSE
 
 /obj/item/nullrod/scythe/talking/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/simple_animal/shade/S in contents)
 		to_chat(S, "You were destroyed!")
 		qdel(S)
@@ -310,6 +326,8 @@
 	hitsound = 'sound/weapons/blade1.ogg'
 	
 /obj/item/nullrod/pride_hammer/afterattack(atom/A as mob|obj|turf|area, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(prob(30) && ishuman(A))
@@ -373,6 +391,8 @@
 	var/used_blessing = FALSE
 
 /obj/item/nullrod/carp/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(used_blessing)
 	else if(user.mind && (user.mind.isholy))
 		to_chat(user, "You are blessed by Carp-Sie. Wild space carp will no longer attack you.")
@@ -410,15 +430,21 @@
 	flags_2 = SLOWS_WHILE_IN_HAND_2
 
 /obj/item/nullrod/tribal_knife/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 
 /obj/item/nullrod/tribal_knife/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/item/nullrod/tribal_knife/process()
+	procstart = null
+	src.procstart = null
 	slowdown = rand(-2, 2)
 
 

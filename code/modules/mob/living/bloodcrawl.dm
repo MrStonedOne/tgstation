@@ -9,19 +9,29 @@
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/effect/dummy/slaughter/relaymove(mob/user, direction)
+	procstart = null
+	src.procstart = null
 	forceMove(get_step(src,direction))
 
 /obj/effect/dummy/slaughter/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 /obj/effect/dummy/slaughter/bullet_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/dummy/slaughter/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 
 
 /mob/living/proc/phaseout(obj/effect/decal/cleanable/B)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(src))
 		var/mob/living/carbon/C = src
 		for(var/obj/item/I in C.held_items)
@@ -44,6 +54,8 @@
 	return 1
 
 /mob/living/proc/bloodpool_sink(obj/effect/decal/cleanable/B)
+	procstart = null
+	src.procstart = null
 	var/turf/mobloc = get_turf(src.loc)
 
 	src.visible_message("<span class='warning'>[src] sinks into the pool of blood!</span>")
@@ -88,6 +100,8 @@
 	return 1
 
 /mob/living/proc/bloodcrawl_consume(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(src, "<span class='danger'>You begin to feast on [victim]. You can not move while you are doing this.</span>")
 
 	var/sound
@@ -132,6 +146,8 @@
 	return TRUE
 
 /mob/living/proc/bloodcrawl_swallow(var/mob/living/victim)
+	procstart = null
+	src.procstart = null
 	qdel(victim)
 
 /obj/item/bloodcrawl
@@ -141,6 +157,8 @@
 	flags_1 = NODROP_1|ABSTRACT_1
 
 /mob/living/proc/exit_blood_effect(obj/effect/decal/cleanable/B)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(src), 'sound/magic/exit_blood.ogg', 100, 1, -1)
 	//Makes the mob have the color of the blood pool it came out of
 	var/newcolor = rgb(149, 10, 10)
@@ -152,6 +170,8 @@
 		remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, newcolor)
 
 /mob/living/proc/phasein(obj/effect/decal/cleanable/B)
+	procstart = null
+	src.procstart = null
 	if(src.notransform)
 		to_chat(src, "<span class='warning'>Finish eating first!</span>")
 		return 0

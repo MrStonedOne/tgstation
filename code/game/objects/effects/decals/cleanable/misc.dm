@@ -12,6 +12,8 @@
 	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/ash/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("ash", 30)
 	pixel_x = rand(-5, 5)
@@ -22,6 +24,8 @@
 	icon_state = "big_ash"
 
 /obj/effect/decal/cleanable/ash/large/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("ash", 30) //double the amount of ash.
 
@@ -44,10 +48,14 @@
 	icon_state = "greenglow"
 
 /obj/effect/decal/cleanable/greenglow/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(1)
 
 /obj/effect/decal/cleanable/greenglow/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/decal/cleanable/cobweb
@@ -82,6 +90,8 @@
 	random_icon_states = list("vomit_1", "vomit_2", "vomit_3", "vomit_4")
 
 /obj/effect/decal/cleanable/vomit/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(isflyperson(H))
@@ -102,6 +112,8 @@
 	desc = "You try not to look at the chunks, and fail."
 
 /obj/effect/decal/cleanable/vomit/old/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state += "-old"
 
@@ -147,10 +159,14 @@
 	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/shreds/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity == 1) //so shreds created during an explosion aren't deleted by the explosion.
 		qdel(src)
 
 /obj/effect/decal/cleanable/shreds/Initialize()
+	procstart = null
+	src.procstart = null
 	pixel_x = rand(-10, 10)
 	pixel_y = rand(-10, 10)
 	. = ..()

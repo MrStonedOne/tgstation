@@ -63,41 +63,59 @@ Difficulty: Medium
 	death_sound = 'sound/magic/demon_dies.ogg'
 
 /mob/living/simple_animal/hostile/megafauna/dragon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	internal = new/obj/item/device/gps/internal/dragon(src)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity == 3)
 		return
 	..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!forced && (swooping & SWOOP_INVULNERABLE))
 		return FALSE
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/visible_message()
+	procstart = null
+	src.procstart = null
 	if(swooping & SWOOP_INVULNERABLE) //to suppress attack messages without overriding every single proc that could send a message saying we got hit
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(!swooping)
 		return ..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/DestroySurroundings()
+	procstart = null
+	src.procstart = null
 	if(!swooping)
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/Move()
+	procstart = null
+	src.procstart = null
 	if(!swooping)
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/Goto(target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	if(!swooping)
 		..()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/OpenFire()
+	procstart = null
+	src.procstart = null
 	if(swooping)
 		return
 	anger_modifier = Clamp(((maxHealth - health)/50),0,20)
@@ -118,6 +136,8 @@ Difficulty: Medium
 		fire_walls()
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/fire_rain()
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 	target.visible_message("<span class='boldwarning'>Fire rains from the sky!</span>")
@@ -126,12 +146,16 @@ Difficulty: Medium
 			new /obj/effect/temp_visual/target(turf)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/fire_walls()
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(src),'sound/magic/fireball.ogg', 200, 1)
 
 	for(var/d in GLOB.cardinals)
 		INVOKE_ASYNC(src, .proc/fire_wall, d)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/fire_wall(dir)
+	procstart = null
+	src.procstart = null
 	var/list/hit_things = list(src)
 	var/turf/E = get_edge_target_turf(src, dir)
 	var/range = 10
@@ -152,11 +176,15 @@ Difficulty: Medium
 		sleep(1)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/triple_swoop()
+	procstart = null
+	src.procstart = null
 	swoop_attack(swoop_duration = 30)
 	swoop_attack(swoop_duration = 30)
 	swoop_attack(swoop_duration = 30)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/proc/swoop_attack(fire_rain, atom/movable/manual_target, swoop_duration = 40)
+	procstart = null
+	src.procstart = null
 	if(stat || swooping)
 		return
 	if(manual_target)
@@ -262,6 +290,8 @@ Difficulty: Medium
 	SetRecoveryTime(MEGAFAUNA_DEFAULT_RECOVERY_TIME)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/AltClickOn(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(!istype(A))
 		return
 	if(swoop_cooldown >= world.time)
@@ -287,6 +317,8 @@ Difficulty: Medium
 	pixel_z = DRAKE_SWOOP_HEIGHT
 
 /obj/effect/temp_visual/fireball/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, pixel_z = 0, time = duration)
 
@@ -298,13 +330,19 @@ Difficulty: Medium
 	duration = 9
 
 /obj/effect/temp_visual/target/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/temp_visual/target/Initialize(mapload, list/flame_hit)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, .proc/fall, flame_hit)
 
 /obj/effect/temp_visual/target/proc/fall(list/flame_hit)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	playsound(T,'sound/magic/fleshtostone.ogg', 80, 1)
 	new /obj/effect/temp_visual/fireball(T)
@@ -345,10 +383,14 @@ Difficulty: Medium
 	randomdir = FALSE
 
 /obj/effect/temp_visual/dragon_flight/Initialize(mapload, negative)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	INVOKE_ASYNC(src, .proc/flight, negative)
 
 /obj/effect/temp_visual/dragon_flight/proc/flight(negative)
+	procstart = null
+	src.procstart = null
 	if(negative)
 		animate(src, pixel_x = -DRAKE_SWOOP_HEIGHT*0.1, pixel_z = DRAKE_SWOOP_HEIGHT*0.15, time = 3, easing = BOUNCE_EASING)
 	else
@@ -366,6 +408,8 @@ Difficulty: Medium
 	duration = 5
 
 /obj/effect/temp_visual/dragon_flight/end/flight(negative)
+	procstart = null
+	src.procstart = null
 	if(negative)
 		pixel_x = -DRAKE_SWOOP_HEIGHT
 		animate(src, pixel_x = -16, pixel_z = 0, time = 5)
@@ -386,6 +430,8 @@ Difficulty: Medium
 	butcher_results = list(/obj/item/ore/diamond = 5, /obj/item/stack/sheet/sinew = 5, /obj/item/stack/sheet/bone = 30)
 
 /mob/living/simple_animal/hostile/megafauna/dragon/lesser/grant_achievement(medaltype,scoretype)
+	procstart = null
+	src.procstart = null
 	return
 
 #undef MEDAL_PREFIX

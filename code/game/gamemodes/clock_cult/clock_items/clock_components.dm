@@ -10,11 +10,15 @@
 	var/message_span = "heavy_brass"
 
 /obj/item/clockwork/component/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		to_chat(user, "<span class='[get_component_span(component_id)]'>You can activate this in your hand to break it down for power.</span>")
 
 /obj/item/clockwork/component/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user))
 		user.visible_message("<span class='notice'>[user] crushes [src] in their hand!</span>", \
 		"<span class='alloy'>You crush [src], capturing its escaping energy for use as power.</span>")
@@ -23,6 +27,8 @@
 		qdel(src)
 
 /obj/item/clockwork/component/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(iscultist(user) || (user.mind && user.mind.isholy))
 		to_chat(user, "<span class='[message_span]'>[cultist_message]</span>")
@@ -173,6 +179,8 @@
 	var/sprite_shift = 9
 
 /obj/item/clockwork/alloy_shards/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(randomsinglesprite)
 		replace_name_desc()
@@ -181,11 +189,15 @@
 		pixel_y = rand(-sprite_shift, sprite_shift)
 
 /obj/item/clockwork/alloy_shards/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		to_chat(user, "<span class='brass'>Can be consumed by a replica fabricator as a source of power.</span>")
 
 /obj/item/clockwork/alloy_shards/proc/replace_name_desc()
+	procstart = null
+	src.procstart = null
 	name = "replicant alloy shard"
 	desc = "A broken shard of some oddly malleable metal. It occasionally moves and seems to glow."
 	clockwork_desc = "A broken shard of replicant alloy."
@@ -215,6 +227,8 @@
 	sprite_shift = 12
 
 /obj/item/clockwork/alloy_shards/medium/gear_bit/replace_name_desc()
+	procstart = null
+	src.procstart = null
 	name = "gear bit"
 	desc = "A broken chunk of a gear. You want it."
 	clockwork_desc = "A broken chunk of a gear."
@@ -222,6 +236,8 @@
 /obj/item/clockwork/alloy_shards/medium/gear_bit/large //gives more power
 
 /obj/item/clockwork/alloy_shards/medium/gear_bit/large/replace_name_desc()
+	procstart = null
+	src.procstart = null
 	..()
 	name = "complex gear bit"
 

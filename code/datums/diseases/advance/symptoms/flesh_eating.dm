@@ -34,6 +34,8 @@ Bonus
 					  <b>Transmission 8:</b> Causes extreme pain to the host, weakening it."
 
 /datum/symptom/flesh_eating/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["resistance"] >= 7) //extra bleeding
@@ -42,6 +44,8 @@ Bonus
 		pain = TRUE
 
 /datum/symptom/flesh_eating/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -54,6 +58,8 @@ Bonus
 			Flesheat(M, A)
 
 /datum/symptom/flesh_eating/proc/Flesheat(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(15,25) * power
 	M.adjustBruteLoss(get_damage)
 	if(pain)
@@ -100,6 +106,8 @@ Bonus
 					  <b>Stealth 5:</b> The symptom remains hidden until active."
 
 /datum/symptom/flesh_death/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 5)
@@ -108,6 +116,8 @@ Bonus
 		chems = TRUE
 
 /datum/symptom/flesh_death/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -121,6 +131,8 @@ Bonus
 			Flesh_death(M, A)
 
 /datum/symptom/flesh_death/proc/Flesh_death(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_damage = rand(6,10)
 	M.adjustBruteLoss(get_damage)
 	if(chems)

@@ -3,6 +3,8 @@
 	name = "dir pin"
 
 /datum/integrated_io/dir/ask_for_pin_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/new_data = input("Please type in a valid dir number.  \
 	Valid dirs are;\n\
 	North/Fore = [NORTH],\n\
@@ -18,14 +20,20 @@
 		write_data_to_pin(new_data)
 
 /datum/integrated_io/dir/write_data_to_pin(var/new_data)
+	procstart = null
+	src.procstart = null
 	if(isnull(new_data) || new_data in list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)/* + list(UP, DOWN)*/)
 		data = new_data
 		holder.on_data_written()
 
 /datum/integrated_io/dir/display_pin_type()
+	procstart = null
+	src.procstart = null
 	return IC_FORMAT_DIR
 
 /datum/integrated_io/dir/display_data(var/input)
+	procstart = null
+	src.procstart = null
 	if(!isnull(data))
 		return "([dir2text(data)])"
 	return ..()

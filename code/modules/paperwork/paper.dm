@@ -34,6 +34,8 @@
 
 
 /obj/item/paper/pickup(user)
+	procstart = null
+	src.procstart = null
 	if(contact_poison && ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/clothing/gloves/G = H.gloves
@@ -44,6 +46,8 @@
 
 
 /obj/item/paper/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_y = rand(-8, 8)
 	pixel_x = rand(-9, 9)
@@ -53,6 +57,8 @@
 
 /obj/item/paper/update_icon()
 
+	procstart = null
+	src.procstart = null
 	if(resistance_flags & ON_FIRE)
 		icon_state = "paper_onfire"
 		return
@@ -63,6 +69,8 @@
 
 
 /obj/item/paper/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to fold it.</span>")
 
@@ -85,6 +93,8 @@
 
 
 /obj/item/paper/verb/rename()
+	procstart = null
+	src.procstart = null
 	set name = "Rename paper"
 	set category = "Object"
 	set src in usr
@@ -105,13 +115,19 @@
 
 
 /obj/item/paper/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] scratches a grid on [user.p_their()] wrist with the paper! It looks like [user.p_theyre()] trying to commit sudoku...</span>")
 	return (BRUTELOSS)
 
 /obj/item/paper/proc/reset_spamflag()
+	procstart = null
+	src.procstart = null
 	spam_flag = FALSE
 
 /obj/item/paper/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.examinate(src)
 	if(rigged && (SSevents.holidays && SSevents.holidays[APRIL_FOOLS]))
 		if(!spam_flag)
@@ -121,6 +137,8 @@
 
 
 /obj/item/paper/attack_ai(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	var/dist
 	if(istype(user) && user.current) //is AI
 		dist = get_dist(src, user.current)
@@ -135,6 +153,8 @@
 
 
 /obj/item/paper/proc/addtofield(id, text, links = 0)
+	procstart = null
+	src.procstart = null
 	var/locid = 0
 	var/laststart = 1
 	var/textindex = 1
@@ -173,6 +193,8 @@
 
 
 /obj/item/paper/proc/updateinfolinks()
+	procstart = null
+	src.procstart = null
 	info_links = info
 	for(var/i in 1 to min(fields, 15))
 		addtofield(i, "<font face=\"[PEN_FONT]\"><A href='?src=[REF(src)];write=[i]'>write</A></font>", 1)
@@ -180,6 +202,8 @@
 
 
 /obj/item/paper/proc/clearpaper()
+	procstart = null
+	src.procstart = null
 	info = null
 	stamps = null
 	LAZYCLEARLIST(stamped)
@@ -189,6 +213,8 @@
 
 
 /obj/item/paper/proc/parsepencode(t, obj/item/pen/P, mob/user, iscrayon = 0)
+	procstart = null
+	src.procstart = null
 	if(length(t) < 1)		//No input means nothing needs to be parsed
 		return
 
@@ -224,6 +250,8 @@
 
 
 /obj/item/paper/proc/openhelp(mob/user)
+	procstart = null
+	src.procstart = null
 	user << browse({"<HTML><HEAD><TITLE>Paper Help</TITLE></HEAD>
 	<BODY>
 		You can use backslash (\\) to escape special characters.<br>
@@ -247,6 +275,8 @@
 
 
 /obj/item/paper/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usr.stat || usr.restrained())
 		return
@@ -282,6 +312,8 @@
 
 
 /obj/item/paper/attackby(obj/item/P, mob/living/carbon/human/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(resistance_flags & ON_FIRE)
@@ -336,6 +368,8 @@
 	add_fingerprint(user)
 
 /obj/item/paper/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!(resistance_flags & FIRE_PROOF))
 		icon_state = "paper_onfire"
@@ -343,6 +377,8 @@
 
 
 /obj/item/paper/extinguish()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
@@ -353,6 +389,8 @@
 /obj/item/paper/construction
 
 /obj/item/paper/construction/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	color = pick("FF0000", "#33cc33", "#ffb366", "#551A8B", "#ff80d5", "#4d94ff")
 
@@ -361,6 +399,8 @@
  */
 
 /obj/item/paper/natural/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	color = "#FFF5ED"
 
@@ -370,6 +410,8 @@
 	slot_flags = null
 
 /obj/item/paper/crumpled/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/paper/crumpled/bloody

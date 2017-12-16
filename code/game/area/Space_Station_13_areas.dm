@@ -79,6 +79,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	ambientsounds = RUINS
 
 /area/asteroid/artifactroom/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_dynamic_lighting()
 

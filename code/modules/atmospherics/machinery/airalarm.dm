@@ -5,12 +5,16 @@
 	var/max2
 
 /datum/tlv/New(min2 as num, min1 as num, max1 as num, max2 as num)
+	procstart = null
+	src.procstart = null
 	if(min2) src.min2 = min2
 	if(min1) src.min1 = min1
 	if(max1) src.max1 = max1
 	if(max2) src.max2 = max2
 
 /datum/tlv/proc/get_danger_level(val as num)
+	procstart = null
+	src.procstart = null
 	if(max2 != -1 && val >= max2)
 		return 2
 	if(min2 != -1 && val <= min2)
@@ -158,6 +162,8 @@
 	var/list/air_scrub_info = list()
 
 /obj/machinery/airalarm/New(loc, ndir, nbuild)
+	procstart = null
+	src.procstart = null
 	..()
 	wires = new /datum/wires/airalarm(src)
 	if(ndir)
@@ -176,16 +182,22 @@
 	update_icon()
 
 /obj/machinery/airalarm/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	qdel(wires)
 	wires = null
 	return ..()
 
 /obj/machinery/airalarm/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(frequency)
 
 /obj/machinery/airalarm/ui_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.has_unlimited_silicon_privilege && aidisabled)
 		to_chat(user, "AI control has been disabled.")
 	else if(!shorted)
@@ -200,6 +212,8 @@
 		ui.open()
 
 /obj/machinery/airalarm/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list(
 		"locked" = locked,
 		"siliconUser" = user.has_unlimited_silicon_privilege,
@@ -323,6 +337,8 @@
 	return data
 
 /obj/machinery/airalarm/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..() || buildstage != 2)
 		return
 	if((locked && !usr.has_unlimited_silicon_privilege) || (usr.has_unlimited_silicon_privilege && aidisabled))
@@ -388,6 +404,8 @@
 
 
 /obj/machinery/airalarm/proc/reset(wire)
+	procstart = null
+	src.procstart = null
 	switch(wire)
 		if(WIRE_POWER)
 			if(!wires.is_cut(WIRE_POWER))
@@ -399,6 +417,8 @@
 
 
 /obj/machinery/airalarm/proc/shock(mob/user, prb)
+	procstart = null
+	src.procstart = null
 	if((stat & (NOPOWER)))		// unpowered, no shock
 		return 0
 	if(!prob(prb))
@@ -412,6 +432,8 @@
 		return 0
 
 /obj/machinery/airalarm/proc/refresh_all()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	for(var/id_tag in A.air_vent_names)
 		var/list/I = A.air_vent_info[id_tag]
@@ -425,6 +447,8 @@
 		send_signal(id_tag, list("status"))
 
 /obj/machinery/airalarm/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	radio_connection = SSradio.add_object(src, frequency, RADIO_TO_AIRALARM)
@@ -441,6 +465,8 @@
 	return 1
 
 /obj/machinery/airalarm/proc/apply_mode()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 	switch(mode)
 		if(AALARM_MODE_SCRUBBING)
@@ -556,6 +582,8 @@
 				))
 
 /obj/machinery/airalarm/update_icon()
+	procstart = null
+	src.procstart = null
 	if(panel_open)
 		switch(buildstage)
 			if(2)
@@ -580,6 +608,8 @@
 			icon_state = "alarm1"
 
 /obj/machinery/airalarm/process()
+	procstart = null
+	src.procstart = null
 	if((stat & (NOPOWER|BROKEN)) || shorted)
 		return
 
@@ -620,6 +650,8 @@
 
 
 /obj/machinery/airalarm/proc/post_alert(alert_level)
+	procstart = null
+	src.procstart = null
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(alarm_frequency)
 
 	if(!frequency)
@@ -641,6 +673,8 @@
 	frequency.post_signal(src, alert_signal, range = -1)
 
 /obj/machinery/airalarm/proc/apply_danger_level()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(src)
 
 	var/new_area_danger_level = 0
@@ -654,6 +688,8 @@
 	update_icon()
 
 /obj/machinery/airalarm/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	switch(buildstage)
 		if(2)
 			if(istype(W, /obj/item/wirecutters) && panel_open && wires.is_all_cut())
@@ -737,6 +773,8 @@
 	return ..()
 
 /obj/machinery/airalarm/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!issilicon(user) && (!user.canUseTopic(src, be_close=TRUE) || !isturf(loc)))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -745,6 +783,8 @@
 		togglelock(user)
 
 /obj/machinery/airalarm/proc/togglelock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		to_chat(user, "<span class='warning'>It does nothing!</span>")
 	else
@@ -756,10 +796,14 @@
 	return
 
 /obj/machinery/airalarm/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/airalarm/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
@@ -767,10 +811,14 @@
 	playsound(src, "sparks", 50, 1)
 
 /obj/machinery/airalarm/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/airalarm/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc, 2)
 		var/obj/item/I = new /obj/item/electronics/airalarm(loc)

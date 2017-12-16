@@ -9,6 +9,8 @@
 	var/can_contaminate
 
 /datum/radiation_wave/New(atom/_source, dir, _intensity=0, _range_modifier=RAD_DISTANCE_COEFFICIENT, _can_contaminate=TRUE)
+	procstart = null
+	src.procstart = null
 	source = _source
 	master_turf = get_turf(_source)
 
@@ -24,10 +26,14 @@
 	START_PROCESSING(SSradiation, src)
 
 /datum/radiation_wave/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSradiation, src)
 	return ..()
 
 /datum/radiation_wave/process()
+	procstart = null
+	src.procstart = null
 	master_turf = get_step(master_turf, move_dir)
 	steps++
 	var/list/atoms = get_rad_atoms()
@@ -47,6 +53,8 @@
 	check_obstructions(atoms) // reduce our overall strength if there are radiation insulators
 
 /datum/radiation_wave/proc/get_rad_atoms()
+	procstart = null
+	src.procstart = null
 	var/list/atoms = list()
 	var/distance = steps
 	var/cmove_dir = move_dir
@@ -67,6 +75,8 @@
 	return atoms
 
 /datum/radiation_wave/proc/check_obstructions(list/atoms)
+	procstart = null
+	src.procstart = null
 	var/width = steps
 	var/cmove_dir = move_dir
 	if(cmove_dir == NORTH || cmove_dir == SOUTH)
@@ -83,6 +93,8 @@
 		intensity = intensity*(1-((1-insulation.amount)/width)) // The further out the rad wave goes the less it's affected by insulation
 
 /datum/radiation_wave/proc/radiate(list/atoms, strength)
+	procstart = null
+	src.procstart = null
 	for(var/k in 1 to atoms.len)
 		var/atom/thing = atoms[k]
 		if(!thing)

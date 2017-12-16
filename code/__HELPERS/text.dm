@@ -15,10 +15,14 @@
 
 // Run all strings to be used in an SQL query through this proc first to properly escape out injection attempts.
 /proc/sanitizeSQL(t)
+	procstart = null
+	src.procstart = null
 	var/sqltext = SSdbcore.Quote("[t]");
 	return copytext(sqltext, 2, lentext(sqltext));//Quote() adds quotes around input, we already do that
 
 /proc/format_table_name(table as text)
+	procstart = null
+	src.procstart = null
 	return CONFIG_GET(string/feedback_tableprefix) + table
 
 /*
@@ -27,6 +31,8 @@
 
 //Simply removes < and > and limits the length of the message
 /proc/strip_html_simple(t,limit=MAX_MESSAGE_LEN)
+	procstart = null
+	src.procstart = null
 	var/list/strip_chars = list("<",">")
 	t = copytext(t,1,limit)
 	for(var/char in strip_chars)
@@ -38,6 +44,8 @@
 
 //Removes a few problematic characters
 /proc/sanitize_simple(t,list/repl_chars = list("\n"="#","\t"="#"))
+	procstart = null
+	src.procstart = null
 	for(var/char in repl_chars)
 		var/index = findtext(t, char)
 		while(index)
@@ -46,25 +54,35 @@
 	return t
 
 /proc/sanitize_filename(t)
+	procstart = null
+	src.procstart = null
 	return sanitize_simple(t, list("\n"="", "\t"="", "/"="", "\\"="", "?"="", "%"="", "*"="", ":"="", "|"="", "\""="", "<"="", ">"=""))
 
 //Runs byond's sanitization proc along-side sanitize_simple
 /proc/sanitize(t,list/repl_chars = null)
+	procstart = null
+	src.procstart = null
 	return html_encode(sanitize_simple(t,repl_chars))
 
 //Runs sanitize and strip_html_simple
 //I believe strip_html_simple() is required to run first to prevent '<' from displaying as '&lt;' after sanitize() calls byond's html_encode()
 /proc/strip_html(t,limit=MAX_MESSAGE_LEN)
+	procstart = null
+	src.procstart = null
 	return copytext((sanitize(strip_html_simple(t))),1,limit)
 
 //Runs byond's sanitization proc along-side strip_html_simple
 //I believe strip_html_simple() is required to run first to prevent '<' from displaying as '&lt;' that html_encode() would cause
 /proc/adminscrub(t,limit=MAX_MESSAGE_LEN)
+	procstart = null
+	src.procstart = null
 	return copytext((html_encode(strip_html_simple(t))),1,limit)
 
 
 //Returns null if there is any bad text in the string
 /proc/reject_bad_text(text, max_length=512)
+	procstart = null
+	src.procstart = null
 	if(length(text) > max_length)
 		return			//message too long
 	var/non_whitespace = 0
@@ -86,6 +104,8 @@
 // Used to get a properly sanitized input, of max_length
 // no_trim is self explanatory but it prevents the input from being trimed if you intend to parse newlines or whitespace.
 /proc/stripped_input(mob/user, message = "", title = "", default = "", max_length=MAX_MESSAGE_LEN, no_trim=FALSE)
+	procstart = null
+	src.procstart = null
 	var/name = input(user, message, title, default) as text|null
 	if(no_trim)
 		return copytext(html_encode(name), 1, max_length)
@@ -94,6 +114,8 @@
 
 // Used to get a properly sanitized multiline input, of max_length
 /proc/stripped_multiline_input(mob/user, message = "", title = "", default = "", max_length=MAX_MESSAGE_LEN, no_trim=FALSE)
+	procstart = null
+	src.procstart = null
 	var/name = input(user, message, title, default) as message|null
 	if(no_trim)
 		return copytext(html_encode(name), 1, max_length)
@@ -102,6 +124,8 @@
 
 //Filters out undesirable characters from names
 /proc/reject_bad_name(t_in, allow_numbers=0, max_length=MAX_NAME_LEN)
+	procstart = null
+	src.procstart = null
 	if(!t_in || length(t_in) > max_length)
 		return //Rejects the input if it is null or if it is longer then the max length allowed
 
@@ -177,6 +201,8 @@
 //html_encode helper proc that returns the smallest non null of two numbers
 //or 0 if they're both null (needed because of findtext returning 0 when a value is not present)
 /proc/non_zero_min(a, b)
+	procstart = null
+	src.procstart = null
 	if(!a)
 		return b
 	if(!b)
@@ -190,6 +216,8 @@
 //Checks the beginning of a string for a specified sub-string
 //Returns the position of the substring or 0 if it was not found
 /proc/dd_hasprefix(text, prefix)
+	procstart = null
+	src.procstart = null
 	var/start = 1
 	var/end = length(prefix) + 1
 	return findtext(text, prefix, start, end)
@@ -197,6 +225,8 @@
 //Checks the beginning of a string for a specified sub-string. This proc is case sensitive
 //Returns the position of the substring or 0 if it was not found
 /proc/dd_hasprefix_case(text, prefix)
+	procstart = null
+	src.procstart = null
 	var/start = 1
 	var/end = length(prefix) + 1
 	return findtextEx(text, prefix, start, end)
@@ -204,6 +234,8 @@
 //Checks the end of a string for a specified substring.
 //Returns the position of the substring or 0 if it was not found
 /proc/dd_hassuffix(text, suffix)
+	procstart = null
+	src.procstart = null
 	var/start = length(text) - length(suffix)
 	if(start)
 		return findtext(text, suffix, start, null)
@@ -212,12 +244,16 @@
 //Checks the end of a string for a specified substring. This proc is case sensitive
 //Returns the position of the substring or 0 if it was not found
 /proc/dd_hassuffix_case(text, suffix)
+	procstart = null
+	src.procstart = null
 	var/start = length(text) - length(suffix)
 	if(start)
 		return findtextEx(text, suffix, start, null)
 
 //Checks if any of a given list of needles is in the haystack
 /proc/text_in_list(haystack, list/needle_list, start=1, end=0)
+	procstart = null
+	src.procstart = null
 	for(var/needle in needle_list)
 		if(findtext(haystack, needle, start, end))
 			return 1
@@ -225,6 +261,8 @@
 
 //Like above, but case sensitive
 /proc/text_in_list_case(haystack, list/needle_list, start=1, end=0)
+	procstart = null
+	src.procstart = null
 	for(var/needle in needle_list)
 		if(findtextEx(haystack, needle, start, end))
 			return 1
@@ -232,24 +270,32 @@
 
 //Adds 'u' number of zeros ahead of the text 't'
 /proc/add_zero(t, u)
+	procstart = null
+	src.procstart = null
 	while (length(t) < u)
 		t = "0[t]"
 	return t
 
 //Adds 'u' number of spaces ahead of the text 't'
 /proc/add_lspace(t, u)
+	procstart = null
+	src.procstart = null
 	while(length(t) < u)
 		t = " [t]"
 	return t
 
 //Adds 'u' number of spaces behind the text 't'
 /proc/add_tspace(t, u)
+	procstart = null
+	src.procstart = null
 	while(length(t) < u)
 		t = "[t] "
 	return t
 
 //Returns a string with reserved characters and spaces before the first letter removed
 /proc/trim_left(text)
+	procstart = null
+	src.procstart = null
 	for (var/i = 1 to length(text))
 		if (text2ascii(text, i) > 32)
 			return copytext(text, i)
@@ -257,6 +303,8 @@
 
 //Returns a string with reserved characters and spaces after the last letter removed
 /proc/trim_right(text)
+	procstart = null
+	src.procstart = null
 	for (var/i = length(text), i > 0, i--)
 		if (text2ascii(text, i) > 32)
 			return copytext(text, 1, i + 1)
@@ -265,16 +313,22 @@
 
 //Returns a string with reserved characters and spaces before the first word and after the last word removed.
 /proc/trim(text, max_length)
+	procstart = null
+	src.procstart = null
 	if(max_length)
 		text = copytext(text, 1, max_length)
 	return trim_left(trim_right(text))
 
 //Returns a string with the first element of the string capitalized.
 /proc/capitalize(t as text)
+	procstart = null
+	src.procstart = null
 	return uppertext(copytext(t, 1, 2)) + copytext(t, 2)
 
 //Centers text by adding spaces to either side of the string.
 /proc/dd_centertext(message, length)
+	procstart = null
+	src.procstart = null
 	var/new_message = message
 	var/size = length(message)
 	var/delta = length - size
@@ -292,6 +346,8 @@
 
 //Limits the length of the text. Note: MAX_MESSAGE_LEN and MAX_NAME_LEN are widely used for this purpose
 /proc/dd_limittext(message, length)
+	procstart = null
+	src.procstart = null
 	var/size = length(message)
 	if(size <= length)
 		return message
@@ -310,6 +366,8 @@
 		var/b = copytext(compare,i,i+1)
 //if it isn't both the same letter, or if they are both the replacement character
 //(no way to know what it was supposed to be)
+		procstart = null
+		src.procstart = null
 		if(a != b)
 			if(a == replace) //if A is the replacement char
 				newtext = copytext(newtext,1,i) + b + copytext(newtext, i+1)
@@ -332,6 +390,8 @@
 	return count
 
 /proc/reverse_text(text = "")
+	procstart = null
+	src.procstart = null
 	var/new_text = ""
 	for(var/i = length(text); i > 0; i--)
 		new_text += copytext(text, i, i+1)
@@ -342,22 +402,32 @@ GLOBAL_LIST_INIT(hex_characters, list("0","1","2","3","4","5","6","7","8","9","a
 GLOBAL_LIST_INIT(alphabet, list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"))
 GLOBAL_LIST_INIT(binary, list("0","1"))
 /proc/random_string(length, list/characters)
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/i=1, i<=length, i++)
 		. += pick(characters)
 
 /proc/repeat_string(times, string="")
+	procstart = null
+	src.procstart = null
 	. = ""
 	for(var/i=1, i<=times, i++)
 		. += string
 
 /proc/random_short_color()
+	procstart = null
+	src.procstart = null
 	return random_string(3, GLOB.hex_characters)
 
 /proc/random_color()
+	procstart = null
+	src.procstart = null
 	return random_string(6, GLOB.hex_characters)
 
 /proc/add_zero2(t, u)
+	procstart = null
+	src.procstart = null
 	var/temp1
 	while (length(t) < u)
 		t = "0[t]"
@@ -373,6 +443,8 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 //The returned text is always the same length as into
 //This was coded to handle DNA gene-splicing.
 /proc/merge_text(into, from, null_char="_")
+	procstart = null
+	src.procstart = null
 	. = ""
 	if(!istext(into))
 		into = ""
@@ -406,6 +478,8 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 //it may appear this can be optimised, but it really can't. findtext() is so much faster than anything you can do in byondcode.
 //stupid byond :(
 /proc/findchar(haystack, needles, start=1, end=0)
+	procstart = null
+	src.procstart = null
 	var/temp
 	var/len = length(needles)
 	for(var/i=1, i<=len, i++)
@@ -415,6 +489,8 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	return end
 
 /proc/parsemarkdown_basic_step1(t, limited=FALSE)
+	procstart = null
+	src.procstart = null
 	if(length(t) <= 0)
 		return
 
@@ -517,6 +593,8 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	return t
 
 /proc/parsemarkdown_basic_step2(t)
+	procstart = null
+	src.procstart = null
 	if(length(t) <= 0)
 		return
 
@@ -541,11 +619,15 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	return t
 
 /proc/parsemarkdown_basic(t, limited=FALSE)
+	procstart = null
+	src.procstart = null
 	t = parsemarkdown_basic_step1(t, limited)
 	t = parsemarkdown_basic_step2(t)
 	return t
 
 /proc/parsemarkdown(t, mob/user=null, limited=FALSE)
+	procstart = null
+	src.procstart = null
 	if(length(t) <= 0)
 		return
 
@@ -573,6 +655,8 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 #define string2charlist(string) (splittext(string, regex("(.)")) - splittext(string, ""))
 
 /proc/rot13(text = "")
+	procstart = null
+	src.procstart = null
 	var/list/textlist = string2charlist(text)
 	var/list/result = list()
 	for(var/c in textlist)
@@ -594,6 +678,8 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 //in the json file and have it be reflected in the in game item/mob it came from.
 //(That's what things like savefiles are for) Note that this list is not shuffled.
 /proc/twitterize(list/proposed, filename, cullshort = 1, storemax = 1000)
+	procstart = null
+	src.procstart = null
 	if(!islist(proposed) || !filename || !CONFIG_GET(flag/log_twitter))
 		return
 
@@ -685,6 +771,8 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 
 //Used for applying byonds text macros to strings that are loaded at runtime
 /proc/apply_text_macros(string)
+	procstart = null
+	src.procstart = null
 	var/next_backslash = findtext(string, "\\")
 	if(!next_backslash)
 		return string

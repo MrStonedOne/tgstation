@@ -51,17 +51,23 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	var/carp_fluff_string = "<span class='holoparasite'>CARP CARP CARP SOME SORT OF HORRIFIC BUG BLAME THE CODERS CARP CARP CARP</span>"
 
 /mob/living/simple_animal/hostile/guardian/Initialize(mapload, theme)
+	procstart = null
+	src.procstart = null
 	GLOB.parasites += src
 	setthemename(theme)
 
 	. = ..()
 
 /mob/living/simple_animal/hostile/guardian/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	if(summoner)
 		var/image/holder = hud_list[HEALTH_HUD]
 		holder.icon_state = "hud[RoundHealth(summoner)]"
 
 /mob/living/simple_animal/hostile/guardian/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	if(summoner)
 		var/image/holder = hud_list[STATUS_HUD]
 		var/icon/I = icon(icon, icon_state, dir)
@@ -72,6 +78,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 			holder.icon_state = "hudhealthy"
 
 /mob/living/simple_animal/hostile/guardian/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.parasites -= src
 	return ..()
 
@@ -149,6 +157,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	snapback()
 
 /mob/living/simple_animal/hostile/guardian/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		if(summoner)
@@ -166,6 +176,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	snapback()
 
 /mob/living/simple_animal/hostile/guardian/proc/snapback()
+	procstart = null
+	src.procstart = null
 	if(summoner)
 		if(get_dist(get_turf(summoner),get_turf(src)) <= range)
 			return
@@ -180,12 +192,18 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 				new /obj/effect/temp_visual/guardian/phase(loc)
 
 /mob/living/simple_animal/hostile/guardian/canSuicide()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/simple_animal/hostile/guardian/proc/is_deployed()
+	procstart = null
+	src.procstart = null
 	return loc != summoner
 
 /mob/living/simple_animal/hostile/guardian/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(!is_deployed())
 		to_chat(src, "<span class='danger'><B>You must be manifested to attack!</span></B>")
 		return FALSE
@@ -193,6 +211,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 		return ..()
 
 /mob/living/simple_animal/hostile/guardian/death()
+	procstart = null
+	src.procstart = null
 	drop_all_held_items()
 	..()
 	if(summoner)
@@ -200,6 +220,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 		summoner.death()
 
 /mob/living/simple_animal/hostile/guardian/update_health_hud()
+	procstart = null
+	src.procstart = null
 	if(summoner && hud_used && hud_used.healths)
 		var/resulthealth
 		if(iscarbon(summoner))
@@ -223,6 +245,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 		update_health_hud()
 
 /mob/living/simple_animal/hostile/guardian/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			gib()
@@ -233,6 +257,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 			adjustBruteLoss(30)
 
 /mob/living/simple_animal/hostile/guardian/gib()
+	procstart = null
+	src.procstart = null
 	if(summoner)
 		to_chat(summoner, "<span class='danger'><B>Your [src] was blown up!</span></B>")
 		summoner.gib()
@@ -242,6 +268,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 //HAND HANDLING
 
 /mob/living/simple_animal/hostile/guardian/equip_to_slot(obj/item/I, slot)
+	procstart = null
+	src.procstart = null
 	if(!slot)
 		return FALSE
 	if(!istype(I))
@@ -263,16 +291,22 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	I.plane = ABOVE_HUD_PLANE
 
 /mob/living/simple_animal/hostile/guardian/proc/apply_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	if((. = guardian_overlays[cache_index]))
 		add_overlay(.)
 
 /mob/living/simple_animal/hostile/guardian/proc/remove_overlay(cache_index)
+	procstart = null
+	src.procstart = null
 	var/I = guardian_overlays[cache_index]
 	if(I)
 		cut_overlay(I)
 		guardian_overlays[cache_index] = null
 
 /mob/living/simple_animal/hostile/guardian/update_inv_hands()
+	procstart = null
+	src.procstart = null
 	remove_overlay(GUARDIAN_HANDS_LAYER)
 	var/list/hands_overlays = list()
 	var/obj/item/l_hand = get_item_for_held_index(1)
@@ -309,11 +343,15 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	apply_overlay(GUARDIAN_HANDS_LAYER)
 
 /mob/living/simple_animal/hostile/guardian/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	update_inv_hands()
 
 //MANIFEST, RECALL, TOGGLE MODE/LIGHT, SHOW TYPE
 
 /mob/living/simple_animal/hostile/guardian/proc/Manifest(forced)
+	procstart = null
+	src.procstart = null
 	if(istype(summoner.loc, /obj/effect) || (cooldown > world.time && !forced))
 		return FALSE
 	if(loc == summoner)
@@ -325,6 +363,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	return FALSE
 
 /mob/living/simple_animal/hostile/guardian/proc/Recall(forced)
+	procstart = null
+	src.procstart = null
 	if(!summoner || loc == summoner || (cooldown > world.time && !forced))
 		return FALSE
 	new /obj/effect/temp_visual/guardian/phase/out(loc)
@@ -334,9 +374,13 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	return TRUE
 
 /mob/living/simple_animal/hostile/guardian/proc/ToggleMode()
+	procstart = null
+	src.procstart = null
 	to_chat(src, "<span class='danger'><B>You don't have another mode!</span></B>")
 
 /mob/living/simple_animal/hostile/guardian/proc/ToggleLight()
+	procstart = null
+	src.procstart = null
 	if(light_range<3)
 		to_chat(src, "<span class='notice'>You activate your light.</span>")
 		set_light(3)
@@ -345,6 +389,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 		set_light(0)
 
 /mob/living/simple_animal/hostile/guardian/verb/ShowType()
+	procstart = null
+	src.procstart = null
 	set name = "Check Guardian Type"
 	set category = "Guardian"
 	set desc = "Check what type you are."
@@ -353,6 +399,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 //COMMUNICATION
 
 /mob/living/simple_animal/hostile/guardian/proc/Communicate()
+	procstart = null
+	src.procstart = null
 	if(summoner)
 		var/input = stripped_input(src, "Please enter a message to tell your summoner.", "Guardian", "")
 		if(!input)
@@ -372,6 +420,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 		log_talk(src,"GUARDIAN:[key_name(src)]: [input]",LOGSAY)
 
 /mob/living/proc/guardian_comm()
+	procstart = null
+	src.procstart = null
 	set name = "Communicate"
 	set category = "Guardian"
 	set desc = "Communicate telepathically with your guardian."
@@ -396,6 +446,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 //FORCE RECALL/RESET
 
 /mob/living/proc/guardian_recall()
+	procstart = null
+	src.procstart = null
 	set name = "Recall Guardian"
 	set category = "Guardian"
 	set desc = "Forcibly recall your guardian."
@@ -405,6 +457,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 		G.Recall()
 
 /mob/living/proc/guardian_reset()
+	procstart = null
+	src.procstart = null
 	set name = "Reset Guardian Player (One Use)"
 	set category = "Guardian"
 	set desc = "Re-rolls which ghost will control your Guardian. One use per Guardian."
@@ -478,6 +532,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	var/allowguardian = FALSE
 
 /obj/item/guardiancreator/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(isguardian(user) && !allowguardian)
 		to_chat(user, "<span class='holoparasite'>[mob_name] chains are not allowed.</span>")
 		return
@@ -505,6 +561,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 
 
 /obj/item/guardiancreator/proc/spawn_guardian(var/mob/living/user, var/key)
+	procstart = null
+	src.procstart = null
 	var/guardiantype = "Standard"
 	if(random)
 		guardiantype = pick(possible_guardians)
@@ -627,6 +685,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 "}
 
 /obj/item/paper/guides/antag/guardian/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/paper/guides/antag/guardian/wizard
@@ -659,6 +719,8 @@ GLOBAL_LIST_EMPTY(parasites) //all currently existing/living guardians
 	name = "holoparasite injector kit"
 
 /obj/item/storage/box/syndie_kit/guardian/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/item/guardiancreator/tech/choose/traitor(src)
 	new /obj/item/paper/guides/antag/guardian(src)

@@ -11,21 +11,29 @@
 	var/beat = BEAT_NONE//is this mob having a heatbeat sound played? if so, which?
 
 /obj/item/organ/heart/update_icon()
+	procstart = null
+	src.procstart = null
 	if(beating)
 		icon_state = "[icon_base]-on"
 	else
 		icon_state = "[icon_base]-off"
 
 /obj/item/organ/heart/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!special)
 		addtimer(CALLBACK(src, .proc/stop_if_unowned), 120)
 
 /obj/item/organ/heart/proc/stop_if_unowned()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		Stop()
 
 /obj/item/organ/heart/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!beating)
 		user.visible_message("<span class='notice'>[user] squeezes [src] to \
@@ -34,21 +42,29 @@
 		addtimer(CALLBACK(src, .proc/stop_if_unowned), 80)
 
 /obj/item/organ/heart/proc/Stop()
+	procstart = null
+	src.procstart = null
 	beating = 0
 	update_icon()
 	return 1
 
 /obj/item/organ/heart/proc/Restart()
+	procstart = null
+	src.procstart = null
 	beating = 1
 	update_icon()
 	return 1
 
 /obj/item/organ/heart/prepare_eat()
+	procstart = null
+	src.procstart = null
 	var/obj/S = ..()
 	S.icon_state = "heart-off"
 	return S
 
 /obj/item/organ/heart/on_life()
+	procstart = null
+	src.procstart = null
 	if(owner.client && beating)
 		var/sound/slowbeat = sound('sound/health/slowbeat.ogg', repeat = TRUE)
 		var/sound/fastbeat = sound('sound/health/fastbeat.ogg', repeat = TRUE)
@@ -88,6 +104,8 @@
 
 
 /obj/item/organ/heart/cursed/attack(mob/living/carbon/human/H, mob/living/carbon/human/user, obj/target)
+	procstart = null
+	src.procstart = null
 	if(H == user && istype(H))
 		playsound(user,'sound/effects/singlebeat.ogg',40,1)
 		user.temporarilyRemoveItemFromInventory(src, TRUE)
@@ -96,6 +114,8 @@
 		return ..()
 
 /obj/item/organ/heart/cursed/on_life()
+	procstart = null
+	src.procstart = null
 	if(world.time > (last_pump + pump_delay))
 		if(ishuman(owner) && owner.client) //While this entire item exists to make people suffer, they can't control disconnects.
 			var/mob/living/carbon/human/H = owner
@@ -109,6 +129,8 @@
 			last_pump = world.time //lets be extra fair *sigh*
 
 /obj/item/organ/heart/cursed/Insert(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(owner)
 		to_chat(owner, "<span class ='userdanger'>Your heart has been replaced with a cursed one, you have to pump this one manually otherwise you'll die!</span>")
@@ -118,6 +140,8 @@
 
 //You are now brea- pumping blood manually
 /datum/action/item_action/organ_action/cursed_heart/Trigger()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && istype(target, /obj/item/organ/heart/cursed))
 		var/obj/item/organ/heart/cursed/cursed_heart = target
@@ -151,6 +175,8 @@
 	icon_state = "heart-c"
 
 /obj/item/organ/heart/cybernetic/emp_act()
+	procstart = null
+	src.procstart = null
 	Stop()
 
 /obj/item/organ/heart/freedom
@@ -159,6 +185,8 @@
 	var/min_next_adrenaline = 0
 
 /obj/item/organ/heart/freedom/on_life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(owner.health < 5 && world.time > min_next_adrenaline)
 		min_next_adrenaline = world.time + rand(250, 600) //anywhere from 4.5 to 10 minutes

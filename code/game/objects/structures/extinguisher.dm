@@ -11,10 +11,14 @@
 	var/opened = 0
 
 /obj/structure/extinguisher_cabinet/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to [opened ? "close":"open"] it.</span>")
 
 /obj/structure/extinguisher_cabinet/New(loc, ndir, building)
+	procstart = null
+	src.procstart = null
 	..()
 	if(building)
 		setDir(ndir)
@@ -26,21 +30,29 @@
 		stored_extinguisher = new /obj/item/extinguisher(src)
 
 /obj/structure/extinguisher_cabinet/Destroy()
+	procstart = null
+	src.procstart = null
 	if(stored_extinguisher)
 		qdel(stored_extinguisher)
 		stored_extinguisher = null
 	return ..()
 
 /obj/structure/extinguisher_cabinet/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	if(stored_extinguisher)
 		stored_extinguisher.ex_act(severity, target)
 
 /obj/structure/extinguisher_cabinet/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A == stored_extinguisher)
 		stored_extinguisher = null
 		update_icon()
 
 /obj/structure/extinguisher_cabinet/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wrench) && !stored_extinguisher)
 		to_chat(user, "<span class='notice'>You start unsecuring [name]...</span>")
 		playsound(loc, I.usesound, 50, 1)
@@ -68,6 +80,8 @@
 
 
 /obj/structure/extinguisher_cabinet/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) || isalien(user))
 		return
 	if(stored_extinguisher)
@@ -83,6 +97,8 @@
 
 
 /obj/structure/extinguisher_cabinet/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stored_extinguisher)
 		stored_extinguisher.forceMove(loc)
 		to_chat(user, "<span class='notice'>You telekinetically remove [stored_extinguisher] from [src].</span>")
@@ -95,14 +111,20 @@
 
 
 /obj/structure/extinguisher_cabinet/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/structure/extinguisher_cabinet/AltClick(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated() || !Adjacent(user) || !istype(user))
 		return
 	toggle_cabinet(user)
 
 /obj/structure/extinguisher_cabinet/proc/toggle_cabinet(mob/user)
+	procstart = null
+	src.procstart = null
 	if(opened && broken)
 		to_chat(user, "<span class='warning'>[src] is broken open.</span>")
 	else
@@ -111,6 +133,8 @@
 		update_icon()
 
 /obj/structure/extinguisher_cabinet/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!opened)
 		icon_state = "extinguisher_closed"
 		return
@@ -123,6 +147,8 @@
 		icon_state = "extinguisher_empty"
 
 /obj/structure/extinguisher_cabinet/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!broken && !(flags_1 & NODECONSTRUCT_1))
 		broken = 1
 		opened = 1
@@ -133,6 +159,8 @@
 
 
 /obj/structure/extinguisher_cabinet/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(disassembled)
 			new /obj/item/wallframe/extinguisher_cabinet(loc)

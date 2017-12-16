@@ -13,15 +13,21 @@
 	resistance_flags = FLAMMABLE
 
 /obj/item/clipboard/Initialize()
+	procstart = null
+	src.procstart = null
 	update_icon()
 	. = ..()
 
 /obj/item/clipboard/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(haspen)
 	QDEL_NULL(toppaper)	//let movable/Destroy handle the rest
 	return ..()
 
 /obj/item/clipboard/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(toppaper)
 		add_overlay(toppaper.icon_state)
@@ -32,6 +38,8 @@
 
 
 /obj/item/clipboard/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/paper))
 		if(!user.transferItemToLoc(W, src))
 			return
@@ -44,6 +52,8 @@
 
 
 /obj/item/clipboard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = "<title>Clipboard</title>"
 	if(haspen)
 		dat += "<A href='?src=[REF(src)];pen=1'>Remove Pen</A><BR><HR>"
@@ -65,6 +75,8 @@
 
 
 /obj/item/clipboard/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usr.stat || usr.restrained())
 		return

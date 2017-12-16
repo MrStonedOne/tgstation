@@ -17,14 +17,20 @@
 	var/star_light_star_bright = FALSE //If this stargazer can see starlight
 
 /obj/structure/destructible/clockwork/stargazer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSprocessing, src)
 
 /obj/structure/destructible/clockwork/stargazer/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprocessing, src)
 	. = ..()
 
 /obj/structure/destructible/clockwork/stargazer/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user))
 		to_chat(user, "<span class='nzcrentr_small'>Generates <b>[DisplayPower(STARGAZER_POWER)]</b> per second while viewing starlight within [STARGAZER_RANGE] tiles.</span>")
@@ -32,15 +38,21 @@
 		to_chat(user, "[is_servant_of_ratvar(user) ? "<span class='nzcrentr_small'>It can see starlight!</span>" : "It's shining brilliantly!"]")
 
 /obj/structure/destructible/clockwork/stargazer/process()
+	procstart = null
+	src.procstart = null
 	star_light_star_bright = check_starlight()
 	if(star_light_star_bright)
 		adjust_clockwork_power(STARGAZER_POWER)
 
 /obj/structure/destructible/clockwork/stargazer/update_anchored(mob/living/user, damage)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	star_light_star_bright = check_starlight()
 
 /obj/structure/destructible/clockwork/stargazer/proc/check_starlight()
+	procstart = null
+	src.procstart = null
 	var/old_status = star_light_star_bright
 	var/has_starlight
 	if(!anchored)

@@ -22,12 +22,16 @@
 	var/static/list/emote_list = list()
 
 /datum/emote/New()
+	procstart = null
+	src.procstart = null
 	if(key_third_person)
 		emote_list[key_third_person] = src
 	mob_type_allowed_typecache = typecacheof(mob_type_allowed_typecache)
 	mob_type_blacklist_typecache = typecacheof(mob_type_blacklist_typecache)
 
 /datum/emote/proc/run_emote(mob/user, params, type_override)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(!can_run_emote(user))
 		return FALSE
@@ -61,6 +65,8 @@
 	log_talk(user,"[key_name(user)] : [msg]",LOGEMOTE)
 
 /datum/emote/proc/replace_pronoun(mob/user, message)
+	procstart = null
+	src.procstart = null
 	if(findtext(message, "their"))
 		message = replacetext(message, "their", user.p_their())
 	if(findtext(message, "them"))
@@ -70,6 +76,8 @@
 	return message
 
 /datum/emote/proc/select_message_type(mob/user)
+	procstart = null
+	src.procstart = null
 	. = message
 	if(!muzzle_ignore && user.is_muzzled() && emote_type == EMOTE_AUDIBLE)
 		return "makes a [pick("strong ", "weak ", "")]noise."
@@ -89,9 +97,13 @@
 		. = message_simple
 
 /datum/emote/proc/select_param(mob/user, params)
+	procstart = null
+	src.procstart = null
 	return replacetext(message_param, "%t", params)
 
 /datum/emote/proc/can_run_emote(mob/user, status_check = TRUE)
+	procstart = null
+	src.procstart = null
 	. = TRUE
 	if(!is_type_in_typecache(user, mob_type_allowed_typecache))
 		return FALSE
@@ -113,6 +125,8 @@
 	mob_type_allowed_typecache = list(/mob/living/brain, /mob/living/silicon)
 
 /datum/emote/sound/run_emote(mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		playsound(user.loc, sound, 50, vary)

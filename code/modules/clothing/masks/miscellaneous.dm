@@ -9,6 +9,8 @@
 	equip_delay_other = 20
 
 /obj/item/clothing/mask/muzzle/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
 		if(src == C.wear_mask)
@@ -32,6 +34,8 @@
 	actions_types = list(/datum/action/item_action/adjust)
 
 /obj/item/clothing/mask/surgical/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjustmask(user)
 
 /obj/item/clothing/mask/fakemoustache
@@ -56,10 +60,14 @@
 	var/voicechange = 0
 
 /obj/item/clothing/mask/pig/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	voicechange = !voicechange
 	to_chat(user, "<span class='notice'>You turn the voice box [voicechange ? "on" : "off"]!</span>")
 
 /obj/item/clothing/mask/pig/speechModification(message)
+	procstart = null
+	src.procstart = null
 	if(voicechange)
 		message = pick("Oink!","Squeeeeeeee!","Oink Oink!")
 	return message
@@ -74,6 +82,8 @@
 	var/voicechange = 1
 
 /obj/item/clothing/mask/spig/speechModification(message)
+	procstart = null
+	src.procstart = null
 	if(voicechange)
 		message = pick("Oink!","Squeeeeeeee!","Oink Oink!")
 	return message
@@ -89,6 +99,8 @@ obj/item/clothing/mask/frog
 	var/voicechange = TRUE
 
 /obj/item/clothing/mask/frog/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	voicechange = !voicechange
 	to_chat(user, "<span class='notice'>You turn the voice box [voicechange ? "on" : "off"]!</span>")
 
@@ -104,9 +116,13 @@ obj/item/clothing/mask/frog/cursed
 	flags_1 = NODROP_1 //reee!!
 
 /obj/item/clothing/mask/frog/cursed/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	return //no voicebox to alter.
 
 /obj/item/clothing/mask/frog/cursed/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = user
 	if(C.wear_mask == src)
 		to_chat(user, "<span class='warning'><B>[src] was cursed! Ree!!</B></span>")
@@ -124,6 +140,8 @@ obj/item/clothing/mask/frog/cursed
 	var/voicechange = 1
 
 /obj/item/clothing/mask/cowmask/speechModification(message)
+	procstart = null
+	src.procstart = null
 	if(voicechange)
 		message = pick("Moooooooo!","Moo!","Moooo!")
 	return message
@@ -138,6 +156,8 @@ obj/item/clothing/mask/frog/cursed
 	var/voicechange = 1
 
 /obj/item/clothing/mask/horsehead/speechModification(message)
+	procstart = null
+	src.procstart = null
 	if(voicechange)
 		message = pick("NEEIIGGGHHHH!", "NEEEIIIIGHH!", "NEIIIGGHH!", "HAAWWWWW!", "HAAAWWW!")
 	return message
@@ -205,6 +225,8 @@ obj/item/clothing/mask/frog/cursed
 	icon_state = "bandbotany"
 
 /obj/item/clothing/mask/bandana/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjustmask(user)
 
 /obj/item/clothing/mask/bandana/red

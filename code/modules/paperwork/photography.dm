@@ -41,10 +41,14 @@
 
 
 /obj/item/photo/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.examinate(src)
 
 
 /obj/item/photo/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/pen) || istype(P, /obj/item/toy/crayon))
 		var/txt = sanitize(input(user, "What would you like to write on the back?", "Photo Writing", null)  as text)
 		txt = copytext(txt, 1, 128)
@@ -54,6 +58,8 @@
 
 
 /obj/item/photo/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(in_range(src, user))
@@ -63,6 +69,8 @@
 
 
 /obj/item/photo/proc/show(mob/user)
+	procstart = null
+	src.procstart = null
 	user << browse_rsc(img, "tmp_photo.png")
 	user << browse("<html><head><title>[name]</title></head>" \
 		+ "<body style='overflow:hidden;margin:0;text-align:center'>" \
@@ -73,6 +81,8 @@
 
 
 /obj/item/photo/verb/rename()
+	procstart = null
+	src.procstart = null
 	set name = "Rename photo"
 	set category = "Object"
 	set src in usr
@@ -84,6 +94,8 @@
 	add_fingerprint(usr)
 
 /obj/item/photo/proc/photocreate(inicon, inimg, indesc, inblueprints)
+	procstart = null
+	src.procstart = null
 	icon = inicon
 	img = inimg
 	desc = indesc
@@ -126,6 +138,8 @@
 
 
 /obj/item/device/camera/CheckParts(list/parts_list)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/device/camera/C = locate(/obj/item/device/camera) in contents
 	if(C)
@@ -158,6 +172,8 @@
 	name = "Cyborg photo camera"
 
 /obj/item/device/camera/siliconcam/robot_camera/verb/borgprinting()
+	procstart = null
+	src.procstart = null
 	set category ="Robot Commands"
 	set name = "Print Image"
 	set src in usr
@@ -167,10 +183,14 @@
 	borgprint()
 
 /obj/item/device/camera/attack(mob/living/carbon/human/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/item/device/camera/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/camera_film))
 		if(pictures_left)
 			to_chat(user, "<span class='notice'>[src] still has some film in it!</span>")
@@ -185,11 +205,15 @@
 
 
 /obj/item/device/camera/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "It has [pictures_left] photo\s left.")
 
 
 /obj/item/device/camera/proc/camera_get_icon(list/turfs, turf/center)
+	procstart = null
+	src.procstart = null
 	var/atoms[] = list()
 	for(var/turf/T in turfs)
 		atoms.Add(T)
@@ -241,6 +265,8 @@
 
 
 /obj/item/device/camera/proc/camera_get_mobs(turf/the_turf)
+	procstart = null
+	src.procstart = null
 	var/mob_detail
 	for(var/mob/M in the_turf)
 		if(M.invisibility)
@@ -394,6 +420,8 @@
 		injectaialbum(icon, img, desc, pixel_x, pixel_y, blueprintsinject)
 
 /obj/item/device/camera/siliconcam/proc/selectpicture(obj/item/device/camera/siliconcam/targetloc)
+	procstart = null
+	src.procstart = null
 	var/list/nametemp = list()
 	var/find
 	if(targetloc.aipictures.len == 0)
@@ -407,6 +435,8 @@
 			return q
 
 /obj/item/device/camera/siliconcam/proc/viewpichelper(obj/item/device/camera/siliconcam/targetloc)
+	procstart = null
+	src.procstart = null
 	var/obj/item/photo/P = new/obj/item/photo()
 	var/datum/picture/selection = selectpicture(targetloc)
 	if(selection)
@@ -419,6 +449,8 @@
 	qdel(P)    //so 10 thousand picture items are not left in memory should an AI take them and then view them all
 
 /obj/item/device/camera/siliconcam/proc/viewpictures(user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user)) // Cyborg
 		var/mob/living/silicon/robot/C = src.loc
 		var/obj/item/device/camera/siliconcam/Cinfo
@@ -433,6 +465,8 @@
 		viewpichelper(Ainfo)
 
 /obj/item/device/camera/afterattack(atom/target, mob/user, flag)
+	procstart = null
+	src.procstart = null
 	if(!on || !pictures_left || !isturf(target.loc))
 		return
 
@@ -447,25 +481,35 @@
 	addtimer(CALLBACK(src, .proc/cooldown), 64)
 
 /obj/item/device/camera/proc/cooldown()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	icon_state = "camera"
 	on = TRUE
 
 /obj/item/device/camera/siliconcam/proc/toggle_camera_mode()
+	procstart = null
+	src.procstart = null
 	if(in_camera_mode)
 		camera_mode_off()
 	else
 		camera_mode_on()
 
 /obj/item/device/camera/siliconcam/proc/camera_mode_off()
+	procstart = null
+	src.procstart = null
 	src.in_camera_mode = 0
 	to_chat(usr, "<B>Camera Mode deactivated</B>")
 
 /obj/item/device/camera/siliconcam/proc/camera_mode_on()
+	procstart = null
+	src.procstart = null
 	src.in_camera_mode = 1
 	to_chat(usr, "<B>Camera Mode activated</B>")
 
 /obj/item/device/camera/siliconcam/robot_camera/proc/borgprint()
+	procstart = null
+	src.procstart = null
 	var/list/nametemp = list()
 	var/find
 	var/datum/picture/selection
@@ -509,6 +553,8 @@
 	var/obj/item/photo/displayed
 
 /obj/item/wallframe/picture/attackby(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/photo))
 		if(!displayed)
 			if(!user.transferItemToLoc(I, src))
@@ -520,6 +566,8 @@
 	..()
 
 /obj/item/wallframe/picture/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.get_inactive_held_item() != src)
 		..()
 		return
@@ -531,20 +579,28 @@
 		update_icon()
 
 /obj/item/wallframe/picture/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.examinate(src)
 
 /obj/item/wallframe/picture/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.is_holding(src) && displayed)
 		displayed.show(user)
 	else
 		..()
 
 /obj/item/wallframe/picture/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(displayed)
 		add_overlay(getFlatIcon(displayed))
 
 /obj/item/wallframe/picture/after_attach(obj/O)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/structure/sign/picture_frame/PF = O
 	PF.copy_overlays(src)
@@ -563,6 +619,8 @@
 	var/obj/item/photo/framed
 
 /obj/structure/sign/picture_frame/New(loc, dir, building)
+	procstart = null
+	src.procstart = null
 	..()
 	if(dir)
 		setDir(dir)
@@ -571,12 +629,16 @@
 		pixel_y = (dir & 3)? (dir ==1 ? -30 : 30) : 0
 
 /obj/structure/sign/picture_frame/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(in_range(src, user) && framed)
 		framed.show(user)
 	else
 		..()
 
 /obj/structure/sign/picture_frame/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/screwdriver) || istype(I, /obj/item/wrench))
 		to_chat(user, "<span class='notice'>You start unsecuring [name]...</span>")
 		playsound(loc, I.usesound, 50, 1)
@@ -599,15 +661,21 @@
 	..()
 
 /obj/structure/sign/picture_frame/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(framed)
 		framed.show(user)
 
 /obj/structure/sign/picture_frame/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(framed)
 		add_overlay(getFlatIcon(framed))
 
 /obj/structure/sign/picture_frame/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/obj/item/wallframe/picture/F = new /obj/item/wallframe/picture(loc)
 		if(framed)

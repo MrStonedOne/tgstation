@@ -15,20 +15,28 @@
 	var/phaseout = /obj/effect/temp_visual/dir_setting/ninja/phase/out
 
 /datum/action/innate/dash/Grant(mob/user, obj/dasher)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	dashing_item = dasher
 	holder = user
 
 /datum/action/innate/dash/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(current_charges > 0)
 		return TRUE
 	else
 		return FALSE
 
 /datum/action/innate/dash/Activate()
+	procstart = null
+	src.procstart = null
 	dashing_item.attack_self(holder) //Used to toggle dash behavior in the dashing item
 
 /datum/action/innate/dash/proc/Teleport(mob/user, atom/target)
+	procstart = null
+	src.procstart = null
 	if(!IsAvailable())
 		return
 	var/turf/T = get_turf(target)
@@ -43,6 +51,8 @@
 		addtimer(CALLBACK(src, .proc/charge), charge_rate)
 
 /datum/action/innate/dash/proc/charge()
+	procstart = null
+	src.procstart = null
 	current_charges = Clamp(current_charges + 1, 0, max_charges)
 	holder.update_action_buttons_icon()
 	if(recharge_sound)

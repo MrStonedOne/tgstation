@@ -39,6 +39,8 @@
 // Gorillas like to dismember limbs from unconcious mobs.
 // Returns null when the target is not an unconcious carbon mob; a list of limbs (possibly empty) otherwise.
 /mob/living/simple_animal/hostile/gorilla/proc/target_bodyparts(atom/the_target)
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	if(iscarbon(the_target))
 		var/mob/living/carbon/C = the_target
@@ -51,6 +53,8 @@
 			return parts
 
 /mob/living/simple_animal/hostile/gorilla/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(client)
 		oogaooga()
 	var/list/parts = target_bodyparts(target)
@@ -71,15 +75,21 @@
 			visible_message("<span class='danger'>[src] knocks [L] down!</span>")
 
 /mob/living/simple_animal/hostile/gorilla/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	var/list/parts = target_bodyparts(target)
 	return ..() && !istype(the_target, /mob/living/carbon/monkey) && (!parts  || parts.len > 3)
 
 
 /mob/living/simple_animal/hostile/gorilla/CanSmashTurfs(turf/T)
+	procstart = null
+	src.procstart = null
 	return iswallturf(T)
 
 
 /mob/living/simple_animal/hostile/gorilla/gib(no_brain)
+	procstart = null
+	src.procstart = null
 	if(!no_brain)
 		var/mob/living/brain/B = new(drop_location())
 		B.name = real_name
@@ -89,16 +99,22 @@
 	..()
 
 /mob/living/simple_animal/hostile/gorilla/handle_automated_speech(override)
+	procstart = null
+	src.procstart = null
 	if(speak_chance && (override || prob(speak_chance)))
 		playsound(src, "sound/creatures/gorilla.ogg", 200)
 	..()
 
 /mob/living/simple_animal/hostile/gorilla/can_use_guns(obj/item/G)
+	procstart = null
+	src.procstart = null
 	to_chat(src, "<span class='warning'>Your meaty finger is much too large for the trigger guard!</span>")
 	return FALSE
 
 
 /mob/living/simple_animal/hostile/gorilla/proc/oogaooga()
+	procstart = null
+	src.procstart = null
 	oogas++
 	if(oogas >= rand(2,6))
 		playsound(src, "sound/creatures/gorilla.ogg", 200)

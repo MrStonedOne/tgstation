@@ -15,6 +15,8 @@ SUBSYSTEM_DEF(events)
 	var/wizardmode = 0
 
 /datum/controller/subsystem/events/Initialize(time, zlevel)
+	procstart = null
+	src.procstart = null
 	for(var/type in typesof(/datum/round_event_control))
 		var/datum/round_event_control/E = new type()
 		if(!E.typepath)
@@ -26,6 +28,8 @@ SUBSYSTEM_DEF(events)
 
 
 /datum/controller/subsystem/events/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if(!resumed)
 		checkEvent() //only check these if we aren't resuming a paused fire
 		src.currentrun = running.Copy()
@@ -45,16 +49,22 @@ SUBSYSTEM_DEF(events)
 
 //checks if we should select a random event yet, and reschedules if necessary
 /datum/controller/subsystem/events/proc/checkEvent()
+	procstart = null
+	src.procstart = null
 	if(scheduled <= world.time)
 		spawnEvent()
 		reschedule()
 
 //decides which world.time we should select another random event at.
 /datum/controller/subsystem/events/proc/reschedule()
+	procstart = null
+	src.procstart = null
 	scheduled = world.time + rand(frequency_lower, max(frequency_lower,frequency_upper))
 
 //selects a random event based on whether it can occur and it's 'weight'(probability)
 /datum/controller/subsystem/events/proc/spawnEvent()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE	//for the admin prompt
 	if(!CONFIG_GET(flag/allow_random_events))
 		return
@@ -87,6 +97,8 @@ SUBSYSTEM_DEF(events)
 				return
 
 /datum/controller/subsystem/events/proc/TriggerEvent(datum/round_event_control/E)
+	procstart = null
+	src.procstart = null
 	. = E.preRunEvent()
 	if(. == EVENT_CANT_RUN)//we couldn't run this event for some reason, set its max_occurrences to 0
 		E.max_occurrences = 0
@@ -117,6 +129,8 @@ SUBSYSTEM_DEF(events)
 // > Not in modules/admin
 // REEEEEEEEE
 /client/proc/forceEvent()
+	procstart = null
+	src.procstart = null
 	set name = "Trigger Event"
 	set category = "Fun"
 
@@ -126,6 +140,8 @@ SUBSYSTEM_DEF(events)
 	holder.forceEvent()
 
 /datum/admins/proc/forceEvent()
+	procstart = null
+	src.procstart = null
 	var/dat 	= ""
 	var/normal 	= ""
 	var/magic 	= ""
@@ -169,6 +185,8 @@ SUBSYSTEM_DEF(events)
 
 //sets up the holidays and holidays list
 /datum/controller/subsystem/events/proc/getHoliday()
+	procstart = null
+	src.procstart = null
 	if(!CONFIG_GET(flag/allow_holidays))
 		return		// Holiday stuff was not enabled in the config!
 
@@ -195,11 +213,15 @@ SUBSYSTEM_DEF(events)
 		world.update_status()
 
 /datum/controller/subsystem/events/proc/toggleWizardmode()
+	procstart = null
+	src.procstart = null
 	wizardmode = !wizardmode
 	message_admins("Summon Events has been [wizardmode ? "enabled, events will occur every [SSevents.frequency_lower / 600] to [SSevents.frequency_upper / 600] minutes" : "disabled"]!")
 	log_game("Summon Events was [wizardmode ? "enabled" : "disabled"]!")
 
 
 /datum/controller/subsystem/events/proc/resetFrequency()
+	procstart = null
+	src.procstart = null
 	frequency_lower = initial(frequency_lower)
 	frequency_upper = initial(frequency_upper)

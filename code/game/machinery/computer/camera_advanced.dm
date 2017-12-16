@@ -15,6 +15,8 @@
 	light_color = LIGHT_COLOR_RED
 
 /obj/machinery/computer/camera_advanced/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(station_lock_override)
 		z_lock = GLOB.station_z_levels.Copy()
@@ -23,10 +25,14 @@
 	icon_keyboard = "syndie_key"
 
 /obj/machinery/computer/camera_advanced/proc/CreateEye()
+	procstart = null
+	src.procstart = null
 	eyeobj = new()
 	eyeobj.origin = src
 
 /obj/machinery/computer/camera_advanced/proc/GrantActions(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(off_action)
 		off_action.target = user
 		off_action.Grant(user)
@@ -38,6 +44,8 @@
 		actions += jump_action
 
 /obj/machinery/computer/camera_advanced/proc/remove_eye_control(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	for(var/V in actions)
@@ -55,10 +63,14 @@
 	playsound(src, 'sound/machines/terminal_off.ogg', 25, 0)
 
 /obj/machinery/computer/camera_advanced/check_eye(mob/user)
+	procstart = null
+	src.procstart = null
 	if( (stat & (NOPOWER|BROKEN)) || (!Adjacent(user) && !user.has_unlimited_silicon_privilege) || user.eye_blind || user.incapacitated() )
 		user.unset_machine()
 
 /obj/machinery/computer/camera_advanced/Destroy()
+	procstart = null
+	src.procstart = null
 	if(current_user)
 		current_user.unset_machine()
 	if(eyeobj)
@@ -67,10 +79,14 @@
 	return ..()
 
 /obj/machinery/computer/camera_advanced/on_unset_machine(mob/M)
+	procstart = null
+	src.procstart = null
 	if(M == current_user)
 		remove_eye_control(M)
 
 /obj/machinery/computer/camera_advanced/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(current_user)
 		to_chat(user, "The console is already in use!")
 		return
@@ -100,13 +116,19 @@
 		eyeobj.setLoc(eyeobj.loc)
 
 /obj/machinery/computer/camera_advanced/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/computer/camera_advanced/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return //AIs would need to disable their own camera procs to use the console safely. Bugs happen otherwise.
 
 
 /obj/machinery/computer/camera_advanced/proc/give_eye_control(mob/user)
+	procstart = null
+	src.procstart = null
 	GrantActions(user)
 	current_user = user
 	eyeobj.eye_user = user
@@ -127,12 +149,16 @@
 	var/image/user_image = null
 
 /mob/camera/aiEye/remote/update_remote_sight(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.see_invisible = SEE_INVISIBLE_LIVING //can't see ghosts through cameras
 	user.sight = 0
 	user.see_in_dark = 2
 	return 1
 
 /mob/camera/aiEye/remote/RemoveImages()
+	procstart = null
+	src.procstart = null
 	..()
 	if(visible_icon)
 		var/client/C = GetViewerClient()
@@ -140,16 +166,22 @@
 			C.images -= user_image
 
 /mob/camera/aiEye/remote/Destroy()
+	procstart = null
+	src.procstart = null
 	eye_user = null
 	origin = null
 	return ..()
 
 /mob/camera/aiEye/remote/GetViewerClient()
+	procstart = null
+	src.procstart = null
 	if(eye_user)
 		return eye_user.client
 	return null
 
 /mob/camera/aiEye/remote/setLoc(T)
+	procstart = null
+	src.procstart = null
 	if(eye_user)
 		if(!isturf(eye_user.loc))
 			return
@@ -167,6 +199,8 @@
 				eye_user.client.images += user_image
 
 /mob/camera/aiEye/remote/relaymove(mob/user,direct)
+	procstart = null
+	src.procstart = null
 	var/initial = initial(sprint)
 	var/max_sprint = 50
 
@@ -190,6 +224,8 @@
 	button_icon_state = "camera_off"
 
 /datum/action/innate/camera_off/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(target))
 		return
 	var/mob/living/C = target
@@ -203,6 +239,8 @@
 	button_icon_state = "camera_jump"
 
 /datum/action/innate/camera_jump/Activate()
+	procstart = null
+	src.procstart = null
 	if(!target || !isliving(target))
 		return
 	var/mob/living/C = target
@@ -247,21 +285,29 @@
 	var/datum/action/innate/servant_warp/warp_action = new
 
 /obj/machinery/computer/camera_advanced/ratvar/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ratvar_act()
 
 /obj/machinery/computer/camera_advanced/ratvar/process()
+	procstart = null
+	src.procstart = null
 	if(prob(1))
 		playsound(src, 'sound/machines/clockcult/steam_whoosh.ogg', 25, TRUE)
 		new/obj/effect/temp_visual/steam_release(get_turf(src))
 
 /obj/machinery/computer/camera_advanced/ratvar/CreateEye()
+	procstart = null
+	src.procstart = null
 	..()
 	eyeobj.visible_icon = 1
 	eyeobj.icon = 'icons/obj/abductor.dmi' //in case you still had any doubts
 	eyeobj.icon_state = "camera_target"
 
 /obj/machinery/computer/camera_advanced/ratvar/GrantActions(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(warp_action)
 		warp_action.Grant(user)
@@ -269,6 +315,8 @@
 		actions += warp_action
 
 /obj/machinery/computer/camera_advanced/ratvar/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		to_chat(user, "<span class='warning'>[src]'s keys are in a language foreign to you, and you don't understand anything on its screen.</span>")
 		return
@@ -284,6 +332,8 @@
 	var/obj/effect/temp_visual/ratvar/warp_marker/warping
 
 /datum/action/innate/servant_warp/Activate()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(target) || !(ishuman(owner) || iscyborg(owner)) || !owner.canUseTopic(target) || warping)
 		return
 	if(!GLOB.servants_active) //No leaving unless there's servants from the get-go

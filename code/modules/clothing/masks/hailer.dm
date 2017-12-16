@@ -39,6 +39,8 @@
 	actions_types = list(/datum/action/item_action/halt)
 
 /obj/item/clothing/mask/gas/sechailer/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver))
 		switch(aggressiveness)
 			if(1)
@@ -60,14 +62,20 @@
 		..()
 
 /obj/item/clothing/mask/gas/sechailer/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/halt))
 		halt()
 	else
 		adjustmask(user)
 
 /obj/item/clothing/mask/gas/sechailer/attack_self()
+	procstart = null
+	src.procstart = null
 	halt()
 /obj/item/clothing/mask/gas/sechailer/emag_act(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if(safety)
 		safety = FALSE
 		to_chat(user, "<span class='warning'>You silently fry [src]'s vocal circuit with the cryptographic sequencer.</span>")
@@ -75,6 +83,8 @@
 		return
 
 /obj/item/clothing/mask/gas/sechailer/verb/halt()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "HALT"
 	set src in usr

@@ -81,6 +81,8 @@ GLOBAL_PROTECT(exp_jobsmap)
 GLOBAL_PROTECT(exp_specialmap)
 
 /proc/guest_jobbans(job)
+	procstart = null
+	src.procstart = null
 	return ((job in GLOB.command_positions) || (job in GLOB.nonhuman_positions) || (job in GLOB.security_positions))
 
 
@@ -88,6 +90,8 @@ GLOBAL_PROTECT(exp_specialmap)
 //this is necessary because antags happen before job datums are handed out, but NOT before they come into existence
 //so I can't simply use job datum.department_head straight from the mind datum, laaaaame.
 /proc/get_department_heads(var/job_title)
+	procstart = null
+	src.procstart = null
 	if(!job_title)
 		return list()
 
@@ -96,6 +100,8 @@ GLOBAL_PROTECT(exp_specialmap)
 			return J.department_head //this is a list
 
 /proc/get_full_job_name(job)
+	procstart = null
+	src.procstart = null
 	var/static/regex/cap_expand = new("cap(?!tain)")
 	var/static/regex/cmo_expand = new("cmo")
 	var/static/regex/hos_expand = new("hos")

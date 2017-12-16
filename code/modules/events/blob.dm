@@ -14,9 +14,13 @@
 	fakeable = TRUE
 
 /datum/round_event/ghost_role/blob/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert", 'sound/ai/outbreak5.ogg')
 
 /datum/round_event/ghost_role/blob/spawn_role()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.blobstart.len)
 		return MAP_ERROR
 	var/list/candidates = get_candidates("blob", null, ROLE_BLOB)

@@ -15,20 +15,28 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	var/global_mode = TRUE //If disabled, only GPS signals of the same Z level are shown
 
 /obj/item/device/gps/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to switch it [tracking ? "off":"on"].</span>")
 
 /obj/item/device/gps/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.GPS_list += src
 	name = "global positioning system ([gpstag])"
 	add_overlay("working")
 
 /obj/item/device/gps/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.GPS_list -= src
 	return ..()
 
 /obj/item/device/gps/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	emped = TRUE
 	cut_overlay("working")
 	add_overlay("emp")
@@ -36,14 +44,20 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	SStgui.close_uis(src) //Close the UI control if it is open.
 
 /obj/item/device/gps/proc/reboot()
+	procstart = null
+	src.procstart = null
 	emped = FALSE
 	cut_overlay("emp")
 	add_overlay("working")
 
 /obj/item/device/gps/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	toggletracking(user)
 
 /obj/item/device/gps/proc/toggletracking(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.canUseTopic(src, be_close=TRUE))
 		return //user not valid to use gps
 	if(emped)
@@ -73,6 +87,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 
 
 /obj/item/device/gps/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["power"] = tracking
 	data["tag"] = gpstag
@@ -115,6 +131,8 @@ GLOBAL_LIST_EMPTY(GPS_list)
 
 
 /obj/item/device/gps/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -180,11 +198,15 @@ GLOBAL_LIST_EMPTY(GPS_list)
 	var/list/turf/tagged
 
 /obj/item/device/gps/visible_debug/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tagged = list()
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/item/device/gps/visible_debug/process()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(T)
 		// I assume it's faster to color,tag and OR the turf in, rather
@@ -194,12 +216,16 @@ GLOBAL_LIST_EMPTY(GPS_list)
 		tagged |= T
 
 /obj/item/device/gps/visible_debug/proc/clear()
+	procstart = null
+	src.procstart = null
 	while(tagged.len)
 		var/turf/T = pop(tagged)
 		T.color = initial(T.color)
 		T.maptext = initial(T.maptext)
 
 /obj/item/device/gps/visible_debug/Destroy()
+	procstart = null
+	src.procstart = null
 	if(tagged)
 		clear()
 	tagged = null

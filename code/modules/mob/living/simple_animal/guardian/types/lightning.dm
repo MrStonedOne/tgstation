@@ -20,6 +20,8 @@
 	var/successfulshocks = 0
 
 /mob/living/simple_animal/hostile/guardian/beam/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && isliving(target) && target != src && target != summoner)
 		cleardeletedchains()
@@ -34,10 +36,14 @@
 		enemychains += Beam(target, "lightning[rand(1,12)]", time=70, maxdistance=7, beam_type=/obj/effect/ebeam/chain)
 
 /mob/living/simple_animal/hostile/guardian/beam/Destroy()
+	procstart = null
+	src.procstart = null
 	removechains()
 	return ..()
 
 /mob/living/simple_animal/hostile/guardian/beam/Manifest()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(summoner)
@@ -50,11 +56,15 @@
 			sleep(3)
 
 /mob/living/simple_animal/hostile/guardian/beam/Recall()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		removechains()
 
 /mob/living/simple_animal/hostile/guardian/beam/proc/cleardeletedchains()
+	procstart = null
+	src.procstart = null
 	if(summonerchain && QDELETED(summonerchain))
 		summonerchain = null
 	if(enemychains.len)
@@ -64,6 +74,8 @@
 				enemychains -= chain
 
 /mob/living/simple_animal/hostile/guardian/beam/proc/shockallchains()
+	procstart = null
+	src.procstart = null
 	. = 0
 	cleardeletedchains()
 	if(summoner)
@@ -75,6 +87,8 @@
 			. += chainshock(chain)
 
 /mob/living/simple_animal/hostile/guardian/beam/proc/removechains()
+	procstart = null
+	src.procstart = null
 	if(summonerchain)
 		qdel(summonerchain)
 		summonerchain = null
@@ -84,6 +98,8 @@
 		enemychains = list()
 
 /mob/living/simple_animal/hostile/guardian/beam/proc/chainshock(datum/beam/B)
+	procstart = null
+	src.procstart = null
 	. = 0
 	var/list/turfs = list()
 	for(var/E in B.elements)

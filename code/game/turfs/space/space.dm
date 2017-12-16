@@ -24,6 +24,8 @@
 	return
 
 /turf/open/space/Initialize()
+	procstart = null
+	src.procstart = null
 	icon_state = SPACE_ICON_STATE
 	air = space_gas
 
@@ -49,26 +51,38 @@
 	return INITIALIZE_HINT_NORMAL
 
 /turf/open/space/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	if(destination_z)
 		var/turf/T = locate(destination_x, destination_y, destination_z)
 		user.forceMove(T)
 
 /turf/open/space/Initalize_Atmos(times_fired)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/space/TakeTemperature(temp)
 
 /turf/open/space/RemoveLattice()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/space/AfterChange()
+	procstart = null
+	src.procstart = null
 	..()
 	atmos_overlay_types = null
 
 /turf/open/space/Assimilate_Air()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/space/proc/update_starlight()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/starlight))
 		for(var/t in RANGE_TURFS(1,src)) //RANGE_TURFS is in code\__HELPERS\game.dm
 			if(isspaceturf(t))
@@ -79,12 +93,18 @@
 		set_light(0)
 
 /turf/open/space/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /turf/open/space/proc/CanBuildHere()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /turf/open/space/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!CanBuildHere())
 		return
@@ -125,6 +145,8 @@
 			to_chat(user, "<span class='warning'>The plating is going to need some support! Place metal rods first.</span>")
 
 /turf/open/space/Entered(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	..()
 	if ((!(A) || src != A.loc))
 		return
@@ -148,25 +170,37 @@
 		A.newtonian_move(A.inertia_dir)
 
 /turf/open/space/handle_slip()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/space/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/space/can_have_cabling()
+	procstart = null
+	src.procstart = null
 	if(locate(/obj/structure/lattice/catwalk, src))
 		return 1
 	return 0
 
 /turf/open/space/is_transition_turf()
+	procstart = null
+	src.procstart = null
 	if(destination_x || destination_y || destination_z)
 		return 1
 
 
 /turf/open/space/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /turf/open/space/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/space.dmi'
 	underlay_appearance.icon_state = SPACE_ICON_STATE
 	underlay_appearance.plane = PLANE_SPACE
@@ -174,6 +208,8 @@
 
 
 /turf/open/space/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	if(!CanBuildHere())
 		return FALSE
 
@@ -187,6 +223,8 @@
 	return FALSE
 
 /turf/open/space/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	procstart = null
+	src.procstart = null
 	switch(passed_mode)
 		if(RCD_FLOORWALL)
 			to_chat(user, "<span class='notice'>You build a floor.</span>")
@@ -195,6 +233,8 @@
 	return FALSE
 
 /turf/open/space/ReplaceWithLattice()
+	procstart = null
+	src.procstart = null
 	var/dest_x = destination_x
 	var/dest_y = destination_y
 	var/dest_z = destination_z

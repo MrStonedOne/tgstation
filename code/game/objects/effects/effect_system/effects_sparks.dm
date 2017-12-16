@@ -6,6 +6,8 @@
 /////////////////////////////////////////////
 
 /proc/do_sparks(n, c, source)
+	procstart = null
+	src.procstart = null
 	// n - number of sparks
 	// c - cardinals, bool, do the sparks only move in cardinal directions?
 	// source - source of the sparks.
@@ -23,6 +25,8 @@
 	light_range = 1
 
 /obj/effect/particle_effect/sparks/New()
+	procstart = null
+	src.procstart = null
 	..()
 	flick("sparks", src) // replay the animation
 	playsound(src.loc, "sparks", 100, 1)
@@ -32,12 +36,16 @@
 	QDEL_IN(src, 20)
 
 /obj/effect/particle_effect/sparks/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	if(isturf(T))
 		T.hotspot_expose(1000,100)
 	return ..()
 
 /obj/effect/particle_effect/sparks/Move()
+	procstart = null
+	src.procstart = null
 	..()
 	var/turf/T = loc
 	if(isturf(T))

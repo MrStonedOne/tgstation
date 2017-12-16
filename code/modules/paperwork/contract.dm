@@ -8,9 +8,13 @@
 	flags_1 = NOBLUDGEON_1
 
 /obj/item/paper/contract/proc/update_text()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/paper/contract/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -18,6 +22,8 @@
 	icon_state = "paper_words"
 
 /obj/item/paper/contract/employment/New(atom/loc, mob/living/nOwner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!nOwner || !nOwner.mind)
 		qdel(src)
@@ -27,11 +33,15 @@
 
 
 /obj/item/paper/contract/employment/update_text()
+	procstart = null
+	src.procstart = null
 	name = "paper- [target] employment contract"
 	info = "<center>Conditions of Employment</center><BR><BR><BR><BR>This Agreement is made and entered into as of the date of last signature below, by and between [target] (hereafter referred to as SLAVE), and Nanotrasen (hereafter referred to as the omnipresent and helpful watcher of humanity).<BR>WITNESSETH:<BR>WHEREAS, SLAVE is a natural born human or humanoid, posessing skills upon which he can aid the omnipresent and helpful watcher of humanity, who seeks employment in the omnipresent and helpful watcher of humanity.<BR>WHEREAS, the omnipresent and helpful watcher of humanity agrees to sporadically provide payment to SLAVE, in exchange for permanent servitude.<BR>NOW THEREFORE in consideration of the mutual covenants herein contained, and other good and valuable consideration, the parties hereto mutually agree as follows:<BR>In exchange for paltry payments, SLAVE agrees to work for the omnipresent and helpful watcher of humanity, for the remainder of his or her current and future lives.<BR>Further, SLAVE agrees to transfer ownership of his or her soul to the loyalty department of the omnipresent and helpful watcher of humanity.<BR>Should transfership of a soul not be possible, a lien shall be placed instead.<BR>Signed,<BR><i>[target]</i>"
 
 
 /obj/item/paper/contract/employment/attack(mob/living/M, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	var/deconvert = FALSE
 	if(M.mind == target && !M.owns_soul())
 		if(user.mind && (user.mind.assigned_role == "Lawyer"))
@@ -91,6 +101,8 @@
 	contractType = CONTRACT_UNWILLING
 
 /obj/item/paper/contract/infernal/New(atom/loc, mob/living/nTarget, datum/mind/nOwner)
+	procstart = null
+	src.procstart = null
 	..()
 	owner = nOwner
 	devil_datum = owner.has_antag_datum(ANTAG_DATUM_DEVIL)
@@ -98,6 +110,8 @@
 	update_text()
 
 /obj/item/paper/contract/infernal/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(signed && (user == target.current) && istype(user, /mob/living/carbon/human/))
 		var/mob/living/carbon/human/H = user
 		H.forcesay("OH GREAT INFERNO!  I DEMAND YOU COLLECT YOUR BOUNTY IMMEDIATELY!")
@@ -109,9 +123,13 @@
 		..()
 
 /obj/item/paper/contract/infernal/update_text()
+	procstart = null
+	src.procstart = null
 	info = "This shouldn't be seen.  Error DEVIL:6"
 
 /obj/item/paper/contract/infernal/power/update_text(signature = "____________", blood = 0)
+	procstart = null
+	src.procstart = null
 	info = "<center><B>Contract for infernal power</B></center><BR><BR><BR>I, [target] of sound mind, do hereby willingly offer my soul to the infernal hells by way of the infernal agent [devil_datum.truename], in exchange for power and physical strength.  I understand that upon my demise, my soul shall fall into the infernal hells, and my body may not be resurrected, cloned, or otherwise brought back to life.  I also understand that this will prevent my brain from being used in an MMI.<BR><BR><BR>Signed, "
 	if(blood)
 		info += "<font face=\"Nyala\" color=#600A0A size=6><i>[signature]</i></font>"
@@ -119,6 +137,8 @@
 		info += "<i>[signature]</i>"
 
 /obj/item/paper/contract/infernal/wealth/update_text(signature = "____________", blood = 0)
+	procstart = null
+	src.procstart = null
 	info = "<center><B>Contract for unlimited wealth</B></center><BR><BR><BR>I, [target] of sound mind, do hereby willingly offer my soul to the infernal hells by way of the infernal agent [devil_datum.truename], in exchange for a pocket that never runs out of valuable resources.  I understand that upon my demise, my soul shall fall into the infernal hells, and my body may not be resurrected, cloned, or otherwise brought back to life.  I also understand that this will prevent my brain from being used in an MMI.<BR><BR><BR>Signed, "
 	if(blood)
 		info += "<font face=\"Nyala\" color=#600A0A size=6><i>[signature]</i></font>"
@@ -126,6 +146,8 @@
 		info += "<i>[signature]</i>"
 
 /obj/item/paper/contract/infernal/prestige/update_text(signature = "____________", blood = 0)
+	procstart = null
+	src.procstart = null
 	info = "<center><B>Contract for prestige</B></center><BR><BR><BR>I, [target] of sound mind, do hereby willingly offer my soul to the infernal hells by way of the infernal agent [devil_datum.truename], in exchange for prestige and esteem among my peers.  I understand that upon my demise, my soul shall fall into the infernal hells, and my body may not be resurrected, cloned, or otherwise brought back to life.  I also understand that this will prevent my brain from being used in an MMI.<BR><BR><BR>Signed, "
 	if(blood)
 		info += "<font face=\"Nyala\" color=#600A0A size=6><i>[signature]</i></font>"
@@ -133,6 +155,8 @@
 		info += "<i>[signature]</i>"
 
 /obj/item/paper/contract/infernal/magic/update_text(signature = "____________", blood = 0)
+	procstart = null
+	src.procstart = null
 	info = "<center><B>Contract for magic</B></center><BR><BR><BR>I, [target] of sound mind, do hereby willingly offer my soul to the infernal hells by way of the infernal agent [devil_datum.truename], in exchange for arcane abilities beyond normal human ability.  I understand that upon my demise, my soul shall fall into the infernal hells, and my body may not be resurrected, cloned, or otherwise brought back to life.  I also understand that this will prevent my brain from being used in an MMI.<BR><BR><BR>Signed, "
 	if(blood)
 		info += "<font face=\"Nyala\" color=#600A0A size=6><i>[signature]</i></font>"
@@ -140,6 +164,8 @@
 		info += "<i>[signature]</i>"
 
 /obj/item/paper/contract/infernal/revive/update_text(signature = "____________", blood = 0)
+	procstart = null
+	src.procstart = null
 	info = "<center><B>Contract for resurrection</B></center><BR><BR><BR>I, [target] of sound mind, do hereby willingly offer my soul to the infernal hells by way of the infernal agent [devil_datum.truename], in exchange for resurrection and curing of all injuries.  I understand that upon my demise, my soul shall fall into the infernal hells, and my body may not be resurrected, cloned, or otherwise brought back to life.  I also understand that this will prevent my brain from being used in an MMI.<BR><BR><BR>Signed, "
 	if(blood)
 		info += "<font face=\"Nyala\" color=#600A0A size=6><i>[signature]</i></font>"
@@ -147,6 +173,8 @@
 		info += "<i>[signature]</i>"
 
 /obj/item/paper/contract/infernal/knowledge/update_text(signature = "____________", blood = 0)
+	procstart = null
+	src.procstart = null
 	info = "<center><B>Contract for knowledge</B></center><BR><BR><BR>I, [target] of sound mind, do hereby willingly offer my soul to the infernal hells by way of the infernal agent [devil_datum.truename], in exchange for boundless knowledge.  I understand that upon my demise, my soul shall fall into the infernal hells, and my body may not be resurrected, cloned, or otherwise brought back to life.  I also understand that this will prevent my brain from being used in an MMI.<BR><BR><BR>Signed, "
 	if(blood)
 		info += "<font face=\"Nyala\" color=#600A0A size=6><i>[signature]</i></font>"
@@ -154,6 +182,8 @@
 		info += "<i>[signature]</i>"
 
 /obj/item/paper/contract/infernal/friend/update_text(signature = "____________", blood = 0)
+	procstart = null
+	src.procstart = null
 	info = "<center><B>Contract for a friend</B></center><BR><BR><BR>I, [target] of sound mind, do hereby willingly offer my soul to the infernal hells by way of the infernal agent [devil_datum.truename], in exchange for a friend.  I understand that upon my demise, my soul shall fall into the infernal hells, and my body may not be resurrected, cloned, or otherwise brought back to life.  I also understand that this will prevent my brain from being used in an MMI.<BR><BR><BR>Signed, "
 	if(blood)
 		info += "<font face=\"Nyala\" color=#600A0A size=6><i>[signature]</i></font>"
@@ -161,6 +191,8 @@
 		info += "<i>[signature]</i>"
 
 /obj/item/paper/contract/infernal/unwilling/update_text(signature = "____________", blood = 0)
+	procstart = null
+	src.procstart = null
 	info = "<center><B>Contract for slave</B></center><BR><BR><BR>I, [target], hereby offer my soul to the infernal hells by way of the infernal agent [devil_datum.truename].  I understand that upon my demise, my soul shall fall into the infernal hells, and my body may not be resurrected, cloned, or otherwise brought back to life.  I also understand that this will prevent my brain from being used in an MMI.<BR><BR><BR>Signed, "
 	if(blood)
 		info += "<font face=\"Nyala\" color=#600A0A size=6><i>[signature]</i></font>"
@@ -168,6 +200,8 @@
 		info += "<i>[signature]</i>"
 
 /obj/item/paper/contract/infernal/attackby(obj/item/P, mob/living/carbon/human/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(P, /obj/item/pen) || istype(P, /obj/item/toy/crayon))
 		attempt_signature(user)
@@ -179,6 +213,8 @@
 		return ..()
 
 /obj/item/paper/contract/infernal/attack(mob/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(M == user && target == M.mind && M.mind.soulOwner != owner && attempt_signature(user, 1))
 		user.visible_message("<span class='danger'>[user] slices [user.p_their()] wrist with [src], and scrawls [user.p_their()] name in blood.</span>", "<span class='danger'>You slice your wrist open and scrawl your name in blood.</span>")
@@ -187,6 +223,8 @@
 		return ..()
 
 /obj/item/paper/contract/infernal/proc/attempt_signature(mob/living/carbon/human/user, blood = 0)
+	procstart = null
+	src.procstart = null
 	if(!user.IsAdvancedToolUser() || !user.is_literate())
 		to_chat(user, "<span class='notice'>You don't know how to read or write.</span>")
 		return 0
@@ -218,6 +256,8 @@
 
 
 /obj/item/paper/contract/infernal/revive/attack(mob/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if (target == M.mind && M.stat == DEAD && M.mind.soulOwner == M.mind)
 		if (cooldown)
 			to_chat(user, "<span class='notice'>Give [M] a chance to think through the contract, don't rush them.</span>")
@@ -245,10 +285,14 @@
 		..()
 
 /obj/item/paper/contract/infernal/revive/proc/resetcooldown()
+	procstart = null
+	src.procstart = null
 	cooldown = FALSE
 
 
 /obj/item/paper/contract/infernal/proc/fulfillContract(mob/living/carbon/human/user = target.current, blood = FALSE)
+	procstart = null
+	src.procstart = null
 	signed = TRUE
 	if(user.mind.soulOwner != user.mind) //They already sold their soul to someone else?
 		var/datum/antagonist/devil/ownerDevilInfo = user.mind.soulOwner.has_antag_datum(ANTAG_DATUM_DEVIL)
@@ -264,10 +308,14 @@
 	return TRUE
 
 /obj/item/paper/contract/infernal/proc/signIncorrectly(mob/living/carbon/human/user = target.current, blood = FALSE)
+	procstart = null
+	src.procstart = null
 	signed = 1
 	update_text("your name", blood)
 
 /obj/item/paper/contract/infernal/power/fulfillContract(mob/living/carbon/human/user = target.current, blood = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!user.dna)
 		return -1
 	user.dna.add_mutation(HULK)
@@ -276,12 +324,16 @@
 	return ..()
 
 /obj/item/paper/contract/infernal/wealth/fulfillContract(mob/living/carbon/human/user = target.current, blood = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user.mind) // How in the hell could that happen?
 		return -1
 	user.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/summon_wealth(null))
 	return ..()
 
 /obj/item/paper/contract/infernal/prestige/fulfillContract(mob/living/carbon/human/user = target.current, blood = 0)
+	procstart = null
+	src.procstart = null
 	//Basically turns the signer into the captain, and uploads an ion law making them the captain.
 	var/obj/item/worn = user.wear_id
 	var/obj/item/card/id/id = null
@@ -315,6 +367,8 @@
 	return ..()
 
 /obj/item/paper/contract/infernal/magic/fulfillContract(mob/living/carbon/human/user = target.current, blood = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user.mind)
 		return -1
 	user.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/conjure_item/spellpacket/robeless(null))
@@ -322,6 +376,8 @@
 	return ..()
 
 /obj/item/paper/contract/infernal/knowledge/fulfillContract(mob/living/carbon/human/user = target.current, blood = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user.mind)
 		return -1
 	user.dna.add_mutation(XRAY)
@@ -329,6 +385,8 @@
 	return ..()
 
 /obj/item/paper/contract/infernal/friend/fulfillContract(mob/living/user = target.current, blood = 0)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) || !user.mind)
 		return -1
 	user.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/summon_friend(null))

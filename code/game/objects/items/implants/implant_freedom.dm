@@ -7,6 +7,8 @@
 
 
 /obj/item/implant/freedom/activate()
+	procstart = null
+	src.procstart = null
 	uses--
 	to_chat(imp_in, "You feel a faint click.")
 	if(iscarbon(imp_in))
@@ -17,6 +19,8 @@
 
 
 /obj/item/implant/freedom/get_data()
+	procstart = null
+	src.procstart = null
 	var/dat = {"
 <b>Implant Specifications:</b><BR>
 <b>Name:</b> Freedom Beacon<BR>

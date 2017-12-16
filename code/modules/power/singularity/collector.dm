@@ -24,13 +24,19 @@
 	anchored = TRUE
 
 /obj/machinery/power/rad_collector/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_EXTREME_INSULATION, FALSE, FALSE)
 
 /obj/machinery/power/rad_collector/Destroy()
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /obj/machinery/power/rad_collector/process()
+	procstart = null
+	src.procstart = null
 	if(loaded_tank)
 		if(!loaded_tank.air_contents.gases[/datum/gas/plasma])
 			investigate_log("<font color='red'>out of fuel</font>.", INVESTIGATE_SINGULO)
@@ -46,6 +52,8 @@
 			last_power-=power_produced
 
 /obj/machinery/power/rad_collector/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(anchored)
@@ -64,6 +72,8 @@
 			return
 
 /obj/machinery/power/rad_collector/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(loaded_tank)
 		if(!silent)
 			to_chat(user, "<span class='warning'>Remove the plasma tank first!</span>")
@@ -71,6 +81,8 @@
 	return ..()
 
 /obj/machinery/power/rad_collector/default_unfasten_wrench(mob/user, obj/item/wrench/W, time = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_UNFASTEN)
 		if(anchored)
@@ -79,6 +91,8 @@
 			disconnect_from_network()
 
 /obj/machinery/power/rad_collector/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		to_chat(user, "<span class='notice'>[W] detects that [last_power]W is being processed.</span>")
 		return TRUE
@@ -123,11 +137,15 @@
 
 
 /obj/machinery/power/rad_collector/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(stat & BROKEN) && !(flags_1 & NODECONSTRUCT_1))
 		eject()
 		stat |= BROKEN
 
 /obj/machinery/power/rad_collector/proc/eject()
+	procstart = null
+	src.procstart = null
 	locked = FALSE
 	var/obj/item/tank/internals/plasma/Z = src.loaded_tank
 	if (!Z)
@@ -142,10 +160,14 @@
 		update_icons()
 
 /obj/machinery/power/rad_collector/rad_act(pulse_strength)
+	procstart = null
+	src.procstart = null
 	if(loaded_tank && active && pulse_strength > RAD_COLLECTOR_EFFICIENCY)
 		last_power += (pulse_strength-RAD_COLLECTOR_EFFICIENCY)*RAD_COLLECTOR_COEFFICIENT
 
 /obj/machinery/power/rad_collector/proc/update_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(loaded_tank)
 		add_overlay("ptank")
@@ -156,6 +178,8 @@
 
 
 /obj/machinery/power/rad_collector/proc/toggle_power()
+	procstart = null
+	src.procstart = null
 	active = !active
 	if(active)
 		icon_state = "ca_on"

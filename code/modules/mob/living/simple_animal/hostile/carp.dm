@@ -38,6 +38,8 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 
 /mob/living/simple_animal/hostile/carp/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && ishuman(target))
 		var/mob/living/carbon/human/H = target
@@ -70,6 +72,8 @@
 	var/regen_cooldown = 0
 
 /mob/living/simple_animal/hostile/carp/megacarp/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "[pick(GLOB.megacarp_first_names)] [pick(GLOB.megacarp_last_names)]"
 	melee_damage_lower += rand(2, 10)
@@ -78,11 +82,15 @@
 	move_to_delay = rand(3,7)
 
 /mob/living/simple_animal/hostile/carp/megacarp/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		regen_cooldown = world.time + REGENERATION_DELAY
 
 /mob/living/simple_animal/hostile/carp/megacarp/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(regen_cooldown < world.time)
 		heal_overall_damage(4)

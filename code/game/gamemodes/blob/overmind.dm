@@ -39,6 +39,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	var/victory_in_progress = FALSE
 
 /mob/camera/blob/Initialize(mapload, starting_points = 60)
+	procstart = null
+	src.procstart = null
 	validate_location()
 	blob_points = starting_points
 	manualplace_min_time += world.time
@@ -57,6 +59,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	.= ..()
 
 /mob/camera/blob/proc/validate_location()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	var/area/A = get_area(T)
 	if(((A && !A.blob_allowed) || !T || !(T.z in GLOB.station_z_levels)) && LAZYLEN(GLOB.blobstart))
@@ -66,6 +70,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	forceMove(T)
 
 /mob/camera/blob/Life()
+	procstart = null
+	src.procstart = null
 	if(!blob_core)
 		if(!placed)
 			if(manualplace_min_time && world.time >= manualplace_min_time)
@@ -90,6 +96,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 
 
 /mob/camera/blob/proc/victory()
+	procstart = null
+	src.procstart = null
 	sound_to_playing_players('sound/machines/alarm.ogg')
 	sleep(100)
 	for(var/i in GLOB.mob_living_list)
@@ -134,6 +142,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	SSticker.force_ending = 1
 
 /mob/camera/blob/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/BL in GLOB.blobs)
 		var/obj/structure/blob/B = BL
 		if(B && B.overmind == src)
@@ -151,6 +161,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	return ..()
 
 /mob/camera/blob/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(src, "<span class='notice'>You are the overmind!</span>")
 	blob_help()
@@ -158,11 +170,15 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 	add_points(0)
 
 /mob/camera/blob/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(blob_reagent_datum)
 		to_chat(user, "Its chemical is <font color=\"[blob_reagent_datum.color]\">[blob_reagent_datum.name]</font>.")
 
 /mob/camera/blob/update_health_hud()
+	procstart = null
+	src.procstart = null
 	if(blob_core)
 		hud_used.healths.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#e36600'>[round(blob_core.obj_integrity)]</font></div>"
 		for(var/mob/living/simple_animal/hostile/blob/blobbernaut/B in blob_mobs)
@@ -170,10 +186,14 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 				B.hud_used.blobpwrdisplay.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#82ed00'>[round(blob_core.obj_integrity)]</font></div>"
 
 /mob/camera/blob/proc/add_points(points)
+	procstart = null
+	src.procstart = null
 	blob_points = Clamp(blob_points + points, 0, max_blob_points)
 	hud_used.blobpwrdisplay.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#82ed00'>[round(blob_points)]</font></div>"
 
 /mob/camera/blob/say(message)
+	procstart = null
+	src.procstart = null
 	if (!message)
 		return
 
@@ -191,6 +211,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 
 /mob/camera/blob/proc/blob_talk(message)
 
+	procstart = null
+	src.procstart = null
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 
 	if (!message)
@@ -209,12 +231,18 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 			to_chat(M, "[link] [rendered]")
 
 /mob/camera/blob/emote(act,m_type=1,message = null)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/camera/blob/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/camera/blob/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 	if(statpanel("Status"))
 		if(blob_core)
@@ -229,6 +257,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 			stat(null, "Time Before Automatic Placement: [max(round((autoplace_max_time - world.time)*0.1, 0.1), 0)]")
 
 /mob/camera/blob/Move(NewLoc, Dir = 0)
+	procstart = null
+	src.procstart = null
 	if(placed)
 		var/obj/structure/blob/B = locate() in range("3x3", NewLoc)
 		if(B)
@@ -243,6 +273,8 @@ GLOBAL_LIST_EMPTY(blob_nodes)
 		return 1
 
 /mob/camera/blob/mind_initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/antagonist/blob/B = mind.has_antag_datum(/datum/antagonist/blob)
 	if(!B)

@@ -18,9 +18,13 @@
 	var/netadmin_mode = 0		// Administrator mode (invisible to other users + bypasses passwords)
 
 /datum/computer_file/program/chatclient/New()
+	procstart = null
+	src.procstart = null
 	username = "DefaultUser[rand(100, 999)]"
 
 /datum/computer_file/program/chatclient/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -162,6 +166,8 @@
 				channel.password = newpassword
 
 /datum/computer_file/program/chatclient/process_tick()
+	procstart = null
+	src.procstart = null
 	..()
 	if(program_state != PROGRAM_STATE_KILLED)
 		ui_header = "ntnrc_idle.gif"
@@ -177,12 +183,16 @@
 		ui_header = "ntnrc_idle.gif"
 
 /datum/computer_file/program/chatclient/kill_program(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(channel)
 		channel.remove_client(src)
 		channel = null
 	..()
 
 /datum/computer_file/program/chatclient/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!SSnetworks.station_network || !SSnetworks.station_network.chat_channels)
 		return
 

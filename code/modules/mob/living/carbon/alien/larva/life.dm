@@ -1,6 +1,8 @@
 
 
 /mob/living/carbon/alien/larva/Life()
+	procstart = null
+	src.procstart = null
 	set invisibility = 0
 	set background = BACKGROUND_ENABLED
 
@@ -14,6 +16,8 @@
 
 
 /mob/living/carbon/alien/larva/update_stat()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)

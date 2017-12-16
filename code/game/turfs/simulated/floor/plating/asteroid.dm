@@ -17,6 +17,8 @@
 	attachment_holes = FALSE
 
 /turf/open/floor/plating/asteroid/Initialize()
+	procstart = null
+	src.procstart = null
 	var/proper_name = name
 	. = ..()
 	name = proper_name
@@ -27,15 +29,23 @@
 		AddComponent(/datum/component/archaeology, 100, archdrops)
 
 /turf/open/floor/plating/asteroid/burn_tile()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/plating/asteroid/MakeSlippery(wet_setting = TURF_WET_WATER, min_wet_time = 0, wet_time_to_add = 0)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/plating/asteroid/MakeDry(wet_setting = TURF_WET_WATER)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/plating/asteroid/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(istype(W, /obj/item/storage/bag/ore))
@@ -59,11 +69,15 @@
 
 
 /turf/open/floor/plating/asteroid/singularity_act()
+	procstart = null
+	src.procstart = null
 	if(turf_z_is_planet(src))
 		return ..()
 	ChangeTurf(/turf/open/space)
 
 /turf/open/floor/plating/asteroid/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	. = SendSignal(COMSIG_ATOM_EX_ACT, severity, target)
 	contents_explosion(severity, target)
 
@@ -85,6 +99,8 @@
 	initial_gas_mix = "TEMP=2.7"
 
 /turf/open/floor/plating/asteroid/basalt/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_basalt_light(src)
 	GET_COMPONENT(arch, /datum/component/archaeology)
@@ -92,6 +108,8 @@
 	arch.callback = CALLBACK(src, /atom/proc/set_light, 0)
 
 /proc/set_basalt_light(turf/open/floor/B)
+	procstart = null
+	src.procstart = null
 	switch(B.icon_state)
 		if("basalt1", "basalt2", "basalt3")
 			B.set_light(2, 0.6, LIGHT_COLOR_LAVA) //more light
@@ -146,6 +164,8 @@
 	has_data = TRUE
 
 /turf/open/floor/plating/asteroid/airless/cave/Initialize()
+	procstart = null
+	src.procstart = null
 	if (!mob_spawn_list)
 		mob_spawn_list = list(/mob/living/simple_animal/hostile/asteroid/goldgrub = 1, /mob/living/simple_animal/hostile/asteroid/goliath = 5, /mob/living/simple_animal/hostile/asteroid/basilisk = 4, /mob/living/simple_animal/hostile/asteroid/hivelord = 3)
 	if (!megafauna_spawn_list)
@@ -159,6 +179,8 @@
 		..()	//do not continue after changeturfing or we will do a double initialize
 
 /turf/open/floor/plating/asteroid/airless/cave/proc/get_cave_data(set_length, exclude_dir = -1)
+	procstart = null
+	src.procstart = null
 	// If set_length (arg1) isn't defined, get a random length; otherwise assign our length to the length arg.
 	if(!set_length)
 		length = rand(25, 50)
@@ -171,6 +193,8 @@
 	backward_cave_dir = angle2dir(dir2angle(forward_cave_dir) + 180)
 
 /turf/open/floor/plating/asteroid/airless/cave/proc/produce_tunnel_from_data(tunnel_length, excluded_dir = -1)
+	procstart = null
+	src.procstart = null
 	get_cave_data(tunnel_length, excluded_dir)
 	// Make our tunnels
 	make_tunnel(forward_cave_dir)
@@ -180,6 +204,8 @@
 	SpawnFloor(src)
 
 /turf/open/floor/plating/asteroid/airless/cave/proc/make_tunnel(dir)
+	procstart = null
+	src.procstart = null
 	var/turf/closed/mineral/tunnel = src
 	var/next_angle = pick(45, -45)
 
@@ -222,6 +248,8 @@
 
 
 /turf/open/floor/plating/asteroid/airless/cave/proc/SpawnFloor(turf/T)
+	procstart = null
+	src.procstart = null
 	for(var/S in RANGE_TURFS(1, src))
 		var/turf/NT = S
 		if(!NT || isspaceturf(NT) || istype(NT.loc, /area/mine/explored) || istype(NT.loc, /area/lavaland/surface/outdoors/explored))
@@ -235,6 +263,8 @@
 	T.ChangeTurf(turf_type,FALSE,FALSE,TRUE)
 
 /turf/open/floor/plating/asteroid/airless/cave/proc/SpawnMonster(turf/T)
+	procstart = null
+	src.procstart = null
 	if(prob(30))
 		if(istype(loc, /area/mine/explored) || !istype(loc, /area/lavaland/surface/outdoors/unexplored))
 			return
@@ -264,6 +294,8 @@
 #undef SPAWN_BUBBLEGUM
 
 /turf/open/floor/plating/asteroid/airless/cave/proc/SpawnFlora(turf/T)
+	procstart = null
+	src.procstart = null
 	if(prob(12))
 		if(istype(loc, /area/mine/explored) || istype(loc, /area/lavaland/surface/outdoors/explored))
 			return

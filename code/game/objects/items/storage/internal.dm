@@ -6,6 +6,8 @@
 	rustle_jimmies = FALSE
 
 /obj/item/storage/internal/Adjacent(A)
+	procstart = null
+	src.procstart = null
 	if(loc)
 		return loc.Adjacent(A)
 
@@ -17,11 +19,15 @@
 	// TRUE if you can quickdraw items from it with alt-click.
 
 /obj/item/storage/internal/pocket/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(loc)
 		name = loc.name
 
 /obj/item/storage/internal/pocket/handle_item_insertion(obj/item/W, prevent_warning = 0, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && silent && !prevent_warning)
 		if(quickdraw)
@@ -67,6 +73,8 @@
 	priority = TRUE // so the detectives would discover pockets in their hats
 
 /obj/item/storage/internal/pocket/small/detective/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/reagent_containers/food/drinks/flask/det(src)
 
 /obj/item/storage/internal/pocket/pocketprotector
@@ -80,10 +88,14 @@
 		/obj/item/clothing/mask/cigarette)
 
 /obj/item/storage/internal/pocket/pocketprotector/cosmetology/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to 3)
 		new /obj/item/lipstick/random(src)
 
 /obj/item/storage/internal/pocket/pocketprotector/full/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/pen/red(src)
 	new /obj/item/pen(src)
 	new /obj/item/pen/blue(src)

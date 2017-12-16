@@ -35,15 +35,21 @@
 	var/mob/trapped_mob
 
 /obj/structure/closet/initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(30))
 		set_spooky_trap()
 
 /obj/structure/closet/dump_contents()
+	procstart = null
+	src.procstart = null
 	..()
 	trigger_spooky_trap()
 
 /obj/structure/closet/proc/set_spooky_trap()
+	procstart = null
+	src.procstart = null
 	if(prob(0.1))
 		trapped = INSANE_CLOWN
 		return
@@ -66,6 +72,8 @@
 		return
 
 /obj/structure/closet/proc/trigger_spooky_trap()
+	procstart = null
+	src.procstart = null
 	if(!trapped)
 		return
 
@@ -105,9 +113,13 @@
 
 //don't spawn in crates
 /obj/structure/closet/crate/trigger_spooky_trap()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/closet/crate/set_spooky_trap()
+	procstart = null
+	src.procstart = null
 	return
 
 
@@ -130,6 +142,8 @@
 	var/timer = 0
 
 /mob/living/simple_animal/shade/howling_ghost/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = pick("ghost","ghostian","ghostian2","ghostking","ghost1","ghost2")
 	icon_living = icon_state
@@ -137,6 +151,8 @@
 	timer = rand(1,15)
 
 /mob/living/simple_animal/shade/howling_ghost/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	timer--
 	if(prob(20))
@@ -146,15 +162,21 @@
 		timer = rand(1,15)
 
 /mob/living/simple_animal/shade/howling_ghost/proc/EtherealMove(direction)
+	procstart = null
+	src.procstart = null
 	forceMove(get_step(src, direction))
 	setDir(direction)
 
 /mob/living/simple_animal/shade/howling_ghost/proc/roam()
+	procstart = null
+	src.procstart = null
 	if(prob(80))
 		var/direction = pick(NORTH,SOUTH,EAST,WEST,NORTHEAST,NORTHWEST,SOUTHEAST,SOUTHWEST)
 		EtherealMove(direction)
 
 /mob/living/simple_animal/shade/howling_ghost/proc/spooky_ghosty()
+	procstart = null
+	src.procstart = null
 	if(prob(20)) //haunt
 		playsound(loc, pick('sound/spookoween/ghosty_wind.ogg','sound/spookoween/ghost_whisper.ogg','sound/spookoween/chain_rattling.ogg'), 300, 1)
 	if(prob(10)) //flickers
@@ -169,9 +191,13 @@
 		return
 
 /mob/living/simple_animal/shade/howling_ghost/adjustHealth()
+	procstart = null
+	src.procstart = null
 	. = 0
 
 /mob/living/simple_animal/shade/howling_ghost/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	return 1
 
 
@@ -194,24 +220,34 @@
 	var/timer
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	timer = rand(5,15)
 	status_flags = (status_flags | GODMODE)
 	return
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/Retaliate()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/Life()
+	procstart = null
+	src.procstart = null
 	timer--
 	if(target)
 		stalk()
 	return
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/proc/stalk()
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = target
 	if(M.stat == DEAD)
 		playsound(M.loc, 'sound/spookoween/insane_low_laugh.ogg', 300, 1)
@@ -223,17 +259,25 @@
 			forceMove(M.loc)
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/MoveToTarget()
+	procstart = null
+	src.procstart = null
 	stalk(target)
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/adjustHealth()
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(prob(5))
 		playsound(loc, 'sound/spookoween/insane_low_laugh.ogg', 300, 1)
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/attackby(obj/item/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/nullrod))
 		if(prob(5))
 			visible_message("[src] finally found the peace it deserves. <i>You hear honks echoing off into the distance.</i>")
@@ -245,6 +289,8 @@
 		..()
 
 /mob/living/simple_animal/hostile/retaliate/clown/insane/handle_temperature_damage()
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////

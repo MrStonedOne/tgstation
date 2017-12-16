@@ -26,9 +26,13 @@
 										"%author% wants you to know if it's a safe bet to buy")
 
 /datum/industry/proc/generateProductName(var/company_name)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/industry/proc/generateInCharacterProductArticle(var/product_name, var/datum/stock/S)
+	procstart = null
+	src.procstart = null
 	var/datum/article/A = new
 	var/list/add_tokens = list("company_name" = S.name, "product_name" = product_name, "outlet" = A.outlet, "author" = A.author)
 	A.about = S
@@ -49,6 +53,8 @@
 	return A
 
 /datum/industry/proc/detokenize(var/str)
+	procstart = null
+	src.procstart = null
 	for (var/T in tokens)
 		str = replacetext(str, "%[T]%", pick(tokens[T]))
 	return str
@@ -78,6 +84,8 @@
 								"%company_name% looking to reap profits off the %industrial% sector with %product_name%")
 
 /datum/industry/agriculture/generateProductName(var/company_name)
+	procstart = null
+	src.procstart = null
 	var/list/products = list("water tank", "cattle prod", "scythe", "plough", "sickle", "cultivator", "loy", "spade", "hoe", "daisy grubber", "cotton gin")
 	var/list/prefix = list("[company_name]'s ", "the [company_name] ", "the fully automatic ", "the full-duplex ", "the semi-automatic ", "the drone-mounted ", "the industry-leading ", "the world-class ")
 	var/list/suffix = list(" of farming", " multiplex", " +[rand(1,15)]", " [consonant()][rand(1000, 9999)]", " hybrid", " maximus", " extreme")
@@ -94,6 +102,8 @@
 		)
 
 /datum/industry/it/proc/latin_number(n)
+	procstart = null
+	src.procstart = null
 	if (n < 20 || !(n % 10))
 		switch(n)
 			if (0)
@@ -156,6 +166,8 @@
 		return "[latin_number(n - (n % 10))] [lowertext(latin_number(n % 10))]"
 
 /datum/industry/it/generateProductName(var/company_name)
+	procstart = null
+	src.procstart = null
 	var/list/products = list("generator", "laptop", "keyboard", "memory card", "display", "operating system", "processor", "graphics card", "nanobots", "power supply", "pAI", "mech", "capacitor", "cell")
 	var/list/prefix = list("the [company_name] ", "the high performance ", "the mobile ", "the portable ", "the professional ", "the extreme ", "the incredible ", "the blazing fast ", "the bleeding edge ", "the bluespace-powered ", null)
 	var/L = pick(consonant(), "Seed ", "Radiant ", "Robust ", "Pentathon ", "Athlete ", "Phantom ", "Semper Fi ")
@@ -172,6 +184,8 @@
 	)
 
 /datum/industry/communications/generateProductName(var/company_name)
+	procstart = null
+	src.procstart = null
 	var/list/products = list("mobile phone", "PDA", "tablet computer", "newscaster", "social network")
 	var/list/prefix = list("the [company_name] ", "the high performance ", "the mobile ", "the portable ", "the professional ", "the extreme ", "the incredible ", "the blazing fast ", "the bleeding edge ", null)
 	var/L = pick("[lowertext(consonant())]Phone ", "Universe ", "Xperience ", "Next ", "Engin Y ", "Cyborg ", "[consonant()]")
@@ -188,6 +202,8 @@
 	)
 
 /datum/industry/health/generateProductName(var/company_name)
+	procstart = null
+	src.procstart = null
 	var/list/prefix = list("amino", "nucleo", "nitro", "panto", "meth", "eth", "as", "algo", "coca", "hero", "lotsu", "opiod", "morph", "trinitro", "prop", "but", "acet", "acyclo", "lansop", "dyclo", "hydro", "oxycod", "vicod", "cannabi", "cryo", "dex", "chloro")
 	var/list/suffix = list("phen", "pirin", "pyrine", "ane", "amphetamine", "prazoline", "ine", "yl", "amine", "aminophen", "one", "ide", "phenate", "anol", "toulene", "glycerine", "vir", "tol", "trinic", "oxide")
 	var/list/uses = list("antidepressant", "analgesic", "anesthetic", "antiretroviral", "antiviral", "antibiotic", "cough drop", "depressant", "hangover cure", "homeopathic", "fertility drug", "hypnotic", "narcotic", "laxative", "multivitamin", "patch", "purgative", "relaxant", "steroid", "sleeping pill", "suppository", "tranquilizer")
@@ -202,6 +218,8 @@
 	)
 
 /datum/industry/consumer/generateProductName(var/company)
+	procstart = null
+	src.procstart = null
 	var/list/meat = list("chicken", "lizard", "corgi", "monkey", "goat", "fly", "xenomorph", "human", "walrus", "wendigo", "bear", "clown", "turkey", "pork", "carp", "crab", "mimic", "mystery")
 	var/list/qualifier = list("synthetic", "organic", "bio", "diet", "sugar-free", "paleolithic", "homeopathic", "recycled", "reclaimed", "vat-grown")
 	return "the [pick(qualifier)] [pick(meat)] meat product line"
@@ -215,6 +233,8 @@
 	)
 
 /datum/industry/mining/generateProductName(var/company)
+	procstart = null
+	src.procstart = null
 	var/list/equipment = list("drill", "pickaxe", "shovel", "jackhammer", "mini-pickaxe", "power hammer", "power gloves", "power armor", "hardsuit", "kinetic accelerator", "resonator", "oxygen tank", "emergency bike horn")
 	var/list/material = list("mauxite", "pharosium", "molitz", "adamantium", "mithril", "cobryl", "bohrum", "claretine", "viscerite", "syreline", "cerenkite", "plasmastone", "gold", "koshmarite", "phoron", "carbon dioxide")
 	return "the [pick(material)] [pick(equipment)]"
@@ -228,6 +248,8 @@
 	)
 
 /datum/industry/defense/generateProductName(var/company)
+	procstart = null
+	src.procstart = null
 	var/list/equipment = list("energy gun", "laser gun", "machine gun", "grenade", "stun baton", "artillery", "bomb", "attack drone", "missile", "chem sprayer")
 	var/list/material = list("bluespace", "stealth", "heat-seeking", "crime-seeking", "wide-range", "bioterror", "auto-reloading", "smart", "sentient", "rapid-fire", "species-targeting", "gibtonite", "mass-market", "perpetual-motion", "nuclear", "fission", "fusion")
 	return "the [pick(material)] [pick(equipment)]"

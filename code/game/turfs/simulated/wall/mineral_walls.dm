@@ -60,6 +60,8 @@
 	canSmoothWith = list(/turf/closed/wall/mineral/uranium, /obj/structure/falsewall/uranium)
 
 /turf/closed/wall/mineral/uranium/proc/radiate()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(world.time > last_event+15)
 			active = 1
@@ -72,14 +74,20 @@
 	return
 
 /turf/closed/wall/mineral/uranium/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	radiate()
 	..()
 
 /turf/closed/wall/mineral/uranium/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	radiate()
 	..()
 
 /turf/closed/wall/mineral/uranium/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	radiate()
 	..()
 
@@ -93,6 +101,8 @@
 	canSmoothWith = list(/turf/closed/wall/mineral/plasma, /obj/structure/falsewall/plasma)
 
 /turf/closed/wall/mineral/plasma/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.is_hot() > 300)//If the temperature of the object is over 300, then ignite
 		message_admins("Plasma wall ignited by [ADMIN_LOOKUPFLW(user)] in [ADMIN_COORDJMP(src)]",0,1)
 		log_game("Plasma wall ignited by [key_name(user)] in [COORD(src)]")
@@ -101,6 +111,8 @@
 	..()
 
 /turf/closed/wall/mineral/plasma/proc/PlasmaBurn(temperature)
+	procstart = null
+	src.procstart = null
 	new girder_type(src)
 	src.ChangeTurf(/turf/open/floor/plasteel)
 	var/turf/open/T = src
@@ -111,10 +123,14 @@
 		PlasmaBurn(exposed_temperature)
 
 /turf/closed/wall/mineral/plasma/proc/ignite(exposed_temperature)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
 /turf/closed/wall/mineral/plasma/bullet_act(var/obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(istype(Proj, /obj/item/projectile/beam))
 		PlasmaBurn(2500)
 	else if(istype(Proj, /obj/item/projectile/ion))
@@ -192,6 +208,8 @@
 //sub-type to be used for interior shuttle walls
 //won't get an underlay of the destination turf on shuttle move
 /turf/closed/wall/mineral/titanium/interior/copyTurf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(T.type != type)
 		T.ChangeTurf(type)
 		if(underlays.len)
@@ -209,6 +227,8 @@
 	return T
 
 /turf/closed/wall/mineral/titanium/copyTurf(turf/T)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	T.transform = transform
 
@@ -252,6 +272,8 @@
 	fixed_underlay = list("space"=1)
 
 /turf/closed/wall/mineral/plastitanium/explosive/dismantle_wall(devastated, explode)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bombcore/large/bombcore = new(get_turf(src))
 	if(devastated || explode)
 		bombcore.detonate()
@@ -259,6 +281,8 @@
 
 //have to copypaste this code
 /turf/closed/wall/mineral/plastitanium/interior/copyTurf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(T.type != type)
 		T.ChangeTurf(type)
 		if(underlays.len)
@@ -276,5 +300,7 @@
 	return T
 
 /turf/closed/wall/mineral/plastitanium/copyTurf(turf/T)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	T.transform = transform

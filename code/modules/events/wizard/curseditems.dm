@@ -10,6 +10,8 @@
 //item you want to equip to the hand, and set its slots_flags = null. Only items equiped to hands need do this.
 
 /datum/round_event/wizard/cursed_items/start()
+	procstart = null
+	src.procstart = null
 	var/item_set = pick("wizardmimic", "swords", "bigfatdoobie", "boxing", "voicemodulators", "catgirls2015")
 	var/list/loadout[slots_amt]
 	var/ruins_spaceworthiness

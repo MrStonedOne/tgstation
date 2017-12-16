@@ -19,21 +19,29 @@
 	var/list/holdingitems
 
 /obj/machinery/reagentgrinder/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holdingitems = list()
 	beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
 	beaker.desc += " May contain blended dust. Don't breathe this in!"
 
 /obj/machinery/reagentgrinder/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	drop_all_items()
 	return ..()
 
 /obj/machinery/reagentgrinder/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		beaker.ex_act(severity, target)
 
 /obj/machinery/reagentgrinder/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(A == beaker)
 		beaker = null
@@ -43,22 +51,30 @@
 		holdingitems -= A
 
 /obj/machinery/reagentgrinder/proc/drop_all_items()
+	procstart = null
+	src.procstart = null
 	for(var/i in holdingitems)
 		var/atom/movable/AM = i
 		AM.forceMove(drop_location())
 	holdingitems = list()
 
 /obj/machinery/reagentgrinder/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	new /obj/item/stack/sheet/metal (drop_location(), 3)
 	qdel(src)
 
 /obj/machinery/reagentgrinder/update_icon()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		icon_state = "juicer1"
 	else
 		icon_state = "juicer0"
 
 /obj/machinery/reagentgrinder/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, I))
 		return
 
@@ -112,12 +128,18 @@
 		return FALSE
 
 /obj/machinery/reagentgrinder/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/reagentgrinder/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/reagentgrinder/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	interact(user)
 
@@ -173,6 +195,8 @@
 	return
 
 /obj/machinery/reagentgrinder/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	var/mob/user = usr
@@ -198,6 +222,8 @@
 	updateUsrDialog()
 
 /obj/machinery/reagentgrinder/proc/detach(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!beaker)
 		return
 	beaker.forceMove(drop_location())
@@ -206,6 +232,8 @@
 	updateUsrDialog()
 
 /obj/machinery/reagentgrinder/proc/eject(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!length(holdingitems))
 		return
 	for(var/i in holdingitems)
@@ -215,20 +243,28 @@
 	updateUsrDialog()
 
 /obj/machinery/reagentgrinder/proc/remove_object(obj/item/O)
+	procstart = null
+	src.procstart = null
 	holdingitems -= O
 	qdel(O)
 
 /obj/machinery/reagentgrinder/proc/shake_for(duration)
+	procstart = null
+	src.procstart = null
 	var/offset = prob(50) ? -2 : 2
 	var/old_pixel_x = pixel_x
 	animate(src, pixel_x = pixel_x + offset, time = 0.2, loop = -1) //start shaking
 	addtimer(CALLBACK(src, .proc/stop_shaking, old_pixel_x), duration)
 
 /obj/machinery/reagentgrinder/proc/stop_shaking(old_px)
+	procstart = null
+	src.procstart = null
 	animate(src)
 	pixel_x = old_px
 
 /obj/machinery/reagentgrinder/proc/operate_for(time, silent = FALSE, juicing = FALSE)
+	procstart = null
+	src.procstart = null
 	shake_for(time)
 	updateUsrDialog()
 	operating = TRUE
@@ -240,10 +276,14 @@
 	addtimer(CALLBACK(src, .proc/stop_operating), time)
 
 /obj/machinery/reagentgrinder/proc/stop_operating()
+	procstart = null
+	src.procstart = null
 	operating = FALSE
 	updateUsrDialog()
 
 /obj/machinery/reagentgrinder/proc/juice()
+	procstart = null
+	src.procstart = null
 	power_change()
 	if(!beaker || (beaker && (beaker.reagents.total_volume >= beaker.reagents.maximum_volume)))
 		return
@@ -263,6 +303,8 @@
 	remove_object(I)
 
 /obj/machinery/reagentgrinder/proc/grind()
+	procstart = null
+	src.procstart = null
 	power_change()
 	if(!beaker || (beaker && beaker.reagents.total_volume >= beaker.reagents.maximum_volume))
 		return
@@ -284,6 +326,8 @@
 	remove_object(I)
 
 /obj/machinery/reagentgrinder/proc/mix(mob/user)
+	procstart = null
+	src.procstart = null
 	//For butter and other things that would change upon shaking or mixing
 	power_change()
 	if(!beaker)
@@ -292,6 +336,8 @@
 	addtimer(CALLBACK(src, /obj/machinery/reagentgrinder/proc/mix_complete), 50)
 
 /obj/machinery/reagentgrinder/proc/mix_complete()
+	procstart = null
+	src.procstart = null
 	if(beaker && beaker.reagents.total_volume)
 		//Recipe to make Butter
 		var/butter_amt = Floor(beaker.reagents.get_reagent_amount("milk") / MILK_TO_BUTTER_COEFF)

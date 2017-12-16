@@ -16,6 +16,8 @@
 	var/breakout_time = 450
 
 /obj/machinery/abductor/experiment/MouseDrop_T(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || user.lying || !Adjacent(user) || !target.Adjacent(user) || !ishuman(target))
 		return
 	if(isabductor(target))
@@ -23,16 +25,22 @@
 	close_machine(target)
 
 /obj/machinery/abductor/experiment/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
 	experimentUI(user)
 
 /obj/machinery/abductor/experiment/open_machine()
+	procstart = null
+	src.procstart = null
 	if(!state_open && !panel_open)
 		..()
 
 /obj/machinery/abductor/experiment/close_machine(mob/target)
+	procstart = null
+	src.procstart = null
 	for(var/A in loc)
 		if(isabductor(A))
 			return
@@ -40,6 +48,8 @@
 		..(target)
 
 /obj/machinery/abductor/experiment/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat != CONSCIOUS)
 		return
 	if(message_cooldown <= world.time)
@@ -47,6 +57,8 @@
 		to_chat(user, "<span class='warning'>[src]'s door won't budge!</span>")
 
 /obj/machinery/abductor/experiment/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	user.visible_message("<span class='notice'>You see [user] kicking against the door of [src]!</span>", \
@@ -60,6 +72,8 @@
 		open_machine()
 
 /obj/machinery/abductor/experiment/proc/dissection_icon(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/icon/photo = null
 	var/g = (H.gender == FEMALE) ? "f" : "m"
 	if(H.dna.species.use_skintones)
@@ -95,6 +109,8 @@
 	return photo
 
 /obj/machinery/abductor/experiment/proc/experimentUI(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += "<h3> Experiment </h3>"
 	if(occupant)
@@ -135,6 +151,8 @@
 	popup.open()
 
 /obj/machinery/abductor/experiment/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..() || usr == occupant)
 		return
 	usr.set_machine(src)
@@ -156,6 +174,8 @@
 	add_fingerprint(usr)
 
 /obj/machinery/abductor/experiment/proc/Experiment(mob/occupant,type,mob/user)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(history)
 	var/mob/living/carbon/human/H = occupant
 
@@ -212,6 +232,8 @@
 
 
 /obj/machinery/abductor/experiment/proc/SendBack(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.Sleeping(160)
 	H.uncuff()
 	if(console && console.pad && console.pad.teleport_target)
@@ -223,6 +245,8 @@
 
 
 /obj/machinery/abductor/experiment/update_icon()
+	procstart = null
+	src.procstart = null
 	if(state_open)
 		icon_state = "experiment-open"
 	else

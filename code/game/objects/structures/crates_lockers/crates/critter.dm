@@ -11,10 +11,14 @@
 	var/obj/item/tank/internals/emergency_oxygen/tank
 
 /obj/structure/closet/crate/critter/New()
+	procstart = null
+	src.procstart = null
 	..()
 	tank = new
 
 /obj/structure/closet/crate/critter/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	if(tank)
 		tank.forceMove(T)
@@ -23,6 +27,8 @@
 	return ..()
 
 /obj/structure/closet/crate/critter/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(opened)
 		add_overlay("crittercrate_door_open")
@@ -32,6 +38,8 @@
 			add_overlay("manifest")
 
 /obj/structure/closet/crate/critter/return_air()
+	procstart = null
+	src.procstart = null
 	if(tank)
 		return tank.air_contents
 	else

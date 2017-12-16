@@ -22,6 +22,8 @@
 	flipped = TRUE
 
 /obj/machinery/atmospherics/components/trinary/mixer/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	for(var/direction in GLOB.cardinals)
 		if(direction & initialize_directions)
@@ -33,24 +35,32 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/trinary/mixer/update_icon_nopipes()
+	procstart = null
+	src.procstart = null
 	if(on && NODE1 && NODE2 && NODE3 && is_operational())
 		icon_state = "mixer_on[flipped?"_f":""]"
 		return
 	icon_state = "mixer_off[flipped?"_f":""]"
 
 /obj/machinery/atmospherics/components/trinary/mixer/power_change()
+	procstart = null
+	src.procstart = null
 	var/old_stat = stat
 	..()
 	if(stat != old_stat)
 		update_icon()
 
 /obj/machinery/atmospherics/components/trinary/mixer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/gas_mixture/air3 = AIR3
 	air3.volume = 300
 	AIR3 = air3
 
 /obj/machinery/atmospherics/components/trinary/mixer/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!on || !(NODE1 && NODE2 && NODE3) && !is_operational())
 		return
@@ -123,6 +133,8 @@
 		ui.open()
 
 /obj/machinery/atmospherics/components/trinary/mixer/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["set_pressure"] = round(target_pressure)
@@ -132,6 +144,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/trinary/mixer/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -170,6 +184,8 @@
 
 
 /obj/machinery/atmospherics/components/trinary/filter/can_unwrench(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && on && is_operational())
 		to_chat(user, "<span class='warning'>You cannot unwrench [src], turn it off first!</span>")

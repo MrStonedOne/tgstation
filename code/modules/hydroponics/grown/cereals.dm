@@ -89,6 +89,8 @@
 	grind_results = list("flour" = 0, "blood" = 0)
 
 /obj/item/reagent_containers/food/snacks/grown/meatwheat/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='notice'>[user] crushes [src] into meat.</span>", "<span class='notice'>You crush [src] into something that resembles meat.</span>")
 	playsound(user, 'sound/effects/blobattack.ogg', 50, 1)
 	var/obj/item/reagent_containers/food/snacks/meat/slab/meatwheat/M = new

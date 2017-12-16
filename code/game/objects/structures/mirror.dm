@@ -11,6 +11,8 @@
 
 
 /obj/structure/mirror/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(broken || !Adjacent(user))
 		return
 
@@ -42,11 +44,15 @@
 		H.update_hair()
 
 /obj/structure/mirror/examine_status(mob/user)
+	procstart = null
+	src.procstart = null
 	if(broken)
 		return // no message spam
 	..()
 
 /obj/structure/mirror/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!broken && !(flags_1 & NODECONSTRUCT_1))
 		icon_state = "mirror_broke"
 		playsound(src, "shatter", 70, 1)
@@ -54,12 +60,16 @@
 		broken = 1
 
 /obj/structure/mirror/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(!disassembled)
 			new /obj/item/shard( src.loc )
 	qdel(src)
 
 /obj/structure/mirror/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/weldingtool) && user.a_intent != INTENT_HARM)
 		var/obj/item/weldingtool/WT = I
 		if(broken)
@@ -78,6 +88,8 @@
 		return ..()
 
 /obj/structure/mirror/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 70, 1)
@@ -93,6 +105,8 @@
 	var/list/choosable_races = list()
 
 /obj/structure/mirror/magic/New()
+	procstart = null
+	src.procstart = null
 	if(!choosable_races.len)
 		for(var/speciestype in subtypesof(/datum/species))
 			var/datum/species/S = new speciestype()
@@ -101,16 +115,22 @@
 	..()
 
 /obj/structure/mirror/magic/lesser/New()
+	procstart = null
+	src.procstart = null
 	choosable_races = GLOB.roundstart_races.Copy()
 	..()
 
 /obj/structure/mirror/magic/badmin/New()
+	procstart = null
+	src.procstart = null
 	for(var/speciestype in subtypesof(/datum/species))
 		var/datum/species/S = new speciestype()
 		choosable_races += S.id
 	..()
 
 /obj/structure/mirror/magic/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 
@@ -222,4 +242,6 @@
 		curse(user)
 
 /obj/structure/mirror/magic/proc/curse(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return

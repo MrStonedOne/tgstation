@@ -22,6 +22,8 @@
 	var/receiving = 1
 
 /obj/machinery/telecomms/relay/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	// Add our level and send it back
 	if(can_send(signal))
 		signal.data["level"] |= listening_level
@@ -29,6 +31,8 @@
 // Checks to see if it can send/receive.
 
 /obj/machinery/telecomms/relay/proc/can(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return FALSE
 	if(!is_freq_listening(signal))
@@ -36,11 +40,15 @@
 	return TRUE
 
 /obj/machinery/telecomms/relay/proc/can_send(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!can(signal))
 		return FALSE
 	return broadcasting
 
 /obj/machinery/telecomms/relay/proc/can_receive(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!can(signal))
 		return FALSE
 	return receiving

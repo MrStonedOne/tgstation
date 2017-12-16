@@ -28,6 +28,8 @@
 	var/buildmode_name = "Undocumented"
 
 /datum/mapGenerator/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(buildmode_name == "Undocumented")
 		buildmode_name = copytext("[type]", 20)	// / d a t u m / m a p g e n e r a t o r / = 20 characters.
@@ -36,6 +38,8 @@
 //Defines the region the map represents, sets map
 //Returns the map
 /datum/mapGenerator/proc/defineRegion(turf/Start, turf/End, replace = 0)
+	procstart = null
+	src.procstart = null
 	if(!checkRegion(Start, End))
 		return 0
 
@@ -48,6 +52,8 @@
 //Defines the region the map represents, as a CIRCLE!, sets map
 //Returns the map
 /datum/mapGenerator/proc/defineCircularRegion(turf/Start, turf/End, replace = 0)
+	procstart = null
+	src.procstart = null
 	if(!checkRegion(Start, End))
 		return 0
 
@@ -83,12 +89,16 @@
 
 //Empties the map list, he's dead jim.
 /datum/mapGenerator/proc/undefineRegion()
+	procstart = null
+	src.procstart = null
 	map = list() //bai bai
 
 
 //Checks for and Rejects bad region coordinates
 //Returns 1/0
 /datum/mapGenerator/proc/checkRegion(turf/Start, turf/End)
+	procstart = null
+	src.procstart = null
 	. = 1
 
 	if(!Start || !End)
@@ -104,6 +114,8 @@
 
 //Requests the mapGeneratorModule(s) to (re)generate
 /datum/mapGenerator/proc/generate()
+	procstart = null
+	src.procstart = null
 	set background = 1 //this can get beefy
 
 	syncModules()
@@ -115,6 +127,8 @@
 
 //Requests the mapGeneratorModule(s) to (re)generate this one turf
 /datum/mapGenerator/proc/generateOneTurf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		return
 	syncModules()
@@ -126,6 +140,8 @@
 
 //Replaces all paths in the module list with actual module datums
 /datum/mapGenerator/proc/initialiseModules()
+	procstart = null
+	src.procstart = null
 	for(var/path in modules)
 		if(ispath(path))
 			modules.Remove(path)
@@ -135,6 +151,8 @@
 
 //Sync mapGeneratorModule(s) to mapGenerator
 /datum/mapGenerator/proc/syncModules()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mapGeneratorModule/mod in modules)
 		mod.sync(src)
 
@@ -145,6 +163,8 @@
 ///////////////////////////
 
 /client/proc/debugNatureMapGenerator()
+	procstart = null
+	src.procstart = null
 	set name = "Test Nature Map Generator"
 	set category = "Debug"
 

@@ -11,17 +11,23 @@
 	resistance_flags = FIRE_PROOF | ACID_PROOF | INDESTRUCTIBLE
 
 /obj/item/device/paicard/Initialize()
+	procstart = null
+	src.procstart = null
 	SSpai.pai_card_list += src
 	add_overlay("pai-off")
 	return ..()
 
 /obj/item/device/paicard/Destroy()
+	procstart = null
+	src.procstart = null
 	//Will stop people throwing friend pAIs into the singularity so they can respawn
 	SSpai.pai_card_list -= src
 	QDEL_NULL(pai)
 	return ..()
 
 /obj/item/device/paicard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if (!in_range(src, user))
 		return
 	user.set_machine(src)
@@ -58,6 +64,8 @@
 
 /obj/item/device/paicard/Topic(href, href_list)
 
+	procstart = null
+	src.procstart = null
 	if(!usr || usr.stat)
 		return
 
@@ -112,6 +120,8 @@
 //		WIRE_TRANSMIT = 4
 
 /obj/item/device/paicard/proc/setPersonality(mob/living/silicon/pai/personality)
+	procstart = null
+	src.procstart = null
 	src.pai = personality
 	src.add_overlay("pai-null")
 
@@ -119,11 +129,15 @@
 	audible_message("\The [src] plays a cheerful startup noise!")
 
 /obj/item/device/paicard/proc/removePersonality()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(pai)
 	cut_overlays()
 	add_overlay("pai-off")
 
 /obj/item/device/paicard/proc/setEmotion(emotion)
+	procstart = null
+	src.procstart = null
 	if(pai)
 		src.cut_overlays()
 		switch(emotion)
@@ -149,9 +163,13 @@
 				src.add_overlay("pai-null")
 
 /obj/item/device/paicard/proc/alertUpdate()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class ='info'>[src] flashes a message across its screen, \"Additional personalities available for download.\"", "<span class='notice'>[src] bleeps electronically.</span>")
 
 /obj/item/device/paicard/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(pai)
 		pai.emp_act(severity)
 	..()

@@ -7,6 +7,8 @@
 	usr.client.holder.edit_admin_permissions()
 
 /datum/admins/proc/edit_admin_permissions()
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_PERMISSIONS))
 		return
 
@@ -59,6 +61,8 @@
 	usr << browse(jointext(output, ""),"window=editrights;size=900x650")
 
 /datum/admins/proc/log_admin_rank_modification(adm_ckey, new_rank)
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/admin_legacy_system))
 		return
 
@@ -113,6 +117,8 @@
 
 
 /datum/admins/proc/log_admin_permission_modification(adm_ckey, new_permission)
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/admin_legacy_system))
 		return
 	if(!usr.client)

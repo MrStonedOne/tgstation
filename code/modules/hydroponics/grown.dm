@@ -18,6 +18,8 @@
 	var/dry_grind = FALSE //If TRUE, this object needs to be dry to be ground up
 
 /obj/item/reagent_containers/food/snacks/grown/Initialize(mapload, obj/item/seeds/new_seed)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	tastes = list("[name]" = 1) // apples taste of apple, silly.
 	if(new_seed)
@@ -43,6 +45,8 @@
 
 
 /obj/item/reagent_containers/food/snacks/grown/proc/add_juice()
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		if(bitesize_mod)
 			bitesize = 1 + round(reagents.total_volume / bitesize_mod)
@@ -50,6 +54,8 @@
 	return 0
 
 /obj/item/reagent_containers/food/snacks/grown/examine(user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(seed)
 		for(var/datum/plant_gene/trait/T in seed.genes)
@@ -57,6 +63,8 @@
 				to_chat(user, T.examine_line)
 
 /obj/item/reagent_containers/food/snacks/grown/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if (istype(O, /obj/item/device/plant_analyzer))
 		var/msg = "<span class='info'>*---------*\n This is \a <span class='name'>[src]</span>.\n"
@@ -81,11 +89,15 @@
 
 // Various gene procs
 /obj/item/reagent_containers/food/snacks/grown/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(seed && seed.get_gene(/datum/plant_gene/trait/squash))
 		squash(user)
 	..()
 
 /obj/item/reagent_containers/food/snacks/grown/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..()) //was it caught by a mob?
 		if(seed)
 			for(var/datum/plant_gene/trait/T in seed.genes)
@@ -94,6 +106,8 @@
 				squash(hit_atom)
 
 /obj/item/reagent_containers/food/snacks/grown/proc/squash(atom/target)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	if(ispath(splat_type, /obj/effect/decal/cleanable/plant_smudge))
 		if(filling_color)
@@ -118,6 +132,8 @@
 	qdel(src)
 
 /obj/item/reagent_containers/food/snacks/grown/On_Consume()
+	procstart = null
+	src.procstart = null
 	if(iscarbon(usr))
 		if(seed)
 			for(var/datum/plant_gene/trait/T in seed.genes)
@@ -125,6 +141,8 @@
 	..()
 
 /obj/item/reagent_containers/food/snacks/grown/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(seed)
 		for(var/datum/plant_gene/trait/T in seed.genes)
 			T.on_cross(src, AM)
@@ -132,6 +150,8 @@
 
 
 /obj/item/reagent_containers/food/snacks/grown/generate_trash(atom/location)
+	procstart = null
+	src.procstart = null
 	if(trash && ispath(trash, /obj/item/grown))
 		. = new trash(location, seed)
 		trash = null
@@ -139,12 +159,16 @@
 	return ..()
 
 /obj/item/reagent_containers/food/snacks/grown/grind_requirements()
+	procstart = null
+	src.procstart = null
 	if(dry_grind && !dry)
 		to_chat(usr, "<span class='warning'>[src] needs to be dry before it can be ground up!</span>")
 		return
 	return TRUE
 
 /obj/item/reagent_containers/food/snacks/grown/on_grind()
+	procstart = null
+	src.procstart = null
 	var/nutriment = reagents.get_reagent_amount("nutriment")
 	if(grind_results.len)
 		for(var/i in 1 to grind_results.len)
@@ -153,6 +177,8 @@
 		reagents.del_reagent("vitamin")
 
 /obj/item/reagent_containers/food/snacks/grown/on_juice()
+	procstart = null
+	src.procstart = null
 	var/nutriment = reagents.get_reagent_amount("nutriment")
 	if(juice_results.len)
 		for(var/i in 1 to juice_results.len)
@@ -162,6 +188,8 @@
 
 // For item-containing growns such as eggy or gatfruit
 /obj/item/reagent_containers/food/snacks/grown/shell/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/T
 	if(trash)
 		T = generate_trash()

@@ -7,11 +7,15 @@
 	density = TRUE
 
 /obj/effect/clockwork/servant_blocker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(!force)
 		return
 	. = ..()
 
 /obj/effect/clockwork/servant_blocker/CanPass(atom/movable/M, turf/target)
+	procstart = null
+	src.procstart = null
 	var/list/target_contents = M.GetAllContents() + M
 	for(var/mob/living/L in target_contents)
 		if(is_servant_of_ratvar(L) && get_dir(M, src) != dir) //Unless we're on the side the arrow is pointing directly away from, no-go
@@ -20,7 +24,11 @@
 	return TRUE
 
 /obj/effect/clockwork/servant_blocker/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/servant_blocker/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return

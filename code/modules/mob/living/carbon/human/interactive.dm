@@ -87,6 +87,8 @@
 /// SNPC voice handling
 
 /mob/living/carbon/human/interactive/proc/loadVoice()
+	procstart = null
+	src.procstart = null
 	if(fexists("data/npc_saves/snpc.sav"))
 		var/savefile/S = new /savefile("data/npc_saves/snpc.sav")
 		S["knownStrings"] >> knownStrings
@@ -101,6 +103,8 @@
 		knownStrings = list()
 
 /mob/living/carbon/human/interactive/proc/saveVoice()
+	procstart = null
+	src.procstart = null
 	if(voice_saved)
 		return
 	var/json_file = file("data/npc_saves/snpc.json")
@@ -111,6 +115,8 @@
 
 //botPool funcs
 /mob/living/carbon/human/interactive/proc/takeDelegate(mob/living/carbon/human/interactive/from,doReset=TRUE)
+	procstart = null
+	src.procstart = null
 	eye_color = "red"
 	if(from == src)
 		return FALSE
@@ -136,6 +142,8 @@
 //end pool funcs
 
 /mob/living/carbon/human/interactive/proc/random()
+	procstart = null
+	src.procstart = null
 	//this is here because this has no client/prefs/brain whatever.
 	age = rand(AGE_MIN,AGE_MAX)
 	//job handling
@@ -144,11 +152,15 @@
 	myjob.equip(src)
 
 /mob/living/carbon/human/interactive/attacked_by(obj/item/I, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	retal = 1
 	retal_target = user
 
 /mob/living/carbon/human/interactive/bullet_act(obj/item/projectile/P, def_zone)
+	procstart = null
+	src.procstart = null
 	var/potentialAssault = locate(/mob/living) in view(2,P.starting)
 	if(potentialAssault)
 		retal = 1
@@ -156,6 +168,8 @@
 	..()
 
 /client/proc/resetSNPC(var/mob/A in SSnpcpool.processing)
+	procstart = null
+	src.procstart = null
 	set name = "Reset SNPC"
 	set desc = "Reset the SNPC"
 	set category = "Debug"
@@ -173,6 +187,8 @@
 			T.doing = 0
 
 /client/proc/customiseSNPC(var/mob/A in SSnpcpool.processing)
+	procstart = null
+	src.procstart = null
 	set name = "Customize SNPC"
 	set desc = "Customise the SNPC"
 	set category = "Debug"
@@ -259,6 +275,8 @@
 						T.forceMove(pick(get_area_turfs(T.job2area(T.myjob))))
 
 /mob/living/carbon/human/interactive/proc/doSetup()
+	procstart = null
+	src.procstart = null
 	Path_ID = new /obj/item/card/id(src)
 
 	var/datum/job/captain/C = new/datum/job/captain
@@ -352,6 +370,8 @@
 
 
 /mob/living/carbon/human/interactive/proc/makeTraitor(var/inPers)
+	procstart = null
+	src.procstart = null
 	isTraitor = 1
 	traitorScale = (slyness + smartness) + rand(-10,10)
 	traitorType = inPers
@@ -374,6 +394,8 @@
 	faction += "hostile"
 
 /mob/living/carbon/human/interactive/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	set_species(/datum/species/synth)
@@ -393,10 +415,14 @@
 	slyness += rand(-10,10)
 
 /mob/living/carbon/human/interactive/Destroy()
+	procstart = null
+	src.procstart = null
 	SSnpcpool.stop_processing(src)
 	return ..()
 
 /mob/living/carbon/human/interactive/proc/retalTarget(var/target)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/M = target
 	if(target)
 		if(health > 0)
@@ -409,26 +435,36 @@
 //Retaliation clauses
 
 /mob/living/carbon/human/interactive/hitby(atom/movable/AM, skipcatch, hitpush, blocked)
+	procstart = null
+	src.procstart = null
 	..(AM,skipcatch,hitpush,blocked)
 	var/mob/living/carbon/C = locate(/mob/living/carbon) in view(MIN_RANGE_FIND,src)
 	if(C)
 		retalTarget(C)
 
 /mob/living/carbon/human/interactive/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	..(M)
 	retalTarget(M)
 
 /mob/living/carbon/human/interactive/show_inv(mob/user)
+	procstart = null
+	src.procstart = null
 	..(user)
 	retalTarget(user)
 
 /mob/living/carbon/human/interactive/can_inject(mob/user, error_msg, target_zone, var/penetrate_thick = 0)
+	procstart = null
+	src.procstart = null
 	..(user,error_msg,target_zone,penetrate_thick)
 	retalTarget(user)
 
 
 //THESE EXIST FOR DEBUGGING OF THE DOING/INTEREST SYSTEM EASILY
 /mob/living/carbon/human/interactive/proc/doing2string(doin)
+	procstart = null
+	src.procstart = null
 	var/toReturn = ""
 	if(!doin)
 		toReturn = "not doing anything"
@@ -441,6 +477,8 @@
 	return toReturn
 
 /mob/living/carbon/human/interactive/proc/interest2string(inter)
+	procstart = null
+	src.procstart = null
 	var/toReturn = "Flatlined"
 	if(inter >= 0 && inter <= 25)
 		toReturn = "Very Bored"
@@ -454,6 +492,8 @@
 //END DEBUG
 
 /mob/living/carbon/human/interactive/proc/IsDeadOrIncap(checkDead = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!canmove)
 		return 1
 	if(health <= 0 && checkDead)
@@ -471,6 +511,8 @@
 	return 0
 
 /mob/living/carbon/human/interactive/proc/enforce_hands()
+	procstart = null
+	src.procstart = null
 	if(main_hand)
 		if(main_hand.loc != src)
 			main_hand = null
@@ -493,6 +535,8 @@
 
 
 /mob/living/carbon/human/interactive/proc/swap_hands()
+	procstart = null
+	src.procstart = null
 	var/oindex = active_hand_index
 	if(active_hand_index == 1)
 		active_hand_index = 2
@@ -503,6 +547,8 @@
 	update_hands = 1
 
 /mob/living/carbon/human/interactive/proc/take_to_slot(obj/item/G, var/hands=0)
+	procstart = null
+	src.procstart = null
 	var/list/slots = list ("left pocket" = slot_l_store,"right pocket" = slot_r_store,"left hand" = slot_hands,"right hand" = slot_hands)
 	if(hands)
 		slots = list ("left hand" = slot_hands,"right hand" = slot_hands)
@@ -513,6 +559,8 @@
 	update_hands = 1
 
 /mob/living/carbon/human/interactive/proc/insert_into_backpack()
+	procstart = null
+	src.procstart = null
 	var/list/slots = list ("left pocket" = slot_l_store,"right pocket" = slot_r_store,"left hand" = slot_hands,"right hand" = slot_hands)
 	var/obj/item/I = get_item_by_slot(pick(slots))
 	var/obj/item/storage/BP = get_item_by_slot(slot_back)
@@ -524,23 +572,33 @@
 	update_hands = 1
 
 /mob/living/carbon/human/interactive/proc/targetRange(towhere)
+	procstart = null
+	src.procstart = null
 	return get_dist(get_turf(towhere), get_turf(src))
 
 /mob/living/carbon/human/interactive/proc/InteractiveProcess()
+	procstart = null
+	src.procstart = null
 	if(SSticker.current_state == GAME_STATE_FINISHED)
 		saveVoice()
 	doProcess()
 
 /mob/living/carbon/human/interactive/death()
+	procstart = null
+	src.procstart = null
 	saveVoice()
 	..()
 
 /mob/living/carbon/human/interactive/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(speaker != src)
 		knownStrings |= html_decode(raw_message)
 	..()
 
 /mob/living/carbon/human/interactive/proc/doProcess()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	//---------------------------
 	//---- interest flow control
@@ -718,6 +776,8 @@
 	LAST_TARGET = TARGET
 
 /mob/living/carbon/human/interactive/proc/dressup(obj/item/clothing/C)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	inactivity_period = 12
 	sleep(5)
@@ -731,6 +791,8 @@
 				equip_to_appropriate_slot(C)
 
 /mob/living/carbon/human/interactive/proc/favouredObjIn(var/list/inList)
+	procstart = null
+	src.procstart = null
 	var/list/outList = list()
 	for(var/i in inList)
 		for(var/path in favoured_types)
@@ -741,6 +803,8 @@
 	return outList
 
 /mob/living/carbon/human/interactive/proc/tryWalk(turf/inTarget, override = 0)
+	procstart = null
+	src.procstart = null
 	if(restrictedJob && !override) // we're a job that has to stay in our home
 		if(!(get_turf(inTarget) in get_area_turfs(job2area(myjob))))
 			TARGET = null
@@ -753,6 +817,8 @@
 		timeout++
 
 /mob/living/carbon/human/interactive/proc/getGoodPath(target,var/maxtries=512)
+	procstart = null
+	src.procstart = null
 	set background = 1
 	var/turf/end = get_turf(target)
 
@@ -779,6 +845,8 @@
 	return path
 
 /mob/living/carbon/human/interactive/proc/walk2derpless(target)
+	procstart = null
+	src.procstart = null
 	set background = 1
 	if(!target)
 		return 0
@@ -805,6 +873,8 @@
 	return 0
 
 /mob/living/carbon/human/interactive/proc/job2area(target)
+	procstart = null
+	src.procstart = null
 	var/datum/job/T = target
 	if(T.title == "Assistant")
 		return /area/hallway/primary
@@ -828,6 +898,8 @@
 		return pick(/area/hallway, /area/crew_quarters/locker)
 
 /mob/living/carbon/human/interactive/proc/target_filter(target)
+	procstart = null
+	src.procstart = null
 	var/list/filtered_targets = list(/area, /turf, /obj/machinery/door, /atom/movable/lighting_object, /obj/structure/cable, /obj/machinery/atmospherics)
 	var/list/L = target
 	for(var/atom/A in target) // added a bunch of "junk" that clogs up the general find procs
@@ -844,6 +916,8 @@
 
 ///BUILT IN MODULES
 /mob/living/carbon/human/interactive/proc/chatter(obj)
+	procstart = null
+	src.procstart = null
 	var/verbs_use = pick_list(NPC_SPEAK_FILE,"verbs_use")
 	var/verbs_touch = pick_list(NPC_SPEAK_FILE,"verbs_touch")
 	var/verbs_move = pick_list(NPC_SPEAK_FILE,"verbs_move")
@@ -905,6 +979,8 @@
 
 
 /mob/living/carbon/human/interactive/proc/getAllContents()
+	procstart = null
+	src.procstart = null
 	var/list/allContents = list()
 	for(var/atom/A in contents)
 		allContents += A
@@ -914,6 +990,8 @@
 	return allContents
 
 /mob/living/carbon/human/interactive/proc/enforceHome()
+	procstart = null
+	src.procstart = null
 	var/list/validHome = get_area_turfs(job2area(myjob))
 
 	if(TARGET)
@@ -929,6 +1007,8 @@
 	return 0
 
 /mob/living/carbon/human/interactive/proc/npcDrop(var/obj/item/A,var/blacklist = 0)
+	procstart = null
+	src.procstart = null
 	if(blacklist)
 		blacklistItems += A
 	A.forceMove(drop_location()) // drop item works inconsistently
@@ -937,6 +1017,8 @@
 
 /mob/living/carbon/human/interactive/proc/traitor(obj)
 
+	procstart = null
+	src.procstart = null
 	if(traitorType == SNPC_PSYCHO)
 		traitorTarget = pick(nearby)
 
@@ -978,6 +1060,8 @@
 					retal_target = traitorTarget
 
 /mob/living/carbon/human/interactive/proc/botany(obj)
+	procstart = null
+	src.procstart = null
 	if(shouldModulePass())
 		return
 
@@ -1082,6 +1166,8 @@
 						qdel(toLoad) // destroy everything we dont need
 
 /mob/living/carbon/human/interactive/proc/bartend(obj)
+	procstart = null
+	src.procstart = null
 	if(shouldModulePass())
 		return
 
@@ -1113,6 +1199,8 @@
 				customEmote("[src] [pick("gibbers","drools","slobbers","claps wildly","spits")], serving up a [D]!")
 
 /mob/living/carbon/human/interactive/proc/shitcurity(obj)
+	procstart = null
+	src.procstart = null
 	var/list/allContents = getAllContents()
 
 	for(var/mob/living/carbon/human/C in nearby)
@@ -1131,6 +1219,8 @@
 				break
 
 /mob/living/carbon/human/interactive/proc/clowning(obj)
+	procstart = null
+	src.procstart = null
 	if(shouldModulePass())
 		return
 	var/list/allContents = getAllContents()
@@ -1185,6 +1275,8 @@
 
 
 /mob/living/carbon/human/interactive/proc/healpeople(obj)
+	procstart = null
+	src.procstart = null
 	var/shouldTryHeal = 0
 	var/obj/item/stack/medical/M
 
@@ -1228,6 +1320,8 @@
 
 
 /mob/living/carbon/human/interactive/proc/dojanitor(obj)
+	procstart = null
+	src.procstart = null
 	if(shouldModulePass())
 		return
 	var/list/allContents = getAllContents()
@@ -1253,10 +1347,14 @@
 				inactivity_period = 25
 
 /mob/living/carbon/human/interactive/proc/customEmote(var/text)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='notice'>[text]</span>")
 
 // START COOKING MODULE
 /mob/living/carbon/human/interactive/proc/cookingwithmagic(var/obj/item/reagent_containers/food/snacks/target)
+	procstart = null
+	src.procstart = null
 	if(Adjacent(target))
 		customEmote("[src] [pick("gibbers","drools","slobbers","claps wildly","spits")] towards [target], and with a bang, it's instantly cooked!")
 		var/obj/item/reagent_containers/food/snacks/S = new target.cooked_type (get_turf(src))
@@ -1267,6 +1365,8 @@
 		tryWalk(target)
 
 /mob/living/carbon/human/interactive/proc/souschef(obj)
+	procstart = null
+	src.procstart = null
 	if(shouldModulePass())
 		return
 
@@ -1437,6 +1537,8 @@
 // END COOKING MODULE
 
 /mob/living/carbon/human/interactive/proc/compareFaction(var/list/targetFactions)
+	procstart = null
+	src.procstart = null
 	var/hasSame = 0
 
 	for(var/A in targetFactions)
@@ -1446,6 +1548,8 @@
 	return hasSame
 
 /mob/living/carbon/human/interactive/proc/combat(obj)
+	procstart = null
+	src.procstart = null
 	enforce_hands()
 	if(canmove)
 		if((graytide || (TRAITS & TRAIT_MEAN)) || retal)
@@ -1585,6 +1689,8 @@
 
 
 /mob/living/carbon/human/interactive/proc/nearbyscan(obj)
+	procstart = null
+	src.procstart = null
 	nearby = list()
 	for(var/mob/living/M in view(4,src))
 		if(M != src)
@@ -1592,12 +1698,16 @@
 
 //END OF MODULES
 /mob/living/carbon/human/interactive/angry/Initialize()
+	procstart = null
+	src.procstart = null
 	TRAITS |= TRAIT_ROBUST
 	TRAITS |= TRAIT_MEAN
 	faction += "bot_angry"
 	. = ..()
 
 /mob/living/carbon/human/interactive/friendly/Initialize()
+	procstart = null
+	src.procstart = null
 	TRAITS |= TRAIT_FRIENDLY
 	TRAITS |= TRAIT_UNROBUST
 	faction += "bot_friendly"
@@ -1606,6 +1716,8 @@
 	. = ..()
 
 /mob/living/carbon/human/interactive/greytide/Initialize()
+	procstart = null
+	src.procstart = null
 	TRAITS |= TRAIT_ROBUST
 	TRAITS |= TRAIT_MEAN
 	TRAITS |= TRAIT_THIEVING
@@ -1618,6 +1730,8 @@
 
 //Walk softly and carry a big stick
 /mob/living/carbon/human/interactive/robust/Initialize()
+	procstart = null
+	src.procstart = null
 	TRAITS |= TRAIT_FRIENDLY
 	TRAITS |= TRAIT_ROBUST
 	TRAITS |= TRAIT_SMART

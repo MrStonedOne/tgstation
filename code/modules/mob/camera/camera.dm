@@ -12,7 +12,11 @@
 	move_on_shuttle = 0
 
 /mob/camera/experience_pressure_difference()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/camera/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	loc = destination

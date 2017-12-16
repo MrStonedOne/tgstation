@@ -39,6 +39,8 @@
 
 
 /obj/item/clothing/gloves/space_ninja/Touch(atom/A,proximity)
+	procstart = null
+	src.procstart = null
 	if(!candrain || draining)
 		return 0
 	if(!ishuman(loc))
@@ -71,11 +73,15 @@
 
 
 /obj/item/clothing/gloves/space_ninja/proc/toggledrain()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/U = loc
 	to_chat(U, "You <b>[candrain?"disable":"enable"]</b> special interaction.")
 	candrain=!candrain
 
 /obj/item/clothing/gloves/space_ninja/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(flags_1 & NODROP_1)
 		to_chat(user, "The energy drain mechanism is <B>[candrain?"active":"inactive"]</B>.")

@@ -52,6 +52,8 @@
 
 
 /datum/personal_crafting/proc/check_contents(datum/crafting_recipe/R, list/contents)
+	procstart = null
+	src.procstart = null
 	main_loop:
 		for(var/A in R.reqs)
 			var/needed_amount = R.reqs[A]
@@ -72,6 +74,8 @@
 	return 1
 
 /datum/personal_crafting/proc/get_environment(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/item/I in user.held_items)
 		. += I
@@ -88,6 +92,8 @@
 				. += AM
 
 /datum/personal_crafting/proc/get_surroundings(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/obj/item/I in get_environment(user))
 		if(I.flags_2 & HOLOGRAM_2)
@@ -104,6 +110,8 @@
 			.[I.type] += 1
 
 /datum/personal_crafting/proc/check_tools(mob/user, datum/crafting_recipe/R, list/contents)
+	procstart = null
+	src.procstart = null
 	if(!R.tools.len)
 		return 1
 	var/list/possible_tools = list()
@@ -123,6 +131,8 @@
 	return 1
 
 /datum/personal_crafting/proc/construct_item(mob/user, datum/crafting_recipe/R)
+	procstart = null
+	src.procstart = null
 	var/list/contents = get_surroundings(user)
 	var/send_feedback = 1
 	if(check_contents(R, contents))
@@ -169,6 +179,8 @@
 */
 
 /datum/personal_crafting/proc/del_reqs(datum/crafting_recipe/R, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/surroundings
 	var/list/Deletion = list()
 	. = list()
@@ -267,6 +279,8 @@
 
 
 /datum/personal_crafting/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.not_incapacitated_turf_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "personal_crafting", "Crafting Menu", 700, 800, master_ui, state)
@@ -274,6 +288,8 @@
 
 
 /datum/personal_crafting/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/list/subs = list()
 	var/cur_subcategory = CAT_NONE
@@ -308,6 +324,8 @@
 
 
 /datum/personal_crafting/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -344,11 +362,15 @@
 
 //Next works nicely with modular arithmetic
 /datum/personal_crafting/proc/next_cat(readonly = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!readonly)
 		viewing_subcategory = 1
 	. = viewing_category % categories.len + 1
 
 /datum/personal_crafting/proc/next_subcat()
+	procstart = null
+	src.procstart = null
 	if(islist(subcategories[viewing_category]))
 		var/list/subs = subcategories[viewing_category]
 		. = viewing_subcategory % subs.len + 1
@@ -356,6 +378,8 @@
 
 //Previous can go fuck itself
 /datum/personal_crafting/proc/prev_cat(readonly = TRUE)
+	procstart = null
+	src.procstart = null
 	if (!readonly)
 		viewing_subcategory = 1
 	if(viewing_category == categories.len)
@@ -366,6 +390,8 @@
 		. = categories.len
 
 /datum/personal_crafting/proc/prev_subcat()
+	procstart = null
+	src.procstart = null
 	if(islist(subcategories[viewing_category]))
 		var/list/subs = subcategories[viewing_category]
 		if(viewing_subcategory == subs.len)
@@ -379,6 +405,8 @@
 
 
 /datum/personal_crafting/proc/build_recipe_data(datum/crafting_recipe/R)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["name"] = R.name
 	data["ref"] = "[REF(R)]"

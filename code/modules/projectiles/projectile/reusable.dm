@@ -6,14 +6,20 @@
 	impact_effect_type = null
 
 /obj/item/projectile/bullet/reusable/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	handle_drop()
 
 /obj/item/projectile/bullet/reusable/on_range()
+	procstart = null
+	src.procstart = null
 	handle_drop()
 	..()
 
 /obj/item/projectile/bullet/reusable/proc/handle_drop()
+	procstart = null
+	src.procstart = null
 	if(!dropped)
 		var/turf/T = get_turf(src)
 		new ammo_type(T)
@@ -40,6 +46,8 @@
 	var/obj/item/pen/pen = null
 
 /obj/item/projectile/bullet/reusable/foam_dart/handle_drop()
+	procstart = null
+	src.procstart = null
 	if(dropped)
 		return
 	var/turf/T = get_turf(src)
@@ -59,6 +67,8 @@
 
 
 /obj/item/projectile/bullet/reusable/foam_dart/Destroy()
+	procstart = null
+	src.procstart = null
 	pen = null
 	return ..()
 

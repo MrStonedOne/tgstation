@@ -11,16 +11,22 @@
 	var/alarm_health = 0
 
 /obj/item/device/assembly/health/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Use a multitool to swap between \"detect death\" mode and \"detect critical state\" mode.</span>")
 
 /obj/item/device/assembly/health/activate()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0//Cooldown check
 	toggle_scan()
 	return 0
 
 /obj/item/device/assembly/health/toggle_secure()
+	procstart = null
+	src.procstart = null
 	secured = !secured
 	if(secured && scanning)
 		START_PROCESSING(SSobj, src)
@@ -31,6 +37,8 @@
 	return secured
 
 /obj/item/device/assembly/health/attackby(obj/item/W as obj, mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/multitool))
 		if(alarm_health == 0)
 			alarm_health = -90
@@ -43,6 +51,8 @@
 		return ..()
 
 /obj/item/device/assembly/health/process()
+	procstart = null
+	src.procstart = null
 	if(!scanning || !secured)
 		return
 
@@ -64,6 +74,8 @@
 	return
 
 /obj/item/device/assembly/health/proc/toggle_scan()
+	procstart = null
+	src.procstart = null
 	if(!secured)
 		return 0
 	scanning = !scanning
@@ -86,6 +98,8 @@
 
 
 /obj/item/device/assembly/health/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!ismob(usr))
 		return

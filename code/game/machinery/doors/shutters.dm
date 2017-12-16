@@ -15,15 +15,21 @@
 //shutters look like ass with things on top of them.
 
 /obj/machinery/door/poddoor/shutters/New()
+	procstart = null
+	src.procstart = null
 	..()
 	layer = CLOSED_DOOR_LAYER	//to handle /obj/machinery/door/New() resetting the layer.
 
 
 /obj/machinery/door/poddoor/shutters/open(ignorepower = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	layer = CLOSED_DOOR_LAYER
 
 
 /obj/machinery/door/poddoor/shutters/close(ignorepower = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	layer = CLOSED_DOOR_LAYER

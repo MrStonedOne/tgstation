@@ -28,6 +28,8 @@
 	var/hitsound = 'sound/effects/Glasshit.ogg'
 
 /obj/structure/window/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(reinf)
 		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
@@ -48,6 +50,8 @@
 		to_chat(user, "<span class='notice'>Alt-click to rotate it clockwise.</span>")
 
 /obj/structure/window/Initialize(mapload, direct)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(direct)
 		setDir(direct)
@@ -79,16 +83,22 @@
 	explosion_block = EXPLOSION_BLOCK_PROC
 
 /obj/structure/window/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_VERY_LIGHT_INSULATION, TRUE, FALSE)
 
 /obj/structure/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)
 			return list("mode" = RCD_DECONSTRUCT, "delay" = 20, "cost" = 5)
 	return FALSE
 
 /obj/structure/window/rcd_act(mob/user, var/obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)
 			to_chat(user, "<span class='notice'>You deconstruct the window.</span>")
@@ -97,11 +107,15 @@
 	return FALSE
 
 /obj/structure/window/narsie_act()
+	procstart = null
+	src.procstart = null
 	add_atom_colour(NARSIE_WINDOW_COLOUR, FIXED_COLOUR_PRIORITY)
 	for(var/obj/item/shard/shard in debris)
 		shard.add_atom_colour(NARSIE_WINDOW_COLOUR, FIXED_COLOUR_PRIORITY)
 
 /obj/structure/window/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(!fulltile)
 		new/obj/structure/window/reinforced/clockwork(get_turf(src), dir)
 	else
@@ -109,17 +123,23 @@
 	qdel(src)
 
 /obj/structure/window/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct(FALSE)
 
 /obj/structure/window/setDir(direct)
+	procstart = null
+	src.procstart = null
 	if(!fulltile)
 		..()
 	else
 		..(FULLTILE_WINDOW_DIR)
 
 /obj/structure/window/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
 	if(dir == FULLTILE_WINDOW_DIR)
@@ -139,6 +159,8 @@
 	return 1
 
 /obj/structure/window/CheckExit(atom/movable/O as mob|obj, target)
+	procstart = null
+	src.procstart = null
 	if(istype(O) && (O.pass_flags & PASSGLASS))
 		return 1
 	if(get_dir(O.loc, target) == dir)
@@ -146,17 +168,23 @@
 	return 1
 
 /obj/structure/window/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message("<span class='notice'>Something knocks on [src].</span>")
 	add_fingerprint(user)
 	playsound(src, 'sound/effects/Glassknock.ogg', 50, 1)
 
 /obj/structure/window/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(!can_be_reached(user))
 		return 1
 	. = ..()
 
 /obj/structure/window/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_be_reached(user))
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
@@ -165,6 +193,8 @@
 	playsound(src, 'sound/effects/Glassknock.ogg', 50, 1)
 
 /obj/structure/window/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 
@@ -174,6 +204,8 @@
 	..()
 
 /obj/structure/window/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!can_be_reached(user))
 		return 1 //skip the afterattack
 
@@ -239,22 +271,32 @@
 	return ..()
 
 /obj/structure/window/proc/check_state(checked_state)
+	procstart = null
+	src.procstart = null
 	if(state == checked_state)
 		return TRUE
 
 /obj/structure/window/proc/check_anchored(checked_anchored)
+	procstart = null
+	src.procstart = null
 	if(anchored == checked_anchored)
 		return TRUE
 
 /obj/structure/window/proc/check_state_and_anchored(checked_state, checked_anchored)
+	procstart = null
+	src.procstart = null
 	return check_state(checked_state) && check_anchored(checked_anchored)
 
 /obj/structure/window/mech_melee_attack(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	if(!can_be_reached())
 		return
 	..()
 
 /obj/structure/window/proc/can_be_reached(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!fulltile)
 		if(get_dir(user,src) & dir)
 			for(var/obj/O in loc)
@@ -263,11 +305,15 @@
 	return 1
 
 /obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.) //received damage
 		update_nearby_icons()
 
 /obj/structure/window/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -279,6 +325,8 @@
 
 
 /obj/structure/window/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(!disassembled)
@@ -292,6 +340,8 @@
 	update_nearby_icons()
 
 /obj/structure/window/verb/rotate()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate Window Counter-Clockwise"
 	set category = "Object"
 	set src in oview(1)
@@ -316,6 +366,8 @@
 	return TRUE
 
 /obj/structure/window/verb/revrotate()
+	procstart = null
+	src.procstart = null
 	set name = "Rotate Window Clockwise"
 	set category = "Object"
 	set src in oview(1)
@@ -339,6 +391,8 @@
 	return TRUE
 
 /obj/structure/window/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(user.incapacitated())
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -349,6 +403,8 @@
 		revrotate()
 
 /obj/structure/window/Destroy()
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	air_update_turf(1)
 	update_nearby_icons()
@@ -356,24 +412,32 @@
 
 
 /obj/structure/window/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	setDir(ini_dir)
 	move_update_air(T)
 
 /obj/structure/window/CanAtmosPass(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!anchored || !density)
 		return TRUE
 	return !(FULLTILE_WINDOW_DIR == dir || dir == get_dir(loc, T))
 
 //This proc is used to update the icons of nearby windows.
 /obj/structure/window/proc/update_nearby_icons()
+	procstart = null
+	src.procstart = null
 	update_icon()
 	if(smooth)
 		queue_smooth_neighbors(src)
 
 //merges adjacent full-tile windows into one
 /obj/structure/window/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(src))
 		if(!fulltile)
 			return
@@ -392,14 +456,20 @@
 
 /obj/structure/window/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > (T0C + heat_resistance))
 		take_damage(round(exposed_volume / 100), BURN, 0, 0)
 	..()
 
 /obj/structure/window/get_dumping_location(obj/item/storage/source,mob/user)
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/structure/window/CanAStarPass(ID, to_dir)
+	procstart = null
+	src.procstart = null
 	if(!density)
 		return 1
 	if((dir == FULLTILE_WINDOW_DIR) || (dir == to_dir))
@@ -408,6 +478,8 @@
 	return 1
 
 /obj/structure/window/GetExplosionBlock()
+	procstart = null
+	src.procstart = null
 	return reinf && fulltile ? real_explosion_block : 0
 
 /obj/structure/window/spawner/east
@@ -434,6 +506,8 @@
 	glass_type = /obj/item/stack/sheet/rglass
 
 /obj/structure/window/reinforced/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/rad_insulation, RAD_HEAVY_INSULATION, TRUE, FALSE)
 
 /obj/structure/window/reinforced/spawner/east
@@ -460,6 +534,8 @@
 	glass_type = /obj/item/stack/sheet/plasmaglass
 
 /obj/structure/window/plasma/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION, TRUE, FALSE)
 
 /obj/structure/window/plasma/spawner/east
@@ -604,6 +680,8 @@
 	glass_amount = 2
 
 /obj/structure/window/shuttle/narsie_act()
+	procstart = null
+	src.procstart = null
 	add_atom_colour("#3C3434", FIXED_COLOUR_PRIORITY)
 
 /obj/structure/window/shuttle/tinted
@@ -645,6 +723,8 @@
 	var/made_glow = FALSE
 
 /obj/structure/window/reinforced/clockwork/Initialize(mapload, direct)
+	procstart = null
+	src.procstart = null
 	if(fulltile)
 		made_glow = TRUE
 	. = ..()
@@ -658,6 +738,8 @@
 	change_construction_value(fulltile ? 2 : 1)
 
 /obj/structure/window/reinforced/clockwork/setDir(direct)
+	procstart = null
+	src.procstart = null
 	if(!made_glow)
 		var/obj/effect/E = new /obj/effect/temp_visual/ratvar/window/single(get_turf(src))
 		E.setDir(direct)
@@ -665,15 +747,21 @@
 	..()
 
 /obj/structure/window/reinforced/clockwork/Destroy()
+	procstart = null
+	src.procstart = null
 	change_construction_value(fulltile ? -2 : -1)
 	return ..()
 
 /obj/structure/window/reinforced/clockwork/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		obj_integrity = max_integrity
 		update_icon()
 
 /obj/structure/window/reinforced/clockwork/narsie_act()
+	procstart = null
+	src.procstart = null
 	take_damage(rand(25, 75), BRUTE)
 	if(src)
 		var/previouscolor = color
@@ -723,6 +811,8 @@
 	var/static/mutable_appearance/paper = mutable_appearance('icons/obj/smooth_structures/paperframes.dmi',icon_state = "paper", layer = ABOVE_OBJ_LAYER - 0.1)
 
 /obj/structure/window/paperframe/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_LIST(debris)
 	var/papers = rand(1,4)
@@ -732,6 +822,8 @@
 	update_icon()
 
 /obj/structure/window/paperframe/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(user.a_intent != INTENT_HARM)
 		user.changeNext_move(CLICK_CD_MELEE)
@@ -745,6 +837,8 @@
 			update_icon()
 
 /obj/structure/window/paperframe/update_icon()
+	procstart = null
+	src.procstart = null
 	if(obj_integrity < max_integrity)
 		cut_overlay(paper)
 		add_overlay(torn)
@@ -757,6 +851,8 @@
 
 
 /obj/structure/window/paperframe/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(W.is_hot())
 		fire_act(W.is_hot())
 		return

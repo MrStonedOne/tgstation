@@ -15,11 +15,15 @@
 	var/obj/machinery/field/generator/FG2 = null
 
 /obj/machinery/field/containment/Destroy()
+	procstart = null
+	src.procstart = null
 	FG1.fields -= src
 	FG2.fields -= src
 	return ..()
 
 /obj/machinery/field/containment/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(get_dist(src, user) > 1)
 		return FALSE
 	else
@@ -27,10 +31,14 @@
 		return TRUE
 
 /obj/machinery/field/containment/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	shock(user)
 	return TRUE
 
 /obj/machinery/field/containment/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BURN)
 			playsound(loc, 'sound/effects/empulse.ogg', 75, 1)
@@ -38,12 +46,18 @@
 			playsound(loc, 'sound/effects/empulse.ogg', 75, 1)
 
 /obj/machinery/field/containment/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/field/containment/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/machinery/field/containment/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	if(!FG1 || !FG2)
 		qdel(src)
 		return
@@ -55,6 +69,8 @@
 		..()
 
 /obj/machinery/field/containment/Crossed(mob/mover)
+	procstart = null
+	src.procstart = null
 	if(isliving(mover))
 		shock(mover)
 
@@ -62,6 +78,8 @@
 		bump_field(mover)
 
 /obj/machinery/field/containment/proc/set_master(master1,master2)
+	procstart = null
+	src.procstart = null
 	if(!master1 || !master2)
 		return FALSE
 	FG1 = master1
@@ -69,12 +87,16 @@
 	return TRUE
 
 /obj/machinery/field/containment/shock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!FG1 || !FG2)
 		qdel(src)
 		return FALSE
 	..()
 
 /obj/machinery/field/containment/Move()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return FALSE
 
@@ -86,6 +108,8 @@
 	var/hasShocked = FALSE //Used to add a delay between shocks. In some cases this used to crash servers by spawning hundreds of sparks every second.
 
 /obj/machinery/field/CollidedWith(atom/movable/mover)
+	procstart = null
+	src.procstart = null
 	if(hasShocked)
 		return
 	if(isliving(mover))
@@ -97,11 +121,15 @@
 
 
 /obj/machinery/field/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(hasShocked || isliving(mover) || ismachinery(mover) || isstructure(mover) || ismecha(mover))
 		return FALSE
 	return ..()
 
 /obj/machinery/field/proc/shock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/shock_damage = min(rand(30,40),rand(30,40))
 
 	if(iscarbon(user))
@@ -120,9 +148,13 @@
 	bump_field(user)
 
 /obj/machinery/field/proc/clear_shock()
+	procstart = null
+	src.procstart = null
 	hasShocked = FALSE
 
 /obj/machinery/field/proc/bump_field(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(hasShocked)
 		return FALSE
 	hasShocked = TRUE

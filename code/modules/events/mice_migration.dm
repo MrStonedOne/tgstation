@@ -8,6 +8,8 @@
 	var/maximum_mice = 15
 
 /datum/round_event/mice_migration/announce(fake)
+	procstart = null
+	src.procstart = null
 	var/cause = pick("space-winter", "budget-cuts", "Ragnarok",
 		"space being cold", "\[REDACTED\]", "climate change",
 		"bad luck")
@@ -24,4 +26,6 @@
 		'sound/effects/mousesqueek.ogg')
 
 /datum/round_event/mice_migration/start()
+	procstart = null
+	src.procstart = null
 	SSsqueak.trigger_migration(rand(minimum_mice, maximum_mice))

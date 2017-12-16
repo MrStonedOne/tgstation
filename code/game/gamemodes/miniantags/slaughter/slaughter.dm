@@ -47,6 +47,8 @@
 	deathmessage = "screams in anger as it collapses into a puddle of viscera!"
 
 /mob/living/simple_animal/slaughter/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/effect/proc_holder/spell/bloodcrawl/bloodspell = new
 	AddSpell(bloodspell)
@@ -54,6 +56,8 @@
 		bloodspell.phased = 1
 
 /mob/living/simple_animal/slaughter/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(boost<world.time)
 		speed = 1
@@ -68,6 +72,8 @@
 	random_icon_states = list("innards")
 
 /mob/living/simple_animal/slaughter/phasein()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	speed = 0
 	boost = world.time + 60
@@ -81,9 +87,13 @@
 	icon_state = "demon_heart-on"
 
 /obj/item/organ/heart/demon/update_icon()
+	procstart = null
+	src.procstart = null
 	return //always beating visually
 
 /obj/item/organ/heart/demon/attack(mob/M, mob/living/carbon/user, obj/target)
+	procstart = null
+	src.procstart = null
 	if(M != user)
 		return ..()
 	user.visible_message("<span class='warning'>[user] raises [src] to their mouth and tears into it with their teeth!</span>", \
@@ -100,16 +110,22 @@
 	src.Insert(user) //Consuming the heart literally replaces your heart with a demon heart. H A R D C O R E
 
 /obj/item/organ/heart/demon/Insert(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(M.mind)
 		M.mind.AddSpell(new /obj/effect/proc_holder/spell/bloodcrawl(null))
 
 /obj/item/organ/heart/demon/Remove(mob/living/carbon/M, special = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(M.mind)
 		M.mind.RemoveSpell(/obj/effect/proc_holder/spell/bloodcrawl)
 
 /obj/item/organ/heart/demon/Stop()
+	procstart = null
+	src.procstart = null
 	return 0 // Always beating.
 
 /mob/living/simple_animal/slaughter/laughter
@@ -151,10 +167,14 @@
 	sibling!</B>"
 
 /mob/living/simple_animal/slaughter/laughter/Destroy()
+	procstart = null
+	src.procstart = null
 	release_friends()
 	. = ..()
 
 /mob/living/simple_animal/slaughter/laughter/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			death()
@@ -164,6 +184,8 @@
 			adjustBruteLoss(30)
 
 /mob/living/simple_animal/slaughter/laughter/proc/release_friends()
+	procstart = null
+	src.procstart = null
 	if(!consumed_mobs)
 		return
 
@@ -180,6 +202,8 @@
 			to_chat(M, "<span class='clown'>You leave [src]'s warm embrace,	and feel ready to take on the world.</span>")
 
 /mob/living/simple_animal/slaughter/laughter/bloodcrawl_swallow(var/mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(consumed_mobs)
 		// Keep their corpse so rescue is possible
 		consumed_mobs += victim

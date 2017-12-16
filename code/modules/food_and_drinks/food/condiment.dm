@@ -29,6 +29,8 @@
 
 /obj/item/reagent_containers/food/condiment/attack(mob/M, mob/user, def_zone)
 
+	procstart = null
+	src.procstart = null
 	if(!reagents || !reagents.total_volume)
 		to_chat(user, "<span class='warning'>None of [src] left, oh no!</span>")
 		return 0
@@ -54,6 +56,8 @@
 	return 1
 
 /obj/item/reagent_containers/food/condiment/afterattack(obj/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
@@ -81,6 +85,8 @@
 		to_chat(user, "<span class='notice'>You transfer [trans] units of the condiment to [target].</span>")
 
 /obj/item/reagent_containers/food/condiment/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	if(!possible_states.len)
 		return
 	if(reagents.reagent_list.len > 0)
@@ -127,12 +133,16 @@
 	possible_states = list()
 
 /obj/item/reagent_containers/food/condiment/saltshaker/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	if(reagents.reagent_list.len == 0)
 		icon_state = "emptyshaker"
 	else
 		icon_state = "saltshakersmall"
 
 /obj/item/reagent_containers/food/condiment/saltshaker/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] begins to swap forms with the salt shaker! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	var/newname = "[name]"
 	name = "[user.name]"
@@ -142,6 +152,8 @@
 	return (TOXLOSS)
 
 /obj/item/reagent_containers/food/condiment/saltshaker/afterattack(obj/target, mob/living/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(isturf(target))
@@ -165,6 +177,8 @@
 	possible_states = list()
 
 /obj/item/reagent_containers/food/condiment/peppermill/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	if(reagents.reagent_list.len == 0)
 		icon_state = "emptyshaker"
 	else
@@ -237,6 +251,8 @@
 	return
 
 /obj/item/reagent_containers/food/condiment/pack/afterattack(obj/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 
@@ -256,6 +272,8 @@
 			qdel(src)
 
 /obj/item/reagent_containers/food/condiment/pack/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	if(reagents.reagent_list.len > 0)
 		var/main_reagent = reagents.get_master_reagent_id()
 		if(main_reagent in possible_states)

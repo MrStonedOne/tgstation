@@ -32,10 +32,14 @@
 	)
 
 /obj/item/screwdriver/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is stabbing [src] into [user.p_their()] [pick("temple", "heart")]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return(BRUTELOSS)
 
 /obj/item/screwdriver/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(random_color) //random colors!
 		icon_state = "screwdriver"
@@ -46,6 +50,8 @@
 		pixel_y = rand(0, 16)
 
 /obj/item/screwdriver/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!random_color) //icon override
 		return
 	cut_overlays()
@@ -54,6 +60,8 @@
 	add_overlay(base_overlay)
 
 /obj/item/screwdriver/worn_overlays(isinhands = FALSE, icon_file)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(isinhands && random_color)
 		var/mutable_appearance/M = mutable_appearance(icon_file, "screwdriver_head")
@@ -61,6 +69,8 @@
 		. += M
 
 /obj/item/screwdriver/get_belt_overlay()
+	procstart = null
+	src.procstart = null
 	if(random_color)
 		var/mutable_appearance/body = mutable_appearance('icons/obj/clothing/belt_overlays.dmi', "screwdriver")
 		var/mutable_appearance/head = mutable_appearance('icons/obj/clothing/belt_overlays.dmi', "screwdriver_head")
@@ -71,6 +81,8 @@
 		return mutable_appearance('icons/obj/clothing/belt_overlays.dmi', icon_state)
 
 /obj/item/screwdriver/attack(mob/living/carbon/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return ..()
 	if(user.zone_selected != "eyes" && user.zone_selected != "head")
@@ -118,10 +130,14 @@
 	random_color = FALSE
 
 /obj/item/screwdriver/power/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is putting [src] to [user.p_their()] temple. It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return(BRUTELOSS)
 
 /obj/item/screwdriver/power/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(user),'sound/items/change_drill.ogg',50,1)
 	var/obj/item/wrench/power/b_drill = new /obj/item/wrench/power
 	to_chat(user, "<span class='notice'>You attach the bolt driver bit to [src].</span>")

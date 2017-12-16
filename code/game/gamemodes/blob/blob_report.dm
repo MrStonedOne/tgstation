@@ -8,6 +8,8 @@
 	var/mach = 0
 
 /datum/station_state/proc/count()
+	procstart = null
+	src.procstart = null
 	for(var/Z in GLOB.station_z_levels)
 		for(var/turf/T in block(locate(1,1,Z), locate(world.maxx,world.maxy,Z)))
 			// don't count shuttles since they may have just left
@@ -49,6 +51,8 @@
 					mach += 1
 
 /datum/station_state/proc/score(datum/station_state/result)
+	procstart = null
+	src.procstart = null
 	if(!result)
 		return 0
 	var/output = 0

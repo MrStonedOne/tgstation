@@ -19,6 +19,8 @@
 		+	<span class='notice'>Crew</span>: Resist the lure of sin and remain pure!"
 
 /datum/game_mode/devil/devil_agents/post_setup()
+	procstart = null
+	src.procstart = null
 	var/i = 0
 	for(var/datum/mind/devil in devils)
 		i++
@@ -28,9 +30,13 @@
 	..()
 
 /datum/game_mode/devil/devil_agents/add_devil_objectives(datum/mind/devil_mind, quantity)
+	procstart = null
+	src.procstart = null
 	..(devil_mind, quantity - give_outsell_objective(devil_mind))
 
 /datum/game_mode/devil/devil_agents/proc/give_outsell_objective(datum/mind/devil)
+	procstart = null
+	src.procstart = null
 	//If you override this method, have it return the number of objectives added.
 	if(devil_target_list.len && devil_target_list[devil]) // Is a double agent
 		var/datum/mind/target_mind = devil_target_list[devil]
@@ -43,5 +49,7 @@
 	return 0
 
 /datum/game_mode/devil/devil_agents/generate_report()
+	procstart = null
+	src.procstart = null
 	return "Multiple soul merchants have been spotted in the quadrant, and appear to be competing over who can purchase the most souls.  Be advised that they are likely to manufacture \
 			emergencies to encourage employees to sell their souls. If anyone sells their soul in error, contact an attorney to overrule the sale."

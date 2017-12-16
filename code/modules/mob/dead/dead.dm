@@ -6,6 +6,8 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
 
 /mob/dead/Initialize()
+	procstart = null
+	src.procstart = null
 	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	initialized = TRUE
@@ -29,9 +31,13 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	return
 
 /mob/dead/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	loc = destination
 
 /mob/dead/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!statpanel("Status"))
@@ -54,6 +60,8 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 		stat(null, "Players Ready: [SSticker.totalPlayersReady]")
 
 /mob/dead/proc/server_hop()
+	procstart = null
+	src.procstart = null
 	set category = "OOC"
 	set name = "Server Hop!"
 	set desc= "Jump to the other server"

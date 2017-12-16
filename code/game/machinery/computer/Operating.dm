@@ -9,10 +9,14 @@
 	light_color = LIGHT_COLOR_BLUE
 
 /obj/machinery/computer/operating/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	find_table()
 
 /obj/machinery/computer/operating/proc/find_table()
+	procstart = null
+	src.procstart = null
 	for(var/direction in GLOB.cardinals)
 		table = locate(/obj/structure/table/optable, get_step(src, direction))
 		if(table)
@@ -20,12 +24,16 @@
 			break
 
 /obj/machinery/computer/operating/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "operating_computer", name, 350, 470, master_ui, state)
 		ui.open()
 
 /obj/machinery/computer/operating/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["table"] = table
 	if(table)

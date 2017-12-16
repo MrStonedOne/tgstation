@@ -1,5 +1,7 @@
 
 /mob/living/silicon/ai/proc/show_laws_verb()
+	procstart = null
+	src.procstart = null
 	set category = "AI Commands"
 	set name = "Show Laws"
 	if(usr.stat == DEAD)
@@ -7,6 +9,8 @@
 	src.show_laws()
 
 /mob/living/silicon/ai/show_laws(everyone = 0)
+	procstart = null
+	src.procstart = null
 	var/who
 
 	if (everyone)

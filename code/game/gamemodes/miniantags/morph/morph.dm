@@ -49,6 +49,8 @@
 							Finally, you can restore yourself to your original form while morphed by shift-clicking yourself.</b>"
 
 /mob/living/simple_animal/hostile/morph/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(morphed)
 		form.examine(user) // Refactor examine to return desc so it's static? Not sure if worth it
 		if(get_dist(user,src)<=3)
@@ -58,6 +60,8 @@
 	return
 
 /mob/living/simple_animal/hostile/morph/med_hud_set_health()
+	procstart = null
+	src.procstart = null
 	if(morphed && !isliving(form))
 		var/image/holder = hud_list[HEALTH_HUD]
 		holder.icon_state = null
@@ -65,6 +69,8 @@
 	..()
 
 /mob/living/simple_animal/hostile/morph/med_hud_set_status()
+	procstart = null
+	src.procstart = null
 	if(morphed && !isliving(form))
 		var/image/holder = hud_list[STATUS_HUD]
 		holder.icon_state = null
@@ -75,6 +81,8 @@
 	return !is_type_in_typecache(A, blacklist_typecache) && (isobj(A) || ismob(A))
 
 /mob/living/simple_animal/hostile/morph/proc/eat(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(A && A.loc != src)
 		visible_message("<span class='warning'>[src] swallows [A] whole!</span>")
 		A.forceMove(src)
@@ -82,6 +90,8 @@
 	return 0
 
 /mob/living/simple_animal/hostile/morph/ShiftClickOn(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(morph_time <= world.time && !stat)
 		if(A == src)
 			restore()
@@ -93,6 +103,8 @@
 		..()
 
 /mob/living/simple_animal/hostile/morph/proc/assume(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(morphed)
 		to_chat(src, "<span class='warning'>You must restore to your original form first!</span>")
 		return
@@ -119,6 +131,8 @@
 	return
 
 /mob/living/simple_animal/hostile/morph/proc/restore()
+	procstart = null
+	src.procstart = null
 	if(!morphed)
 		to_chat(src, "<span class='warning'>You're already in your normal form!</span>")
 		return
@@ -144,6 +158,8 @@
 	med_hud_set_status() //we are not an object
 
 /mob/living/simple_animal/hostile/morph/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(morphed)
 		visible_message("<span class='warning'>[src] twists and dissolves into a pile of green flesh!</span>", \
 						"<span class='userdanger'>Your skin ruptures! Your flesh breaks apart! No disguise can ward off de--</span>")
@@ -152,12 +168,16 @@
 	..()
 
 /mob/living/simple_animal/hostile/morph/proc/barf_contents()
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/AM in src)
 		AM.forceMove(loc)
 		if(prob(90))
 			step(AM, pick(GLOB.alldirs))
 
 /mob/living/simple_animal/hostile/morph/wabbajack_act(mob/living/new_mob)
+	procstart = null
+	src.procstart = null
 	barf_contents()
 	. = ..()
 
@@ -166,9 +186,13 @@
 	restore()
 
 /mob/living/simple_animal/hostile/morph/LoseAggro()
+	procstart = null
+	src.procstart = null
 	vision_range = idle_vision_range
 
 /mob/living/simple_animal/hostile/morph/AIShouldSleep(var/list/possible_targets)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/list/things = list()
@@ -179,11 +203,15 @@
 		assume(T)
 
 /mob/living/simple_animal/hostile/morph/can_track(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(morphed)
 		return 0
 	return ..()
 
 /mob/living/simple_animal/hostile/morph/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(isliving(target)) //Eat Corpses to regen health
 		var/mob/living/L = target
 		if(L.stat == DEAD)
@@ -212,6 +240,8 @@
 	role_name = "morphling"
 
 /datum/round_event/ghost_role/morph/spawn_role()
+	procstart = null
+	src.procstart = null
 	var/list/candidates = get_candidates("alien", null, ROLE_ALIEN)
 	if(!candidates.len)
 		return NOT_ENOUGH_PLAYERS

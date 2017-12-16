@@ -9,6 +9,8 @@
 	var/datum/mapGenerator/mapGenerator
 
 /obj/effect/landmark/mapGenerator/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(startTurfZ < 0)
 		startTurfZ = z

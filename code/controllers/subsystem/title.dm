@@ -8,6 +8,8 @@ SUBSYSTEM_DEF(title)
 	var/turf/closed/indestructible/splashscreen/splash_turf
 
 /datum/controller/subsystem/title/PreInit()
+	procstart = null
+	src.procstart = null
 	if(file_path && icon)
 		return
 
@@ -43,6 +45,8 @@ SUBSYSTEM_DEF(title)
 			splash_turf.icon = icon
 
 /datum/controller/subsystem/title/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		switch(var_name)
@@ -51,6 +55,8 @@ SUBSYSTEM_DEF(title)
 					splash_turf.icon = icon
 
 /datum/controller/subsystem/title/Shutdown()
+	procstart = null
+	src.procstart = null
 	if(file_path)
 		var/F = file("data/previous_title.dat")
 		WRITE_FILE(F, file_path)
@@ -62,6 +68,8 @@ SUBSYSTEM_DEF(title)
 		S.Fade(FALSE,FALSE)
 
 /datum/controller/subsystem/title/Recover()
+	procstart = null
+	src.procstart = null
 	icon = SStitle.icon
 	splash_turf = SStitle.splash_turf
 	file_path = SStitle.file_path

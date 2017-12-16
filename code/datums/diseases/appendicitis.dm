@@ -15,6 +15,8 @@
 	bypasses_immunity = TRUE // Immunity is based on not having an appendix; this isn't a virus
 
 /datum/disease/appendicitis/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(1)

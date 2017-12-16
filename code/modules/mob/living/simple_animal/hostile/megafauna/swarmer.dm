@@ -25,6 +25,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 //returns a type of AI swarmer that is NOT at max cap
 //type order is shuffled, to prevent bias
 /proc/GetUncappedAISwarmerType()
+	procstart = null
+	src.procstart = null
 	var/static/list/swarmerTypes = subtypesof(/mob/living/simple_animal/hostile/swarmer/ai)
 	LAZYINITLIST(GLOB.AISwarmersByType)
 	for(var/t in shuffle(swarmerTypes))
@@ -35,6 +37,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 //Total of all subtype caps
 /proc/GetTotalAISwarmerCap()
+	procstart = null
+	src.procstart = null
 	var/static/list/swarmerTypes = subtypesof(/mob/living/simple_animal/hostile/swarmer/ai)
 	. = 0
 	LAZYINITLIST(GLOB.AISwarmersByType)
@@ -66,6 +70,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 
 /mob/living/simple_animal/hostile/megafauna/swarmer_swarm_beacon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	swarmer_caps = GLOB.AISwarmerCapsByType //for admin-edits
 	internal = new/obj/item/device/gps/internal/swarmer_beacon(src)
@@ -76,6 +82,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 
 /mob/living/simple_animal/hostile/megafauna/swarmer_swarm_beacon/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/createtype = GetUncappedAISwarmerType()
@@ -85,6 +93,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 
 /mob/living/simple_animal/hostile/megafauna/swarmer_swarm_beacon/adjustHealth(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. > 0 && world.time > call_help_cooldown)
 		call_help_cooldown = world.time + call_help_cooldown_amt
@@ -107,6 +117,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 	AIStatus = AI_ON
 
 /mob/living/simple_animal/hostile/swarmer/ai/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	ToggleLight() //so you can see them eating you out of house and home/shooting you/stunlocking you for eternity
 	LAZYINITLIST(GLOB.AISwarmersByType[type])
@@ -115,16 +127,22 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.AISwarmers -= src
 	GLOB.AISwarmersByType[type] -= src
 	return ..()
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/SwarmerTypeToCreate()
+	procstart = null
+	src.procstart = null
 	return GetUncappedAISwarmerType()
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/resource/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(!stop_automated_movement)
@@ -135,6 +153,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/Move(atom/newloc)
+	procstart = null
+	src.procstart = null
 	if(newloc)
 		if(newloc.z == z) //so these actions are Z-specific
 			if(islava(newloc))
@@ -152,12 +172,16 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/proc/StartAction(deci = 0)
+	procstart = null
+	src.procstart = null
 	stop_automated_movement = TRUE
 	AIStatus = AI_OFF
 	addtimer(CALLBACK(src, .proc/EndAction), deci)
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/proc/EndAction()
+	procstart = null
+	src.procstart = null
 	stop_automated_movement = FALSE
 	AIStatus = AI_ON
 
@@ -180,6 +204,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 //Most can be left to the automatic Gain/LosePatience() system
 /mob/living/simple_animal/hostile/swarmer/ai/resource/CanAttack(atom/the_target)
 
+	procstart = null
+	src.procstart = null
 	//SPECIFIC CASES:
 	//Smash fulltile windows before grilles
 	if(istype(the_target, /obj/structure/grille))
@@ -198,11 +224,15 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/resource/OpenFire(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isliving(A)) //don't shoot rocks, sillies.
 		..()
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/resource/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(target.swarmer_act(src))
 		add_type_to_wanted(target.type)
 		return TRUE
@@ -212,6 +242,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/resource/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(!stop_automated_movement)
@@ -232,11 +264,15 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 
 //So swarmers can learn what is and isn't food
 /mob/living/simple_animal/hostile/swarmer/ai/resource/proc/add_type_to_wanted(typepath)
+	procstart = null
+	src.procstart = null
 	if(!sharedWanted[typepath])// this and += is faster than |=
 		sharedWanted += typecacheof(typepath)
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/resource/proc/add_type_to_ignore(typepath)
+	procstart = null
+	src.procstart = null
 	if(!sharedIgnore[typepath])
 		sharedIgnore += typecacheof(typepath)
 
@@ -252,6 +288,8 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 	minimum_distance = 3
 
 /mob/living/simple_animal/hostile/swarmer/ai/ranged_combat/Aggro()
+	procstart = null
+	src.procstart = null
 	..()
 	summon_backup(15, TRUE) //Exact matching, so that goliaths don't come to aid the swarmers, that'd be silly
 
@@ -265,11 +303,15 @@ GLOBAL_LIST_INIT(AISwarmerCapsByType, list(/mob/living/simple_animal/hostile/swa
 	ranged = FALSE
 
 /mob/living/simple_animal/hostile/swarmer/ai/melee_combat/Aggro()
+	procstart = null
+	src.procstart = null
 	..()
 	summon_backup(15, TRUE)
 
 
 /mob/living/simple_animal/hostile/swarmer/ai/melee_combat/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	if(isliving(target))
 		if(prob(35))
 			StartAction(30)

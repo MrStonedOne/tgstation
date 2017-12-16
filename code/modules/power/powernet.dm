@@ -15,9 +15,13 @@
 	var/netexcess = 0			// excess power on the powernet (typically avail-load)///////
 
 /datum/powernet/New()
+	procstart = null
+	src.procstart = null
 	SSmachines.powernets += src
 
 /datum/powernet/Destroy()
+	procstart = null
+	src.procstart = null
 	//Go away references, you suck!
 	for(var/obj/structure/cable/C in cables)
 		cables -= C
@@ -30,12 +34,16 @@
 	return ..()
 
 /datum/powernet/proc/is_empty()
+	procstart = null
+	src.procstart = null
 	return !cables.len && !nodes.len
 
 //remove a cable from the current powernet
 //if the powernet is then empty, delete it
 //Warning : this proc DON'T check if the cable exists
 /datum/powernet/proc/remove_cable(obj/structure/cable/C)
+	procstart = null
+	src.procstart = null
 	cables -= C
 	C.powernet = null
 	if(is_empty())//the powernet is now empty...
@@ -44,6 +52,8 @@
 //add a cable to the current powernet
 //Warning : this proc DON'T check if the cable exists
 /datum/powernet/proc/add_cable(obj/structure/cable/C)
+	procstart = null
+	src.procstart = null
 	if(C.powernet)// if C already has a powernet...
 		if(C.powernet == src)
 			return
@@ -56,6 +66,8 @@
 //if the powernet is then empty, delete it
 //Warning : this proc DON'T check if the machine exists
 /datum/powernet/proc/remove_machine(obj/machinery/power/M)
+	procstart = null
+	src.procstart = null
 	nodes -=M
 	M.powernet = null
 	if(is_empty())//the powernet is now empty...
@@ -65,6 +77,8 @@
 //add a power machine to the current powernet
 //Warning : this proc DON'T check if the machine exists
 /datum/powernet/proc/add_machine(obj/machinery/power/M)
+	procstart = null
+	src.procstart = null
 	if(M.powernet)// if M already has a powernet...
 		if(M.powernet == src)
 			return
@@ -76,6 +90,8 @@
 //handles the power changes in the powernet
 //called every ticks by the powernet controller
 /datum/powernet/proc/reset()
+	procstart = null
+	src.procstart = null
 	//see if there's a surplus of power remaining in the powernet and stores unused power in the SMES
 	netexcess = avail - load
 
@@ -93,6 +109,8 @@
 	newavail = 0
 
 /datum/powernet/proc/get_electrocute_damage()
+	procstart = null
+	src.procstart = null
 	if(avail >= 1000)
 		return Clamp(round(avail/10000), 10, 90) + rand(-5,5)
 	else

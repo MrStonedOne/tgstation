@@ -8,6 +8,8 @@
 	CanAtmosPass = ATMOS_PASS_DENSITY
 
 /obj/effect/forcefield/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/forcefield/cult
@@ -25,6 +27,8 @@
 	var/timeleft = 300
 
 /obj/effect/forcefield/mime/New()
+	procstart = null
+	src.procstart = null
 	..()
 	QDEL_IN(src, timeleft)
 

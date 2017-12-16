@@ -20,12 +20,16 @@
 
 
 /obj/item/vending_refill/New(amt = -1)
+	procstart = null
+	src.procstart = null
 	..()
 	name = "\improper [machine_name] restocking unit"
 	if(isnum(amt) && amt > -1)
 		charges[1] = amt
 
 /obj/item/vending_refill/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(charges[1] > 0)
 		to_chat(user, "It can restock [charges[1]+charges[2]+charges[3]] item(s).")

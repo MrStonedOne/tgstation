@@ -12,6 +12,8 @@
 
 
 /datum/game_mode/meteor/process()
+	procstart = null
+	src.procstart = null
 	if(nometeors || meteordelay > world.time - SSticker.round_start_time)
 		return
 
@@ -31,6 +33,8 @@
 
 
 /datum/game_mode/meteor/special_report()
+	procstart = null
+	src.procstart = null
 	var/survivors = 0
 	var/list/survivor_list = list()
 
@@ -51,9 +55,13 @@
 		return "<span class='redtext big'>Nobody survived the meteor storm!</span>"
 
 /datum/game_mode/meteor/set_round_result()
+	procstart = null
+	src.procstart = null
 	..()
 	SSticker.mode_result = "end - evacuation"
 
 /datum/game_mode/meteor/generate_report()
+	procstart = null
+	src.procstart = null
 	return "[pick("Asteroids have", "Meteors have", "Large rocks have", "Stellar minerals have", "Space hail has", "Debris has")] been detected near your station, and a collision is possible, \
 			though unlikely.  Be prepared for largescale impacts and destruction.  Please note that the debris will prevent the escape shuttle from arriving quickly."

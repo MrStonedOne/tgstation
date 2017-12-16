@@ -14,16 +14,22 @@
 	liked_food = VEGETABLES | FRUIT | GRAIN
 
 /datum/species/pod/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.faction |= "plants"
 	C.faction |= "vines"
 
 /datum/species/pod/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.faction -= "plants"
 	C.faction -= "vines"
 
 /datum/species/pod/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.stat == DEAD)
 		return
 	var/light_amount = 0 //how much light there is in the place, affects receiving nutrition and healing
@@ -42,12 +48,16 @@
 		H.take_overall_damage(2,0)
 
 /datum/species/pod/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(chem.id == "plantbgone")
 		H.adjustToxLoss(3)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
 		return 1
 
 /datum/species/pod/on_hit(obj/item/projectile/P, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	switch(P.type)
 		if(/obj/item/projectile/energy/floramut)
 			if(prob(15))

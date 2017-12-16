@@ -3,6 +3,8 @@
 ****************************************************/
 
 /mob/living/carbon/human/proc/suppress_bloodloss(amount)
+	procstart = null
+	src.procstart = null
 	if(bleedsuppress)
 		return
 	else
@@ -10,12 +12,16 @@
 		addtimer(CALLBACK(src, .proc/resume_bleeding), amount)
 
 /mob/living/carbon/human/proc/resume_bleeding()
+	procstart = null
+	src.procstart = null
 	bleedsuppress = 0
 	if(stat != DEAD && bleed_rate)
 		to_chat(src, "<span class='warning'>The blood soaks through your bandage.</span>")
 
 
 /mob/living/carbon/monkey/handle_blood()
+	procstart = null
+	src.procstart = null
 	if(bodytemperature >= 225 && !(disabilities & NOCLONE)) //cryosleep or husked people do not pump the blood.
 		//Blood regeneration if there is some space
 		if(blood_volume < BLOOD_VOLUME_NORMAL)
@@ -24,6 +30,8 @@
 // Takes care blood loss and regeneration
 /mob/living/carbon/human/handle_blood()
 
+	procstart = null
+	src.procstart = null
 	if(NOBLOOD in dna.species.species_traits)
 		bleed_rate = 0
 		return
@@ -89,6 +97,8 @@
 
 //Makes a blood drop, leaking amt units of blood from the mob
 /mob/living/carbon/proc/bleed(amt)
+	procstart = null
+	src.procstart = null
 	if(blood_volume)
 		blood_volume = max(blood_volume - amt, 0)
 		if(isturf(src.loc)) //Blood loss still happens in locker, floor stays clean
@@ -98,15 +108,21 @@
 				add_splatter_floor(src.loc, 1)
 
 /mob/living/carbon/human/bleed(amt)
+	procstart = null
+	src.procstart = null
 	if(!(NOBLOOD in dna.species.species_traits))
 		..()
 
 
 
 /mob/living/proc/restore_blood()
+	procstart = null
+	src.procstart = null
 	blood_volume = initial(blood_volume)
 
 /mob/living/carbon/human/restore_blood()
+	procstart = null
+	src.procstart = null
 	blood_volume = BLOOD_VOLUME_NORMAL
 	bleed_rate = 0
 
@@ -116,6 +132,8 @@
 
 //Gets blood from mob to a container or other mob, preserving all data in it.
 /mob/living/proc/transfer_blood_to(atom/movable/AM, amount, forced)
+	procstart = null
+	src.procstart = null
 	if(!blood_volume || !AM.reagents)
 		return 0
 	if(blood_volume < BLOOD_VOLUME_BAD && !forced)
@@ -154,9 +172,13 @@
 
 
 /mob/living/proc/get_blood_data(blood_id)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/get_blood_data(blood_id)
+	procstart = null
+	src.procstart = null
 	if(blood_id == "blood") //actual blood reagent
 		var/blood_data = list()
 		//set the blood data
@@ -194,17 +216,25 @@
 
 //get the id of the substance this mob use as blood.
 /mob/proc/get_blood_id()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/simple_animal/get_blood_id()
+	procstart = null
+	src.procstart = null
 	if(blood_volume)
 		return "blood"
 
 /mob/living/carbon/monkey/get_blood_id()
+	procstart = null
+	src.procstart = null
 	if(!(disabilities & NOCLONE))
 		return "blood"
 
 /mob/living/carbon/human/get_blood_id()
+	procstart = null
+	src.procstart = null
 	if(dna.species.exotic_blood)
 		return dna.species.exotic_blood
 	else if((NOBLOOD in dna.species.species_traits) || (disabilities & NOCLONE))
@@ -213,6 +243,8 @@
 
 // This is has more potential uses, and is probably faster than the old proc.
 /proc/get_safe_blood(bloodtype)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!bloodtype)
 		return
@@ -236,6 +268,8 @@
 
 //to add a splatter of blood or other mob liquid.
 /mob/living/proc/add_splatter_floor(turf/T, small_drip)
+	procstart = null
+	src.procstart = null
 	if(get_blood_id() != "blood")
 		return
 	if(!T)
@@ -269,10 +303,14 @@
 		B.blood_DNA |= temp_blood_DNA
 
 /mob/living/carbon/human/add_splatter_floor(turf/T, small_drip)
+	procstart = null
+	src.procstart = null
 	if(!(NOBLOOD in dna.species.species_traits))
 		..()
 
 /mob/living/carbon/alien/add_splatter_floor(turf/T, small_drip)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		T = get_turf(src)
 	var/obj/effect/decal/cleanable/xenoblood/B = locate() in T.contents
@@ -281,6 +319,8 @@
 	B.blood_DNA["UNKNOWN DNA"] = "X*"
 
 /mob/living/silicon/robot/add_splatter_floor(turf/T, small_drip)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		T = get_turf(src)
 	var/obj/effect/decal/cleanable/oil/B = locate() in T.contents

@@ -3,6 +3,8 @@
 	var/optiontext
 
 /mob/dead/new_player/proc/handle_player_polling()
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.IsConnected())
 		to_chat(usr, "<span class='danger'>Failed to establish database connection.</span>")
 		return
@@ -20,6 +22,8 @@
 	src << browse(output,"window=playerpolllist;size=500x300")
 
 /mob/dead/new_player/proc/poll_player(pollid)
+	procstart = null
+	src.procstart = null
 	if(!pollid)
 		return
 	if (!SSdbcore.Connect())
@@ -324,6 +328,8 @@
 	return
 
 /mob/dead/new_player/proc/poll_check_voted(pollid, text = FALSE)
+	procstart = null
+	src.procstart = null
 	var/table = "poll_vote"
 	if (text)
 		table = "poll_textreply"
@@ -343,6 +349,8 @@
 
 
 /mob/dead/new_player/proc/vote_rig_check()
+	procstart = null
+	src.procstart = null
 	if (usr != src)
 		if (!usr || !src)
 			return 0
@@ -355,6 +363,8 @@
 	return 1
 
 /mob/dead/new_player/proc/vote_valid_check(pollid, holder, type)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.Connect())
 		to_chat(src, "<span class='danger'>Failed to establish database connection.</span>")
 		return 0
@@ -370,6 +380,8 @@
 	return 1
 
 /mob/dead/new_player/proc/vote_on_irv_poll(pollid, list/votelist)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.Connect())
 		to_chat(src, "<span class='danger'>Failed to establish database connection.</span>")
 		return 0
@@ -439,6 +451,8 @@
 
 
 /mob/dead/new_player/proc/vote_on_poll(pollid, optionid)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.Connect())
 		to_chat(src, "<span class='danger'>Failed to establish database connection.</span>")
 		return 0
@@ -459,6 +473,8 @@
 	return 1
 
 /mob/dead/new_player/proc/log_text_poll_reply(pollid, replytext)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.Connect())
 		to_chat(src, "<span class='danger'>Failed to establish database connection.</span>")
 		return 0
@@ -486,6 +502,8 @@
 	return 1
 
 /mob/dead/new_player/proc/vote_on_numval_poll(pollid, optionid, rating)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.Connect())
 		to_chat(src, "<span class='danger'>Failed to establish database connection.</span>")
 		return 0
@@ -513,6 +531,8 @@
 	return 1
 
 /mob/dead/new_player/proc/vote_on_multi_poll(pollid, optionid)
+	procstart = null
+	src.procstart = null
 	if (!SSdbcore.Connect())
 		to_chat(src, "<span class='danger'>Failed to establish database connection.</span>")
 		return 0

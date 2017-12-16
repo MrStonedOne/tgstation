@@ -27,19 +27,27 @@
 	var/timerid
 
 /mob/living/simple_animal/hostile/asteroid/curseblob/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	timerid = QDEL_IN(src, 600)
 	playsound(src, 'sound/effects/curse1.ogg', 100, 1, -1)
 
 /mob/living/simple_animal/hostile/asteroid/curseblob/Destroy()
+	procstart = null
+	src.procstart = null
 	new /obj/effect/temp_visual/dir_setting/curse/blob(loc, dir)
 	doing_move_loop = FALSE
 	return ..()
 
 /mob/living/simple_animal/hostile/asteroid/curseblob/Goto(move_target, delay, minimum_distance)
+	procstart = null
+	src.procstart = null
 	move_loop(target, delay)
 
 /mob/living/simple_animal/hostile/asteroid/curseblob/proc/move_loop(move_target, delay)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(doing_move_loop)
 		return
@@ -54,11 +62,15 @@
 	doing_move_loop = FALSE
 
 /mob/living/simple_animal/hostile/asteroid/curseblob/proc/check_for_target()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(set_target) || set_target.stat != CONSCIOUS || z != set_target.z)
 		qdel(src)
 		return TRUE
 
 /mob/living/simple_animal/hostile/asteroid/curseblob/GiveTarget(new_target)
+	procstart = null
+	src.procstart = null
 	if(check_for_target())
 		return
 	new_target = set_target
@@ -71,6 +83,8 @@
 
 //if it's not our target, we ignore it
 /mob/living/simple_animal/hostile/asteroid/curseblob/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(mover == set_target)
 		return FALSE
 	if(istype(mover, /obj/item/projectile))
@@ -96,11 +110,15 @@ IGNORE_PROC_IF_NOT_TARGET(attack_animal)
 IGNORE_PROC_IF_NOT_TARGET(attack_slime)
 
 /mob/living/simple_animal/hostile/asteroid/curseblob/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(Proj.firer != set_target)
 		return
 	return ..()
 
 /mob/living/simple_animal/hostile/asteroid/curseblob/attacked_by(obj/item/I, mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(L != set_target)
 		return
 	return ..()

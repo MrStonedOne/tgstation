@@ -22,5 +22,7 @@
 	action_icon_state = "the_traps"
 
 /obj/effect/proc_holder/spell/aoe_turf/conjure/the_traps/post_summon(obj/structure/trap/T, mob/user)
+	procstart = null
+	src.procstart = null
 	T.immune_minds += user.mind
 	T.charges = 1

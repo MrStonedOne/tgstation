@@ -19,6 +19,8 @@
 
 
 /obj/structure/disposalpipe/Initialize(mapload, obj/structure/disposalconstruct/make_from)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(!QDELETED(make_from))
@@ -43,12 +45,16 @@
 	update()
 
 /obj/structure/disposalpipe/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION)
 
 // pipe is deleted
 // ensure if holder is present, it is expelled
 /obj/structure/disposalpipe/Destroy()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/disposalholder/H = locate() in src
 	if(H)
 		H.active = FALSE
@@ -59,14 +65,20 @@
 // returns the direction of the next pipe object, given the entrance dir
 // by default, returns the bitmask of remaining directions
 /obj/structure/disposalpipe/proc/nextdir(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return dpdir & (~turn(H.dir, 180))
 
 // transfer the holder through this pipe segment
 // overriden for special behaviour
 /obj/structure/disposalpipe/proc/transfer(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	return transfer_to_dir(H, nextdir(H))
 
 /obj/structure/disposalpipe/proc/transfer_to_dir(obj/structure/disposalholder/H, nextdir)
+	procstart = null
+	src.procstart = null
 	H.setDir(nextdir)
 	var/turf/T = H.nextloc()
 	var/obj/structure/disposalpipe/P = H.findpipe(T)
@@ -85,17 +97,23 @@
 
 // update the icon_state to reflect hidden status
 /obj/structure/disposalpipe/proc/update()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	hide(T.intact && !isspaceturf(T))	// space never hides pipes
 
 // hide called by levelupdate if turf intact status changes
 // change visibility status and force update of icon
 /obj/structure/disposalpipe/hide(var/intact)
+	procstart = null
+	src.procstart = null
 	invisibility = intact ? INVISIBILITY_MAXIMUM: 0	// hide if floor is intact
 
 // expel the held objects into a turf
 // called when there is a break in the pipe
 /obj/structure/disposalpipe/proc/expel(obj/structure/disposalholder/H, turf/T, direction)
+	procstart = null
+	src.procstart = null
 	var/turf/target
 	var/eject_range = 5
 	var/turf/open/floor/floorturf
@@ -130,12 +148,16 @@
 
 // pipe affected by explosion
 /obj/structure/disposalpipe/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/disposalholder/H = locate() in src
 	if(H)
 		H.contents_explosion(severity, target)
 
 
 /obj/structure/disposalpipe/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" && damage_amount < 10)
 		return 0
 	return ..()
@@ -144,6 +166,8 @@
 //attack by item
 //weldingtool: unfasten and convert to obj/disposalconstruct
 /obj/structure/disposalpipe/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(I, /obj/item/weldingtool))
 		if(!can_be_deconstructed(user))
@@ -164,10 +188,14 @@
 
 //checks if something is blocking the deconstruction (e.g. trunk with a bin still linked to it)
 /obj/structure/disposalpipe/proc/can_be_deconstructed()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 // called when pipe is cut with welder
 /obj/structure/disposalpipe/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(disassembled)
 			if(stored)
@@ -185,6 +213,8 @@
 
 
 /obj/structure/disposalpipe/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct()
@@ -206,6 +236,8 @@
 // if coming in from secondary dirs, then next is primary dir
 // if coming in from primary dir, then next is equal chance of other dirs
 /obj/structure/disposalpipe/junction/nextdir(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	var/flipdir = turn(H.dir, 180)
 	if(flipdir != dir)	// came from secondary dir, so exit through primary
 		return dir
@@ -242,10 +274,14 @@
 	var/obj/linked 	// the linked obj/machinery/disposal or obj/disposaloutlet
 
 /obj/structure/disposalpipe/trunk/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	getlinked()
 
 /obj/structure/disposalpipe/trunk/Destroy()
+	procstart = null
+	src.procstart = null
 	if(linked)
 		if(istype(linked, /obj/structure/disposaloutlet))
 			var/obj/structure/disposaloutlet/D = linked
@@ -256,6 +292,8 @@
 	return ..()
 
 /obj/structure/disposalpipe/trunk/proc/getlinked()
+	procstart = null
+	src.procstart = null
 	linked = null
 	var/turf/T = get_turf(src)
 	var/obj/machinery/disposal/D = locate() in T
@@ -270,6 +308,8 @@
 
 
 /obj/structure/disposalpipe/trunk/can_be_deconstructed(mob/user)
+	procstart = null
+	src.procstart = null
 	if(linked)
 		to_chat(user, "<span class='warning'>You need to deconstruct disposal machinery above this pipe!</span>")
 		return FALSE
@@ -279,6 +319,8 @@
 // if not entering from disposal bin,
 // transfer to linked object (outlet or bin)
 /obj/structure/disposalpipe/trunk/transfer(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	if(H.dir == DOWN)		// we just entered from a disposer
 		return ..()		// so do base transfer proc
 	// otherwise, go to the linked object
@@ -294,6 +336,8 @@
 	return null
 
 /obj/structure/disposalpipe/trunk/nextdir(obj/structure/disposalholder/H)
+	procstart = null
+	src.procstart = null
 	if(H.dir == DOWN)
 		return dir
 	else
@@ -308,4 +352,6 @@
 	// i.e. will be treated as an empty turf
 
 /obj/structure/disposalpipe/broken/deconstruct()
+	procstart = null
+	src.procstart = null
 	qdel(src)

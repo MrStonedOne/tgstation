@@ -33,10 +33,14 @@ GLOBAL_LIST_INIT(glass_recipes, list ( \
 	amount = 50
 
 /obj/item/stack/sheet/glass/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.glass_recipes
 	return ..()
 
 /obj/item/stack/sheet/glass/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/CC = W
@@ -86,10 +90,14 @@ GLOBAL_LIST_INIT(pglass_recipes, list ( \
 	amount = 50
 
 /obj/item/stack/sheet/plasmaglass/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.pglass_recipes
 	return ..()
 
 /obj/item/stack/sheet/plasmaglass/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 
 	if(istype(W, /obj/item/stack/rods))
@@ -133,6 +141,8 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	grind_results = list("silicon" = 1, "iron" = 1)
 
 /obj/item/stack/sheet/rglass/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	..()
 
@@ -143,6 +153,8 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	var/glacost = 500
 
 /obj/item/stack/sheet/rglass/cyborg/get_amount()
+	procstart = null
+	src.procstart = null
 	return min(round(source.energy / metcost), round(glasource.energy / glacost))
 
 /obj/item/stack/sheet/rglass/cyborg/use(used, transfer = FALSE) // Requires special checks, because it uses two storages
@@ -150,10 +162,14 @@ GLOBAL_LIST_INIT(reinforced_glass_recipes, list ( \
 	glasource.use_charge(used * glacost)
 
 /obj/item/stack/sheet/rglass/cyborg/add(amount)
+	procstart = null
+	src.procstart = null
 	source.add_charge(amount * metcost)
 	glasource.add_charge(amount * glacost)
 
 /obj/item/stack/sheet/rglass/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.reinforced_glass_recipes
 	return ..()
 
@@ -174,6 +190,8 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 	grind_results = list("silicon" = 1, "plasma" = 1, "iron" = 1)
 
 /obj/item/stack/sheet/plasmarglass/Initialize(mapload, new_amount, merge = TRUE)
+	procstart = null
+	src.procstart = null
 	recipes = GLOB.prglass_recipes
 	return ..()
 
@@ -199,11 +217,15 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 	sharpness = IS_SHARP
 
 /obj/item/shard/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is slitting [user.p_their()] [pick("wrists", "throat")] with the shard of glass! It looks like [user.p_theyre()] trying to commit suicide.</span>")
 	return (BRUTELOSS)
 
 
 /obj/item/shard/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/caltrop, force)
 	icon_state = pick("large", "medium", "small")
@@ -219,6 +241,8 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 			pixel_y = rand(-5, 5)
 
 /obj/item/shard/afterattack(atom/A as mob|obj, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity || !(src in user))
 		return
 	if(isturf(A))
@@ -238,6 +262,8 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 
 
 /obj/item/shard/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/device/lightreplacer))
 		I.attackby(src, user)
 	else if(istype(I, /obj/item/weldingtool))
@@ -256,6 +282,8 @@ GLOBAL_LIST_INIT(prglass_recipes, list ( \
 		return ..()
 
 /obj/item/shard/Crossed(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(istype(L) && has_gravity(loc))
 		playsound(loc, 'sound/effects/glass_step.ogg', 50, 1)
 	. = ..()

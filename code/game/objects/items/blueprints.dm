@@ -11,6 +11,8 @@
 	var/fluffnotice = "Nobody's gonna read this stuff!"
 
 /obj/item/areaeditor/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	. = "<BODY><HTML><head><title>[src]</title></head> \
 				<h2>[station_name()] [src.name]</h2> \
@@ -24,6 +26,8 @@
 
 
 /obj/item/areaeditor/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!usr.canUseTopic(src))
@@ -47,11 +51,15 @@
 
 
 /obj/item/areaeditor/blueprints/Destroy()
+	procstart = null
+	src.procstart = null
 	clear_viewer()
 	return ..()
 
 
 /obj/item/areaeditor/blueprints/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!legend)
 		var/area/A = get_area()
@@ -79,6 +87,8 @@
 
 
 /obj/item/areaeditor/blueprints/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["edit_area"])
 		if(get_area_type()!=AREA_STATION)
@@ -101,6 +111,8 @@
 	attack_self(usr) //this is not the proper way, but neither of the old update procs work! it's too ancient and I'm tired shush.
 
 /obj/item/areaeditor/blueprints/proc/get_images(turf/T, viewsize)
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/tt in RANGE_TURFS(viewsize, T))
 		var/turf/TT = tt
@@ -108,6 +120,8 @@
 			. += TT.blueprint_data
 
 /obj/item/areaeditor/blueprints/proc/set_viewer(mob/user, message = "")
+	procstart = null
+	src.procstart = null
 	if(user && user.client)
 		if(viewing)
 			clear_viewer()
@@ -118,6 +132,8 @@
 			to_chat(user, message)
 
 /obj/item/areaeditor/blueprints/proc/clear_viewer(mob/user, message = "")
+	procstart = null
+	src.procstart = null
 	if(viewing)
 		viewing.images -= showing
 		viewing = null
@@ -126,17 +142,23 @@
 		to_chat(user, message)
 
 /obj/item/areaeditor/blueprints/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	clear_viewer()
 	legend = FALSE
 
 
 /obj/item/areaeditor/proc/get_area()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(usr)
 	var/area/A = T.loc
 	return A
 
 /obj/item/areaeditor/proc/get_area_type(area/A = get_area())
+	procstart = null
+	src.procstart = null
 	if(A.outdoors)
 		return AREA_SPACE
 	var/list/SPECIALS = list(
@@ -155,6 +177,8 @@
 	return AREA_STATION
 
 /obj/item/areaeditor/blueprints/proc/view_wire_devices(mob/user)
+	procstart = null
+	src.procstart = null
 	var/message = "<br>You examine the wire legend.<br>"
 	for(var/wireset in GLOB.wire_color_directory)
 		message += "<br><a href='?src=[REF(src)];view_wireset=[wireset]'>[GLOB.wire_name_directory[wireset]]</a>"
@@ -162,6 +186,8 @@
 	return message
 
 /obj/item/areaeditor/blueprints/proc/view_wire_set(mob/user, wireset)
+	procstart = null
+	src.procstart = null
 	//for some reason you can't use wireset directly as a derefencer so this is the next best :/
 	for(var/device in GLOB.wire_color_directory)
 		if("[device]" == wireset)	//I know... don't change it...
@@ -175,6 +201,8 @@
 	return ""
 
 /obj/item/areaeditor/proc/edit_area()
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area()
 	var/prevname = "[A.name]"
 	var/str = trim(stripped_input(usr,"New area name:", "Area Creation", "", MAX_NAME_LEN))
@@ -196,6 +224,8 @@
 
 
 /obj/item/areaeditor/proc/set_area_machinery_title(area/A,title,oldtitle)
+	procstart = null
+	src.procstart = null
 	if(!oldtitle) // or replacetext goes to infinite loop
 		return
 	for(var/area/RA in A.related)

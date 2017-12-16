@@ -3,6 +3,8 @@
 // eye damage, eye_blind, eye_blurry, druggy, BLIND disability, NEARSIGHT disability, and HUSK disability.
 
 /mob/living/carbon/damage_eyes(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = getorganslot(ORGAN_SLOT_EYES)
 	if (!eyes)
 		return
@@ -15,6 +17,8 @@
 				overlay_fullscreen("eye_damage", /obj/screen/fullscreen/impaired, 1)
 
 /mob/living/carbon/set_eye_damage(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = getorganslot(ORGAN_SLOT_EYES)
 	if (!eyes)
 		return
@@ -28,6 +32,8 @@
 		clear_fullscreen("eye_damage")
 
 /mob/living/carbon/adjust_eye_damage(amount)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/eyes/eyes = getorganslot(ORGAN_SLOT_EYES)
 	if (!eyes)
 		return
@@ -41,6 +47,8 @@
 		clear_fullscreen("eye_damage")
 
 /mob/living/carbon/adjust_drugginess(amount)
+	procstart = null
+	src.procstart = null
 	druggy = max(druggy+amount, 0)
 	if(druggy)
 		overlay_fullscreen("high", /obj/screen/fullscreen/high)
@@ -50,6 +58,8 @@
 		clear_alert("high")
 
 /mob/living/carbon/set_drugginess(amount)
+	procstart = null
+	src.procstart = null
 	druggy = max(amount, 0)
 	if(druggy)
 		overlay_fullscreen("high", /obj/screen/fullscreen/high)
@@ -59,35 +69,49 @@
 		clear_alert("high")
 
 /mob/living/carbon/adjust_disgust(amount)
+	procstart = null
+	src.procstart = null
 	disgust = Clamp(disgust+amount, 0, DISGUST_LEVEL_MAXEDOUT)
 
 /mob/living/carbon/set_disgust(amount)
+	procstart = null
+	src.procstart = null
 	disgust = Clamp(amount, 0, DISGUST_LEVEL_MAXEDOUT)
 
 /mob/living/carbon/cure_blind()
+	procstart = null
+	src.procstart = null
 	if(disabilities & BLIND)
 		disabilities &= ~BLIND
 		adjust_blindness(-1)
 		return 1
 /mob/living/carbon/become_blind()
+	procstart = null
+	src.procstart = null
 	if(!(disabilities & BLIND))
 		disabilities |= BLIND
 		blind_eyes(1)
 		return 1
 
 /mob/living/carbon/cure_nearsighted()
+	procstart = null
+	src.procstart = null
 	if(disabilities & NEARSIGHT)
 		disabilities &= ~NEARSIGHT
 		clear_fullscreen("nearsighted")
 		return 1
 
 /mob/living/carbon/become_nearsighted()
+	procstart = null
+	src.procstart = null
 	if(!(disabilities & NEARSIGHT))
 		disabilities |= NEARSIGHT
 		overlay_fullscreen("nearsighted", /obj/screen/fullscreen/impaired, 1)
 		return 1
 
 /mob/living/carbon/cure_husk()
+	procstart = null
+	src.procstart = null
 	if(disabilities & HUSK)
 		disabilities &= ~HUSK
 		status_flags &= ~DISFIGURED
@@ -95,6 +119,8 @@
 		return 1
 
 /mob/living/carbon/become_husk()
+	procstart = null
+	src.procstart = null
 	if(disabilities & HUSK)
 		return
 	disabilities |= HUSK
@@ -103,32 +129,44 @@
 	return 1
 
 /mob/living/carbon/proc/get_traumas()
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		. = B.traumas
 
 /mob/living/carbon/proc/has_trauma_type(brain_trauma_type, consider_permanent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		. = B.has_trauma_type(brain_trauma_type, consider_permanent)
 
 /mob/living/carbon/proc/gain_trauma(datum/brain_trauma/trauma, permanent = FALSE, list/arguments)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		. = B.gain_trauma(trauma, permanent, arguments)
 
 /mob/living/carbon/proc/gain_trauma_type(brain_trauma_type = /datum/brain_trauma, permanent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		. = B.gain_trauma_type(brain_trauma_type, permanent)
 
 /mob/living/carbon/proc/cure_trauma_type(brain_trauma_type, cure_permanent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		. = B.cure_trauma_type(brain_trauma_type, cure_permanent)
 
 /mob/living/carbon/proc/cure_all_traumas(cure_permanent = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/brain/B = getorganslot(ORGAN_SLOT_BRAIN)
 	if(B)
 		. = B.cure_all_traumas(cure_permanent)

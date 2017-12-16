@@ -4,6 +4,8 @@
 	desc = "A low-end tablet often seen among low ranked station personnel."
 
 /obj/item/device/modular_computer/tablet/preset/cheap/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	install_component(new /obj/item/computer_hardware/processor_unit/small)
 	install_component(new /obj/item/computer_hardware/battery(src, /obj/item/stock_parts/cell/computer/micro))
@@ -12,6 +14,8 @@
 
 // Alternative version, an average one, for higher ranked positions mostly
 /obj/item/device/modular_computer/tablet/preset/advanced/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	install_component(new /obj/item/computer_hardware/processor_unit/small)
 	install_component(new /obj/item/computer_hardware/battery(src, /obj/item/stock_parts/cell/computer))
@@ -21,6 +25,8 @@
 	install_component(new /obj/item/computer_hardware/printer/mini)
 
 /obj/item/device/modular_computer/tablet/preset/cargo/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	install_component(new /obj/item/computer_hardware/processor_unit/small)
 	install_component(new /obj/item/computer_hardware/battery(src, /obj/item/stock_parts/cell/computer))

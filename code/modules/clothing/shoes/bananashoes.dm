@@ -8,11 +8,15 @@
 	actions_types = list(/datum/action/item_action/toggle)
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/material_container, list(MAT_BANANIUM), 200000, TRUE)
 	AddComponent(/datum/component/squeak, list('sound/items/bikehorn.ogg'=1), 75)
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/step_action()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on)
 		new/obj/item/grown/bananapeel/specialpeel(get_step(src,turn(usr.dir, 180))) //honk
@@ -25,6 +29,8 @@
 			to_chat(loc, "<span class='warning'>You ran out of bananium!</span>")
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(bananium, /datum/component/material_container)
 	var/sheet_amount = bananium.retrieve_all()
 	if(sheet_amount)
@@ -33,10 +39,14 @@
 		to_chat(user, "<span class='notice'>You cannot retrieve any bananium from the prototype shoes.</span>")
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>The shoes are [on ? "enabled" : "disabled"].</span>")
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(bananium, /datum/component/material_container)
 	if(bananium.amount(MAT_BANANIUM))
 		on = !on
@@ -50,6 +60,8 @@
 		to_chat(user, "<span class='warning'>You need bananium to turn the prototype shoes on!</span>")
 
 /obj/item/clothing/shoes/clown_shoes/banana_shoes/update_icon()
+	procstart = null
+	src.procstart = null
 	if(on)
 		icon_state = "clown_prototype_on"
 	else

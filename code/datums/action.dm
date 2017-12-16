@@ -20,6 +20,8 @@
 	var/mob/owner
 
 /datum/action/New(Target)
+	procstart = null
+	src.procstart = null
 	target = Target
 	button = new
 	button.linked_action = src
@@ -29,6 +31,8 @@
 		button.desc = desc
 
 /datum/action/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		Remove(owner)
 	target = null
@@ -37,6 +41,8 @@
 	return ..()
 
 /datum/action/proc/Grant(mob/M)
+	procstart = null
+	src.procstart = null
 	if(M)
 		if(owner)
 			if(owner == M)
@@ -69,6 +75,8 @@
 		Remove(owner)
 
 /datum/action/proc/Remove(mob/M)
+	procstart = null
+	src.procstart = null
 	if(M)
 		if(M.client)
 			M.client.screen -= button
@@ -80,14 +88,20 @@
 	button.id = null
 
 /datum/action/proc/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!IsAvailable())
 		return 0
 	return 1
 
 /datum/action/proc/Process()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/proc/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!owner)
 		return 0
 	if(check_flags & AB_CHECK_RESTRAINED)
@@ -105,6 +119,8 @@
 	return 1
 
 /datum/action/proc/UpdateButtonIcon(status_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(button)
 		if(!status_only)
 			button.name = name
@@ -130,6 +146,8 @@
 			return 1
 
 /datum/action/proc/ApplyIcon(obj/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	if(icon_icon && button_icon_state && current_button.button_icon_state != button_icon_state)
 		current_button.cut_overlays(TRUE)
 		current_button.add_overlay(mutable_appearance(icon_icon, button_icon_state))
@@ -144,18 +162,24 @@
 	// then change this to an icon state
 
 /datum/action/item_action/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/I = target
 	LAZYINITLIST(I.actions)
 	I.actions += src
 
 /datum/action/item_action/Destroy()
+	procstart = null
+	src.procstart = null
 	var/obj/item/I = target
 	I.actions -= src
 	UNSETEMPTY(I.actions)
 	return ..()
 
 /datum/action/item_action/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	if(target)
@@ -164,6 +188,8 @@
 	return 1
 
 /datum/action/item_action/ApplyIcon(obj/screen/movable/action_button/current_button)
+	procstart = null
+	src.procstart = null
 	if(button_icon && button_icon_state)
 		// If set, use the custom icon that we set instead
 		// of the item appearence
@@ -216,6 +242,8 @@
 	name = "Set Internals"
 
 /datum/action/item_action/set_internals/UpdateButtonIcon(status_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(..()) //button available
 		if(iscarbon(owner))
 			var/mob/living/carbon/C = owner
@@ -239,6 +267,8 @@
 	desc = "UNTZ UNTZ UNTZ"
 
 /datum/action/item_action/toggle_headphones/Trigger()
+	procstart = null
+	src.procstart = null
 	var/obj/item/clothing/ears/headphones/H = target
 	if(istype(H))
 		H.toggle(owner)
@@ -250,10 +280,14 @@
 	button_icon_state = "vortex_ff_on"
 
 /datum/action/item_action/toggle_unfriendly_fire/Trigger()
+	procstart = null
+	src.procstart = null
 	if(..())
 		UpdateButtonIcon()
 
 /datum/action/item_action/toggle_unfriendly_fire/UpdateButtonIcon(status_only = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/hierophant_club))
 		var/obj/item/hierophant_club/H = target
 		if(H.friendly_fire_check)
@@ -269,6 +303,8 @@
 	desc = "Change the type of instrument your synthesizer is playing as."
 
 /datum/action/item_action/synthswitch/Trigger()
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/device/instrument/piano_synth))
 		var/obj/item/device/instrument/piano_synth/synth = target
 		var/chosen = input("Choose the type of instrument you want to use", "Instrument Selection", "piano") as null|anything in synth.insTypes
@@ -284,6 +320,8 @@
 	button_icon_state = "vortex_recall"
 
 /datum/action/item_action/vortex_recall/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/hierophant_club))
 		var/obj/item/hierophant_club/H = target
 		if(H.teleporting)
@@ -296,6 +334,8 @@
 	buttontooltipstyle = "clockcult"
 
 /datum/action/item_action/clock/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(owner))
 		return 0
 	return ..()
@@ -305,6 +345,8 @@
 	desc = "Allows you to create a stunning Judicial Marker at any location in view. Click again to disable."
 
 /datum/action/item_action/clock/toggle_visor/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(owner))
 		return 0
 	if(istype(target, /obj/item/clothing/glasses/judicial_visor))
@@ -332,6 +374,8 @@
 /datum/action/item_action/toggle
 
 /datum/action/item_action/toggle/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	name = "Toggle [target.name]"
 	button.name = name
@@ -348,6 +392,8 @@
 /datum/action/item_action/adjust
 
 /datum/action/item_action/adjust/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	name = "Adjust [target.name]"
 	button.name = name
@@ -371,6 +417,8 @@
 	name = "Toggle Jetpack Stabilization"
 
 /datum/action/item_action/jetpack_stabilization/IsAvailable()
+	procstart = null
+	src.procstart = null
 	var/obj/item/tank/jetpack/J = target
 	if(!istype(J) || !J.on)
 		return 0
@@ -396,6 +444,8 @@
 	var/active = FALSE
 
 /datum/action/item_action/toggle_research_scanner/Trigger()
+	procstart = null
+	src.procstart = null
 	if(IsAvailable())
 		active = !active
 		if(active)
@@ -406,6 +456,8 @@
 		return 1
 
 /datum/action/item_action/toggle_research_scanner/Remove(mob/M)
+	procstart = null
+	src.procstart = null
 	if(owner && active)
 		owner.research_scanner--
 		active = FALSE
@@ -416,6 +468,8 @@
 	desc = "Use the instrument specified"
 
 /datum/action/item_action/instrument/Trigger()
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/item/device/instrument))
 		var/obj/item/device/instrument/I = target
 		I.interact(usr)
@@ -426,17 +480,23 @@
 	check_flags = AB_CHECK_CONSCIOUS
 
 /datum/action/item_action/organ_action/IsAvailable()
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/I = target
 	if(!I.owner)
 		return 0
 	return ..()
 
 /datum/action/item_action/organ_action/toggle/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	name = "Toggle [target.name]"
 	button.name = name
 
 /datum/action/item_action/organ_action/use/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	name = "Use [target.name]"
 	button.name = name
@@ -450,6 +510,8 @@
 	background_icon_state = "bg_spell"
 
 /datum/action/spell_action/New(Target)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/effect/proc_holder/S = target
 	S.action = src
@@ -461,11 +523,15 @@
 	button.name = name
 
 /datum/action/spell_action/Destroy()
+	procstart = null
+	src.procstart = null
 	var/obj/effect/proc_holder/S = target
 	S.action = null
 	return ..()
 
 /datum/action/spell_action/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(target)
@@ -474,11 +540,15 @@
 		return TRUE
 
 /datum/action/spell_action/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 	return TRUE
 
 /datum/action/spell_action/spell/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 	var/obj/effect/proc_holder/spell/S = target
@@ -489,6 +559,8 @@
 /datum/action/spell_action/alien
 
 /datum/action/spell_action/alien/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 	var/obj/effect/proc_holder/alien/ab = target
@@ -504,6 +576,8 @@
 	var/active = 0
 
 /datum/action/innate/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	if(!active)
@@ -513,9 +587,13 @@
 	return 1
 
 /datum/action/innate/proc/Activate()
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/action/innate/proc/Deactivate()
+	procstart = null
+	src.procstart = null
 	return
 
 //Preset for action that call specific procs (consider innate).
@@ -524,6 +602,8 @@
 	var/procname
 
 /datum/action/generic/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	if(target && procname)
@@ -551,6 +631,8 @@
 	check_flags = 0
 
 /datum/action/language_menu/Trigger()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return FALSE
 	if(ismob(owner))

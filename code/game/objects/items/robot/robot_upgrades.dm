@@ -15,6 +15,8 @@
 	var/one_use = FALSE
 
 /obj/item/borg/upgrade/proc/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(R.stat == DEAD)
 		to_chat(usr, "<span class='notice'>[src] will not function on a deceased cyborg.</span>")
 		return 1
@@ -31,9 +33,13 @@
 	one_use = TRUE
 
 /obj/item/borg/upgrade/rename/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	heldname = stripped_input(user, "Enter new robot name", "Cyborg Reclassification", heldname, MAX_NAME_LEN)
 
 /obj/item/borg/upgrade/rename/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -54,6 +60,8 @@
 	one_use = TRUE
 
 /obj/item/borg/upgrade/restart/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(R.health < 0)
 		to_chat(usr, "<span class='warning'>You have to repair the cyborg before using this module!</span>")
 		return 0
@@ -73,6 +81,8 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/vtec/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(R.speed < 0)
@@ -92,6 +102,8 @@
 	module_type = /obj/item/robot_module/security
 
 /obj/item/borg/upgrade/disablercooler/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -114,6 +126,8 @@
 	icon_state = "cyborg_upgrade3"
 
 /obj/item/borg/upgrade/thrusters/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -132,6 +146,8 @@
 	module_type = /obj/item/robot_module/miner
 
 /obj/item/borg/upgrade/ddrill/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -153,6 +169,8 @@
 	module_type = /obj/item/robot_module/miner
 
 /obj/item/borg/upgrade/soh/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -171,6 +189,8 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/syndicate/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -190,6 +210,8 @@
 	module_type = /obj/item/robot_module/miner
 
 /obj/item/borg/upgrade/lavaproof/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	R.weather_immunities += "lava"
@@ -209,6 +231,8 @@
 	var/datum/action/toggle_action
 
 /obj/item/borg/upgrade/selfrepair/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -224,9 +248,13 @@
 	return 1
 
 /obj/item/borg/upgrade/selfrepair/dropped()
+	procstart = null
+	src.procstart = null
 	addtimer(CALLBACK(src, .proc/check_dropped), 1)
 
 /obj/item/borg/upgrade/selfrepair/proc/check_dropped()
+	procstart = null
+	src.procstart = null
 	if(loc != cyborg)
 		toggle_action.Remove(cyborg)
 		QDEL_NULL(toggle_action)
@@ -234,6 +262,8 @@
 		deactivate()
 
 /obj/item/borg/upgrade/selfrepair/ui_action_click()
+	procstart = null
+	src.procstart = null
 	on = !on
 	if(on)
 		to_chat(cyborg, "<span class='notice'>You activate the self-repair module.</span>")
@@ -244,6 +274,8 @@
 	update_icon()
 
 /obj/item/borg/upgrade/selfrepair/update_icon()
+	procstart = null
+	src.procstart = null
 	if(cyborg)
 		icon_state = "selfrepair_[on ? "on" : "off"]"
 		for(var/X in actions)
@@ -253,11 +285,15 @@
 		icon_state = "cyborg_upgrade5"
 
 /obj/item/borg/upgrade/selfrepair/proc/deactivate()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	on = FALSE
 	update_icon()
 
 /obj/item/borg/upgrade/selfrepair/process()
+	procstart = null
+	src.procstart = null
 	if(!repair_tick)
 		repair_tick = 1
 		return
@@ -309,6 +345,8 @@
 	var/list/additional_reagents = list()
 
 /obj/item/borg/upgrade/hypospray/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	for(var/obj/item/reagent_containers/borghypo/H in R.module.modules)
@@ -339,6 +377,8 @@
 	icon_state = "cyborg_upgrade3"
 
 /obj/item/borg/upgrade/piercing_hypospray/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -361,6 +401,8 @@
 	module_type = /obj/item/robot_module/medical
 
 /obj/item/borg/upgrade/defib/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -376,6 +418,8 @@
 	icon_state = "boris"
 
 /obj/item/borg/upgrade/ai/action(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(R.shell)

@@ -3,6 +3,8 @@
 	proper_name = "Vending Unit"
 
 /datum/wires/vending/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_THROW, WIRE_SHOCK, WIRE_SPEAKER,
 		WIRE_CONTRABAND, WIRE_IDSCAN
@@ -11,6 +13,8 @@
 	..()
 
 /datum/wires/vending/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/V = holder
 	if(!issilicon(user) && V.seconds_electrified && V.shock(user, 100))
 		return FALSE
@@ -18,6 +22,8 @@
 		return TRUE
 
 /datum/wires/vending/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/V = holder
 	var/list/status = list()
 	status += "The orange light is [V.seconds_electrified ? "on" : "off"]."
@@ -28,6 +34,8 @@
 	return status
 
 /datum/wires/vending/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/V = holder
 	switch(wire)
 		if(WIRE_THROW)
@@ -42,6 +50,8 @@
 			V.shut_up = !V.shut_up
 
 /datum/wires/vending/on_cut(wire, mend)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/vending/V = holder
 	switch(wire)
 		if(WIRE_THROW)

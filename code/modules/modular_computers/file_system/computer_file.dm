@@ -9,10 +9,14 @@
 	var/static/file_uid = 0
 
 /datum/computer_file/New()
+	procstart = null
+	src.procstart = null
 	..()
 	uid = file_uid++
 
 /datum/computer_file/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!holder)
 		return ..()
 
@@ -25,6 +29,8 @@
 
 // Returns independent copy of this file.
 /datum/computer_file/proc/clone(rename = 0)
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/temp = new type
 	temp.unsendable = unsendable
 	temp.undeletable = undeletable

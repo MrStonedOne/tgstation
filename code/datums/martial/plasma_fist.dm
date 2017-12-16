@@ -8,6 +8,8 @@
 
 
 /datum/martial_art/plasma_fist/proc/check_streak(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	if(findtext(streak,TORNADO_COMBO))
 		streak = ""
 		Tornado(A,D)
@@ -23,6 +25,8 @@
 	return 0
 
 /datum/martial_art/plasma_fist/proc/TornadoAnimate(mob/living/carbon/human/A)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	for(var/i in list(NORTH,SOUTH,EAST,WEST,EAST,SOUTH,NORTH,SOUTH,EAST,WEST,EAST,SOUTH))
 		if(!A)
@@ -32,6 +36,8 @@
 		sleep(1)
 
 /datum/martial_art/plasma_fist/proc/Tornado(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	A.say("TORNADO SWEEP!")
 	TornadoAnimate(A)
 	var/obj/effect/proc_holder/spell/aoe_turf/repulse/R = new(null)
@@ -43,6 +49,8 @@
 	return
 
 /datum/martial_art/plasma_fist/proc/Throwback(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	D.visible_message("<span class='danger'>[A] has hit [D] with Plasma Punch!</span>", \
 								"<span class='userdanger'>[A] has hit [D] with Plasma Punch!</span>")
 	playsound(D.loc, 'sound/weapons/punch1.ogg', 50, 1, -1)
@@ -53,6 +61,8 @@
 	return
 
 /datum/martial_art/plasma_fist/proc/Plasma(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	A.do_attack_animation(D, ATTACK_EFFECT_PUNCH)
 	playsound(D.loc, 'sound/weapons/punch1.ogg', 50, 1, -1)
 	A.say("PLASMA FIST!")
@@ -63,6 +73,8 @@
 	return
 
 /datum/martial_art/plasma_fist/harm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	add_to_streak("H",D)
 	if(check_streak(A,D))
 		return 1
@@ -70,6 +82,8 @@
 	return 1
 
 /datum/martial_art/plasma_fist/disarm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	add_to_streak("D",D)
 	if(check_streak(A,D))
 		return 1
@@ -77,6 +91,8 @@
 	return 1
 
 /datum/martial_art/plasma_fist/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	add_to_streak("G",D)
 	if(check_streak(A,D))
 		return 1
@@ -84,6 +100,8 @@
 	return 1
 
 /mob/living/carbon/human/proc/plasma_fist_help()
+	procstart = null
+	src.procstart = null
 	set name = "Recall Teachings"
 	set desc = "Remember the martial techniques of the Plasma Fist."
 	set category = "Plasma Fist"
@@ -101,6 +119,8 @@
 	var/used = 0
 
 /obj/item/plasma_fist_scroll/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	if(!used)

@@ -19,6 +19,8 @@
 	var/holocreator_busy = FALSE //to prevent placing multiple holo barriers at once
 
 /obj/item/holosign_creator/afterattack(atom/target, mob/user, flag)
+	procstart = null
+	src.procstart = null
 	if(flag)
 		if(!check_allowed_items(target, 1))
 			return
@@ -50,9 +52,13 @@
 					to_chat(user, "<span class='notice'>[src] is projecting at max capacity!</span>")
 
 /obj/item/holosign_creator/attack(mob/living/carbon/human/M, mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/holosign_creator/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(signs.len)
 		for(var/H in signs)
 			qdel(H)
@@ -92,6 +98,8 @@
 	var/shock = 0
 
 /obj/item/holosign_creator/cyborg/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/R = user
 

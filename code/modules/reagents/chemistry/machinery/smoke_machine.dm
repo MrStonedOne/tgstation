@@ -16,6 +16,8 @@
 	var/list/possible_settings = list(3,6,9)
 
 /datum/effect_system/smoke_spread/chem/smoke_machine/set_up(datum/reagents/carry, setting = 3, efficiency = 10, loc)
+	procstart = null
+	src.procstart = null
 	amount = setting
 	carry.copy_to(chemholder, 20)
 	carry.remove_any(setting * 16 / efficiency)
@@ -30,10 +32,14 @@
 
 
 /obj/machinery/smoke_machine/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(volume)
 
 /obj/machinery/smoke_machine/update_icon()
+	procstart = null
+	src.procstart = null
 	if((!is_operational()) || (!on) || (reagents.total_volume == 0))
 		icon_state = "smoke0"
 	else
@@ -41,6 +47,8 @@
 	. = ..()
 
 /obj/machinery/smoke_machine/RefreshParts()
+	procstart = null
+	src.procstart = null
 	efficiency = 6
 	for(var/obj/item/stock_parts/matter_bin/B in component_parts)
 		efficiency += B.rating
@@ -50,6 +58,8 @@
 		efficiency += M.rating
 
 /obj/machinery/smoke_machine/process()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 	if(!is_operational())
@@ -65,6 +75,8 @@
 		smoke.start()
 
 /obj/machinery/smoke_machine/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(I, /obj/item/reagent_containers) && I.is_open_container())
 		var/obj/item/reagent_containers/RC = I
@@ -86,6 +98,8 @@
 		ui.open()
 
 /obj/machinery/smoke_machine/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	var/TankContents[0]
 	var/TankCurrentVolume = 0
@@ -102,6 +116,8 @@
 	return data
 
 /obj/machinery/smoke_machine/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..() || !anchored)
 		return
 	switch(action)

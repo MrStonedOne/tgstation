@@ -8,4 +8,6 @@
 	var/scientist = FALSE // vars to not pollute spieces list with castes
 
 /datum/species/abductor/copy_properties_from(datum/species/abductor/old_species)
+	procstart = null
+	src.procstart = null
 	scientist = old_species.scientist

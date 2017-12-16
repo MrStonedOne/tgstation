@@ -3,6 +3,8 @@
 	var/list/screens = list()
 
 /mob/proc/overlay_fullscreen(category, type, severity)
+	procstart = null
+	src.procstart = null
 	var/obj/screen/fullscreen/screen = screens[category]
 	if (!screen || screen.type != type)
 		// needs to be recreated
@@ -24,6 +26,8 @@
 	return screen
 
 /mob/proc/clear_fullscreen(category, animated = 10)
+	procstart = null
+	src.procstart = null
 	var/obj/screen/fullscreen/screen = screens[category]
 	if(!screen)
 		return
@@ -39,20 +43,28 @@
 		qdel(screen)
 
 /mob/proc/clear_fullscreen_after_animate(obj/screen/fullscreen/screen)
+	procstart = null
+	src.procstart = null
 	if(client)
 		client.screen -= screen
 	qdel(screen)
 
 /mob/proc/clear_fullscreens()
+	procstart = null
+	src.procstart = null
 	for(var/category in screens)
 		clear_fullscreen(category)
 
 /mob/proc/hide_fullscreens()
+	procstart = null
+	src.procstart = null
 	if(client)
 		for(var/category in screens)
 			client.screen -= screens[category]
 
 /mob/proc/reload_fullscreen()
+	procstart = null
+	src.procstart = null
 	if(client)
 		var/obj/screen/fullscreen/screen
 		for(var/category in screens)
@@ -74,11 +86,15 @@
 	var/show_when_dead = FALSE
 
 /obj/screen/fullscreen/proc/should_show_to(mob/mymob)
+	procstart = null
+	src.procstart = null
 	if(!show_when_dead && mymob.stat == DEAD)
 		return FALSE
 	return TRUE
 
 /obj/screen/fullscreen/Destroy()
+	procstart = null
+	src.procstart = null
 	severity = 0
 	. = ..()
 

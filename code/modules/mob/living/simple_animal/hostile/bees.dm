@@ -54,11 +54,15 @@
 	var/static/hydroponicstypecache = typecacheof(/obj/machinery/hydroponics)
 
 /mob/living/simple_animal/hostile/poison/bees/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	generate_bee_visuals()
 
 
 /mob/living/simple_animal/hostile/poison/bees/Destroy()
+	procstart = null
+	src.procstart = null
 	if(beehome)
 		beehome.bees -= src
 		beehome = null
@@ -67,6 +71,8 @@
 
 
 /mob/living/simple_animal/hostile/poison/bees/death(gibbed)
+	procstart = null
+	src.procstart = null
 	if(beehome)
 		beehome.bees -= src
 		beehome = null
@@ -75,6 +81,8 @@
 
 
 /mob/living/simple_animal/hostile/poison/bees/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!beehome)
@@ -82,6 +90,8 @@
 
 
 /mob/living/simple_animal/hostile/poison/bees/proc/generate_bee_visuals()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	var/col = BEE_DEFAULT_COLOUR
@@ -101,6 +111,8 @@
 
 //We don't attack beekeepers/people dressed as bees//Todo: bee costume
 /mob/living/simple_animal/hostile/poison/bees/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return FALSE
@@ -110,6 +122,8 @@
 
 
 /mob/living/simple_animal/hostile/poison/bees/Found(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isliving(A))
 		var/mob/living/H = A
 		return !H.bee_friendly()
@@ -144,6 +158,8 @@
 
 
 /mob/living/simple_animal/hostile/poison/bees/proc/assign_reagent(datum/reagent/R)
+	procstart = null
+	src.procstart = null
 	if(istype(R))
 		beegent = R
 		name = "[initial(name)] ([R.name])"
@@ -151,6 +167,8 @@
 
 
 /mob/living/simple_animal/hostile/poison/bees/proc/pollinate(obj/machinery/hydroponics/Hydro)
+	procstart = null
+	src.procstart = null
 	if(!istype(Hydro) || !Hydro.myseed || Hydro.dead || Hydro.recent_bee_visit)
 		target = null
 		return
@@ -178,6 +196,8 @@
 
 
 /mob/living/simple_animal/hostile/poison/bees/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		return
@@ -203,6 +223,8 @@
 			break // End loop after the first compatible find.
 
 /mob/living/simple_animal/hostile/poison/bees/toxin/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/reagent/R = pick(typesof(/datum/reagent/toxin))
 	assign_reagent(GLOB.chemical_reagents_list[initial(R.id)])
@@ -216,11 +238,15 @@
 
  //the Queen doesn't leave the box on her own, and she CERTAINLY doesn't pollinate by herself
 /mob/living/simple_animal/hostile/poison/bees/queen/Found(atom/A)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 
 //leave pollination for the peasent bees
 /mob/living/simple_animal/hostile/poison/bees/queen/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && beegent && isliving(target))
 		var/mob/living/L = target
@@ -230,10 +256,14 @@
 
 //PEASENT BEES
 /mob/living/simple_animal/hostile/poison/bees/queen/pollinate()
+	procstart = null
+	src.procstart = null
 	return
 
 
 /mob/living/simple_animal/hostile/poison/bees/proc/reagent_incompatible(mob/living/simple_animal/hostile/poison/bees/B)
+	procstart = null
+	src.procstart = null
 	if(!B)
 		return FALSE
 	if(B.beegent && beegent && B.beegent.id != beegent.id || B.beegent && !beegent || !B.beegent && beegent)
@@ -251,6 +281,8 @@
 
 
 /obj/item/queen_bee/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/reagent_containers/syringe))
 		var/obj/item/reagent_containers/syringe/S = I
 		if(S.reagents.has_reagent("royal_bee_jelly")) //checked twice, because I really don't want royal bee jelly to be duped
@@ -277,15 +309,21 @@
 
 
 /obj/item/queen_bee/bought/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	queen = new(src)
 
 
 /obj/item/queen_bee/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(queen)
 	return ..()
 
 /mob/living/simple_animal/hostile/poison/bees/consider_wakeup()
+	procstart = null
+	src.procstart = null
 	if (beehome && loc == beehome) // If bees are chilling in their nest, they're not actively looking for targets
 		idle = min(100, ++idle)
 		if(idle >= BEE_IDLE_ROAMING && prob(BEE_PROB_GOROAM))

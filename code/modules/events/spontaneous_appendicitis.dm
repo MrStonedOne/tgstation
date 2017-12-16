@@ -10,6 +10,8 @@
 	fakeable = FALSE
 
 /datum/round_event/spontaneous_appendicitis/start()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/H in shuffle(GLOB.alive_mob_list))
 		if(!H.client)
 			continue

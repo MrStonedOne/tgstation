@@ -58,9 +58,13 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	icon_state = "yellow"
 
 /obj/effect/debugging/marker/Move()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /client/proc/camera_view()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Camera Range Display"
 
@@ -83,6 +87,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 
 
 /client/proc/sec_camera_report()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Camera Report"
 
@@ -123,6 +129,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Camera Report") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/intercom_view()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Intercom Range Display"
 
@@ -141,6 +149,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Intercom Range") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_show_at_list()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Show roundstart AT list"
 	set desc = "Displays a list of active turfs coordinates at roundstart"
@@ -158,6 +168,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Roundstart Active Turfs") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_show_at_markers()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Show roundstart AT markers"
 	set desc = "Places a marker on all active-at-roundstart turfs"
@@ -178,6 +190,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Roundstart Active Turf Markers")
 
 /client/proc/enable_debug_verbs()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Debug verbs - Enable"
 	if(!check_rights(R_DEBUG))
@@ -187,6 +201,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Enable Debug Verbs") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/disable_debug_verbs()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Debug verbs - Disable"
 	verbs.Remove(/client/proc/disable_debug_verbs, GLOB.admin_verbs_debug_mapping)
@@ -194,6 +210,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Disable Debug Verbs") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/count_objects_on_z_level()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Count Objects On Level"
 	var/level = input("Which z-level?","Level?") as text
@@ -233,6 +251,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Count Objects Zlevel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/count_objects_all()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Count Objects All"
 
@@ -256,6 +276,8 @@ GLOBAL_LIST_INIT(admin_verbs_debug_mapping, list(
 //This proc is intended to detect lag problems relating to communication procs
 GLOBAL_VAR_INIT(say_disabled, FALSE)
 /client/proc/disable_communication()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Disable all communication verbs"
 

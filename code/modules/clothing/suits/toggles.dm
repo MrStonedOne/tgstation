@@ -7,33 +7,47 @@
 	hooded = 1
 
 /obj/item/clothing/suit/hooded/New()
+	procstart = null
+	src.procstart = null
 	MakeHood()
 	..()
 
 /obj/item/clothing/suit/hooded/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	qdel(hood)
 	hood = null
 
 /obj/item/clothing/suit/hooded/proc/MakeHood()
+	procstart = null
+	src.procstart = null
 	if(!hood)
 		var/obj/item/clothing/head/hooded/W = new hoodtype(src)
 		W.suit = src
 		hood = W
 
 /obj/item/clothing/suit/hooded/ui_action_click()
+	procstart = null
+	src.procstart = null
 	ToggleHood()
 
 /obj/item/clothing/suit/hooded/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot == slot_wear_suit)
 		return 1
 
 /obj/item/clothing/suit/hooded/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	if(slot != slot_wear_suit)
 		RemoveHood()
 	..()
 
 /obj/item/clothing/suit/hooded/proc/RemoveHood()
+	procstart = null
+	src.procstart = null
 	src.icon_state = "[initial(icon_state)]"
 	suittoggled = FALSE
 	if(ishuman(hood.loc))
@@ -47,10 +61,14 @@
 		A.UpdateButtonIcon()
 
 /obj/item/clothing/suit/hooded/dropped()
+	procstart = null
+	src.procstart = null
 	..()
 	RemoveHood()
 
 /obj/item/clothing/suit/hooded/proc/ToggleHood()
+	procstart = null
+	src.procstart = null
 	if(!suittoggled)
 		if(ishuman(src.loc))
 			var/mob/living/carbon/human/H = src.loc
@@ -74,15 +92,21 @@
 	var/obj/item/clothing/suit/hooded/suit
 
 /obj/item/clothing/head/hooded/Destroy()
+	procstart = null
+	src.procstart = null
 	suit = null
 	return ..()
 
 /obj/item/clothing/head/hooded/dropped()
+	procstart = null
+	src.procstart = null
 	..()
 	if(suit)
 		suit.RemoveHood()
 
 /obj/item/clothing/head/hooded/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(slot != slot_head)
 		if(suit)
@@ -93,6 +117,8 @@
 //Toggle exosuits for different aesthetic styles (hoodies, suit jacket buttons, etc)
 
 /obj/item/clothing/suit/toggle/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!user.canUseTopic(src, be_close=TRUE))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -101,9 +127,13 @@
 		suit_toggle(user)
 
 /obj/item/clothing/suit/toggle/ui_action_click()
+	procstart = null
+	src.procstart = null
 	suit_toggle()
 
 /obj/item/clothing/suit/toggle/proc/suit_toggle()
+	procstart = null
+	src.procstart = null
 	set src in usr
 
 	if(!can_use(usr))
@@ -122,15 +152,21 @@
 		A.UpdateButtonIcon()
 
 /obj/item/clothing/suit/toggle/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "Alt-click on [src] to toggle the [togglename].")
 
 //Hardsuit toggle code
 /obj/item/clothing/suit/space/hardsuit/New()
+	procstart = null
+	src.procstart = null
 	MakeHelmet()
 	..()
 
 /obj/item/clothing/suit/space/hardsuit/Destroy()
+	procstart = null
+	src.procstart = null
 	if(helmet)
 		helmet.suit = null
 		qdel(helmet)
@@ -138,11 +174,15 @@
 	return ..()
 
 /obj/item/clothing/head/helmet/space/hardsuit/Destroy()
+	procstart = null
+	src.procstart = null
 	if(suit)
 		suit.helmet = null
 	return ..()
 
 /obj/item/clothing/suit/space/hardsuit/proc/MakeHelmet()
+	procstart = null
+	src.procstart = null
 	if(!helmettype)
 		return
 	if(!helmet)
@@ -151,10 +191,14 @@
 		helmet = W
 
 /obj/item/clothing/suit/space/hardsuit/ui_action_click()
+	procstart = null
+	src.procstart = null
 	..()
 	ToggleHelmet()
 
 /obj/item/clothing/suit/space/hardsuit/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	if(!helmettype)
 		return
 	if(slot != slot_wear_suit)
@@ -162,6 +206,8 @@
 	..()
 
 /obj/item/clothing/suit/space/hardsuit/proc/RemoveHelmet()
+	procstart = null
+	src.procstart = null
 	if(!helmet)
 		return
 	suittoggled = FALSE
@@ -177,10 +223,14 @@
 		helmet.forceMove(src)
 
 /obj/item/clothing/suit/space/hardsuit/dropped()
+	procstart = null
+	src.procstart = null
 	..()
 	RemoveHelmet()
 
 /obj/item/clothing/suit/space/hardsuit/proc/ToggleHelmet()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = src.loc
 	if(!helmettype)
 		return

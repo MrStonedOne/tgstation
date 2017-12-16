@@ -15,6 +15,8 @@
 	resistance_flags = FLAMMABLE
 
 /obj/item/stack/wrapping_paper/use(used, transfer)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	. = ..()
 	if(QDELETED(src) && !transfer)
@@ -39,15 +41,23 @@
 	return 1
 
 /obj/item/storage/can_be_package_wrapped()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/storage/box/can_be_package_wrapped()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/item/smallDelivery/can_be_package_wrapped()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/stack/packageWrap/afterattack(obj/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(!istype(target))
@@ -101,6 +111,8 @@
 	user.log_message("<font color='blue'>Has used [name] on [target]</font>", INDIVIDUAL_ATTACK_LOG)
 
 /obj/item/stack/packageWrap/use(used, transfer = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	. = ..()
 	if(QDELETED(src) && !transfer)

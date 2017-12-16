@@ -8,9 +8,13 @@
 	anchored = TRUE
 
 /obj/effect/step_trigger/proc/Trigger(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/effect/step_trigger/Crossed(H as mob|obj)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!H)
 		return
@@ -22,9 +26,13 @@
 
 
 /obj/effect/step_trigger/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/step_trigger/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /* Sends a message to mob when triggered*/
@@ -35,6 +43,8 @@
 	mobs_only = TRUE
 
 /obj/effect/step_trigger/message/Trigger(mob/M)
+	procstart = null
+	src.procstart = null
 	if(M.client)
 		to_chat(M, "<span class='info'>[message]</span>")
 		if(once)
@@ -52,6 +62,8 @@
 	var/list/affecting = list()
 
 /obj/effect/step_trigger/thrower/Trigger(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!A || !ismovableatom(A))
 		return
 	var/atom/movable/AM = A
@@ -115,6 +127,8 @@
 	var/teleport_z = 0
 
 /obj/effect/step_trigger/teleporter/Trigger(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(teleport_x && teleport_y && teleport_z)
 
 		var/turf/T = locate(teleport_x, teleport_y, teleport_z)
@@ -128,6 +142,8 @@
 	var/teleport_z_offset = 0
 
 /obj/effect/step_trigger/teleporter/random/Trigger(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	if(teleport_x && teleport_y && teleport_z)
 		if(teleport_x_offset && teleport_y_offset && teleport_z_offset)
 
@@ -147,6 +163,8 @@
 	var/exitsmoke = 0
 
 /obj/effect/step_trigger/teleport_fancy/Trigger(mob/M)
+	procstart = null
+	src.procstart = null
 	var/dest = locate(locationx, locationy, z)
 	M.Move(dest)
 
@@ -184,6 +202,8 @@
 
 
 /obj/effect/step_trigger/sound_effect/Trigger(atom/movable/A)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(A)
 
 	if(!T)

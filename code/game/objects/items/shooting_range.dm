@@ -8,24 +8,34 @@
 	var/obj/structure/target_stake/pinnedLoc
 
 /obj/item/target/Destroy()
+	procstart = null
+	src.procstart = null
 	removeOverlays()
 	if(pinnedLoc)
 		pinnedLoc.nullPinnedTarget()
 	return ..()
 
 /obj/item/target/proc/nullPinnedLoc()
+	procstart = null
+	src.procstart = null
 	pinnedLoc = null
 	density = FALSE
 
 /obj/item/target/proc/removeOverlays()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 /obj/item/target/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pinnedLoc)
 		pinnedLoc.forceMove(loc)
 
 /obj/item/target/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/weldingtool))
 		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
@@ -35,6 +45,8 @@
 		return ..()
 
 /obj/item/target/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(pinnedLoc)
 		pinnedLoc.removeTarget(user)
 	..()
@@ -61,10 +73,14 @@
 #define DECALTYPE_BULLET 2
 
 /obj/item/target/clown/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	..()
 	playsound(src.loc, 'sound/items/bikehorn.ogg', 50, 1)
 
 /obj/item/target/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/projectile/bullet/reusable)) // If it's a foam dart, don't bother with any of this other shit
 		return P.on_hit(src, 0)
 	var/p_x = P.p_x + pick(0,0,0,0,0,-1,1) // really ugly way of coding "sometimes offset P.p_x!"

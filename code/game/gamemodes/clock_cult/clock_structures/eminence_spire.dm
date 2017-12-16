@@ -12,6 +12,8 @@
 	var/kingmaking
 
 /obj/structure/destructible/clockwork/eminence_spire/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(user))
 		to_chat(user, "<span class='notice'>You can tell how powerful [src] is; you know better than to touch it.</span>")
 		return
@@ -36,6 +38,8 @@
 		nomination(user)
 
 /obj/structure/destructible/clockwork/eminence_spire/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!IsAdminGhost(user))
 		return
 
@@ -74,6 +78,8 @@
 	selection_timer = addtimer(CALLBACK(src, .proc/kingmaker), 300, TIMER_STOPPABLE)
 
 /obj/structure/destructible/clockwork/eminence_spire/proc/objection(mob/living/wright)
+	procstart = null
+	src.procstart = null
 	if(alert(wright, "Object to the selection of [eminence_nominee] as Eminence?", "Objection!", "Object", "Cancel") == "Cancel" || !is_servant_of_ratvar(wright) || !wright.canUseTopic(src) || !eminence_nominee)
 		return
 	hierophant_message("<span class='brass'><b>[wright] objects to the nomination of [eminence_nominee]!</b> The eminence spire has been reset.</span>")
@@ -83,6 +89,8 @@
 	deltimer(selection_timer)
 
 /obj/structure/destructible/clockwork/eminence_spire/proc/cancelation(mob/living/cold_feet)
+	procstart = null
+	src.procstart = null
 	if(alert(cold_feet, "Cancel your nomination?", "Cancel Nomination", "Withdraw Nomination", "Cancel") == "Cancel" || !is_servant_of_ratvar(cold_feet) || !cold_feet.canUseTopic(src) || !eminence_nominee)
 		return
 	hierophant_message("<span class='brass'><b>[eminence_nominee] has withdrawn their nomination!</b> The eminence spire has been reset.</span>")
@@ -92,6 +100,8 @@
 	deltimer(selection_timer)
 
 /obj/structure/destructible/clockwork/eminence_spire/proc/kingmaker()
+	procstart = null
+	src.procstart = null
 	if(!eminence_nominee)
 		return
 	if(ismob(eminence_nominee))

@@ -25,6 +25,8 @@
 
 // TODO: Implement more logic here. For now it's only a placeholder.
 /obj/machinery/ntnet_relay/is_operational()
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN | NOPOWER | EMPED))
 		return FALSE
 	if(dos_failure)
@@ -34,12 +36,16 @@
 	return TRUE
 
 /obj/machinery/ntnet_relay/update_icon()
+	procstart = null
+	src.procstart = null
 	if(is_operational())
 		icon_state = "bus"
 	else
 		icon_state = "bus_off"
 
 /obj/machinery/ntnet_relay/process()
+	procstart = null
+	src.procstart = null
 	if(is_operational())
 		use_power = ACTIVE_POWER_USE
 	else
@@ -64,6 +70,8 @@
 
 /obj/machinery/ntnet_relay/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
 
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 
 	if(!ui)
@@ -72,6 +80,8 @@
 
 
 /obj/machinery/ntnet_relay/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["enabled"] = enabled
 	data["dos_capacity"] = dos_capacity
@@ -81,6 +91,8 @@
 
 
 /obj/machinery/ntnet_relay/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -95,9 +107,13 @@
 			update_icon()
 
 /obj/machinery/ntnet_relay/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	ui_interact(user)
 
 /obj/machinery/ntnet_relay/Initialize()
+	procstart = null
+	src.procstart = null
 	uid = gl_uid++
 	component_parts = list()
 
@@ -108,6 +124,8 @@
 	. = ..()
 
 /obj/machinery/ntnet_relay/Destroy()
+	procstart = null
+	src.procstart = null
 	if(SSnetworks.station_network)
 		SSnetworks.station_network.relays.Remove(src)
 		SSnetworks.station_network.add_log("Quantum relay connection severed. Current amount of linked relays: [NTNet.relays.len]")

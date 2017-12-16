@@ -15,6 +15,8 @@
 	var/finish_color = null
 
 /obj/item/device/modular_computer/tablet/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!finish_color)
 		finish_color = pick("red","blue","brown","green","black")

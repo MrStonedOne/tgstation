@@ -39,12 +39,16 @@
 	maptext_width = 32
 
 /obj/machinery/door_timer/New()
+	procstart = null
+	src.procstart = null
 	..()
 
 	Radio = new/obj/item/device/radio(src)
 	Radio.listening = 0
 
 /obj/machinery/door_timer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(id != null)
 		for(var/obj/machinery/door/window/brigdoor/M in urange(20, src))
@@ -68,6 +72,8 @@
 // if it's less than 0, open door, reset timer
 // update the door_timer window and the icon
 /obj/machinery/door_timer/process()
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return
 
@@ -78,6 +84,8 @@
 
 // has the door power sitatuation changed, if so update icon.
 /obj/machinery/door_timer/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
@@ -85,6 +93,8 @@
 // open/closedoor checks if door_timer has power, if so it checks if the
 // linked door is open/closed (by density) then opens it/closes it.
 /obj/machinery/door_timer/proc/timer_start()
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return 0
 
@@ -108,6 +118,8 @@
 
 /obj/machinery/door_timer/proc/timer_end(forced = FALSE)
 
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return 0
 
@@ -137,11 +149,15 @@
 
 
 /obj/machinery/door_timer/proc/time_left(seconds = FALSE)
+	procstart = null
+	src.procstart = null
 	. = max(0,timer_duration - (activation_time ? world.time - activation_time : 0))
 	if(seconds)
 		. /= 10
 
 /obj/machinery/door_timer/proc/set_timer(value)
+	procstart = null
+	src.procstart = null
 	var/new_time = Clamp(value,0,MAX_TIMER)
 	. = new_time == timer_duration //return 1 on no change
 	timer_duration = new_time
@@ -158,6 +174,8 @@
 // if BROKEN, display blue screen of death icon AI uses
 // if timing=true, run update display function
 /obj/machinery/door_timer/update_icon()
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER))
 		icon_state = "frame"
 		return
@@ -181,6 +199,8 @@
 
 // Adds an icon in case the screen is broken/off, stolen from status_display.dm
 /obj/machinery/door_timer/proc/set_picture(state)
+	procstart = null
+	src.procstart = null
 	if(maptext)
 		maptext = ""
 	cut_overlays()
@@ -190,11 +210,15 @@
 //Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
 // Stolen from status_display
 /obj/machinery/door_timer/proc/update_display(line1, line2)
+	procstart = null
+	src.procstart = null
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
 	if(maptext != new_text)
 		maptext = new_text
 
 /obj/machinery/door_timer/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/time_left = time_left(seconds = TRUE)
 	data["seconds"] = round(time_left % 60)
@@ -209,6 +233,8 @@
 
 
 /obj/machinery/door_timer/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	. = TRUE

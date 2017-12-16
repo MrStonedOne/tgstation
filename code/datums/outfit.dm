@@ -27,14 +27,20 @@
 	var/can_be_admin_equipped = TRUE // Set to FALSE if your outfit requires runtime parameters
 
 /datum/outfit/proc/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	//to be overriden for customization depending on client prefs,species etc
 	return
 
 /datum/outfit/proc/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	//to be overriden for toggling internals, id binding, access etc
 	return
 
 /datum/outfit/proc/equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	pre_equip(H, visualsOnly)
 
 	//Start with uniform,suit,backpack for additional slots
@@ -108,6 +114,8 @@
 	return TRUE
 
 /datum/outfit/proc/apply_fingerprints(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!istype(H))
 		return
 	if(H.back)

@@ -89,18 +89,26 @@
 	pin = /obj/item/device/firing_pin
 
 /obj/item/gun/energy/beam_rifle/equipped(mob/user)
+	procstart = null
+	src.procstart = null
 	set_user(user)
 	. = ..()
 
 /obj/item/gun/energy/beam_rifle/pickup(mob/user)
+	procstart = null
+	src.procstart = null
 	set_user(user)
 	. = ..()
 
 /obj/item/gun/energy/beam_rifle/dropped()
+	procstart = null
+	src.procstart = null
 	set_user()
 	. = ..()
 
 /obj/item/gun/energy/beam_rifle/ui_action_click(owner, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/zoom_speed_action))
 		zoom_speed++
 		if(zoom_speed > 1)
@@ -126,6 +134,8 @@
 	reset_zooming()
 
 /obj/item/gun/energy/beam_rifle/proc/smooth_zooming(delay_override = null)
+	procstart = null
+	src.procstart = null
 	if(!check_user() || !zooming || zoom_lock == ZOOM_LOCK_OFF || zoom_lock == ZOOM_LOCK_CENTER_VIEW)
 		return
 	if(zoom_animating && delay_override != 0)
@@ -140,12 +150,16 @@
 	zoom_animating = 0
 
 /obj/item/gun/energy/beam_rifle/proc/set_autozoom_pixel_offsets_immediate(current_angle)
+	procstart = null
+	src.procstart = null
 	if(zoom_lock == ZOOM_LOCK_CENTER_VIEW || zoom_lock == ZOOM_LOCK_OFF)
 		return
 	current_zoom_x = sin(current_angle) + sin(current_angle) * AUTOZOOM_PIXEL_STEP_FACTOR * zoom_current_view_increase
 	current_zoom_y = cos(current_angle) + cos(current_angle) * AUTOZOOM_PIXEL_STEP_FACTOR * zoom_current_view_increase
 
 /obj/item/gun/energy/beam_rifle/proc/handle_zooming()
+	procstart = null
+	src.procstart = null
 	if(!zooming || !check_user())
 		return
 	if(zoom_speed == ZOOM_SPEED_INSTANT)
@@ -162,15 +176,21 @@
 	smooth_zooming(SSfastprocess.wait * zoom_target_view_increase * zoom_speed)
 
 /obj/item/gun/energy/beam_rifle/proc/start_zooming()
+	procstart = null
+	src.procstart = null
 	if(zoom_lock == ZOOM_LOCK_OFF)
 		return
 	zooming = TRUE
 
 /obj/item/gun/energy/beam_rifle/proc/stop_zooming()
+	procstart = null
+	src.procstart = null
 	zooming = FALSE
 	reset_zooming()
 
 /obj/item/gun/energy/beam_rifle/proc/reset_zooming()
+	procstart = null
+	src.procstart = null
 	if(!check_user(FALSE))
 		return
 	zoom_animating = 0
@@ -182,6 +202,8 @@
 	current_zoom_y = 0
 
 /obj/item/gun/energy/beam_rifle/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	var/obj/item/ammo_casing/energy/primary_ammo = ammo_type[1]
 	if(cell.charge > primary_ammo.e_cost)
@@ -190,33 +212,45 @@
 		add_overlay(drained_overlay)
 
 /obj/item/gun/energy/beam_rifle/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	projectile_setting_pierce = !projectile_setting_pierce
 	to_chat(user, "<span class='boldnotice'>You set \the [src] to [projectile_setting_pierce? "pierce":"impact"] mode.</span>")
 	aiming_beam()
 
 /obj/item/gun/energy/beam_rifle/proc/update_slowdown()
+	procstart = null
+	src.procstart = null
 	if(aiming)
 		slowdown = scoped_slow
 	else
 		slowdown = initial(slowdown)
 
 /obj/item/gun/energy/beam_rifle/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSprojectiles, src)
 	zoom_speed_action = new(src)
 	zoom_lock_action = new(src)
 
 /obj/item/gun/energy/beam_rifle/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	set_user(null)
 	QDEL_NULL(current_tracer)
 	return ..()
 
 /obj/item/gun/energy/beam_rifle/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	chambered = null
 	recharge_newshot()
 
 /obj/item/gun/energy/beam_rifle/proc/aiming_beam(force_update = FALSE)
+	procstart = null
+	src.procstart = null
 	var/diff = abs(aiming_lastangle - lastangle)
 	check_user()
 	if(diff < AIMING_BEAM_ANGLE_CHANGE_THRESHOLD && !force_update)
@@ -242,6 +276,8 @@
 	P.fire(lastangle)
 
 /obj/item/gun/energy/beam_rifle/process()
+	procstart = null
+	src.procstart = null
 	if(!aiming)
 		return
 	check_user()
@@ -251,6 +287,8 @@
 	last_process = world.time
 
 /obj/item/gun/energy/beam_rifle/proc/check_user(automatic_cleanup = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!istype(current_user) || !isturf(current_user.loc) || !(src in current_user.held_items) || current_user.incapacitated())	//Doesn't work if you're not holding it!
 		if(automatic_cleanup)
 			stop_aiming()
@@ -259,6 +297,8 @@
 	return TRUE
 
 /obj/item/gun/energy/beam_rifle/proc/process_aim()
+	procstart = null
+	src.procstart = null
 	if(istype(current_user) && current_user.client && current_user.client.mouseParams)
 		var/angle = mouse_angle_from_client(current_user.client)
 		switch(angle)
@@ -279,6 +319,8 @@
 		lastangle = angle
 
 /obj/item/gun/energy/beam_rifle/on_mob_move()
+	procstart = null
+	src.procstart = null
 	check_user()
 	if(aiming)
 		delay_penalty(aiming_time_increase_user_movement)
@@ -286,6 +328,8 @@
 		aiming_beam(TRUE)
 
 /obj/item/gun/energy/beam_rifle/proc/start_aiming()
+	procstart = null
+	src.procstart = null
 	aiming_time_left = aiming_time
 	aiming = TRUE
 	process_aim()
@@ -294,6 +338,8 @@
 	start_zooming()
 
 /obj/item/gun/energy/beam_rifle/proc/stop_aiming()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	aiming_time_left = aiming_time
 	aiming = FALSE
@@ -301,6 +347,8 @@
 	stop_zooming()
 
 /obj/item/gun/energy/beam_rifle/proc/set_user(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user == current_user)
 		return
 	stop_aiming()
@@ -312,6 +360,8 @@
 		LAZYADD(current_user.mousemove_intercept_objects, src)
 
 /obj/item/gun/energy/beam_rifle/onMouseDrag(src_object, over_object, src_location, over_location, params, mob)
+	procstart = null
+	src.procstart = null
 	if(aiming)
 		process_aim()
 		aiming_beam()
@@ -322,6 +372,8 @@
 	return ..()
 
 /obj/item/gun/energy/beam_rifle/onMouseDown(object, location, params, mob/mob)
+	procstart = null
+	src.procstart = null
 	if(istype(mob))
 		set_user(mob)
 	if(istype(object, /obj/screen) && !istype(object, /obj/screen/click_catcher))
@@ -332,6 +384,8 @@
 	return ..()
 
 /obj/item/gun/energy/beam_rifle/onMouseUp(object, location, params, mob/M)
+	procstart = null
+	src.procstart = null
 	if(istype(object, /obj/screen) && !istype(object, /obj/screen/click_catcher))
 		return
 	process_aim()
@@ -343,6 +397,8 @@
 	return ..()
 
 /obj/item/gun/energy/beam_rifle/afterattack(atom/target, mob/living/user, flag, params, passthrough = FALSE)
+	procstart = null
+	src.procstart = null
 	if(flag) //It's adjacent, is the user, or is on the user's person
 		if(target in user.contents) //can't shoot stuff inside us.
 			return
@@ -359,10 +415,14 @@
 	stop_aiming()
 
 /obj/item/gun/energy/beam_rifle/proc/sync_ammo()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/ammo_casing/energy/beam_rifle/AC in contents)
 		AC.sync_stats()
 
 /obj/item/gun/energy/beam_rifle/proc/delay_penalty(amount)
+	procstart = null
+	src.procstart = null
 	aiming_time_left = Clamp(aiming_time_left + amount, 0, aiming_time)
 
 /obj/item/ammo_casing/energy/beam_rifle
@@ -385,6 +445,8 @@
 	var/obj/item/gun/energy/beam_rifle/host
 
 /obj/item/ammo_casing/energy/beam_rifle/proc/sync_stats()
+	procstart = null
+	src.procstart = null
 	var/obj/item/gun/energy/beam_rifle/BR = loc
 	if(!istype(BR))
 		stack_trace("Beam rifle syncing error")
@@ -406,6 +468,8 @@
 	structure_bleed_coeff = BR.structure_bleed_coeff
 
 /obj/item/ammo_casing/energy/beam_rifle/ready_proj(atom/target, mob/living/user, quiet, zone_override)
+	procstart = null
+	src.procstart = null
 	. = ..(target, user, quiet, zone_override)
 	var/obj/item/projectile/beam/beam_rifle/hitscan/HS_BB = BB
 	if(!istype(HS_BB))
@@ -427,6 +491,8 @@
 	HS_BB.gun = host
 
 /obj/item/ammo_casing/energy/beam_rifle/throw_proj(atom/target, turf/targloc, mob/living/user, params, spread)
+	procstart = null
+	src.procstart = null
 	var/turf/curloc = get_turf(user)
 	if(!istype(curloc) || !BB)
 		return FALSE
@@ -480,6 +546,8 @@
 	var/list/pierced = list()
 
 /obj/item/projectile/beam/beam_rifle/proc/AOE(turf/epicenter)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!epicenter)
 		return
@@ -497,6 +565,8 @@
 			O.take_damage(aoe_structure_damage * get_damage_coeff(O), BURN, "laser", FALSE)
 
 /obj/item/projectile/beam/beam_rifle/proc/check_pierce(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!do_pierce)
 		return FALSE
 	if(pierced[target])		//we already pierced them go away
@@ -526,6 +596,8 @@
 	return FALSE
 
 /obj/item/projectile/beam/beam_rifle/proc/get_damage_coeff(atom/target)
+	procstart = null
+	src.procstart = null
 	if(istype(target, /obj/machinery/door))
 		return 0.4
 	if(istype(target, /obj/structure/window))
@@ -533,6 +605,8 @@
 	return 1
 
 /obj/item/projectile/beam/beam_rifle/proc/handle_impact(atom/target)
+	procstart = null
+	src.procstart = null
 	if(isobj(target))
 		var/obj/O = target
 		O.take_damage(impact_structure_damage * get_damage_coeff(target), BURN, "laser", FALSE)
@@ -542,6 +616,8 @@
 		L.emote("scream")
 
 /obj/item/projectile/beam/beam_rifle/proc/handle_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if(!cached && !QDELETED(target))
 		cached = get_turf(target)
@@ -553,6 +629,8 @@
 		handle_impact(target)
 
 /obj/item/projectile/beam/beam_rifle/Collide(atom/target)
+	procstart = null
+	src.procstart = null
 	paused = TRUE
 	if(check_pierce(target))
 		permutated += target
@@ -563,6 +641,8 @@
 	. = ..()
 
 /obj/item/projectile/beam/beam_rifle/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	paused = TRUE
 	if(!QDELETED(target))
 		cached = get_turf(target)
@@ -582,11 +662,15 @@
 	var/tracer_spawned = FALSE
 
 /obj/item/projectile/beam/beam_rifle/hitscan/Destroy()
+	procstart = null
+	src.procstart = null
 	paused = TRUE	//STOP HITTING WHEN YOU'RE ALREADY BEING DELETED!
 	spawn_tracer(constant_tracer)
 	return ..()
 
 /obj/item/projectile/beam/beam_rifle/hitscan/proc/spawn_tracer(put_in_rifle = FALSE)
+	procstart = null
+	src.procstart = null
 	if(tracer_spawned)
 		return
 	tracer_spawned = TRUE
@@ -609,6 +693,8 @@
 		QDEL_IN(PB, 5)
 
 /obj/item/projectile/beam/beam_rifle/hitscan/proc/check_for_turf_edge(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!istype(T))
 		return TRUE
 	var/tx = T.x
@@ -696,10 +782,14 @@
 	constant_tracer = TRUE
 
 /obj/item/projectile/beam/beam_rifle/hitscan/aiming_beam/prehit(atom/target)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return FALSE
 
 /obj/item/projectile/beam/beam_rifle/hitscan/aiming_beam/on_hit()
+	procstart = null
+	src.procstart = null
 	qdel(src)
 	return FALSE
 
@@ -715,6 +805,8 @@
 	appearance_flags = 0
 
 /obj/effect/projectile_beam/proc/scale_to(nx,ny,override=TRUE)
+	procstart = null
+	src.procstart = null
 	var/matrix/M
 	if(!override)
 		M = transform
@@ -724,6 +816,8 @@
 	transform = M
 
 /obj/effect/projectile_beam/proc/turn_to(angle,override=TRUE)
+	procstart = null
+	src.procstart = null
 	var/matrix/M
 	if(!override)
 		M = transform
@@ -733,11 +827,15 @@
 	transform = M
 
 /obj/effect/projectile_beam/New(angle_override, p_x, p_y, color_override, scaling = 1)
+	procstart = null
+	src.procstart = null
 	if(angle_override && p_x && p_y && color_override && scaling)
 		apply_vars(angle_override, p_x, p_y, color_override, scaling)
 	return ..()
 
 /obj/effect/projectile_beam/proc/apply_vars(angle_override, p_x, p_y, color_override, scaling = 1, new_loc, increment = 0)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/look = new(src)
 	look.pixel_x = p_x
 	look.pixel_y = p_y
@@ -771,7 +869,11 @@
 	background_icon_state = "bg_tech"
 
 /obj/effect/projectile_beam/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/projectile_beam/singularity_act()
+	procstart = null
+	src.procstart = null
 	return

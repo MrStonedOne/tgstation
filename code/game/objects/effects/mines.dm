@@ -8,9 +8,13 @@
 	var/triggered = 0
 
 /obj/effect/mine/proc/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	to_chat(victim, "<span class='danger'>*click*</span>")
 
 /obj/effect/mine/Crossed(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		if(ismob(AM))
 			var/mob/MM = AM
@@ -20,6 +24,8 @@
 			triggermine(AM)
 
 /obj/effect/mine/proc/triggermine(mob/victim)
+	procstart = null
+	src.procstart = null
 	if(triggered)
 		return
 	visible_message("<span class='danger'>[victim] sets off [icon2html(src, viewers(src))] [src]!</span>")
@@ -39,6 +45,8 @@
 	var/range_flash = 3
 
 /obj/effect/mine/explosive/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	explosion(loc, range_devastation, range_heavy, range_light, range_flash)
 
 
@@ -47,6 +55,8 @@
 	var/stun_time = 80
 
 /obj/effect/mine/stun/mineEffect(mob/living/victim)
+	procstart = null
+	src.procstart = null
 	if(isliving(victim))
 		victim.Knockdown(stun_time)
 
@@ -54,6 +64,8 @@
 	name = "kick mine"
 
 /obj/effect/mine/kickmine/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	if(isliving(victim) && victim.client)
 		to_chat(victim, "<span class='userdanger'>You have been kicked FOR NO REISIN!</span>")
 		qdel(victim.client)
@@ -65,6 +77,8 @@
 	var/gas_type = "o2"
 
 /obj/effect/mine/gas/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	atmos_spawn_air("[gas_type]=[gas_amount]")
 
 
@@ -83,6 +97,8 @@
 	var/sound = 'sound/items/bikehorn.ogg'
 
 /obj/effect/mine/sound/mineEffect(mob/victim)
+	procstart = null
+	src.procstart = null
 	playsound(loc, sound, 100, 1)
 
 
@@ -99,10 +115,14 @@
 	var/duration = 0
 
 /obj/effect/mine/pickup/New()
+	procstart = null
+	src.procstart = null
 	..()
 	animate(src, pixel_y = 4, time = 20, loop = -1)
 
 /obj/effect/mine/pickup/triggermine(mob/victim)
+	procstart = null
+	src.procstart = null
 	if(triggered)
 		return
 	triggered = 1
@@ -118,6 +138,8 @@
 	color = "#FF0000"
 
 /obj/effect/mine/pickup/bloodbath/mineEffect(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	if(!victim.client || !istype(victim))
 		return
 	to_chat(victim, "<span class='reallybig redtext'>RIP AND TEAR</span>")
@@ -152,6 +174,8 @@
 	color = "#0000FF"
 
 /obj/effect/mine/pickup/healing/mineEffect(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	if(!victim.client || !istype(victim))
 		return
 	to_chat(victim, "<span class='notice'>You feel great!</span>")
@@ -164,6 +188,8 @@
 	duration = 300
 
 /obj/effect/mine/pickup/speed/mineEffect(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	if(!victim.client || !istype(victim))
 		return
 	to_chat(victim, "<span class='notice'>You feel fast!</span>")

@@ -20,15 +20,21 @@
 	var/alert = FALSE // TRUE to display things more seriously
 
 /obj/item/pinpointer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.pinpointer_list += src
 
 /obj/item/pinpointer/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	GLOB.pinpointer_list -= src
 	return ..()
 
 /obj/item/pinpointer/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	active = !active
 	user.visible_message("<span class='notice'>[user] [active ? "" : "de"]activates their pinpointer.</span>", "<span class='notice'>You [active ? "" : "de"]activate your pinpointer.</span>")
 	playsound(src, 'sound/items/screwdriver2.ogg', 50, 1)
@@ -40,15 +46,21 @@
 	update_icon()
 
 /obj/item/pinpointer/process()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return PROCESS_KILL
 	scan_for_target()
 	update_icon()
 
 /obj/item/pinpointer/proc/scan_for_target()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/pinpointer/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(!active)
 		return
@@ -78,6 +90,8 @@
 	icon_state = "pinpointer_crew"
 
 /obj/item/pinpointer/crew/proc/trackable(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/turf/here = get_turf(src)
 	if((H.z == 0 || H.z == here.z) && istype(H.w_uniform, /obj/item/clothing/under))
 		var/obj/item/clothing/under/U = H.w_uniform
@@ -92,6 +106,8 @@
 	return FALSE
 
 /obj/item/pinpointer/crew/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(active)
 		active = FALSE
 		user.visible_message("<span class='notice'>[user] deactivates their pinpointer.</span>", "<span class='notice'>You deactivate your pinpointer.</span>")
@@ -136,6 +152,8 @@
 	update_icon()
 
 /obj/item/pinpointer/crew/scan_for_target()
+	procstart = null
+	src.procstart = null
 	if(target)
 		if(ishuman(target))
 			var/mob/living/carbon/human/H = target
@@ -145,6 +163,8 @@
 		active = FALSE
 
 /obj/item/pinpointer/process()
+	procstart = null
+	src.procstart = null
 	if(!active)
 		return PROCESS_KILL
 	scan_for_target()

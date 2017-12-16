@@ -14,10 +14,14 @@
 	role_name = "revenant"
 
 /datum/round_event/ghost_role/revenant/New(my_processing = TRUE, new_ignore_mobcheck = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	ignore_mobcheck = new_ignore_mobcheck
 
 /datum/round_event/ghost_role/revenant/spawn_role()
+	procstart = null
+	src.procstart = null
 	if(!ignore_mobcheck)
 		var/deadMobs = 0
 		for(var/mob/M in GLOB.dead_mob_list)

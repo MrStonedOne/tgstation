@@ -1,6 +1,8 @@
 
 
 /mob/living/silicon/robot/attacked_by(obj/item/I, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	if(hat_offset != INFINITY && user.a_intent == INTENT_HELP && is_type_in_typecache(I, equippable_hats))
 		to_chat(user, "<span class='notice'>You begin to place [I] on [src]'s head...</span>")
 		to_chat(src, "<span class='notice'>[user] is placing [I] on your head...</span>")
@@ -13,6 +15,8 @@
 	return ..()
 
 /mob/living/silicon/robot/attack_alien(mob/living/carbon/alien/humanoid/M)
+	procstart = null
+	src.procstart = null
 	if (M.a_intent == INTENT_DISARM)
 		if(!(lying))
 			M.do_attack_animation(src, ATTACK_EFFECT_DISARM)
@@ -34,6 +38,8 @@
 	return
 
 /mob/living/silicon/robot/attack_slime(mob/living/simple_animal/slime/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //successful slime shock
 		flash_act()
 		var/stunprob = M.powerlevel * 7 + 10
@@ -53,6 +59,8 @@
 	return
 
 /mob/living/silicon/robot/attack_hand(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(opened && !wiresexposed && !issilicon(user))
 		if(cell)
@@ -73,11 +81,15 @@
 				step_away(src,user,15)
 
 /mob/living/silicon/robot/fire_act()
+	procstart = null
+	src.procstart = null
 	if(!on_fire) //Silicons don't gain stacks from hotspots, but hotspots can ignite them
 		IgniteMob()
 
 
 /mob/living/silicon/robot/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			Stun(160)
@@ -87,6 +99,8 @@
 
 
 /mob/living/silicon/robot/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user == src)//To prevent syndieborgs from emagging themselves
 		return
 	if(!opened)//Cover is closed
@@ -163,6 +177,8 @@
 
 
 /mob/living/silicon/robot/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD)
 		adjustBruteLoss(30)
 	else
@@ -170,6 +186,8 @@
 	return TRUE
 
 /mob/living/silicon/robot/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			gib()
@@ -183,6 +201,8 @@
 				adjustBruteLoss(30)
 
 /mob/living/silicon/robot/bullet_act(var/obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	..(Proj)
 	updatehealth()
 	if(prob(75) && Proj.damage > 0)

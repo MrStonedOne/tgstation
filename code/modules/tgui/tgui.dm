@@ -54,6 +54,8 @@
   * return datum/tgui The requested UI.
  **/
 /datum/tgui/New(mob/user, datum/src_object, ui_key, interface, title, width = 0, height = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state, browser_id = null)
+	procstart = null
+	src.procstart = null
 	src.user = user
 	src.src_object = src_object
 	src.ui_key = ui_key
@@ -83,6 +85,8 @@
   * Open this UI (and initialize it with data).
  **/
 /datum/tgui/proc/open()
+	procstart = null
+	src.procstart = null
 	if(!user.client)
 		return // Bail if there is no client.
 
@@ -113,6 +117,8 @@
   * optional data list The new initial data.
  **/
 /datum/tgui/proc/reinitialize(interface, list/data)
+	procstart = null
+	src.procstart = null
 	if(interface)
 		set_interface(interface) // Set a new interface.
 	if(data)
@@ -125,6 +131,8 @@
   * Close the UI, and all its children.
  **/
 /datum/tgui/proc/close()
+	procstart = null
+	src.procstart = null
 	user << browse(null, "window=[window_id]") // Close the window.
 	SStgui.on_close(src)
 	for(var/datum/tgui/child in children) // Loop through and close all children.
@@ -142,6 +150,8 @@
   * required window_options list The window options to set.
  **/
 /datum/tgui/proc/set_window_options(list/window_options)
+	procstart = null
+	src.procstart = null
 	src.window_options = window_options
 
  /**
@@ -152,6 +162,8 @@
   * required style string The new UI style.
  **/
 /datum/tgui/proc/set_style(style)
+	procstart = null
+	src.procstart = null
 	src.style = lowertext(style)
 
  /**
@@ -162,6 +174,8 @@
   * required interface string The new UI interface.
  **/
 /datum/tgui/proc/set_interface(interface)
+	procstart = null
+	src.procstart = null
 	src.interface = lowertext(interface)
 
  /**
@@ -172,6 +186,8 @@
   * required state bool Enable/disable auto-updating.
  **/
 /datum/tgui/proc/set_autoupdate(state = 1)
+	procstart = null
+	src.procstart = null
 	autoupdate = state
 
  /**
@@ -183,6 +199,8 @@
   * optional data list The data/datastructure to initialize the UI with.
  **/
 /datum/tgui/proc/set_initial_data(list/data)
+	procstart = null
+	src.procstart = null
 	initial_data = data
 
  /**
@@ -195,6 +213,8 @@
   * return string UI HTML output.
  **/
 /datum/tgui/proc/get_html(var/inline)
+	procstart = null
+	src.procstart = null
 	var/html
 	// Poplate HTML with JSON if we're supposed to inline.
 	if(inline)
@@ -213,6 +233,8 @@
   * return list The config data.
  **/
 /datum/tgui/proc/get_config_data()
+	procstart = null
+	src.procstart = null
 	var/list/config_data = list(
 			"title"     = title,
 			"status"    = status,
@@ -244,6 +266,8 @@
   * return string The packaged JSON.
  **/
 /datum/tgui/proc/get_json(list/data)
+	procstart = null
+	src.procstart = null
 	var/list/json_data = list()
 
 	json_data["config"] = get_config_data()
@@ -265,6 +289,8 @@
   * If the src_object's ui_act() returns 1, update all UIs attacked to it.
  **/
 /datum/tgui/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(user != usr)
 		return // Something is not right here.
 
@@ -299,6 +325,8 @@
   * optional force bool If the UI should be forced to update.
  **/
 /datum/tgui/process(force = 0)
+	procstart = null
+	src.procstart = null
 	var/datum/host = src_object.ui_host()
 	if(!src_object || !host || !user) // If the object or user died (or something else), abort.
 		close()
@@ -318,6 +346,8 @@
   * optional force bool If the update should be sent regardless of state.
  **/
 /datum/tgui/proc/push_data(data, force = 0)
+	procstart = null
+	src.procstart = null
 	update_status(push = 0) // Update the window state.
 	if(!initialized)
 		return // Cannot update UI if it is not set up yet.
@@ -336,6 +366,8 @@
   * optional force_open bool If force_open should be passed to ui_interact.
  **/
 /datum/tgui/proc/update(force_open = FALSE)
+	procstart = null
+	src.procstart = null
 	src_object.ui_interact(user, ui_key, src, force_open, master_ui, state)
 
  /**
@@ -346,6 +378,8 @@
   * optional push bool Push an update to the UI (an update is always sent for UI_DISABLED).
  **/
 /datum/tgui/proc/update_status(push = 0)
+	procstart = null
+	src.procstart = null
 	var/status = src_object.ui_status(user, state)
 	if(master_ui)
 		status = min(status, master_ui.status)
@@ -363,6 +397,8 @@
   * optional push bool Push an update to the UI (an update is always sent for UI_DISABLED).
  **/
 /datum/tgui/proc/set_status(status, push = 0)
+	procstart = null
+	src.procstart = null
 	if(src.status != status) // Only update if status has changed.
 		if(src.status == UI_DISABLED)
 			src.status = status
@@ -374,4 +410,6 @@
 				push_data(null, force = 1)
 
 /datum/tgui/proc/set_titlebar(value)
+	procstart = null
+	src.procstart = null
 	titlebar = value

@@ -23,6 +23,8 @@ SUBSYSTEM_DEF(mapping)
 	var/loading_ruins = FALSE
 
 /datum/controller/subsystem/mapping/PreInit()
+	procstart = null
+	src.procstart = null
 	if(!config)
 #ifdef FORCE_MAP
 		config = new(FORCE_MAP)
@@ -33,6 +35,8 @@ SUBSYSTEM_DEF(mapping)
 
 
 /datum/controller/subsystem/mapping/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	if(config.defaulted)
 		to_chat(world, "<span class='boldannounce'>Unable to load next map config, defaulting to Box Station</span>")
 	loadWorld()
@@ -70,14 +74,20 @@ SUBSYSTEM_DEF(mapping)
 */
 
 /datum/controller/subsystem/mapping/proc/add_nuke_threat(datum/nuke)
+	procstart = null
+	src.procstart = null
 	nuke_threats[nuke] = TRUE
 	check_nuke_threats()
 
 /datum/controller/subsystem/mapping/proc/remove_nuke_threat(datum/nuke)
+	procstart = null
+	src.procstart = null
 	nuke_threats -= nuke
 	check_nuke_threats()
 
 /datum/controller/subsystem/mapping/proc/check_nuke_threats()
+	procstart = null
+	src.procstart = null
 	for(var/datum/d in nuke_threats)
 		if(!istype(d) || QDELETED(d))
 			nuke_threats -= d
@@ -87,6 +97,8 @@ SUBSYSTEM_DEF(mapping)
 		C.update_icon()
 
 /datum/controller/subsystem/mapping/Recover()
+	procstart = null
+	src.procstart = null
 	flags |= SS_NO_INIT
 	map_templates = SSmapping.map_templates
 	ruins_templates = SSmapping.ruins_templates
@@ -99,6 +111,8 @@ SUBSYSTEM_DEF(mapping)
 	next_map_config = SSmapping.next_map_config
 
 /datum/controller/subsystem/mapping/proc/TryLoadZ(filename, errorList, forceLevel, last)
+	procstart = null
+	src.procstart = null
 	var/static/dmm_suite/loader
 	if(!loader)
 		loader = new
@@ -108,12 +122,16 @@ SUBSYSTEM_DEF(mapping)
 		QDEL_NULL(loader)
 
 /datum/controller/subsystem/mapping/proc/CreateSpace(MaxZLevel)
+	procstart = null
+	src.procstart = null
 	while(world.maxz < MaxZLevel)
 		++world.maxz
 		CHECK_TICK
 
 #define INIT_ANNOUNCE(X) to_chat(world, "<span class='boldannounce'>[X]</span>"); log_world(X)
 /datum/controller/subsystem/mapping/proc/loadWorld()
+	procstart = null
+	src.procstart = null
 	//if any of these fail, something has gone horribly, HORRIBLY, wrong
 	var/list/FailedZs = list()
 
@@ -143,6 +161,8 @@ SUBSYSTEM_DEF(mapping)
 GLOBAL_LIST_EMPTY(the_station_areas)
 
 /datum/controller/subsystem/mapping/proc/generate_station_area_list()
+	procstart = null
+	src.procstart = null
 	var/list/station_areas_blacklist = typecacheof(list(/area/space, /area/mine, /area/ruin))
 	for(var/area/A in world)
 		var/turf/picked = safepick(get_area_turfs(A.type))
@@ -154,6 +174,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		log_world("ERROR: Station areas list failed to generate!")
 
 /datum/controller/subsystem/mapping/proc/maprotate()
+	procstart = null
+	src.procstart = null
 	var/players = GLOB.clients.len
 	var/list/mapvotes = list()
 	//count votes
@@ -204,6 +226,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		to_chat(world, "<span class='boldannounce'>Map rotation has chosen [VM.map_name] for next round!</span>")
 
 /datum/controller/subsystem/mapping/proc/changemap(var/datum/map_config/VM)
+	procstart = null
+	src.procstart = null
 	if(!VM.MakeNextMap())
 		next_map_config = new(default_to_box = TRUE)
 		message_admins("Failed to set new map with next_map.json for [VM.map_name]! Using default as backup!")
@@ -223,6 +247,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 	preloadShelterTemplates()
 
 /datum/controller/subsystem/mapping/proc/preloadRuinTemplates()
+	procstart = null
+	src.procstart = null
 	// Still supporting bans by filename
 	var/list/banned = generateMapList("config/lavaruinblacklist.txt")
 	banned += generateMapList("config/spaceruinblacklist.txt")
@@ -246,6 +272,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 			space_ruins_templates[R.name] = R
 
 /datum/controller/subsystem/mapping/proc/preloadShuttleTemplates()
+	procstart = null
+	src.procstart = null
 	var/list/unbuyable = generateMapList("config/unbuyableshuttles.txt")
 
 	for(var/item in subtypesof(/datum/map_template/shuttle))
@@ -261,6 +289,8 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 		map_templates[S.shuttle_id] = S
 
 /datum/controller/subsystem/mapping/proc/preloadShelterTemplates()
+	procstart = null
+	src.procstart = null
 	for(var/item in subtypesof(/datum/map_template/shelter))
 		var/datum/map_template/shelter/shelter_type = item
 		if(!(initial(shelter_type.mappath)))

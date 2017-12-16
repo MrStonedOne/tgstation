@@ -7,31 +7,45 @@
 	var/popped = FALSE
 
 /obj/effect/fun_balloon/New()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSobj.processing |= src
 
 /obj/effect/fun_balloon/Destroy()
+	procstart = null
+	src.procstart = null
 	SSobj.processing -= src
 	. = ..()
 
 /obj/effect/fun_balloon/process()
+	procstart = null
+	src.procstart = null
 	if(!popped && check() && !QDELETED(src))
 		popped = TRUE
 		effect()
 		pop()
 
 /obj/effect/fun_balloon/proc/check()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/effect/fun_balloon/proc/effect()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/fun_balloon/proc/pop()
+	procstart = null
+	src.procstart = null
 	visible_message("[src] pops!")
 	playsound(get_turf(src), 'sound/items/party_horn.ogg', 50, 1, -1)
 	qdel(src)
 
 /obj/effect/fun_balloon/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.client || !user.client.holder || popped)
 		return
 	switch(alert("Pop [src]?","Fun Balloon","Yes","No"))
@@ -46,6 +60,8 @@
 	var/group_name = "a bunch of giant spiders"
 
 /obj/effect/fun_balloon/sentience/effect()
+	procstart = null
+	src.procstart = null
 	var/list/bodies = list()
 	for(var/mob/living/M in range(effect_range, get_turf(src)))
 		bodies += M
@@ -67,6 +83,8 @@
 	var/trigger_time = 60
 
 /obj/effect/fun_balloon/sentience/emergency_shuttle/check()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(SSshuttle.emergency && (SSshuttle.emergency.timeLeft() <= trigger_time) && (SSshuttle.emergency.mode == SHUTTLE_CALL))
 		. = TRUE
@@ -77,6 +95,8 @@
 	var/effect_range = 5
 
 /obj/effect/fun_balloon/scatter/effect()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/M in range(effect_range, get_turf(src)))
 		var/turf/T = find_safe_turf()
 		new /obj/effect/temp_visual/gravpush(get_turf(M))
@@ -91,6 +111,8 @@
 	anchored = TRUE
 
 /obj/effect/station_crash/New()
+	procstart = null
+	src.procstart = null
 	for(var/S in SSshuttle.stationary)
 		var/obj/docking_port/stationary/SM = S
 		if(SM.id == "emergency_home")
@@ -110,6 +132,8 @@
 	anchored = TRUE
 
 /obj/effect/shuttle_build/New()
+	procstart = null
+	src.procstart = null
 	SSshuttle.emergency.dock(SSshuttle.getDock("emergency_home"))
 	qdel(src)
 
@@ -121,6 +145,8 @@
 
 
 /obj/effect/forcefield/arena_shuttle/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!isliving(AM))
 		return
 	if(!warp_points.len)
@@ -158,6 +184,8 @@
 	var/list/warp_points = list()
 
 /obj/effect/forcefield/arena_shuttle_entrance/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!isliving(AM))
 		return
 

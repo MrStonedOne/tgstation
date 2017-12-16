@@ -12,6 +12,8 @@
 	light_color = LIGHT_COLOR_RED
 
 /obj/machinery/computer/security/check_eye(mob/user)
+	procstart = null
+	src.procstart = null
 	if( (stat & (NOPOWER|BROKEN)) || user.incapacitated() || user.eye_blind )
 		user.unset_machine()
 		return
@@ -35,16 +37,22 @@
 			user.unset_machine()
 
 /obj/machinery/computer/security/on_unset_machine(mob/user)
+	procstart = null
+	src.procstart = null
 	watchers.Remove(user)
 	user.reset_perspective(null)
 
 /obj/machinery/computer/security/Destroy()
+	procstart = null
+	src.procstart = null
 	if(watchers.len)
 		for(var/mob/M in watchers)
 			M.unset_machine() //to properly reset the view of the users if the console is deleted.
 	return ..()
 
 /obj/machinery/computer/security/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat)
 		return
 	if (!network)
@@ -74,6 +82,8 @@
 	use_camera_console(user)
 
 /obj/machinery/computer/security/proc/use_camera_console(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/camera_list = get_available_cameras()
 	var/t = input(user, "Which camera should you change to?") as null|anything in camera_list
 	if(user.machine != src) //while we were choosing we got disconnected from our computer or are using another machine.
@@ -122,6 +132,8 @@
 
 //returns the list of cameras accessible from this computer
 /obj/machinery/computer/security/proc/get_available_cameras()
+	procstart = null
+	src.procstart = null
 	var/list/L = list()
 	for (var/obj/machinery/camera/C in GLOB.cameranet.cameras)
 		if((z > ZLEVEL_SPACEMAX || C.z > ZLEVEL_SPACEMAX) && (C.z != z))//if on away mission, can only recieve feed from same z_level cameras
@@ -157,6 +169,8 @@
 	light_power = 0
 
 /obj/machinery/computer/security/telescreen/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = initial(icon_state)
 	if(stat & BROKEN)
 		icon_state += "b"

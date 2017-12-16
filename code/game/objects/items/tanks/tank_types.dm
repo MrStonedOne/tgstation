@@ -20,6 +20,8 @@
 
 
 /obj/item/tank/internals/oxygen/New()
+	procstart = null
+	src.procstart = null
 	..()
 	ASSERT_GAS(/datum/gas/oxygen, air_contents)
 	air_contents.gases[/datum/gas/oxygen][MOLES] = (6*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
@@ -48,6 +50,8 @@
 	force = 10
 
 /obj/item/tank/internals/anesthetic/New()
+	procstart = null
+	src.procstart = null
 	..()
 	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrous_oxide)
 	air_contents.gases[/datum/gas/oxygen][MOLES] = (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
@@ -66,6 +70,8 @@
 	dog_fashion = /datum/dog_fashion/back
 
 /obj/item/tank/internals/air/New()
+	procstart = null
+	src.procstart = null
 	..()
 	air_contents.assert_gases(/datum/gas/oxygen, /datum/gas/nitrogen)
 	air_contents.gases[/datum/gas/oxygen][MOLES] = (6*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C) * O2STANDARD
@@ -86,12 +92,16 @@
 
 
 /obj/item/tank/internals/plasma/New()
+	procstart = null
+	src.procstart = null
 	..()
 	ASSERT_GAS(/datum/gas/plasma, air_contents)
 	air_contents.gases[/datum/gas/plasma][MOLES] = (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
 	return
 
 /obj/item/tank/internals/plasma/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/flamethrower))
 		var/obj/item/flamethrower/F = W
 		if ((!F.status)||(F.ptank))
@@ -105,6 +115,8 @@
 		return ..()
 
 /obj/item/tank/internals/plasma/full/New()
+	procstart = null
+	src.procstart = null
 	..() // Plasma asserted in parent
 	air_contents.gases[/datum/gas/plasma][MOLES] = (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
 	return
@@ -123,12 +135,16 @@
 	distribute_pressure = TANK_DEFAULT_RELEASE_PRESSURE
 
 /obj/item/tank/internals/plasmaman/New()
+	procstart = null
+	src.procstart = null
 	..()
 	ASSERT_GAS(/datum/gas/plasma, air_contents)
 	air_contents.gases[/datum/gas/plasma][MOLES] = (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
 	return
 
 /obj/item/tank/internals/plasmaman/full/New()
+	procstart = null
+	src.procstart = null
 	..() // Plasma asserted in parent
 	air_contents.gases[/datum/gas/plasma][MOLES] = (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
 	return
@@ -143,6 +159,8 @@
 	w_class = WEIGHT_CLASS_SMALL //thanks i forgot this
 
 /obj/item/tank/internals/plasmaman/belt/full/New()
+	procstart = null
+	src.procstart = null
 	..() // Plasma asserted in parent
 	air_contents.gases[/datum/gas/plasma][MOLES] = (10*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
 	return
@@ -165,6 +183,8 @@
 
 
 /obj/item/tank/internals/emergency_oxygen/New()
+	procstart = null
+	src.procstart = null
 	..()
 	ASSERT_GAS(/datum/gas/oxygen, air_contents)
 	air_contents.gases[/datum/gas/oxygen][MOLES] = (3*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)

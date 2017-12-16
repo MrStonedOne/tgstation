@@ -10,6 +10,8 @@
 	var/datum/objective_team/monkey/monkey_team
 
 /datum/antagonist/monkey/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSticker.mode.ape_infectees += owner
 	owner.special_role = "Infected Monkey"
@@ -22,6 +24,8 @@
 		QDEL_NULL(D)
 
 /datum/antagonist/monkey/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<b>You are a monkey now!</b>")
 	to_chat(owner, "<b>Bite humans to infect them, follow the orders of the monkey leaders, and help fellow monkeys!</b>")
 	to_chat(owner, "<b>Ensure at least one infected monkey escapes on the Emergency Shuttle!</b>")
@@ -30,6 +34,8 @@
 	SEND_SOUND(owner.current, sound('sound/ambience/antag/monkey.ogg'))
 
 /datum/antagonist/monkey/on_removal()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	owner.special_role = null
 	SSticker.mode.ape_infectees -= owner
@@ -39,6 +45,8 @@
 		D.cure()
 
 /datum/antagonist/monkey/create_team(datum/objective_team/monkey/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		for(var/datum/antagonist/monkey/N in get_antagonists(/datum/antagonist/monkey, TRUE))
 			if(N.monkey_team)
@@ -52,6 +60,8 @@
 	monkey_team = new_team
 
 /datum/antagonist/monkey/proc/forge_objectives()
+	procstart = null
+	src.procstart = null
 	if(monkey_team)
 		owner.objectives |= monkey_team.objectives
 
@@ -59,6 +69,8 @@
 	name = "Monkey Leader"
 
 /datum/antagonist/monkey/leader/on_gain()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/disease/D = (/datum/disease/transformation/jungle_fever in owner.current.viruses)
 	if(D)
@@ -69,12 +81,16 @@
 	owner.special_role = "Monkey Leader"
 
 /datum/antagonist/monkey/leader/on_removal()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSticker.mode.ape_leaders -= owner
 	var/obj/item/organ/heart/H = new
 	H.Insert(owner.current, drop_if_replaced = FALSE) //replace freedom heart with normal heart
 
 /datum/antagonist/monkey/leader/greet()
+	procstart = null
+	src.procstart = null
 	to_chat(owner, "<B><span class='notice'>You are the Jungle Fever patient zero!!</B></span>")
 	to_chat(owner, "<b>You have been planted onto this station by the Animal Rights Consortium.</b>")
 	to_chat(owner, "<b>Soon the disease will transform you into an ape. Afterwards, you will be able spread the infection to others with a bite.</b>")
@@ -91,6 +107,8 @@
 	var/escaped_monkeys = 0
 
 /datum/objective/monkey/check_completion()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/monkey/M in GLOB.alive_mob_list)
 		if (M.HasDisease(D) && (M.onCentCom() || M.onSyndieBase()))
@@ -103,6 +121,8 @@
 	name = "Monkeys"
 
 /datum/objective_team/monkey/proc/update_objectives()
+	procstart = null
+	src.procstart = null
 	objectives = list()
 	var/datum/objective/monkey/O = new /datum/objective/monkey()
 	O.team = src
@@ -110,6 +130,8 @@
 	return
 
 /datum/objective_team/monkey/proc/infected_monkeys_alive()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/monkey/M in GLOB.alive_mob_list)
 		if(M.HasDisease(D))
@@ -117,6 +139,8 @@
 	return FALSE
 
 /datum/objective_team/monkey/proc/infected_monkeys_escaped()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/monkey/M in GLOB.alive_mob_list)
 		if(M.HasDisease(D) && (M.onCentCom() || M.onSyndieBase()))
@@ -124,6 +148,8 @@
 	return FALSE
 
 /datum/objective_team/monkey/proc/infected_humans_escaped()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/human/M in GLOB.alive_mob_list)
 		if(M.HasDisease(D) && (M.onCentCom() || M.onSyndieBase()))
@@ -131,6 +157,8 @@
 	return FALSE
 
 /datum/objective_team/monkey/proc/infected_humans_alive()
+	procstart = null
+	src.procstart = null
 	var/datum/disease/D = new /datum/disease/transformation/jungle_fever()
 	for(var/mob/living/carbon/human/M in GLOB.alive_mob_list)
 		if(M.HasDisease(D))
@@ -138,6 +166,8 @@
 	return FALSE
 
 /datum/objective_team/monkey/proc/get_result()
+	procstart = null
+	src.procstart = null
 	if(infected_monkeys_escaped())
 		return MONKEYS_ESCAPED
 	if(infected_monkeys_alive())
@@ -147,6 +177,8 @@
 	return MONKEYS_DIED
 
 /datum/objective_team/monkey/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	switch(get_result())
 		if(MONKEYS_ESCAPED)

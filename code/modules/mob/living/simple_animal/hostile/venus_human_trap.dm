@@ -13,6 +13,8 @@
 
 
 /obj/structure/alien/resin/flower_bud_enemy/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/list/anchors = list()
 	anchors += locate(x-2,y+2,z)
@@ -26,6 +28,8 @@
 	addtimer(CALLBACK(src, .proc/bear_fruit), growth_time)
 
 /obj/structure/alien/resin/flower_bud_enemy/proc/bear_fruit()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>the plant has borne fruit!</span>")
 	new /mob/living/simple_animal/hostile/venus_human_trap(get_turf(src))
 	qdel(src)
@@ -38,6 +42,8 @@
 
 
 /obj/effect/ebeam/vine/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM))
 		var/mob/living/L = AM
 		if(!("vines" in L.faction))
@@ -71,6 +77,8 @@
 	del_on_death = 1
 
 /mob/living/simple_animal/hostile/venus_human_trap/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/L in grasping)
 		var/datum/beam/B = grasping[L]
 		if(B)
@@ -79,6 +87,8 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/venus_human_trap/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(..())
 		for(var/mob/living/L in grasping)
 			if(L.stat == DEAD)
@@ -114,12 +124,16 @@
 
 
 /mob/living/simple_animal/hostile/venus_human_trap/OpenFire(atom/the_target)
+	procstart = null
+	src.procstart = null
 	var/dist = get_dist(src,the_target)
 	Beam(the_target, "vine", time=dist*2, maxdistance=dist+2, beam_type=/obj/effect/ebeam/vine)
 	the_target.attack_animal(src)
 
 
 /mob/living/simple_animal/hostile/venus_human_trap/CanAttack(atom/the_target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(the_target in grasping)

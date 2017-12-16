@@ -13,6 +13,8 @@
 	infectable_hosts = list(SPECIES_ORGANIC, SPECIES_UNDEAD) //bees nesting in corpses
 
 /datum/disease/beesease/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(2) //also changes say, see say.dm

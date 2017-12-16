@@ -14,12 +14,18 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/machinery/igniter/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/igniter/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/igniter/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	add_fingerprint(user)
@@ -37,10 +43,14 @@
 	return 1
 
 /obj/machinery/igniter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "igniter[on]"
 
 /obj/machinery/igniter/power_change()
+	procstart = null
+	src.procstart = null
 	if(!( stat & NOPOWER) )
 		icon_state = "igniter[src.on]"
 	else
@@ -62,16 +72,22 @@
 	resistance_flags = FIRE_PROOF
 
 /obj/machinery/sparker/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(2, 1, src)
 	spark_system.attach(src)
 
 /obj/machinery/sparker/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	return ..()
 
 /obj/machinery/sparker/power_change()
+	procstart = null
+	src.procstart = null
 	if ( powered() && disable == 0 )
 		stat &= ~NOPOWER
 		icon_state = "[base_state]"
@@ -82,6 +98,8 @@
 //		src.sd_SetLuminosity(0)
 
 /obj/machinery/sparker/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(W, /obj/item/screwdriver))
 		add_fingerprint(user)
 		src.disable = !src.disable
@@ -98,12 +116,16 @@
 		return ..()
 
 /obj/machinery/sparker/attack_ai()
+	procstart = null
+	src.procstart = null
 	if (anchored)
 		return src.ignite()
 	else
 		return
 
 /obj/machinery/sparker/proc/ignite()
+	procstart = null
+	src.procstart = null
 	if (!(powered()))
 		return
 
@@ -121,6 +143,8 @@
 	return 1
 
 /obj/machinery/sparker/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!(stat & (BROKEN|NOPOWER)))
 		ignite()
 	..()

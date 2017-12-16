@@ -70,6 +70,8 @@
 	duration = 20
 
 /obj/effect/temp_visual/ratvar/belligerent_cast/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 0, time = duration, easing = EASE_OUT)
 
@@ -82,6 +84,8 @@
 	light_color = "#1E8CE1"
 
 /obj/effect/temp_visual/ratvar/mending_mantra/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = matrix()*2
 	var/matrix/M = transform
@@ -96,6 +100,8 @@
 	duration = 3
 
 /obj/effect/temp_visual/ratvar/ocular_warden/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-8, 8)
 	pixel_y = rand(-10, 10)
@@ -110,6 +116,8 @@
 	duration = 30
 
 /obj/effect/temp_visual/ratvar/prolonging_prism/Initialize(mapload, set_appearance)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(set_appearance)
 		appearance = set_appearance
@@ -135,6 +143,8 @@
 	duration = 10
 
 /obj/effect/temp_visual/ratvar/component/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = matrix()*0.75
 	pixel_x = rand(-10, 10)
@@ -166,6 +176,8 @@
 	light_color = "#FAE48C"
 
 /obj/effect/temp_visual/ratvar/sigil/transgression/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/oldtransform = transform
 	animate(src, transform = matrix()*2, time = 5)
@@ -180,6 +192,8 @@
 	light_color = "#EC8A2D"
 
 /obj/effect/temp_visual/ratvar/sigil/transmission/Initialize(mapload, transform_multiplier)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/oldtransform = transform
 	transform = matrix()*transform_multiplier
@@ -207,6 +221,8 @@
 	duration = 15
 
 /obj/effect/temp_visual/steam/Initialize(mapload, steam_direction)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(steam_direction)
 	var/x_offset = 0
@@ -228,6 +244,8 @@
 	name = "all the steam"
 
 /obj/effect/temp_visual/steam_release/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/V in GLOB.cardinals)
 		var/turf/T = get_step(src, V)
@@ -250,6 +268,8 @@
 	duration = 55
 
 /obj/effect/temp_visual/ratvar/warp_marker/Initialize(mapload, mob/living/servant)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	animate(src, alpha = 255, time = 50)
 
@@ -265,5 +285,7 @@
 	duration = 300
 
 /obj/effect/temp_visual/ratvar/command_point/Initialize(mapload, appearance)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = appearance

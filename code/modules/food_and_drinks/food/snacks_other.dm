@@ -68,6 +68,8 @@
 	foodtype = JUNKFOOD
 
 /obj/item/reagent_containers/food/snacks/popcorn/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eatverb = pick("bite","crunch","nibble","gnaw","gobble","chomp")
 
@@ -449,17 +451,23 @@
 	foodtype = JUNKFOOD | SUGAR
 
 /obj/item/reagent_containers/food/snacks/lollipop/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	head = mutable_appearance('icons/obj/lollipop.dmi', "lollipop_head")
 	change_head_color(rgb(rand(0, 255), rand(0, 255), rand(0, 255)))
 
 /obj/item/reagent_containers/food/snacks/lollipop/proc/change_head_color(C)
+	procstart = null
+	src.procstart = null
 	headcolor = C
 	cut_overlay(head)
 	head.color = C
 	add_overlay(head)
 
 /obj/item/reagent_containers/food/snacks/lollipop/throw_impact(atom/A)
+	procstart = null
+	src.procstart = null
 	..(A)
 	throw_speed = 1
 	throwforce = 0
@@ -468,14 +476,20 @@
 	var/spamchecking = TRUE
 
 /obj/item/reagent_containers/food/snacks/lollipop/cyborg/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/spamcheck), 1200)
 
 /obj/item/reagent_containers/food/snacks/lollipop/cyborg/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..(user, slot)
 	spamchecking = FALSE
 
 /obj/item/reagent_containers/food/snacks/lollipop/cyborg/proc/spamcheck()
+	procstart = null
+	src.procstart = null
 	if(spamchecking)
 		qdel(src)
 
@@ -489,6 +503,8 @@
 	foodtype = JUNKFOOD
 
 /obj/item/reagent_containers/food/snacks/gumball/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	color = rgb(rand(0, 255), rand(0, 255), rand(0, 255))
 
@@ -496,14 +512,20 @@
 	var/spamchecking = TRUE
 
 /obj/item/reagent_containers/food/snacks/gumball/cyborg/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/spamcheck), 1200)
 
 /obj/item/reagent_containers/food/snacks/gumball/cyborg/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	. = ..(user, slot)
 	spamchecking = FALSE
 
 /obj/item/reagent_containers/food/snacks/gumball/cyborg/proc/spamcheck()
+	procstart = null
+	src.procstart = null
 	if(spamchecking)
 		qdel(src)
 

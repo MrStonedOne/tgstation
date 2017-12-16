@@ -17,6 +17,8 @@
 
 
 /obj/item/melee/cultblade/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user))
 		user.Knockdown(100)
 		user.dropItemToGround(src, TRUE)
@@ -36,6 +38,8 @@
 	flags_1 = NODROP_1|DROPDEL_1
 
 /obj/item/melee/cultblade/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!iscultist(user))
 		if(!is_servant_of_ratvar(user))
@@ -65,6 +69,8 @@
 	embed_chance = 75
 
 /obj/item/melee/cultblade/dagger/attack(mob/living/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target
@@ -101,15 +107,21 @@
 	var/dash_toggled = TRUE
 
 /obj/item/twohanded/required/cult_bastard/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_light(4)
 	jaunt = new(src)
 	linked_action = new(src)
 
 /obj/item/twohanded/required/cult_bastard/can_be_pulled(user)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /obj/item/twohanded/required/cult_bastard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	dash_toggled = !dash_toggled
 	if(dash_toggled)
 		to_chat(loc, "<span class='notice'>You raise [src] and prepare to jaunt with it.</span>")
@@ -117,6 +129,8 @@
 		to_chat(loc, "<span class='notice'>You lower [src] and prepare to swing it normally.</span>")
 
 /obj/item/twohanded/required/cult_bastard/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!iscultist(user))
 		if(!is_servant_of_ratvar(user))
@@ -137,12 +151,16 @@
 	user.update_icons()
 
 /obj/item/twohanded/required/cult_bastard/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	linked_action.Remove(user)
 	jaunt.Remove(user)
 	user.update_icons()
 
 /obj/item/twohanded/required/cult_bastard/IsReflect()
+	procstart = null
+	src.procstart = null
 	if(spinning)
 		playsound(src, pick('sound/weapons/bulletflyby.ogg', 'sound/weapons/bulletflyby2.ogg', 'sound/weapons/bulletflyby3.ogg'), 75, 1)
 		return TRUE
@@ -150,6 +168,8 @@
 		..()
 
 /obj/item/twohanded/required/cult_bastard/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(prob(final_block_chance))
 		if(attack_type == PROJECTILE_ATTACK)
 			owner.visible_message("<span class='danger'>[owner] deflects [attack_text] with [src]!</span>")
@@ -162,6 +182,8 @@
 	return FALSE
 
 /obj/item/twohanded/required/cult_bastard/afterattack(atom/target, mob/user, proximity, click_parameters)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(dash_toggled)
 		jaunt.Teleport(user, target)
@@ -193,6 +215,8 @@
 	phaseout = /obj/effect/temp_visual/dir_setting/cult/phase/out
 
 /datum/action/innate/dash/cult/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(iscultist(holder) && current_charges)
 		return TRUE
 	else
@@ -210,17 +234,23 @@
 	var/obj/item/twohanded/required/cult_bastard/sword
 
 /datum/action/innate/cult/spin2win/Grant(mob/user, obj/bastard)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	sword = bastard
 	holder = user
 
 /datum/action/innate/cult/spin2win/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(iscultist(holder) && cooldown <= world.time)
 		return TRUE
 	else
 		return FALSE
 
 /datum/action/innate/cult/spin2win/Activate()
+	procstart = null
+	src.procstart = null
 	cooldown = world.time + sword.spin_cooldown
 	holder.changeNext_move(50)
 	holder.apply_status_effect(/datum/status_effect/sword_spin)
@@ -231,6 +261,8 @@
 	holder.update_action_buttons_icon()
 
 /datum/action/innate/cult/spin2win/proc/stop_spinning()
+	procstart = null
+	src.procstart = null
 	sword.spinning = FALSE
 	sword.block_chance = 50
 	sword.slowdown -= 1.5
@@ -339,6 +371,8 @@
 	prefix = "darkened"
 
 /obj/item/sharpener/cult/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "cult_sharpener[used ? "_used" : ""]"
 
 /obj/item/clothing/suit/hooded/cultrobes/cult_shield
@@ -362,6 +396,8 @@
 	flags_inv = HIDEHAIR|HIDEFACE|HIDEEARS
 
 /obj/item/clothing/suit/hooded/cultrobes/cult_shield/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!iscultist(user))
 		if(!is_servant_of_ratvar(user))
@@ -378,6 +414,8 @@
 			user.dropItemToGround(src, TRUE)
 
 /obj/item/clothing/suit/hooded/cultrobes/cult_shield/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(current_charges)
 		owner.visible_message("<span class='danger'>\The [attack_text] is deflected in a burst of blood-red sparks!</span>")
 		current_charges--
@@ -389,6 +427,8 @@
 	return 0
 
 /obj/item/clothing/suit/hooded/cultrobes/cult_shield/worn_overlays(isinhands)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands && current_charges)
 		. += mutable_appearance('icons/effects/cult_effects.dmi', "shield-cult", MOB_LAYER + 0.01)
@@ -414,6 +454,8 @@
 	armor = list(melee = -50, bullet = -50, laser = -50, energy = -50, bomb = -50, bio = -50, rad = -50, fire = 0, acid = 0)
 
 /obj/item/clothing/suit/hooded/cultrobes/berserker/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!iscultist(user))
 		if(!is_servant_of_ratvar(user))
@@ -438,6 +480,8 @@
 	flash_protect = 1
 
 /obj/item/clothing/glasses/night/cultblind/equipped(mob/living/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!iscultist(user))
 		to_chat(user, "<span class='cultlarge'>\"You want to be blind, do you?\"</span>")
@@ -461,6 +505,8 @@
 	var/global/curselimit = 0
 
 /obj/item/device/shuttle_curse/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!iscultist(user))
 		user.dropItemToGround(src, TRUE)
 		user.Knockdown(100)
@@ -501,6 +547,8 @@
 	var/uses = 4
 
 /obj/item/device/cult_shift/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(uses)
 		to_chat(user, "<span class='cult'>It has [uses] use\s remaining.</span>")
@@ -508,6 +556,8 @@
 		to_chat(user, "<span class='cult'>It seems drained.</span>")
 
 /obj/item/device/cult_shift/proc/handle_teleport_grab(turf/T, mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/C = user
 	if(C.pulling)
 		var/atom/movable/pulled = C.pulling
@@ -515,6 +565,8 @@
 		. = pulled
 
 /obj/item/device/cult_shift/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!uses || !iscarbon(user))
 		to_chat(user, "<span class='warning'>\The [src] is dull and unmoving in your hands.</span>")
 		return
@@ -561,6 +613,8 @@
 	var/charges = 5
 
 /obj/item/device/flashlight/flare/culttorch/afterattack(atom/movable/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(!iscultist(user))

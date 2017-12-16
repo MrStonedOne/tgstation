@@ -21,6 +21,8 @@
 	action_icon_state = "skeleton"
 
 /obj/effect/proc_holder/spell/targeted/lichdom/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/M in targets)
 		var/list/hand_items = list()
 		if(iscarbon(M))
@@ -86,6 +88,8 @@
 	var/static/active_phylacteries = 0
 
 /obj/item/phylactery/Initialize(mapload, datum/mind/newmind)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	mind = newmind
 	name = "phylactery of [mind.name]"
@@ -98,6 +102,8 @@
 		SSticker.mode.round_ends_with_antag_death = FALSE
 
 /obj/item/phylactery/Destroy(force=FALSE)
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	active_phylacteries--
 	GLOB.poi_list -= src
@@ -106,6 +112,8 @@
 	. = ..()
 
 /obj/item/phylactery/process()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(mind))
 		qdel(src)
 		return
@@ -114,6 +122,8 @@
 		addtimer(CALLBACK(src, .proc/rise), respawn_time, TIMER_UNIQUE)
 
 /obj/item/phylactery/proc/rise()
+	procstart = null
+	src.procstart = null
 	if(mind.current && mind.current.stat != DEAD)
 		return "[mind] already has a living body: [mind.current]"
 

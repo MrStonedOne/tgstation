@@ -9,6 +9,8 @@
 	layer = LOW_ITEM_LAYER
 
 /obj/structure/destructible/clockwork/trap/trigger/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/structure/destructible/clockwork/trap/T in get_turf(src))
 		if(!istype(T, /obj/structure/destructible/clockwork/trap/trigger))
@@ -17,6 +19,8 @@
 			to_chat(usr, "<span class='alloy'>[src] automatically links with [T] beneath it.</span>")
 
 /obj/structure/destructible/clockwork/trap/trigger/pressure_sensor/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM) && !is_servant_of_ratvar(AM))
 		var/mob/living/L = AM
 		if(L.stat || L.m_intent == MOVE_INTENT_WALK || L.lying)

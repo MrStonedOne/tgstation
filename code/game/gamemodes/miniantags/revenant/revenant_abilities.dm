@@ -9,6 +9,8 @@
 			Harvest(A)
 
 /mob/living/simple_animal/revenant/proc/Harvest(mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	if(!castcheck(0))
 		return
 	if(draining)
@@ -103,6 +105,8 @@
 	action_background_icon_state = "bg_revenant"
 
 /obj/effect/proc_holder/spell/targeted/revenant_transmit/cast(list/targets, mob/living/simple_animal/revenant/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/M in targets)
 		var/msg = stripped_input(usr, "What do you wish to tell [M]?", null, "")
 		if(!msg)
@@ -133,6 +137,8 @@
 	var/cast_amount = 50 //How much essence it costs to use
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(locked)
 		name = "[initial(name)] ([unlock_amount]E)"
@@ -140,6 +146,8 @@
 		name = "[initial(name)] ([cast_amount]E)"
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/can_cast(mob/living/simple_animal/revenant/user = usr)
+	procstart = null
+	src.procstart = null
 	if(charge_counter < charge_max)
 		return FALSE
 	if(!istype(user)) //Badmins, no. Badmins, don't do it.
@@ -154,6 +162,8 @@
 	return TRUE
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/proc/attempt_cast(mob/living/simple_animal/revenant/user = usr)
+	procstart = null
+	src.procstart = null
 	if(!istype(user)) //If you're not a revenant, it works. Please, please, please don't give this to a non-revenant.
 		name = "[initial(name)]"
 		if(locked)
@@ -193,11 +203,15 @@
 	action_icon_state = "overload_lights"
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/overload/cast(list/targets, mob/living/simple_animal/revenant/user = usr)
+	procstart = null
+	src.procstart = null
 	if(attempt_cast(user))
 		for(var/turf/T in targets)
 			INVOKE_ASYNC(src, .proc/overload, T, user)
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/overload/proc/overload(turf/T, mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/light/L in T)
 		if(!L.on)
 			return
@@ -209,6 +223,8 @@
 		addtimer(CALLBACK(src, .proc/overload_shock, L, user), 20)
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/overload/proc/overload_shock(obj/machinery/light/L, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!L.on) //wait, wait, don't shock me
 		return
 	flick("[L.base_state]2", L)
@@ -233,11 +249,15 @@
 	action_icon_state = "defile"
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/defile/cast(list/targets, mob/living/simple_animal/revenant/user = usr)
+	procstart = null
+	src.procstart = null
 	if(attempt_cast(user))
 		for(var/turf/T in targets)
 			INVOKE_ASYNC(src, .proc/defile, T)
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/defile/proc/defile(turf/T)
+	procstart = null
+	src.procstart = null
 	if(T.flags_1 & NOJAUNT_1)
 		T.flags_1 &= ~NOJAUNT_1
 		new /obj/effect/temp_visual/revenant(T)
@@ -283,11 +303,15 @@
 
 //A note to future coders: do not replace this with an EMP because it will wreck malf AIs and gang dominators and everyone will hate you.
 /obj/effect/proc_holder/spell/aoe_turf/revenant/malfunction/cast(list/targets, mob/living/simple_animal/revenant/user = usr)
+	procstart = null
+	src.procstart = null
 	if(attempt_cast(user))
 		for(var/turf/T in targets)
 			INVOKE_ASYNC(src, .proc/malfunction, T, user)
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/malfunction/proc/malfunction(turf/T, mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/simple_animal/bot/bot in T)
 		if(!bot.emagged)
 			new /obj/effect/temp_visual/revenant(bot.loc)
@@ -327,11 +351,15 @@
 	action_icon_state = "blight"
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/blight/cast(list/targets, mob/living/simple_animal/revenant/user = usr)
+	procstart = null
+	src.procstart = null
 	if(attempt_cast(user))
 		for(var/turf/T in targets)
 			INVOKE_ASYNC(src, .proc/blight, T, user)
 
 /obj/effect/proc_holder/spell/aoe_turf/revenant/blight/proc/blight(turf/T, mob/user)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/mob in T)
 		if(mob == user)
 			continue

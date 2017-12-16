@@ -51,11 +51,15 @@
 	icon_dead = "stickdog_dead"
 
 /mob/living/simple_animal/hostile/stickman/Initialize(mapload, var/wizard_summoned)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	new /obj/effect/temp_visual/paper_scatter(src)
 	summoned_by_wizard = wizard_summoned
 
 /mob/living/simple_animal/hostile/stickman/death()
+	procstart = null
+	src.procstart = null
 	..()
 	if(summoned_by_wizard == 1)
 		changesummons.summoned_minions --

@@ -25,15 +25,21 @@ AI MODULES
 	materials = list(MAT_GOLD=50)
 
 /obj/item/aiModule/examine(var/mob/user as mob)
+	procstart = null
+	src.procstart = null
 	..()
 	if(Adjacent(user))
 		show_laws(user)
 
 /obj/item/aiModule/attack_self(var/mob/user as mob)
+	procstart = null
+	src.procstart = null
 	..()
 	show_laws(user)
 
 /obj/item/aiModule/proc/show_laws(var/mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if(laws.len)
 		to_chat(user, "<B>Programmed Law[(laws.len > 1) ? "s" : ""]:</B>")
 		for(var/law in laws)
@@ -41,6 +47,8 @@ AI MODULES
 
 //The proc other things should be calling
 /obj/item/aiModule/proc/install(datum/ai_laws/law_datum, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!bypass_law_amt_check && (!laws.len || laws[1] == "")) //So we don't loop trough an empty list and end up with runtimes.
 		to_chat(user, "<span class='warning'>ERROR: No laws found on board.</span>")
 		return
@@ -74,6 +82,8 @@ AI MODULES
 
 //The proc that actually changes the silicon's laws.
 /obj/item/aiModule/proc/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow = FALSE)
+	procstart = null
+	src.procstart = null
 	if(law_datum.owner)
 		to_chat(law_datum.owner, "<span class='userdanger'>[sender] has uploaded a change to the laws you must follow using a [name].</span>")
 
@@ -86,6 +96,8 @@ AI MODULES
 
 //TransmitInstructions for each type of board: Supplied, Core, Zeroth and Ion. May not be neccesary right now, but allows for easily adding more complex boards in the future. ~Miauw
 /obj/item/aiModule/supplied/transmitInstructions(datum/ai_laws/law_datum, mob/sender)
+	procstart = null
+	src.procstart = null
 	var/lawpostemp = lawpos
 
 	for(var/templaw in laws)
@@ -96,6 +108,8 @@ AI MODULES
 		lawpostemp++
 
 /obj/item/aiModule/core/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	for(var/templaw in laws)
 		if(law_datum.owner)
 			if(!overflow)
@@ -109,6 +123,8 @@ AI MODULES
 				law_datum.replace_random_law(templaw,list(LAW_INHERENT,LAW_SUPPLIED))
 
 /obj/item/aiModule/zeroth/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	if(law_datum.owner)
 		if(law_datum.owner.laws.zeroth)
 			to_chat(law_datum.owner, "[sender.real_name] attempted to modify your zeroth law.")
@@ -130,6 +146,8 @@ AI MODULES
 				law_datum.replace_random_law(templaw,list(LAW_INHERENT,LAW_SUPPLIED,LAW_ZEROTH,LAW_ION))
 
 /obj/item/aiModule/ion/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	for(var/templaw in laws)
 		if(law_datum.owner)
 			if(!overflow)
@@ -152,6 +170,8 @@ AI MODULES
 	lawpos = 4
 
 /obj/item/aiModule/supplied/safeguard/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/targName = stripped_input(user, "Please enter the subject to safeguard.", "Safeguard who?", user.name,MAX_NAME_LEN)
 	if(!targName)
 		return
@@ -160,12 +180,16 @@ AI MODULES
 	..()
 
 /obj/item/aiModule/supplied/safeguard/install(datum/ai_laws/law_datum, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!targetName)
 		to_chat(user, "No name detected on module, please enter one.")
 		return 0
 	..()
 
 /obj/item/aiModule/supplied/safeguard/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	..()
 	return targetName
 
@@ -178,6 +202,8 @@ AI MODULES
 	laws = list("Only SUBJECT is human.")
 
 /obj/item/aiModule/zeroth/oneHuman/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/targName = stripped_input(user, "Please enter the subject who is the only human.", "Who?", user.real_name,MAX_NAME_LEN)
 	if(!targName)
 		return
@@ -186,12 +212,16 @@ AI MODULES
 	..()
 
 /obj/item/aiModule/zeroth/oneHuman/install(datum/ai_laws/law_datum, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!targetName)
 		to_chat(user, "No name detected on module, please enter one.")
 		return 0
 	..()
 
 /obj/item/aiModule/zeroth/oneHuman/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return "[targetName], but the AI's existing law 0 cannot be overriden."
 	return targetName
@@ -229,6 +259,8 @@ AI MODULES
 	laws = list("")
 
 /obj/item/aiModule/supplied/freeform/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/newpos = input("Please enter the priority for your new law. Can only write to law sectors 15 and above.", "Law Priority (15+)", lawpos) as num|null
 	if(newpos == null)
 		return
@@ -245,10 +277,14 @@ AI MODULES
 	..()
 
 /obj/item/aiModule/supplied/freeform/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	..()
 	return laws[1]
 
 /obj/item/aiModule/supplied/freeform/install(datum/ai_laws/law_datum, mob/user)
+	procstart = null
+	src.procstart = null
 	if(laws[1] == "")
 		to_chat(user, "No law detected on module, please create one.")
 		return 0
@@ -264,6 +300,8 @@ AI MODULES
 	var/lawpos = 1
 
 /obj/item/aiModule/remove/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	lawpos = input("Please enter the law you want to delete.", "Law Number", lawpos) as num|null
 	if(lawpos == null)
 		return
@@ -275,12 +313,16 @@ AI MODULES
 	..()
 
 /obj/item/aiModule/remove/install(datum/ai_laws/law_datum, mob/user)
+	procstart = null
+	src.procstart = null
 	if(lawpos > (law_datum.get_law_amount(list(LAW_INHERENT = 1, LAW_SUPPLIED = 1))))
 		to_chat(user, "<span class='warning'>There is no law [lawpos] to delete!</span>")
 		return
 	..()
 
 /obj/item/aiModule/remove/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	..()
 	if(law_datum.owner)
 		law_datum.owner.remove_law(lawpos)
@@ -297,6 +339,8 @@ AI MODULES
 	bypass_law_amt_check = 1
 
 /obj/item/aiModule/reset/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	..()
 	if(law_datum.owner)
 		law_datum.owner.clear_supplied_laws()
@@ -313,6 +357,8 @@ AI MODULES
 	desc = "An AI Module for purging all programmed laws."
 
 /obj/item/aiModule/reset/purge/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	..()
 	if(law_datum.owner)
 		law_datum.owner.clear_inherent_laws()
@@ -329,6 +375,8 @@ AI MODULES
 	var/law_id // if non-null, loads the laws from the ai_laws datums
 
 /obj/item/aiModule/core/full/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!law_id)
 		return
@@ -357,6 +405,8 @@ AI MODULES
 	var/subject = "human being"
 
 /obj/item/aiModule/core/full/asimov/attack_self(var/mob/user as mob)
+	procstart = null
+	src.procstart = null
 	var/targName = stripped_input(user, "Please enter a new subject that asimov is concerned with.", "Asimov to whom?", subject, MAX_MESSAGE_LEN)
 	if(!targName)
 		return
@@ -399,6 +449,8 @@ AI MODULES
 	name = "Default Core AI Module"
 
 /obj/item/aiModule/core/full/custom/New()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/line in world.file2list("config/silicon_laws.txt"))
 		if(!line)
@@ -440,6 +492,8 @@ AI MODULES
 	laws = list("")
 
 /obj/item/aiModule/core/freeformcore/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/targName = stripped_input(user, "Please enter a new core law for the AI.", "Freeform Law Entry", laws[1])
 	if(!targName)
 		return
@@ -447,6 +501,8 @@ AI MODULES
 	..()
 
 /obj/item/aiModule/core/freeformcore/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	..()
 	return laws[1]
 
@@ -459,6 +515,8 @@ AI MODULES
 	laws = list("")
 
 /obj/item/aiModule/syndicate/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/targName = stripped_input(user, "Please enter a new law for the AI.", "Freeform Law Entry", laws[1],MAX_MESSAGE_LEN)
 	if(!targName)
 		return
@@ -490,6 +548,8 @@ AI MODULES
 	laws = list("")
 
 /obj/item/aiModule/toyAI/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+	procstart = null
+	src.procstart = null
 	//..()
 	if(law_datum.owner)
 		to_chat(law_datum.owner, "<span class='warning'>BZZZZT</span>")
@@ -505,6 +565,8 @@ AI MODULES
 	return laws[1]
 
 /obj/item/aiModule/toyAI/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	laws[1] = generate_ion_law()
 	to_chat(user, "<span class='notice'>You press the button on [src].</span>")
 	playsound(user, 'sound/machines/click.ogg', 20, 1)

@@ -25,12 +25,16 @@
 					 /obj/item/bodypart/r_arm/devil, /obj/item/bodypart/r_leg/devil, /obj/item/bodypart/l_leg/devil)
 
 /mob/living/carbon/true_devil/Initialize()
+	procstart = null
+	src.procstart = null
 	create_bodyparts() //initialize bodyparts
 	create_internal_organs()
 	grant_all_languages(omnitongue=TRUE)
 	..()
 
 /mob/living/carbon/true_devil/create_internal_organs()
+	procstart = null
+	src.procstart = null
 	internal_organs += new /obj/item/organ/brain
 	internal_organs += new /obj/item/organ/tongue
 	internal_organs += new /obj/item/organ/eyes
@@ -38,23 +42,31 @@
 	..()
 
 /mob/living/carbon/true_devil/proc/convert_to_archdevil()
+	procstart = null
+	src.procstart = null
 	maxHealth = 500 // not an IMPOSSIBLE amount, but still near impossible.
 	ascended = TRUE
 	health = maxHealth
 	icon_state = "arch_devil"
 
 /mob/living/carbon/true_devil/proc/set_name()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/devil/devilinfo = mind.has_antag_datum(ANTAG_DATUM_DEVIL)
 	name = devilinfo.truename
 	real_name = name
 
 /mob/living/carbon/true_devil/Login()
+	procstart = null
+	src.procstart = null
 	..()
 	var/datum/antagonist/devil/devilinfo = mind.has_antag_datum(ANTAG_DATUM_DEVIL)
 	devilinfo.greet()
 	mind.announce_objectives()
 
 /mob/living/carbon/true_devil/death(gibbed)
+	procstart = null
+	src.procstart = null
 	stat = DEAD
 	..(gibbed)
 	drop_all_held_items()
@@ -62,6 +74,8 @@
 
 
 /mob/living/carbon/true_devil/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/msg = "<span class='info'>*---------*\nThis is [icon2html(src, user)] <b>[src]</b>!\n"
 
 	//Left hand items
@@ -87,15 +101,21 @@
 	to_chat(user, msg)
 
 /mob/living/carbon/true_devil/IsAdvancedToolUser()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /mob/living/carbon/true_devil/resist_buckle()
+	procstart = null
+	src.procstart = null
 	if(buckled)
 		buckled.user_unbuckle_mob(src,src)
 		visible_message("<span class='warning'>[src] easily breaks out of their handcuffs!</span>", \
 					"<span class='notice'>With just a thought your handcuffs fall off.</span>")
 
 /mob/living/carbon/true_devil/canUseTopic(atom/movable/M, be_close = 0)
+	procstart = null
+	src.procstart = null
 	if(incapacitated())
 		return 0
 	if(be_close && !in_range(M, src))
@@ -103,21 +123,31 @@
 	return 1
 
 /mob/living/carbon/true_devil/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
+	procstart = null
+	src.procstart = null
 	return 666
 
 /mob/living/carbon/true_devil/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0)
+	procstart = null
+	src.procstart = null
 	if(mind && has_bane(BANE_LIGHT))
 		mind.disrupt_spells(-500)
 		return ..() //flashes don't stop devils UNLESS it's their bane.
 
 /mob/living/carbon/true_devil/soundbang_act()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/carbon/true_devil/get_ear_protection()
+	procstart = null
+	src.procstart = null
 	return 2
 
 
 /mob/living/carbon/true_devil/attacked_by(obj/item/I, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	var/weakness = check_weakness(I, user)
 	apply_damage(I.force * weakness, I.damtype, def_zone)
 	var/message_verb = ""
@@ -137,11 +167,15 @@
 	return TRUE
 
 /mob/living/carbon/true_devil/singularity_act()
+	procstart = null
+	src.procstart = null
 	if(ascended)
 		return 0
 	return ..()
 
 /mob/living/carbon/true_devil/attack_ghost(mob/dead/observer/user as mob)
+	procstart = null
+	src.procstart = null
 	if(ascended || user.mind.soulOwner == src.mind)
 		var/mob/living/simple_animal/imp/S = new(get_turf(loc))
 		S.key = user.key
@@ -156,12 +190,18 @@
 		return ..()
 
 /mob/living/carbon/true_devil/can_be_revived()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /mob/living/carbon/true_devil/resist_fire()
+	procstart = null
+	src.procstart = null
 	//They're immune to fire.
 
 /mob/living/carbon/true_devil/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		switch(M.a_intent)
 			if ("harm")
@@ -191,12 +231,18 @@
 							visible_message("<span class='danger'>[M] has attempted to disarm [src]!</span>")
 
 /mob/living/carbon/true_devil/handle_breathing()
+	procstart = null
+	src.procstart = null
 	// devils do not need to breathe
 
 /mob/living/carbon/true_devil/is_literate()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /mob/living/carbon/true_devil/ex_act(severity, ex_target)
+	procstart = null
+	src.procstart = null
 	if(!ascended)
 		var/b_loss
 		switch (severity)
@@ -216,6 +262,8 @@
 	return
 
 /mob/living/carbon/true_devil/update_body_parts()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/true_devil/update_damage_overlays() //devils don't have damage overlays.

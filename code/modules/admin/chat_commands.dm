@@ -7,6 +7,8 @@
 	var/static/last_irc_status = 0
 
 /datum/server_tools_command/ircstatus/Run(sender, params)
+	procstart = null
+	src.procstart = null
 	var/rtod = REALTIMEOFDAY
 	if(rtod - last_irc_status < IRC_STATUS_THROTTLE)
 		return
@@ -23,6 +25,8 @@
 	var/static/last_irc_check = 0
 
 /datum/server_tools_command/irccheck/Run(sender, params)
+	procstart = null
+	src.procstart = null
 	var/rtod = REALTIMEOFDAY
 	if(rtod - last_irc_check < IRC_STATUS_THROTTLE)
 		return
@@ -37,6 +41,8 @@
 	admin_only = TRUE
 
 /datum/server_tools_command/ahelp/Run(sender, params)
+	procstart = null
+	src.procstart = null
 	var/list/all_params = splittext(params, " ")
 	var/target = all_params[1]
 	all_params.Cut(1, 2)
@@ -58,6 +64,8 @@
 	admin_only = TRUE
 
 /datum/server_tools_command/namecheck/Run(sender, params)
+	procstart = null
+	src.procstart = null
 	log_admin("Chat Name Check: [sender] on [params]")
 	message_admins("Name checking [params] from [sender]")
 	return keywords_lookup(params, 1)
@@ -68,6 +76,8 @@
 	admin_only = TRUE
 
 /datum/server_tools_command/adminwho/Run(sender, params)
+	procstart = null
+	src.procstart = null
 	return ircadminwho()
 
 GLOBAL_LIST(round_end_notifiees)
@@ -78,6 +88,8 @@ GLOBAL_LIST(round_end_notifiees)
 	admin_only = TRUE
 
 /datum/server_tools_command/notify/Run(sender, params)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.IsRoundInProgress() && SSticker.HasRoundStarted())
 		return "[sender], the round has already ended!"
 	LAZYINITLIST(GLOB.round_end_notifiees)
@@ -90,6 +102,8 @@ GLOBAL_LIST(round_end_notifiees)
 	admin_only = TRUE
 
 /datum/server_tools_command/sdql/Run(sender, params)
+	procstart = null
+	src.procstart = null
 	if(GLOB.AdminProcCaller)
 		return "Unable to run query, another admin proc call is in progress. Try again later."
 	GLOB.AdminProcCaller = "CHAT_[sender]"	//_ won't show up in ckeys so it'll never match with a real admin
@@ -106,6 +120,8 @@ GLOBAL_LIST(round_end_notifiees)
 	admin_only = TRUE
 
 /datum/server_tools_command/reload_admins/Run(sender, params)
+	procstart = null
+	src.procstart = null
 	load_admins()
 	log_admin("[sender] reloaded admins via chat command.")
 	return "Admins reloaded."

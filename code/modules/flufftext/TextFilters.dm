@@ -2,6 +2,8 @@
 
 //is this shit even used at all
 /proc/NewStutter(phrase,stun)
+	procstart = null
+	src.procstart = null
 	phrase = html_decode(phrase)
 
 	var/list/split_phrase = splittext(phrase," ") //Split it up into words.
@@ -41,6 +43,8 @@
 	step(M, pick(d,turn(d,90),turn(d,-90)))
 
 /proc/Ellipsis(original_msg, chance = 50, keep_words)
+	procstart = null
+	src.procstart = null
 	if(chance <= 0)
 		return "..."
 	if(chance >= 100)

@@ -66,6 +66,8 @@
 
 
 /obj/item/organ/lungs/proc/check_breath(datum/gas_mixture/breath, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if((H.status_flags & GODMODE))
 		return
 
@@ -291,6 +293,8 @@
 
 
 /obj/item/organ/lungs/proc/handle_too_little_breath(mob/living/carbon/human/H = null, breath_pp = 0, safe_breath_min = 0, true_pp = 0)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(!H || !safe_breath_min) //the other args are either: Ok being 0 or Specifically handled.
 		return FALSE
@@ -339,6 +343,8 @@
 				to_chat(H, "<span class='warning'>You feel [hot_message] in your [name]!</span>")
 
 /obj/item/organ/lungs/prepare_eat()
+	procstart = null
+	src.procstart = null
 	var/obj/S = ..()
 	S.reagents.add_reagent("salbutamol", 5)
 	return S
@@ -358,6 +364,8 @@
 	icon_state = "lungs-c"
 
 /obj/item/organ/lungs/cybernetic/emp_act()
+	procstart = null
+	src.procstart = null
 	owner.losebreath = 20
 
 

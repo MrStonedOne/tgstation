@@ -58,6 +58,8 @@
 	spacewalk = TRUE
 
 /mob/living/simple_animal/hostile/syndicate/melee/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(!Proj)
 		return
 	if(prob(50))
@@ -126,6 +128,8 @@
 	environment_smash = ENVIRONMENT_SMASH_NONE
 
 /mob/living/simple_animal/hostile/syndicate/civilian/Aggro()
+	procstart = null
+	src.procstart = null
 	..()
 	summon_backup(15)
 	say("GUARDS!!")

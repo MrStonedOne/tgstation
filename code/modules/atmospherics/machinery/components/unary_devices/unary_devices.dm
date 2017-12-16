@@ -9,16 +9,24 @@
 	var/static/gl_uid = 1
 
 /obj/machinery/atmospherics/components/unary/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	initialize_directions = dir
 
 /obj/machinery/atmospherics/components/unary/on_construction()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/atmospherics/components/unary/hide(intact)
+	procstart = null
+	src.procstart = null
 	update_icon()
 	..(intact)
 
 /obj/machinery/atmospherics/components/unary/proc/assign_uid_vents()
+	procstart = null
+	src.procstart = null
 	uid = num2text(gl_uid++)
 	return uid

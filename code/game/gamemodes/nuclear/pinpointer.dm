@@ -2,6 +2,8 @@
 	var/mode = TRACK_NUKE_DISK
 
 /obj/item/pinpointer/nuke/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/msg = "Its tracking indicator reads "
 	switch(mode)
@@ -19,6 +21,8 @@
 			to_chat(user, "Extreme danger. Arming signal detected. Time remaining: [bomb.get_time_left()].")
 
 /obj/item/pinpointer/nuke/process()
+	procstart = null
+	src.procstart = null
 	..()
 	if(active) // If shit's going down
 		for(var/obj/machinery/nuclearbomb/bomb in GLOB.nuke_list)
@@ -31,6 +35,8 @@
 						to_chat(L, "<span class='userdanger'>Your [name] vibrates and lets out a tinny alarm. Uh oh.</span>")
 
 /obj/item/pinpointer/nuke/scan_for_target()
+	procstart = null
+	src.procstart = null
 	target = null
 	switch(mode)
 		if(TRACK_NUKE_DISK)
@@ -50,6 +56,8 @@
 	..()
 
 /obj/item/pinpointer/nuke/proc/switch_mode_to(new_mode)
+	procstart = null
+	src.procstart = null
 	if(isliving(loc))
 		var/mob/living/L = loc
 		to_chat(L, "<span class='userdanger'>Your [name] beeps as it reconfigures its tracking algorithms.</span>")
@@ -68,6 +76,8 @@
 	flags_1 = NODROP_1
 
 /obj/item/pinpointer/syndicate_cyborg/scan_for_target()
+	procstart = null
+	src.procstart = null
 	target = null
 	var/list/possible_targets = list()
 	var/turf/here = get_turf(src)

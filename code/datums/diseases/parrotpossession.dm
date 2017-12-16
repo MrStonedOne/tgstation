@@ -16,6 +16,8 @@
 	var/mob/living/simple_animal/parrot/Poly/ghost/parrot
 
 /datum/disease/parrot_possession/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!parrot || parrot.loc != affected_mob)
 		cure()
@@ -24,6 +26,8 @@
 			affected_mob.say(pick(parrot.speech_buffer))
 
 /datum/disease/parrot_possession/cure()
+	procstart = null
+	src.procstart = null
 	if(parrot && parrot.loc == affected_mob)
 		parrot.forceMove(affected_mob.drop_location())
 		affected_mob.visible_message("<span class='danger'>[parrot] is violently driven out of [affected_mob]!</span>", "<span class='userdanger'>[parrot] bursts out of your chest!</span>")

@@ -20,15 +20,21 @@
 	var/use_cyborg_cell = 0 //whether the gun's cell drains the cyborg user's cell to recharge
 
 /obj/item/gun/energy/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	cell.use(round(cell.charge / severity))
 	chambered = null //we empty the chamber
 	recharge_newshot() //and try to charge a new shot
 	update_icon()
 
 /obj/item/gun/energy/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/item/gun/energy/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(cell_type)
 		cell = new cell_type(src)
@@ -42,6 +48,8 @@
 	update_icon()
 
 /obj/item/gun/energy/proc/update_ammo_types()
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_casing/energy/shot
 	for (var/i = 1, i <= ammo_type.len, i++)
 		var/shottype = ammo_type[i]
@@ -52,11 +60,15 @@
 	fire_delay = shot.delay
 
 /obj/item/gun/energy/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(cell)
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/gun/energy/process()
+	procstart = null
+	src.procstart = null
 	if(selfcharge)
 		charge_tick++
 		if(charge_tick < charge_delay)
@@ -70,15 +82,21 @@
 		update_icon()
 
 /obj/item/gun/energy/attack_self(mob/living/user as mob)
+	procstart = null
+	src.procstart = null
 	if(ammo_type.len > 1)
 		select_fire(user)
 		update_icon()
 
 /obj/item/gun/energy/can_shoot()
+	procstart = null
+	src.procstart = null
 	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
 	return cell.charge >= shot.e_cost
 
 /obj/item/gun/energy/recharge_newshot(no_cyborg_drain)
+	procstart = null
+	src.procstart = null
 	if (!ammo_type || !cell)
 		return
 	if(use_cyborg_cell && !no_cyborg_drain)
@@ -96,6 +114,8 @@
 				chambered.newshot()
 
 /obj/item/gun/energy/process_chamber()
+	procstart = null
+	src.procstart = null
 	if(chambered && !chambered.BB) //if BB is null, i.e the shot has been fired...
 		var/obj/item/ammo_casing/energy/shot = chambered
 		cell.use(shot.e_cost)//... drain the cell cell
@@ -103,16 +123,22 @@
 	recharge_newshot() //try to charge a new shot
 
 /obj/item/gun/energy/process_fire()
+	procstart = null
+	src.procstart = null
 	if(!chambered && can_shoot())
 		process_chamber()	// If the gun was drained and then recharged, load a new shot.
 	return ..()
 
 /obj/item/gun/energy/process_burst()
+	procstart = null
+	src.procstart = null
 	if(!chambered && can_shoot())
 		process_chamber()	// Ditto.
 	return ..()
 
 /obj/item/gun/energy/proc/select_fire(mob/living/user)
+	procstart = null
+	src.procstart = null
 	select++
 	if (select > ammo_type.len)
 		select = 1
@@ -127,6 +153,8 @@
 	return
 
 /obj/item/gun/energy/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!automatic_charge_overlays)
 		return
@@ -157,9 +185,13 @@
 		item_state = itemState
 
 /obj/item/gun/energy/ui_action_click()
+	procstart = null
+	src.procstart = null
 	toggle_gunlight()
 
 /obj/item/gun/energy/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if (can_shoot() && can_trigger_gun(user))
 		user.visible_message("<span class='suicide'>[user] is putting the barrel of [src] in [user.p_their()] mouth.  It looks like [user.p_theyre()] trying to commit suicide!</span>")
 		sleep(25)
@@ -180,6 +212,8 @@
 
 
 /obj/item/gun/energy/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if("selfcharge")
 			if(var_value)
@@ -190,6 +224,8 @@
 
 
 /obj/item/gun/energy/ignition_effect(atom/A, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!can_shoot() || !ammo_type[select])
 		shoot_with_empty_chamber()
 		. = ""

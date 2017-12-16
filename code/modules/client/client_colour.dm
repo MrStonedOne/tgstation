@@ -27,6 +27,8 @@
 	colour_type - a typepath (subtyped from /datum/client_colour)
 */
 /mob/proc/add_client_colour(colour_type)
+	procstart = null
+	src.procstart = null
 	if(!ispath(colour_type, /datum/client_colour))
 		return
 
@@ -41,6 +43,8 @@
 	colour_type - a typepath (subtyped from /datum/client_colour)
 */
 /mob/proc/remove_client_colour(colour_type)
+	procstart = null
+	src.procstart = null
 	if(!ispath(colour_type, /datum/client_colour))
 		return
 
@@ -58,6 +62,8 @@
 	client_colour datum, if one exists
 */
 /mob/proc/update_client_colour()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 	client.color = ""

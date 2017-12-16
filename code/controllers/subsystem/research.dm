@@ -1,5 +1,7 @@
 
 SUBSYSTEM_DEF(research)
+	procstart = null
+	src.procstart = null
 	name = "Research"
 	flags = SS_KEEP_TIMING
 	priority = FIRE_PRIORITY_RESEARCH
@@ -32,6 +34,8 @@ SUBSYSTEM_DEF(research)
 	var/bomb_research_point_scaling = 1800
 
 /datum/controller/subsystem/research/Initialize()
+	procstart = null
+	src.procstart = null
 	initialize_all_techweb_designs()
 	initialize_all_techweb_nodes()
 	science_tech = new /datum/techweb/science
@@ -40,9 +44,13 @@ SUBSYSTEM_DEF(research)
 	return ..()
 
 /datum/controller/subsystem/research/fire()
+	procstart = null
+	src.procstart = null
 	handle_research_income()
 
 /datum/controller/subsystem/research/proc/handle_research_income()
+	procstart = null
+	src.procstart = null
 	var/bitcoins = 0
 	if(multiserver_calculation)
 		var/eff = calculate_server_coefficient()
@@ -68,6 +76,8 @@ SUBSYSTEM_DEF(research)
 	return coeff
 
 /datum/controller/subsystem/research/proc/autosort_categories()
+	procstart = null
+	src.procstart = null
 	for(var/i in techweb_nodes)
 		var/datum/techweb_node/I = techweb_nodes[i]
 		if(techweb_categories[I.category])

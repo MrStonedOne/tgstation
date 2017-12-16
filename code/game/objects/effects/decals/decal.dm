@@ -4,13 +4,19 @@
 	resistance_flags = FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/effect/decal/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/effect/decal/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(!(resistance_flags & FIRE_PROOF)) //non fire proof decal or being burned by lava
 		qdel(src)
 
 /obj/effect/decal/HandleTurfChange(turf/T)
+	procstart = null
+	src.procstart = null
 	..()
 	if(T == loc && (isspaceturf(T) || isclosedturf(T) || islava(T) || istype(T, /turf/open/water) || ischasm(T)))
 		qdel(src)
@@ -23,10 +29,14 @@
 	layer = TURF_DECAL_LAYER
 
 /obj/effect/turf_decal/Initialize()
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_QDEL
 
 /obj/effect/turf_decal/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/turf/T = loc
 	if(!istype(T)) //you know this will happen somehow

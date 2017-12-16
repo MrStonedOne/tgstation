@@ -11,21 +11,29 @@
 	CanAtmosPass = ATMOS_PASS_DENSITY
 
 /obj/structure/emergency_shield/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(pick(GLOB.cardinals))
 	air_update_turf(1)
 
 /obj/structure/emergency_shield/Destroy()
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	air_update_turf(1)
 	return ..()
 
 /obj/structure/emergency_shield/Move()
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	. = ..()
 	move_update_air(T)
 
 /obj/structure/emergency_shield/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			qdel(src)
@@ -33,6 +41,8 @@
 			take_damage(50, BRUTE, "energy", 0)
 
 /obj/structure/emergency_shield/play_attack_sound(damage, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BURN)
 			playsound(loc, 'sound/effects/empulse.ogg', 75, 1)
@@ -40,6 +50,8 @@
 			playsound(loc, 'sound/effects/empulse.ogg', 75, 1)
 
 /obj/structure/emergency_shield/take_damage(damage, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.) //damage was dealt
 		new /obj/effect/temp_visual/impact_effect/ion(loc)
@@ -51,6 +63,8 @@
 	max_integrity = 60
 
 /obj/structure/emergency_shield/sanguine/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/emergency_shield/invoker
@@ -61,6 +75,8 @@
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
 /obj/structure/emergency_shield/invoker/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/shieldgen
@@ -80,17 +96,23 @@
 	var/shield_range = 4
 
 /obj/machinery/shieldgen/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deployed_shields = list()
 	if(mapload && active && anchored)
 		shields_up()
 
 /obj/machinery/shieldgen/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_LIST(deployed_shields)
 	return ..()
 
 
 /obj/machinery/shieldgen/proc/shields_up()
+	procstart = null
+	src.procstart = null
 	active = TRUE
 	update_icon()
 
@@ -100,17 +122,23 @@
 				deployed_shields += new /obj/structure/emergency_shield(target_tile)
 
 /obj/machinery/shieldgen/proc/shields_down()
+	procstart = null
+	src.procstart = null
 	active = FALSE
 	update_icon()
 	QDEL_LIST(deployed_shields)
 
 /obj/machinery/shieldgen/process()
+	procstart = null
+	src.procstart = null
 	if((stat & BROKEN) && active)
 		if(deployed_shields.len && prob(5))
 			qdel(pick(deployed_shields))
 
 
 /obj/machinery/shieldgen/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(!(stat && BROKEN))
 			stat |= BROKEN
@@ -118,6 +146,8 @@
 			update_icon()
 
 /obj/machinery/shieldgen/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		to_chat(user, "<span class='warning'>The machine is locked, you are unable to use it!</span>")
 		return
@@ -141,6 +171,8 @@
 	return
 
 /obj/machinery/shieldgen/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver))
 		playsound(src.loc, W.usesound, 100, 1)
 		panel_open = !panel_open
@@ -192,6 +224,8 @@
 		return ..()
 
 /obj/machinery/shieldgen/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		to_chat(user, "<span class='warning'>The access controller is damaged!</span>")
 		return
@@ -201,6 +235,8 @@
 	to_chat(user, "<span class='warning'>You short out the access controller.</span>")
 
 /obj/machinery/shieldgen/update_icon()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = (stat & BROKEN) ? "shieldonbr":"shieldon"
 	else
@@ -233,11 +269,15 @@
 	req_access = list(ACCESS_XENOBIOLOGY)
 
 /obj/machinery/shieldwallgen/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/d in GLOB.cardinals)
 		cleanup_field(d)
 	return ..()
 
 /obj/machinery/shieldwallgen/proc/power()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		power = 0
 		return
@@ -258,14 +298,20 @@
 		PN.load += avail_power //uses powernet power.
 
 /obj/machinery/shieldwallgen/process()
+	procstart = null
+	src.procstart = null
 	power()
 	use_stored_power(50)
 
 /obj/machinery/shieldwallgen/proc/use_stored_power(amount)
+	procstart = null
+	src.procstart = null
 	power = Clamp(power - amount, 0, maximum_stored_power)
 	update_activity()
 
 /obj/machinery/shieldwallgen/proc/update_activity()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = "Shield_Gen +a"
 		if(active == ACTIVE_SETUPFIELDS)
@@ -288,6 +334,8 @@
 			cleanup_field(d)
 
 /obj/machinery/shieldwallgen/proc/setup_field(direction)
+	procstart = null
+	src.procstart = null
 	if(!direction)
 		return
 
@@ -316,6 +364,8 @@
 	return TRUE
 
 /obj/machinery/shieldwallgen/proc/cleanup_field(direction)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/shieldwall/F
 	var/obj/machinery/shieldwallgen/G
 	var/turf/T = loc
@@ -332,6 +382,8 @@
 			qdel(F)
 
 /obj/machinery/shieldwallgen/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(active)
 		if(!silent)
 			to_chat(user, "<span class='warning'>Turn off the shield generator first!</span>")
@@ -339,6 +391,8 @@
 	return ..()
 
 /obj/machinery/shieldwallgen/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench))
 		default_unfasten_wrench(user, W, 0)
 
@@ -356,6 +410,8 @@
 		return ..()
 
 /obj/machinery/shieldwallgen/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		to_chat(user, "<span class='warning'>\The [src] needs to be firmly secured to the floor first!</span>")
 		return
@@ -381,6 +437,8 @@
 	add_fingerprint(user)
 
 /obj/machinery/shieldwallgen/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		to_chat(user, "<span class='warning'>The access controller is damaged!</span>")
 		return
@@ -404,6 +462,8 @@
 	var/obj/machinery/shieldwallgen/gen_secondary
 
 /obj/machinery/shieldwall/Initialize(mapload, obj/machinery/shieldwallgen/first_gen, obj/machinery/shieldwallgen/second_gen)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	gen_primary = first_gen
 	gen_secondary = second_gen
@@ -415,14 +475,20 @@
 		L.gib()
 
 /obj/machinery/shieldwall/Destroy()
+	procstart = null
+	src.procstart = null
 	gen_primary = null
 	gen_secondary = null
 	return ..()
 
 /obj/machinery/shieldwall/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/shieldwall/process()
+	procstart = null
+	src.procstart = null
 	if(needs_power)
 		if(!gen_primary || !gen_primary.active || !gen_secondary || !gen_secondary.active)
 			qdel(src)
@@ -431,6 +497,8 @@
 		drain_power(10)
 
 /obj/machinery/shieldwall/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BURN)
 			playsound(loc, 'sound/effects/empulse.ogg', 75, 1)
@@ -439,17 +507,23 @@
 
 //the shield wall is immune to damage but it drains the stored power of the generators.
 /obj/machinery/shieldwall/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(damage_type == BRUTE || damage_type == BURN)
 		drain_power(damage_amount)
 
 /obj/machinery/shieldwall/proc/drain_power(drain_amount)
+	procstart = null
+	src.procstart = null
 	if(needs_power && gen_primary)
 		gen_primary.use_stored_power(drain_amount*0.5)
 		if(gen_secondary) //using power may cause us to be destroyed
 			gen_secondary.use_stored_power(drain_amount*0.5)
 
 /obj/machinery/shieldwall/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return prob(20)
 	else

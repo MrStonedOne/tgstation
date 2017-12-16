@@ -37,6 +37,8 @@
 	var/breakout_time = 300
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	initialize_directions = dir
 
@@ -47,9 +49,13 @@
 	radio.recalculateChannels()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/on_construction()
+	procstart = null
+	src.procstart = null
 	..(dir, dir)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/C
 	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		C += M.rating
@@ -61,27 +67,37 @@
 	conduction_coefficient = initial(conduction_coefficient) * C
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(radio)
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(beaker)
 		beaker.ex_act(severity, target)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	..()
 	if(A == beaker)
 		beaker = null
 		updateUsrDialog()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		beaker.forceMove(drop_location())
 		beaker = null
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	if(panel_open)
@@ -133,6 +149,8 @@
 		add_overlay("cover-off")
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/proc/run_anim(anim_up, image/occupant_overlay)
+	procstart = null
+	src.procstart = null
 	if(!on || !occupant || !is_operational())
 		running_anim = FALSE
 		return
@@ -148,6 +166,8 @@
 	addtimer(CALLBACK(src, .proc/run_anim, anim_up, occupant_overlay), 7, TIMER_UNIQUE)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/process()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!on)
@@ -191,6 +211,8 @@
 	return 1
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(!on)
@@ -223,15 +245,21 @@
 		air1.gases[/datum/gas/oxygen][MOLES] -= 0.5 / efficiency // Magically consume gas? Why not, we run on cryo magic.
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/relaymove(mob/user)
+	procstart = null
+	src.procstart = null
 	if(message_cooldown <= world.time)
 		message_cooldown = world.time + 50
 		to_chat(user, "<span class='warning'>[src]'s door won't budge!</span>")
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/open_machine(drop = 0)
+	procstart = null
+	src.procstart = null
 	if(!state_open && !panel_open)
 		on = FALSE
 		..()
@@ -244,11 +272,15 @@
 	update_icon()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/close_machine(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if((isnull(user) || istype(user)) && state_open && !panel_open)
 		..(user)
 		return occupant
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/container_resist(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	user.visible_message("<span class='notice'>You see [user] kicking against the glass of [src]!</span>", \
@@ -262,6 +294,8 @@
 		open_machine()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(occupant)
 		if(on)
@@ -272,11 +306,15 @@
 		to_chat(user, "[src] seems empty.")
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || user.lying || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !user.IsAdvancedToolUser())
 		return
 	close_machine(target)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/reagent_containers/glass))
 		. = 1 //no afterattack
 		if(beaker)
@@ -310,6 +348,8 @@
 		ui.open()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["isOperating"] = on
 	data["hasOccupant"] = occupant ? TRUE : FALSE
@@ -360,6 +400,8 @@
 	return data
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -388,18 +430,28 @@
 	update_icon()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/update_remote_sight(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return // we don't see the pipe network while inside cryo.
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/get_remote_view_fullscreens(mob/user)
+	procstart = null
+	src.procstart = null
 	user.overlay_fullscreen("remote_view", /obj/screen/fullscreen/impaired, 1)
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/can_crawl_through()
+	procstart = null
+	src.procstart = null
 	return // can't ventcrawl in or out of cryo.
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/can_see_pipes()
+	procstart = null
+	src.procstart = null
 	return 0 // you can't see the pipe network when inside a cryo cell.
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/return_temperature()
+	procstart = null
+	src.procstart = null
 	var/datum/gas_mixture/G = AIR1
 
 	if(G.total_moles() > 10)
@@ -407,6 +459,8 @@
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/cryo_cell/default_change_direction_wrench(mob/user, obj/item/wrench/W)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		SetInitDirections()

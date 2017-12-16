@@ -13,6 +13,8 @@
 	var/capacity = 4
 
 /obj/structure/guncase/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	if(mapload)
 		for(var/obj/item/I in loc.contents)
@@ -23,6 +25,8 @@
 	update_icon()
 
 /obj/structure/guncase/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(case_type && LAZYLEN(contents))
 		var/mutable_appearance/gun_overlay = mutable_appearance(icon, case_type)
@@ -35,6 +39,8 @@
 		add_overlay("[icon_state]_door")
 
 /obj/structure/guncase/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) || isalien(user))
 		return
 	if(istype(I, gun_category) && open)
@@ -54,6 +60,8 @@
 		return ..()
 
 /obj/structure/guncase/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user) || isalien(user))
 		return
 	if(contents.len && open)
@@ -63,6 +71,8 @@
 		update_icon()
 
 /obj/structure/guncase/proc/ShowWindow(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = {"<div class='block'>
 				<h3>Stored Guns</h3>
 				<table align='center'>"}
@@ -77,6 +87,8 @@
 	popup.open(0)
 
 /obj/structure/guncase/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["retrieve"])
 		var/obj/item/O = locate(href_list["retrieve"]) in contents
 		if(!O || !istype(O))
@@ -89,9 +101,13 @@
 			update_icon()
 
 /obj/structure/guncase/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	update_icon()
 
 /obj/structure/guncase/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	for(var/atom/A in contents)
 		A.ex_act(severity++, target)
 		CHECK_TICK

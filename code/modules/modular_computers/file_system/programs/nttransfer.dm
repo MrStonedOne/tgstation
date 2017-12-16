@@ -24,10 +24,14 @@
 	var/static/nttransfer_uid = 0
 
 /datum/computer_file/program/nttransfer/New()
+	procstart = null
+	src.procstart = null
 	unique_token = nttransfer_uid++
 	..()
 
 /datum/computer_file/program/nttransfer/process_tick()
+	procstart = null
+	src.procstart = null
 	// Server mode
 	update_netspeed()
 	if(provided_file)
@@ -44,6 +48,8 @@
 			crash_download("Connection to remote server lost")
 
 /datum/computer_file/program/nttransfer/kill_program(forced = FALSE)
+	procstart = null
+	src.procstart = null
 	if(downloaded_file) // Client mode, clean up variables for next use
 		finalize_download()
 
@@ -54,6 +60,8 @@
 	..(forced)
 
 /datum/computer_file/program/nttransfer/proc/update_netspeed()
+	procstart = null
+	src.procstart = null
 	download_netspeed = 0
 	switch(ntnet_status)
 		if(1)
@@ -65,6 +73,8 @@
 
 // Finishes download and attempts to store the file on HDD
 /datum/computer_file/program/nttransfer/proc/finish_download()
+	procstart = null
+	src.procstart = null
 	var/obj/item/computer_hardware/hard_drive/hard_drive = computer.all_components[MC_HDD]
 	if(!computer || !hard_drive || !hard_drive.store_file(downloaded_file))
 		error = "I/O Error:  Unable to save file. Check your hard drive and try again."
@@ -72,11 +82,15 @@
 
 //  Crashes the download and displays specific error message
 /datum/computer_file/program/nttransfer/proc/crash_download(var/message)
+	procstart = null
+	src.procstart = null
 	error = message ? message : "An unknown error has occurred during download"
 	finalize_download()
 
 // Cleans up variables for next use
 /datum/computer_file/program/nttransfer/proc/finalize_download()
+	procstart = null
+	src.procstart = null
 	if(remote)
 		remote.connected_clients.Remove(src)
 	downloaded_file = null
@@ -84,6 +98,8 @@
 	download_completion = 0
 
 /datum/computer_file/program/nttransfer/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	switch(action)
@@ -143,6 +159,8 @@
 
 /datum/computer_file/program/nttransfer/ui_data(mob/user)
 
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 
 	if(error)

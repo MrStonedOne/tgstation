@@ -5,16 +5,22 @@
 	return 0
 
 /mob/living/carbon/isloyal()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/implant/mindshield/L in implants)
 		return TRUE
 
 /mob/proc/lowest_buckled_mob()
+	procstart = null
+	src.procstart = null
 	. = src
 	if(buckled && ismob(buckled))
 		var/mob/Buckled = buckled
 		. = Buckled.lowest_buckled_mob()
 
 /proc/check_zone(zone)
+	procstart = null
+	src.procstart = null
 	if(!zone)
 		return "chest"
 	switch(zone)
@@ -37,6 +43,8 @@
 
 /proc/ran_zone(zone, probability = 80)
 
+	procstart = null
+	src.procstart = null
 	zone = check_zone(zone)
 
 	if(prob(probability))
@@ -60,6 +68,8 @@
 	return zone
 
 /proc/above_neck(zone)
+	procstart = null
+	src.procstart = null
 	var/list/zones = list("head", "mouth", "eyes")
 	if(zones.Find(zone))
 		return 1
@@ -67,6 +77,8 @@
 		return 0
 
 /proc/stars(n, pr)
+	procstart = null
+	src.procstart = null
 	n = html_encode(n)
 	if (pr == null)
 		pr = 25
@@ -89,6 +101,8 @@
 	return sanitize(t)
 
 /proc/slur(n)
+	procstart = null
+	src.procstart = null
 	var/phrase = html_decode(n)
 	var/leng = lentext(phrase)
 	var/counter=lentext(phrase)
@@ -166,6 +180,8 @@
 
 
 /proc/stutter(n)
+	procstart = null
+	src.procstart = null
 	var/te = html_decode(n)
 	var/t = ""//placed before the message. Not really sure what it's for.
 	n = length(n)//length of the entire word
@@ -189,6 +205,8 @@
 	return copytext(sanitize(t),1,MAX_MESSAGE_LEN)
 
 /proc/derpspeech(message, stuttering)
+	procstart = null
+	src.procstart = null
 	message = replacetext(message, " am ", " ")
 	message = replacetext(message, " is ", " ")
 	message = replacetext(message, " are ", " ")
@@ -254,6 +272,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 
 /proc/shake_camera(mob/M, duration, strength=1)
+	procstart = null
+	src.procstart = null
 	if(!M || !M.client || duration <= 0)
 		return
 	var/client/C = M.client
@@ -272,6 +292,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 
 /proc/findname(msg)
+	procstart = null
+	src.procstart = null
 	if(!istext(msg))
 		msg = "[msg]"
 	for(var/i in GLOB.mob_list)
@@ -281,11 +303,15 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return 0
 
 /mob/proc/first_name()
+	procstart = null
+	src.procstart = null
 	var/static/regex/firstname = new("^\[^\\s-\]+") //First word before whitespace or "-"
 	firstname.Find(real_name)
 	return firstname.match
 
 /mob/proc/abiotic(full_body = 0)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in held_items)
 		if(!(I.flags_1 & NODROP_1))
 			return 1
@@ -293,6 +319,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 //change a mob's act-intent. Input the intent as a string such as "help" or use "right"/"left
 /mob/verb/a_intent_change(input as text)
+	procstart = null
+	src.procstart = null
 	set name = "a-intent"
 	set hidden = 1
 
@@ -326,12 +354,16 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 
 /proc/is_blind(A)
+	procstart = null
+	src.procstart = null
 	if(ismob(A))
 		var/mob/B = A
 		return	B.eye_blind
 	return 0
 
 /mob/proc/hallucinating()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /proc/is_special_character(mob/M) // returns 1 for special characters and 2 for heroes of gamemode //moved out of admins.dm because things other than admin procs were calling this.
@@ -413,6 +445,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 					A.add_overlay(alert_overlay)
 
 /proc/item_heal_robotic(mob/living/carbon/human/H, mob/user, brute_heal, burn_heal)
+	procstart = null
+	src.procstart = null
 	var/obj/item/bodypart/affecting = H.get_bodypart(check_zone(user.zone_selected))
 	if(affecting && affecting.status == BODYPART_ROBOTIC)
 		var/dam //changes repair text based on how much brute/burn was supplied
@@ -431,6 +465,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 
 /proc/IsAdminGhost(var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user)		//Are they a mob? Auto interface updates call this with a null src
 		return
 	if(!user.client) // Do they have a client?
@@ -444,6 +480,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return TRUE
 
 /proc/offer_control(mob/M)
+	procstart = null
+	src.procstart = null
 	to_chat(M, "Control of your mob has been offered to dead players.")
 	if(usr)
 		log_admin("[key_name(usr)] has offered control of ([key_name(M)]) to ghosts.")
@@ -469,12 +507,16 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		return FALSE
 
 /mob/proc/is_flying(mob/M = src)
+	procstart = null
+	src.procstart = null
 	if(M.movement_type & FLYING)
 		return 1
 	else
 		return 0
 
 /mob/proc/click_random_mob()
+	procstart = null
+	src.procstart = null
 	var/list/nearby_mobs = list()
 	for(var/mob/living/L in range(1, src))
 		if(L!=src)
@@ -484,6 +526,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		ClickOn(T)
 
 /mob/proc/log_message(message, message_type)
+	procstart = null
+	src.procstart = null
 	if(!LAZYLEN(message) || !message_type)
 		return
 
@@ -495,4 +539,6 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	logging[message_type] += timestamped_message
 
 /mob/proc/can_hear()
+	procstart = null
+	src.procstart = null
 	. = TRUE

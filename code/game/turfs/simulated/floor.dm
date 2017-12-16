@@ -17,6 +17,8 @@
 	var/list/burnt_states
 
 /turf/open/floor/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	if (!broken_states)
 		broken_states = list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
 	if (!burnt_states)
@@ -46,6 +48,8 @@
 		MakeDirty()
 
 /turf/open/floor/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	var/shielded = is_shielded()
 	..()
 	if(severity != 1 && shielded && target != src)
@@ -80,34 +84,50 @@
 				src.hotspot_expose(1000,CELL_VOLUME)
 
 /turf/open/floor/is_shielded()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/A in contents)
 		if(A.level == 3)
 			return 1
 
 /turf/open/floor/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/proc/update_icon()
+	procstart = null
+	src.procstart = null
 	update_visuals()
 	return 1
 
 /turf/open/floor/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /turf/open/floor/proc/gets_drilled()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/floor/proc/break_tile_to_plating()
+	procstart = null
+	src.procstart = null
 	var/turf/open/floor/plating/T = make_plating()
 	T.break_tile()
 
 /turf/open/floor/proc/break_tile()
+	procstart = null
+	src.procstart = null
 	if(broken)
 		return
 	icon_state = pick(broken_states)
 	broken = 1
 
 /turf/open/floor/burn_tile()
+	procstart = null
+	src.procstart = null
 	if(broken || burnt)
 		return
 	if(burnt_states.len)
@@ -117,9 +137,13 @@
 	burnt = 1
 
 /turf/open/floor/proc/make_plating()
+	procstart = null
+	src.procstart = null
 	return ChangeTurf(/turf/open/floor/plating)
 
 /turf/open/floor/ChangeTurf(path, new_baseturf, defer_change = FALSE, ignore_air = FALSE, forceop = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isfloorturf(src))
 		return ..() //fucking turfs switch the fucking src of the fucking running procs
 	if(!ispath(path, /turf/open/floor))
@@ -133,6 +157,8 @@
 	return W
 
 /turf/open/floor/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!C || !user)
 		return 1
 	if(..())
@@ -144,6 +170,8 @@
 	return 0
 
 /turf/open/floor/proc/try_replace_tile(obj/item/stack/tile/T, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(T.turf_type == type)
 		return
 	var/obj/item/crowbar/CB = user.is_holding_item_of_type(/obj/item/crowbar)
@@ -155,10 +183,14 @@
 	P.attackby(T, user, params)
 
 /turf/open/floor/proc/pry_tile(obj/item/C, mob/user, silent = FALSE)
+	procstart = null
+	src.procstart = null
 	playsound(src, C.usesound, 80, 1)
 	return remove_tile(user, silent)
 
 /turf/open/floor/proc/remove_tile(mob/user, silent = FALSE, make_tile = TRUE)
+	procstart = null
+	src.procstart = null
 	if(broken || burnt)
 		broken = 0
 		burnt = 0
@@ -172,6 +204,8 @@
 	return make_plating()
 
 /turf/open/floor/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size == STAGE_THREE)
 		if(prob(30))
@@ -192,19 +226,27 @@
 			ReplaceWithLattice()
 
 /turf/open/floor/narsie_act(force, ignore_mobs, probability = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		ChangeTurf(/turf/open/floor/engine/cult)
 
 /turf/open/floor/ratvar_act(force, ignore_mobs)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		ChangeTurf(/turf/open/floor/clockwork)
 
 /turf/open/floor/acid_melt()
+	procstart = null
+	src.procstart = null
 	ChangeTurf(baseturf)
 
 /turf/open/floor/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_FLOORWALL)
 			return list("mode" = RCD_FLOORWALL, "delay" = 20, "cost" = 16)
@@ -220,6 +262,8 @@
 	return FALSE
 
 /turf/open/floor/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	procstart = null
+	src.procstart = null
 	switch(passed_mode)
 		if(RCD_FLOORWALL)
 			to_chat(user, "<span class='notice'>You build a wall.</span>")

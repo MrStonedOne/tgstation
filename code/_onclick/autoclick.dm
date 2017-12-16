@@ -7,6 +7,8 @@
 	var/mouseControlObject = null
 
 /client/MouseDown(object, location, control, params)
+	procstart = null
+	src.procstart = null
 	var/delay = mob.CanMobAutoclick(object, location, params)
 	if(delay)
 		selected_target[1] = object
@@ -19,6 +21,8 @@
 		active_mousedown_item.onMouseDown(object, location, params, mob)
 
 /client/MouseUp(object, location, control, params)
+	procstart = null
+	src.procstart = null
 	selected_target[1] = null
 	if(active_mousedown_item)
 		active_mousedown_item.onMouseUp(object, location, params, mob)
@@ -27,6 +31,8 @@
 /mob/proc/CanMobAutoclick(object, location, params)
 
 /mob/living/carbon/CanMobAutoclick(atom/object, location, params)
+	procstart = null
+	src.procstart = null
 	if(!object.IsAutoclickable())
 		return
 	var/obj/item/h = get_active_held_item()
@@ -36,6 +42,8 @@
 /mob/proc/canMobMousedown(object, location, params)
 
 /mob/living/carbon/canMobMousedown(atom/object, location, params)
+	procstart = null
+	src.procstart = null
 	var/obj/item/H = get_active_held_item()
 	if(H)
 		. = H.canItemMouseDown(object, location, params)
@@ -43,13 +51,19 @@
 /obj/item/proc/CanItemAutoclick(object, location, params)
 
 /obj/item/proc/canItemMouseDown(object, location, params)
+	procstart = null
+	src.procstart = null
 	if(canMouseDown)
 		return src
 
 /obj/item/proc/onMouseDown(object, location, params, mob)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/proc/onMouseUp(object, location, params, mob)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item
@@ -59,19 +73,29 @@
 	var/automatic = 0 //can gun use it, 0 is no, anything above 0 is the delay between clicks in ds
 
 /obj/item/gun/CanItemAutoclick(object, location, params)
+	procstart = null
+	src.procstart = null
 	. = automatic
 
 /atom/proc/IsAutoclickable()
+	procstart = null
+	src.procstart = null
 	. = 1
 
 /obj/screen/IsAutoclickable()
+	procstart = null
+	src.procstart = null
 	. = 0
 
 /obj/screen/click_catcher/IsAutoclickable()
+	procstart = null
+	src.procstart = null
 	. = 1
 
 //Please don't roast me too hard
 /client/MouseMove(object,location,control,params)
+	procstart = null
+	src.procstart = null
 	mouseParams = params
 	mouseLocation = location
 	mouseObject = object
@@ -81,9 +105,13 @@
 			I.onMouseMove(object, location, control, params)
 
 /obj/item/proc/onMouseMove(object, location, control, params)
+	procstart = null
+	src.procstart = null
 	return
 
 /client/MouseDrag(src_object,atom/over_object,src_location,over_location,src_control,over_control,params)
+	procstart = null
+	src.procstart = null
 	mouseParams = params
 	mouseLocation = over_location
 	mouseObject = over_object
@@ -95,4 +123,6 @@
 		active_mousedown_item.onMouseDrag(src_object, over_object, src_location, over_location, params, mob)
 
 /obj/item/proc/onMouseDrag(src_object, over_object, src_location, over_location, params, mob)
+	procstart = null
+	src.procstart = null
 	return

@@ -15,11 +15,15 @@
 	var/armed = 0
 
 /datum/computer_file/program/revelation/run_program(var/mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..(user)
 	if(armed)
 		activate()
 
 /datum/computer_file/program/revelation/proc/activate()
+	procstart = null
+	src.procstart = null
 	if(computer)
 		computer.visible_message("<span class='notice'>\The [computer]'s screen brightly flashes and loud electrical buzzing is heard.</span>")
 		computer.enabled = 0
@@ -43,6 +47,8 @@
 
 
 /datum/computer_file/program/revelation/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	switch(action)
@@ -59,11 +65,15 @@
 
 
 /datum/computer_file/program/revelation/clone()
+	procstart = null
+	src.procstart = null
 	var/datum/computer_file/program/revelation/temp = ..()
 	temp.armed = armed
 	return temp
 
 /datum/computer_file/program/revelation/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 
 	data["armed"] = armed

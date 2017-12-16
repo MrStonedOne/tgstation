@@ -1,6 +1,8 @@
 
 	//The mob should have a gender you want before running this proc. Will run fine without H
 /datum/preferences/proc/random_character(gender_override)
+	procstart = null
+	src.procstart = null
 	if(gender_override)
 		gender = gender_override
 	else
@@ -21,6 +23,8 @@
 	age = rand(AGE_MIN,AGE_MAX)
 
 /datum/preferences/proc/update_preview_icon()
+	procstart = null
+	src.procstart = null
 	// Silicons only need a very basic preview since there is no customization for them.
 	if(job_engsec_high)
 		switch(job_engsec_high)

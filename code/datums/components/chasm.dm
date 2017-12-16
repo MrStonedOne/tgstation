@@ -17,19 +17,27 @@
 		/obj/effect/collapse))
 
 /datum/component/chasm/Initialize(turf/target)
+	procstart = null
+	src.procstart = null
 	RegisterSignal(list(COMSIG_MOVABLE_CROSSED, COMSIG_ATOM_ENTERED), .proc/Entered)
 	target_turf = target
 	START_PROCESSING(SSobj, src) // process on create, in case stuff is still there
 
 /datum/component/chasm/proc/Entered(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	START_PROCESSING(SSobj, src)
 	drop_stuff(AM)
 
 /datum/component/chasm/process()
+	procstart = null
+	src.procstart = null
 	if (!drop_stuff())
 		STOP_PROCESSING(SSobj, src)
 
 /datum/component/chasm/proc/is_safe()
+	procstart = null
+	src.procstart = null
 	//if anything matching this typecache is found in the chasm, we don't drop things
 	var/static/list/chasm_safeties_typecache = typecacheof(list(/obj/structure/lattice/catwalk, /obj/structure/stone_tile))
 
@@ -41,6 +49,8 @@
 	return LAZYLEN(found_safeties)
 
 /datum/component/chasm/proc/drop_stuff(AM)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if (is_safe())
 		return FALSE
@@ -53,6 +63,8 @@
 			INVOKE_ASYNC(src, .proc/drop, thing)
 
 /datum/component/chasm/proc/droppable(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	// avoid an infinite loop, but allow falling a large distance
 	if(falling_atoms[AM] && falling_atoms[AM] > 30)
 		return FALSE
@@ -76,6 +88,8 @@
 	return TRUE
 
 /datum/component/chasm/proc/drop(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	//Make sure the item is still there after our sleep
 	if(!AM || QDELETED(AM))
 		return

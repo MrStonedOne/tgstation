@@ -14,6 +14,8 @@
 	pipe_state = "he_manifold"
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/manifold/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			initialize_directions_he = EAST|SOUTH|WEST
@@ -25,6 +27,8 @@
 			initialize_directions_he = NORTH|EAST|SOUTH
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/manifold/update_icon()
+	procstart = null
+	src.procstart = null
 	var/invis = invisibility ? "-f" : ""
 
 	icon_state = "manifold_center[invis]"
@@ -51,9 +55,13 @@
 	pipe_state = "he_manifold4w"
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/manifold4w/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	initialize_directions_he = initial(initialize_directions_he)
 
 /obj/machinery/atmospherics/pipe/heat_exchanging/manifold4w/update_icon()
+	procstart = null
+	src.procstart = null
 	var/invis = invisibility ? "-f" : ""
 
 	icon_state = "manifold4w_center[invis]"

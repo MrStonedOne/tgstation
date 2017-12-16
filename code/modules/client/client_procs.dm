@@ -26,6 +26,8 @@
 	*/
 
 /client/Topic(href, href_list, hsrc)
+	procstart = null
+	src.procstart = null
 	if(!usr || usr != mob)	//stops us calling Topic for somebody else's client. Also helps prevent usr=null
 		return
 
@@ -106,12 +108,16 @@
 	..()	//redirect to hsrc.Topic()
 
 /client/proc/is_content_unlocked()
+	procstart = null
+	src.procstart = null
 	if(!prefs.unlock_content)
 		to_chat(src, "Become a BYOND member to access member-perks and features, as well as support the engine that makes this game possible. Only 10 bucks for 3 months! <a href='http://www.byond.com/membership'>Click Here to find out more</a>.")
 		return 0
 	return 1
 
 /client/proc/handle_spam_prevention(message, mute_type)
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/automute_on) && !holder && last_message == message)
 		src.last_message_count++
 		if(src.last_message_count >= SPAM_TRIGGER_AUTOMUTE)
@@ -128,6 +134,8 @@
 
 //This stops files larger than UPLOAD_LIMIT being sent from client to server via input(), client.Import() etc.
 /client/AllowUpload(filename, filelength)
+	procstart = null
+	src.procstart = null
 	if(filelength > UPLOAD_LIMIT)
 		to_chat(src, "<font color='red'>Error: AllowUpload(): File Upload too large. Upload Limit: [UPLOAD_LIMIT/1024]KiB.</font>")
 		return 0
@@ -143,6 +151,8 @@ GLOBAL_LIST(external_rsc_urls)
 
 
 /client/New(TopicData)
+	procstart = null
+	src.procstart = null
 	var/tdata = TopicData //save this for later use
 	chatOutput = new /datum/chatOutput(src)
 	TopicData = null							//Prevent calls to client.Topic from connect
@@ -370,6 +380,8 @@ GLOBAL_LIST(external_rsc_urls)
 //////////////
 
 /client/Del()
+	procstart = null
+	src.procstart = null
 	if(credits)
 		QDEL_LIST(credits)
 	log_access("Logout: [key_name(src)]")
@@ -405,9 +417,13 @@ GLOBAL_LIST(external_rsc_urls)
 	return ..()
 
 /client/Destroy()
+	procstart = null
+	src.procstart = null
 	return QDEL_HINT_HARDDEL_NOW
 
 /client/proc/set_client_age_from_db(connectiontopic)
+	procstart = null
+	src.procstart = null
 	if (IsGuestKey(src.key))
 		return
 	if(!SSdbcore.Connect())
@@ -492,6 +508,8 @@ GLOBAL_LIST(external_rsc_urls)
 	. = player_age
 
 /client/proc/findJoinDate()
+	procstart = null
+	src.procstart = null
 	var/list/http = world.Export("http://byond.com/members/[ckey]?format=text")
 	if(!http)
 		log_world("Failed to connect to byond age check for [ckey]")
@@ -505,6 +523,8 @@ GLOBAL_LIST(external_rsc_urls)
 			CRASH("Age check regex failed for [src.ckey]")
 
 /client/proc/check_randomizer(topic)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if (connection != "seeker")
 		return
@@ -573,6 +593,8 @@ GLOBAL_LIST(external_rsc_urls)
 			return TRUE
 
 /client/proc/cid_check_reconnect()
+	procstart = null
+	src.procstart = null
 	var/token = md5("[rand(0,9999)][world.time][rand(0,9999)][ckey][rand(0,9999)][address][rand(0,9999)][computer_id][rand(0,9999)]")
 	. = token
 	log_access("Failed Login: [key] [computer_id] [address] - CID randomizer check")
@@ -582,6 +604,8 @@ GLOBAL_LIST(external_rsc_urls)
 	to_chat(src, {"<a href="byond://[url]?token=[token]">You will be automatically taken to the game, if not, click here to be taken manually</a>"})
 
 /client/proc/note_randomizer_user()
+	procstart = null
+	src.procstart = null
 	var/const/adminckey = "CID-Error"
 	var/sql_ckey = sanitizeSQL(ckey)
 	//check to see if we noted them in the last day.
@@ -601,6 +625,8 @@ GLOBAL_LIST(external_rsc_urls)
 
 
 /client/proc/check_ip_intel()
+	procstart = null
+	src.procstart = null
 	set waitfor = 0 //we sleep when getting the intel, no need to hold up the client connection while we sleep
 	if (CONFIG_GET(string/ipintel_email))
 		var/datum/ipintel/res = get_ip_intel(address)
@@ -610,6 +636,8 @@ GLOBAL_LIST(external_rsc_urls)
 
 
 /client/proc/add_verbs_from_config()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/see_own_notes))
 		verbs += /client/proc/self_notes
 
@@ -621,6 +649,8 @@ GLOBAL_LIST(external_rsc_urls)
 //checks if a client is afk
 //3000 frames = 5 minutes
 /client/proc/is_afk(duration = CONFIG_GET(number/inactivity_period))
+	procstart = null
+	src.procstart = null
 	if(inactivity > duration)
 		return inactivity
 	return FALSE
@@ -630,6 +660,8 @@ GLOBAL_LIST(external_rsc_urls)
 // So we slow this down a little.
 // See: http://www.byond.com/docs/ref/info.html#/client/proc/Stat
 /client/Stat()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (holder)
 		stoplag(1)
@@ -638,6 +670,8 @@ GLOBAL_LIST(external_rsc_urls)
 
 //send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
+	procstart = null
+	src.procstart = null
 	//get the common files
 	getFiles(
 		'html/search.js',
@@ -654,9 +688,13 @@ GLOBAL_LIST(external_rsc_urls)
 //Hook, override it to run code when dir changes
 //Like for /atoms, but clients are their own snowflake FUCK
 /client/proc/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	dir = newdir
 
 /client/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch (var_name)
 		if ("holder")
 			return FALSE
@@ -671,6 +709,8 @@ GLOBAL_LIST(external_rsc_urls)
 
 
 /client/proc/change_view(new_size)
+	procstart = null
+	src.procstart = null
 	if (isnull(new_size))
 		CRASH("change_view called without argument.")
 
@@ -681,15 +721,21 @@ GLOBAL_LIST(external_rsc_urls)
 		M.update_damage_hud()
 
 /client/proc/generate_clickcatcher()
+	procstart = null
+	src.procstart = null
 	if(!void)
 		void = new()
 		screen += void
 
 /client/proc/apply_clickcatcher()
+	procstart = null
+	src.procstart = null
 	generate_clickcatcher()
 	var/list/actualview = getviewsize(view)
 	void.UpdateGreed(actualview[1],actualview[2])
 
 /client/proc/AnnouncePR(announcement)
+	procstart = null
+	src.procstart = null
 	if(prefs && prefs.chat_toggles & CHAT_PULLR)
 		to_chat(src, announcement)

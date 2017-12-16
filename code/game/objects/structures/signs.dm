@@ -9,6 +9,8 @@
 	var/buildable_sign = 1 //unwrenchable and modifiable
 
 /obj/structure/sign/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION) // Since this is on a wall if it becomes irradiated it will smuggle the radiation past the wall
 
@@ -18,6 +20,8 @@
 	icon_state = "backing"
 
 /obj/structure/sign/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -28,6 +32,8 @@
 			playsound(loc, 'sound/items/welder.ogg', 80, 1)
 
 /obj/structure/sign/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/wrench) && buildable_sign)
 		user.visible_message("<span class='notice'>[user] starts removing [src]...</span>", \
 							 "<span class='notice'>You start unfastening [src].</span>")
@@ -102,6 +108,8 @@
 	var/sign_path = /obj/structure/sign/basic //the type of sign that will be created when placed on a turf
 
 /obj/item/sign_backing/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(isturf(target) && proximity)
 		var/turf/T = target
 		user.visible_message("<span class='notice'>[user] fastens [src] to [T].</span>", \

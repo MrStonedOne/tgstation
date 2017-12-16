@@ -28,6 +28,8 @@
 	var/toggle = FALSE
 
 /mob/living/simple_animal/hostile/guardian/ranged/ToggleMode()
+	procstart = null
+	src.procstart = null
 	if(src.loc == summoner)
 		if(toggle)
 			ranged = initial(ranged)
@@ -55,6 +57,8 @@
 		to_chat(src, "<span class='danger'><B>You have to be recalled to toggle modes!</span></B>")
 
 /mob/living/simple_animal/hostile/guardian/ranged/Shoot(atom/targeted_atom)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(., /obj/item/projectile))
 		var/obj/item/projectile/P = .
@@ -62,6 +66,8 @@
 			P.color = namedatum.colour
 
 /mob/living/simple_animal/hostile/guardian/ranged/ToggleLight()
+	procstart = null
+	src.procstart = null
 	var/msg
 	switch(lighting_alpha)
 		if (LIGHTING_PLANE_ALPHA_VISIBLE)
@@ -81,6 +87,8 @@
 
 
 /mob/living/simple_animal/hostile/guardian/ranged/verb/Snare()
+	procstart = null
+	src.procstart = null
 	set name = "Set Surveillance Snare"
 	set category = "Guardian"
 	set desc = "Set an invisible snare that will alert you when living creatures walk over it. Max of 5"
@@ -95,6 +103,8 @@
 		to_chat(src, "<span class='danger'><B>You have too many snares deployed. Remove some first.</span></B>")
 
 /mob/living/simple_animal/hostile/guardian/ranged/verb/DisarmSnare()
+	procstart = null
+	src.procstart = null
 	set name = "Remove Surveillance Snare"
 	set category = "Guardian"
 	set desc = "Disarm unwanted surveillance snares."
@@ -112,6 +122,8 @@
 
 
 /obj/effect/snare/Crossed(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(isliving(AM) && spawner && spawner.summoner && AM != spawner && !spawner.hasmatchingsummoner(AM))
 		to_chat(spawner.summoner, "<span class='danger'><B>[AM] has crossed surveillance snare, [name].</span></B>")
 		var/list/guardians = spawner.summoner.hasparasites()
@@ -119,7 +131,11 @@
 			to_chat(para, "<span class='danger'><B>[AM] has crossed surveillance snare, [name].</span></B>")
 
 /obj/effect/snare/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/snare/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return

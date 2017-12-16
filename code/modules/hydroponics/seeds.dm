@@ -36,6 +36,8 @@
 	var/weed_chance = 5 //Percentage chance per tray update to grow weeds
 
 /obj/item/seeds/Initialize(loc, nogenes = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-8, 8)
 	pixel_y = rand(-8, 8)
@@ -69,6 +71,8 @@
 			genes += new /datum/plant_gene/reagent(reag_id, reagents_add[reag_id])
 
 /obj/item/seeds/proc/Copy()
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/S = new type(null, 1)
 	// Copy all the stats
 	S.lifespan = lifespan
@@ -87,14 +91,20 @@
 	return S
 
 /obj/item/seeds/proc/get_gene(typepath)
+	procstart = null
+	src.procstart = null
 	return (locate(typepath) in genes)
 
 /obj/item/seeds/proc/reagents_from_genes()
+	procstart = null
+	src.procstart = null
 	reagents_add = list()
 	for(var/datum/plant_gene/reagent/R in genes)
 		reagents_add[R.reagent_id] = R.rate
 
 /obj/item/seeds/proc/mutate(lifemut = 2, endmut = 5, productmut = 1, yieldmut = 2, potmut = 25, wrmut = 2, wcmut = 5, traitmut = 0)
+	procstart = null
+	src.procstart = null
 	adjust_lifespan(rand(-lifemut,lifemut))
 	adjust_endurance(rand(-endmut,endmut))
 	adjust_production(rand(-productmut,productmut))
@@ -124,6 +134,8 @@
 
 // Harvest procs
 /obj/item/seeds/proc/getYield()
+	procstart = null
+	src.procstart = null
 	var/return_yield = yield
 
 	var/obj/machinery/hydroponics/parent = loc
@@ -137,6 +149,8 @@
 
 
 /obj/item/seeds/proc/harvest(mob/user = usr)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/hydroponics/parent = loc //for ease of access
 	var/t_amount = 0
 	var/list/result = list()
@@ -157,6 +171,8 @@
 
 
 /obj/item/seeds/proc/prepare_result(var/obj/item/reagent_containers/food/snacks/grown/T)
+	procstart = null
+	src.procstart = null
 	if(T.reagents)
 		for(var/reagent_id in reagents_add)
 			if(reagent_id == "blood") // Hack to make blood in plants always O-
@@ -169,6 +185,8 @@
 
 /// Setters procs ///
 /obj/item/seeds/proc/adjust_yield(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(yield != -1) // Unharvestable shouldn't suddenly turn harvestable
 		yield = Clamp(yield + adjustamt, 0, 10)
 
@@ -179,18 +197,24 @@
 			C.value = yield
 
 /obj/item/seeds/proc/adjust_lifespan(adjustamt)
+	procstart = null
+	src.procstart = null
 	lifespan = Clamp(lifespan + adjustamt, 10, 100)
 	var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/lifespan)
 	if(C)
 		C.value = lifespan
 
 /obj/item/seeds/proc/adjust_endurance(adjustamt)
+	procstart = null
+	src.procstart = null
 	endurance = Clamp(endurance + adjustamt, 10, 100)
 	var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/endurance)
 	if(C)
 		C.value = endurance
 
 /obj/item/seeds/proc/adjust_production(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(yield != -1)
 		production = Clamp(production + adjustamt, 1, 10)
 		var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/production)
@@ -198,6 +222,8 @@
 			C.value = production
 
 /obj/item/seeds/proc/adjust_potency(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(potency != -1)
 		potency = Clamp(potency + adjustamt, 0, 100)
 		var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/potency)
@@ -205,12 +231,16 @@
 			C.value = potency
 
 /obj/item/seeds/proc/adjust_weed_rate(adjustamt)
+	procstart = null
+	src.procstart = null
 	weed_rate = Clamp(weed_rate + adjustamt, 0, 10)
 	var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/weed_rate)
 	if(C)
 		C.value = weed_rate
 
 /obj/item/seeds/proc/adjust_weed_chance(adjustamt)
+	procstart = null
+	src.procstart = null
 	weed_chance = Clamp(weed_chance + adjustamt, 0, 67)
 	var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/weed_chance)
 	if(C)
@@ -219,6 +249,8 @@
 //Directly setting stats
 
 /obj/item/seeds/proc/set_yield(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(yield != -1) // Unharvestable shouldn't suddenly turn harvestable
 		yield = Clamp(adjustamt, 0, 10)
 
@@ -229,18 +261,24 @@
 			C.value = yield
 
 /obj/item/seeds/proc/set_lifespan(adjustamt)
+	procstart = null
+	src.procstart = null
 	lifespan = Clamp(adjustamt, 10, 100)
 	var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/lifespan)
 	if(C)
 		C.value = lifespan
 
 /obj/item/seeds/proc/set_endurance(adjustamt)
+	procstart = null
+	src.procstart = null
 	endurance = Clamp(adjustamt, 10, 100)
 	var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/endurance)
 	if(C)
 		C.value = endurance
 
 /obj/item/seeds/proc/set_production(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(yield != -1)
 		production = Clamp(adjustamt, 1, 10)
 		var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/production)
@@ -248,6 +286,8 @@
 			C.value = production
 
 /obj/item/seeds/proc/set_potency(adjustamt)
+	procstart = null
+	src.procstart = null
 	if(potency != -1)
 		potency = Clamp(adjustamt, 0, 100)
 		var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/potency)
@@ -255,12 +295,16 @@
 			C.value = potency
 
 /obj/item/seeds/proc/set_weed_rate(adjustamt)
+	procstart = null
+	src.procstart = null
 	weed_rate = Clamp(adjustamt, 0, 10)
 	var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/weed_rate)
 	if(C)
 		C.value = weed_rate
 
 /obj/item/seeds/proc/set_weed_chance(adjustamt)
+	procstart = null
+	src.procstart = null
 	weed_chance = Clamp(adjustamt, 0, 67)
 	var/datum/plant_gene/core/C = get_gene(/datum/plant_gene/core/weed_chance)
 	if(C)
@@ -305,6 +349,8 @@
 	return
 
 /obj/item/seeds/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(O, /obj/item/device/plant_analyzer))
 		to_chat(user, "<span class='info'>*---------*\n This is \a <span class='name'>[src]</span>.</span>")
 		var/text = get_analyzer_text()
@@ -323,6 +369,8 @@
 // Checks plants for broken tray icons. Use Advanced Proc Call to activate.
 // Maybe some day it would be used as unit test.
 /proc/check_plants_growth_stages_icons()
+	procstart = null
+	src.procstart = null
 	var/list/states = icon_states('icons/obj/hydroponics/growing.dmi')
 	states |= icon_states('icons/obj/hydroponics/growing_fruits.dmi')
 	states |= icon_states('icons/obj/hydroponics/growing_flowers.dmi')
@@ -346,6 +394,8 @@
 				to_chat(world, "[seed.name] ([seed.type]) lacks the [seed.icon_harvest] icon!")
 
 /obj/item/seeds/proc/randomize_stats()
+	procstart = null
+	src.procstart = null
 	set_lifespan(rand(25, 60))
 	set_endurance(rand(15, 35))
 	set_production(rand(2, 10))
@@ -356,6 +406,8 @@
 	maturation = rand(6, 12)
 
 /obj/item/seeds/proc/add_random_reagents(lower = 0, upper = 2)
+	procstart = null
+	src.procstart = null
 	var/amount_random_reagents = rand(lower, upper)
 	for(var/i in 1 to amount_random_reagents)
 		var/random_amount = rand(4, 15) * 0.01 // this must be multiplied by 0.01, otherwise, it will not properly associate
@@ -367,6 +419,8 @@
 	reagents_from_genes()
 
 /obj/item/seeds/proc/add_random_traits(lower = 0, upper = 2)
+	procstart = null
+	src.procstart = null
 	var/amount_random_traits = rand(lower, upper)
 	for(var/i in 1 to amount_random_traits)
 		var/random_trait = pick((subtypesof(/datum/plant_gene/trait)-typesof(/datum/plant_gene/trait/plant_type)))
@@ -377,6 +431,8 @@
 			qdel(T)
 
 /obj/item/seeds/proc/add_random_plant_type(normal_plant_chance = 75)
+	procstart = null
+	src.procstart = null
 	if(prob(normal_plant_chance))
 		var/random_plant_type = pick(subtypesof(/datum/plant_gene/trait/plant_type))
 		var/datum/plant_gene/trait/plant_type/P = new random_plant_type

@@ -5,13 +5,19 @@
 	target_amount = 4
 
 /datum/objective/devil/soulquantity/New()
+	procstart = null
+	src.procstart = null
 	target_amount = pick(6,7,8)
 	update_explanation_text()
 
 /datum/objective/devil/soulquantity/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Purchase, and retain control over at least [target_amount] souls."
 
 /datum/objective/devil/soulquantity/check_completion()
+	procstart = null
+	src.procstart = null
 	var/count = 0
 	var/datum/antagonist/devil/devilDatum = owner.has_antag_datum(ANTAG_DATUM_DEVIL)
 	var/list/souls = devilDatum.soulsOwned
@@ -29,6 +35,8 @@
 	var/contractName
 
 /datum/objective/devil/soulquality/New()
+	procstart = null
+	src.procstart = null
 	contractType = pick(CONTRACT_POWER, CONTRACT_WEALTH, CONTRACT_PRESTIGE, CONTRACT_MAGIC, CONTRACT_REVIVE, CONTRACT_KNOWLEDGE/*, CONTRACT_UNWILLING*/)
 	target_amount = pick(1,2)
 	switch(contractType)
@@ -47,9 +55,13 @@
 	update_explanation_text()
 
 /datum/objective/devil/soulquality/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	explanation_text = "Have mortals sign at least [target_amount] contracts [contractName]"
 
 /datum/objective/devil/soulquality/check_completion()
+	procstart = null
+	src.procstart = null
 	var/count = 0
 	var/datum/antagonist/devil/devilDatum = owner.has_antag_datum(ANTAG_DATUM_DEVIL)
 	var/list/souls = devilDatum.soulsOwned
@@ -65,10 +77,14 @@
 	explanation_text = "You shouldn't see this text.  Error:DEVIL3"
 
 /datum/objective/devil/sintouch/New()
+	procstart = null
+	src.procstart = null
 	target_amount = pick(4,5)
 	explanation_text = "Ensure at least [target_amount] mortals are sintouched."
 
 /datum/objective/devil/sintouch/check_completion()
+	procstart = null
+	src.procstart = null
 	return target_amount>=SSticker.mode.sintouched.len
 
 
@@ -77,12 +93,16 @@
 	explanation_text = "You shouldn't see this text.  Error:DEVIL4"
 
 /datum/objective/devil/buy_target/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	if(target)
 		explanation_text = "Purchase and retain the soul of [target.name], the [target.assigned_role]."
 	else
 		explanation_text = "Free objective."
 
 /datum/objective/devil/buy_target/check_completion()
+	procstart = null
+	src.procstart = null
 	return target.soulOwner == owner
 
 
@@ -92,10 +112,14 @@
 /datum/objective/devil/outsell/New()
 
 /datum/objective/devil/outsell/update_explanation_text()
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/devil/opponent = target.has_antag_datum(ANTAG_DATUM_DEVIL)
 	explanation_text = "Purchase and retain control over more souls than [opponent.truename], known to mortals as [target.name], the [target.assigned_role]."
 
 /datum/objective/devil/outsell/check_completion()
+	procstart = null
+	src.procstart = null
 	var/selfcount = 0
 	var/datum/antagonist/devil/devilDatum = owner.has_antag_datum(ANTAG_DATUM_DEVIL)
 	var/list/souls = devilDatum.soulsOwned

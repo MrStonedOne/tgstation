@@ -24,6 +24,8 @@
 	var/sight_blocker_distance = 1
 
 /obj/structure/necropolis_gate/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(SOUTH)
 	var/turf/sight_blocker_turf = get_turf(src)
@@ -47,6 +49,8 @@
 	add_overlay(dais_overlay)
 
 /obj/structure/necropolis_gate/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		qdel(sight_blocker, TRUE)
 		. = ..()
@@ -54,14 +58,20 @@
 		return QDEL_HINT_LETMELIVE
 
 /obj/structure/necropolis_gate/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/structure/necropolis_gate/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(get_dir(loc, target) == dir)
 		return !density
 	return 1
 
 /obj/structure/necropolis_gate/CheckExit(atom/movable/O, target)
+	procstart = null
+	src.procstart = null
 	if(get_dir(O.loc, target) == dir)
 		return !density
 	return 1
@@ -76,21 +86,29 @@
 	opacity = TRUE
 
 /obj/structure/opacity_blocker/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/structure/opacity_blocker/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		. = ..()
 	else
 		return QDEL_HINT_LETMELIVE
 
 /obj/structure/necropolis_gate/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(locked)
 		to_chat(user, "<span class='boldannounce'>It's [open ? "stuck open":"locked"].</span>")
 		return
 	toggle_the_gate(user)
 
 /obj/structure/necropolis_gate/proc/toggle_the_gate(mob/user, legion_damaged)
+	procstart = null
+	src.procstart = null
 	if(changing_openness)
 		return
 	changing_openness = TRUE
@@ -140,10 +158,14 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	sight_blocker_distance = 2
 
 /obj/structure/necropolis_gate/legion_gate/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.necropolis_gate = src
 
 /obj/structure/necropolis_gate/legion_gate/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		if(GLOB.necropolis_gate == src)
 			GLOB.necropolis_gate = null
@@ -152,6 +174,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 		return QDEL_HINT_LETMELIVE
 
 /obj/structure/necropolis_gate/legion_gate/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!open && !changing_openness)
 		var/safety = alert(user, "You think this might be a bad idea...", "Knock on the door?", "Proceed", "Abort")
 		if(safety == "Abort" || !in_range(src, user) || !src || open || changing_openness || user.incapacitated())
@@ -162,6 +186,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	..()
 
 /obj/structure/necropolis_gate/legion_gate/toggle_the_gate(mob/user, legion_damaged)
+	procstart = null
+	src.procstart = null
 	if(open)
 		return
 	. = ..()
@@ -213,6 +239,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	var/static/mutable_appearance/top_overlay
 
 /obj/structure/necropolis_arch/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "arch_bottom"
 	top_overlay = mutable_appearance('icons/effects/160x160.dmi', "arch_top")
@@ -220,9 +248,13 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	add_overlay(top_overlay)
 
 /obj/structure/necropolis_arch/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/structure/necropolis_arch/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		. = ..()
 	else
@@ -247,19 +279,27 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	var/falling = FALSE //If the tile is falling
 
 /obj/structure/stone_tile/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "[tile_key][rand(1, tile_random_sprite_max)]"
 
 /obj/structure/stone_tile/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force || fallen)
 		. = ..()
 	else
 		return QDEL_HINT_LETMELIVE
 
 /obj/structure/stone_tile/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/stone_tile/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(falling || fallen)
 		return
 	var/turf/T = get_turf(src)
@@ -279,6 +319,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 			crossed_effect(AM)
 
 /obj/structure/stone_tile/proc/collapse()
+	procstart = null
+	src.procstart = null
 	falling = TRUE
 	var/break_that_sucker = fall_on_cross == DESTROY_ON_CROSS
 	playsound(src, 'sound/effects/pressureplate.ogg', 50, TRUE)
@@ -296,6 +338,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 		addtimer(CALLBACK(src, .proc/rebuild), 55)
 
 /obj/structure/stone_tile/proc/rebuild()
+	procstart = null
+	src.procstart = null
 	pixel_x = initial(pixel_x)
 	pixel_y = initial(pixel_y) - 5
 	animate(src, alpha = initial(alpha), pixel_x = initial(pixel_x), pixel_y = initial(pixel_y), time = 30)
@@ -304,6 +348,8 @@ GLOBAL_DATUM(necropolis_gate, /obj/structure/necropolis_gate/legion_gate)
 	fallen = FALSE
 
 /obj/structure/stone_tile/proc/crossed_effect(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/stone_tile/block

@@ -15,6 +15,8 @@
 	foodtype = JUNKFOOD | GRAIN | FRIED | SUGAR
 
 /obj/item/reagent_containers/food/snacks/donut/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(30))
 		icon_state = "donut2"
@@ -30,6 +32,8 @@
 	tastes = list("donut" = 3, "chaos" = 1)
 
 /obj/item/reagent_containers/food/snacks/donut/chaos/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	extra_reagent = pick("nutriment", "capsaicin", "frostoil", "krokodil", "plasma", "cocoa", "slimejelly", "banana", "berryjuice", "omnizine")
 	reagents.add_reagent("[extra_reagent]", 3)
@@ -51,6 +55,8 @@
 	foodtype = JUNKFOOD | GRAIN | FRIED | FRUIT | SUGAR
 
 /obj/item/reagent_containers/food/snacks/donut/jelly/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(extra_reagent)
 		reagents.add_reagent("[extra_reagent]", 3)
@@ -230,6 +236,8 @@
 	foodtype = GRAIN | VEGETABLES
 
 /obj/item/reagent_containers/food/snacks/plumphelmetbiscuit/Initialize()
+	procstart = null
+	src.procstart = null
 	var/fey = prob(10)
 	if(fey)
 		name = "exceptional plump helmet biscuit"
@@ -383,10 +391,14 @@
 	tastes = list("pancakes" = 1, "chocolate" = 1)
 
 /obj/item/reagent_containers/food/snacks/pancakes/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/reagent_containers/food/snacks/pancakes/update_icon()
+	procstart = null
+	src.procstart = null
 	if(contents.len)
 		name = "stack of pancakes"
 	else
@@ -395,6 +407,8 @@
 		cut_overlay(our_overlays[our_overlays.len])
 
 /obj/item/reagent_containers/food/snacks/pancakes/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	var/ingredients_listed = ""
 	var/pancakeCount = contents.len
 	switch(pancakeCount)
@@ -420,6 +434,8 @@
 	bitecount = originalBites
 
 /obj/item/reagent_containers/food/snacks/pancakes/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/reagent_containers/food/snacks/pancakes/))
 		var/obj/item/reagent_containers/food/snacks/pancakes/P = I
 		if((contents.len >= PANCAKE_MAX_STACK) || ((P.contents.len + contents.len) > PANCAKE_MAX_STACK) || (reagents.total_volume >= volume))
@@ -446,6 +462,8 @@
 	..()
 
 /obj/item/reagent_containers/food/snacks/pancakes/update_overlays(obj/item/reagent_containers/food/snacks/P)
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/pancake = mutable_appearance(icon, "[P.item_state]_[rand(1,3)]")
 	pancake.pixel_x = rand(-1,1)
 	pancake.pixel_y = 3 * contents.len - 1
@@ -453,6 +471,8 @@
 	update_icon()
 
 /obj/item/reagent_containers/food/snacks/pancakes/attack(mob/M, mob/user, def_zone, stacked = TRUE)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM || !contents.len || !stacked)
 		return ..()
 	var/obj/item/O = contents[contents.len]

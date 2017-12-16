@@ -11,18 +11,26 @@
 	var/list/stored_files = list()		// List of stored files on this drive. DO NOT MODIFY DIRECTLY!
 
 /obj/item/computer_hardware/hard_drive/on_remove(obj/item/device/modular_computer/MC, mob/user)
+	procstart = null
+	src.procstart = null
 	MC.shutdown_computer()
 
 /obj/item/computer_hardware/hard_drive/proc/install_default_programs()
+	procstart = null
+	src.procstart = null
 	store_file(new/datum/computer_file/program/computerconfig(src)) 	// Computer configuration utility, allows hardware control and displays more info than status bar
 	store_file(new/datum/computer_file/program/ntnetdownload(src))		// NTNet Downloader Utility, allows users to download more software from NTNet repository
 	store_file(new/datum/computer_file/program/filemanager(src))		// File manager, allows text editor functions and basic file manipulation.
 
 /obj/item/computer_hardware/hard_drive/examine(user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>It has [max_capacity] GQ of storage capacity.</span>")
 
 /obj/item/computer_hardware/hard_drive/diagnostics(var/mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	// 999 is a byond limit that is in place. It's unlikely someone will reach that many files anyway, since you would sooner run out of space.
 	to_chat(user, "NT-NFS File Table Status: [stored_files.len]/999")
@@ -30,6 +38,8 @@
 
 // Use this proc to add file to the drive. Returns 1 on success and 0 on failure. Contains necessary sanity checks.
 /obj/item/computer_hardware/hard_drive/proc/store_file(var/datum/computer_file/F)
+	procstart = null
+	src.procstart = null
 	if(!F || !istype(F))
 		return 0
 
@@ -53,6 +63,8 @@
 
 // Use this proc to remove file from the drive. Returns 1 on success and 0 on failure. Contains necessary sanity checks.
 /obj/item/computer_hardware/hard_drive/proc/remove_file(var/datum/computer_file/F)
+	procstart = null
+	src.procstart = null
 	if(!F || !istype(F))
 		return 0
 
@@ -71,6 +83,8 @@
 
 // Loops through all stored files and recalculates used_capacity of this drive
 /obj/item/computer_hardware/hard_drive/proc/recalculate_size()
+	procstart = null
+	src.procstart = null
 	var/total_size = 0
 	for(var/datum/computer_file/F in stored_files)
 		total_size += F.size
@@ -79,6 +93,8 @@
 
 // Checks whether file can be stored on the hard drive. We can only store unique files, so this checks whether we wouldn't get a duplicity by adding a file.
 /obj/item/computer_hardware/hard_drive/proc/can_store_file(var/datum/computer_file/F)
+	procstart = null
+	src.procstart = null
 	if(!F || !istype(F))
 		return 0
 
@@ -102,6 +118,8 @@
 
 // Tries to find the file by filename. Returns null on failure
 /obj/item/computer_hardware/hard_drive/proc/find_file_by_name(var/filename)
+	procstart = null
+	src.procstart = null
 	if(!check_functionality())
 		return null
 
@@ -117,10 +135,14 @@
 	return null
 
 /obj/item/computer_hardware/hard_drive/Destroy()
+	procstart = null
+	src.procstart = null
 	stored_files = null
 	return ..()
 
 /obj/item/computer_hardware/hard_drive/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()	
 	install_default_programs()
 

@@ -16,6 +16,8 @@
 	var/selectable = 1	// Set to 0 for passive equipment such as mining scanner or armor plates
 
 /obj/item/mecha_parts/mecha_equipment/proc/update_chassis_page()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		send_byjax(chassis.occupant,"exosuit.browser","eq_list",chassis.get_equipment_list())
 		send_byjax(chassis.occupant,"exosuit.browser","equipment_menu",chassis.get_equipment_menu(),"dropdowns")
@@ -23,12 +25,16 @@
 	return
 
 /obj/item/mecha_parts/mecha_equipment/proc/update_equip_info()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		send_byjax(chassis.occupant,"exosuit.browser","[REF(src)]",get_equip_info())
 		return 1
 	return
 
 /obj/item/mecha_parts/mecha_equipment/Destroy()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		chassis.equipment -= src
 		if(chassis.selected == src)
@@ -41,10 +47,14 @@
 	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/proc/critfail()
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		log_message("Critical failure",1)
 
 /obj/item/mecha_parts/mecha_equipment/proc/get_equip_info()
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return
 	var/txt = "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp;"
@@ -61,10 +71,14 @@
 	return range&RANGED
 
 /obj/item/mecha_parts/mecha_equipment/proc/is_melee()
+	procstart = null
+	src.procstart = null
 	return range&MELEE
 
 
 /obj/item/mecha_parts/mecha_equipment/proc/action_checks(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return 0
 	if(!chassis)
@@ -78,14 +92,20 @@
 	return 1
 
 /obj/item/mecha_parts/mecha_equipment/proc/action(atom/target)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/mecha_parts/mecha_equipment/proc/start_cooldown()
+	procstart = null
+	src.procstart = null
 	set_ready_state(0)
 	chassis.use_power(energy_drain)
 	addtimer(CALLBACK(src, .proc/set_ready_state, 1), equip_cooldown)
 
 /obj/item/mecha_parts/mecha_equipment/proc/do_after_cooldown(atom/target)
+	procstart = null
+	src.procstart = null
 	if(!chassis)
 		return
 	var/C = chassis.loc
@@ -98,10 +118,14 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/proc/can_attach(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	if(M.equipment.len<M.max_equip)
 		return 1
 
 /obj/item/mecha_parts/mecha_equipment/proc/attach(obj/mecha/M)
+	procstart = null
+	src.procstart = null
 	M.equipment += src
 	chassis = M
 	forceMove(M)
@@ -112,6 +136,8 @@
 	return
 
 /obj/item/mecha_parts/mecha_equipment/proc/detach(atom/moveto=null)
+	procstart = null
+	src.procstart = null
 	moveto = moveto || get_turf(chassis)
 	if(src.Move(moveto))
 		chassis.equipment -= src
@@ -125,21 +151,29 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/Topic(href,href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["detach"])
 		detach()
 
 /obj/item/mecha_parts/mecha_equipment/proc/set_ready_state(state)
+	procstart = null
+	src.procstart = null
 	equip_ready = state
 	if(chassis)
 		send_byjax(chassis.occupant,"exosuit.browser","[REF(src)]",src.get_equip_info())
 	return
 
 /obj/item/mecha_parts/mecha_equipment/proc/occupant_message(message)
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		chassis.occupant_message("[icon2html(src, chassis.occupant)] [message]")
 	return
 
 /obj/item/mecha_parts/mecha_equipment/proc/log_message(message)
+	procstart = null
+	src.procstart = null
 	if(chassis)
 		chassis.log_message("<i>[src]:</i> [message]")
 	return
@@ -147,8 +181,12 @@
 
 //Used for reloading weapons/tools etc. that use some form of resource
 /obj/item/mecha_parts/mecha_equipment/proc/rearm()
+	procstart = null
+	src.procstart = null
 	return 0
 
 
 /obj/item/mecha_parts/mecha_equipment/proc/needs_rearm()
+	procstart = null
+	src.procstart = null
 	return 0

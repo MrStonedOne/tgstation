@@ -30,6 +30,8 @@
 	var/special_name_chance = 5
 
 /datum/species/golem/random_name(gender,unique,lastname)
+	procstart = null
+	src.procstart = null
 	var/golem_surname = pick(GLOB.golem_names)
 	// 3% chance that our golem has a human surname, because
 	// cultural contamination
@@ -48,6 +50,8 @@
 	var/static/list/random_golem_types
 
 /datum/species/golem/random/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!random_golem_types)
 		random_golem_types = subtypesof(/datum/species/golem) - type
@@ -85,6 +89,8 @@
 	var/datum/action/innate/ignite/ignite
 
 /datum/species/golem/plasma/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.bodytemperature > 750)
 		if(!boom_warning && H.on_fire)
 			to_chat(H, "<span class='userdanger'>You feel like you could blow up at any moment!</span>")
@@ -103,12 +109,16 @@
 	..()
 
 /datum/species/golem/plasma/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(C))
 		ignite = new
 		ignite.Grant(C)
 
 /datum/species/golem/plasma/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(ignite)
 		ignite.Remove(C)
 	..()
@@ -120,6 +130,8 @@
 	button_icon_state = "sacredflame"
 
 /datum/action/innate/ignite/Activate()
+	procstart = null
+	src.procstart = null
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		if(H.fire_stacks)
@@ -188,10 +200,14 @@
 	prefix = "Titanium"
 
 /datum/species/golem/titanium/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.weather_immunities |= "ash"
 
 /datum/species/golem/titanium/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.weather_immunities -= "ash"
 
@@ -206,11 +222,15 @@
 	prefix = "Plastitanium"
 
 /datum/species/golem/plastitanium/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.weather_immunities |= "lava"
 	C.weather_immunities |= "ash"
 
 /datum/species/golem/plastitanium/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.weather_immunities -= "ash"
 	C.weather_immunities -= "lava"
@@ -229,6 +249,8 @@
 
 //Regenerates because self-repairing super-advanced alien tech
 /datum/species/golem/alloy/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.stat == DEAD)
 		return
 	H.heal_overall_damage(2,2)
@@ -253,16 +275,22 @@
 	special_name_chance = 100
 
 /datum/species/golem/wood/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.faction |= "plants"
 	C.faction |= "vines"
 
 /datum/species/golem/wood/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.faction -= "plants"
 	C.faction -= "vines"
 
 /datum/species/golem/wood/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.stat == DEAD)
 		return
 	var/light_amount = 0 //how much light there is in the place, affects receiving nutrition and healing
@@ -281,6 +309,8 @@
 		H.take_overall_damage(2,0)
 
 /datum/species/golem/wood/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(chem.id == "plantbgone")
 		H.adjustToxLoss(3)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
@@ -299,6 +329,8 @@
 	prefix = "Uranium"
 
 /datum/species/golem/uranium/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(world.time > last_event+30)
 			active = 1
@@ -321,6 +353,8 @@
 	prefix = "Sand"
 
 /datum/species/golem/sand/spec_death(gibbed, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.visible_message("<span class='danger'>[H] turns into a pile of sand!</span>")
 	for(var/obj/item/W in H)
 		H.dropItemToGround(W)
@@ -329,6 +363,8 @@
 	qdel(H)
 
 /datum/species/golem/sand/bullet_act(obj/item/projectile/P, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!(P.original == H && P.firer == H))
 		if(P.flag == "bullet" || P.flag == "bomb")
 			playsound(H, 'sound/effects/shovel_dig.ogg', 70, 1)
@@ -351,6 +387,8 @@
 	prefix = "Glass"
 
 /datum/species/golem/glass/spec_death(gibbed, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	playsound(H, "shatter", 70, 1)
 	H.visible_message("<span class='danger'>[H] shatters!</span>")
 	for(var/obj/item/W in H)
@@ -360,6 +398,8 @@
 	qdel(H)
 
 /datum/species/golem/glass/bullet_act(obj/item/projectile/P, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!(P.original == H && P.firer == H)) //self-shots don't reflect
 		if(P.flag == "laser" || P.flag == "energy")
 			H.visible_message("<span class='danger'>The [P.name] gets reflected by [H]'s glass skin!</span>", \
@@ -390,6 +430,8 @@
 	var/last_teleport = 0
 
 /datum/species/golem/bluespace/proc/reactive_teleport(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.visible_message("<span class='warning'>[H] teleports!</span>", "<span class='danger'>You destabilize and teleport!</span>")
 	new /obj/effect/particle_effect/sparks(get_turf(H))
 	playsound(get_turf(H), "sparks", 50, 1)
@@ -397,6 +439,8 @@
 	last_teleport = world.time
 
 /datum/species/golem/bluespace/spec_hitby(atom/movable/AM, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/I
 	if(istype(AM, /obj/item))
@@ -407,21 +451,29 @@
 			reactive_teleport(H)
 
 /datum/species/golem/bluespace/spec_attack_hand(mob/living/carbon/human/M, mob/living/carbon/human/H, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	..()
 	if(world.time > last_teleport + teleport_cooldown && M != H &&  M.a_intent != INTENT_HELP)
 		reactive_teleport(H)
 
 /datum/species/golem/bluespace/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, intent, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	if(world.time > last_teleport + teleport_cooldown && user != H)
 		reactive_teleport(H)
 
 /datum/species/golem/bluespace/on_hit(obj/item/projectile/P, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	if(world.time > last_teleport + teleport_cooldown)
 		reactive_teleport(H)
 
 /datum/species/golem/bluespace/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(C))
 		unstable_teleport = new
@@ -429,6 +481,8 @@
 		last_teleport = world.time
 
 /datum/species/golem/bluespace/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(unstable_teleport)
 		unstable_teleport.Remove(C)
 	..()
@@ -442,18 +496,24 @@
 	var/last_teleport = 0
 
 /datum/action/innate/unstable_teleport/IsAvailable()
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(world.time > last_teleport + cooldown)
 			return 1
 		return 0
 
 /datum/action/innate/unstable_teleport/Activate()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = owner
 	H.visible_message("<span class='warning'>[H] starts vibrating!</span>", "<span class='danger'>You start charging your bluespace core...</span>")
 	playsound(get_turf(H), 'sound/weapons/flash.ogg', 25, 1)
 	addtimer(CALLBACK(src, .proc/teleport, H), 15)
 
 /datum/action/innate/unstable_teleport/proc/teleport(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.visible_message("<span class='warning'>[H] disappears in a shower of sparks!</span>", "<span class='danger'>You teleport!</span>")
 	var/datum/effect_system/spark_spread/spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(10, 0, src)
@@ -488,34 +548,46 @@
 	var/active = null
 
 /datum/species/golem/bananium/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	..()
 	last_banana = world.time
 	last_honk = world.time
 
 /datum/species/golem/bananium/random_name(gender,unique,lastname)
+	procstart = null
+	src.procstart = null
 	var/clown_name = pick(GLOB.clown_names)
 	var/golem_name = "[uppertext(clown_name)]"
 	return golem_name
 
 /datum/species/golem/bananium/spec_attack_hand(mob/living/carbon/human/M, mob/living/carbon/human/H, datum/martial_art/attacker_style)
+	procstart = null
+	src.procstart = null
 	..()
 	if(world.time > last_banana + banana_cooldown && M != H &&  M.a_intent != INTENT_HELP)
 		new/obj/item/grown/bananapeel/specialpeel(get_turf(H))
 		last_banana = world.time
 
 /datum/species/golem/bananium/spec_attacked_by(obj/item/I, mob/living/user, obj/item/bodypart/affecting, intent, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	if(world.time > last_banana + banana_cooldown && user != H)
 		new/obj/item/grown/bananapeel/specialpeel(get_turf(H))
 		last_banana = world.time
 
 /datum/species/golem/bananium/on_hit(obj/item/projectile/P, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	if(world.time > last_banana + banana_cooldown)
 		new/obj/item/grown/bananapeel/specialpeel(get_turf(H))
 		last_banana = world.time
 
 /datum/species/golem/bananium/spec_hitby(atom/movable/AM, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/I
 	if(istype(AM, /obj/item))
@@ -527,6 +599,8 @@
 			last_banana = world.time
 
 /datum/species/golem/bananium/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!active)
 		if(world.time > last_honk + honkooldown)
 			active = 1
@@ -537,9 +611,13 @@
 	..()
 
 /datum/species/golem/bananium/spec_death(gibbed, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	playsound(get_turf(H), 'sound/misc/sadtrombone.ogg', 70, 0)
 
 /datum/species/golem/bananium/get_spans()
+	procstart = null
+	src.procstart = null
 	return list(SPAN_CLOWN)
 
 
@@ -557,12 +635,16 @@
 	var/obj/effect/proc_holder/spell/targeted/dominate/dominate
 
 /datum/species/golem/runic/random_name(gender,unique,lastname)
+	procstart = null
+	src.procstart = null
 	var/edgy_first_name = pick("Razor","Blood","Dark","Evil","Cold","Pale","Black","Silent","Chaos","Deadly")
 	var/edgy_last_name = pick("Edge","Night","Death","Razor","Blade","Steel","Calamity","Twilight","Shadow","Nightmare") //dammit Razor Razor
 	var/golem_name = "[edgy_first_name] [edgy_last_name]"
 	return golem_name
 
 /datum/species/golem/runic/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.faction |= "cult"
 	phase_shift = new
@@ -576,6 +658,8 @@
 	C.AddSpell(dominate)
 
 /datum/species/golem/runic/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.faction -= "cult"
 	if(phase_shift)
@@ -586,6 +670,8 @@
 		C.RemoveSpell(dominate)
 
 /datum/species/golem/runic/handle_chemicals(datum/reagent/chem, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(chem.id == "holywater")
 		H.adjustFireLoss(4)
 		H.reagents.remove_reagent(chem.id, REAGENTS_METABOLISM)
@@ -615,18 +701,26 @@
 	var/has_corpse
 
 /datum/species/golem/clockwork/on_species_gain(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	H.faction |= "ratvar"
 
 /datum/species/golem/clockwork/on_species_loss(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!is_servant_of_ratvar(H))
 		H.faction -= "ratvar"
 	. = ..()
 
 /datum/species/golem/clockwork/get_spans()
+	procstart = null
+	src.procstart = null
 	return SPAN_ROBOT //beep
 
 /datum/species/golem/clockwork/spec_death(gibbed, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	gibbed = !has_corpse ? FALSE : gibbed
 	. = ..()
 	if(!has_corpse)
@@ -665,22 +759,30 @@
 	prefix = "Cloth"
 
 /datum/species/golem/cloth/check_roundstart_eligible()
+	procstart = null
+	src.procstart = null
 	if(SSevents.holidays && SSevents.holidays[HALLOWEEN])
 		return TRUE
 	return ..()
 
 /datum/species/golem/cloth/random_name(gender,unique,lastname)
+	procstart = null
+	src.procstart = null
 	var/pharaoh_name = pick("Neferkare", "Hudjefa", "Khufu", "Mentuhotep", "Ahmose", "Amenhotep", "Thutmose", "Hatshepsut", "Tutankhamun", "Ramses", "Seti", \
 	"Merenptah", "Djer", "Semerkhet", "Nynetjer", "Khafre", "Pepi", "Intef", "Ay") //yes, Ay was an actual pharaoh
 	var/golem_name = "[pharaoh_name] \Roman[rand(1,99)]"
 	return golem_name
 
 /datum/species/golem/cloth/spec_life(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(H.fire_stacks < 1)
 		H.adjust_fire_stacks(1) //always prone to burning
 	..()
 
 /datum/species/golem/cloth/spec_death(gibbed, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(gibbed)
 		return
 	if(H.on_fire)
@@ -705,6 +807,8 @@
 	var/mob/living/carbon/human/cloth_golem
 
 /obj/structure/cloth_pile/Initialize(mapload, mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(H) && is_species(H, /datum/species/golem/cloth))
 		H.unequip_everything()
 		H.forceMove(src)
@@ -715,16 +819,22 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/structure/cloth_pile/Destroy()
+	procstart = null
+	src.procstart = null
 	if(cloth_golem)
 		QDEL_NULL(cloth_golem)
 	return ..()
 
 /obj/structure/cloth_pile/burn()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>[src] burns into ash!</span>")
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	..()
 
 /obj/structure/cloth_pile/proc/revive()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || QDELETED(cloth_golem)) //QDELETED also checks for null, so if no cloth golem is set this won't runtime
 		return
 	if(cloth_golem.suiciding || cloth_golem.disabilities & NOCLONE)
@@ -742,6 +852,8 @@
 	qdel(src)
 
 /obj/structure/cloth_pile/attackby(obj/item/P, mob/living/carbon/human/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if(resistance_flags & ON_FIRE)
@@ -759,9 +871,13 @@
 	info_text = "As a <span class='danger'>Plastic Golem</span>, you are capable of ventcrawling, and passing through plastic flaps."
 
 /datum/species/golem/plastic/on_species_gain(mob/living/carbon/C, datum/species/old_species)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.ventcrawler = VENTCRAWLER_NUDE
 
 /datum/species/golem/plastic/on_species_loss(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	C.ventcrawler = initial(C.ventcrawler)

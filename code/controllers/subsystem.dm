@@ -42,10 +42,14 @@
 // Called AFTER Recover if that is called
 // Prefer to use Initialize if possible
 /datum/controller/subsystem/proc/PreInit()
+	procstart = null
+	src.procstart = null
 	return
 
 //This is used so the mc knows when the subsystem sleeps. do not override.
 /datum/controller/subsystem/proc/ignite(resumed = 0)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	. = SS_SLEEPING
 	fire(resumed)
@@ -62,10 +66,14 @@
 //fire() seems more suitable. This is the procedure that gets called every 'wait' deciseconds.
 //Sleeping in here prevents future fires until returned.
 /datum/controller/subsystem/proc/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	flags |= SS_NO_FIRE
 	throw EXCEPTION("Subsystem [src]([type]) does not fire() but did not set the SS_NO_FIRE flag. Please add the SS_NO_FIRE flag to any subsystem that doesn't fire so it doesn't get added to the processing list and waste cpu.")
 
 /datum/controller/subsystem/Destroy()
+	procstart = null
+	src.procstart = null
 	dequeue()
 	can_fire = 0
 	flags |= SS_NO_FIRE
@@ -76,6 +84,8 @@
 //	(we loop thru a linked list until we get to the end or find the right point)
 //	(this lets us sort our run order correctly without having to re-sort the entire already sorted list)
 /datum/controller/subsystem/proc/enqueue()
+	procstart = null
+	src.procstart = null
 	var/SS_priority = priority
 	var/SS_flags = flags
 	var/datum/controller/subsystem/queue_node
@@ -134,6 +144,8 @@
 
 
 /datum/controller/subsystem/proc/dequeue()
+	procstart = null
+	src.procstart = null
 	if (queue_next)
 		queue_next.queue_prev = queue_prev
 	if (queue_prev)
@@ -148,6 +160,8 @@
 
 
 /datum/controller/subsystem/proc/pause()
+	procstart = null
+	src.procstart = null
 	. = 1
 	switch(state)
 		if(SS_RUNNING)
@@ -158,6 +172,8 @@
 
 //used to initialize the subsystem AFTER the map has loaded
 /datum/controller/subsystem/Initialize(start_timeofday)
+	procstart = null
+	src.procstart = null
 	initialized = TRUE
 	var/time = (REALTIMEOFDAY - start_timeofday) / 10
 	var/msg = "Initialized [name] subsystem within [time] second[time == 1 ? "" : "s"]!"
@@ -167,6 +183,8 @@
 
 //hook for printing stats to the "MC" statuspanel for admins to see performance and related stats etc.
 /datum/controller/subsystem/stat_entry(msg)
+	procstart = null
+	src.procstart = null
 	if(!statclick)
 		statclick = new/obj/effect/statclick/debug(null, "Initializing...", src)
 
@@ -184,6 +202,8 @@
 	stat(title, statclick.update(msg))
 
 /datum/controller/subsystem/proc/state_letter()
+	procstart = null
+	src.procstart = null
 	switch (state)
 		if (SS_RUNNING)
 			. = "R"
@@ -199,6 +219,8 @@
 //could be used to postpone a costly subsystem for (default one) var/cycles, cycles
 //for instance, during cpu intensive operations like explosions
 /datum/controller/subsystem/proc/postpone(cycles = 1)
+	procstart = null
+	src.procstart = null
 	if(next_fire - world.time < wait)
 		next_fire += (wait*cycles)
 
@@ -207,6 +229,8 @@
 /datum/controller/subsystem/Recover()
 
 /datum/controller/subsystem/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch (var_name)
 		if ("can_fire")
 			//this is so the subsystem doesn't rapid fire to make up missed ticks causing more lag

@@ -54,18 +54,24 @@
 	)
 
 /obj/machinery/chem_dispenser/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cell = new cell_type
 	recharge()
 	dispensable_reagents = sortList(dispensable_reagents)
 
 /obj/machinery/chem_dispenser/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	QDEL_NULL(cell)
 	return ..()
 
 /obj/machinery/chem_dispenser/process()
 
+	procstart = null
+	src.procstart = null
 	if(recharged < 0)
 		recharge()
 		recharged = recharge_delay
@@ -73,6 +79,8 @@
 		recharged -= 1
 
 /obj/machinery/chem_dispenser/proc/recharge()
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN|NOPOWER))
 		return
 	var/usedpower = cell.give( 1 / powerefficiency) //Should always be a gain of one on the UI.
@@ -80,6 +88,8 @@
 		use_power(2500)
 
 /obj/machinery/chem_dispenser/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		to_chat(user, "<span class='warning'>[src] has no functional safeties to emag.</span>")
 		return
@@ -88,15 +98,21 @@
 	emagged = TRUE
 
 /obj/machinery/chem_dispenser/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity < 3)
 		..()
 
 /obj/machinery/chem_dispenser/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(beaker)
 		beaker.ex_act(severity, target)
 
 /obj/machinery/chem_dispenser/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	..()
 	if(A == beaker)
 		beaker = null
@@ -112,6 +128,8 @@
 		ui.open()
 
 /obj/machinery/chem_dispenser/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["amount"] = amount
 	data["energy"] = cell.charge ? cell.charge * powerefficiency : "0" //To prevent NaN in the UI.
@@ -150,6 +168,8 @@
 	return data
 
 /obj/machinery/chem_dispenser/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -181,6 +201,8 @@
 				. = TRUE
 
 /obj/machinery/chem_dispenser/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, I))
 		return
 
@@ -207,9 +229,13 @@
 		return ..()
 
 /obj/machinery/chem_dispenser/get_cell()
+	procstart = null
+	src.procstart = null
 	return cell
 
 /obj/machinery/chem_dispenser/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	var/list/datum/reagents/R = list()
 	var/total = min(rand(7,15), Floor(cell.charge*powerefficiency))
 	var/datum/reagents/Q = new(total*10)
@@ -279,6 +305,8 @@
 	)
 
 /obj/machinery/chem_dispenser/constructable/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/time = 0
 	var/i
 	for(var/obj/item/stock_parts/cell/P in component_parts)
@@ -294,6 +322,8 @@
 	dispensable_reagents = sortList(dispensable_reagents)
 
 /obj/machinery/chem_dispenser/constructable/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "minidispenser-o", "minidispenser", I))
 		return
 
@@ -305,6 +335,8 @@
 	return ..()
 
 /obj/machinery/chem_dispenser/constructable/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		beaker.forceMove(drop_location())
 		beaker = null

@@ -9,10 +9,14 @@
 	light_color = LIGHT_COLOR_CYAN
 
 /obj/machinery/computer/station_alert/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.alert_consoles += src
 
 /obj/machinery/computer/station_alert/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.alert_consoles -= src
 	return ..()
 
@@ -24,6 +28,8 @@
 		ui.open()
 
 /obj/machinery/computer/station_alert/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	. = list()
 
 	.["alarms"] = list()
@@ -33,6 +39,8 @@
 			.["alarms"][class] += area
 
 /obj/machinery/computer/station_alert/proc/triggerAlarm(class, area/A, O, obj/source)
+	procstart = null
+	src.procstart = null
 	if(source.z != z)
 		return
 	if(stat & (BROKEN))
@@ -59,6 +67,8 @@
 
 
 /obj/machinery/computer/station_alert/proc/cancelAlarm(class, area/A, obj/origin)
+	procstart = null
+	src.procstart = null
 	if(stat & (BROKEN))
 		return
 	var/list/L = alarms[class]
@@ -75,6 +85,8 @@
 	return !cleared
 
 /obj/machinery/computer/station_alert/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & (NOPOWER|BROKEN))
 		return

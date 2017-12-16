@@ -3,6 +3,8 @@
 //////////////////////////
 
 /proc/make_datum_references_lists()
+	procstart = null
+	src.procstart = null
 	//hair
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/hair, GLOB.hair_styles_list, GLOB.hair_styles_male_list, GLOB.hair_styles_female_list)
 	//facial hair
@@ -55,6 +57,8 @@
 //creates every subtype of prototype (excluding prototype) and adds it to list L.
 //if no list/L is provided, one is created.
 /proc/init_subtypes(prototype, list/L)
+	procstart = null
+	src.procstart = null
 	if(!istype(L))
 		L = list()
 	for(var/path in subtypesof(prototype))
@@ -64,6 +68,8 @@
 //returns a list of paths to every subtype of prototype (excluding prototype)
 //if no list/L is provided, one is created.
 /proc/init_paths(prototype, list/L)
+	procstart = null
+	src.procstart = null
 	if(!istype(L))
 		L = list()
 		for(var/path in subtypesof(prototype))

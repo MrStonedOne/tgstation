@@ -17,6 +17,8 @@
 	var/mutantrace_variation = NO_MUTANTRACE_VARIATION //Are there special sprites for specific situations? Don't use this unless you need to.
 
 /obj/item/clothing/under/worn_overlays(isinhands = FALSE)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if(!isinhands)
 
@@ -28,6 +30,8 @@
 			. += accessory_overlay
 
 /obj/item/clothing/under/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if((has_sensor == BROKEN_SENSORS) && istype(I, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/C = I
 		C.use(1)
@@ -38,6 +42,8 @@
 		return ..()
 
 /obj/item/clothing/under/update_clothes_damaged_state(damaging = TRUE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(loc))
 		var/mob/M = loc
@@ -46,6 +52,8 @@
 		has_sensor = BROKEN_SENSORS
 
 /obj/item/clothing/under/New()
+	procstart = null
+	src.procstart = null
 	if(random_sensor)
 		//make the sensor mode favor higher levels, except coords.
 		sensor_mode = pick(SENSOR_OFF, SENSOR_LIVING, SENSOR_LIVING, SENSOR_VITALS, SENSOR_VITALS, SENSOR_VITALS, SENSOR_COORDS, SENSOR_COORDS)
@@ -53,6 +61,8 @@
 	..()
 
 /obj/item/clothing/under/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	..()
 	if(adjusted)
 		adjusted = NORMAL_STYLE
@@ -73,6 +83,8 @@
 			H.update_inv_wear_suit()
 
 /obj/item/clothing/under/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(attached_accessory)
 		attached_accessory.on_uniform_dropped(src, user)
 		if(ishuman(user))
@@ -83,6 +95,8 @@
 	..()
 
 /obj/item/clothing/under/proc/attach_accessory(obj/item/I, mob/user, notifyAttach = 1)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(istype(I, /obj/item/clothing/accessory))
 		var/obj/item/clothing/accessory/A = I
@@ -114,6 +128,8 @@
 			return TRUE
 
 /obj/item/clothing/under/proc/remove_accessory(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 	if(!can_use(user))
@@ -134,6 +150,8 @@
 
 
 /obj/item/clothing/under/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(can_adjust)
 		if(adjusted == ALT_STYLE)

@@ -218,13 +218,19 @@ world
 
 	// Multiply all alpha values by this float
 /icon/proc/ChangeOpacity(opacity = 1)
+	procstart = null
+	src.procstart = null
 	MapColors(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,opacity, 0,0,0,0)
 
 // Convert to grayscale
 /icon/proc/GrayScale()
+	procstart = null
+	src.procstart = null
 	MapColors(0.3,0.3,0.3, 0.59,0.59,0.59, 0.11,0.11,0.11, 0,0,0)
 
 /icon/proc/ColorTone(tone)
+	procstart = null
+	src.procstart = null
 	GrayScale()
 
 	var/list/TONE = ReadRGB(tone)
@@ -243,6 +249,8 @@ world
 
 // Take the minimum color of two icons; combine transparency as if blending with ICON_ADD
 /icon/proc/MinColors(icon)
+	procstart = null
+	src.procstart = null
 	var/icon/I = new(src)
 	I.Opaque()
 	I.Blend(icon, ICON_SUBTRACT)
@@ -250,6 +258,8 @@ world
 
 // Take the maximum color of two icons; combine opacity as if blending with ICON_OR
 /icon/proc/MaxColors(icon)
+	procstart = null
+	src.procstart = null
 	var/icon/I
 	if(isicon(icon))
 		I = new(icon)
@@ -266,20 +276,28 @@ world
 
 // make this icon fully opaque--transparent pixels become black
 /icon/proc/Opaque(background = "#000000")
+	procstart = null
+	src.procstart = null
 	SwapColor(null, background)
 	MapColors(1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,0, 0,0,0,1)
 
 // Change a grayscale icon into a white icon where the original color becomes the alpha
 // I.e., black -> transparent, gray -> translucent white, white -> solid white
 /icon/proc/BecomeAlphaMask()
+	procstart = null
+	src.procstart = null
 	SwapColor(null, "#000000ff")	// don't let transparent become gray
 	MapColors(0,0,0,0.3, 0,0,0,0.59, 0,0,0,0.11, 0,0,0,0, 1,1,1,0)
 
 /icon/proc/UseAlphaMask(mask)
+	procstart = null
+	src.procstart = null
 	Opaque()
 	AddAlphaMask(mask)
 
 /icon/proc/AddAlphaMask(mask)
+	procstart = null
+	src.procstart = null
 	var/icon/M = new(mask)
 	M.Blend("#ffffff", ICON_SUBTRACT)
 	// apply mask
@@ -308,6 +326,8 @@ world
  */
 
 /proc/ReadRGB(rgb)
+	procstart = null
+	src.procstart = null
 	if(!rgb)
 		return
 
@@ -372,6 +392,8 @@ world
 		. += alpha
 
 /proc/ReadHSV(hsv)
+	procstart = null
+	src.procstart = null
 	if(!hsv)
 		return
 
@@ -426,6 +448,8 @@ world
 		. += alpha
 
 /proc/HSVtoRGB(hsv)
+	procstart = null
+	src.procstart = null
 	if(!hsv)
 		return "#000000"
 	var/list/HSV = ReadHSV(hsv)
@@ -457,6 +481,8 @@ world
 	return (HSV.len > 3) ? rgb(r,g,b,HSV[4]) : rgb(r,g,b)
 
 /proc/RGBtoHSV(rgb)
+	procstart = null
+	src.procstart = null
 	if(!rgb)
 		return "#0000000"
 	var/list/RGB = ReadRGB(rgb)
@@ -490,6 +516,8 @@ world
 	return hsv(hue, sat, val, (RGB.len>3 ? RGB[4] : null))
 
 /proc/hsv(hue, sat, val, alpha)
+	procstart = null
+	src.procstart = null
 	if(hue < 0 || hue >= 1536)
 		hue %= 1536
 	if(hue < 0)
@@ -532,6 +560,8 @@ world
 	amount<0 or amount>1 are allowed
  */
 /proc/BlendHSV(hsv1, hsv2, amount)
+	procstart = null
+	src.procstart = null
 	var/list/HSV1 = ReadHSV(hsv1)
 	var/list/HSV2 = ReadHSV(hsv2)
 
@@ -600,6 +630,8 @@ world
 	amount<0 or amount>1 are allowed
  */
 /proc/BlendRGB(rgb1, rgb2, amount)
+	procstart = null
+	src.procstart = null
 	var/list/RGB1 = ReadRGB(rgb1)
 	var/list/RGB2 = ReadRGB(rgb2)
 
@@ -618,9 +650,13 @@ world
 	return isnull(alpha) ? rgb(r, g, b) : rgb(r, g, b, alpha)
 
 /proc/BlendRGBasHSV(rgb1, rgb2, amount)
+	procstart = null
+	src.procstart = null
 	return HSVtoRGB(RGBtoHSV(rgb1), RGBtoHSV(rgb2), amount)
 
 /proc/HueToAngle(hue)
+	procstart = null
+	src.procstart = null
 	// normalize hsv in case anything is screwy
 	if(hue < 0 || hue >= 1536)
 		hue %= 1536
@@ -631,6 +667,8 @@ world
 	return hue / (1530/360)
 
 /proc/AngleToHue(angle)
+	procstart = null
+	src.procstart = null
 	// normalize hsv in case anything is screwy
 	if(angle < 0 || angle >= 360)
 		angle -= 360 * round(angle / 360)
@@ -642,6 +680,8 @@ world
 
 // positive angle rotates forward through red->green->blue
 /proc/RotateHue(hsv, angle)
+	procstart = null
+	src.procstart = null
 	var/list/HSV = ReadHSV(hsv)
 
 	// normalize hsv in case anything is screwy
@@ -669,12 +709,16 @@ world
 
 // Convert an rgb color to grayscale
 /proc/GrayScale(rgb)
+	procstart = null
+	src.procstart = null
 	var/list/RGB = ReadRGB(rgb)
 	var/gray = RGB[1]*0.3 + RGB[2]*0.59 + RGB[3]*0.11
 	return (RGB.len > 3) ? rgb(gray, gray, gray, RGB[4]) : rgb(gray, gray, gray)
 
 // Change grayscale color to black->tone->white range
 /proc/ColorTone(rgb, tone)
+	procstart = null
+	src.procstart = null
 	var/list/RGB = ReadRGB(rgb)
 	var/list/TONE = ReadRGB(tone)
 
@@ -689,6 +733,8 @@ world
 
 //Used in the OLD chem colour mixing algorithm
 /proc/GetColors(hex)
+	procstart = null
+	src.procstart = null
 	hex = uppertext(hex)
 	// No alpha set? Default to full alpha.
 	if(length(hex) == 7)
@@ -715,6 +761,8 @@ The _flatIcons list is a cache for generated icon files.
 
 // Creates a single icon from a given /atom or /image.  Only the first argument is required.
 /proc/getFlatIcon(image/A, defdir=A.dir, deficon=A.icon, defstate=A.icon_state, defblend=A.blend_mode)
+	procstart = null
+	src.procstart = null
 	// We start with a blank canvas, otherwise some icon procs crash silently
 	var/icon/flat = icon('icons/effects/effects.dmi', "nothing") // Final flattened icon
 	if(!A)
@@ -891,6 +939,8 @@ The _flatIcons list is a cache for generated icon files.
 
 //For photo camera.
 /proc/build_composite_icon(atom/A)
+	procstart = null
+	src.procstart = null
 	var/icon/composite = icon(A.icon, A.icon_state, A.dir, 1)
 	for(var/O in A.overlays)
 		var/image/I = O
@@ -901,6 +951,8 @@ The _flatIcons list is a cache for generated icon files.
 //What the mob looks like as animated static
 //By vg's ComicIronic
 /proc/getStaticIcon(icon/A, safety=1)
+	procstart = null
+	src.procstart = null
 	var/icon/flat_icon = safety ? A : new(A)
 	flat_icon.Blend(rgb(255,255,255))
 	flat_icon.BecomeAlphaMask()
@@ -912,6 +964,8 @@ The _flatIcons list is a cache for generated icon files.
 //What the mob looks like as a pitch black outline
 //By vg's ComicIronic
 /proc/getBlankIcon(icon/A, safety=1)
+	procstart = null
+	src.procstart = null
 	var/icon/flat_icon = safety ? A : new(A)
 	flat_icon.Blend(rgb(255,255,255))
 	flat_icon.BecomeAlphaMask()
@@ -923,6 +977,8 @@ The _flatIcons list is a cache for generated icon files.
 //Dwarf fortress style icons based on letters (defaults to the first letter of the Atom's name)
 //By vg's ComicIronic
 /proc/getLetterImage(atom/A, letter= "", uppercase = 0)
+	procstart = null
+	src.procstart = null
 	if(!A)
 		return
 
@@ -946,6 +1002,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 
 // Pick a random animal instead of the icon, and use that instead
 /proc/getRandomAnimalImage(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.friendly_animal_types.len)
 		for(var/T in typesof(/mob/living/simple_animal))
 			var/mob/living/simple_animal/SA = T
@@ -970,6 +1028,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 //Interface for using DrawBox() to draw 1 pixel on a coordinate.
 //Returns the same icon specifed in the argument, but with the pixel drawn
 /proc/DrawPixel(icon/I,colour,drawX,drawY)
+	procstart = null
+	src.procstart = null
 	if(!I)
 		return 0
 
@@ -987,6 +1047,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 
 //Interface for easy drawing of one pixel on an atom.
 /atom/proc/DrawPixelOn(colour, drawX, drawY)
+	procstart = null
+	src.procstart = null
 	var/icon/I = new(icon)
 	var/icon/J = DrawPixel(I, colour, drawX, drawY)
 	if(J) //Only set the icon if it succeeded, the icon without the pixel is 1000x better than a black square.
@@ -996,6 +1058,8 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 
 //For creating consistent icons for human looking simple animals
 /proc/get_flat_human_icon(icon_id, datum/job/J, datum/preferences/prefs, dummy_key)
+	procstart = null
+	src.procstart = null
 	var/static/list/humanoid_icon_cache = list()
 	if(!icon_id || !humanoid_icon_cache[icon_id])
 		var/mob/living/carbon/human/dummy/body = generate_or_wait_for_human_dummy(dummy_key)
@@ -1038,11 +1102,15 @@ GLOBAL_LIST_EMPTY(friendly_animal_types)
 //Images have dir without being an atom, so they get their own definition.
 //Lame.
 /image/proc/setDir(newdir)
+	procstart = null
+	src.procstart = null
 	dir = newdir
 
 GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0,0,0)))
 
 /obj/proc/make_frozen_visual()
+	procstart = null
+	src.procstart = null
 	// Used to make the frozen item visuals for Freon.
 	if(resistance_flags & FREEZE_PROOF)
 		return
@@ -1054,6 +1122,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 
 //Assumes already frozed
 /obj/proc/make_unfrozen()
+	procstart = null
+	src.procstart = null
 	if(flags_2 & FROZEN_2)
 		name = replacetext(name, "frozen ", "")
 		remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, GLOB.freon_color_matrix)
@@ -1065,6 +1135,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 // exporting it as text, and then parsing the base64 from that.
 // (This relies on byond automatically storing icons in savefiles as base64)
 /proc/icon2base64(icon/icon, iconKey = "misc")
+	procstart = null
+	src.procstart = null
 	if (!isicon(icon))
 		return FALSE
 	WRITE_FILE(GLOB.iconCache[iconKey], icon)
@@ -1073,6 +1145,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 	return replacetext(copytext(partial[2], 3, -5), "\n", "")
 
 /proc/icon2html(thing, target, icon_state, dir, frame = 1, moving = FALSE)
+	procstart = null
+	src.procstart = null
 	if (!thing)
 		return
 
@@ -1124,6 +1198,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 	return "<img class='icon icon-[icon_state]' src=\"[url_encode(key)]\">"
 
 /proc/icon2base64html(thing)
+	procstart = null
+	src.procstart = null
 	if (!thing)
 		return
 	var/static/list/bicon_cache = list()
@@ -1158,6 +1234,8 @@ GLOBAL_LIST_INIT(freon_color_matrix, list("#2E5E69", "#60A2A8", "#A1AFB1", rgb(0
 
 //Costlier version of icon2html() that uses getFlatIcon() to account for overlays, underlays, etc. Use with extreme moderation, ESPECIALLY on mobs.
 /proc/costly_icon2html(thing, target)
+	procstart = null
+	src.procstart = null
 	if (!thing)
 		return
 

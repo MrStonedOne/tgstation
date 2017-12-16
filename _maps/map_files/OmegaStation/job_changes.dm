@@ -4,11 +4,15 @@
 #define JOB_MODIFICATION_MAP_NAME "OmegaStation"
 
 /datum/job/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	supervisors = "the captain and the head of personnel"
 
 /datum/outfit/job/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	box = /obj/item/storage/box/survival/radio
@@ -18,22 +22,30 @@
 //Command
 
 /datum/job/captain/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	supervisors = "Nanotrasen and Central Command"
 
 /datum/job/hop/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	supervisors = "the captain and Central Command"
 
 /datum/job/hop/get_access()
+	procstart = null
+	src.procstart = null
 	MAP_JOB_CHECK_BASE
 	return get_all_accesses()
 
 //Security
 
 /datum/job/officer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	total_positions = 3
@@ -42,17 +54,23 @@
 	minimal_access = list(ACCESS_SECURITY, ACCESS_SEC_DOORS, ACCESS_BRIG, ACCESS_ARMORY, ACCESS_COURT, ACCESS_MAINT_TUNNELS, ACCESS_MORGUE, ACCESS_WEAPONS, ACCESS_FORENSICS_LOCKERS)
 
 /datum/outfit/job/officer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	box = /obj/item/storage/box/security/radio
 
 /datum/job/detective/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	access = list(ACCESS_SECURITY, ACCESS_SEC_DOORS, ACCESS_BRIG, ACCESS_ARMORY, ACCESS_COURT, ACCESS_MAINT_TUNNELS, ACCESS_MORGUE, ACCESS_WEAPONS, ACCESS_FORENSICS_LOCKERS)
 	minimal_access = list(ACCESS_SECURITY, ACCESS_SEC_DOORS, ACCESS_BRIG, ACCESS_ARMORY, ACCESS_COURT, ACCESS_MAINT_TUNNELS, ACCESS_MORGUE, ACCESS_WEAPONS, ACCESS_FORENSICS_LOCKERS)
 
 /datum/outfit/job/detective/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	box = /obj/item/storage/box/security/radio
@@ -60,6 +78,8 @@
 //Medbay
 
 /datum/job/doctor/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	selection_color = "#ffffff"
@@ -71,6 +91,8 @@
 //Engineering
 
 /datum/job/engineer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	total_positions = 2
@@ -79,11 +101,15 @@
 	minimal_access = list(ACCESS_EVA, ACCESS_ENGINE, ACCESS_ENGINE_EQUIP, ACCESS_TECH_STORAGE, ACCESS_MAINT_TUNNELS, ACCESS_EXTERNAL_AIRLOCKS, ACCESS_CONSTRUCTION, ACCESS_ATMOSPHERICS, ACCESS_TCOMSAT)
 
 /datum/outfit/job/engineer/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	box = /obj/item/storage/box/engineer/radio
 
 /datum/job/atmos/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	total_positions = 2
@@ -92,6 +118,8 @@
 //Science
 
 /datum/job/scientist/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	total_positions = 3
@@ -102,6 +130,8 @@
 //Cargo
 
 /datum/job/cargo_tech/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	total_positions = 2
@@ -110,6 +140,8 @@
 	minimal_access = list(ACCESS_MAINT_TUNNELS, ACCESS_MAILSORTING, ACCESS_CARGO, ACCESS_CARGO_BOT, ACCESS_QM, ACCESS_MINING, ACCESS_MINING_STATION, ACCESS_MINERAL_STOREROOM)
 
 /datum/job/mining/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	total_positions = 2
@@ -118,24 +150,32 @@
 	minimal_access = list(ACCESS_MAINT_TUNNELS, ACCESS_MAILSORTING, ACCESS_CARGO, ACCESS_CARGO_BOT, ACCESS_QM, ACCESS_MINING, ACCESS_MINING_STATION, ACCESS_MINERAL_STOREROOM)
 
 /datum/outfit/job/mining/New()
+	procstart = null
+	src.procstart = null
 	..()
 	box = /obj/item/storage/box/engineer/radio
 
 //Service
 
 /datum/job/bartender/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	access = list(ACCESS_HYDROPONICS, ACCESS_BAR, ACCESS_KITCHEN, ACCESS_MORGUE, ACCESS_WEAPONS)
 	minimal_access = list(ACCESS_HYDROPONICS, ACCESS_BAR, ACCESS_KITCHEN, ACCESS_MORGUE, ACCESS_WEAPONS)
 
 /datum/job/cook/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	access = list(ACCESS_HYDROPONICS, ACCESS_BAR, ACCESS_KITCHEN, ACCESS_MORGUE, ACCESS_WEAPONS)
 	minimal_access = list(ACCESS_HYDROPONICS, ACCESS_BAR, ACCESS_KITCHEN, ACCESS_MORGUE, ACCESS_WEAPONS)
 
 /datum/job/hydro/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	access = list(ACCESS_HYDROPONICS, ACCESS_BAR, ACCESS_KITCHEN, ACCESS_MORGUE, ACCESS_MAINT_TUNNELS)
@@ -143,6 +183,8 @@
 	// they get maint access because of all the hydro content in maint
 
 /datum/job/janitor/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	access = list(ACCESS_JANITOR, ACCESS_HYDROPONICS, ACCESS_BAR, ACCESS_KITCHEN, ACCESS_MORGUE, ACCESS_MAINT_TUNNELS)
@@ -152,6 +194,8 @@
 //Civilian
 
 /datum/job/clown/New()
+	procstart = null
+	src.procstart = null
 	..()
 	MAP_JOB_CHECK
 	supervisors = "nobody but yourself" //Honk

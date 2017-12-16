@@ -15,6 +15,8 @@
 
 
 /obj/item/implantpad/update_icon()
+	procstart = null
+	src.procstart = null
 	if(case)
 		icon_state = "implantpad-1"
 	else
@@ -22,6 +24,8 @@
 
 
 /obj/item/implantpad/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(case && user.is_holding(src))
 		user.put_in_active_hand(case)
 
@@ -35,6 +39,8 @@
 
 
 /obj/item/implantpad/attackby(obj/item/implantcase/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(C, /obj/item/implantcase))
 		if(!case)
 			if(!user.transferItemToLoc(C, src))
@@ -45,6 +51,8 @@
 		return ..()
 
 /obj/item/implantpad/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = "<B>Implant Mini-Computer:</B><HR>"
 	if(case)
@@ -60,6 +68,8 @@
 
 
 /obj/item/implantpad/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(usr.stat)
 		return

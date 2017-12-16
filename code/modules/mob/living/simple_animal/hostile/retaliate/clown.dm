@@ -33,11 +33,15 @@
 	unsuitable_atmos_damage = 10
 
 /mob/living/simple_animal/hostile/retaliate/clown/handle_temperature_damage()
+	procstart = null
+	src.procstart = null
 	if(bodytemperature < minbodytemp)
 		adjustBruteLoss(10)
 	else if(bodytemperature > maxbodytemp)
 		adjustBruteLoss(15)
 
 /mob/living/simple_animal/hostile/retaliate/clown/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	..()
 	playsound(src.loc, 'sound/items/bikehorn.ogg', 50, 1)

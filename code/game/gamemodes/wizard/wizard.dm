@@ -19,6 +19,8 @@
 	var/finished = 0
 
 /datum/game_mode/wizard/pre_setup()
+	procstart = null
+	src.procstart = null
 	var/datum/mind/wizard = pick(antag_candidates)
 	wizards += wizard
 	wizard.assigned_role = "Wizard"
@@ -33,17 +35,23 @@
 
 
 /datum/game_mode/wizard/post_setup()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/wizard in wizards)
 		wizard.add_antag_datum(/datum/antagonist/wizard)
 	return ..()
 
 /datum/game_mode/wizard/generate_report()
+	procstart = null
+	src.procstart = null
 	return "A dangerous Wizards' Federation individual by the name of [pick(GLOB.wizard_first)] [pick(GLOB.wizard_second)] has recently escaped confinement from an unlisted prison facility. This \
 		man is a dangerous mutant with the ability to alter himself and the world around him by what he and his leaders believe to be magic. If this man attempts an attack on your station, \
 		his execution is highly encouraged, as is the preservation of his body for later study."
 
 
 /datum/game_mode/wizard/are_special_antags_dead()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/wizard in wizards)
 		if(isliving(wizard.current) && wizard.current.stat!=DEAD)
 			return FALSE
@@ -59,15 +67,21 @@
 	return TRUE
 
 /datum/game_mode/wizard/set_round_result()
+	procstart = null
+	src.procstart = null
 	..()
 	if(finished)
 		SSticker.mode_result = "loss - wizard killed"
 		SSticker.news_report = WIZARD_KILLED
 
 /datum/game_mode/wizard/special_report()
+	procstart = null
+	src.procstart = null
 	if(finished)
 		return "<span class='redtext big'>The wizard[(wizards.len>1)?"s":""] has been killed by the crew! The Space Wizards Federation has been taught a lesson they will not soon forget!</span>"
 
 //returns whether the mob is a wizard (or apprentice)
 /proc/iswizard(mob/living/M)
+	procstart = null
+	src.procstart = null
 	return M.mind && M.mind.has_antag_datum(/datum/antagonist/wizard,TRUE)

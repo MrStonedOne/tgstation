@@ -8,12 +8,16 @@
 	var/update = TRUE
 
 /datum/pipeline/New()
+	procstart = null
+	src.procstart = null
 	other_airs = list()
 	members = list()
 	other_atmosmch = list()
 	SSair.networks += src
 
 /datum/pipeline/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.networks -= src
 	if(air && air.volume)
 		temporarily_store_air()
@@ -24,12 +28,16 @@
 	return ..()
 
 /datum/pipeline/process()
+	procstart = null
+	src.procstart = null
 	if(update)
 		update = FALSE
 		reconcile_air()
 	update = air.react()
 
 /datum/pipeline/proc/build_pipeline(obj/machinery/atmospherics/base)
+	procstart = null
+	src.procstart = null
 	var/volume = 0
 	if(istype(base, /obj/machinery/atmospherics/pipe))
 		var/obj/machinery/atmospherics/pipe/E = base
@@ -79,6 +87,8 @@
 	air.volume = volume
 
 /datum/pipeline/proc/addMachineryMember(obj/machinery/atmospherics/components/C)
+	procstart = null
+	src.procstart = null
 	other_atmosmch |= C
 	var/datum/gas_mixture/G = C.returnPipenetAir(src)
 	if(!G)
@@ -86,6 +96,8 @@
 	other_airs |= G
 
 /datum/pipeline/proc/addMember(obj/machinery/atmospherics/A, obj/machinery/atmospherics/N)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/machinery/atmospherics/pipe))
 		var/obj/machinery/atmospherics/pipe/P = A
 		P.parent = src
@@ -103,6 +115,8 @@
 		addMachineryMember(A)
 
 /datum/pipeline/proc/merge(datum/pipeline/E)
+	procstart = null
+	src.procstart = null
 	air.volume += E.air.volume
 	members.Add(E.members)
 	for(var/obj/machinery/atmospherics/pipe/S in E.members)
@@ -118,17 +132,25 @@
 	qdel(E)
 
 /obj/machinery/atmospherics/proc/addMember(obj/machinery/atmospherics/A)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/atmospherics/pipe/addMember(obj/machinery/atmospherics/A)
+	procstart = null
+	src.procstart = null
 	parent.addMember(A, src)
 
 /obj/machinery/atmospherics/components/addMember(obj/machinery/atmospherics/A)
+	procstart = null
+	src.procstart = null
 	var/datum/pipeline/P = returnPipenet(A)
 	P.addMember(A, src)
 
 
 /datum/pipeline/proc/temporarily_store_air()
+	procstart = null
+	src.procstart = null
 	//Update individual gas_mixtures by volume ratio
 
 	for(var/obj/machinery/atmospherics/pipe/member in members)
@@ -143,6 +165,8 @@
 		member.air_temporary.temperature = air.temperature
 
 /datum/pipeline/proc/temperature_interact(turf/target, share_volume, thermal_conductivity)
+	procstart = null
+	src.procstart = null
 	var/total_heat_capacity = air.heat_capacity()
 	var/partial_heat_capacity = total_heat_capacity*(share_volume/air.volume)
 	var/target_temperature
@@ -199,12 +223,16 @@
 	update = TRUE
 
 /datum/pipeline/proc/return_air()
+	procstart = null
+	src.procstart = null
 	. = other_airs + air
 	if(null in .)
 		stack_trace("[src] has one or more null gas mixtures, which may cause bugs. Null mixtures will not be considered in reconcile_air().")
 		return removeNullsFromList(.)
 
 /datum/pipeline/proc/reconcile_air()
+	procstart = null
+	src.procstart = null
 	var/list/datum/gas_mixture/GL = list()
 	var/list/datum/pipeline/PL = list()
 	PL += src

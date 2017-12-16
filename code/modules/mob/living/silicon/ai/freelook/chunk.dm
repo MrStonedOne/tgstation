@@ -21,6 +21,8 @@
 // Add an AI eye to the chunk, then update if changed.
 
 /datum/camerachunk/proc/add(mob/camera/aiEye/eye)
+	procstart = null
+	src.procstart = null
 	var/client/client = eye.GetViewerClient()
 	if(client)
 		client.images += obscured
@@ -33,6 +35,8 @@
 // Remove an AI eye from the chunk, then update if changed.
 
 /datum/camerachunk/proc/remove(mob/camera/aiEye/eye)
+	procstart = null
+	src.procstart = null
 	var/client/client = eye.GetViewerClient()
 	if(client)
 		client.images -= obscured
@@ -44,6 +48,8 @@
 // Called when a chunk has changed. I.E: A wall was deleted.
 
 /datum/camerachunk/proc/visibilityChanged(turf/loc)
+	procstart = null
+	src.procstart = null
 	if(!visibleTurfs[loc])
 		return
 	hasChanged()
@@ -52,6 +58,8 @@
 // instead be flagged to update the next time an AI Eye moves near it.
 
 /datum/camerachunk/proc/hasChanged(update_now = 0)
+	procstart = null
+	src.procstart = null
 	if(visible || update_now)
 		addtimer(CALLBACK(src, .proc/update), UPDATE_BUFFER, TIMER_UNIQUE)
 	else
@@ -61,6 +69,8 @@
 
 /datum/camerachunk/proc/update()
 
+	procstart = null
+	src.procstart = null
 	set background = BACKGROUND_ENABLED
 
 	var/list/newVisibleTurfs = list()
@@ -129,6 +139,8 @@
 
 /datum/camerachunk/New(loc, x, y, z)
 
+	procstart = null
+	src.procstart = null
 	// 0xf = 15
 	x &= ~(CHUNK_SIZE - 1)
 	y &= ~(CHUNK_SIZE - 1)

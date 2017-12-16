@@ -15,6 +15,8 @@
 	req_access = list( )
 
 /obj/machinery/computer/shuttle/labor/one_way/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["move"])
 		var/obj/docking_port/mobile/M = SSshuttle.getShuttle("laborcamp")
 		if(!M)

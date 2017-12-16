@@ -35,6 +35,8 @@
 				chatter_speak_word(A.loc, phomeme, length)
 
 /proc/chatter_speak_word(loc, phomeme, length)
+	procstart = null
+	src.procstart = null
 	var/path = "sound/chatter/[phomeme]_[length].ogg"
 
 	playsound(loc, path,
@@ -43,6 +45,8 @@
 	sleep((length + 1) * chatter_get_sleep_multiplier(phomeme))
 
 /proc/chatter_get_sleep_multiplier(phomeme)
+	procstart = null
+	src.procstart = null
 	// These values are tenths of seconds, so 0.5 == 0.05seconds
 	. = 1
 	switch(phomeme)

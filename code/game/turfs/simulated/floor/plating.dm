@@ -14,6 +14,8 @@
 	var/attachment_holes = TRUE
 
 /turf/open/floor/plating/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(broken || burnt)
 		to_chat(user, "<span class='notice'>It looks like the dents could be <i>welded</i> smooth.</span>")
@@ -24,6 +26,8 @@
 		to_chat(user, "<span class='notice'>You might be able to build ontop of it with some <i>tiles</i>...</span>")
 
 /turf/open/floor/plating/Initialize()
+	procstart = null
+	src.procstart = null
 	if (!broken_states)
 		broken_states = list("platingdmg1", "platingdmg2", "platingdmg3")
 	if (!burnt_states)
@@ -32,12 +36,16 @@
 	icon_plating = icon_state
 
 /turf/open/floor/plating/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(!broken && !burnt)
 		icon_state = icon_plating //Because asteroids are 'platings' too.
 
 /turf/open/floor/plating/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(istype(C, /obj/item/stack/rods) && attachment_holes)
@@ -93,6 +101,8 @@
 	burnt_states = list("foam_plating")
 
 /turf/open/floor/plating/foam/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/stack/tile/plasteel))
 		var/obj/item/stack/tile/plasteel/P = I
 		if(P.use(1))
@@ -114,5 +124,7 @@
 			to_chat(user, "<span class='danger'>You hit [src], to no effect!</span>")
 
 /turf/open/floor/plating/foam/ex_act()
+	procstart = null
+	src.procstart = null
 	..()
 	ChangeTurf(baseturf)

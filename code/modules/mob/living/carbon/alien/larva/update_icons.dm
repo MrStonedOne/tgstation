@@ -1,9 +1,13 @@
 
 /mob/living/carbon/alien/larva/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	update_icons()
 
 /mob/living/carbon/alien/larva/update_icons()
+	procstart = null
+	src.procstart = null
 	var/state = 0
 	if(amount_grown > 80)
 		state = 2
@@ -22,10 +26,14 @@
 		icon_state = "larva[state]"
 
 /mob/living/carbon/alien/larva/update_transform() //All this is handled in update_icons()
+	procstart = null
+	src.procstart = null
 	..()
 	return update_icons()
 
 /mob/living/carbon/alien/larva/update_inv_handcuffed()
+	procstart = null
+	src.procstart = null
 	update_icons() //larva icon_state changes if cuffed/uncuffed.
 
 

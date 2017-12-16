@@ -7,6 +7,8 @@
 
 
 /obj/item/grenade/syndieminibomb/prime()
+	procstart = null
+	src.procstart = null
 	update_mob()
 	explosion(src.loc,1,2,4,flame_range = 2)
 	qdel(src)
@@ -17,6 +19,8 @@
 	icon_state = "concussion"
 
 /obj/item/grenade/syndieminibomb/concussion/prime()
+	procstart = null
+	src.procstart = null
 	update_mob()
 	explosion(src.loc,0,2,3,flame_range = 3)
 	qdel(src)
@@ -37,6 +41,8 @@
 	var/stamina_damage = 30
 
 /obj/item/grenade/gluon/prime()
+	procstart = null
+	src.procstart = null
 	update_mob()
 	playsound(loc, 'sound/effects/empulse.ogg', 50, 1)
 	radiation_pulse(src, rad_damage)

@@ -41,6 +41,8 @@
 	#define TILE_EMAG		7
 
 /mob/living/simple_animal/bot/floorbot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 	var/datum/job/engineer/J = new/datum/job/engineer
@@ -48,14 +50,20 @@
 	prev_access = access_card.access
 
 /mob/living/simple_animal/bot/floorbot/turn_on()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /mob/living/simple_animal/bot/floorbot/turn_off()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /mob/living/simple_animal/bot/floorbot/bot_reset()
+	procstart = null
+	src.procstart = null
 	..()
 	target = null
 	oldloc = null
@@ -64,11 +72,15 @@
 	update_icon()
 
 /mob/living/simple_animal/bot/floorbot/set_custom_texts()
+	procstart = null
+	src.procstart = null
 	text_hack = "You corrupt [name]'s construction protocols."
 	text_dehack = "You detect errors in [name] and reset his programming."
 	text_dehack_fail = "[name] is not responding to reset commands!"
 
 /mob/living/simple_animal/bot/floorbot/get_controls(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += hack(user)
 	dat += showpai(user)
@@ -99,6 +111,8 @@
 	return dat
 
 /mob/living/simple_animal/bot/floorbot/attackby(obj/item/W , mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stack/tile/plasteel))
 		to_chat(user, "<span class='notice'>The floorbot can produce normal tiles itself.</span>")
 		return
@@ -123,12 +137,16 @@
 		..()
 
 /mob/living/simple_animal/bot/floorbot/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(emagged == 2)
 		if(user)
 			to_chat(user, "<span class='danger'>[src] buzzes and beeps.</span>")
 
 /mob/living/simple_animal/bot/floorbot/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -163,6 +181,8 @@
 	update_controls()
 
 /mob/living/simple_animal/bot/floorbot/proc/empty_tiles()
+	procstart = null
+	src.procstart = null
 	var/atom/Tsec = drop_location()
 
 	while(specialtiles > initial(tiletype.max_amount))
@@ -173,6 +193,8 @@
 	tiletype = null
 
 /mob/living/simple_animal/bot/floorbot/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -273,6 +295,8 @@
 
 //Floorbots, having several functions, need sort out special conditions here.
 /mob/living/simple_animal/bot/floorbot/process_scan(scan_target)
+	procstart = null
+	src.procstart = null
 	var/result
 	var/turf/open/floor/F
 	switch(process_type)
@@ -306,6 +330,8 @@
 
 /mob/living/simple_animal/bot/floorbot/proc/repair(turf/target_turf)
 
+	procstart = null
+	src.procstart = null
 	if(isspaceturf(target_turf))
 		 //Must be a hull breach or in line mode to continue.
 		if(!is_hull_breach(target_turf) && !targetdirection)
@@ -358,10 +384,14 @@
 	target = null
 
 /mob/living/simple_animal/bot/floorbot/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "floorbot[on]"
 
 
 /mob/living/simple_animal/bot/floorbot/explode()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	visible_message("<span class='boldannounce'>[src] blows apart!</span>")
 	var/atom/Tsec = drop_location()
@@ -387,6 +417,8 @@
 	req_one_access = list(ACCESS_CONSTRUCTION, ACCESS_ROBOTICS)
 
 /mob/living/simple_animal/bot/floorbot/UnarmedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isturf(A))
 		repair(A)
 	else

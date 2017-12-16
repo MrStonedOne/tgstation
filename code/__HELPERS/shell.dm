@@ -4,6 +4,8 @@
 #define SHELLEO_ERR ".err"
 #define SHELLEO_OUT ".out"
 /world/proc/shelleo(command)
+	procstart = null
+	src.procstart = null
 	var/static/list/shelleo_ids = list()
 	var/stdout = ""
 	var/stderr = ""
@@ -41,6 +43,8 @@
 #undef SHELLEO_OUT
 
 /proc/shell_url_scrub(url)
+	procstart = null
+	src.procstart = null
 	var/static/regex/bad_chars_regex = regex("\[^#%&./:=?\\w]*", "g")
 	var/scrubbed_url = ""
 	var/bad_match = ""

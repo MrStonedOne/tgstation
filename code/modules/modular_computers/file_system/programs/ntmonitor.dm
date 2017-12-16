@@ -10,6 +10,8 @@
 	tgui_id = "ntos_net_monitor"
 
 /datum/computer_file/program/ntnetmonitor/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 	switch(action)
@@ -58,6 +60,8 @@
 			SSnetworks.station_network.toggle_function(text2num(params["id"]))
 
 /datum/computer_file/program/ntnetmonitor/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!SSnetworks.station_network)
 		return
 	var/list/data = get_header_data()

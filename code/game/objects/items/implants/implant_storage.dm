@@ -14,13 +14,19 @@
 	var/obj/item/storage/internal/implant/storage
 
 /obj/item/implant/storage/New()
+	procstart = null
+	src.procstart = null
 	..()
 	storage = new /obj/item/storage/internal/implant(src)
 
 /obj/item/implant/storage/activate()
+	procstart = null
+	src.procstart = null
 	storage.MouseDrop(imp_in)
 
 /obj/item/implant/storage/removed(source, silent = 0, special = 0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(!special)
 			storage.close_all()
@@ -29,6 +35,8 @@
 		return 1
 
 /obj/item/implant/storage/implant(mob/living/target, mob/user, silent = 0)
+	procstart = null
+	src.procstart = null
 	for(var/X in target.implants)
 		if(istype(X, type))
 			var/obj/item/implant/storage/imp_e = X

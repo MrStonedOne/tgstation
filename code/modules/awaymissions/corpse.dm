@@ -28,6 +28,8 @@
 	var/banType = "lavaland"
 
 /obj/effect/mob_spawn/attack_ghost(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted() || !loc)
 		return
 	if(!uses)
@@ -43,6 +45,8 @@
 	create(ckey = user.ckey)
 
 /obj/effect/mob_spawn/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(instant || (roundstart && (mapload || (SSticker && SSticker.current_state > GAME_STATE_SETTING_UP))))
 		create()
@@ -51,18 +55,26 @@
 		LAZYADD(GLOB.mob_spawners[name], src)
 
 /obj/effect/mob_spawn/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.poi_list -= src
 	var/list/spawners = GLOB.mob_spawners[name]
 	LAZYREMOVE(spawners, src)
 	return ..()
 
 /obj/effect/mob_spawn/proc/special(mob/M)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/mob_spawn/proc/equip(mob/M)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/mob_spawn/proc/create(ckey, name)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = new mob_type(get_turf(src)) //living mobs only
 	if(!random)
 		M.real_name = mob_name ? mob_name : M.name
@@ -139,6 +151,8 @@
 	var/skin_tone
 
 /obj/effect/mob_spawn/human/Initialize()
+	procstart = null
+	src.procstart = null
 	if(ispath(outfit))
 		outfit = new outfit()
 	if(!outfit)
@@ -146,6 +160,8 @@
 	return ..()
 
 /obj/effect/mob_spawn/human/equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(mob_species)
 		H.set_species(mob_species)
 	if(husk)
@@ -233,6 +249,8 @@
 	icon_state = "grey baby slime" //sets the icon in the map editor
 
 /obj/effect/mob_spawn/slime/equip(mob/living/simple_animal/slime/S)
+	procstart = null
+	src.procstart = null
 	S.colour = mobcolour
 
 /obj/effect/mob_spawn/human/facehugger/create() //Creates a squashed facehugger
@@ -296,6 +314,8 @@
 	assignedrole = "Space Doctor"
 
 /obj/effect/mob_spawn/human/doctor/alive/equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	..()
 	// Remove radio and PDA so they wouldn't annoy station crew.
 	var/list/del_types = list(/obj/item/device/pda, /obj/item/device/radio/headset)
@@ -381,6 +401,8 @@
 	r_pocket = /obj/item/storage/wallet/random
 
 /datum/outfit/beachbum/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
+	procstart = null
+	src.procstart = null
 	..()
 	if(visualsOnly)
 		return
@@ -515,6 +537,8 @@
 	assignedrole = "Space Bar Patron"
 
 /obj/effect/mob_spawn/human/alive/space_bar_patron/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	var/despawn = alert("Return to cryosleep? (Warning, Your mob will be deleted!)",,"Yes","No")
 	if(despawn == "No" || !loc || !Adjacent(user))
 		return

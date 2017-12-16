@@ -23,6 +23,8 @@
 	grind_results = list("eggyolk" = 5)
 
 /obj/item/reagent_containers/food/snacks/egg/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..()) //was it caught by a mob?
 		var/turf/T = get_turf(hit_atom)
 		new/obj/effect/decal/cleanable/egg_smudge(T)
@@ -30,6 +32,8 @@
 		qdel(src)
 
 /obj/item/reagent_containers/food/snacks/egg/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype( W, /obj/item/toy/crayon ))
 		var/obj/item/toy/crayon/C = W
 		var/clr = C.item_color
@@ -118,6 +122,8 @@
 	foodtype = MEAT
 
 /obj/item/reagent_containers/food/snacks/omelette/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/kitchen/fork))
 		var/obj/item/kitchen/fork/F = W
 		if(F.forkload)

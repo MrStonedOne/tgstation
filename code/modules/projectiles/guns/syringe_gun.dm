@@ -14,26 +14,38 @@
 	var/max_syringes = 1
 
 /obj/item/gun/syringe/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chambered = new /obj/item/ammo_casing/syringegun(src)
 
 /obj/item/gun/syringe/recharge_newshot()
+	procstart = null
+	src.procstart = null
 	if(!syringes.len)
 		return
 	chambered.newshot()
 
 /obj/item/gun/syringe/can_shoot()
+	procstart = null
+	src.procstart = null
 	return syringes.len
 
 /obj/item/gun/syringe/process_chamber()
+	procstart = null
+	src.procstart = null
 	if(chambered && !chambered.BB) //we just fired
 		recharge_newshot()
 
 /obj/item/gun/syringe/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "Can hold [max_syringes] syringe\s. Has [syringes.len] syringe\s remaining.")
 
 /obj/item/gun/syringe/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!syringes.len)
 		to_chat(user, "<span class='warning'>[src] is empty!</span>")
 		return 0
@@ -50,6 +62,8 @@
 	return 1
 
 /obj/item/gun/syringe/attackby(obj/item/A, mob/user, params, show_msg = TRUE)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/item/reagent_containers/syringe))
 		if(syringes.len < max_syringes)
 			if(!user.transferItemToLoc(A, src))
@@ -83,10 +97,14 @@
 	desc = "A syringe gun that has been modified to fit DNA injectors instead of normal syringes."
 
 /obj/item/gun/syringe/dna/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	chambered = new /obj/item/ammo_casing/dnainjector(src)
 
 /obj/item/gun/syringe/dna/attackby(obj/item/A, mob/user, params, show_msg = TRUE)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/item/dnainjector))
 		var/obj/item/dnainjector/D = A
 		if(D.used)

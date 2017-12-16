@@ -4,6 +4,8 @@
 	icon_door = "mixed"
 
 /obj/structure/closet/athletic_mixed/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/under/shorts/purple(src)
 	new /obj/item/clothing/under/shorts/grey(src)
@@ -20,6 +22,8 @@
 	desc = "It's a storage unit for gloves for use in the boxing ring."
 
 /obj/structure/closet/boxinggloves/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/gloves/boxing/blue(src)
 	new /obj/item/clothing/gloves/boxing/green(src)
@@ -32,6 +36,8 @@
 	desc = "IT'S A STORAGE UNIT FOR FIGHTER MASKS OLE!"
 
 /obj/structure/closet/masks/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/clothing/mask/luchador(src)
 	new /obj/item/clothing/mask/luchador/rudos(src)
@@ -44,6 +50,8 @@
 	icon_door = "red"
 
 /obj/structure/closet/lasertag/red/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/gun/energy/laser/redtag(src)
@@ -58,6 +66,8 @@
 	icon_door = "blue"
 
 /obj/structure/closet/lasertag/blue/PopulateContents()
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 3)
 		new /obj/item/gun/energy/laser/bluetag(src)

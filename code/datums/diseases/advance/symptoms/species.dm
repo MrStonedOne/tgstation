@@ -9,6 +9,8 @@
 	severity = 0
 
 /datum/symptom/undead_adaptation/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	A.process_dead = TRUE
@@ -25,6 +27,8 @@
 	severity = 0
 
 /datum/symptom/inorganic_adaptation/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	A.infectable_hosts |= SPECIES_INORGANIC

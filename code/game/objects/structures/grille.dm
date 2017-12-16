@@ -18,14 +18,20 @@
 	var/broken_type = /obj/structure/grille/broken
 
 /obj/structure/grille/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_NO_INSULATION)
 
 /obj/structure/grille/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/structure/grille/update_icon()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || broken)
 		return
 
@@ -40,6 +46,8 @@
 	icon_state = "grille50_[rand(0,3)]"
 
 /obj/structure/grille/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(anchored)
 		to_chat(user, "<span class='notice'>It's secured in place with <b>screws</b>. The rods look like they could be <b>cut</b> through.</span>")
@@ -47,6 +55,8 @@
 		to_chat(user, "<span class='notice'>The anchoring screws are <i>unscrewed</i>. The rods look like they could be <b>cut</b> through.</span>")
 
 /obj/structure/grille/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_DECONSTRUCT)
 			return list("mode" = RCD_DECONSTRUCT, "delay" = 20, "cost" = 5)
@@ -58,6 +68,8 @@
 	return FALSE
 
 /obj/structure/grille/rcd_act(mob/user, var/obj/item/construction/rcd/the_rcd, passed_mode)
+	procstart = null
+	src.procstart = null
 	switch(passed_mode)
 		if(RCD_DECONSTRUCT)
 			to_chat(user, "<span class='notice'>You deconstruct the grille.</span>")
@@ -73,6 +85,8 @@
 	return FALSE
 
 /obj/structure/grille/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(broken)
 		new /obj/structure/grille/ratvar/broken(src.loc)
 	else
@@ -80,29 +94,41 @@
 	qdel(src)
 
 /obj/structure/grille/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!ismob(AM))
 		return
 	var/mob/M = AM
 	shock(M, 70)
 
 /obj/structure/grille/attack_animal(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!shock(user, 70))
 		take_damage(rand(5,10), BRUTE, "melee", 1)
 
 /obj/structure/grille/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 
 /obj/structure/grille/hulk_damage()
+	procstart = null
+	src.procstart = null
 	return 60
 
 /obj/structure/grille/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		if(!shock(user, 70))
 			..(user, 1)
 		return TRUE
 
 /obj/structure/grille/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_KICK)
 	user.visible_message("<span class='warning'>[user] hits [src].</span>", null, null, COMBAT_MESSAGE_RANGE)
@@ -110,6 +136,8 @@
 		take_damage(rand(5,10), BRUTE, "melee", 1)
 
 /obj/structure/grille/attack_alien(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.do_attack_animation(src)
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.visible_message("<span class='warning'>[user] mangles [src].</span>", null, null, COMBAT_MESSAGE_RANGE)
@@ -118,6 +146,8 @@
 
 
 /obj/structure/grille/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGRILLE))
 		return TRUE
 	else
@@ -127,12 +157,16 @@
 			return !density
 
 /obj/structure/grille/CanAStarPass(ID, dir, caller)
+	procstart = null
+	src.procstart = null
 	. = !density
 	if(ismovableatom(caller))
 		var/atom/movable/mover = caller
 		. = . || (mover.pass_flags & PASSGRILLE)
 
 /obj/structure/grille/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	add_fingerprint(user)
 	if(istype(W, /obj/item/wirecutters))
@@ -198,6 +232,8 @@
 		return ..()
 
 /obj/structure/grille/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			if(damage_amount)
@@ -209,6 +245,8 @@
 
 
 /obj/structure/grille/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!loc) //if already qdel'd somehow, we do nothing
 		return
 	if(!(flags_1&NODECONSTRUCT_1))
@@ -218,6 +256,8 @@
 	..()
 
 /obj/structure/grille/obj_break()
+	procstart = null
+	src.procstart = null
 	if(!broken && !(flags_1 & NODECONSTRUCT_1))
 		new broken_type(src.loc)
 		var/obj/R = new rods_type(drop_location(), rods_broken)
@@ -229,6 +269,8 @@
 // returns 1 if shocked, 0 otherwise
 
 /obj/structure/grille/proc/shock(mob/user, prb)
+	procstart = null
+	src.procstart = null
 	if(!anchored || broken)		// anchored/broken grilles are never connected
 		return FALSE
 	if(!prob(prb))
@@ -248,12 +290,16 @@
 	return FALSE
 
 /obj/structure/grille/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(!broken)
 		if(exposed_temperature > T0C + 1500)
 			take_damage(1, BURN, 0, 0)
 	..()
 
 /obj/structure/grille/hitby(AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(isobj(AM))
 		if(prob(50) && anchored && !broken)
 			var/turf/T = get_turf(src)
@@ -265,6 +311,8 @@
 	return ..()
 
 /obj/structure/grille/get_dumping_location(obj/item/storage/source,mob/user)
+	procstart = null
+	src.procstart = null
 	return null
 
 /obj/structure/grille/broken // Pre-broken grilles for map placement
@@ -285,6 +333,8 @@
 	broken_type = /obj/structure/grille/ratvar/broken
 
 /obj/structure/grille/ratvar/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(broken)
 		new /obj/effect/temp_visual/ratvar/grille/broken(get_turf(src))
@@ -293,6 +343,8 @@
 		new /obj/effect/temp_visual/ratvar/beam/grille(get_turf(src))
 
 /obj/structure/grille/ratvar/narsie_act()
+	procstart = null
+	src.procstart = null
 	take_damage(rand(1, 3), BRUTE)
 	if(src)
 		var/previouscolor = color
@@ -301,6 +353,8 @@
 		addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 8)
 
 /obj/structure/grille/ratvar/ratvar_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/grille/ratvar/broken

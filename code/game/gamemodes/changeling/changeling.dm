@@ -27,6 +27,8 @@ GLOBAL_VAR(changeling_team_objective_type) //If this is not null, we hand our th
 
 /datum/game_mode/changeling/pre_setup()
 
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		restricted_jobs += protected_jobs
 
@@ -55,6 +57,8 @@ GLOBAL_VAR(changeling_team_objective_type) //If this is not null, we hand our th
 		return 0
 
 /datum/game_mode/changeling/post_setup()
+	procstart = null
+	src.procstart = null
 	//Decide if it's ok for the lings to have a team objective
 	//And then set it up to be handed out in forge_changeling_objectives
 	var/list/team_objectives = subtypesof(/datum/objective/changeling_team_objective)
@@ -89,12 +93,16 @@ GLOBAL_VAR(changeling_team_objective_type) //If this is not null, we hand our th
 						changelings += character.mind
 
 /datum/game_mode/changeling/generate_report()
+	procstart = null
+	src.procstart = null
 	return "The Gorlex Marauders have announced the successful raid and destruction of Central Command containment ship #S-[rand(1111, 9999)]. This ship housed only a single prisoner - \
 			codenamed \"Thing\", and it was highly adaptive and extremely dangerous. We have reason to believe that the Thing has allied with the Syndicate, and you should note that likelihood \
 			of the Thing being sent to a station in this sector is highly likely. It may be in the guise of any crew member. Trust nobody - suspect everybody. Do not announce this to the crew, \
 			as paranoia may spread and inhibit workplace efficiency."
 
 /proc/changeling_transform(mob/living/carbon/human/user, datum/changelingprofile/chosen_prof)
+	procstart = null
+	src.procstart = null
 	var/datum/dna/chosen_dna = chosen_prof.dna
 	user.real_name = chosen_prof.name
 	user.underwear = chosen_prof.underwear

@@ -3,6 +3,8 @@
 	randomize = TRUE
 
 /datum/wires/mulebot/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_POWER1, WIRE_POWER2,
 		WIRE_AVOIDANCE, WIRE_LOADCHECK,
@@ -12,11 +14,15 @@
 	..()
 
 /datum/wires/mulebot/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/bot/mulebot/M = holder
 	if(M.open)
 		return TRUE
 
 /datum/wires/mulebot/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/bot/mulebot/M = holder
 	switch(wire)
 		if(WIRE_POWER1, WIRE_POWER2)

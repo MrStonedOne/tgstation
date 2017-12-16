@@ -3,9 +3,13 @@
 	var/i_attached//Added for possible image attachments to objects. For hallucinations and the like.
 
 /obj/effect/overlay/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/overlay/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/overlay/beam//Not actually a projectile, just an effect.
@@ -15,6 +19,8 @@
 	var/atom/BeamSource
 
 /obj/effect/overlay/beam/New()
+	procstart = null
+	src.procstart = null
 	..()
 	QDEL_IN(src, 10)
 

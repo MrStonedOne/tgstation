@@ -8,6 +8,8 @@
 	to_chat(usr, "<span class='danger'>Examine tooltips [prefs.enable_tips ? "en" : "dis"]abled.</span>")
 
 /client/verb/change_tip_delay()
+	procstart = null
+	src.procstart = null
 	set name = "Set examine tooltip delay"
 	set desc = "Sets the delay in milliseconds before examine tooltips appear"
 	set category = "Preferences"

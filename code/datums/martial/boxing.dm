@@ -2,15 +2,21 @@
 	name = "Boxing"
 
 /datum/martial_art/boxing/disarm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	to_chat(A, "<span class='warning'>Can't disarm while boxing!</span>")
 	return 1
 
 /datum/martial_art/boxing/grab_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
+	procstart = null
+	src.procstart = null
 	to_chat(A, "<span class='warning'>Can't grab while boxing!</span>")
 	return 1
 
 /datum/martial_art/boxing/harm_act(mob/living/carbon/human/A, mob/living/carbon/human/D)
 
+	procstart = null
+	src.procstart = null
 	A.do_attack_animation(D, ATTACK_EFFECT_PUNCH)
 
 	var/atk_verb = pick("left hook","right hook","straight punch")
@@ -51,6 +57,8 @@
 	var/datum/martial_art/boxing/style = new
 
 /obj/item/clothing/gloves/boxing/equipped(mob/user, slot)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	if(slot == slot_gloves)
@@ -59,6 +67,8 @@
 	return
 
 /obj/item/clothing/gloves/boxing/dropped(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ishuman(user))
 		return
 	var/mob/living/carbon/human/H = user

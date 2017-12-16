@@ -9,6 +9,8 @@
 
 /datum/round_event/wizard/robelesscasting/start()
 
+	procstart = null
+	src.procstart = null
 	for(var/i in GLOB.mob_living_list) //Hey if a corgi has magic missle he should get the same benifit as anyone
 		var/mob/living/L = i
 		if(L.mind && L.mind.spell_list.len != 0)
@@ -30,6 +32,8 @@
 	earliest_start = 0
 
 /datum/round_event/wizard/improvedcasting/start()
+	procstart = null
+	src.procstart = null
 	for(var/i in GLOB.mob_living_list)
 		var/mob/living/L = i
 		if(L.mind && L.mind.spell_list.len != 0)

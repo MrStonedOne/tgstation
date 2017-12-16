@@ -23,14 +23,20 @@
 	var/energy_to_lower = -20
 
 /obj/singularity/energy_ball/Initialize(mapload, starting_energy = 50, is_miniball = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!is_miniball)
 		set_light(10, 7, "#EEEEFF")
 
 /obj/singularity/energy_ball/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/singularity/energy_ball/Destroy()
+	procstart = null
+	src.procstart = null
 	if(orbiting && istype(orbiting.orbiting, /obj/singularity/energy_ball))
 		var/obj/singularity/energy_ball/EB = orbiting.orbiting
 		EB.orbiting_balls -= src
@@ -42,11 +48,15 @@
 	. = ..()
 
 /obj/singularity/energy_ball/admin_investigate_setup()
+	procstart = null
+	src.procstart = null
 	if(istype(loc, /obj/singularity/energy_ball))
 		return
 	..()
 
 /obj/singularity/energy_ball/process()
+	procstart = null
+	src.procstart = null
 	if(!orbiting)
 		handle_energy()
 
@@ -68,12 +78,16 @@
 		energy = 0 // ensure we dont have miniballs of miniballs
 
 /obj/singularity/energy_ball/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(orbiting_balls.len)
 		to_chat(user, "The amount of orbiting mini-balls is [orbiting_balls.len].")
 
 
 /obj/singularity/energy_ball/proc/move_the_basket_ball(var/move_amount)
+	procstart = null
+	src.procstart = null
 	//we face the last thing we zapped, so this lets us favor that direction a bit
 	var/move_bias = pick(GLOB.alldirs)
 	for(var/i in 0 to move_amount)
@@ -89,6 +103,8 @@
 
 
 /obj/singularity/energy_ball/proc/handle_energy()
+	procstart = null
+	src.procstart = null
 	if(energy >= energy_to_raise)
 		energy_to_lower = energy_to_raise - 20
 		energy_to_raise = energy_to_raise * 1.25
@@ -107,6 +123,8 @@
 		dissipate() //sing code has a much better system.
 
 /obj/singularity/energy_ball/proc/new_mini_ball()
+	procstart = null
+	src.procstart = null
 	if(!loc)
 		return
 	var/obj/singularity/energy_ball/EB = new(loc, 0, TRUE)
@@ -121,12 +139,18 @@
 
 
 /obj/singularity/energy_ball/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	dust_mobs(A)
 
 /obj/singularity/energy_ball/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	dust_mobs(AM)
 
 /obj/singularity/energy_ball/orbit(obj/singularity/energy_ball/target)
+	procstart = null
+	src.procstart = null
 	if (istype(target))
 		target.orbiting_balls += src
 		GLOB.poi_list -= src
@@ -134,6 +158,8 @@
 
 	. = ..()
 /obj/singularity/energy_ball/stop_orbit()
+	procstart = null
+	src.procstart = null
 	if (orbiting && istype(orbiting.orbiting, /obj/singularity/energy_ball))
 		var/obj/singularity/energy_ball/orbitingball = orbiting.orbiting
 		orbitingball.orbiting_balls -= src
@@ -144,6 +170,8 @@
 
 
 /obj/singularity/energy_ball/proc/dust_mobs(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(A))
 		return
 	for(var/obj/machinery/power/grounding_rod/GR in orange(src, 2))
@@ -153,6 +181,8 @@
 	C.dust()
 
 /proc/tesla_zap(atom/source, zap_range = 3, power, explosive = FALSE, stun_mobs = TRUE)
+	procstart = null
+	src.procstart = null
 	. = source.dir
 	if(power < 1000)
 		return

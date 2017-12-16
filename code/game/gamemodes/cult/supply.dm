@@ -16,6 +16,8 @@
 	)
 
 /obj/item/paper/talisman/supply/invoke(mob/living/user, successfuluse = 1)
+	procstart = null
+	src.procstart = null
 	var/list/dat = list()
 	dat += "<B>There are [uses] bloody runes on the parchment.</B><BR>"
 	dat += "Please choose the chant to be imbued into the fabric of reality.<BR>"
@@ -29,6 +31,8 @@
 	return 0
 
 /obj/item/paper/talisman/supply/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src) || usr.incapacitated() || !in_range(src, usr))
 		return
 
@@ -63,6 +67,8 @@
 	uses = 2
 
 /obj/item/paper/talisman/supply/weak/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// no runed metal from lesser talismans.
 	possible_summons -= /datum/cult_supply/metal

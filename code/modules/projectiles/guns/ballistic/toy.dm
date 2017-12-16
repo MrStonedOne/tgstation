@@ -29,6 +29,8 @@
 	actions_types = list()
 
 /obj/item/gun/ballistic/automatic/toy/pistol/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "[initial(icon_state)][chambered ? "" : "-e"][suppressed ? "-suppressed" : ""]"
 
@@ -36,6 +38,8 @@
 	mag_type = /obj/item/ammo_box/magazine/toy/pistol/riot
 
 /obj/item/gun/ballistic/automatic/toy/pistol/riot/Initialize()
+	procstart = null
+	src.procstart = null
 	magazine = new /obj/item/ammo_box/magazine/toy/pistol/riot(src)
 	return ..()
 
@@ -58,6 +62,8 @@
 	can_suppress = FALSE
 
 /obj/item/gun/ballistic/shotgun/toy/process_chamber(empty_chamber = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(chambered && !chambered.BB)
 		qdel(chambered)

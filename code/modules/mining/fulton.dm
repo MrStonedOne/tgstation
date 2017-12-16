@@ -13,10 +13,14 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	var/safe_for_living_creatures = 1
 
 /obj/item/extraction_pack/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	usr.show_message("It has [uses_left] use\s remaining.", 1)
 
 /obj/item/extraction_pack/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/possible_beacons = list()
 	for(var/B in GLOB.total_extraction_beacons)
 		var/obj/structure/extraction_point/EP = B
@@ -38,6 +42,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 		to_chat(user, "You link the extraction pack to the beacon system.")
 
 /obj/item/extraction_pack/afterattack(atom/movable/A, mob/living/carbon/human/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(!beacon)
 		to_chat(user, "[src] is not linked to a beacon, and cannot be used.")
 		return
@@ -144,6 +150,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	icon_state = "subspace_amplifier"
 
 /obj/item/fulton_core/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(do_after(user,15,target = user) && !QDELETED(src))
 		new /obj/structure/extraction_point(get_turf(user))
 		qdel(src)
@@ -158,12 +166,16 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	var/beacon_network = "station"
 
 /obj/structure/extraction_point/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/area/area_name = get_area(src)
 	name += " ([rand(100,999)]) ([area_name.name])"
 	GLOB.total_extraction_beacons += src
 
 /obj/structure/extraction_point/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.total_extraction_beacons -= src
 	..()
 
@@ -173,6 +185,8 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	var/atom/movable/stored_obj
 
 /obj/item/extraction_pack/proc/check_for_living_mobs(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isliving(A))
 		var/mob/living/L = A
 		if(L.stat != DEAD)
@@ -185,7 +199,11 @@ GLOBAL_LIST_EMPTY(total_extraction_beacons)
 	return 0
 
 /obj/effect/extraction_holder/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/extraction_holder/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return

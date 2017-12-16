@@ -14,10 +14,14 @@
 	var/const/changeling_amount = 1 //hard limit on changelings if scaling is turned off
 
 /datum/game_mode/traitor/changeling/announce()
+	procstart = null
+	src.procstart = null
 	to_chat(world, "<B>The current game mode is - Traitor+Changeling!</B>")
 	to_chat(world, "<B>There are alien creatures on the station along with some syndicate operatives out for their own gain! Do not let the changelings or the traitors succeed!</B>")
 
 /datum/game_mode/traitor/changeling/can_start()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return 0
 	possible_changelings = get_players_for_role(ROLE_CHANGELING)
@@ -26,6 +30,8 @@
 	return 1
 
 /datum/game_mode/traitor/changeling/pre_setup()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		restricted_jobs += protected_jobs
 
@@ -57,6 +63,8 @@
 		return 0
 
 /datum/game_mode/traitor/changeling/post_setup()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/changeling in changelings)
 		changeling.add_antag_datum(/datum/antagonist/changeling)
 	return ..()
@@ -77,6 +85,8 @@
 	..()
 
 /datum/game_mode/traitor/changeling/generate_report()
+	procstart = null
+	src.procstart = null
 	return "The Syndicate has started some experimental research regarding humanoid shapeshifting.  There are rumors that this technology will be field tested on a Nanotrasen station \
 			for infiltration purposes.  Be advised that support personel may also be deployed to defend these shapeshifters. Trust nobody - suspect everybody. Do not announce this to the crew, \
 			as paranoia may spread and inhibit workplace efficiency."

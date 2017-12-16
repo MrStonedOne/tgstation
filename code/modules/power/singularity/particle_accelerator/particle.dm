@@ -23,12 +23,16 @@
 
 
 /obj/effect/accelerated_particle/New(loc)
+	procstart = null
+	src.procstart = null
 	..()
 
 	addtimer(CALLBACK(src, .proc/move), 1)
 
 
 /obj/effect/accelerated_particle/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A)
 		if(isliving(A))
 			toxmob(A)
@@ -44,20 +48,30 @@
 			movement_range = 0
 
 /obj/effect/accelerated_particle/Crossed(atom/A)
+	procstart = null
+	src.procstart = null
 	if(isliving(A))
 		toxmob(A)
 
 
 /obj/effect/accelerated_particle/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/effect/accelerated_particle/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/accelerated_particle/proc/toxmob(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.rad_act(energy*6)
 
 /obj/effect/accelerated_particle/proc/move()
+	procstart = null
+	src.procstart = null
 	if(!step(src,dir))
 		forceMove(get_step(src,dir))
 	movement_range--

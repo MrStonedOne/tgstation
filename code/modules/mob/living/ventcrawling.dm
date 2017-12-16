@@ -6,6 +6,8 @@ GLOBAL_LIST_INIT(ventcrawl_machinery, typecacheof(list(
 //VENTCRAWLING
 
 /mob/living/proc/handle_ventcrawl(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!ventcrawler || !Adjacent(A))
 		return
 	if(stat)
@@ -73,6 +75,8 @@ GLOBAL_LIST_INIT(ventcrawl_machinery, typecacheof(list(
 		to_chat(src, "<span class='warning'>This ventilation duct is not connected to anything!</span>")
 
 /mob/living/simple_animal/slime/handle_ventcrawl(atom/A)
+	procstart = null
+	src.procstart = null
 	if(buckled)
 		to_chat(src, "<i>I can't vent crawl while feeding...</i>")
 		return
@@ -80,6 +84,8 @@ GLOBAL_LIST_INIT(ventcrawl_machinery, typecacheof(list(
 
 
 /mob/living/proc/add_ventcrawl(obj/machinery/atmospherics/starting_machine)
+	procstart = null
+	src.procstart = null
 	if(!istype(starting_machine) || !starting_machine.can_see_pipes())
 		return
 	var/list/totalMembers = list()
@@ -102,6 +108,8 @@ GLOBAL_LIST_INIT(ventcrawl_machinery, typecacheof(list(
 
 
 /mob/living/proc/remove_ventcrawl()
+	procstart = null
+	src.procstart = null
 	if(client)
 		for(var/image/current_image in pipes_shown)
 			client.images -= current_image
@@ -112,9 +120,13 @@ GLOBAL_LIST_INIT(ventcrawl_machinery, typecacheof(list(
 
 //OOP
 /atom/proc/update_pipe_vision(atom/new_loc = null)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/update_pipe_vision(atom/new_loc = null)
+	procstart = null
+	src.procstart = null
 	. = loc
 	if(new_loc)
 		. = new_loc

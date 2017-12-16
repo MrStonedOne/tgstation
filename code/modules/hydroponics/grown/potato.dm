@@ -38,6 +38,8 @@
 
 
 /obj/item/reagent_containers/food/snacks/grown/potato/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.is_sharp())
 		to_chat(user, "<span class='notice'>You cut the potato into wedges with [W].</span>")
 		var/obj/item/reagent_containers/food/snacks/grown/potato/wedges/Wedges = new /obj/item/reagent_containers/food/snacks/grown/potato/wedges

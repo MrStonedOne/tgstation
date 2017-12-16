@@ -18,6 +18,8 @@
   * optional state datum/ui_state The state used to determine status.
  **/
 /datum/proc/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	return -1 // Not implemented.
 
  /**
@@ -31,6 +33,8 @@
   * return list Data to be sent to the UI.
  **/
 /datum/proc/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	return list() // Not implemented.
 
 
@@ -46,6 +50,8 @@
   * return bool If the UI should be updated or not.
  **/
 /datum/proc/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	procstart = null
+	src.procstart = null
 	if(!ui || ui.status != UI_INTERACTIVE)
 		return 1 // If UI is not interactive or usr calling Topic is not the UI user, bail.
 
@@ -58,6 +64,8 @@
   * and be a part of another object.
  **/
 /datum/proc/ui_host()
+	procstart = null
+	src.procstart = null
 	return src // Default src.
 
  /**
@@ -76,6 +84,8 @@
   * required uiref ref The UI that was closed.
  **/
 /client/verb/uiclose(ref as text)
+	procstart = null
+	src.procstart = null
 	// Name the verb, and hide it from the user panel.
 	set name = "uiclose"
 	set hidden = 1

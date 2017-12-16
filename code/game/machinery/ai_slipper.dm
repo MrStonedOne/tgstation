@@ -14,10 +14,14 @@
 	req_access = list(ACCESS_AI_UPLOAD)
 
 /obj/machinery/ai_slipper/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>It has <b>[uses]</b> uses of foam remaining.</span>")
 
 /obj/machinery/ai_slipper/power_change()
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		return
 	else
@@ -31,9 +35,13 @@
 			icon_state = "ai-slipper1"
 
 /obj/machinery/ai_slipper/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/ai_slipper/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(!allowed(user))

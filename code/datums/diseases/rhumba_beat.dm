@@ -12,6 +12,8 @@
 	process_dead = TRUE
 
 /datum/disease/rhumba_beat/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	if(affected_mob.ckey == "rosham")
 		cure()

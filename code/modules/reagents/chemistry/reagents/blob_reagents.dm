@@ -15,6 +15,8 @@
 	can_synth = 0
 
 /datum/reagent/blob/proc/send_message(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/totalmessage = message
 	if(message_living && !issilicon(M))
 		totalmessage += message_living
@@ -22,6 +24,8 @@
 	to_chat(M, "<span class='userdanger'>[totalmessage]</span>")
 
 /datum/reagent/blob/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	if(M.stat == DEAD || istype(M, /mob/living/simple_animal/hostile/blob))
 		return 0 //the dead, and blob mobs, don't cause reactions
 	return round(reac_volume * min(1.5 - touch_protection, 1), 0.1) //full touch protection means 50% volume, any prot below 0.5 means 100% volume.
@@ -57,10 +61,14 @@
 	complementary_color = "#57787B"
 
 /datum/reagent/blob/replicating_foam/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	M.apply_damage(0.7*reac_volume, BRUTE)
 
 /datum/reagent/blob/replicating_foam/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_type == BRUTE)
 		damage = damage * 2
 	else if(damage_type == BURN && damage > 0 && B.obj_integrity - damage > 0 && prob(60))
@@ -71,6 +79,8 @@
 	return ..()
 
 /datum/reagent/blob/replicating_foam/expand_reaction(obj/structure/blob/B, obj/structure/blob/newB, turf/T, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	if(prob(30))
 		newB.expand(null, null, 0) //do it again!
 
@@ -87,12 +97,16 @@
 	complementary_color = "#FFF68F"
 
 /datum/reagent/blob/networked_fibers/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	M.apply_damage(0.6*reac_volume, BRUTE)
 	if(M)
 		M.apply_damage(0.6*reac_volume, BURN)
 
 /datum/reagent/blob/networked_fibers/expand_reaction(obj/structure/blob/B, obj/structure/blob/newB, turf/T, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	if(!O && newB.overmind)
 		if(!istype(B, /obj/structure/blob/node))
 			newB.overmind.add_points(1)
@@ -119,15 +133,21 @@
 	complementary_color = "#3C6EC8"
 
 /datum/reagent/blob/shifting_fragments/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	M.apply_damage(0.7*reac_volume, BRUTE)
 
 /datum/reagent/blob/shifting_fragments/expand_reaction(obj/structure/blob/B, obj/structure/blob/newB, turf/T, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	if(istype(B, /obj/structure/blob/normal) || (istype(B, /obj/structure/blob/shield) && prob(25)))
 		newB.forceMove(get_turf(B))
 		B.forceMove(T)
 
 /datum/reagent/blob/shifting_fragments/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if((damage_flag == "melee" || damage_flag == "bullet" || damage_flag == "laser") && damage > 0 && B.obj_integrity - damage > 0 && prob(60-damage))
 		var/list/blobstopick = list()
 		for(var/obj/structure/blob/OB in orange(1, B))
@@ -155,6 +175,8 @@
 	message_living = ", and you feel your skin char and melt"
 
 /datum/reagent/blob/blazing_oil/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	M.adjust_fire_stacks(round(reac_volume/10))
 	M.IgniteMob()
@@ -164,9 +186,13 @@
 		M.emote("scream")
 
 /datum/reagent/blob/blazing_oil/extinguish_reaction(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	B.take_damage(1.5, BURN, "energy")
 
 /datum/reagent/blob/blazing_oil/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_type == BURN && damage_flag != "energy")
 		for(var/turf/open/T in range(1, B))
 			var/obj/structure/blob/C = locate() in T
@@ -187,6 +213,8 @@
 	message_living = ", and you feel <i>alive</i>"
 
 /datum/reagent/blob/regenerative_materia/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	M.adjust_drugginess(reac_volume)
 	if(M.reagents)
@@ -195,6 +223,8 @@
 	M.apply_damage(0.7*reac_volume, TOX)
 
 /datum/reagent/blob/regenerative_materia/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustToxLoss(1*REM)
 	if(iscarbon(M))
 		var/mob/living/carbon/N = M
@@ -202,6 +232,8 @@
 	..()
 
 /datum/reagent/blob/regenerative_materia/on_mob_delete(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M))
 		var/mob/living/carbon/N = M
 		N.hal_screwyhud = 0
@@ -221,6 +253,8 @@
 	message_living = ", and you feel tired"
 
 /datum/reagent/blob/zombifying_pods/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	M.apply_damage(0.6*reac_volume, TOX)
 	if(O && ishuman(M) && M.stat == UNCONSCIOUS)
@@ -235,6 +269,8 @@
 		to_chat(O, "<span class='notice'>Gained [points] resources from the zombification of [M].</span>")
 
 /datum/reagent/blob/zombifying_pods/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if((damage_flag == "melee" || damage_flag == "bullet" || damage_flag == "laser") && damage <= 20 && B.obj_integrity - damage <= 0 && prob(30)) //if the cause isn't fire or a bomb, the damage is less than 21, we're going to die from that damage, 20% chance of a shitty spore.
 		B.visible_message("<span class='warning'><b>A spore floats free of the blob!</b></span>")
 		var/mob/living/simple_animal/hostile/blob/blobspore/weak/BS = new/mob/living/simple_animal/hostile/blob/blobspore/weak(B.loc)
@@ -244,6 +280,8 @@
 	return ..()
 
 /datum/reagent/blob/zombifying_pods/expand_reaction(obj/structure/blob/B, obj/structure/blob/newB, turf/T, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		var/mob/living/simple_animal/hostile/blob/blobspore/weak/BS = new/mob/living/simple_animal/hostile/blob/blobspore/weak(T)
 		BS.overmind = B.overmind
@@ -263,6 +301,8 @@
 	message_living = ", and you feel a horrible tingling sensation"
 
 /datum/reagent/blob/energized_jelly/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	M.losebreath += round(0.2*reac_volume)
 	M.adjustStaminaLoss(0.4*reac_volume)
@@ -270,14 +310,20 @@
 		M.apply_damage(0.6*reac_volume, OXY)
 
 /datum/reagent/blob/energized_jelly/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if((damage_flag == "melee" || damage_flag == "bullet" || damage_flag == "laser") && B.obj_integrity - damage <= 0 && prob(10))
 		do_sparks(rand(2, 4), FALSE, B)
 	return ..()
 
 /datum/reagent/blob/energized_jelly/tesla_reaction(obj/structure/blob/B, power)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /datum/reagent/blob/energized_jelly/emp_reaction(obj/structure/blob/B, severity)
+	procstart = null
+	src.procstart = null
 	var/damage = rand(30, 50) - severity * rand(10, 15)
 	B.take_damage(damage, BURN, "energy")
 
@@ -295,6 +341,8 @@
 	message = "The blob blasts you"
 
 /datum/reagent/blob/explosive_lattice/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	var/initial_volume = reac_volume
 	reac_volume = ..()
 	if(reac_volume >= 10) //if it's not a spore cloud, bad time incoming
@@ -311,6 +359,8 @@
 		M.apply_damage(0.6*reac_volume, BRUTE)
 
 /datum/reagent/blob/explosive_lattice/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "bomb")
 		return 0
 	else if(damage_flag != "melee" && damage_flag != "bullet" && damage_flag != "laser")
@@ -330,6 +380,8 @@
 	message_living = ", and you feel like your insides are solidifying"
 
 /datum/reagent/blob/cryogenic_poison/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	if(M.reagents)
 		M.reagents.add_reagent("frostoil", 0.3*reac_volume)
@@ -338,6 +390,8 @@
 	M.apply_damage(0.2*reac_volume, BRUTE)
 
 /datum/reagent/blob/cryogenic_poison/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.adjustBruteLoss(0.3*REM, 0)
 	M.adjustFireLoss(0.3*REM, 0)
 	M.adjustToxLoss(0.3*REM, 0)
@@ -359,6 +413,8 @@
 	message_living = ", and you hear a faint buzzing"
 
 /datum/reagent/blob/electromagnetic_web/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	if(prob(reac_volume*2))
 		M.emp_act(EMP_LIGHT)
@@ -366,6 +422,8 @@
 		M.apply_damage(reac_volume, BURN)
 
 /datum/reagent/blob/electromagnetic_web/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_type == BRUTE) //take full brute
 		switch(B.brute_resist)
 			if(0.5)
@@ -377,6 +435,8 @@
 	return damage * 1.25 //a laser will do 25 damage, which will kill any normal blob
 
 /datum/reagent/blob/electromagnetic_web/death_reaction(obj/structure/blob/B, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" || damage_flag == "bullet" || damage_flag == "laser")
 		empulse(B.loc, 1, 3) //less than screen range, so you can stand out of range to avoid it
 
@@ -394,6 +454,8 @@
 	message = "The blobs strike you"
 
 /datum/reagent/blob/synchronous_mesh/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	M.apply_damage(0.2*reac_volume, BRUTE)
 	if(M && reac_volume)
@@ -403,6 +465,8 @@
 				M.apply_damage(0.3*reac_volume, BRUTE)
 
 /datum/reagent/blob/synchronous_mesh/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" || damage_flag == "bullet" || damage_flag == "laser") //the cause isn't fire or bombs, so split the damage
 		var/damagesplit = 1 //maximum split is 9, reducing the damage each blob takes to 11% but doing that damage to 9 blobs
 		for(var/obj/structure/blob/C in orange(1, B))
@@ -429,11 +493,15 @@
 	message = "The blob stabs you"
 
 /datum/reagent/blob/reactive_spines/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	if(M.stat == DEAD || istype(M, /mob/living/simple_animal/hostile/blob))
 		return 0 //the dead, and blob mobs, don't cause reactions
 	M.adjustBruteLoss(0.8*reac_volume)
 
 /datum/reagent/blob/reactive_spines/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage && damage_type == BRUTE && B.obj_integrity - damage > 0) //is there any damage, is it brute, and will we be alive
 		if(damage_flag == "melee")
 			B.visible_message("<span class='boldwarning'>The blob retaliates, lashing out!</span>")
@@ -456,6 +524,8 @@
 	message_living = ", and you gasp for breath"
 
 /datum/reagent/blob/pressurized_slime/reaction_mob(mob/living/M, method=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/O)
+	procstart = null
+	src.procstart = null
 	reac_volume = ..()
 	var/turf/open/T = get_turf(M)
 	if(istype(T) && prob(reac_volume))
@@ -469,16 +539,22 @@
 		M.adjustStaminaLoss(0.2*reac_volume)
 
 /datum/reagent/blob/pressurized_slime/damage_reaction(obj/structure/blob/B, damage, damage_type, damage_flag)
+	procstart = null
+	src.procstart = null
 	if((damage_flag == "melee" || damage_flag == "bullet" || damage_flag == "laser") || damage_type != BURN)
 		extinguisharea(B, damage)
 	return ..()
 
 /datum/reagent/blob/pressurized_slime/death_reaction(obj/structure/blob/B, damage_flag)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" || damage_flag == "bullet" || damage_flag == "laser")
 		B.visible_message("<span class='boldwarning'>The blob ruptures, spraying the area with liquid!</span>")
 		extinguisharea(B, 50)
 
 /datum/reagent/blob/pressurized_slime/proc/extinguisharea(obj/structure/blob/B, probchance)
+	procstart = null
+	src.procstart = null
 	for(var/turf/open/T in range(1, B))
 		if(prob(probchance))
 			T.MakeSlippery(min_wet_time = 10, wet_time_to_add = 5)

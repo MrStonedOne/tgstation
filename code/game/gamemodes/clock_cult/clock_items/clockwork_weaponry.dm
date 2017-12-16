@@ -9,6 +9,8 @@
 	var/datum/action/innate/call_weapon/action //Some melee weapons use an action that lets you return and dismiss them
 
 /obj/item/clockwork/weapon/Initialize(mapload, new_action)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(new_action)
 		action = new_action

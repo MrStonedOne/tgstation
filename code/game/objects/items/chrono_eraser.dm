@@ -16,18 +16,26 @@
 	var/list/erased_minds = list() //a collection of minds from the dead
 
 /obj/item/chrono_eraser/proc/pass_mind(datum/mind/M)
+	procstart = null
+	src.procstart = null
 	erased_minds += M
 
 /obj/item/chrono_eraser/dropped()
+	procstart = null
+	src.procstart = null
 	..()
 	if(PA)
 		qdel(PA)
 
 /obj/item/chrono_eraser/Destroy()
+	procstart = null
+	src.procstart = null
 	dropped()
 	return ..()
 
 /obj/item/chrono_eraser/ui_action_click(mob/user)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
 		if(C.back == src)
@@ -38,6 +46,8 @@
 				user.put_in_hands(PA)
 
 /obj/item/chrono_eraser/item_action_slot_check(slot, mob/user)
+	procstart = null
+	src.procstart = null
 	if(slot == slot_back)
 		return 1
 
@@ -57,6 +67,8 @@
 	var/turf/startpos = null
 
 /obj/item/gun/energy/chrono_gun/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(istype(loc, /obj/item/chrono_eraser))
 		TED = loc
@@ -65,14 +77,20 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/item/gun/energy/chrono_gun/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/gun/energy/chrono_gun/process_fire()
+	procstart = null
+	src.procstart = null
 	if(field)
 		field_disconnect(field)
 	..()
 
 /obj/item/gun/energy/chrono_gun/Destroy()
+	procstart = null
+	src.procstart = null
 	if(TED)
 		TED.PA = null
 		TED = null
@@ -81,6 +99,8 @@
 	return ..()
 
 /obj/item/gun/energy/chrono_gun/proc/field_connect(obj/effect/chrono_field/F)
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = src.loc
 	if(F.gun)
 		if(isliving(user) && F.captured)
@@ -95,6 +115,8 @@
 
 
 /obj/item/gun/energy/chrono_gun/proc/field_disconnect(obj/effect/chrono_field/F)
+	procstart = null
+	src.procstart = null
 	if(F && field == F)
 		var/mob/living/user = src.loc
 		if(F.gun == src)
@@ -105,6 +127,8 @@
 	startpos = null
 
 /obj/item/gun/energy/chrono_gun/proc/field_check(obj/effect/chrono_field/F)
+	procstart = null
+	src.procstart = null
 	if(F)
 		if(field == F)
 			var/turf/currentpos = get_turf(src)
@@ -115,6 +139,8 @@
 		return 0
 
 /obj/item/gun/energy/chrono_gun/proc/pass_mind(datum/mind/M)
+	procstart = null
+	src.procstart = null
 	if(TED)
 		TED.pass_mind(M)
 
@@ -127,6 +153,8 @@
 	var/obj/item/gun/energy/chrono_gun/gun = null
 
 /obj/item/projectile/energy/chrono_beam/fire()
+	procstart = null
+	src.procstart = null
 	gun = firer.get_active_held_item()
 	if(istype(gun))
 		return ..()
@@ -134,6 +162,8 @@
 		return 0
 
 /obj/item/projectile/energy/chrono_beam/on_hit(atom/target)
+	procstart = null
+	src.procstart = null
 	if(target && gun && isliving(target))
 		var/obj/effect/chrono_field/F = new(target.loc, target, gun)
 		gun.field_connect(F)
@@ -162,6 +192,8 @@
 	var/RPpos = null
 
 /obj/effect/chrono_field/New(loc, var/mob/living/target, var/obj/item/gun/energy/chrono_gun/G)
+	procstart = null
+	src.procstart = null
 	if(target && isliving(target) && G)
 		target.forceMove(src)
 		src.captured = target
@@ -181,11 +213,15 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/chrono_field/Destroy()
+	procstart = null
+	src.procstart = null
 	if(gun && gun.field_check(src))
 		gun.field_disconnect(src)
 	return ..()
 
 /obj/effect/chrono_field/update_icon()
+	procstart = null
+	src.procstart = null
 	var/ttk_frame = 1 - (tickstokill / initial(tickstokill))
 	ttk_frame = Clamp(Ceiling(ttk_frame * CHRONO_FRAME_COUNT), 1, CHRONO_FRAME_COUNT)
 	if(ttk_frame != RPpos)
@@ -195,6 +231,8 @@
 		underlays += mob_underlay
 
 /obj/effect/chrono_field/process()
+	procstart = null
+	src.procstart = null
 	if(captured)
 		if(tickstokill > initial(tickstokill))
 			for(var/atom/movable/AM in contents)
@@ -227,6 +265,8 @@
 		qdel(src)
 
 /obj/effect/chrono_field/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/projectile/energy/chrono_beam))
 		var/obj/item/projectile/energy/chrono_beam/beam = P
 		var/obj/item/gun/energy/chrono_gun/Pgun = beam.gun
@@ -236,6 +276,8 @@
 		return 0
 
 /obj/effect/chrono_field/assume_air()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/effect/chrono_field/return_air() //we always have nominal air and temperature
@@ -247,18 +289,28 @@
 	return GM
 
 /obj/effect/chrono_field/Move()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/chrono_field/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/chrono_field/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/chrono_field/ex_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/chrono_field/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 

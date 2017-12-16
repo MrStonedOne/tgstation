@@ -25,6 +25,8 @@
 	gold_core_spawnable = HOSTILE_SPAWN //are you sure about this??
 
 /mob/living/simple_animal/hostile/headcrab/proc/Infect(mob/living/carbon/victim)
+	procstart = null
+	src.procstart = null
 	var/obj/item/organ/body_egg/changeling_egg/egg = new(victim)
 	egg.Insert(victim)
 	if(origin)
@@ -38,6 +40,8 @@
 	egg_lain = 1
 
 /mob/living/simple_animal/hostile/headcrab/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && !egg_lain && iscarbon(target) && !ismonkey(target))
 		// Changeling egg can survive in aliens!
@@ -57,6 +61,8 @@
 	var/time
 
 /obj/item/organ/body_egg/changeling_egg/egg_process()
+	procstart = null
+	src.procstart = null
 	// Changeling eggs grow in dead people
 	time++
 	if(time >= EGG_INCUBATION_TIME)
@@ -65,6 +71,8 @@
 		qdel(src)
 
 /obj/item/organ/body_egg/changeling_egg/proc/Pop()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/monkey/M = new(owner)
 	owner.stomach_contents += M
 

@@ -15,9 +15,13 @@
 	var/datum/radio_frequency/radio_connection
 
 /obj/machinery/air_sensor/update_icon()
+		procstart = null
+		src.procstart = null
 		icon_state = "gsensor[on]"
 
 /obj/machinery/air_sensor/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(on)
 		var/datum/gas_mixture/air_sample = return_air()
 
@@ -39,16 +43,22 @@
 
 
 /obj/machinery/air_sensor/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
 
 /obj/machinery/air_sensor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSair.atmos_machinery += src
 	set_frequency(frequency)
 
 /obj/machinery/air_sensor/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.atmos_machinery -= src
 	SSradio.remove_object(src, frequency)
 	return ..()
@@ -82,10 +92,14 @@
 	light_color = LIGHT_COLOR_CYAN
 
 /obj/machinery/computer/atmos_control/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_frequency(frequency)
 
 /obj/machinery/computer/atmos_control/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	return ..()
 
@@ -97,6 +111,8 @@
 		ui.open()
 
 /obj/machinery/computer/atmos_control/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/data = list()
 
 	data["sensors"] = list()
@@ -115,6 +131,8 @@
 	return data
 
 /obj/machinery/computer/atmos_control/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal)
 		return
 
@@ -125,6 +143,8 @@
 	sensor_information[id_tag] = signal.data
 
 /obj/machinery/computer/atmos_control/proc/set_frequency(new_frequency)
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src, frequency)
 	frequency = new_frequency
 	radio_connection = SSradio.add_object(src, frequency, RADIO_ATMOSIA)
@@ -144,6 +164,8 @@
 
 // This hacky madness is the evidence of the fact that a lot of machines were never meant to be constructable, im so sorry you had to see this
 /obj/machinery/computer/atmos_control/tank/proc/reconnect(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/IO = list()
 	var/datum/radio_frequency/freq = SSradio.return_frequency(FREQ_ATMOS_STORAGE)
 	var/list/devices = freq.devices["_default"]
@@ -180,6 +202,8 @@
 		ui.open()
 
 /obj/machinery/computer/atmos_control/tank/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = ..()
 	data["tank"] = TRUE
 	data["inputting"] = input_info ? input_info["power"] : FALSE
@@ -190,6 +214,8 @@
 	return data
 
 /obj/machinery/computer/atmos_control/tank/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..() || !radio_connection)
 		return
 	var/datum/signal/signal = new(list("sigtype" = "command"))
@@ -212,6 +238,8 @@
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/computer/atmos_control/tank/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	if(!signal)
 		return
 

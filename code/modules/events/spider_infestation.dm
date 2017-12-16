@@ -12,14 +12,20 @@
 
 
 /datum/round_event/spider_infestation/setup()
+	procstart = null
+	src.procstart = null
 	announceWhen = rand(announceWhen, announceWhen + 50)
 	spawncount = rand(5, 8)
 
 /datum/round_event/spider_infestation/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Unidentified lifesigns detected coming aboard [station_name()]. Secure any exterior access, including ducting and ventilation.", "Lifesign Alert", 'sound/ai/aliens.ogg')
 
 
 /datum/round_event/spider_infestation/start()
+	procstart = null
+	src.procstart = null
 	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/components/unary/vent_pump/temp_vent in world)
 		if((temp_vent.loc.z in GLOB.station_z_levels) && !temp_vent.welded)

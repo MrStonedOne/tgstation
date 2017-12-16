@@ -7,6 +7,8 @@
 	show_laws()
 
 /mob/living/silicon/robot/show_laws(everyone = 0)
+	procstart = null
+	src.procstart = null
 	laws_sanity_check()
 	var/who
 
@@ -45,6 +47,8 @@
 
 
 /mob/living/silicon/robot/proc/lawsync()
+	procstart = null
+	src.procstart = null
 	laws_sanity_check()
 	var/datum/ai_laws/master = connected_ai ? connected_ai.laws : null
 	var/temp

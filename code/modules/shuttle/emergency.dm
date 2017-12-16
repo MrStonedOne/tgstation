@@ -12,12 +12,16 @@
 	var/list/authorized = list()
 
 /obj/machinery/computer/emergency_shuttle/attackby(obj/item/I, mob/user,params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/card/id))
 		say("Please equip your ID card into your ID slot to authenticate.")
 	. = ..()
 
 /obj/machinery/computer/emergency_shuttle/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.human_adjacent_state)
 
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "emergency_shuttle_console", name,
@@ -25,6 +29,8 @@
 		ui.open()
 
 /obj/machinery/computer/emergency_shuttle/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["timer_str"] = SSshuttle.emergency.getTimerStr()
@@ -47,6 +53,8 @@
 	return data
 
 /obj/machinery/computer/emergency_shuttle/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(ENGINES_STARTED) // past the point of no return
@@ -93,6 +101,8 @@
 			minor_announce("Early launch authorization revoked, [remaining] authorizations needed")
 
 /obj/machinery/computer/emergency_shuttle/proc/authorize(mob/user, source)
+	procstart = null
+	src.procstart = null
 	var/obj/item/card/id/ID = user.get_idcard()
 
 	if(ID in authorized)
@@ -111,6 +121,8 @@
 	process()
 
 /obj/machinery/computer/emergency_shuttle/process()
+	procstart = null
+	src.procstart = null
 	// Launch check is in process in case auth_need changes for some reason
 	// probably external.
 	. = FALSE
@@ -134,6 +146,8 @@
 		. = TRUE
 
 /obj/machinery/computer/emergency_shuttle/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	// How did you even get on the shuttle before it go to the station?
 	if(!IS_DOCKED)
 		return
@@ -164,6 +178,8 @@
 	process()
 
 /obj/machinery/computer/emergency_shuttle/Destroy()
+	procstart = null
+	src.procstart = null
 	// Our fake IDs that the emag generated are just there for colour
 	// They're not supposed to be accessible
 
@@ -188,13 +204,19 @@
 	var/sound_played = 0 //If the launch sound has been sent to all players on the shuttle itself
 
 /obj/docking_port/mobile/emergency/canDock(obj/docking_port/stationary/S)
+	procstart = null
+	src.procstart = null
 	return SHUTTLE_CAN_DOCK //If the emergency shuttle can't move, the whole game breaks, so it will force itself to land even if it has to crush a few departments in the process
 
 /obj/docking_port/mobile/emergency/register()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSshuttle.emergency = src
 
 /obj/docking_port/mobile/emergency/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if(force)
 		// This'll make the shuttle subsystem use the backup shuttle.
 		if(src == SSshuttle.emergency)
@@ -204,6 +226,8 @@
 	. = ..()
 
 /obj/docking_port/mobile/emergency/request(obj/docking_port/stationary/S, area/signalOrigin, reason, redAlert, set_coefficient=null)
+	procstart = null
+	src.procstart = null
 	if(!isnum(set_coefficient))
 		var/security_num = seclevel2num(get_security_level())
 		switch(security_num)
@@ -233,6 +257,8 @@
 	priority_announce("The emergency shuttle has been called. [redAlert ? "Red Alert state confirmed: Dispatching priority shuttle. " : "" ]It will arrive in [timeLeft(600)] minutes.[reason][SSshuttle.emergencyLastCallLoc ? "\n\nCall signal traced. Results can be viewed on any communications console." : "" ]", null, 'sound/ai/shuttlecalled.ogg', "Priority")
 
 /obj/docking_port/mobile/emergency/cancel(area/signalOrigin)
+	procstart = null
+	src.procstart = null
 	if(mode != SHUTTLE_CALL)
 		return
 	if(SSshuttle.emergencyNoRecall)
@@ -248,6 +274,8 @@
 	priority_announce("The emergency shuttle has been recalled.[SSshuttle.emergencyLastCallLoc ? " Recall signal traced. Results can be viewed on any communications console." : "" ]", null, 'sound/ai/shuttlerecalled.ogg', "Priority")
 
 /obj/docking_port/mobile/emergency/proc/is_hijacked()
+	procstart = null
+	src.procstart = null
 	var/has_people = FALSE
 
 	for(var/mob/living/player in GLOB.player_list)
@@ -268,6 +296,8 @@
 	return has_people
 
 /obj/docking_port/mobile/emergency/check()
+	procstart = null
+	src.procstart = null
 	if(!timer)
 		return
 	var/time_left = timeLeft(1)
@@ -395,6 +425,8 @@
 				timer = 0
 
 /obj/docking_port/mobile/emergency/transit_failure()
+	procstart = null
+	src.procstart = null
 	..()
 	message_admins("Moving emergency shuttle directly to centcom dock to prevent deadlock.")
 
@@ -413,6 +445,8 @@
 	launch_status = UNLAUNCHED
 
 /obj/docking_port/mobile/pod/request()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/computer/shuttle/S = getControlConsole()
 
 	if(GLOB.security_level == SEC_LEVEL_RED || GLOB.security_level == SEC_LEVEL_DELTA || (S && S.emagged))
@@ -424,11 +458,15 @@
 		return 1
 
 /obj/docking_port/mobile/pod/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(id == "pod")
 		WARNING("[type] id has not been changed from the default. Use the id convention \"pod1\" \"pod2\" etc.")
 
 /obj/docking_port/mobile/pod/cancel()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/computer/shuttle/pod
@@ -443,9 +481,13 @@
 	clockwork = TRUE //it'd look weird
 
 /obj/machinery/computer/shuttle/pod/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/computer/shuttle/pod/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	emagged = TRUE
@@ -462,6 +504,8 @@
 	// Minimal distance from the map edge, setting this too low can result in shuttle landing on the edge and getting "sliced"
 
 /obj/docking_port/stationary/random/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!mapload)
 		return
@@ -505,6 +549,8 @@
 	var/unlocked = FALSE
 
 /obj/item/storage/pod/PopulateContents()
+	procstart = null
+	src.procstart = null
 	new /obj/item/clothing/head/helmet/space/orange(src)
 	new /obj/item/clothing/head/helmet/space/orange(src)
 	new /obj/item/clothing/suit/space/orange(src)
@@ -519,15 +565,21 @@
 	new /obj/item/storage/toolbox/emergency(src)
 
 /obj/item/storage/pod/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/storage/pod/MouseDrop(over_object, src_location, over_location)
+	procstart = null
+	src.procstart = null
 	if(GLOB.security_level == SEC_LEVEL_RED || GLOB.security_level == SEC_LEVEL_DELTA || unlocked)
 		. = ..()
 	else
 		to_chat(usr, "The storage unit will only unlock during a Red or Delta security alert.")
 
 /obj/item/storage/pod/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	return MouseDrop(user)
 
 /obj/docking_port/mobile/emergency/backup
@@ -540,6 +592,8 @@
 	roundstart_move = "backup_away"
 
 /obj/docking_port/mobile/emergency/backup/Initialize()
+	procstart = null
+	src.procstart = null
 	// We want to be a valid emergency shuttle
 	// but not be the main one, keep whatever's set
 	// valid.

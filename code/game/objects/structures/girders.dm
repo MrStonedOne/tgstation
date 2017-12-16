@@ -11,10 +11,14 @@
 	max_integrity = 200
 
 /obj/structure/girder/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_VERY_LIGHT_INSULATION)
 
 /obj/structure/girder/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	switch(state)
 		if(GIRDER_REINF)
@@ -30,6 +34,8 @@
 			to_chat(user, "<span class='notice'>[src] is disassembled! You probably shouldn't be able to see this examine message.</span>")
 
 /obj/structure/girder/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 
 	if(istype(W, /obj/item/gun/energy/plasmacutter))
@@ -212,6 +218,8 @@
 
 // Screwdriver behavior for girders
 /obj/structure/girder/screwdriver_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(state == GIRDER_DISPLACED)
 		playsound(src, tool.usesound, 100, 1)
@@ -250,6 +258,8 @@
 
 // Wirecutter behavior for girders
 /obj/structure/girder/wirecutter_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(state == GIRDER_REINF_STRUTS)
 		playsound(src.loc, tool.usesound, 100, 1)
@@ -263,6 +273,8 @@
 			return TRUE
 
 /obj/structure/girder/wrench_act(mob/user, obj/item/tool)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(state == GIRDER_DISPLACED)
 		if(!isfloorturf(loc))
@@ -287,6 +299,8 @@
 			return TRUE
 
 /obj/structure/girder/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGRILLE))
 		return prob(girderpasschance)
 	else
@@ -296,18 +310,24 @@
 			return 0
 
 /obj/structure/girder/CanAStarPass(ID, dir, caller)
+	procstart = null
+	src.procstart = null
 	. = !density
 	if(ismovableatom(caller))
 		var/atom/movable/mover = caller
 		. = . || (mover.pass_flags & PASSGRILLE)
 
 /obj/structure/girder/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		var/remains = pick(/obj/item/stack/rods, /obj/item/stack/sheet/metal)
 		new remains(loc)
 	qdel(src)
 
 /obj/structure/girder/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		new /obj/structure/destructible/clockwork/wall_gear(loc)
 	else
@@ -315,6 +335,8 @@
 	qdel(src)
 
 /obj/structure/girder/narsie_act()
+	procstart = null
+	src.procstart = null
 	new /obj/structure/girder/cult(loc)
 	qdel(src)
 
@@ -345,6 +367,8 @@
 	can_displace = FALSE
 
 /obj/structure/girder/cult/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	if(istype(W, /obj/item/tome) && iscultist(user)) //Cultists can demolish cult girders instantly with their tomes
 		user.visible_message("<span class='warning'>[user] strikes [src] with [W]!</span>", "<span class='notice'>You demolish [src].</span>")
@@ -404,14 +428,20 @@
 		return ..()
 
 /obj/structure/girder/cult/narsie_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/girder/cult/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/runed_metal(drop_location(), 1)
 	qdel(src)
 
 /obj/structure/girder/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_FLOORWALL)
 			return list("mode" = RCD_FLOORWALL, "delay" = 20, "cost" = 8)
@@ -420,6 +450,8 @@
 	return FALSE
 
 /obj/structure/girder/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	switch(passed_mode)
 		if(RCD_FLOORWALL)

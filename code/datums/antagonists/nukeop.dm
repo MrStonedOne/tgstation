@@ -18,24 +18,34 @@
 	var/nukeop_outfit = /datum/outfit/syndicate
 
 /datum/antagonist/nukeop/proc/update_synd_icons_added(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/opshud = GLOB.huds[ANTAG_HUD_OPS]
 	opshud.join_hud(M)
 	set_antag_hud(M, "synd")
 
 /datum/antagonist/nukeop/proc/update_synd_icons_removed(mob/living/M)
+	procstart = null
+	src.procstart = null
 	var/datum/atom_hud/antag/opshud = GLOB.huds[ANTAG_HUD_OPS]
 	opshud.leave_hud(M)
 	set_antag_hud(M, null)
 
 /datum/antagonist/nukeop/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = mob_override || owner.current
 	update_synd_icons_added(M)
 
 /datum/antagonist/nukeop/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/M = mob_override || owner.current
 	update_synd_icons_removed(M)
 
 /datum/antagonist/nukeop/proc/equip_op()
+	procstart = null
+	src.procstart = null
 	if(!ishuman(owner.current))
 		return
 	var/mob/living/carbon/human/H = owner.current
@@ -46,12 +56,16 @@
 	return TRUE
 
 /datum/antagonist/nukeop/greet()
+	procstart = null
+	src.procstart = null
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ops.ogg',100,0)
 	to_chat(owner, "<span class='notice'>You are a [nuke_team ? nuke_team.syndicate_name : "syndicate"] agent!</span>")
 	owner.announce_objectives()
 	return
 
 /datum/antagonist/nukeop/on_gain()
+	procstart = null
+	src.procstart = null
 	give_alias()
 	forge_objectives()
 	. = ..()
@@ -61,9 +75,13 @@
 		move_to_spawnpoint()
 
 /datum/antagonist/nukeop/get_team()
+	procstart = null
+	src.procstart = null
 	return nuke_team
 
 /datum/antagonist/nukeop/proc/assign_nuke()
+	procstart = null
+	src.procstart = null
 	if(nuke_team && !nuke_team.tracked_nuke)
 		nuke_team.memorized_code = random_nukecode()
 		var/obj/machinery/nuclearbomb/nuke = locate("syndienuke") in GLOB.nuke_list
@@ -78,12 +96,16 @@
 			nuke_team.memorized_code = null
 
 /datum/antagonist/nukeop/proc/give_alias()
+	procstart = null
+	src.procstart = null
 	if(nuke_team && nuke_team.syndicate_name)
 		var/number = 1
 		number = nuke_team.members.Find(owner)
 		owner.current.real_name = "[nuke_team.syndicate_name] Operative #[number]"
 
 /datum/antagonist/nukeop/proc/memorize_code()
+	procstart = null
+	src.procstart = null
 	if(nuke_team && nuke_team.tracked_nuke && nuke_team.memorized_code)
 		owner.store_memory("<B>[nuke_team.tracked_nuke] Code</B>: [nuke_team.memorized_code]", 0, 0)
 		to_chat(owner, "The nuclear authorization code is: <B>[nuke_team.memorized_code]</B>")
@@ -91,19 +113,27 @@
 		to_chat(owner, "Unfortunately the syndicate was unable to provide you with nuclear authorization code.")
 
 /datum/antagonist/nukeop/proc/forge_objectives()
+	procstart = null
+	src.procstart = null
 	if(nuke_team)
 		owner.objectives |= nuke_team.objectives
 
 /datum/antagonist/nukeop/proc/move_to_spawnpoint()
+	procstart = null
+	src.procstart = null
 	var/team_number = 1
 	if(nuke_team)
 		team_number = nuke_team.members.Find(owner)
 	owner.current.forceMove(GLOB.nukeop_start[((team_number - 1) % GLOB.nukeop_start.len) + 1])
 
 /datum/antagonist/nukeop/leader/move_to_spawnpoint()
+	procstart = null
+	src.procstart = null
 	owner.current.forceMove(pick(GLOB.nukeop_leader_start))
 
 /datum/antagonist/nukeop/create_team(datum/objective_team/nuclear/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team)
 		if(!always_new_team)
 			for(var/datum/antagonist/nukeop/N in GLOB.antagonists)
@@ -125,6 +155,8 @@
 	var/title
 
 /datum/antagonist/nukeop/leader/memorize_code()
+	procstart = null
+	src.procstart = null
 	..()
 	if(nuke_team && nuke_team.memorized_code)
 		var/obj/item/paper/P = new
@@ -138,6 +170,8 @@
 			H.update_icons()
 
 /datum/antagonist/nukeop/leader/give_alias()
+	procstart = null
+	src.procstart = null
 	title = pick("Czar", "Boss", "Commander", "Chief", "Kingpin", "Director", "Overlord")
 	if(nuke_team && nuke_team.syndicate_name)
 		owner.current.real_name = "[nuke_team.syndicate_name] [title]"
@@ -145,6 +179,8 @@
 		owner.current.real_name = "Syndicate [title]"
 
 /datum/antagonist/nukeop/leader/greet()
+	procstart = null
+	src.procstart = null
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/ops.ogg',100,0)
 	to_chat(owner, "<B>You are the Syndicate [title] for this mission. You are responsible for the distribution of telecrystals and your ID is the only one who can open the launch bay doors.</B>")
 	to_chat(owner, "<B>If you feel you are not up to this task, give your ID to another operative.</B>")
@@ -154,11 +190,15 @@
 
 
 /datum/antagonist/nukeop/leader/proc/nuketeam_name_assign()
+	procstart = null
+	src.procstart = null
 	if(!nuke_team)
 		return
 	nuke_team.rename_team(ask_name())
 
 /datum/objective_team/nuclear/proc/rename_team(new_name)
+	procstart = null
+	src.procstart = null
 	syndicate_name = new_name
 	name = "[syndicate_name] Team"
 	for(var/I in members)
@@ -170,6 +210,8 @@
 		H.fully_replace_character_name(H.real_name,chosen_name)
 
 /datum/antagonist/nukeop/leader/proc/ask_name()
+	procstart = null
+	src.procstart = null
 	var/randomname = pick(GLOB.last_names)
 	var/newname = stripped_input(owner.current,"You are the nuke operative [title]. Please choose a last name for your family.", "Name change",randomname)
 	if (!newname)
@@ -188,6 +230,8 @@
 	nukeop_outfit = /datum/outfit/syndicate/full
 
 /datum/antagonist/nukeop/lone/assign_nuke()
+	procstart = null
+	src.procstart = null
 	if(nuke_team && !nuke_team.tracked_nuke)
 		nuke_team.memorized_code = random_nukecode()
 		var/obj/machinery/nuclearbomb/selfdestruct/nuke = locate() in GLOB.nuke_list
@@ -208,22 +252,30 @@
 	var/memorized_code
 
 /datum/objective_team/nuclear/New()
+	procstart = null
+	src.procstart = null
 	..()
 	syndicate_name = syndicate_name()
 
 /datum/objective_team/nuclear/proc/update_objectives()
+	procstart = null
+	src.procstart = null
 	if(core_objective)
 		var/datum/objective/O = new core_objective
 		O.team = src
 		objectives += O
 
 /datum/objective_team/nuclear/proc/disk_rescued()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/disk/nuclear/D in GLOB.poi_list)
 		if(!D.onCentCom())
 			return FALSE
 	return TRUE
 
 /datum/objective_team/nuclear/proc/operatives_dead()
+	procstart = null
+	src.procstart = null
 	for(var/I in members)
 		var/datum/mind/operative_mind = I
 		if(ishuman(operative_mind.current) && (operative_mind.current.stat != DEAD))
@@ -231,10 +283,14 @@
 	return TRUE
 
 /datum/objective_team/nuclear/proc/syndies_escaped()
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/S = SSshuttle.getShuttle("syndicate")
 	return (S && (S.z == ZLEVEL_CENTCOM || S.z == ZLEVEL_TRANSIT))
 
 /datum/objective_team/nuclear/proc/get_result()
+	procstart = null
+	src.procstart = null
 	var/evacuation = SSshuttle.emergency.mode == SHUTTLE_ENDGAME
 	var/disk_rescued = disk_rescued()
 	var/syndies_didnt_escape = !syndies_escaped()
@@ -263,6 +319,8 @@
 		return	//Undefined result
 
 /datum/objective_team/nuclear/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	parts += "<span class='header'>[syndicate_name] Operatives:</span>"
 	

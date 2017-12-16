@@ -29,11 +29,15 @@
 	clockwork = TRUE //it'd look weird
 
 /obj/machinery/computer/libraryconsole/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/computer/libraryconsole/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = "" // <META HTTP-EQUIV='Refresh' CONTENT='10'>
 	switch(screenstate)
@@ -69,6 +73,8 @@
 	popup.open()
 
 /obj/machinery/computer/libraryconsole/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(..())
 		usr << browse(null, "window=publiclibrary")
@@ -133,6 +139,8 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 
 
 /proc/load_library_db_to_cache()
+	procstart = null
+	src.procstart = null
 	if(GLOB.cachedbooks)
 		return
 	if(!SSdbcore.Connect())
@@ -180,6 +188,8 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 	var/cooldown = 0
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/build_library_menu()
+	procstart = null
+	src.procstart = null
 	if(libcomp_menu)
 		return
 	load_library_db_to_cache()
@@ -196,12 +206,16 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 		libcomp_menu[page] += "<tr><td>[C.author]</td><td>[C.title]</td><td>[C.category]</td><td><A href='?src=[REF(src)];targetid=[C.id]'>\[Order\]</A></td></tr>\n"
 
 /obj/machinery/computer/libraryconsole/bookmanagement/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(circuit)
 		circuit.name = "Book Inventory Management Console (Machine Board)"
 		circuit.build_path = /obj/machinery/computer/libraryconsole/bookmanagement
 
 /obj/machinery/computer/libraryconsole/bookmanagement/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/dat = "" // <META HTTP-EQUIV='Refresh' CONTENT='10'>
 	switch(screenstate)
@@ -314,11 +328,15 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 	popup.open()
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/findscanner(viewrange)
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/libraryscanner/S in range(viewrange, get_turf(src)))
 		return S
 	return null
 
 /obj/machinery/computer/libraryconsole/bookmanagement/proc/print_forbidden_lore(mob/user)
+	procstart = null
+	src.procstart = null
 	var/spook = pick("blood", "brass")
 	var/turf/T = get_turf(src)
 	if(spook == "blood")
@@ -330,6 +348,8 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 	user.visible_message("[user] stares at the blank screen for a few moments, [user.p_their()] expression frozen in fear. When [user.p_they()] finally awaken[user.p_s()] from it, [user.p_they()] look[user.p_s()] a lot older.", 2)
 
 /obj/machinery/computer/libraryconsole/bookmanagement/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/barcodescanner))
 		var/obj/item/barcodescanner/scanner = W
 		scanner.computer = src
@@ -339,10 +359,14 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 		return ..()
 
 /obj/machinery/computer/libraryconsole/bookmanagement/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(density && !emagged)
 		emagged = TRUE
 
 /obj/machinery/computer/libraryconsole/bookmanagement/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		usr << browse(null, "window=library")
 		onclose(usr, "library")
@@ -504,6 +528,8 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 	var/obj/item/book/cache		// Last scanned book
 
 /obj/machinery/libraryscanner/attackby(obj/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/book))
 		if(!user.transferItemToLoc(O, src))
 			return
@@ -511,6 +537,8 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 		return ..()
 
 /obj/machinery/libraryscanner/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	usr.set_machine(src)
 	var/dat = "" // <META HTTP-EQUIV='Refresh' CONTENT='10'>
 	if(cache)
@@ -528,6 +556,8 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 	popup.open()
 
 /obj/machinery/libraryscanner/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		usr << browse(null, "window=scanner")
 		onclose(usr, "scanner")
@@ -560,6 +590,8 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 	var/busy = FALSE
 
 /obj/machinery/bookbinder/attackby(obj/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/paper))
 		bind_book(user, O)
 	else if(default_unfasten_wrench(user, O))
@@ -568,6 +600,8 @@ GLOBAL_LIST(cachedbooks) // List of our cached book datums
 		return ..()
 
 /obj/machinery/bookbinder/proc/bind_book(mob/user, obj/item/paper/P)
+	procstart = null
+	src.procstart = null
 	if(stat)
 		return
 	if(busy)

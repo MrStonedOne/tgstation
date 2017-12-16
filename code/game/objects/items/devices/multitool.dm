@@ -29,6 +29,8 @@
 	var/mode = 0
 
 /obj/item/device/multitool/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(selected_io)
 		selected_io = null
 		to_chat(user, "<span class='notice'>You clear the wired connection from the multitool.</span>")
@@ -37,12 +39,16 @@
 	update_icon()
 
 /obj/item/device/multitool/update_icon()
+	procstart = null
+	src.procstart = null
 	if(selected_io)
 		icon_state = "multitool_red"
 	else
 		icon_state = "multitool"
 
 /obj/item/device/multitool/proc/wire(var/datum/integrated_io/io, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!io.holder.assembly)
 		to_chat(user, "<span class='warning'>\The [io.holder] needs to be secured inside an assembly first.</span>")
 		return
@@ -72,6 +78,8 @@
 
 
 /obj/item/device/multitool/proc/unwire(var/datum/integrated_io/io1, var/datum/integrated_io/io2, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!io1.linked.len || !io2.linked.len)
 		to_chat(user, "<span class='warning'>There is nothing connected to the data channel.</span>")
 		return
@@ -99,14 +107,20 @@
 	var/rangewarning = 20 //Glows yellow when inside
 
 /obj/item/device/multitool/ai_detect/New()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/device/multitool/ai_detect/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/device/multitool/ai_detect/process()
+	procstart = null
+	src.procstart = null
 	if(track_cooldown > world.time)
 		return
 	detect_state = PROXIMITY_NONE
@@ -115,6 +129,8 @@
 	track_cooldown = world.time + track_delay
 
 /obj/item/device/multitool/ai_detect/proc/multitool_detect()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	for(var/mob/living/silicon/ai/AI in GLOB.ai_list)
 		if(AI.cameraFollow == src)
@@ -139,6 +155,8 @@
 	track_delay = 5
 
 /obj/item/device/multitool/ai_detect/admin/multitool_detect()
+	procstart = null
+	src.procstart = null
 	var/turf/our_turf = get_turf(src)
 	for(var/mob/J in urange(rangewarning,our_turf))
 		if(GLOB.admin_datums[J.ckey])

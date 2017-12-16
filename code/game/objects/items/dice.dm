@@ -5,6 +5,8 @@
 	icon_state = "dicebag"
 
 /obj/item/storage/pill_bottle/dice/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/special_die = pick("1","2","fudge","space","00","8bd20","4dd6","100")
 	if(special_die == "1")
@@ -31,6 +33,8 @@
 		new /obj/item/dice/d100(src)
 
 /obj/item/storage/pill_bottle/dice/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is gambling with death! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (OXYLOSS)
 
@@ -47,11 +51,15 @@
 	var/rigged = FALSE
 
 /obj/item/dice/New()
+	procstart = null
+	src.procstart = null
 	result = rand(1, sides)
 	update_icon()
 	..()
 
 /obj/item/dice/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is gambling with death! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (OXYLOSS)
 
@@ -74,6 +82,8 @@
 	sides = 4
 
 /obj/item/dice/d4/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/caltrop, 4)
 
@@ -86,6 +96,8 @@
 	icon_state = "spaced6"
 
 /obj/item/dice/d6/space/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(prob(10))
 		name = "spess cube"
@@ -134,6 +146,8 @@
 	sides = 100
 
 /obj/item/dice/d100/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/dice/eightbd20
@@ -144,6 +158,8 @@
 	special_faces = list("It is certain","It is decidedly so","Without a doubt","Yes, definitely","You may rely on it","As I see it, yes","Most likely","Outlook good","Yes","Signs point to yes","Reply hazy try again","Ask again later","Better not tell you now","Cannot predict now","Concentrate and ask again","Don't count on it","My reply is no","My sources say no","Outlook not so good","Very doubtful")
 
 /obj/item/dice/eightbd20/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/dice/fourdd6
@@ -154,16 +170,24 @@
 	special_faces = list("Cube-Side: 1-1","Cube-Side: 1-2","Cube-Side: 1-3","Cube-Side: 1-4","Cube-Side: 1-5","Cube-Side: 1-6","Cube-Side: 2-1","Cube-Side: 2-2","Cube-Side: 2-3","Cube-Side: 2-4","Cube-Side: 2-5","Cube-Side: 2-6","Cube-Side: 3-1","Cube-Side: 3-2","Cube-Side: 3-3","Cube-Side: 3-4","Cube-Side: 3-5","Cube-Side: 3-6","Cube-Side: 4-1","Cube-Side: 4-2","Cube-Side: 4-3","Cube-Side: 4-4","Cube-Side: 4-5","Cube-Side: 4-6","Cube-Side: 5-1","Cube-Side: 5-2","Cube-Side: 5-3","Cube-Side: 5-4","Cube-Side: 5-5","Cube-Side: 5-6","Cube-Side: 6-1","Cube-Side: 6-2","Cube-Side: 6-3","Cube-Side: 6-4","Cube-Side: 6-5","Cube-Side: 6-6","Cube-Side: 7-1","Cube-Side: 7-2","Cube-Side: 7-3","Cube-Side: 7-4","Cube-Side: 7-5","Cube-Side: 7-6","Cube-Side: 8-1","Cube-Side: 8-2","Cube-Side: 8-3","Cube-Side: 8-4","Cube-Side: 8-5","Cube-Side: 8-6")
 
 /obj/item/dice/fourdd6/update_icon()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/dice/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	diceroll(user)
 
 /obj/item/dice/throw_impact(atom/target)
+	procstart = null
+	src.procstart = null
 	diceroll(thrownby)
 	. = ..()
 
 /obj/item/dice/proc/diceroll(mob/user)
+	procstart = null
+	src.procstart = null
 	result = rand(1, sides)
 	if(rigged && result != rigged)
 		if(prob(Clamp(1/(sides - 1) * 100, 25, 80)))
@@ -187,10 +211,14 @@
 		visible_message("<span class='notice'>[src] rolls to a stop, landing on [result]. [comment]</span>")
 
 /obj/item/dice/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	add_overlay("[src.icon_state][src.result]")
 
 /obj/item/dice/microwave_act(obj/machinery/microwave/M)
+	procstart = null
+	src.procstart = null
 	if(can_be_rigged)
 		rigged = result
 	..(M)

@@ -28,6 +28,8 @@ BONUS
 	symptom_delay_max = 75
 
 /datum/symptom/vitiligo/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob
@@ -73,6 +75,8 @@ BONUS
 	symptom_delay_max = 14
 
 /datum/symptom/revitiligo/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

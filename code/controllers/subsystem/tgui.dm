@@ -11,15 +11,23 @@ SUBSYSTEM_DEF(tgui)
 	var/basehtml // The HTML base used for all UIs.
 
 /datum/controller/subsystem/tgui/PreInit()
+	procstart = null
+	src.procstart = null
 	basehtml = file2text("tgui/tgui.html")
 
 /datum/controller/subsystem/tgui/Shutdown()
+	procstart = null
+	src.procstart = null
 	close_all_uis()
 
 /datum/controller/subsystem/tgui/stat_entry()
+	procstart = null
+	src.procstart = null
 	..("P:[processing_uis.len]")
 
 /datum/controller/subsystem/tgui/fire(resumed = 0)
+	procstart = null
+	src.procstart = null
 	if (!resumed)
 		src.currentrun = processing_uis.Copy()
 	//cache for sanic speed (lists are references anyways)

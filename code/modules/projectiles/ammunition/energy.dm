@@ -14,6 +14,8 @@
 	var/list/projectile_vars = list()
 
 /obj/item/ammo_casing/energy/chameleon/ready_proj()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!BB)
 		newshot()
@@ -214,6 +216,8 @@
 	var/obj/item/gun/energy/gravity_gun/gun = null
 
 /obj/item/ammo_casing/energy/gravityrepulse/New(var/obj/item/gun/energy/gravity_gun/G)
+	procstart = null
+	src.procstart = null
 	gun = G
 
 /obj/item/ammo_casing/energy/gravityattract
@@ -226,6 +230,8 @@
 
 
 /obj/item/ammo_casing/energy/gravityattract/New(var/obj/item/gun/energy/gravity_gun/G)
+	procstart = null
+	src.procstart = null
 	gun = G
 
 /obj/item/ammo_casing/energy/gravitychaos
@@ -237,6 +243,8 @@
 	var/obj/item/gun/energy/gravity_gun/gun = null
 
 /obj/item/ammo_casing/energy/gravitychaos/New(var/obj/item/gun/energy/gravity_gun/G)
+	procstart = null
+	src.procstart = null
 	gun = G
 
 /obj/item/ammo_casing/energy/plasma

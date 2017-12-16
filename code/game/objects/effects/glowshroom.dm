@@ -32,18 +32,26 @@
 	myseed = /obj/item/seeds/glowshroom/shadowshroom
 
 /obj/structure/glowshroom/single/Spread()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/structure/glowshroom/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	to_chat(user, "This is a [generation]\th generation [name]!")
 
 /obj/structure/glowshroom/Destroy()
+	procstart = null
+	src.procstart = null
 	if(myseed)
 		QDEL_NULL(myseed)
 	return ..()
 
 /obj/structure/glowshroom/New(loc, obj/item/seeds/newseed, mutate_stats)
+	procstart = null
+	src.procstart = null
 	..()
 	if(newseed)
 		myseed = newseed.Copy()
@@ -83,6 +91,8 @@
 	addtimer(CALLBACK(src, .proc/Spread), delay)
 
 /obj/structure/glowshroom/proc/Spread()
+	procstart = null
+	src.procstart = null
 	var/turf/ownturf = get_turf(src)
 	var/shrooms_planted = 0
 	for(var/i in 1 to myseed.yield)
@@ -130,6 +140,8 @@
 		addtimer(CALLBACK(src, .proc/Spread), delay)
 
 /obj/structure/glowshroom/proc/CalcDir(turf/location = loc)
+	procstart = null
+	src.procstart = null
 	var/direction = 16
 
 	for(var/wallDir in GLOB.cardinals)
@@ -162,14 +174,20 @@
 	return 1
 
 /obj/structure/glowshroom/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	if(damage_type == BURN && damage_amount)
 		playsound(src.loc, 'sound/items/welder.ogg', 100, 1)
 
 /obj/structure/glowshroom/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > 300)
 		take_damage(5, BURN, 0, 0)
 
 /obj/structure/glowshroom/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	. = 1
 	visible_message("<span class='danger'>[src] melts away!</span>")
 	var/obj/effect/decal/cleanable/molten_object/I = new (get_turf(src))

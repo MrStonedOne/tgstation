@@ -5,17 +5,25 @@
 	blocks_air = 1
 
 /turf/closed/ComponentInitialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/rad_insulation, RAD_MEDIUM_INSULATION)
 
 /turf/closed/ChangeTurf()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSair.high_pressure_delta -= src
 
 /turf/closed/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/closed/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSCLOSEDTURF))
 		return TRUE
 	else
@@ -27,9 +35,13 @@
 	explosion_block = 50
 
 /turf/closed/indestructible/TerraformTurf(path, defer_change = FALSE, ignore_air = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/closed/indestructible/acid_act(acidpwr, acid_volume, acid_id)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /turf/closed/indestructible/oldshuttle
@@ -47,12 +59,16 @@
 	layer = FLY_LAYER
 
 /turf/closed/indestructible/splashscreen/New()
+	procstart = null
+	src.procstart = null
 	SStitle.splash_turf = src
 	if(SStitle.icon)
 		icon = SStitle.icon
 	..()
 
 /turf/closed/indestructible/splashscreen/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		switch(var_name)
@@ -82,6 +98,8 @@
 	icon = 'icons/obj/smooth_structures/reinforced_window.dmi'
 
 /turf/closed/indestructible/fakeglass/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = null //set the icon state to null, so our base state isn't visible
 	underlays += mutable_appearance('icons/obj/structures.dmi', "grille") //add a grille underlay
@@ -125,6 +143,8 @@
 	baseturf = /turf/closed/indestructible/necropolis
 
 /turf/closed/indestructible/necropolis/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "necro1"
 	return TRUE
@@ -142,6 +162,8 @@
 	opacity = FALSE
 
 /turf/closed/indestructible/riveted/boss/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "basalt"
 	return TRUE

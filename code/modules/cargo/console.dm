@@ -20,12 +20,16 @@
 	requestonly = TRUE
 
 /obj/machinery/computer/cargo/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/circuitboard/computer/cargo/board = circuit
 	contraband = board.contraband
 	emagged = board.emagged
 
 /obj/machinery/computer/cargo/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	user.visible_message("<span class='warning'>[user] swipes a suspicious card through [src]!</span>",
@@ -47,6 +51,8 @@
 		ui.open()
 
 /obj/machinery/computer/cargo/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["requestonly"] = requestonly
 	data["location"] = SSshuttle.supply.getStatusText()
@@ -98,6 +104,8 @@
 	return data
 
 /obj/machinery/computer/cargo/ui_act(action, params, datum/tgui/ui)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(action != "add" && requestonly)
@@ -201,6 +209,8 @@
 
 /obj/machinery/computer/cargo/proc/post_signal(command)
 
+	procstart = null
+	src.procstart = null
 	var/datum/radio_frequency/frequency = SSradio.return_frequency(FREQ_STATUS_DISPLAYS)
 
 	if(!frequency)

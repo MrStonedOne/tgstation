@@ -11,6 +11,8 @@
 	handle_robot_cell()
 
 /mob/living/silicon/robot/proc/handle_robot_cell()
+	procstart = null
+	src.procstart = null
 	if(stat != DEAD)
 		if(low_power_mode)
 			if(cell && cell.charge)
@@ -20,6 +22,8 @@
 			use_power()
 
 /mob/living/silicon/robot/proc/use_power()
+	procstart = null
+	src.procstart = null
 	if(cell && cell.charge)
 		if(cell.charge <= 100)
 			uneq_all()
@@ -32,6 +36,8 @@
 	diag_hud_set_borgcell()
 
 /mob/living/silicon/robot/proc/handle_robot_hud_updates()
+	procstart = null
+	src.procstart = null
 	if(!client)
 		return
 
@@ -54,6 +60,8 @@
 
 
 /mob/living/silicon/robot/update_health_hud()
+	procstart = null
+	src.procstart = null
 	if(!client || !hud_used)
 		return
 	if(hud_used.healths)
@@ -74,6 +82,8 @@
 			hud_used.healths.icon_state = "health7"
 
 /mob/living/silicon/robot/proc/update_cell_hud_icon()
+	procstart = null
+	src.procstart = null
 	if(cell)
 		var/cellcharge = cell.charge/cell.maxcharge
 		switch(cellcharge)
@@ -92,6 +102,8 @@
 
 //Robots on fire
 /mob/living/silicon/robot/handle_fire()
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(fire_stacks > 0)
@@ -104,6 +116,8 @@
 	return
 
 /mob/living/silicon/robot/update_fire()
+	procstart = null
+	src.procstart = null
 	var/mutable_appearance/fire_overlay = mutable_appearance('icons/mob/OnFire.dmi', "Generic_mob_burning")
 	if(on_fire)
 		add_overlay(fire_overlay)
@@ -111,6 +125,8 @@
 		cut_overlay(fire_overlay)
 
 /mob/living/silicon/robot/update_canmove()
+	procstart = null
+	src.procstart = null
 	if(stat || buckled || lockcharge)
 		canmove = 0
 	else

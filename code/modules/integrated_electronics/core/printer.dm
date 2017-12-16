@@ -10,6 +10,8 @@
 	var/list/program			// Currently loaded save, in form of list
 
 /obj/item/device/integrated_circuit_printer/proc/check_interactivity(mob/user)
+	procstart = null
+	src.procstart = null
 	return user.canUseTopic(src, be_close = TRUE)
 
 /obj/item/device/integrated_circuit_printer/upgraded
@@ -17,10 +19,14 @@
 	can_clone = TRUE
 
 /obj/item/device/integrated_circuit_printer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/material_container, list(MAT_METAL), MINERAL_MATERIAL_AMOUNT * 25, TRUE, list(/obj/item/stack, /obj/item/integrated_circuit))
 
 /obj/item/device/integrated_circuit_printer/attackby(var/obj/item/O, var/mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/disk/integrated_circuit/upgrade/advanced))
 		if(upgraded)
 			to_chat(user, "<span class='warning'>\The [src] already has this upgrade. </span>")
@@ -44,9 +50,13 @@
 	return ..()
 
 /obj/item/device/integrated_circuit_printer/attack_self(var/mob/user)
+	procstart = null
+	src.procstart = null
 	interact(user)
 
 /obj/item/device/integrated_circuit_printer/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(isnull(current_category))
 		current_category = SScircuit.circuit_fabricator_recipe_list[1]
 
@@ -97,6 +107,8 @@
 	user << browse(HTML, "window=integrated_printer;size=600x500;border=1;can_resize=1;can_close=1;can_minimize=1")
 
 /obj/item/device/integrated_circuit_printer/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(!check_interactivity(usr))
 		return
 	if(..())

@@ -36,6 +36,8 @@
 
 
 /obj/item/pneumatic_cannon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(selfcharge)
 		init_charge()
@@ -44,17 +46,25 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/pneumatic_cannon/process()
+	procstart = null
+	src.procstart = null
 	if(++charge_tick >= charge_ticks && charge_type)
 		fill_with_type(charge_type, charge_amount)
 
 /obj/item/pneumatic_cannon/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/pneumatic_cannon/CanItemAutoclick()
+	procstart = null
+	src.procstart = null
 	return automatic
 
 /obj/item/pneumatic_cannon/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	var/list/out = list()
 	if(!in_range(user, src))
@@ -68,6 +78,8 @@
 	to_chat(user, out.Join("<br>"))
 
 /obj/item/pneumatic_cannon/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	if(istype(W, /obj/item/tank/internals))
@@ -98,6 +110,8 @@
 		load_item(IW, user)
 
 /obj/item/pneumatic_cannon/proc/can_load_item(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(allowed_typecache && !is_type_in_typecache(I, allowed_typecache))
 		if(user)
 			to_chat(user, "<span class='warning'>[I] won't fit into [src]!</span>")
@@ -113,6 +127,8 @@
 	return TRUE
 
 /obj/item/pneumatic_cannon/proc/load_item(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!can_load_item(I, user))
 		return FALSE
 	if(user)		//Only use transfer proc if there's a user, otherwise just set loc.
@@ -126,6 +142,8 @@
 	return TRUE
 
 /obj/item/pneumatic_cannon/afterattack(atom/target, mob/living/carbon/human/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(flag && user.a_intent == INTENT_HARM) //melee attack
 		return
 	if(!istype(user))
@@ -133,6 +151,8 @@
 	Fire(user, target)
 
 /obj/item/pneumatic_cannon/proc/Fire(mob/living/carbon/human/user, var/atom/target)
+	procstart = null
+	src.procstart = null
 	if(!istype(user) && !target)
 		return
 	var/discharge = 0
@@ -168,6 +188,8 @@
 		user.Knockdown(60)
 
 /obj/item/pneumatic_cannon/proc/fire_items(turf/target, mob/user)
+	procstart = null
+	src.procstart = null
 	if(fire_mode == PCANNON_FIREALL)
 		for(var/obj/item/ITD in loadedItems) //Item To Discharge
 			if(!throw_item(target, ITD, user))
@@ -185,6 +207,8 @@
 				break
 
 /obj/item/pneumatic_cannon/proc/throw_item(turf/target, obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(I))
 		return FALSE
 	loadedItems -= I
@@ -194,6 +218,8 @@
 	return TRUE
 
 /obj/item/pneumatic_cannon/proc/get_target(turf/target, turf/starting)
+	procstart = null
+	src.procstart = null
 	if(range_multiplier == 1)
 		return target
 	var/x_o = (target.x - starting.x)
@@ -212,6 +238,8 @@
 	gasPerThrow = 5
 
 /obj/item/pneumatic_cannon/proc/updateTank(obj/item/tank/internals/thetank, removing = 0, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(removing)
 		if(!src.tank)
 			return
@@ -230,6 +258,8 @@
 	src.update_icons()
 
 /obj/item/pneumatic_cannon/proc/update_icons()
+	procstart = null
+	src.procstart = null
 	src.cut_overlays()
 	if(!tank)
 		return
@@ -237,6 +267,8 @@
 	src.update_icon()
 
 /obj/item/pneumatic_cannon/proc/fill_with_type(type, amount)
+	procstart = null
+	src.procstart = null
 	if(!ispath(type, /obj/item))
 		return FALSE
 	var/loaded = 0
@@ -263,6 +295,8 @@
 	var/static/list/pie_typecache = typecacheof(/obj/item/reagent_containers/food/snacks/pie)
 
 /obj/item/pneumatic_cannon/pie/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	allowed_typecache = pie_typecache
 

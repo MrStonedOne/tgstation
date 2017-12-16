@@ -21,9 +21,13 @@
 	var/thanks_msg = "The cargo shuttle should return in five minutes. Have some supply points for your trouble."
 
 /datum/round_event/shuttle_loan/setup()
+	procstart = null
+	src.procstart = null
 	dispatch_type = pick(HIJACK_SYNDIE, RUSKY_PARTY, SPIDER_GIFT, DEPARTMENT_RESUPPLY, ANTIDOTE_NEEDED, PIZZA_DELIVERY)
 
 /datum/round_event/shuttle_loan/announce(fake)
+	procstart = null
+	src.procstart = null
 	SSshuttle.shuttle_loan = src
 	switch(dispatch_type)
 		if(HIJACK_SYNDIE)
@@ -42,6 +46,8 @@
 			priority_announce("Cargo: It looks like a neighbouring station accidentally delivered their pizza to you instead", "CentCom Spacepizza Division")
 
 /datum/round_event/shuttle_loan/proc/loan_shuttle()
+	procstart = null
+	src.procstart = null
 	priority_announce(thanks_msg, "Cargo shuttle commandeered by CentCom.")
 
 	dispatched = 1
@@ -67,6 +73,8 @@
 			SSshuttle.centcom_message += "Pizza delivery for [station_name()]"
 
 /datum/round_event/shuttle_loan/tick()
+	procstart = null
+	src.procstart = null
 	if(dispatched)
 		if(SSshuttle.supply.mode != SHUTTLE_IDLE)
 			endWhen = activeFor
@@ -74,6 +82,8 @@
 			endWhen = activeFor + 1
 
 /datum/round_event/shuttle_loan/end()
+	procstart = null
+	src.procstart = null
 	if(SSshuttle.shuttle_loan && SSshuttle.shuttle_loan.dispatched)
 		//make sure the shuttle was dispatched in time
 		SSshuttle.shuttle_loan = null

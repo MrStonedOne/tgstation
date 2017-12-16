@@ -6,6 +6,8 @@ SUBSYSTEM_DEF(assets)
 	var/list/preload = list()
 
 /datum/controller/subsystem/assets/Initialize(timeofday)
+	procstart = null
+	src.procstart = null
 	for(var/type in typesof(/datum/asset) - list(/datum/asset, /datum/asset/simple))
 		var/datum/asset/A = new type()
 		A.register()

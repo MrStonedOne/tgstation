@@ -20,6 +20,8 @@ GLOBAL_VAR_INIT(message_delay, 0) // To make sure restarting the recentmessages 
 	circuit = /obj/item/circuitboard/machine/telecomms/broadcaster
 
 /obj/machinery/telecomms/broadcaster/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
+	procstart = null
+	src.procstart = null
 	// Don't broadcast rejected signals
 	if(signal.data["reject"])
 		return
@@ -82,6 +84,8 @@ GLOBAL_VAR_INIT(message_delay, 0) // To make sure restarting the recentmessages 
 		flick("broadcaster_send", src)
 
 /obj/machinery/telecomms/broadcaster/Destroy()
+	procstart = null
+	src.procstart = null
 	// In case message_delay is left on 1, otherwise it won't reset the list and people can't say the same thing twice anymore.
 	if(GLOB.message_delay)
 		GLOB.message_delay = 0

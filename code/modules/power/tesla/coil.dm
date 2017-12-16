@@ -19,10 +19,14 @@
 	var/last_zap = 0
 
 /obj/machinery/power/tesla_coil/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires = new /datum/wires/tesla_coil(src)
 
 /obj/machinery/power/tesla_coil/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/power_multiplier = 0
 	zap_cooldown = 100
 	for(var/obj/item/stock_parts/capacitor/C in component_parts)
@@ -31,6 +35,8 @@
 	input_power_multiplier = power_multiplier
 
 /obj/machinery/power/tesla_coil/default_unfasten_wrench(mob/user, obj/item/wrench/W, time = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_UNFASTEN)
 		if(panel_open)
@@ -43,6 +49,8 @@
 			disconnect_from_network()
 
 /obj/machinery/power/tesla_coil/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "coil_open[anchored]", "coil[anchored]", W))
 		return
 
@@ -62,11 +70,15 @@
 	return ..()
 
 /obj/machinery/power/tesla_coil/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_GRAB && user_buckle_mob(user.pulling, user, check_loc = 0))
 		return
 	..()
 
 /obj/machinery/power/tesla_coil/tesla_act(var/power)
+	procstart = null
+	src.procstart = null
 	if(anchored && !panel_open)
 		being_shocked = TRUE
 		//don't lose arc power when it's not connected to anything
@@ -81,6 +93,8 @@
 		..()
 
 /obj/machinery/power/tesla_coil/proc/zap()
+	procstart = null
+	src.procstart = null
 	if((last_zap + zap_cooldown) > world.time || !powernet)
 		return FALSE
 	last_zap = world.time
@@ -104,6 +118,8 @@
 	buckle_requires_restraints = TRUE
 
 /obj/machinery/power/grounding_rod/default_unfasten_wrench(mob/user, obj/item/wrench/W, time = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_UNFASTEN)
 		if(panel_open)
@@ -112,6 +128,8 @@
 			icon_state = "grounding_rod[anchored]"
 
 /obj/machinery/power/grounding_rod/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "grounding_rod_open[anchored]", "grounding_rod[anchored]", W))
 		return
 
@@ -127,11 +145,15 @@
 	return ..()
 
 /obj/machinery/power/grounding_rod/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_GRAB && user_buckle_mob(user.pulling, user, check_loc = 0))
 		return
 	..()
 
 /obj/machinery/power/grounding_rod/tesla_act(var/power)
+	procstart = null
+	src.procstart = null
 	if(anchored && !panel_open)
 		flick("grounding_rodhit", src)
 	else

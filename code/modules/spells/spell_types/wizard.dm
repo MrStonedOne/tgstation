@@ -262,6 +262,8 @@
 	action_icon_state = "repulse"
 
 /obj/effect/proc_holder/spell/aoe_turf/repulse/cast(list/targets,mob/user = usr, var/stun_amt = 40)
+	procstart = null
+	src.procstart = null
 	var/list/thrownatoms = list()
 	var/atom/throwtarget
 	var/distfromcaster
@@ -306,6 +308,8 @@
 	action_background_icon_state = "bg_alien"
 
 /obj/effect/proc_holder/spell/aoe_turf/repulse/xeno/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(user))
 		var/mob/living/carbon/C = user
 		playsound(C.loc, 'sound/voice/hiss5.ogg', 80, 1, 1)
@@ -327,6 +331,8 @@
 	sound = 'sound/magic/fireball.ogg'
 
 /obj/effect/proc_holder/spell/targeted/sacred_flame/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/L in targets)
 		L.adjust_fire_stacks(20)
 	if(isliving(user))
@@ -341,6 +347,8 @@
 	charge_max = 10
 
 /obj/effect/proc_holder/spell/targeted/conjure_item/spellpacket/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/mob/living/carbon/C in targets)
 		C.throw_mode_on()
@@ -353,6 +361,8 @@
 	w_class = WEIGHT_CLASS_TINY
 
 /obj/item/spellpacket/lightningbolt/throw_impact(atom/hit_atom)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		if(isliving(hit_atom))
 			var/mob/living/M = hit_atom
@@ -360,6 +370,8 @@
 		qdel(src)
 
 /obj/item/spellpacket/lightningbolt/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(ishuman(thrower))
 		var/mob/living/carbon/human/H = thrower

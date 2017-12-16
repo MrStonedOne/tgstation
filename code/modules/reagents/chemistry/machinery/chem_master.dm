@@ -19,25 +19,35 @@
 	var/useramount = 30 // Last used amount
 
 /obj/machinery/chem_master/Initialize()
+	procstart = null
+	src.procstart = null
 	create_reagents(100)
 	add_overlay("waitlight")
 	. = ..()
 
 /obj/machinery/chem_master/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(beaker)
 	QDEL_NULL(bottle)
 	return ..()
 
 /obj/machinery/chem_master/RefreshParts()
+	procstart = null
+	src.procstart = null
 	reagents.maximum_volume = 0
 	for(var/obj/item/reagent_containers/glass/beaker/B in component_parts)
 		reagents.maximum_volume += B.reagents.maximum_volume
 
 /obj/machinery/chem_master/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	if(severity < 3)
 		..()
 
 /obj/machinery/chem_master/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(beaker)
 		beaker.ex_act(severity, target)
@@ -45,6 +55,8 @@
 		bottle.ex_act(severity, target)
 
 /obj/machinery/chem_master/handle_atom_del(atom/A)
+	procstart = null
+	src.procstart = null
 	..()
 	if(A == beaker)
 		beaker = null
@@ -54,12 +66,16 @@
 		bottle = null
 
 /obj/machinery/chem_master/update_icon()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		icon_state = "mixer1"
 	else
 		icon_state = "mixer0"
 
 /obj/machinery/chem_master/proc/eject_beaker()
+	procstart = null
+	src.procstart = null
 	if(beaker)
 		beaker.forceMove(drop_location())
 		adjust_item_drop_location(beaker)
@@ -67,16 +83,22 @@
 		update_icon()
 
 /obj/machinery/chem_master/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if (prob(50))
 		qdel(src)
 
 /obj/machinery/chem_master/power_change()
+	procstart = null
+	src.procstart = null
 	if(powered())
 		stat &= ~NOPOWER
 	else
 		stat |= NOPOWER
 
 /obj/machinery/chem_master/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "mixer0_nopower", "mixer0", I))
 		return
 
@@ -118,6 +140,8 @@
 		return ..()
 
 /obj/machinery/chem_master/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	eject_beaker()
 	if(bottle)
 		bottle.forceMove(drop_location())
@@ -134,6 +158,8 @@
 
 
 /obj/machinery/chem_master/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["isBeakerLoaded"] = beaker ? 1 : 0
 	data["beakerCurrentVolume"] = beaker ? beaker.reagents.total_volume : null
@@ -165,6 +191,8 @@
 	return data
 
 /obj/machinery/chem_master/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -328,6 +356,8 @@
 
 
 /obj/machinery/chem_master/proc/isgoodnumber(num)
+	procstart = null
+	src.procstart = null
 	if(isnum(num))
 		if(num > 200)
 			num = 200

@@ -7,14 +7,20 @@
 
 //returns the master list for verbs of a type
 /datum/verbs/proc/GetList()
+	procstart = null
+	src.procstart = null
 	CRASH("Abstract verblist for [type]")
 
 //do things for each entry in Generate_list
 //return value sets Generate_list[verbpath]
 /datum/verbs/proc/HandleVerb(list/entry, atom/verb/verbpath, ...)
+	procstart = null
+	src.procstart = null
 	return entry
 
 /datum/verbs/New()
+	procstart = null
+	src.procstart = null
 	var/mainlist = GetList()
 	var/ourentry = mainlist[type]
 	children = list()
@@ -38,6 +44,8 @@
 		parent.Add_children(list(src))
 
 /datum/verbs/proc/Set_parent(datum/verbs/_parent)
+	procstart = null
+	src.procstart = null
 	parent = _parent
 	if (abstract)
 		parent.Add_children(children)
@@ -49,6 +57,8 @@
 			parent.Load_verbs(verbparenttype, verblistoftypes[verbparenttype])
 
 /datum/verbs/proc/Add_children(list/kids)
+	procstart = null
+	src.procstart = null
 	if (abstract && parent)
 		parent.Add_children(kids)
 		return
@@ -60,6 +70,8 @@
 			children += item
 
 /datum/verbs/proc/Load_verbs(verb_parent_type, list/verbs)
+	procstart = null
+	src.procstart = null
 	if (abstract && parent)
 		parent.Load_verbs(verb_parent_type, verbs)
 		return
@@ -68,6 +80,8 @@
 		verblist[verbpath] = verb_parent_type
 
 /datum/verbs/proc/Generate_list(...)
+	procstart = null
+	src.procstart = null
 	. = list()
 	if (length(children))
 		for (var/thing in children)
@@ -96,6 +110,8 @@
 		.[verbpath] = HandleVerb(arglist(list(entry, verbpath) + args))
 
 /world/proc/LoadVerbs(verb_type)
+	procstart = null
+	src.procstart = null
 	if(!ispath(verb_type, /datum/verbs) || verb_type == /datum/verbs)
 		CRASH("Invalid verb_type: [verb_type]")
 	for (var/typepath in subtypesof(verb_type))

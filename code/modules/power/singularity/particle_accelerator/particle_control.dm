@@ -20,11 +20,15 @@
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
 
 /obj/machinery/particle_accelerator/control_box/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wires = new /datum/wires/particle_accelerator/control_box(src)
 	connected_parts = list()
 
 /obj/machinery/particle_accelerator/control_box/Destroy()
+	procstart = null
+	src.procstart = null
 	if(active)
 		toggle_power()
 	for(var/CP in connected_parts)
@@ -35,12 +39,16 @@
 	return ..()
 
 /obj/machinery/particle_accelerator/control_box/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(construction_state == PA_CONSTRUCTION_COMPLETE)
 		interact(user)
 	else if(construction_state == PA_CONSTRUCTION_PANEL_OPEN)
 		wires.interact(user)
 
 /obj/machinery/particle_accelerator/control_box/proc/update_state()
+	procstart = null
+	src.procstart = null
 	if(construction_state < PA_CONSTRUCTION_COMPLETE)
 		use_power = NO_POWER_USE
 		assembled = 0
@@ -58,6 +66,8 @@
 		connected_parts.Cut()
 
 /obj/machinery/particle_accelerator/control_box/update_icon()
+	procstart = null
+	src.procstart = null
 	if(active)
 		icon_state = "control_boxp1"
 	else
@@ -76,6 +86,8 @@
 					icon_state = "control_boxc"
 
 /obj/machinery/particle_accelerator/control_box/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -106,12 +118,16 @@
 	update_icon()
 
 /obj/machinery/particle_accelerator/control_box/proc/strength_change()
+	procstart = null
+	src.procstart = null
 	for(var/CP in connected_parts)
 		var/obj/structure/particle_accelerator/part = CP
 		part.strength = strength
 		part.update_icon()
 
 /obj/machinery/particle_accelerator/control_box/proc/add_strength(s)
+	procstart = null
+	src.procstart = null
 	if(assembled && (strength < strength_upper_limit))
 		strength++
 		strength_change()
@@ -122,6 +138,8 @@
 
 
 /obj/machinery/particle_accelerator/control_box/proc/remove_strength(s)
+	procstart = null
+	src.procstart = null
 	if(assembled && (strength > 0))
 		strength--
 		strength_change()
@@ -132,6 +150,8 @@
 
 
 /obj/machinery/particle_accelerator/control_box/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & NOPOWER)
 		active = 0
@@ -140,6 +160,8 @@
 		use_power = IDLE_POWER_USE
 
 /obj/machinery/particle_accelerator/control_box/process()
+	procstart = null
+	src.procstart = null
 	if(active)
 		//a part is missing!
 		if(connected_parts.len < 6)
@@ -152,6 +174,8 @@
 			PE.emit_particle(strength)
 
 /obj/machinery/particle_accelerator/control_box/proc/part_scan()
+	procstart = null
+	src.procstart = null
 	var/ldir = turn(dir,-90)
 	var/rdir = turn(dir,90)
 	var/odir = turn(dir,180)
@@ -193,6 +217,8 @@
 	return 1
 
 /obj/machinery/particle_accelerator/control_box/proc/check_part(turf/T, type)
+	procstart = null
+	src.procstart = null
 	var/obj/structure/particle_accelerator/PA = locate(/obj/structure/particle_accelerator) in T
 	if(istype(PA, type) && (PA.construction_state == PA_CONSTRUCTION_COMPLETE))
 		if(PA.connect_master(src))
@@ -202,6 +228,8 @@
 
 
 /obj/machinery/particle_accelerator/control_box/proc/toggle_power()
+	procstart = null
+	src.procstart = null
 	active = !active
 	investigate_log("turned [active?"<font color='green'>ON</font>":"<font color='red'>OFF</font>"] by [usr ? key_name(usr) : "outside forces"]", INVESTIGATE_SINGULO)
 	message_admins("PA Control Computer turned [active ?"ON":"OFF"] by [usr ? key_name_admin(usr) : "outside forces"][ADMIN_QUE(usr)] [ADMIN_FLW(usr)] in [ADMIN_COORDJMP(src)]",0,1)
@@ -224,6 +252,8 @@
 
 
 /obj/machinery/particle_accelerator/control_box/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if((get_dist(src, user) > 1) || (stat & (BROKEN|NOPOWER)))
 		if(!issilicon(user))
 			user.unset_machine()
@@ -254,6 +284,8 @@
 	popup.open()
 
 /obj/machinery/particle_accelerator/control_box/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(construction_state)
 		if(PA_CONSTRUCTION_UNSECURED)
@@ -265,6 +297,8 @@
 
 
 /obj/machinery/particle_accelerator/control_box/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/did_something = FALSE
 
 	switch(construction_state)
@@ -318,6 +352,8 @@
 	..()
 
 /obj/machinery/particle_accelerator/control_box/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(prob(50))
 		qdel(src)
 

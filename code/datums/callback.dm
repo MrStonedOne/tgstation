@@ -50,6 +50,8 @@
 	var/list/arguments
 
 /datum/callback/New(thingtocall, proctocall, ...)
+	procstart = null
+	src.procstart = null
 	if (thingtocall)
 		object = thingtocall
 	delegate = proctocall
@@ -57,6 +59,8 @@
 		arguments = args.Copy(3)
 
 /world/proc/ImmediateInvokeAsync(thingtocall, proctocall, ...)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 
 	if (!thingtocall)
@@ -70,6 +74,8 @@
 		call(thingtocall, proctocall)(arglist(calling_arguments))
 
 /datum/callback/proc/Invoke(...)
+	procstart = null
+	src.procstart = null
 	if (!object)
 		return
 	var/list/calling_arguments = arguments
@@ -86,6 +92,8 @@
 
 //copy and pasted because fuck proc overhead
 /datum/callback/proc/InvokeAsync(...)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if (!object)
 		return
@@ -108,12 +116,16 @@
 	var/total
 
 /datum/callback_select/New(count, savereturns)
+	procstart = null
+	src.procstart = null
 	total = count
 	if (savereturns)
 		finished = new(count)
 
 
 /datum/callback_select/proc/invoke_callback(index, datum/callback/callback, list/callback_args, savereturn = TRUE)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	if (!callback || !istype(callback))
 		//This check only exists because the alternative is callback_select would block forever if given invalid data
@@ -136,6 +148,8 @@
 //can optionly save and return a list of return values, in the same order as the original list of callbacks
 //resolution is the number of byond ticks between checks.
 /proc/callback_select(list/callbacks, list/callback_args, savereturns = TRUE, resolution = 1)
+	procstart = null
+	src.procstart = null
 	if (!callbacks)
 		return
 	var/count = length(callbacks)

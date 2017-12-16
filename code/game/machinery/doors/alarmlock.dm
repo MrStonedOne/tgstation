@@ -11,21 +11,29 @@
 	autoclose = FALSE
 
 /obj/machinery/door/airlock/alarmlock/New()
+	procstart = null
+	src.procstart = null
 	..()
 	air_connection = new
 
 /obj/machinery/door/airlock/alarmlock/Destroy()
+	procstart = null
+	src.procstart = null
 	SSradio.remove_object(src,air_frequency)
 	air_connection = null
 	return ..()
 
 /obj/machinery/door/airlock/alarmlock/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SSradio.remove_object(src, air_frequency)
 	air_connection = SSradio.add_object(src, air_frequency, RADIO_TO_AIRALARM)
 	open()
 
 /obj/machinery/door/airlock/alarmlock/receive_signal(datum/signal/signal)
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & (NOPOWER|BROKEN))
 		return

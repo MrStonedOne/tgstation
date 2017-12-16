@@ -7,6 +7,8 @@
 	var/needs_update_stat = FALSE
 
 /datum/status_effect/incapacitating/on_creation(mob/living/new_owner, set_duration, updating_canmove)
+	procstart = null
+	src.procstart = null
 	if(isnum(set_duration))
 		duration = set_duration
 	. = ..()
@@ -17,6 +19,8 @@
 				owner.update_stat()
 
 /datum/status_effect/incapacitating/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.update_canmove()
 	if(needs_update_stat || issilicon(owner)) //silicons need stat updates in addition to normal canmove updates
 		owner.update_stat()
@@ -30,6 +34,8 @@
 	id = "knockdown"
 
 /datum/status_effect/incapacitating/knockdown/tick()
+	procstart = null
+	src.procstart = null
 	if(owner.staminaloss)
 		owner.adjustStaminaLoss(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
 
@@ -40,6 +46,8 @@
 	needs_update_stat = TRUE
 
 /datum/status_effect/incapacitating/unconscious/tick()
+	procstart = null
+	src.procstart = null
 	if(owner.staminaloss)
 		owner.adjustStaminaLoss(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
 
@@ -52,6 +60,8 @@
 	var/mob/living/carbon/human/human_owner
 
 /datum/status_effect/incapacitating/sleeping/on_creation(mob/living/new_owner, updating_canmove)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(iscarbon(owner)) //to avoid repeated istypes
@@ -60,11 +70,15 @@
 			human_owner = owner
 
 /datum/status_effect/incapacitating/sleeping/Destroy()
+	procstart = null
+	src.procstart = null
 	carbon_owner = null
 	human_owner = null
 	return ..()
 
 /datum/status_effect/incapacitating/sleeping/tick()
+	procstart = null
+	src.procstart = null
 	if(owner.staminaloss)
 		owner.adjustStaminaLoss(-0.5) //reduce stamina loss by 0.5 per tick, 10 per 2 seconds
 	if(human_owner && human_owner.drunkenness)
@@ -94,6 +108,8 @@
 	alerttooltipstyle = "hisgrace"
 
 /datum/status_effect/his_wrath/tick()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/his_grace/HG in owner.held_items)
 		qdel(src)
 		return
@@ -117,13 +133,19 @@
 	alerttooltipstyle = "clockcult"
 
 /datum/status_effect/belligerent/on_apply()
+	procstart = null
+	src.procstart = null
 	return do_movement_toggle(TRUE)
 
 /datum/status_effect/belligerent/tick()
+	procstart = null
+	src.procstart = null
 	if(!do_movement_toggle())
 		qdel(src)
 
 /datum/status_effect/belligerent/proc/do_movement_toggle(force_damage)
+	procstart = null
+	src.procstart = null
 	var/number_legs = owner.get_num_legs()
 	if(iscarbon(owner) && !is_servant_of_ratvar(owner) && !owner.null_rod_check() && number_legs)
 		if(force_damage || owner.m_intent != MOVE_INTENT_WALK)
@@ -145,6 +167,8 @@
 	return FALSE
 
 /datum/status_effect/belligerent/on_remove()
+	procstart = null
+	src.procstart = null
 	if(owner.m_intent == MOVE_INTENT_WALK)
 		owner.toggle_move_intent()
 
@@ -167,15 +191,21 @@
 	"\"No, *O, you **re so cl***-\"" = TRUE, "You hear a yell of frustration, cut off by static." = FALSE)
 
 /datum/status_effect/maniamotor/on_creation(mob/living/new_owner, obj/structure/destructible/clockwork/powered/mania_motor/new_motor)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		motor = new_motor
 
 /datum/status_effect/maniamotor/Destroy()
+	procstart = null
+	src.procstart = null
 	motor = null
 	return ..()
 
 /datum/status_effect/maniamotor/tick()
+	procstart = null
+	src.procstart = null
 	var/is_servant = is_servant_of_ratvar(owner)
 	var/span_part = severity > 50 ? "" : "_small" //let's save like one check
 	if(QDELETED(motor))
@@ -246,6 +276,8 @@
 	alert_type = null
 
 /datum/status_effect/cultghost/tick()
+	procstart = null
+	src.procstart = null
 	if(owner.reagents)
 		owner.reagents.del_reagent("holywater") //can't be deconverted
 
@@ -258,11 +290,15 @@
 	var/obj/item/twohanded/required/kinetic_crusher/hammer_synced
 
 /datum/status_effect/crusher_mark/on_creation(mob/living/new_owner, obj/item/twohanded/required/kinetic_crusher/new_hammer_synced)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		hammer_synced = new_hammer_synced
 
 /datum/status_effect/crusher_mark/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.mob_size >= MOB_SIZE_LARGE)
 		marked_underlay = mutable_appearance('icons/effects/effects.dmi', "shield2")
 		marked_underlay.pixel_x = -owner.pixel_x
@@ -272,6 +308,8 @@
 	return FALSE
 
 /datum/status_effect/crusher_mark/Destroy()
+	procstart = null
+	src.procstart = null
 	hammer_synced = null
 	if(owner)
 		owner.underlays -= marked_underlay
@@ -279,6 +317,8 @@
 	return ..()
 
 /datum/status_effect/crusher_mark/be_replaced()
+	procstart = null
+	src.procstart = null
 	owner.underlays -= marked_underlay //if this is being called, we should have an owner at this point.
 	..()
 
@@ -296,6 +336,8 @@
 	var/needs_to_bleed = FALSE
 
 /datum/status_effect/saw_bleed/Destroy()
+	procstart = null
+	src.procstart = null
 	if(owner)
 		owner.cut_overlay(bleed_overlay)
 		owner.underlays -= bleed_underlay
@@ -303,6 +345,8 @@
 	return ..()
 
 /datum/status_effect/saw_bleed/on_apply()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return FALSE
 	bleed_overlay = mutable_appearance('icons/effects/bleed.dmi', "bleed[bleed_amount]")
@@ -320,12 +364,16 @@
 	return ..()
 
 /datum/status_effect/saw_bleed/tick()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		qdel(src)
 	else
 		add_bleed(-1)
 
 /datum/status_effect/saw_bleed/proc/add_bleed(amount)
+	procstart = null
+	src.procstart = null
 	owner.cut_overlay(bleed_overlay)
 	owner.underlays -= bleed_underlay
 	bleed_amount += amount
@@ -344,6 +392,8 @@
 		qdel(src)
 
 /datum/status_effect/saw_bleed/on_remove()
+	procstart = null
+	src.procstart = null
 	if(needs_to_bleed)
 		var/turf/T = get_turf(owner)
 		new /obj/effect/temp_visual/bleed/explode(T)
@@ -355,6 +405,8 @@
 		new /obj/effect/temp_visual/bleed(get_turf(owner))
 
 /mob/living/proc/apply_necropolis_curse(set_curse)
+	procstart = null
+	src.procstart = null
 	var/datum/status_effect/necropolis_curse/C = has_status_effect(STATUS_EFFECT_NECROPOLIS_CURSE)
 	if(!set_curse)
 		set_curse = pick(CURSE_BLINDING, CURSE_SPAWNING, CURSE_WASTING, CURSE_GRASPING)
@@ -375,30 +427,42 @@
 	var/obj/effect/temp_visual/curse/wasting_effect = new
 
 /datum/status_effect/necropolis_curse/on_creation(mob/living/new_owner, set_curse)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		apply_curse(set_curse)
 
 /datum/status_effect/necropolis_curse/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(wasting_effect))
 		qdel(wasting_effect)
 		wasting_effect = null
 	return ..()
 
 /datum/status_effect/necropolis_curse/on_remove()
+	procstart = null
+	src.procstart = null
 	remove_curse(curse_flags)
 
 /datum/status_effect/necropolis_curse/proc/apply_curse(set_curse)
+	procstart = null
+	src.procstart = null
 	curse_flags |= set_curse
 	if(curse_flags & CURSE_BLINDING)
 		owner.overlay_fullscreen("curse", /obj/screen/fullscreen/curse, 1)
 
 /datum/status_effect/necropolis_curse/proc/remove_curse(remove_curse)
+	procstart = null
+	src.procstart = null
 	if(remove_curse & CURSE_BLINDING)
 		owner.clear_fullscreen("curse", 50)
 	curse_flags &= ~remove_curse
 
 /datum/status_effect/necropolis_curse/tick()
+	procstart = null
+	src.procstart = null
 	if(owner.stat == DEAD)
 		return
 	if(curse_flags & CURSE_WASTING)
@@ -428,6 +492,8 @@
 				grasp(spawn_turf)
 
 /datum/status_effect/necropolis_curse/proc/grasp(turf/spawn_turf)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	new/obj/effect/temp_visual/dir_setting/curse/grasp_portal(spawn_turf, owner.dir)
 	playsound(spawn_turf, 'sound/effects/curse2.ogg', 80, 1, -1)
@@ -440,6 +506,8 @@
 	icon_state = "curse"
 
 /obj/effect/temp_visual/curse/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	deltimer(timerid)
 
@@ -454,6 +522,8 @@
 	var/old_health
 
 /datum/status_effect/kindle/tick()
+	procstart = null
+	src.procstart = null
 	owner.Knockdown(15)
 	if(iscarbon(owner))
 		var/mob/living/carbon/C = owner
@@ -471,6 +541,8 @@
 	old_health = owner.health
 
 /datum/status_effect/kindle/on_remove()
+	procstart = null
+	src.procstart = null
 	owner.visible_message("<span class='warning'>The light in [owner]'s eyes fades!</span>", \
 	"<span class='boldannounce'>You snap out of your daze!</span>")
 

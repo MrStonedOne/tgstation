@@ -32,6 +32,8 @@
 
 
 /obj/structure/filingcabinet/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(mapload)
 		for(var/obj/item/I in loc)
@@ -39,6 +41,8 @@
 				I.forceMove(src)
 
 /obj/structure/filingcabinet/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc, 2)
 		for(var/obj/item/I in src)
@@ -46,6 +50,8 @@
 	qdel(src)
 
 /obj/structure/filingcabinet/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(P, /obj/item/paper) || istype(P, /obj/item/folder) || istype(P, /obj/item/photo) || istype(P, /obj/item/documents))
 		if(!user.transferItemToLoc(P, src))
 			return
@@ -67,6 +73,8 @@
 
 
 /obj/structure/filingcabinet/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(contents.len <= 0)
 		to_chat(user, "<span class='notice'>[src] is empty.</span>")
 		return
@@ -81,12 +89,16 @@
 	user << browse("<html><head><title>[name]</title></head><body>[dat]</body></html>", "window=filingcabinet;size=350x300")
 
 /obj/structure/filingcabinet/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		attack_self_tk(user)
 	else
 		..()
 
 /obj/structure/filingcabinet/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(contents.len)
 		if(prob(40 + contents.len * 5))
 			var/obj/item/I = pick(contents)
@@ -98,6 +110,8 @@
 	to_chat(user, "<span class='notice'>You find nothing in [src].</span>")
 
 /obj/structure/filingcabinet/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(href_list["retrieve"])
 		usr << browse("", "window=filingcabinet") // Close the menu
 
@@ -117,6 +131,8 @@
 	var/virgin = 1
 
 /obj/structure/filingcabinet/security/proc/populate()
+	procstart = null
+	src.procstart = null
 	if(virgin)
 		for(var/datum/data/record/G in GLOB.data_core.general)
 			var/datum/data/record/S = find_record("name", G.fields["name"], GLOB.data_core.security)
@@ -136,9 +152,13 @@
 						//before the records have been generated, so we do this inside the loop.
 
 /obj/structure/filingcabinet/security/attack_hand()
+	procstart = null
+	src.procstart = null
 	populate()
 	..()
 /obj/structure/filingcabinet/security/attack_tk()
+	procstart = null
+	src.procstart = null
 	populate()
 	..()
 
@@ -149,6 +169,8 @@
 	var/virgin = 1
 
 /obj/structure/filingcabinet/medical/proc/populate()
+	procstart = null
+	src.procstart = null
 	if(virgin)
 		for(var/datum/data/record/G in GLOB.data_core.general)
 			var/datum/data/record/M = find_record("name", G.fields["name"], GLOB.data_core.medical)
@@ -167,9 +189,13 @@
 			virgin = 0	//tabbing here is correct- it's possible for people to try and use it
 						//before the records have been generated, so we do this inside the loop.
 /obj/structure/filingcabinet/medical/attack_hand()
+	procstart = null
+	src.procstart = null
 	populate()
 	..()
 /obj/structure/filingcabinet/medical/attack_tk()
+	procstart = null
+	src.procstart = null
 	populate()
 	..()
 
@@ -185,14 +211,20 @@ GLOBAL_LIST_EMPTY(employmentCabinets)
 	var/virgin = 1
 
 /obj/structure/filingcabinet/employment/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.employmentCabinets += src
 
 /obj/structure/filingcabinet/employment/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.employmentCabinets -= src
 	return ..()
 
 /obj/structure/filingcabinet/employment/proc/fillCurrent()
+	procstart = null
+	src.procstart = null
 	//This proc fills the cabinet with the current crew.
 	for(var/record in GLOB.data_core.locked)
 		var/datum/data/record/G = record
@@ -204,9 +236,13 @@ GLOBAL_LIST_EMPTY(employmentCabinets)
 
 
 /obj/structure/filingcabinet/employment/proc/addFile(mob/living/carbon/human/employee)
+	procstart = null
+	src.procstart = null
 	new /obj/item/paper/contract/employment(src, employee)
 
 /obj/structure/filingcabinet/employment/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!cooldown)
 		if(virgin)
 			fillCurrent()

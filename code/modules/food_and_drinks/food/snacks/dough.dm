@@ -16,6 +16,8 @@
 
 // Dough + rolling pin = flat dough
 /obj/item/reagent_containers/food/snacks/dough/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/kitchen/rollingpin))
 		if(isturf(loc))
 			new /obj/item/reagent_containers/food/snacks/flatdough(loc)
@@ -88,6 +90,8 @@
 
 // Cake batter + rolling pin = pie dough
 /obj/item/reagent_containers/food/snacks/cakebatter/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/kitchen/rollingpin))
 		if(isturf(loc))
 			new /obj/item/reagent_containers/food/snacks/piedough(loc)

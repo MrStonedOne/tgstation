@@ -24,6 +24,8 @@
 
 
 /mob/living/simple_animal/hostile/spawner/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/simple_animal/L in spawned_mobs)
 		if(L.nest == src)
 			L.nest = null
@@ -31,10 +33,14 @@
 	return ..()
 
 /mob/living/simple_animal/hostile/spawner/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spawn_mob()
 
 /mob/living/simple_animal/hostile/spawner/proc/spawn_mob()
+	procstart = null
+	src.procstart = null
 	if(spawned_mobs.len >= max_mobs)
 		return 0
 	if(spawn_delay > world.time)

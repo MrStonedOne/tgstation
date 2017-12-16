@@ -1,6 +1,8 @@
 // Cold
 
 /datum/disease/advance/cold/New(var/process = TRUE, var/datum/disease/advance/D, var/copy = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		name = "Cold"
 		symptoms = list(new/datum/symptom/sneeze)
@@ -10,6 +12,8 @@
 // Flu
 
 /datum/disease/advance/flu/New(var/process = TRUE, var/datum/disease/advance/D, var/copy = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		name = "Flu"
 		symptoms = list(new/datum/symptom/cough)
@@ -19,6 +23,8 @@
 // Voice Changing
 
 /datum/disease/advance/voice_change/New(var/process = TRUE, var/datum/disease/advance/D, var/copy = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		name = "Epiglottis Mutation"
 		symptoms = list(new/datum/symptom/voice_change)
@@ -28,6 +34,8 @@
 // Toxin Filter
 
 /datum/disease/advance/heal/New(var/process = TRUE, var/datum/disease/advance/D, var/copy = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		name = "Liver Enhancer"
 		symptoms = list(new/datum/symptom/heal)
@@ -37,6 +45,8 @@
 // Hallucigen
 
 /datum/disease/advance/hallucigen/New(var/process = TRUE, var/datum/disease/advance/D, var/copy = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		name = "Second Sight"
 		symptoms = list(new/datum/symptom/hallucigen)
@@ -45,6 +55,8 @@
 // Sensory Restoration
 
 /datum/disease/advance/mind_restoration/New(var/process = TRUE, var/datum/disease/advance/D, var/copy = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		name = "Intelligence Booster"
 		symptoms = list(new/datum/symptom/mind_restoration)
@@ -53,6 +65,8 @@
 // Sensory Destruction
 
 /datum/disease/advance/narcolepsy/New(var/process = TRUE, var/datum/disease/advance/D, var/copy = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!D)
 		name = "Experimental Insomnia Cure"
 		symptoms = list(new/datum/symptom/narcolepsy)

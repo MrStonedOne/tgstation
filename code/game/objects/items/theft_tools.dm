@@ -16,26 +16,36 @@
 	var/pulseicon = "plutonium_core_pulse"
 
 /obj/item/nuke_core/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/nuke_core/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/nuke_core/attackby(obj/item/nuke_core_container/container, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(container))
 		container.load(src, user)
 	else
 		return ..()
 
 /obj/item/nuke_core/process()
+	procstart = null
+	src.procstart = null
 	if(cooldown < world.time - 60)
 		cooldown = world.time
 		flick(pulseicon, src)
 		radiation_pulse(src, 400, 2)
 		
 /obj/item/nuke_core/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is rubbing [src] against [user.p_them()]self! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (TOXLOSS)
 
@@ -51,10 +61,14 @@
 	var/obj/item/nuke_core/core
 
 /obj/item/nuke_core_container/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(core)
 	return ..()
 
 /obj/item/nuke_core_container/proc/load(obj/item/nuke_core/ncore, mob/user)
+	procstart = null
+	src.procstart = null
 	if(core || !istype(ncore))
 		return FALSE
 	ncore.forceMove(src)
@@ -65,6 +79,8 @@
 	return TRUE
 
 /obj/item/nuke_core_container/proc/seal()
+	procstart = null
+	src.procstart = null
 	if(istype(core))
 		STOP_PROCESSING(SSobj, core)
 		icon_state = "core_container_sealed"
@@ -73,6 +89,8 @@
 			to_chat(loc, "<span class='warning'>[src] is permanently sealed, [core]'s radiation is contained.</span>")
 
 /obj/item/nuke_core_container/attackby(obj/item/nuke_core/core, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(core))
 		if(!user.temporarilyRemoveItemFromInventory(core))
 			to_chat(user, "<span class='warning'>The [core] is stuck to your hand!</span>")
@@ -131,6 +149,8 @@
 	return FALSE
 
 /obj/item/nuke_core/supermatter_sliver/attackby(obj/item/W, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/hemostat/supermatter))
 		var/obj/item/hemostat/supermatter/tongs = W
 		if (tongs.sliver)
@@ -150,6 +170,8 @@
 		qdel(src)
 
 /obj/item/nuke_core/supermatter_sliver/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!iscarbon(user))
 		return FALSE
@@ -165,10 +187,14 @@
 	var/obj/item/nuke_core/supermatter_sliver/sliver
 
 /obj/item/nuke_core_container/supermatter/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sliver)
 	return ..()
 
 /obj/item/nuke_core_container/supermatter/load(obj/item/hemostat/supermatter/T, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(T) || !T.sliver)
 		return FALSE
 	T.sliver.forceMove(src)
@@ -181,6 +207,8 @@
 	return TRUE
 
 /obj/item/nuke_core_container/supermatter/seal()
+	procstart = null
+	src.procstart = null
 	if(istype(sliver))
 		STOP_PROCESSING(SSobj, sliver)
 		icon_state = "core_container_sealed"
@@ -189,6 +217,8 @@
 			to_chat(loc, "<span class='warning'>[src] is permanently sealed, [sliver] is safely contained.</span>")
 
 /obj/item/nuke_core_container/supermatter/attackby(obj/item/hemostat/supermatter/tongs, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(tongs))
 		//try to load shard into core
 		load(tongs, user)
@@ -214,16 +244,22 @@
 	var/obj/item/nuke_core/supermatter_sliver/sliver
 
 /obj/item/hemostat/supermatter/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(sliver)
 	return ..()
 
 /obj/item/hemostat/supermatter/update_icon()
+	procstart = null
+	src.procstart = null
 	if(sliver)
 		icon_state = "supermatter_tongs_loaded"
 	else
 		icon_state = "supermatter_tongs"
 
 /obj/item/hemostat/supermatter/afterattack(atom/O, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!sliver)
 		return
 	if(ismovableatom(O) && O != sliver)
@@ -241,6 +277,8 @@
 	..()
 
 /obj/item/hemostat/supermatter/proc/Consume(atom/movable/AM, mob/user)
+	procstart = null
+	src.procstart = null
 	if(ismob(AM))
 		var/mob/victim = AM
 		victim.dust()

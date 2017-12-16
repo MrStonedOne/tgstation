@@ -34,6 +34,8 @@
 	gold_core_spawnable = HOSTILE_SPAWN
 
 /mob/living/simple_animal/hostile/faithless/AttackingTarget()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && prob(12) && iscarbon(target))
 		var/mob/living/carbon/C = target

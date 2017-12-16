@@ -12,12 +12,16 @@
 
 
 /client/verb/drop_item()
+	procstart = null
+	src.procstart = null
 	set hidden = 1
 	if(!iscyborg(mob) && mob.stat == CONSCIOUS)
 		mob.dropItemToGround(mob.get_active_held_item())
 	return
 
 /client/proc/Move_object(direct)
+	procstart = null
+	src.procstart = null
 	if(mob && mob.control_object)
 		if(mob.control_object.density)
 			step(mob.control_object,direct)
@@ -32,6 +36,8 @@
 #define MOVEMENT_DELAY_BUFFER_DELTA 1.25
 
 /client/Move(n, direct)
+	procstart = null
+	src.procstart = null
 	if(world.time < move_delay) //do not move anything ahead of this check please
 		return FALSE
 	else
@@ -120,11 +126,15 @@
 		mob.dir = turn(mob.dir, 180)
 
 /mob/Moved(oldLoc, dir, Forced = FALSE)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/O in contents)
 		O.on_mob_move(dir, src, oldLoc, Forced)
 
 /mob/setDir(newDir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	for(var/obj/O in contents)
 		O.on_mob_turn(newDir, src)
@@ -134,6 +144,8 @@
 ///Called by client/Move()
 ///Checks to see if you are being grabbed and if so attemps to break it
 /client/proc/Process_Grab()
+	procstart = null
+	src.procstart = null
 	if(mob.pulledby)
 		if(mob.incapacitated(ignore_restraints = 1))
 			move_delay = world.time + 10
@@ -149,6 +161,8 @@
 ///Called by client/Move()
 ///Allows mobs to run though walls
 /client/proc/Process_Incorpmove(direct)
+	procstart = null
+	src.procstart = null
 	var/turf/mobloc = get_turf(mob)
 	if(!isliving(mob))
 		return
@@ -224,6 +238,8 @@
 ///For moving in space
 ///return TRUE for movement 0 for none
 /mob/Process_Spacemove(movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	if(spacewalk || ..())
 		return TRUE
 	var/atom/movable/backup = get_spacemove_backup()
@@ -235,6 +251,8 @@
 	return FALSE
 
 /mob/get_spacemove_backup()
+	procstart = null
+	src.procstart = null
 	for(var/A in orange(1, get_turf(src)))
 		if(isarea(A))
 			continue
@@ -261,13 +279,19 @@
 				. = AM
 
 /mob/proc/mob_has_gravity()
+	procstart = null
+	src.procstart = null
 	return has_gravity()
 
 /mob/proc/mob_negates_gravity()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 //moves the mob/object we're pulling
 /mob/proc/Move_Pulled(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!pulling)
 		return
 	if(pulling.anchored || !pulling.Adjacent(src))
@@ -286,9 +310,13 @@
 
 
 /mob/proc/slip(s_amount, w_amount, obj/O, lube)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/update_gravity()
+	procstart = null
+	src.procstart = null
 	return
 
 //bodypart selection - Cyberboss
@@ -297,9 +325,13 @@
 //1: r-leg 2: groin 3: l-leg
 
 /client/proc/check_has_body_select()
+	procstart = null
+	src.procstart = null
 	return mob && mob.hud_used && mob.hud_used.zone_select && istype(mob.hud_used.zone_select, /obj/screen/zone_sel)
 
 /client/verb/body_toggle_head()
+	procstart = null
+	src.procstart = null
 	set name = "body-toggle-head"
 	set hidden = 1
 
@@ -319,6 +351,8 @@
 	selector.set_selected_zone(next_in_line, mob)
 
 /client/verb/body_r_arm()
+	procstart = null
+	src.procstart = null
 	set name = "body-r-arm"
 	set hidden = 1
 
@@ -329,6 +363,8 @@
 	selector.set_selected_zone("r_arm", mob)
 
 /client/verb/body_chest()
+	procstart = null
+	src.procstart = null
 	set name = "body-chest"
 	set hidden = 1
 
@@ -339,6 +375,8 @@
 	selector.set_selected_zone("chest", mob)
 
 /client/verb/body_l_arm()
+	procstart = null
+	src.procstart = null
 	set name = "body-l-arm"
 	set hidden = 1
 
@@ -349,6 +387,8 @@
 	selector.set_selected_zone("l_arm", mob)
 
 /client/verb/body_r_leg()
+	procstart = null
+	src.procstart = null
 	set name = "body-r-leg"
 	set hidden = 1
 
@@ -359,6 +399,8 @@
 	selector.set_selected_zone("r_leg", mob)
 
 /client/verb/body_groin()
+	procstart = null
+	src.procstart = null
 	set name = "body-groin"
 	set hidden = 1
 
@@ -369,6 +411,8 @@
 	selector.set_selected_zone("groin", mob)
 
 /client/verb/body_l_leg()
+	procstart = null
+	src.procstart = null
 	set name = "body-l-leg"
 	set hidden = 1
 
@@ -379,6 +423,8 @@
 	selector.set_selected_zone("l_leg", mob)
 
 /client/verb/toggle_walk_run()
+	procstart = null
+	src.procstart = null
 	set name = "toggle-walk-run"
 	set hidden = TRUE
 	set instant = TRUE
@@ -386,6 +432,8 @@
 		mob.toggle_move_intent()
 
 /mob/proc/toggle_move_intent()
+	procstart = null
+	src.procstart = null
 	if(hud_used && hud_used.static_inventory)
 		for(var/obj/screen/mov_intent/selector in hud_used.static_inventory)
 			selector.toggle(src)

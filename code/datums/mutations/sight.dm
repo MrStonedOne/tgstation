@@ -5,11 +5,15 @@
 	text_gain_indication = "<span class='danger'>You can't see very well.</span>"
 
 /datum/mutation/human/nearsight/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.become_nearsighted()
 
 /datum/mutation/human/nearsight/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.cure_nearsighted()
@@ -22,11 +26,15 @@
 	text_gain_indication = "<span class='danger'>You can't seem to see anything.</span>"
 
 /datum/mutation/human/blind/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.become_blind()
 
 /datum/mutation/human/blind/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.cure_blind()
@@ -42,12 +50,16 @@
 	time_coeff = 2
 
 /datum/mutation/human/x_ray/on_acquiring(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
 	owner.update_sight()
 
 /datum/mutation/human/x_ray/on_losing(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	owner.update_sight()
@@ -63,12 +75,18 @@
 	limb_req = "head"
 
 /datum/mutation/human/laser_eyes/New()
+	procstart = null
+	src.procstart = null
 	..()
 	visual_indicators |= mutable_appearance('icons/effects/genetics.dmi', "lasereyes", -FRONT_MUTATIONS_LAYER)
 
 /datum/mutation/human/laser_eyes/get_visual_indicator(mob/living/carbon/human/owner)
+	procstart = null
+	src.procstart = null
 	return visual_indicators[1]
 
 /datum/mutation/human/laser_eyes/on_ranged_attack(mob/living/carbon/human/owner, atom/target, mouseparams)
+	procstart = null
+	src.procstart = null
 	if(owner.a_intent == INTENT_HARM)
 		owner.LaserEyes(target, mouseparams)

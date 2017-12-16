@@ -1,5 +1,7 @@
 //returns a list of scriptures and if they're unlocked or not
 /proc/scripture_unlock_check()
+	procstart = null
+	src.procstart = null
 	. = list(SCRIPTURE_DRIVER = TRUE, SCRIPTURE_SCRIPT = FALSE, SCRIPTURE_APPLICATION = FALSE)
 	//Drivers: always unlocked
 
@@ -11,6 +13,8 @@
 
 //reports to servants when scripture is locked or unlocked
 /proc/scripture_unlock_alert(list/previous_states)
+	procstart = null
+	src.procstart = null
 	. = scripture_unlock_check()
 	for(var/i in .)
 		if(.[i] != previous_states[i])
@@ -20,6 +24,8 @@
 					M.playsound_local(M, 'sound/magic/clockwork/scripture_tier_up.ogg', 50, FALSE, pressure_affected = FALSE)
 
 /proc/update_slab_info(obj/item/clockwork/slab/set_slab)
+	procstart = null
+	src.procstart = null
 	generate_all_scripture()
 	var/needs_update = FALSE //if everything needs an update, for whatever reason
 	for(var/s in GLOB.all_scripture)
@@ -36,6 +42,8 @@
 		set_slab.update_quickbind()
 
 /proc/generate_all_scripture()
+	procstart = null
+	src.procstart = null
 	if(!GLOB.all_scripture.len)
 		for(var/V in sortList(subtypesof(/datum/clockwork_scripture), /proc/cmp_clockscripture_priority))
 			var/datum/clockwork_scripture/S = new V
@@ -43,9 +51,13 @@
 
 //changes construction value
 /proc/change_construction_value(amount)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.current_state != GAME_STATE_PLAYING) //This is primarily so that structures added pre-roundstart don't contribute to construction value
 		return
 	GLOB.clockwork_construction_value = max(0, GLOB.clockwork_construction_value + amount)
 
 /proc/can_recite_scripture(mob/living/L, can_potentially)
+	procstart = null
+	src.procstart = null
 	return (is_servant_of_ratvar(L) && (can_potentially || (L.stat == CONSCIOUS && L.can_speak_vocal())) && (GLOB.ratvar_awakens || (ishuman(L) || issilicon(L))))

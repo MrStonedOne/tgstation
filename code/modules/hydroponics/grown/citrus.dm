@@ -111,6 +111,8 @@
 	foodtype = FRUIT
 
 /obj/item/reagent_containers/food/snacks/grown/firelemon/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/area/A = get_area(user)
 	user.visible_message("<span class='warning'>[user] primes [src]!</span>", "<span class='userdanger'>You prime [src]!</span>")
 	var/message = "[ADMIN_LOOKUPFLW(user)] primed a combustible lemon for detonation at [A] [ADMIN_COORDJMP(user)]"
@@ -125,18 +127,26 @@
 	addtimer(CALLBACK(src, .proc/prime), rand(10, 60))
 
 /obj/item/reagent_containers/food/snacks/grown/firelemon/burn()
+	procstart = null
+	src.procstart = null
 	prime()
 	..()
 
 /obj/item/reagent_containers/food/snacks/grown/firelemon/proc/update_mob()
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		var/mob/M = loc
 		M.dropItemToGround(src)
 
 /obj/item/reagent_containers/food/snacks/grown/firelemon/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	qdel(src) //Ensuring that it's deleted by its own explosion
 
 /obj/item/reagent_containers/food/snacks/grown/firelemon/proc/prime()
+	procstart = null
+	src.procstart = null
 	switch(seed.potency) //Combustible lemons are alot like IEDs, lots of flame, very little bang.
 		if(0 to 30)
 			update_mob()

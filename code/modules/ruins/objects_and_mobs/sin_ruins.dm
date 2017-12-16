@@ -10,6 +10,8 @@
 	var/win_prob = 5
 
 /obj/structure/cursed_slot_machine/attack_hand(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(user))
 		return
 	if(in_use)
@@ -27,6 +29,8 @@
 	addtimer(CALLBACK(src, .proc/determine_victor, user), 50)
 
 /obj/structure/cursed_slot_machine/proc/determine_victor(mob/living/user)
+	procstart = null
+	src.procstart = null
 	icon_state = "slots1"
 	in_use = FALSE
 	if(prob(win_prob))
@@ -49,15 +53,21 @@
 	density = TRUE
 
 /obj/structure/cursed_money/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	addtimer(CALLBACK(src, .proc/collapse), 600)
 
 /obj/structure/cursed_money/proc/collapse()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>[src] falls in on itself, \
 		canvas rotting away and contents vanishing.</span>")
 	qdel(src)
 
 /obj/structure/cursed_money/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='warning'>[user] opens the bag and \
 		and removes a die. The bag then vanishes.</span>",
 		"<span class='boldwarning'>You open the bag...!</span>\n\
@@ -98,6 +108,8 @@
 	icon_state = "magic_mirror"
 
 /obj/structure/mirror/magic/pride/curse(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='danger'><B>The ground splits beneath [user] as [user.p_their()] hand leaves the mirror!</B></span>", \
 	"<span class='notice'>Perfect. Much better! Now <i>nobody</i> will be able to resist yo-</span>")
 	var/turf/T = get_turf(user)
@@ -121,6 +133,8 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 
 /obj/item/kitchen/knife/envy/afterattack(atom/movable/AM, mob/living/carbon/human/user, proximity)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!proximity)
 		return

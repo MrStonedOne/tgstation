@@ -22,6 +22,8 @@
 	var/list/debris = list()
 
 /obj/machinery/door/window/New(loc, set_dir)
+	procstart = null
+	src.procstart = null
 	..()
 	if(set_dir)
 		setDir(set_dir)
@@ -36,6 +38,8 @@
 		debris += new /obj/item/stack/cable_coil(src, cable)
 
 /obj/machinery/door/window/Destroy()
+	procstart = null
+	src.procstart = null
 	density = FALSE
 	for(var/I in debris)
 		qdel(I)
@@ -45,12 +49,16 @@
 	return ..()
 
 /obj/machinery/door/window/update_icon()
+	procstart = null
+	src.procstart = null
 	if(density)
 		icon_state = base_state
 	else
 		icon_state = "[src.base_state]open"
 
 /obj/machinery/door/window/proc/open_and_close()
+	procstart = null
+	src.procstart = null
 	open()
 	if(src.check_access(null))
 		sleep(50)
@@ -59,6 +67,8 @@
 	close()
 
 /obj/machinery/door/window/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if( operating || !src.density )
 		return
 	if (!( ismob(AM) ))
@@ -77,6 +87,8 @@
 	bumpopen(M)
 
 /obj/machinery/door/window/bumpopen(mob/user)
+	procstart = null
+	src.procstart = null
 	if( operating || !src.density )
 		return
 	src.add_fingerprint(user)
@@ -90,6 +102,8 @@
 	return
 
 /obj/machinery/door/window/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
 	if(get_dir(loc, target) == dir) //Make sure looking at appropriate border
@@ -108,6 +122,8 @@
 		return 1
 
 /obj/machinery/door/window/CanAtmosPass(turf/T)
+	procstart = null
+	src.procstart = null
 	if(get_dir(loc, T) == dir)
 		return !density
 	else
@@ -115,9 +131,13 @@
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
 /obj/machinery/door/window/CanAStarPass(obj/item/card/id/ID, to_dir)
+	procstart = null
+	src.procstart = null
 	return !density || (dir != to_dir) || (check_access(ID) && hasPower())
 
 /obj/machinery/door/window/CheckExit(atom/movable/mover as mob|obj, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
 	if(get_dir(loc, target) == dir)
@@ -126,6 +146,8 @@
 		return 1
 
 /obj/machinery/door/window/open(forced=0)
+	procstart = null
+	src.procstart = null
 	if (src.operating == 1) //doors can still open when emag-disabled
 		return 0
 	if(!forced)
@@ -151,6 +173,8 @@
 	return 1
 
 /obj/machinery/door/window/close(forced=0)
+	procstart = null
+	src.procstart = null
 	if (src.operating)
 		return 0
 	if(!forced)
@@ -173,6 +197,8 @@
 	return 1
 
 /obj/machinery/door/window/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(loc, 'sound/effects/glasshit.ogg', 90, 1)
@@ -181,6 +207,8 @@
 
 
 /obj/machinery/door/window/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1) && !disassembled)
 		for(var/obj/fragment in debris)
 			fragment.forceMove(get_turf(src))
@@ -189,23 +217,33 @@
 	qdel(src)
 
 /obj/machinery/door/window/narsie_act()
+	procstart = null
+	src.procstart = null
 	add_atom_colour("#7D1919", FIXED_COLOUR_PRIORITY)
 
 /obj/machinery/door/window/ratvar_act()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/door/window/clockwork/C = new(loc, dir)
 	C.name = name
 	qdel(src)
 
 /obj/machinery/door/window/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(exposed_temperature > T0C + (reinf ? 1600 : 800))
 		take_damage(round(exposed_volume / 200), BURN, 0, 0)
 	..()
 
 
 /obj/machinery/door/window/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return src.attack_hand(user)
 
 /obj/machinery/door/window/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!operating && density && !emagged)
 		emagged = TRUE
 		operating = TRUE
@@ -218,6 +256,8 @@
 
 /obj/machinery/door/window/attackby(obj/item/I, mob/living/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(operating)
 		return
 
@@ -283,6 +323,8 @@
 	return ..()
 
 /obj/machinery/door/window/try_to_crowbar(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!hasPower())
 		if(density)
 			open(2)
@@ -292,6 +334,8 @@
 		to_chat(user, "<span class='warning'>The door's motors resist your efforts to force it!</span>")
 
 /obj/machinery/door/window/do_animate(animation)
+	procstart = null
+	src.procstart = null
 	switch(animation)
 		if("opening")
 			flick("[src.base_state]opening", src)
@@ -330,12 +374,16 @@
 	var/made_glow = FALSE
 
 /obj/machinery/door/window/clockwork/New(loc, set_dir)
+	procstart = null
+	src.procstart = null
 	..()
 	for(var/i in 1 to 2)
 		debris += new/obj/item/clockwork/alloy_shards/medium/gear_bit/large(src)
 	change_construction_value(2)
 
 /obj/machinery/door/window/clockwork/setDir(direct)
+	procstart = null
+	src.procstart = null
 	if(!made_glow)
 		var/obj/effect/E = new /obj/effect/temp_visual/ratvar/door/window(get_turf(src))
 		E.setDir(direct)
@@ -343,21 +391,31 @@
 	..()
 
 /obj/machinery/door/window/clockwork/Destroy()
+	procstart = null
+	src.procstart = null
 	change_construction_value(-2)
 	return ..()
 
 /obj/machinery/door/window/clockwork/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(prob(80/severity))
 		open()
 
 /obj/machinery/door/window/clockwork/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		obj_integrity = max_integrity
 
 /obj/machinery/door/window/clockwork/hasPower()
+	procstart = null
+	src.procstart = null
 	return TRUE //yup that's power all right
 
 /obj/machinery/door/window/clockwork/narsie_act()
+	procstart = null
+	src.procstart = null
 	take_damage(rand(30, 60), BRUTE)
 	if(src)
 		var/previouscolor = color
@@ -366,6 +424,8 @@
 		addtimer(CALLBACK(src, /atom/proc/update_atom_colour), 8)
 
 /obj/machinery/door/window/clockwork/allowed(mob/M)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(M))
 		return 1
 	return 0

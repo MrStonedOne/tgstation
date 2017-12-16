@@ -4,6 +4,8 @@
 	var/sting_icon = null
 
 /obj/effect/proc_holder/changeling/sting/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/user = usr
 	if(!user || !user.mind)
 		return
@@ -17,6 +19,8 @@
 	return
 
 /obj/effect/proc_holder/changeling/sting/proc/set_sting(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='notice'>We prepare our sting, use alt+click or middle mouse button on target to sting them.</span>")
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	changeling.chosen_sting = src
@@ -25,6 +29,8 @@
 	user.hud_used.lingstingdisplay.invisibility = 0
 
 /obj/effect/proc_holder/changeling/sting/proc/unset_sting(mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(user, "<span class='warning'>We retract our sting, we can't sting anyone for now.</span>")
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	changeling.chosen_sting = null
@@ -33,12 +39,16 @@
 	user.hud_used.lingstingdisplay.invisibility = INVISIBILITY_ABSTRACT
 
 /mob/living/carbon/proc/unset_sting()
+	procstart = null
+	src.procstart = null
 	if(mind)
 		var/datum/antagonist/changeling/changeling = mind.has_antag_datum(/datum/antagonist/changeling)
 		if(changeling && changeling.chosen_sting)
 			changeling.chosen_sting.unset_sting(src)
 
 /obj/effect/proc_holder/changeling/sting/can_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
@@ -56,6 +66,8 @@
 	return 1
 
 /obj/effect/proc_holder/changeling/sting/sting_feedback(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return
 	to_chat(user, "<span class='notice'>We stealthily sting [target.name].</span>")
@@ -74,6 +86,8 @@
 	var/datum/changelingprofile/selected_dna = null
 
 /obj/effect/proc_holder/changeling/sting/transformation/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/user = usr
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	if(changeling.chosen_sting)
@@ -88,6 +102,8 @@
 	..()
 
 /obj/effect/proc_holder/changeling/sting/transformation/can_sting(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if((target.disabilities & HUSK) || !iscarbon(target) || (NOTRANSSTING in target.dna.species.species_traits))
@@ -96,6 +112,8 @@
 	return 1
 
 /obj/effect/proc_holder/changeling/sting/transformation/sting_action(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	add_logs(user, target, "stung", "transformation sting", " new identity is [selected_dna.dna.real_name]")
 	var/datum/dna/NewDNA = selected_dna.dna
 	if(ismonkey(target))
@@ -124,9 +142,13 @@
 	force = 5 //Basically as strong as a punch
 
 /obj/item/melee/arm_blade/false/afterattack(atom/target, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/proc_holder/changeling/sting/false_armblade/can_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if((target.disabilities & HUSK) || !target.has_dna())
@@ -135,6 +157,8 @@
 	return 1
 
 /obj/effect/proc_holder/changeling/sting/false_armblade/sting_action(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	add_logs(user, target, "stung", object="falso armblade sting")
 
 	var/obj/item/held = target.get_active_held_item()
@@ -154,6 +178,8 @@
 	return TRUE
 
 /obj/effect/proc_holder/changeling/sting/false_armblade/proc/remove_fake(mob/target, obj/item/melee/arm_blade/false/blade)
+	procstart = null
+	src.procstart = null
 	playsound(target, 'sound/effects/blobattack.ogg', 30, 1)
 	target.visible_message("<span class='warning'>With a sickening crunch, \
 	[target] reforms their [blade.name] into an arm!</span>",
@@ -172,11 +198,15 @@
 	dna_cost = 0
 
 /obj/effect/proc_holder/changeling/sting/extract_dna/can_sting(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 		return changeling.can_absorb_dna(target)
 
 /obj/effect/proc_holder/changeling/sting/extract_dna/sting_action(mob/user, mob/living/carbon/human/target)
+	procstart = null
+	src.procstart = null
 	add_logs(user, target, "stung", "extraction sting")
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	if(!(changeling.has_dna(target.dna)))
@@ -192,6 +222,8 @@
 	dna_cost = 2
 
 /obj/effect/proc_holder/changeling/sting/mute/sting_action(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	add_logs(user, target, "stung", "mute sting")
 	target.silent += 30
 	return TRUE
@@ -205,6 +237,8 @@
 	dna_cost = 1
 
 /obj/effect/proc_holder/changeling/sting/blind/sting_action(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	add_logs(user, target, "stung", "blind sting")
 	to_chat(target, "<span class='danger'>Your eyes burn horrifically!</span>")
 	target.become_nearsighted()
@@ -221,11 +255,15 @@
 	dna_cost = 1
 
 /obj/effect/proc_holder/changeling/sting/LSD/sting_action(mob/user, mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	add_logs(user, target, "stung", "LSD sting")
 	addtimer(CALLBACK(src, .proc/hallucination_time, target), rand(300,600))
 	return TRUE
 
 /obj/effect/proc_holder/changeling/sting/LSD/proc/hallucination_time(mob/living/carbon/target)
+	procstart = null
+	src.procstart = null
 	if(target)
 		target.hallucination = max(400, target.hallucination)
 
@@ -238,6 +276,8 @@
 	dna_cost = 2
 
 /obj/effect/proc_holder/changeling/sting/cryo/sting_action(mob/user, mob/target)
+	procstart = null
+	src.procstart = null
 	add_logs(user, target, "stung", "cryo sting")
 	if(target.reagents)
 		target.reagents.add_reagent("frostoil", 30)

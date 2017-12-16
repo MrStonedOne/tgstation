@@ -3,6 +3,8 @@
 	proper_name = "APC"
 
 /datum/wires/apc/New(atom/holder)
+	procstart = null
+	src.procstart = null
 	wires = list(
 		WIRE_POWER1, WIRE_POWER2,
 		WIRE_IDSCAN, WIRE_AI
@@ -11,11 +13,15 @@
 	..()
 
 /datum/wires/apc/interactable(mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/apc/A = holder
 	if(A.panel_open && !A.opened)
 		return TRUE
 
 /datum/wires/apc/get_status()
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/apc/A = holder
 	var/list/status = list()
 	status += "The interface light is [A.locked ? "red" : "green"]."
@@ -24,6 +30,8 @@
 	return status
 
 /datum/wires/apc/on_pulse(wire)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/apc/A = holder
 	switch(wire)
 		if(WIRE_POWER1, WIRE_POWER2) // Short for a long while.
@@ -39,6 +47,8 @@
 				addtimer(CALLBACK(A, /obj/machinery/power/apc.proc/reset, wire), 10)
 
 /datum/wires/apc/on_cut(index, mend)
+	procstart = null
+	src.procstart = null
 	var/obj/machinery/power/apc/A = holder
 	switch(index)
 		if(WIRE_POWER1, WIRE_POWER2) // Short out.

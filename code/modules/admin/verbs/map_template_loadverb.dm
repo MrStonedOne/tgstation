@@ -25,6 +25,8 @@
 	usr.client.images -= preview
 
 /client/proc/map_template_upload()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Map Template - Upload"
 

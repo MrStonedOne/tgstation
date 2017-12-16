@@ -16,11 +16,15 @@
 	var/target_layer = PIPING_LAYER_DEFAULT
 
 /obj/machinery/meter/Destroy()
+	procstart = null
+	src.procstart = null
 	SSair.atmos_machinery -= src
 	target = null
 	return ..()
 
 /obj/machinery/meter/Initialize(mapload, new_piping_layer)
+	procstart = null
+	src.procstart = null
 	if(!isnull(new_piping_layer))
 		target_layer = new_piping_layer
 	SSair.atmos_machinery += src
@@ -29,6 +33,8 @@
 	return ..()
 
 /obj/machinery/meter/proc/reattach_to_layer()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/atmospherics/pipe/pipe in loc)
 		if(pipe.piping_layer == target_layer)
 			target = pipe
@@ -36,11 +42,15 @@
 			break
 
 /obj/machinery/meter/proc/setAttachLayer(var/new_layer)
+	procstart = null
+	src.procstart = null
 	target_layer = new_layer
 	pixel_x = (new_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_P_X
 	pixel_y = (new_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_P_Y
 
 /obj/machinery/meter/process_atmos()
+	procstart = null
+	src.procstart = null
 	if(!target)
 		icon_state = "meterX"
 		return 0
@@ -86,6 +96,8 @@
 		radio_connection.post_signal(src, signal)
 
 /obj/machinery/meter/proc/status()
+	procstart = null
+	src.procstart = null
 	if (target)
 		var/datum/gas_mixture/environment = target.return_air()
 		if(environment)
@@ -96,11 +108,15 @@
 		. = "The connect error light is blinking."
 
 /obj/machinery/meter/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, status())
 
 
 /obj/machinery/meter/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if (istype(W, /obj/item/wrench))
 		playsound(src, W.usesound, 50, 1)
 		to_chat(user, "<span class='notice'>You begin to unfasten \the [src]...</span>")
@@ -115,13 +131,19 @@
 		return ..()
 
 /obj/machinery/meter/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/meter/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/meter/attack_hand(mob/user)
 
+	procstart = null
+	src.procstart = null
 	if(stat & (NOPOWER|BROKEN))
 		return 1
 	else
@@ -129,6 +151,8 @@
 		return 1
 
 /obj/machinery/meter/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		new /obj/item/pipe_meter(loc)
@@ -139,5 +163,7 @@
 /obj/machinery/meter/turf
 
 /obj/machinery/meter/turf/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	target = loc

@@ -17,6 +17,8 @@
 	var/list/cards = list()
 
 /obj/item/deck/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/cardcolor
@@ -56,6 +58,8 @@
 		src.cards.Add(card)
 
 /obj/item/deck/attackby(obj/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if (istype(O, /obj/item/hand))
 		var/obj/item/hand/H = O
 
@@ -69,6 +73,8 @@
 		return ..()
 
 /obj/item/deck/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/newcards           = list()
 	var/datum/playingcard/card
 
@@ -82,6 +88,8 @@
 	user.visible_message("\The [user] shuffles [src].")
 
 /obj/item/deck/afterattack(atom/A as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
+	procstart = null
+	src.procstart = null
 	if(flag)
 		return //It's adjacent, is the user, or is on the user's person
 
@@ -91,12 +99,16 @@
 		return ..()
 
 /obj/item/deck/attack(mob/living/M, mob/living/user, def_zone)
+	procstart = null
+	src.procstart = null
 	if (istype(M))
 		src.dealTo(M, user)
 	else
 		return ..()
 
 /obj/item/deck/proc/dealTo(mob/living/target, mob/living/source)
+	procstart = null
+	src.procstart = null
 	if (!cards.len)
 		source.show_message("There are no cards in the deck.")
 		return
@@ -132,18 +144,24 @@
 	resistance_flags = FLAMMABLE
 
 /obj/item/hand/New(loc)
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	src.hi = new/datum/html_interface/cards(src, "Your hand", 540, 302)
 	src.update_conceal()
 
 /obj/item/hand/Destroy()
+	procstart = null
+	src.procstart = null
 	if (src.hi)
 		qdel(src.hi)
 
 	return ..()
 
 /obj/item/hand/attackby(obj/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(cards.len == 1 && istype(O, /obj/item/pen))
 		var/datum/playingcard/P = cards[1]
 		if(!blank)
@@ -167,6 +185,8 @@
 		return ..()
 
 /obj/item/hand/verb/discard(datum/playingcard/card in cards)
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name     = "Discard"
 	set desc     = "Place a card from your hand in front of you."
@@ -192,6 +212,8 @@
 	src.update_icon()
 
 /obj/item/hand/verb/toggle_conceal()
+	procstart = null
+	src.procstart = null
 	set category  = "Object"
 	set name      = "Toggle conceal"
 	set desc      = "Toggle concealment of your hand"
@@ -205,9 +227,13 @@
 	src.update_icon()
 
 /obj/item/hand/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	src.hi.show(user)
 
 /obj/item/hand/examine()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	if((!concealed || src.loc == usr) && cards.len)
@@ -217,12 +243,16 @@
 			usr.show_message("The [card.name].", 1)
 
 /obj/item/hand/proc/update_conceal()
+	procstart = null
+	src.procstart = null
 	if (src.concealed)
 		src.hi.updateContent("headbar", "You are currently concealing your hand. <a href=\"byond://?src=[REF(hi)]&action=toggle_conceal\">Reveal your hand.</a>")
 	else
 		src.hi.updateContent("headbar", "You are currently revealing your hand. <a href=\"byond://?src=[REF(hi)]&action=toggle_conceal\">Conceal your hand.</a>")
 
 /obj/item/hand/update_icon()
+	procstart = null
+	src.procstart = null
 	if (!cards.len)
 		qdel (src)
 	else
@@ -265,6 +295,8 @@
 		src.hi.updateContent("hand", html)
 
 /obj/item/hand/Topic(href, href_list[], datum/html_interface_client/hclient)
+	procstart = null
+	src.procstart = null
 	if (istype(hclient))
 		switch (href_list["action"])
 			if ("play_card")
@@ -276,4 +308,6 @@
 
 // Hook for html_interface module to prevent updates to clients who don't have this in their inventory.
 /obj/item/hand/proc/hiIsValidClient(datum/html_interface_client/hclient, datum/html_interface/hi)
+	procstart = null
+	src.procstart = null
 	return (hclient.client.mob && hclient.client.mob.stat == 0 && (src in hclient.client.mob.contents))

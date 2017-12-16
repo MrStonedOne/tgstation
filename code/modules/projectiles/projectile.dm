@@ -74,10 +74,14 @@
 	var/log_override = FALSE //is this type spammed enough to not log? (KAs)
 
 /obj/item/projectile/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	permutated = list()
 
 /obj/item/projectile/proc/Range()
+	procstart = null
+	src.procstart = null
 	range--
 	if(range <= 0 && loc)
 		on_range()
@@ -87,19 +91,27 @@
 
 //to get the correct limb (if any) for the projectile hit message
 /mob/living/proc/check_limb_hit(hit_zone)
+	procstart = null
+	src.procstart = null
 	if(has_limbs)
 		return hit_zone
 
 /mob/living/carbon/check_limb_hit(hit_zone)
+	procstart = null
+	src.procstart = null
 	if(get_bodypart(hit_zone))
 		return hit_zone
 	else //when a limb is missing the damage is actually passed to the chest
 		return "chest"
 
 /obj/item/projectile/proc/prehit(atom/target)
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/projectile/proc/on_hit(atom/target, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	var/turf/target_loca = get_turf(target)
 
 	var/hitx
@@ -167,12 +179,16 @@
 	return L.apply_effects(stun, knockdown, unconscious, irradiate, slur, stutter, eyeblur, drowsy, blocked, stamina, jitter)
 
 /obj/item/projectile/proc/vol_by_damage()
+	procstart = null
+	src.procstart = null
 	if(src.damage)
 		return Clamp((src.damage) * 0.67, 30, 100)// Multiply projectile damage by 0.67, then clamp the value between 30 and 100
 	else
 		return 50 //if the projectile doesn't do damage, play its hitsound at 50% volume
 
 /obj/item/projectile/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	if(check_ricochet(A) && check_ricochet_flag(A) && ricochets < ricochets_max)
 		ricochets++
 		if(A.handle_ricochet(src))
@@ -237,19 +253,27 @@
 		return O
 
 /obj/item/projectile/proc/check_ricochet()
+	procstart = null
+	src.procstart = null
 	if(prob(ricochet_chance))
 		return TRUE
 	return FALSE
 
 /obj/item/projectile/proc/check_ricochet_flag(atom/A)
+	procstart = null
+	src.procstart = null
 	if(A.flags_1 & CHECK_RICOCHET_1)
 		return TRUE
 	return FALSE
 
 /obj/item/projectile/Process_Spacemove(var/movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	return TRUE	//Bullets don't drift in space
 
 /obj/item/projectile/process()
+	procstart = null
+	src.procstart = null
 	last_process = world.time
 	if(!loc || !fired)
 		fired = FALSE
@@ -273,6 +297,8 @@
 		pixel_move(required_moves)
 
 /obj/item/projectile/proc/fire(angle, atom/direct_target)
+	procstart = null
+	src.procstart = null
 	//If no angle needs to resolve it from xo/yo!
 	if(!log_override && firer && original)
 		add_logs(firer, original, "fired at", src, " [get_area(src)]")
@@ -305,6 +331,8 @@
 	return TRUE
 
 /obj/item/projectile/proc/pixel_move(moves)
+	procstart = null
+	src.procstart = null
 	if(!nondirectional_sprite)
 		var/matrix/M = new
 		M.Turn(Angle)
@@ -347,6 +375,8 @@
 
 //Returns true if the target atom is on our current turf and above the right layer
 /obj/item/projectile/proc/can_hit_target(atom/target, var/list/passthrough)
+	procstart = null
+	src.procstart = null
 	if(target && (target.layer >= PROJECTILE_HIT_THRESHHOLD_LAYER) || ismob(target))
 		if(loc == get_turf(target))
 			if(!(target in passthrough))
@@ -354,6 +384,8 @@
 	return FALSE
 
 /obj/item/projectile/proc/preparePixelProjectile(atom/target, atom/source, params, spread = 0)
+	procstart = null
+	src.procstart = null
 	var/turf/curloc = get_turf(source)
 	var/turf/targloc = get_turf(target)
 	forceMove(get_turf(source))
@@ -376,6 +408,8 @@
 		setAngle(Get_Angle(src, targloc))
 
 /proc/calculate_projectile_angle_and_pixel_offsets(mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/list/mouse_control = params2list(params)
 	var/p_x = 0
 	var/p_y = 0
@@ -412,8 +446,12 @@
 		Collide(AM)
 
 /obj/item/projectile/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSprojectiles, src)
 	return ..()
 
 /obj/item/projectile/experience_pressure_difference()
+	procstart = null
+	src.procstart = null
 	return

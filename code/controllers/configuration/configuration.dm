@@ -19,6 +19,8 @@ GLOBAL_PROTECT(config_dir)
 	var/list/mode_false_report_weight
 
 /datum/controller/configuration/New()
+	procstart = null
+	src.procstart = null
 	config = src
 	InitEntries()
 	LoadModes()
@@ -30,6 +32,8 @@ GLOBAL_PROTECT(config_dir)
 	loadmaplist(CONFIG_MAPS_FILE)
 
 /datum/controller/configuration/Destroy()
+	procstart = null
+	src.procstart = null
 	entries_by_type.Cut()
 	QDEL_LIST_ASSOC_VAL(entries)
 	QDEL_LIST_ASSOC_VAL(maplist)
@@ -40,6 +44,8 @@ GLOBAL_PROTECT(config_dir)
 	return ..()
 
 /datum/controller/configuration/proc/InitEntries()
+	procstart = null
+	src.procstart = null
 	var/list/_entries = list()
 	entries = _entries
 	var/list/_entries_by_type = list()
@@ -60,10 +66,14 @@ GLOBAL_PROTECT(config_dir)
 		_entries_by_type[I] = E
 
 /datum/controller/configuration/proc/RemoveEntry(datum/config_entry/CE)
+	procstart = null
+	src.procstart = null
 	entries -= CE.name
 	entries_by_type -= CE.type
 
 /datum/controller/configuration/proc/LoadEntries(filename, list/stack = list())
+	procstart = null
+	src.procstart = null
 	var/filename_to_test = world.system_type == MS_WINDOWS ? lowertext(filename) : filename
 	if(filename_to_test in stack)
 		log_config("Warning: Config recursion detected ([english_list(stack)]), breaking!")
@@ -128,17 +138,25 @@ GLOBAL_PROTECT(config_dir)
 	++.
 
 /datum/controller/configuration/can_vv_get(var_name)
+	procstart = null
+	src.procstart = null
 	return (var_name != "entries_by_type" || !hiding_entries_by_type) && ..()
 
 /datum/controller/configuration/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	return !(var_name in list("entries_by_type", "entries")) && ..()
 
 /datum/controller/configuration/stat_entry()
+	procstart = null
+	src.procstart = null
 	if(!statclick)
 		statclick = new/obj/effect/statclick/debug(null, "Edit", src)
 	stat("[name]:", statclick)
 
 /datum/controller/configuration/proc/Get(entry_type)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall() && GLOB.LastAdminCalledProc == "Get" && GLOB.LastAdminCalledTargetRef == "[REF(src)]")
 		log_admin_private("Config access of [entry_type] attempted by [key_name(usr)]")
 		return
@@ -152,6 +170,8 @@ GLOBAL_PROTECT(config_dir)
 	return E.value
 
 /datum/controller/configuration/proc/Set(entry_type, new_val)
+	procstart = null
+	src.procstart = null
 	if(IsAdminAdvancedProcCall() && GLOB.LastAdminCalledProc == "Set" && GLOB.LastAdminCalledTargetRef == "[REF(src)]")
 		log_admin_private("Config rewrite of [entry_type] to [new_val] attempted by [key_name(usr)]")
 		return
@@ -165,6 +185,8 @@ GLOBAL_PROTECT(config_dir)
 	return E.ValidateAndSet("[new_val]")
 
 /datum/controller/configuration/proc/LoadModes()
+	procstart = null
+	src.procstart = null
 	gamemode_cache = typecacheof(/datum/game_mode, TRUE)
 	modes = list()
 	mode_names = list()
@@ -193,6 +215,8 @@ GLOBAL_PROTECT(config_dir)
 	votable_modes += "secret"
 
 /datum/controller/configuration/proc/loadmaplist(filename)
+	procstart = null
+	src.procstart = null
 	log_config("Loading config file [filename]...")
 	filename = "[GLOB.config_dir][filename]"
 	var/list/Lines = world.file2list(filename)
@@ -248,6 +272,8 @@ GLOBAL_PROTECT(config_dir)
 
 
 /datum/controller/configuration/proc/pick_mode(mode_name)
+	procstart = null
+	src.procstart = null
 	// I wish I didn't have to instance the game modes in order to look up
 	// their information, but it is the only way (at least that I know of).
 	// ^ This guy didn't try hard enough
@@ -259,6 +285,8 @@ GLOBAL_PROTECT(config_dir)
 	return new /datum/game_mode/extended()
 
 /datum/controller/configuration/proc/get_runnable_modes()
+	procstart = null
+	src.procstart = null
 	var/list/datum/game_mode/runnable_modes = new
 	var/list/probabilities = Get(/datum/config_entry/keyed_number_list/probability)
 	var/list/min_pop = Get(/datum/config_entry/keyed_number_list/min_pop)
@@ -289,6 +317,8 @@ GLOBAL_PROTECT(config_dir)
 	return runnable_modes
 
 /datum/controller/configuration/proc/get_runnable_midround_modes(crew)
+	procstart = null
+	src.procstart = null
 	var/list/datum/game_mode/runnable_modes = new
 	var/list/probabilities = Get(/datum/config_entry/keyed_number_list/probability)
 	var/list/min_pop = Get(/datum/config_entry/keyed_number_list/min_pop)

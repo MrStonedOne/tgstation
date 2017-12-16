@@ -57,10 +57,14 @@ Possible to do for anyone motivated enough:
 	var/static/list/holopads = list()
 
 /obj/machinery/holopad/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	holopads += src
 
 /obj/machinery/holopad/Destroy()
+	procstart = null
+	src.procstart = null
 	if(outgoing_call)
 		outgoing_call.ConnectionFailure(src)
 
@@ -82,6 +86,8 @@ Possible to do for anyone motivated enough:
 	return ..()
 
 /obj/machinery/holopad/power_change()
+	procstart = null
+	src.procstart = null
 	if (powered())
 		stat &= ~NOPOWER
 	else
@@ -94,17 +100,23 @@ Possible to do for anyone motivated enough:
 			outgoing_call.ConnectionFailure(src)
 
 /obj/machinery/holopad/obj_break()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(outgoing_call)
 		outgoing_call.ConnectionFailure(src)
 
 /obj/machinery/holopad/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/holograph_range = 4
 	for(var/obj/item/stock_parts/capacitor/B in component_parts)
 		holograph_range += 1 * B.rating
 	holo_range = holograph_range
 
 /obj/machinery/holopad/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "holopad_open", "holopad0", P))
 		return
 
@@ -134,6 +146,8 @@ Possible to do for anyone motivated enough:
 	return ..()
 
 /obj/machinery/holopad/AltClick(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(isAI(user))
 		hangup_all_calls()
 		return
@@ -193,11 +207,15 @@ Possible to do for anyone motivated enough:
 
 //Stop ringing the AI!!
 /obj/machinery/holopad/proc/hangup_all_calls()
+	procstart = null
+	src.procstart = null
 	for(var/I in holo_calls)
 		var/datum/holocall/HC = I
 		HC.Disconnect(src)
 
 /obj/machinery/holopad/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..() || isAI(usr))
 		return
 	add_fingerprint(usr)
@@ -277,6 +295,8 @@ Possible to do for anyone motivated enough:
 
 //do not allow AIs to answer calls or people will use it to meta the AI sattelite
 /obj/machinery/holopad/attack_ai(mob/living/silicon/ai/user)
+	procstart = null
+	src.procstart = null
 	if (!istype(user))
 		return
 	/*There are pretty much only three ways to interact here.
@@ -290,6 +310,8 @@ Possible to do for anyone motivated enough:
 		clear_holo(user)
 
 /obj/machinery/holopad/process()
+	procstart = null
+	src.procstart = null
 	for(var/I in masters)
 		var/mob/living/master = I
 		var/mob/living/silicon/ai/AI = master
@@ -328,6 +350,8 @@ Possible to do for anyone motivated enough:
 
 
 /obj/machinery/holopad/proc/activate_holo(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/AI = user
 	if(!istype(AI))
 		AI = null
@@ -366,6 +390,8 @@ Possible to do for anyone motivated enough:
 /*This is the proc for special two-way communication between AI and holopad/people talking near holopad.
 For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 /obj/machinery/holopad/Hear(message, atom/movable/speaker, datum/language/message_language, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	if(speaker && masters.len && !radio_freq)//Master is mostly a safety in case lag hits or something. Radio_freq so AIs dont hear holopad stuff through radios.
 		for(var/mob/living/silicon/ai/master in masters)
 			if(masters[master] && speaker != master)
@@ -383,6 +409,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		record_message(speaker,raw_message,message_language)
 
 /obj/machinery/holopad/proc/SetLightsAndPower()
+	procstart = null
+	src.procstart = null
 	var/total_users = masters.len + LAZYLEN(holo_calls)
 	use_power = total_users > 0 ? ACTIVE_POWER_USE : IDLE_POWER_USE
 	active_power_usage = HOLOPAD_PASSIVE_POWER_USAGE + (HOLOGRAM_POWER_USAGE * total_users)
@@ -393,6 +421,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	update_icon()
 
 /obj/machinery/holopad/update_icon()
+	procstart = null
+	src.procstart = null
 	var/total_users = masters.len + LAZYLEN(holo_calls)
 	if(total_users || replay_mode)
 		icon_state = "holopad1"
@@ -400,6 +430,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		icon_state = "holopad0"
 
 /obj/machinery/holopad/proc/set_holo(mob/living/user, var/obj/effect/overlay/holo_pad_hologram/h)
+	procstart = null
+	src.procstart = null
 	masters[user] = h
 	var/mob/living/silicon/ai/AI = user
 	if(istype(AI))
@@ -408,11 +440,15 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return TRUE
 
 /obj/machinery/holopad/proc/clear_holo(mob/living/user)
+	procstart = null
+	src.procstart = null
 	qdel(masters[user]) // Get rid of user's hologram
 	unset_holo(user)
 	return TRUE
 
 /obj/machinery/holopad/proc/unset_holo(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/silicon/ai/AI = user
 	if(istype(AI) && AI.current == src)
 		AI.current = null
@@ -421,6 +457,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return TRUE
 
 /obj/machinery/holopad/proc/move_hologram(mob/living/user, turf/new_turf)
+	procstart = null
+	src.procstart = null
 	if(masters[user])
 		var/obj/effect/overlay/holo_pad_hologram/H = masters[user]
 		step_to(H, new_turf)
@@ -435,6 +473,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 // RECORDED MESSAGES
 
 /obj/machinery/holopad/proc/setup_replay_holo(datum/holorecord/record)
+	procstart = null
+	src.procstart = null
 	var/obj/effect/overlay/holo_pad_hologram/Hologram = new(loc)//Spawn a blank effect at the location.
 	Hologram.add_overlay(record.caller_image)
 	Hologram.alpha = 170
@@ -452,6 +492,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return Hologram
 
 /obj/machinery/holopad/proc/replay_start()
+	procstart = null
+	src.procstart = null
 	if(!replay_mode)
 		replay_mode = TRUE
 		replay_holo = setup_replay_holo(disk.record)
@@ -462,6 +504,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return
 
 /obj/machinery/holopad/proc/replay_stop()
+	procstart = null
+	src.procstart = null
 	if(replay_mode)
 		replay_mode = FALSE
 		temp = null
@@ -470,6 +514,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		updateDialog()
 
 /obj/machinery/holopad/proc/record_start(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!user || !disk || disk.record)
 		return
 	disk.record = new
@@ -481,12 +527,16 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	temp += "<A href='?src=[REF(src)];record_stop=1'>End recording.</A>"
 
 /obj/machinery/holopad/proc/get_record_icon(mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/olddir = user.dir
 	user.setDir(SOUTH)
 	. = getFlatIcon(user)
 	user.setDir(olddir)
 
 /obj/machinery/holopad/proc/record_message(mob/living/speaker,message,language)
+	procstart = null
+	src.procstart = null
 	if(!record_mode)
 		return
 	//make this command so you can have multiple languages in single record
@@ -513,6 +563,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		record_stop()
 
 /obj/machinery/holopad/proc/replay_entry(entry_number)
+	procstart = null
+	src.procstart = null
 	if(!replay_mode)
 		return
 	if(disk.record.entries.len < entry_number)
@@ -543,6 +595,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	.(entry_number+1)
 
 /obj/machinery/holopad/proc/record_stop()
+	procstart = null
+	src.procstart = null
 	if(record_mode)
 		record_mode = FALSE
 		temp = null
@@ -550,6 +604,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		updateDialog()
 
 /obj/machinery/holopad/proc/record_clear()
+	procstart = null
+	src.procstart = null
 	if(disk && disk.record)
 		QDEL_NULL(disk.record)
 	updateDialog()
@@ -559,15 +615,21 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	var/datum/holocall/HC
 
 /obj/effect/overlay/holo_pad_hologram/Destroy()
+	procstart = null
+	src.procstart = null
 	Impersonation = null
 	if(HC)
 		HC.Disconnect(HC.calling_holopad)
 	return ..()
 
 /obj/effect/overlay/holo_pad_hologram/Process_Spacemove(movement_dir = 0)
+	procstart = null
+	src.procstart = null
 	return 1
 
 /obj/effect/overlay/holo_pad_hologram/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(Impersonation)
 		return Impersonation.examine(user)
 	return ..()

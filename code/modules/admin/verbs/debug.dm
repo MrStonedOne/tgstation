@@ -27,6 +27,8 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 */
 
 /client/proc/callproc()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Advanced ProcCall"
 	set waitfor = 0
@@ -109,6 +111,8 @@ GLOBAL_VAR(LastAdminCalledProc)
 GLOBAL_PROTECT(LastAdminCalledProc)
 
 /proc/WrapAdminProcCall(target, procname, list/arguments)
+	procstart = null
+	src.procstart = null
 	var/current_caller = GLOB.AdminProcCaller
 	var/ckey = usr ? usr.client.ckey : GLOB.AdminProcCaller
 	if(!ckey)
@@ -128,6 +132,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 //adv proc call this, ya nerds
 /world/proc/WrapAdminProcCall(target, procname, list/arguments)
+	procstart = null
+	src.procstart = null
 	if(target == GLOBAL_PROC)
 		return call(procname)(arglist(arguments))
 	else if(target != world)
@@ -143,6 +149,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 #endif
 
 /client/proc/callproc_datum(datum/A as null|area|mob|obj|turf)
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Atom ProcCall"
 	set waitfor = 0
@@ -177,6 +185,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 
 /client/proc/get_callproc_args()
+	procstart = null
+	src.procstart = null
 	var/argnum = input("Number of arguments","Number:",0) as num|null
 	if(isnull(argnum))
 		return
@@ -196,6 +206,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 		. += named_args
 
 /client/proc/get_callproc_returnval(returnval,procname)
+	procstart = null
+	src.procstart = null
 	. = ""
 	if(islist(returnval))
 		var/list/returnedlist = returnval
@@ -220,6 +232,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 
 /client/proc/Cell()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Air Status in Location"
 	if(!mob)
@@ -241,6 +255,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Air Status In Location") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_robotize(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Make Robot"
 
@@ -257,6 +273,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 		alert("Invalid mob")
 
 /client/proc/cmd_admin_blobize(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Make Blob"
 
@@ -272,6 +290,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 
 /client/proc/cmd_admin_animalize(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Make Simple Animal"
 
@@ -293,6 +313,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 
 /client/proc/makepAI(turf/T in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Make pAI"
 	set desc = "Specify a location to spawn a pAI device, then specify a key to play that pAI"
@@ -320,6 +342,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Make pAI") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_alienize(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Make Alien"
 
@@ -335,6 +359,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 		alert("Invalid mob")
 
 /client/proc/cmd_admin_slimeize(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Make slime"
 
@@ -350,6 +376,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 		alert("Invalid mob")
 
 /proc/make_types_fancy(var/list/types)
+	procstart = null
+	src.procstart = null
 	if (ispath(types))
 		types = list(types)
 	. = list()
@@ -388,6 +416,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 		.[typename] = type
 
 /proc/get_fancy_list_of_atom_types()
+	procstart = null
+	src.procstart = null
 	var/static/list/pre_generated_list
 	if (!pre_generated_list) //init
 		pre_generated_list = make_types_fancy(typesof(/atom))
@@ -395,6 +425,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 
 /proc/get_fancy_list_of_datum_types()
+	procstart = null
+	src.procstart = null
 	var/static/list/pre_generated_list
 	if (!pre_generated_list) //init
 		pre_generated_list = make_types_fancy(sortList(typesof(/datum) - typesof(/atom)))
@@ -402,6 +434,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 
 /proc/filter_fancy_list(list/L, filter as text)
+	procstart = null
+	src.procstart = null
 	var/list/matches = new
 	for(var/key in L)
 		var/value = L[key]
@@ -411,6 +445,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 //TODO: merge the vievars version into this or something maybe mayhaps
 /client/proc/cmd_debug_del_all(object as text)
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Del-All"
 
@@ -435,6 +471,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 
 /client/proc/cmd_debug_make_powernets()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Make Powernets"
 	SSmachines.makepowernets()
@@ -443,6 +481,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Make Powernets") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_grantfullaccess(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Grant Full Access"
 
@@ -485,6 +525,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	message_admins("<span class='adminnotice'>[key_name_admin(usr)] has granted [M.key] full access.</span>")
 
 /client/proc/cmd_assume_direct_control(mob/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Assume direct control"
 	set desc = "Direct intervention"
@@ -504,6 +546,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Assume Direct Control") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_areatest(on_station)
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Test Areas"
 
@@ -616,16 +660,22 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 		to_chat(world, "<b>No problem areas!</b>")
 
 /client/proc/cmd_admin_areatest_station()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Test Areas (STATION Z)"
 	cmd_admin_areatest(TRUE)
 
 /client/proc/cmd_admin_areatest_all()
+	procstart = null
+	src.procstart = null
 	set category = "Mapping"
 	set name = "Test Areas (ALL)"
 	cmd_admin_areatest(FALSE)
 
 /client/proc/cmd_admin_dress(mob/living/carbon/human/M in GLOB.mob_list)
+	procstart = null
+	src.procstart = null
 	set category = "Fun"
 	set name = "Select equipment"
 	if(!ishuman(M))
@@ -692,6 +742,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 /client/proc/startSinglo()
 
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Start Singularity"
 	set desc = "Sets up the singularity and all machines to get power flowing through the station"
@@ -749,6 +801,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 			SMES.input_attempt = 1
 
 /client/proc/cmd_debug_mob_lists()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Debug Mob Lists"
 	set desc = "For when you just gotta know"
@@ -770,6 +824,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 			to_chat(usr, jointext(GLOB.joined_player_list,","))
 
 /client/proc/cmd_display_del_log()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Display del() Log"
 	set desc = "Display del's log of everything that's passed through it."
@@ -799,6 +855,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	usr << browse(dellog.Join(), "window=dellog")
 
 /client/proc/cmd_display_overlay_log()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Display overlay Log"
 	set desc = "Display SSoverlays log of everything that's passed through it."
@@ -806,6 +864,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	render_stats(SSoverlays.stats, src)
 
 /client/proc/cmd_display_init_log()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Display Initialize() Log"
 	set desc = "Displays a list of things that didn't handle Initialize() properly"
@@ -813,6 +873,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	usr << browse(replacetext(SSatoms.InitLog(), "\n", "<br>"), "window=initlog")
 
 /client/proc/debug_huds(i as num)
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Debug HUDs"
 	set desc = "Debug the data or antag HUDs"
@@ -822,6 +884,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	debug_variables(GLOB.huds[i])
 
 /client/proc/jump_to_ruin()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Jump to Ruin"
 	set desc = "Displays a list of all placed ruins to teleport to."
@@ -854,6 +918,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 		to_chat(usr, "<span class='italics'>[template.description]</span>")
 
 /client/proc/clear_dynamic_transit()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Clear Dynamic Transit"
 	set desc = "Deallocates all transit space, restoring it to round start conditions."
@@ -866,6 +932,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 
 
 /client/proc/toggle_medal_disable()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Toggle Medal Disable"
 	set desc = "Toggles the safety lock on trying to contact the medal hub."
@@ -879,6 +947,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	log_admin("[key_name(src)] [GLOB.medals_enabled ? "disabled" : "enabled"] the medal hub lockout.")
 
 /client/proc/view_runtimes()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "View Runtimes"
 	set desc = "Open the runtime Viewer"
@@ -889,6 +959,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	GLOB.error_cache.show_to(src)
 
 /client/proc/pump_random_event()
+	procstart = null
+	src.procstart = null
 	set category = "Debug"
 	set name = "Pump Random Event"
 	set desc = "Schedules the event subsystem to fire a new random event immediately. Some events may fire without notification."
@@ -902,6 +974,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	log_admin("[key_name(src)] pumped a random event.")
 
 /client/proc/start_line_profiling()
+	procstart = null
+	src.procstart = null
 	set category = "Profile"
 	set name = "Start Line Profiling"
 	set desc = "Starts tracking line by line profiling for code lines that support it"
@@ -913,6 +987,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	log_admin("[key_name(src)] started line by line profiling.")
 
 /client/proc/stop_line_profiling()
+	procstart = null
+	src.procstart = null
 	set category = "Profile"
 	set name = "Stops Line Profiling"
 	set desc = "Stops tracking line by line profiling for code lines that support it"
@@ -924,6 +1000,8 @@ GLOBAL_PROTECT(LastAdminCalledProc)
 	log_admin("[key_name(src)] stopped line by line profiling.")
 
 /client/proc/show_line_profiling()
+	procstart = null
+	src.procstart = null
 	set category = "Profile"
 	set name = "Show Line Profiling"
 	set desc = "Shows tracked profiling info from code lines that support it"

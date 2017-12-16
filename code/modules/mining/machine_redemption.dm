@@ -26,15 +26,21 @@
 	var/obj/item/disk/design_disk/inserted_disk
 
 /obj/machinery/mineral/ore_redemption/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	AddComponent(/datum/component/material_container, list(MAT_METAL, MAT_GLASS, MAT_SILVER, MAT_GOLD, MAT_DIAMOND, MAT_PLASMA, MAT_URANIUM, MAT_BANANIUM, MAT_TITANIUM, MAT_BLUESPACE),INFINITY)
 	stored_research = new /datum/techweb/specialized/autounlocking/smelter
 
 /obj/machinery/mineral/ore_redemption/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stored_research)
 	return ..()
 
 /obj/machinery/mineral/ore_redemption/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/ore_pickup_rate_temp = 15
 	var/point_upgrade_temp = 1
 	var/sheet_per_ore_temp = 1
@@ -50,6 +56,8 @@
 
 /obj/machinery/mineral/ore_redemption/proc/smelt_ore(obj/item/ore/O)
 
+	procstart = null
+	src.procstart = null
 	ore_buffer -= O
 
 	if(O && O.refined_type)
@@ -69,6 +77,8 @@
 		qdel(O)
 
 /obj/machinery/mineral/ore_redemption/proc/can_smelt_alloy(datum/design/D)
+	procstart = null
+	src.procstart = null
 	if(D.make_reagents.len)
 		return FALSE
 
@@ -95,6 +105,8 @@
 	return build_amount
 
 /obj/machinery/mineral/ore_redemption/proc/process_ores(list/ores_to_process)
+	procstart = null
+	src.procstart = null
 	var/current_amount = 0
 	for(var/ore in ores_to_process)
 		if(current_amount >= ore_pickup_rate)
@@ -102,6 +114,8 @@
 		smelt_ore(ore)
 
 /obj/machinery/mineral/ore_redemption/proc/send_console_message()
+	procstart = null
+	src.procstart = null
 	if(!(z in GLOB.station_z_levels))
 		return
 	message_sent = TRUE
@@ -126,6 +140,8 @@
 			D.createmessage("Ore Redemption Machine", "New minerals available!", msg, 1, 0)
 
 /obj/machinery/mineral/ore_redemption/process()
+	procstart = null
+	src.procstart = null
 	if(panel_open || !powered())
 		return
 	var/atom/input = get_step(src, input_dir)
@@ -147,6 +163,8 @@
 		send_console_message()
 
 /obj/machinery/mineral/ore_redemption/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(exchange_parts(user, W))
 		return
 	GET_COMPONENT(materials, /datum/component/material_container)
@@ -185,22 +203,30 @@
 	return ..()
 
 /obj/machinery/mineral/ore_redemption/on_deconstruction()
+	procstart = null
+	src.procstart = null
 	GET_COMPONENT(materials, /datum/component/material_container)
 	materials.retrieve_all()
 	..()
 
 /obj/machinery/mineral/ore_redemption/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/mineral/ore_redemption/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "ore_redemption_machine", "Ore Redemption Machine", 440, 550, master_ui, state)
 		ui.open()
 
 /obj/machinery/mineral/ore_redemption/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["unclaimedPoints"] = points
 	if(inserted_id)
@@ -230,6 +256,8 @@
 	return data
 
 /obj/machinery/mineral/ore_redemption/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	GET_COMPONENT(materials, /datum/component/material_container)
@@ -339,14 +367,20 @@
 			return TRUE
 
 /obj/machinery/mineral/ore_redemption/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	do_sparks(5, TRUE, src)
 	..()
 
 /obj/machinery/mineral/ore_redemption/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/mineral/ore_redemption/update_icon()
+	procstart = null
+	src.procstart = null
 	if(powered())
 		icon_state = initial(icon_state)
 	else

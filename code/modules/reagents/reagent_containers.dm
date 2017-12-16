@@ -13,6 +13,8 @@
 	var/spillable = FALSE
 
 /obj/item/reagent_containers/Initialize(mapload, vol)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(isnum(vol) && vol > 0)
 		volume = vol
@@ -25,10 +27,14 @@
 	add_initial_reagents()
 
 /obj/item/reagent_containers/proc/add_initial_reagents()
+	procstart = null
+	src.procstart = null
 	if(list_reagents)
 		reagents.add_reagent_list(list_reagents)
 
 /obj/item/reagent_containers/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(possible_transfer_amounts.len)
 		var/i=0
 		for(var/A in possible_transfer_amounts)
@@ -42,10 +48,14 @@
 				return
 
 /obj/item/reagent_containers/attack(mob/M, mob/user, def_zone)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 
 /obj/item/reagent_containers/afterattack(obj/target, mob/user , flag)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/reagent_containers/proc/reagentlist(obj/item/reagent_containers/snack) //Attack logs for regents in pills
@@ -58,6 +68,8 @@
 		return "No reagents"
 
 /obj/item/reagent_containers/proc/canconsume(mob/eater, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscarbon(eater))
 		return 0
 	var/mob/living/carbon/C = eater
@@ -73,6 +85,8 @@
 	return 1
 
 /obj/item/reagent_containers/ex_act()
+	procstart = null
+	src.procstart = null
 	if(reagents)
 		for(var/datum/reagent/R in reagents.reagent_list)
 			R.on_ex_act()
@@ -80,17 +94,25 @@
 		..()
 
 /obj/item/reagent_containers/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	reagents.expose_temperature(exposed_temperature)
 	..()
 
 /obj/item/reagent_containers/throw_impact(atom/target)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	SplashReagents(target, TRUE)
 
 /obj/item/reagent_containers/proc/bartender_check(atom/target)
+	procstart = null
+	src.procstart = null
 	return (target.CanPass(src, get_turf(src)) && thrownby && thrownby.mind && thrownby.mind.assigned_role == "Bartender")
 
 /obj/item/reagent_containers/proc/SplashReagents(atom/target, thrown = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!reagents || !reagents.total_volume || !spillable)
 		return
 
@@ -126,9 +148,13 @@
 	reagents.clear_reagents()
 
 /obj/item/reagent_containers/microwave_act(obj/machinery/microwave/M)
+	procstart = null
+	src.procstart = null
 	if(is_open_container())
 		reagents.expose_temperature(1000)
 	..()
 
 /obj/item/reagent_containers/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	reagents.expose_temperature(exposed_temperature)

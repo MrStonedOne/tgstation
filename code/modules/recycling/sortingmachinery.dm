@@ -9,20 +9,28 @@
 	var/sortTag = 0
 
 /obj/structure/bigDelivery/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/poster_ripped.ogg', 50, 1)
 	qdel(src)
 
 /obj/structure/bigDelivery/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	for(var/atom/movable/AM in contents)
 		AM.forceMove(T)
 	return ..()
 
 /obj/structure/bigDelivery/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/AM in contents)
 		AM.ex_act()
 
 /obj/structure/bigDelivery/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/destTagger))
 		var/obj/item/device/destTagger/O = W
 
@@ -52,6 +60,8 @@
 		return ..()
 
 /obj/structure/bigDelivery/relay_container_resist(mob/living/user, obj/O)
+	procstart = null
+	src.procstart = null
 	if(ismovableatom(loc))
 		var/atom/movable/AM = loc //can't unwrap the wrapped container if it's inside something.
 		AM.relay_container_resist(user, O)
@@ -78,10 +88,14 @@
 	var/sortTag = 0
 
 /obj/item/smallDelivery/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	for(var/atom/movable/AM in contents)
 		AM.ex_act()
 
 /obj/item/smallDelivery/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	user.temporarilyRemoveItemFromInventory(src, TRUE)
 	for(var/X in contents)
 		var/atom/movable/AM = X
@@ -90,6 +104,8 @@
 	qdel(src)
 
 /obj/item/smallDelivery/attack_self_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ismob(loc))
 		var/mob/M = loc
 		M.temporarilyRemoveItemFromInventory(src, TRUE)
@@ -104,6 +120,8 @@
 	qdel(src)
 
 /obj/item/smallDelivery/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/device/destTagger))
 		var/obj/item/device/destTagger/O = W
 
@@ -150,6 +168,8 @@
 	slot_flags = SLOT_BELT
 
 /obj/item/device/destTagger/proc/openwindow(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat = "<tt><center><h1><b>TagMaster 2.2</b></h1></center>"
 
 	dat += "<table style='width:100%; padding:4px;'><tr>"
@@ -165,10 +185,14 @@
 	onclose(user, "destTagScreen")
 
 /obj/item/device/destTagger/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	openwindow(user)
 	return
 
 /obj/item/device/destTagger/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(usr)
 	if(href_list["nextTag"])
 		var/n = text2num(href_list["nextTag"])

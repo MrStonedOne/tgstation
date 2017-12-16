@@ -20,14 +20,20 @@
 
 
 /mob/living/prepare_huds()
+	procstart = null
+	src.procstart = null
 	..()
 	prepare_data_huds()
 
 /mob/living/proc/prepare_data_huds()
+	procstart = null
+	src.procstart = null
 	med_hud_set_health()
 	med_hud_set_status()
 
 /mob/living/Destroy()
+	procstart = null
+	src.procstart = null
 	if(LAZYLEN(status_effects))
 		for(var/s in status_effects)
 			var/datum/status_effect/S = s
@@ -52,6 +58,8 @@
 	return ..()
 
 /mob/living/ghostize(can_reenter_corpse = 1)
+	procstart = null
+	src.procstart = null
 	var/prev_client = client
 	. = ..()
 	if(.)
@@ -60,9 +68,13 @@
 
 
 /mob/living/proc/OpenCraftingMenu()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/generateStaticOverlay()
+	procstart = null
+	src.procstart = null
 	staticOverlays.Add(list("static", "blank", "letter", "animal"))
 	var/image/staticOverlay = image(getStaticIcon(new/icon(icon,icon_state)), loc = src)
 	staticOverlay.override = 1
@@ -83,6 +95,8 @@
 
 //Generic Collide(). Override MobCollide() and ObjCollide() instead of this.
 /mob/living/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	if(..()) //we are thrown onto something
 		return
 	if (buckled || now_pushing)
@@ -101,11 +115,15 @@
 			return
 
 /mob/living/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	last_bumped = world.time
 
 //Called when we bump onto a mob
 /mob/living/proc/MobCollide(mob/M)
+	procstart = null
+	src.procstart = null
 	//Even if we don't push/swap places, we "touched" them, so spread fire
 	spreadFire(M)
 	//Also diseases
@@ -191,10 +209,14 @@
 
 //Called when we bump onto an obj
 /mob/living/proc/ObjCollide(obj/O)
+	procstart = null
+	src.procstart = null
 	return
 
 //Called when we want to push an atom/movable
 /mob/living/proc/PushAM(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(now_pushing)
 		return 1
 	if(moving_diagonally)// no pushing during diagonal moves.
@@ -223,6 +245,8 @@
 //mob verbs are a lot faster than object verbs
 //for more info on why this is not atom/pull, see examinate() in mob.dm
 /mob/living/verb/pulled(atom/movable/AM as mob|obj in oview(1))
+	procstart = null
+	src.procstart = null
 	set name = "Pull"
 	set category = "Object"
 
@@ -233,6 +257,8 @@
 
 //same as above
 /mob/living/pointed(atom/A as mob|obj|turf in view())
+	procstart = null
+	src.procstart = null
 	if(incapacitated())
 		return 0
 	if(src.status_flags & FAKEDEATH)
@@ -243,6 +269,8 @@
 	return 1
 
 /mob/living/verb/succumb(whispered as null)
+	procstart = null
+	src.procstart = null
 	set hidden = 1
 	if (InCritical())
 		log_message("Has [whispered ? "whispered his final words" : "succumbed to death"] while in [InFullCritical() ? "hard":"soft"] critical with [round(health, 0.1)] points of health!", INDIVIDUAL_ATTACK_LOG)
@@ -253,22 +281,32 @@
 		death()
 
 /mob/living/incapacitated(ignore_restraints, ignore_grab)
+	procstart = null
+	src.procstart = null
 	if(stat || IsUnconscious() || IsStun() || IsKnockdown() || (!ignore_restraints && restrained(ignore_grab)))
 		return 1
 
 /mob/living/proc/InCritical()
+	procstart = null
+	src.procstart = null
 	return (health <= HEALTH_THRESHOLD_CRIT && (stat == SOFT_CRIT || stat == UNCONSCIOUS))
 
 /mob/living/proc/InFullCritical()
+	procstart = null
+	src.procstart = null
 	return (health <= HEALTH_THRESHOLD_FULLCRIT && stat == UNCONSCIOUS)
 
 //This proc is used for mobs which are affected by pressure to calculate the amount of pressure that actually
 //affects them once clothing is factored in. ~Errorage
 /mob/living/proc/calculate_affecting_pressure(pressure)
+	procstart = null
+	src.procstart = null
 	return pressure
 
 
 /mob/living/proc/adjustBodyTemp(actual, desired, incrementboost)
+	procstart = null
+	src.procstart = null
 	var/temperature = actual
 	var/difference = abs(actual-desired)	//get difference
 	var/increments = difference/10 //find how many increments apart they are
@@ -289,14 +327,20 @@
 
 
 /mob/living/proc/getMaxHealth()
+	procstart = null
+	src.procstart = null
 	return maxHealth
 
 /mob/living/proc/setMaxHealth(newMaxHealth)
+	procstart = null
+	src.procstart = null
 	maxHealth = newMaxHealth
 
 // MOB PROCS //END
 
 /mob/living/proc/mob_sleep()
+	procstart = null
+	src.procstart = null
 	set name = "Sleep"
 	set category = "IC"
 
@@ -311,6 +355,8 @@
 /mob/proc/get_contents()
 
 /mob/living/proc/lay_down()
+	procstart = null
+	src.procstart = null
 	set name = "Rest"
 	set category = "IC"
 
@@ -320,6 +366,8 @@
 
 //Recursive function to find everything a mob is holding.
 /mob/living/get_contents(obj/item/storage/Storage = null)
+	procstart = null
+	src.procstart = null
 	var/list/L = list()
 
 	if(Storage) //If it called itself
@@ -336,6 +384,8 @@
 		return L
 
 /mob/living/proc/check_contents_for(A)
+	procstart = null
+	src.procstart = null
 	var/list/L = src.get_contents()
 
 	for(var/obj/B in L)
@@ -344,9 +394,13 @@
 	return 0
 
 /mob/living/proc/can_inject()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /mob/living/proc/get_organ_target()
+	procstart = null
+	src.procstart = null
 	var/mob/shooter = src
 	var/t = shooter.zone_selected
 	if ((t in list( "eyes", "mouth" )))
@@ -356,6 +410,8 @@
 
 
 /mob/living/proc/updatehealth()
+	procstart = null
+	src.procstart = null
 	if(status_flags & GODMODE)
 		return
 	health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss()
@@ -365,6 +421,8 @@
 
 //proc used to ressuscitate a mob
 /mob/living/proc/revive(full_heal = 0, admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	if(full_heal)
 		fully_heal(admin_revive)
 	if(stat == DEAD && can_be_revived()) //in some cases you can't revive (e.g. no brain)
@@ -386,6 +444,8 @@
 
 //proc used to completely heal a mob.
 /mob/living/proc/fully_heal(admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	restore_blood()
 	setToxLoss(0, 0) //zero as second argument not automatically call updatehealth().
 	setOxyLoss(0, 0)
@@ -416,14 +476,20 @@
 
 //proc called by revive(), to check if we can actually ressuscitate the mob (we don't want to revive him and have him instantly die again)
 /mob/living/proc/can_be_revived()
+	procstart = null
+	src.procstart = null
 	. = 1
 	if(health <= HEALTH_THRESHOLD_DEAD)
 		return 0
 
 /mob/living/proc/update_damage_overlays()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/Examine_OOC()
+	procstart = null
+	src.procstart = null
 	set name = "Examine Meta-Info (OOC)"
 	set category = "OOC"
 	set src in view()
@@ -439,6 +505,8 @@
 	return
 
 /mob/living/Move(atom/newloc, direct)
+	procstart = null
+	src.procstart = null
 	if (buckled && buckled.loc != newloc) //not updating position
 		if (!buckled.anchored)
 			return buckled.Move(newloc, direct)
@@ -475,6 +543,8 @@
 		makeTrail(newloc, T, old_direction)
 
 /mob/living/movement_delay(ignorewalk = 0)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(isopenturf(loc) && !is_flying())
 		var/turf/open/T = loc
@@ -496,6 +566,8 @@
 				. += config_walk_delay.value_cache
 
 /mob/living/proc/makeTrail(turf/target_turf, turf/start, direction)
+	procstart = null
+	src.procstart = null
 	if(!has_gravity())
 		return
 	var/blood_exists = FALSE
@@ -527,17 +599,23 @@
 						TH.transfer_mob_blood_dna(src)
 
 /mob/living/carbon/human/makeTrail(turf/T)
+	procstart = null
+	src.procstart = null
 	if((NOBLOOD in dna.species.species_traits) || !bleed_rate || bleedsuppress)
 		return
 	..()
 
 /mob/living/proc/getTrail()
+	procstart = null
+	src.procstart = null
 	if(getBruteLoss() < 300)
 		return pick("ltrails_1", "ltrails_2")
 	else
 		return pick("trails_1", "trails_2")
 
 /mob/living/experience_pressure_difference(pressure_difference, direction, pressure_resistance_prob_delta = 0)
+	procstart = null
+	src.procstart = null
 	if (client && client.move_delay >= world.time + world.tick_lag*2)
 		pressure_resistance_prob_delta -= 30
 
@@ -565,9 +643,13 @@
 		..(pressure_difference, direction, pressure_resistance_prob_delta)
 
 /mob/living/can_resist()
+	procstart = null
+	src.procstart = null
 	return !((next_move > world.time) || incapacitated(ignore_restraints = TRUE))
 
 /mob/living/verb/resist()
+	procstart = null
+	src.procstart = null
 	set name = "Resist"
 	set category = "IC"
 
@@ -607,9 +689,13 @@
 
 
 /mob/proc/resist_grab(moving_resist)
+	procstart = null
+	src.procstart = null
 	return 1 //returning 0 means we successfully broke free
 
 /mob/living/resist_grab(moving_resist)
+	procstart = null
+	src.procstart = null
 	. = 1
 	if(pulledby.grab_state)
 		if(prob(30/pulledby.grab_state))
@@ -624,18 +710,28 @@
 		return 0
 
 /mob/living/proc/resist_buckle()
+	procstart = null
+	src.procstart = null
 	buckled.user_unbuckle_mob(src,src)
 
 /mob/living/proc/resist_fire()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/resist_restraints()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/get_visible_name()
+	procstart = null
+	src.procstart = null
 	return name
 
 /mob/living/update_gravity(has_gravity,override = 0)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		return
 	if(has_gravity)
@@ -646,6 +742,8 @@
 		float(!has_gravity)
 
 /mob/living/float(on)
+	procstart = null
+	src.procstart = null
 	if(throwing)
 		return
 	var/fixed = 0
@@ -663,6 +761,8 @@
 // The src mob is trying to strip an item from someone
 // Override if a certain type of mob should be behave differently when stripping items (can't, for example)
 /mob/living/stripPanelUnequip(obj/item/what, mob/who, where)
+	procstart = null
+	src.procstart = null
 	if(what.flags_1 & NODROP_1)
 		to_chat(src, "<span class='warning'>You can't remove \the [what.name], it appears to be stuck!</span>")
 		return
@@ -683,6 +783,8 @@
 // The src mob is trying to place an item on someone
 // Override if a certain mob should be behave differently when placing items (can't, for example)
 /mob/living/stripPanelEquip(obj/item/what, mob/who, where)
+	procstart = null
+	src.procstart = null
 	what = src.get_active_held_item()
 	if(what && (what.flags_1 & NODROP_1))
 		to_chat(src, "<span class='warning'>You can't put \the [what.name] on [who], it's stuck to your hand!</span>")
@@ -712,6 +814,8 @@
 						who.equip_to_slot(what, where, TRUE)
 
 /mob/living/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_SIX)
 		throw_at(S,14,3, spin=1)
@@ -719,6 +823,8 @@
 		step_towards(src,S)
 
 /mob/living/proc/do_jitter_animation(jitteriness)
+	procstart = null
+	src.procstart = null
 	var/amplitude = min(4, (jitteriness/100) + 1)
 	var/pixel_x_diff = rand(-amplitude, amplitude)
 	var/pixel_y_diff = rand(-amplitude/3, amplitude/3)
@@ -729,6 +835,8 @@
 	floating = 0 // If we were without gravity, the bouncing animation got stopped, so we make sure to restart it in next life().
 
 /mob/living/proc/get_temperature(datum/gas_mixture/environment)
+	procstart = null
+	src.procstart = null
 	var/loc_temp = environment ? environment.temperature : T0C
 	if(isobj(loc))
 		var/obj/oloc = loc
@@ -741,16 +849,24 @@
 	return loc_temp
 
 /mob/living/proc/get_standard_pixel_x_offset(lying = 0)
+	procstart = null
+	src.procstart = null
 	return initial(pixel_x)
 
 /mob/living/proc/get_standard_pixel_y_offset(lying = 0)
+	procstart = null
+	src.procstart = null
 	return initial(pixel_y)
 
 /mob/living/cancel_camera()
+	procstart = null
+	src.procstart = null
 	..()
 	cameraFollow = null
 
 /mob/living/proc/can_track(mob/living/user)
+	procstart = null
+	src.procstart = null
 	//basic fast checks go first. When overriding this proc, I recommend calling ..() at the end.
 	var/turf/T = get_turf(src)
 	if(!T)
@@ -774,9 +890,13 @@
 
 //used in datum/reagents/reaction() proc
 /mob/living/proc/get_permeability_protection()
+	procstart = null
+	src.procstart = null
 	return 0
 
 /mob/living/proc/harvest(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(src))
 		return
 	if(butcher_results)
@@ -788,6 +908,8 @@
 	gib(0, 0, 1)
 
 /mob/living/canUseTopic(atom/movable/M, be_close = 0, no_dextery = 0)
+	procstart = null
+	src.procstart = null
 	if(incapacitated())
 		return
 	if(no_dextery)
@@ -797,12 +919,16 @@
 		to_chat(src, "<span class='warning'>You don't have the dexterity to do this!</span>")
 	return
 /mob/living/proc/can_use_guns(obj/item/G)
+	procstart = null
+	src.procstart = null
 	if (G.trigger_guard != TRIGGER_GUARD_ALLOW_ALL && !IsAdvancedToolUser())
 		to_chat(src, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return FALSE
 	return TRUE
 
 /mob/living/carbon/proc/update_stamina()
+	procstart = null
+	src.procstart = null
 	if(staminaloss)
 		var/total_health = (health - staminaloss)
 		if(total_health <= HEALTH_THRESHOLD_CRIT && !stat)
@@ -812,14 +938,20 @@
 	update_health_hud()
 
 /mob/living/carbon/alien/update_stamina()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/owns_soul()
+	procstart = null
+	src.procstart = null
 	if(mind)
 		return mind.soulOwner == mind
 	return TRUE
 
 /mob/living/proc/return_soul()
+	procstart = null
+	src.procstart = null
 	hellbound = 0
 	if(mind)
 		var/datum/antagonist/devil/devilInfo = mind.soulOwner.has_antag_datum(ANTAG_DATUM_DEVIL)
@@ -828,27 +960,37 @@
 		mind.soulOwner = mind
 
 /mob/living/proc/has_bane(banetype)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/devil/devilInfo = is_devil(src)
 	return devilInfo && banetype == devilInfo.bane
 
 /mob/living/proc/check_weakness(obj/item/weapon, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	if(mind && mind.has_antag_datum(ANTAG_DATUM_DEVIL))
 		return check_devil_bane_multiplier(weapon, attacker)
 	return 1
 
 /mob/living/proc/check_acedia()
+	procstart = null
+	src.procstart = null
 	if(src.mind && src.mind.objectives)
 		for(var/datum/objective/sintouched/acedia/A in src.mind.objectives)
 			return 1
 	return 0
 
 /mob/living/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback)
+	procstart = null
+	src.procstart = null
 	stop_pulling()
 	. = ..()
 
 // Called when we are hit by a bolt of polymorph and changed
 // Generally the mob we are currently in is about to be deleted
 /mob/living/proc/wabbajack_act(mob/living/new_mob)
+	procstart = null
+	src.procstart = null
 	new_mob.name = real_name
 	new_mob.real_name = real_name
 
@@ -864,6 +1006,8 @@
 		to_chat(G, "<span class='holoparasite'>Your summoner has changed form!</span>")
 
 /mob/living/rad_act(amount)
+	procstart = null
+	src.procstart = null
 	if(!amount || amount < RAD_MOB_SKIN_PROTECTION)
 		return
 
@@ -877,15 +1021,21 @@
 	apply_effect((amount*RAD_MOB_COEFFICIENT)/max(1, (radiation**2)*RAD_OVERDOSE_REDUCTION), IRRADIATE, blocked)
 
 /mob/living/proc/fakefireextinguish()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/proc/fakefire()
+	procstart = null
+	src.procstart = null
 	return
 
 
 
 //Mobs on Fire
 /mob/living/proc/IgniteMob()
+	procstart = null
+	src.procstart = null
 	if(fire_stacks > 0 && !on_fire)
 		on_fire = 1
 		src.visible_message("<span class='warning'>[src] catches fire!</span>", \
@@ -897,6 +1047,8 @@
 	return FALSE
 
 /mob/living/proc/ExtinguishMob()
+	procstart = null
+	src.procstart = null
 	if(on_fire)
 		on_fire = 0
 		fire_stacks = 0
@@ -913,6 +1065,8 @@
 //Share fire evenly between the two mobs
 //Called in MobCollide() and Crossed()
 /mob/living/proc/spreadFire(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(!istype(L))
 		return
 	var/L_old_on_fire = L.on_fire
@@ -932,6 +1086,8 @@
 
 // used by secbot and monkeys Crossed
 /mob/living/proc/knockOver(var/mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if(C.key) //save us from monkey hordes
 		C.visible_message("<span class='warning'>[pick( \
 						"[C] dives out of [src]'s way!", \
@@ -943,16 +1099,22 @@
 	C.Knockdown(40)
 
 /mob/living/ConveyorMove()
+	procstart = null
+	src.procstart = null
 	if((movement_type & FLYING) && !stat)
 		return
 	..()
 
 /mob/living/can_be_pulled()
+	procstart = null
+	src.procstart = null
 	return ..() && !(buckled && buckled.buckle_prevents_pull)
 
 //Updates canmove, lying and icons. Could perhaps do with a rename but I can't think of anything to describe it.
 //Robots, animals and brains have their own version so don't worry about them
 /mob/living/proc/update_canmove()
+	procstart = null
+	src.procstart = null
 	var/ko = IsKnockdown() || IsUnconscious() || (stat && (stat != SOFT_CRIT || pulledby)) || (status_flags & FAKEDEATH)
 	var/move_and_fall = stat == SOFT_CRIT && !pulledby
 	var/chokehold = pulledby && pulledby.grab_state >= GRAB_NECK
@@ -990,22 +1152,30 @@
 	return canmove
 
 /mob/living/proc/AddAbility(obj/effect/proc_holder/A)
+	procstart = null
+	src.procstart = null
 	abilities.Add(A)
 	A.on_gain(src)
 	if(A.has_action)
 		A.action.Grant(src)
 
 /mob/living/proc/RemoveAbility(obj/effect/proc_holder/A)
+	procstart = null
+	src.procstart = null
 	abilities.Remove(A)
 	A.on_lose(src)
 	if(A.action)
 		A.action.Remove(src)
 
 /mob/living/proc/add_abilities_to_panel()
+	procstart = null
+	src.procstart = null
 	for(var/obj/effect/proc_holder/A in abilities)
 		statpanel("[A.panel]",A.get_panel_text(),A)
 
 /mob/living/lingcheck()
+	procstart = null
+	src.procstart = null
 	if(mind)
 		var/datum/antagonist/changeling/changeling = mind.has_antag_datum(/datum/antagonist/changeling)
 		if(changeling)
@@ -1017,6 +1187,8 @@
 	return LINGHIVE_NONE
 
 /mob/living/forceMove(atom/destination)
+	procstart = null
+	src.procstart = null
 	stop_pulling()
 	if(buckled)
 		buckled.unbuckle_mob(src, force = TRUE)
@@ -1040,5 +1212,7 @@
 			registered_z = null
 
 /mob/living/onTransitZ(old_z,new_z)
+	procstart = null
+	src.procstart = null
 	..()
 	update_z(new_z)

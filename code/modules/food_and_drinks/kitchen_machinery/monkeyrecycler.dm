@@ -15,6 +15,8 @@
 	var/cube_production = 1
 
 /obj/machinery/monkey_recycler/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/req_grind = 5
 	var/cubes_made = 1
 	for(var/obj/item/stock_parts/manipulator/B in component_parts)
@@ -26,6 +28,8 @@
 	src.desc = "A machine used for recycling dead monkeys into monkey cubes. It currently produces [cubes_made] cube(s) for every [required_grind] monkey(s) inserted."
 
 /obj/machinery/monkey_recycler/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, "grinder_open", "grinder", O))
 		return
 
@@ -48,12 +52,16 @@
 		return ..()
 
 /obj/machinery/monkey_recycler/MouseDrop_T(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return
 	if(ismonkey(target))
 		stuff_monkey_in(target, user)
 
 /obj/machinery/monkey_recycler/proc/stuff_monkey_in(mob/living/carbon/monkey/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(target))
 		return
 	if(target.stat == 0)
@@ -75,6 +83,8 @@
 
 
 /obj/machinery/monkey_recycler/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if (src.stat != 0) //NOPOWER etc
 		return
 	if(grinded >= required_grind)

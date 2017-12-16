@@ -16,6 +16,8 @@
 	var/isGlass = TRUE //Whether the 'bottle' is made of glass or not so that milk cartons dont shatter when someone gets hit by it
 
 /obj/item/reagent_containers/food/drinks/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	if (gulp_size < 5)
 		gulp_size = 5
 	else
@@ -23,6 +25,8 @@
 
 /obj/item/reagent_containers/food/drinks/attack(mob/M, mob/user, def_zone)
 
+	procstart = null
+	src.procstart = null
 	if(!reagents || !reagents.total_volume)
 		to_chat(user, "<span class='warning'>[src] is empty!</span>")
 		return 0
@@ -54,6 +58,8 @@
 	return 1
 
 /obj/item/reagent_containers/food/drinks/afterattack(obj/target, mob/user , proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
@@ -91,6 +97,8 @@
 			addtimer(CALLBACK(reagents, /datum/reagents.proc/add_reagent, refill, trans), 600)
 
 /obj/item/reagent_containers/food/drinks/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	var/hotness = I.is_hot()
 	if(hotness && reagents)
 		reagents.expose_temperature(hotness)
@@ -98,11 +106,15 @@
 	..()
 
 /obj/item/reagent_containers/food/drinks/throw_impact(atom/target, mob/thrower)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.) //if the bottle wasn't caught
 		smash(target, thrower, TRUE)
 
 /obj/item/reagent_containers/food/drinks/proc/smash(atom/target, mob/thrower, ranged = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!isGlass)
 		return
 	if(bartender_check(target) && ranged)
@@ -209,6 +221,8 @@
 	spillable = TRUE
 
 /obj/item/reagent_containers/food/drinks/mug/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume)
 		icon_state = "tea"
 	else
@@ -261,6 +275,8 @@
 	isGlass = FALSE
 
 /obj/item/reagent_containers/food/drinks/sillycup/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	if(reagents.total_volume)
 		icon_state = "water_cup"
 	else
@@ -273,6 +289,8 @@
 	volume = 15 //I figure if you have to craft these it should at least be slightly better than something you can get for free from a watercooler
 
 /obj/item/reagent_containers/food/drinks/sillycup/smallcarton/smash(atom/target, mob/thrower, ranged = FALSE)
+	procstart = null
+	src.procstart = null
 	if(bartender_check(target) && ranged)
 		return
 	var/obj/item/broken_bottle/B = new (loc)
@@ -289,6 +307,8 @@
 	qdel(src)
 
 /obj/item/reagent_containers/food/drinks/sillycup/smallcarton/on_reagent_change(changetype)
+	procstart = null
+	src.procstart = null
 	if (reagents.reagent_list.len)
 		switch(reagents.get_master_reagent_id())
 			if("orangejuice")
@@ -394,6 +414,8 @@
 	grind_results = list("aluminum" = 10)
 
 /obj/item/reagent_containers/food/drinks/soda_cans/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(M == user && !src.reagents.total_volume && user.a_intent == INTENT_HARM && user.zone_selected == "head")
 		user.visible_message("<span class='warning'>[user] crushes the can of [src] on [user.p_their()] forehead!</span>", "<span class='notice'>You crush the can of [src] on your forehead.</span>")
 		playsound(user.loc,'sound/weapons/pierce.ogg', rand(10,50), 1)
@@ -404,6 +426,8 @@
 
 
 /obj/item/reagent_containers/food/drinks/soda_cans/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!is_open_container())
 		to_chat(user, "You pull back the tab of \the [src] with a satisfying pop.") //Ahhhhhhhh
 		container_type = OPENCONTAINER_1
@@ -440,6 +464,8 @@
 	foodtype = FRUIT
 
 /obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	name = "lemon-lime soda"
 

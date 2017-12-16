@@ -44,6 +44,8 @@
 	circuit = /obj/item/circuitboard/machine/protolathe/department/security
 
 /obj/machinery/rnd/protolathe/department/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	matching_designs = list()
 	cached_designs = list()
@@ -52,10 +54,14 @@
 	update_research()
 
 /obj/machinery/rnd/protolathe/department/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(stored_research)
 	return ..()
 
 /obj/machinery/rnd/protolathe/department/user_try_print_id(id, amount)
+	procstart = null
+	src.procstart = null
 	var/datum/design/D = get_techweb_design_by_id(id)
 	if(!D || !(D.departmental_flags & allowed_department_flags))
 		say("Warning: Printing failed. Please update the research data with the on-screen button!")
@@ -63,17 +69,23 @@
 	. = ..()
 
 /obj/machinery/rnd/protolathe/department/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	interact(user)
 
 /obj/machinery/rnd/protolathe/department/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/datum/browser/popup = new(user, "rndconsole", name, 460, 550)
 	popup.set_content(generate_ui())
 	popup.open()
 
 /obj/machinery/rnd/protolathe/department/proc/search(string)
+	procstart = null
+	src.procstart = null
 	matching_designs.Cut()
 	for(var/v in stored_research.researched_designs)
 		var/datum/design/D = stored_research.researched_designs[v]
@@ -83,10 +95,14 @@
 			matching_designs.Add(D)
 
 /obj/machinery/rnd/protolathe/department/proc/update_research()
+	procstart = null
+	src.procstart = null
 	host_research.copy_research_to(stored_research, TRUE)
 	update_designs()
 
 /obj/machinery/rnd/protolathe/department/proc/update_designs()
+	procstart = null
+	src.procstart = null
 	cached_designs.Cut()
 	for(var/i in stored_research.researched_designs)
 		var/datum/design/d = stored_research.researched_designs[i]
@@ -94,6 +110,8 @@
 			cached_designs |= d
 
 /obj/machinery/rnd/protolathe/department/proc/generate_ui()
+	procstart = null
+	src.procstart = null
 	var/list/ui = list()
 	ui += ui_header()
 	switch(screen)
@@ -149,6 +167,8 @@
 	return l
 
 /obj/machinery/rnd/protolathe/department/proc/ui_department_lathe()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	var/coeff = efficiency_coeff
 	l += "<form name='search' action='?src=[REF(src)]'>\
@@ -185,6 +205,8 @@
 	return l
 
 /obj/machinery/rnd/protolathe/department/proc/ui_header()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	l += "<div class='statusDisplay'><b>[host_research.organization] [department_tag] Department Lathe</b>"
 	l += "Security protocols: [emagged? "<font color='red'>Disabled</font>" : "<font color='green'>Enabled</font>"]"
@@ -195,6 +217,8 @@
 	return l
 
 /obj/machinery/rnd/protolathe/department/proc/ui_materials()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	l += "<div class='statusDisplay'><h3>Material Storage:</h3>"
 	for(var/mat_id in materials.materials)
@@ -208,6 +232,8 @@
 	return l
 
 /obj/machinery/rnd/protolathe/department/proc/ui_chemicals()
+	procstart = null
+	src.procstart = null
 	var/list/l = list()
 	l += "<div class='statusDisplay'><A href='?src=[REF(src)];disposeall=1'>Disposal All Chemicals in Storage</A>"
 	l += "<h3>Chemical Storage:</h3>"
@@ -218,6 +244,8 @@
 	return l
 
 /obj/machinery/rnd/protolathe/department/Topic(raw, ls)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	add_fingerprint(usr)

@@ -42,12 +42,16 @@ Applications: 8 servants, 3 caches, and 100 CV
 	"Sending you power is too difficult here.", "Boss says stop wasting time.")
 
 /datum/clockwork_scripture/New()
+	procstart = null
+	src.procstart = null
 	creation_update()
 
 /datum/clockwork_scripture/proc/creation_update() //updates any on-creation effects
 	return FALSE //return TRUE if updated
 
 /datum/clockwork_scripture/proc/run_scripture()
+	procstart = null
+	src.procstart = null
 	var/successful = FALSE
 	if(can_recite() && has_requirements())
 		if(slab.busy)
@@ -125,6 +129,8 @@ Applications: 8 servants, 3 caches, and 100 CV
 	return TRUE
 
 /datum/clockwork_scripture/proc/check_offstation_penalty()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(invoker)
 	if(!T || (!(T.z in GLOB.station_z_levels) && T.z != ZLEVEL_CENTCOM && T.z != ZLEVEL_MINING && T.z != ZLEVEL_LAVALAND && T.z != ZLEVEL_CITYOFCOGS))
 		channel_time *= 2
@@ -158,6 +164,8 @@ Applications: 8 servants, 3 caches, and 100 CV
 	return TRUE
 
 /datum/clockwork_scripture/proc/chant()
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	chanting = TRUE
 	for(var/invocation in invocations)
@@ -189,11 +197,15 @@ Applications: 8 servants, 3 caches, and 100 CV
 	var/chant_interval = 10 //Amount of deciseconds between times the chant is actually spoken aloud
 
 /datum/clockwork_scripture/channeled/check_offstation_penalty()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		chant_interval *= 2
 
 /datum/clockwork_scripture/channeled/scripture_effects()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to chant_amount)
 		if(!do_after(invoker, chant_interval, target = invoker, extra_checks = CALLBACK(src, .proc/can_recite)))
 			break
@@ -221,11 +233,15 @@ Applications: 8 servants, 3 caches, and 100 CV
 	var/space_allowed = FALSE
 
 /datum/clockwork_scripture/create_object/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!prevent_path)
 		prevent_path = object_path
 
 /datum/clockwork_scripture/create_object/check_special_requirements()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(invoker)
 	if(!space_allowed && isspaceturf(T))
 		to_chat(invoker, "<span class='warning'>You need solid ground to place this object!</span>")
@@ -236,6 +252,8 @@ Applications: 8 servants, 3 caches, and 100 CV
 	return TRUE
 
 /datum/clockwork_scripture/create_object/scripture_effects()
+	procstart = null
+	src.procstart = null
 	if(creator_message && observer_message)
 		invoker.visible_message(observer_message, creator_message)
 	else if(creator_message)
@@ -256,6 +274,8 @@ Applications: 8 servants, 3 caches, and 100 CV
 	var/confirmed = FALSE //If we've confirmed that we want to make this construct outside of the station Z
 
 /datum/clockwork_scripture/create_object/construct/check_special_requirements()
+	procstart = null
+	src.procstart = null
 	update_construct_limit()
 	var/constructs = get_constructs()
 	if(constructs >= construct_limit)
@@ -271,10 +291,14 @@ Applications: 8 servants, 3 caches, and 100 CV
 	return TRUE
 
 /datum/clockwork_scripture/create_object/construct/post_recital()
+	procstart = null
+	src.procstart = null
 	creation_update()
 	confirmed = FALSE
 
 /datum/clockwork_scripture/create_object/construct/proc/get_constructs()
+	procstart = null
+	src.procstart = null
 	var/constructs = 0
 	for(var/V in GLOB.all_clockwork_mobs)
 		if(istype(V, construct_type))
@@ -297,10 +321,14 @@ Applications: 8 servants, 3 caches, and 100 CV
 	var/datum/progressbar/progbar
 
 /datum/clockwork_scripture/ranged_ability/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(progbar)
 	return ..()
 
 /datum/clockwork_scripture/ranged_ability/scripture_effects()
+	procstart = null
+	src.procstart = null
 	if(slab_overlay)
 		slab.add_overlay(slab_overlay)
 		slab.item_state = "clockwork_slab"

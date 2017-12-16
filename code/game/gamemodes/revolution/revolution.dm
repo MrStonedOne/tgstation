@@ -33,6 +33,8 @@
 //Announces the game type//
 ///////////////////////////
 /datum/game_mode/revolution/announce()
+	procstart = null
+	src.procstart = null
 	to_chat(world, "<B>The current game mode is - Revolution!</B>")
 	to_chat(world, "<B>Some crewmembers are attempting to start a revolution!<BR>\nRevolutionaries - Kill the Captain, HoP, HoS, CE, RD and CMO. Convert other crewmembers (excluding the heads of staff, and security officers) to your cause by flashing them. Protect your leaders.<BR>\nPersonnel - Protect the heads of staff. Kill the leaders of the revolution, and brainwash the other revolutionaries (by beating them in the head).</B>")
 
@@ -42,6 +44,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 /datum/game_mode/revolution/pre_setup()
 
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(flag/protect_roles_from_antagonist))
 		restricted_jobs += protected_jobs
 
@@ -62,6 +66,8 @@
 	return TRUE
 
 /datum/game_mode/revolution/post_setup()
+	procstart = null
+	src.procstart = null
 	var/list/heads = SSjob.get_living_heads()
 	var/list/sec = SSjob.get_living_sec()
 	var/weighted_score = min(max(round(heads.len - ((8 - sec.len) / 3)),1),max_headrevs)
@@ -110,6 +116,8 @@
 
 
 /datum/game_mode/revolution/process()
+	procstart = null
+	src.procstart = null
 	check_counter++
 	if(check_counter >= 5)
 		if(!finished)
@@ -121,6 +129,8 @@
 //Checks if the revs have won or not//
 //////////////////////////////////////
 /datum/game_mode/revolution/check_win()
+	procstart = null
+	src.procstart = null
 	if(check_rev_victory())
 		finished = 1
 	else if(check_heads_victory())
@@ -131,6 +141,8 @@
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/revolution/check_finished()
+	procstart = null
+	src.procstart = null
 	if(CONFIG_GET(keyed_flag_list/continuous)["revolution"])
 		if(finished)
 			SSshuttle.clearHostileEnvironment(src)
@@ -144,15 +156,21 @@
 //Deals with converting players to the revolution//
 ///////////////////////////////////////////////////
 /proc/is_revolutionary(mob/M)
+	procstart = null
+	src.procstart = null
 	return M && istype(M) && M.mind && M.mind.has_antag_datum(/datum/antagonist/rev)
 
 /proc/is_head_revolutionary(mob/M)
+	procstart = null
+	src.procstart = null
 	return M && istype(M) && M.mind && M.mind.has_antag_datum(/datum/antagonist/rev/head)
 
 //////////////////////////
 //Checks for rev victory//
 //////////////////////////
 /datum/game_mode/revolution/proc/check_rev_victory()
+	procstart = null
+	src.procstart = null
 	for(var/datum/objective/mutiny/objective in revolution.objectives)
 		if(!(objective.check_completion()))
 			return FALSE
@@ -162,6 +180,8 @@
 //Checks for a head victory//
 /////////////////////////////
 /datum/game_mode/revolution/proc/check_heads_victory()
+	procstart = null
+	src.procstart = null
 	for(var/datum/mind/rev_mind in revolution.head_revolutionaries())
 		var/turf/T = get_turf(rev_mind.current)
 		if(!considered_afk(rev_mind) && considered_alive(rev_mind) && (T.z in GLOB.station_z_levels))
@@ -171,6 +191,8 @@
 
 
 /datum/game_mode/revolution/set_round_result()
+	procstart = null
+	src.procstart = null
 	..()
 	if(finished == 1)
 		SSticker.mode_result = "win - heads killed"
@@ -181,12 +203,16 @@
 
 //TODO What should be displayed for revs in non-rev rounds
 /datum/game_mode/revolution/special_report()
+	procstart = null
+	src.procstart = null
 	if(finished == 1)
 		return "<span class='redtext big'>The heads of staff were killed or exiled! The revolutionaries win!</span>"
 	else if(finished == 2)
 		return "<span class='redtext big'>The heads of staff managed to stop the revolution!</span>"
 
 /datum/game_mode/revolution/generate_report()
+	procstart = null
+	src.procstart = null
 	return "Employee unrest has spiked in recent weeks, with several attempted mutinies on heads of staff. Some crew have been observed using flashbulb devices to blind their colleagues, \
 		who then follow their orders without question and work towards dethroning departmental leaders. Watch for behavior such as this with caution. If the crew attempts a mutiny, you and \
 		your heads of staff are fully authorized to execute them using lethal weaponry - they will be later cloned and interrogated at Central Command."

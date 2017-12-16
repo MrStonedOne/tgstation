@@ -15,6 +15,8 @@ Note: Must be placed within 3 tiles of the R&D Console
 	var/decon_mod = 0
 
 /obj/machinery/rnd/destructive_analyzer/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/T = 0
 	for(var/obj/item/stock_parts/S in component_parts)
 		T += S.rating
@@ -22,16 +24,22 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 
 /obj/machinery/rnd/destructive_analyzer/proc/ConvertReqString2List(list/source_list)
+	procstart = null
+	src.procstart = null
 	var/list/temp_list = params2list(source_list)
 	for(var/O in temp_list)
 		temp_list[O] = text2num(temp_list[O])
 	return temp_list
 
 /obj/machinery/rnd/destructive_analyzer/disconnect_console()
+	procstart = null
+	src.procstart = null
 	linked_console.linked_destroy = null
 	..()
 
 /obj/machinery/rnd/destructive_analyzer/Insert_Item(obj/item/O, mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent != INTENT_HARM)
 		. = 1
 		if(!is_insertion_ready(user))
@@ -48,16 +56,22 @@ Note: Must be placed within 3 tiles of the R&D Console
 			linked_console.updateUsrDialog()
 
 /obj/machinery/rnd/destructive_analyzer/proc/finish_loading()
+	procstart = null
+	src.procstart = null
 	update_icon()
 	reset_busy()
 
 /obj/machinery/rnd/destructive_analyzer/update_icon()
+	procstart = null
+	src.procstart = null
 	if(loaded_item)
 		icon_state = "d_analyzer_l"
 	else
 		icon_state = initial(icon_state)
 
 /obj/machinery/rnd/destructive_analyzer/proc/reclaim_materials_from(obj/item/thing)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(linked_console && linked_console.linked_lathe) //Also sends salvaged materials to a linked protolathe, if any.
 		for(var/material in thing.materials)
@@ -66,6 +80,8 @@ Note: Must be placed within 3 tiles of the R&D Console
 			. += can_insert
 
 /obj/machinery/rnd/destructive_analyzer/proc/destroy_item(obj/item/thing, innermode = FALSE)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(thing) || QDELETED(src) || QDELETED(linked_console))
 		return FALSE
 	if(!innermode)
@@ -93,6 +109,8 @@ Note: Must be placed within 3 tiles of the R&D Console
 	return TRUE
 
 /obj/machinery/rnd/destructive_analyzer/proc/user_try_decon_id(id, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(loaded_item) || !istype(linked_console))
 		return FALSE
 
@@ -136,6 +154,8 @@ Note: Must be placed within 3 tiles of the R&D Console
 	return TRUE
 
 /obj/machinery/rnd/destructive_analyzer/proc/unload_item()
+	procstart = null
+	src.procstart = null
 	if(!loaded_item)
 		return FALSE
 	loaded_item.forceMove(get_turf(src))

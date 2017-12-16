@@ -31,6 +31,8 @@ Bonus
 					  <b>Stage Speed 10:</b> Further increases cooling speed."
 
 /datum/symptom/fever/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stage_speed"] >= 5) //dangerous cold
@@ -40,6 +42,8 @@ Bonus
 		power = 2.5
 
 /datum/symptom/shivering/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob
@@ -51,6 +55,8 @@ Bonus
 		Chill(M, A)
 
 /datum/symptom/shivering/proc/Chill(mob/living/M, datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	var/get_cold = 6 * power
 	if(!unsafe)
 		M.bodytemperature = min(M.bodytemperature - (get_cold * A.stage), BODYTEMP_COLD_DAMAGE_LIMIT + 1)

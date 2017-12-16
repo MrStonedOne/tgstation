@@ -12,21 +12,31 @@
 	var/static/list/AllTeleporters
 
 /obj/effect/bump_teleporter/New()
+	procstart = null
+	src.procstart = null
 	..()
 	LAZYADD(AllTeleporters, src)
 
 /obj/effect/bump_teleporter/Destroy()
+	procstart = null
+	src.procstart = null
 	LAZYREMOVE(AllTeleporters, src)
 	return ..()
 
 
 /obj/effect/bump_teleporter/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/bump_teleporter/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/bump_teleporter/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!ismob(AM))
 		return
 	if(!id_target)

@@ -11,6 +11,8 @@
 	var/current_amount = 0	//How many projectiles left.
 
 /obj/effect/proc_holder/spell/aimed/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/living/user = usr
 	if(!istype(user))
 		return
@@ -32,12 +34,16 @@
 		add_ranged_ability(user, msg, TRUE)
 
 /obj/effect/proc_holder/spell/aimed/update_icon()
+	procstart = null
+	src.procstart = null
 	if(!action)
 		return
 	action.button_icon_state = "[base_icon_state][active]"
 	action.UpdateButtonIcon()
 
 /obj/effect/proc_holder/spell/aimed/InterceptClickOn(mob/living/caller, params, atom/target)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return FALSE
 	var/ran_out = (current_amount <= 0)
@@ -49,6 +55,8 @@
 	return TRUE
 
 /obj/effect/proc_holder/spell/aimed/cast(list/targets, mob/living/user)
+	procstart = null
+	src.procstart = null
 	var/target = targets[1]
 	var/turf/T = user.loc
 	var/turf/U = get_step(user, user.dir) // Get the tile infront of the move, based on their direction
@@ -63,6 +71,8 @@
 	return TRUE
 
 /obj/effect/proc_holder/spell/aimed/proc/fire_projectile(mob/living/user, atom/target)
+	procstart = null
+	src.procstart = null
 	current_amount--
 	var/obj/item/projectile/P = new projectile_type(user.loc)
 	P.firer = user

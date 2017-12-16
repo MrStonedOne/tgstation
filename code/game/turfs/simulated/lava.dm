@@ -12,36 +12,52 @@
 	light_color = LIGHT_COLOR_LAVA
 
 /turf/open/lava/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	contents_explosion(severity, target)
 
 /turf/open/lava/MakeSlippery(wet_setting = TURF_WET_WATER, min_wet_time = 0, wet_time_to_add = 0)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/lava/MakeDry(wet_setting = TURF_WET_WATER)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/lava/airless
 	initial_gas_mix = "TEMP=2.7"
 
 /turf/open/lava/Entered(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(burn_stuff(AM))
 		START_PROCESSING(SSobj, src)
 
 /turf/open/lava/hitby(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(burn_stuff(AM))
 		START_PROCESSING(SSobj, src)
 
 /turf/open/lava/process()
+	procstart = null
+	src.procstart = null
 	if(!burn_stuff())
 		STOP_PROCESSING(SSobj, src)
 
 /turf/open/lava/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
+	procstart = null
+	src.procstart = null
 	switch(the_rcd.mode)
 		if(RCD_FLOORWALL)
 			return list("mode" = RCD_FLOORWALL, "delay" = 0, "cost" = 3)
 	return FALSE
 
 /turf/open/lava/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode)
+	procstart = null
+	src.procstart = null
 	switch(passed_mode)
 		if(RCD_FLOORWALL)
 			to_chat(user, "<span class='notice'>You build a floor.</span>")
@@ -50,26 +66,38 @@
 	return FALSE
 
 /turf/open/lava/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/lava/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/lava/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = 'icons/turf/floors.dmi'
 	underlay_appearance.icon_state = "basalt"
 	return TRUE
 
 /turf/open/lava/GetHeatCapacity()
+	procstart = null
+	src.procstart = null
 	. = 700000
 
 /turf/open/lava/GetTemperature()
+	procstart = null
+	src.procstart = null
 	. = 5000
 
 /turf/open/lava/TakeTemperature(temp)
 
 
 /turf/open/lava/proc/is_safe()
+	procstart = null
+	src.procstart = null
 	//if anything matching this typecache is found in the lava, we don't burn things
 	var/static/list/lava_safeties_typecache = typecacheof(list(/obj/structure/lattice/catwalk, /obj/structure/stone_tile))
 	var/list/found_safeties = typecache_filter_list(contents, lava_safeties_typecache)
@@ -80,6 +108,8 @@
 
 
 /turf/open/lava/proc/burn_stuff(AM)
+	procstart = null
+	src.procstart = null
 	. = 0
 
 	if(is_safe())

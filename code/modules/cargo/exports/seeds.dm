@@ -7,6 +7,8 @@
 	var/global/list/discoveredPlants = list()
 
 /datum/export/seed/get_cost(obj/O)
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/S = O
 	if(!needs_discovery && (S.type in discoveredPlants))
 		return 0
@@ -15,6 +17,8 @@
 	return ..() * S.rarity // That's right, no bonus for potency. Send a crappy sample first to "show improvement" later.
 
 /datum/export/seed/sell_object(obj/O)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/seeds/S = O
 	discoveredPlants[S.type] = S.potency
@@ -27,6 +31,8 @@
 	needs_discovery = TRUE // Only for already discovered species
 
 /datum/export/seed/potency/get_cost(obj/O)
+	procstart = null
+	src.procstart = null
 	var/obj/item/seeds/S = O
 	var/cost = ..()
 	if(!cost)

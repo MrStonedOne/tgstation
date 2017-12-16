@@ -18,6 +18,8 @@
 	pin = /obj/item/device/firing_pin
 
 /obj/item/gun/ballistic/automatic/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!select)
 		add_overlay("[initial(icon_state)]semi")
@@ -26,6 +28,8 @@
 	icon_state = "[initial(icon_state)][magazine ? "-[magazine.max_ammo]" : ""][chambered ? "" : "-e"][suppressed ? "-suppressed" : ""]"
 
 /obj/item/gun/ballistic/automatic/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -52,9 +56,13 @@
 				to_chat(user, "<span class='warning'>You cannot seem to get \the [src] out of your hands!</span>")
 
 /obj/item/gun/ballistic/automatic/ui_action_click()
+	procstart = null
+	src.procstart = null
 	burst_select()
 
 /obj/item/gun/ballistic/automatic/proc/burst_select()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = usr
 	select = !select
 	if(!select)
@@ -73,9 +81,13 @@
 		A.UpdateButtonIcon()
 
 /obj/item/gun/ballistic/automatic/can_shoot()
+	procstart = null
+	src.procstart = null
 	return get_ammo()
 
 /obj/item/gun/ballistic/automatic/proc/empty_alarm()
+	procstart = null
+	src.procstart = null
 	if(!chambered && !get_ammo() && !alarmed)
 		playsound(src.loc, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
 		update_icon()
@@ -100,15 +112,21 @@
 	pin = /obj/item/device/firing_pin
 
 /obj/item/gun/ballistic/automatic/c20r/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/gun/ballistic/automatic/c20r/afterattack()
+	procstart = null
+	src.procstart = null
 	..()
 	empty_alarm()
 	return
 
 /obj/item/gun/ballistic/automatic/c20r/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "c20r[magazine ? "-[Ceiling(get_ammo(0)/4)*4]" : ""][chambered ? "" : "-e"][suppressed ? "-suppressed" : ""]"
 
@@ -127,6 +145,8 @@
 	knife_y_offset = 12
 
 /obj/item/gun/ballistic/automatic/wt550/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "wt550[magazine ? "-[Ceiling(get_ammo(0)/4)*4]" : ""]"
 
@@ -151,6 +171,8 @@
 	pin = /obj/item/device/firing_pin/implant/pindicate
 
 /obj/item/gun/ballistic/automatic/m90/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underbarrel = new /obj/item/gun/ballistic/revolver/grenadelauncher(src)
 	update_icon()
@@ -159,17 +181,23 @@
 	pin = /obj/item/device/firing_pin
 
 /obj/item/gun/ballistic/automatic/m90/unrestricted/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	underbarrel = new /obj/item/gun/ballistic/revolver/grenadelauncher/unrestricted(src)
 	update_icon()
 
 /obj/item/gun/ballistic/automatic/m90/afterattack(atom/target, mob/living/user, flag, params)
+	procstart = null
+	src.procstart = null
 	if(select == 2)
 		underbarrel.afterattack(target, user, flag, params)
 	else
 		..()
 		return
 /obj/item/gun/ballistic/automatic/m90/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /obj/item/ammo_casing))
 		if(istype(A, underbarrel.magazine.ammo_type))
 			underbarrel.attack_self()
@@ -177,6 +205,8 @@
 	else
 		..()
 /obj/item/gun/ballistic/automatic/m90/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	cut_overlays()
 	switch(select)
@@ -189,6 +219,8 @@
 	icon_state = "[initial(icon_state)][magazine ? "" : "-e"]"
 	return
 /obj/item/gun/ballistic/automatic/m90/burst_select()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/user = usr
 	switch(select)
 		if(0)
@@ -254,16 +286,22 @@
 	pin = /obj/item/device/firing_pin
 
 /obj/item/gun/ballistic/automatic/shotgun/bulldog/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	update_icon()
 
 /obj/item/gun/ballistic/automatic/shotgun/bulldog/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(magazine)
 		add_overlay("[magazine.icon_state]")
 	icon_state = "bulldog[chambered ? "" : "-e"]"
 
 /obj/item/gun/ballistic/automatic/shotgun/bulldog/afterattack()
+	procstart = null
+	src.procstart = null
 	..()
 	empty_alarm()
 	return
@@ -293,12 +331,16 @@
 
 
 /obj/item/gun/ballistic/automatic/l6_saw/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(cover_open && magazine)
 		to_chat(user, "<span class='notice'>It seems like you could use an <b>empty hand</b> to remove the magazine.</span>")
 
 
 /obj/item/gun/ballistic/automatic/l6_saw/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	cover_open = !cover_open
 	to_chat(user, "<span class='notice'>You [cover_open ? "open" : "close"] [src]'s cover.</span>")
 	if(cover_open)
@@ -309,6 +351,8 @@
 
 
 /obj/item/gun/ballistic/automatic/l6_saw/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "l6[cover_open ? "open" : "closed"][magazine ? Ceiling(get_ammo(0)/12.5)*25 : "-empty"][suppressed ? "-suppressed" : ""]"
 	item_state = "l6[cover_open ? "openmag" : "closedmag"]"
 
@@ -322,6 +366,8 @@
 
 
 /obj/item/gun/ballistic/automatic/l6_saw/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(loc != user)
 		..()
 		return	//let them pick it up
@@ -339,6 +385,8 @@
 
 
 /obj/item/gun/ballistic/automatic/l6_saw/attackby(obj/item/A, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!cover_open && istype(A, mag_type))
 		to_chat(user, "<span class='warning'>[src]'s cover is closed! You can't insert a new mag.</span>")
 		return
@@ -369,6 +417,8 @@
 
 
 /obj/item/gun/ballistic/automatic/sniper_rifle/update_icon()
+	procstart = null
+	src.procstart = null
 	if(magazine)
 		icon_state = "sniper-mag"
 	else
@@ -398,6 +448,8 @@
 	actions_types = list()
 
 /obj/item/gun/ballistic/automatic/surplus/update_icon()
+	procstart = null
+	src.procstart = null
 	if(magazine)
 		icon_state = "surplus"
 	else
@@ -420,6 +472,8 @@
 	casing_ejector = FALSE
 
 /obj/item/gun/ballistic/automatic/laser/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "oldrifle[magazine ? "-[Ceiling(get_ammo(0)/4)*4]" : ""]"
 	return

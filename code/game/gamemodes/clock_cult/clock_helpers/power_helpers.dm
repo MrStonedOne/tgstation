@@ -4,6 +4,8 @@
 	return amount ? GLOB.clockwork_power >= amount : GLOB.clockwork_power
 
 /proc/adjust_clockwork_power(amount) //Adjusts the global clockwork power by this amount (min 0.)
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_approaches)
 		amount *= 0.75 //The herald's beacon reduces power costs by 25% across the board!
 	GLOB.clockwork_power = GLOB.ratvar_awakens ? INFINITY : max(0, GLOB.clockwork_power + amount)
@@ -19,6 +21,8 @@
 	return TRUE
 
 /proc/can_access_clockwork_power(atom/movable/access_point, amount) //Returns true if the access point has access to clockwork power (and optionally, a number of watts for it)
+	procstart = null
+	src.procstart = null
 	if(amount && !get_clockwork_power(amount)) //No point in trying if we don't have the power anyway
 		return
 	var/list/possible_conduits = view(5, access_point)

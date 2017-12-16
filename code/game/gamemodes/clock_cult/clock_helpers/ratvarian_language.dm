@@ -72,6 +72,8 @@ List of nuances:
 	return add_ratvarian_regex(ratvarian)
 
 /proc/add_ratvarian_regex(text)
+	procstart = null
+	src.procstart = null
 	var/ratvarian 	= replacetext(text, 		RATVAR_OF_MATCH, 		RATVAR_OF_REPLACEMENT)
 	ratvarian 		= replacetext(ratvarian,	RATVAR_GUA_MATCH, 		RATVAR_GUA_REPLACEMENT)
 	ratvarian 		= replacetext(ratvarian,	RATVAR_TH_MATCH, 		RATVAR_TH_REPLACEMENT)
@@ -89,6 +91,8 @@ List of nuances:
 	return remove_ratvarian_regex(text)
 
 /proc/remove_ratvarian_regex(ratvarian)
+	procstart = null
+	src.procstart = null
 	var/text 	= replacetext(ratvarian, 	REVERSE_RATVAR_HYPHEN_GUA_MATCH,		REVERSE_RATVAR_HYPHEN_GUA_REPLACEMENT)
 	text 		= replacetext(text, 		REVERSE_RATVAR_HYPHEN_PRE_AND_MATCH,	REVERSE_RATVAR_HYPHEN_PRE_AND_REPLACEMENT)
 	text 		= replacetext(text, 		REVERSE_RATVAR_HYPHEN_POST_AND_MATCH,	REVERSE_RATVAR_HYPHEN_POST_AND_REPLACEMENT)
@@ -99,6 +103,8 @@ List of nuances:
 
 //Causes the mob or AM in question to speak a message; it assumes that the message is already translated to ratvar speech using text2ratvar()
 /proc/clockwork_say(atom/movable/AM, message, whisper=FALSE)
+	procstart = null
+	src.procstart = null
 	var/list/spans = list(SPAN_ROBOT)
 
 	if(isliving(AM))

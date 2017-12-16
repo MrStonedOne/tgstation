@@ -7,6 +7,8 @@
 	appearance_flags = KEEP_TOGETHER|TILE_BOUND|PIXEL_SCALE
 
 /mob/living/carbon/human/Initialize()
+	procstart = null
+	src.procstart = null
 	verbs += /mob/living/proc/mob_sleep
 	verbs += /mob/living/proc/lay_down
 
@@ -29,9 +31,13 @@
 	. = ..()
 
 /mob/living/carbon/human/OpenCraftingMenu()
+	procstart = null
+	src.procstart = null
 	handcrafting.ui_interact(src)
 
 /mob/living/carbon/human/prepare_data_huds()
+	procstart = null
+	src.procstart = null
 	//Update med hud images...
 	..()
 	//...sec hud images...
@@ -42,6 +48,8 @@
 	add_to_all_human_data_huds()
 
 /mob/living/carbon/human/Stat()
+	procstart = null
+	src.procstart = null
 	..()
 
 	if(statpanel("Status"))
@@ -93,6 +101,8 @@
 
 
 /mob/living/carbon/human/show_inv(mob/user)
+	procstart = null
+	src.procstart = null
 	user.set_machine(src)
 	var/has_breathable_mask = istype(wear_mask, /obj/item/clothing/mask)
 	var/list/obscured = check_obscured_slots()
@@ -187,6 +197,8 @@
 // called when something steps onto a human
 // this could be made more general, but for now just handle mulebot
 /mob/living/carbon/human/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/bot/mulebot/MB = AM
 	if(istype(MB))
 		MB.RunOver(src)
@@ -195,6 +207,8 @@
 
 
 /mob/living/carbon/human/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(usr.canUseTopic(src, BE_CLOSE, NO_DEXTERY))
 		if(href_list["embedded_object"])
 			var/obj/item/bodypart/L = locate(href_list["embedded_limb"]) in bodyparts
@@ -470,9 +484,13 @@
 							to_chat(usr, "<span class='warning'>Unable to locate a data core entry for this person.</span>")
 
 /mob/living/carbon/human/proc/canUseHUD()
+	procstart = null
+	src.procstart = null
 	return !(src.stat || IsKnockdown() || IsStun() || src.restrained())
 
 /mob/living/carbon/human/can_inject(mob/user, error_msg, target_zone, var/penetrate_thick = 0)
+	procstart = null
+	src.procstart = null
 	. = 1 // Default to returning true.
 	if(user && !target_zone)
 		target_zone = user.zone_selected
@@ -491,6 +509,8 @@
 		to_chat(user, "<span class='alert'>There is no exposed flesh or thin material [above_neck(target_zone) ? "on [p_their()] head" : "on [p_their()] body"].</span>")
 
 /mob/living/carbon/human/proc/check_obscured_slots()
+	procstart = null
+	src.procstart = null
 	var/list/obscured = list()
 
 	if(wear_suit)
@@ -519,6 +539,8 @@
 		return null
 
 /mob/living/carbon/human/assess_threat(judgement_criteria, lasercolor = "", datum/callback/weaponcheck=null)
+	procstart = null
+	src.procstart = null
 	if(judgement_criteria & JUDGE_EMAGGED)
 		return 10 //Everyone is a criminal!
 
@@ -592,6 +614,8 @@
 
 //Used for new human mobs created by cloning/goleming/podding
 /mob/living/carbon/human/proc/set_cloned_appearance()
+	procstart = null
+	src.procstart = null
 	if(gender == MALE)
 		facial_hair_style = "Full Beard"
 	else
@@ -602,6 +626,8 @@
 	update_hair()
 
 /mob/living/carbon/human/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_THREE)
 		for(var/obj/item/hand in held_items)
@@ -613,6 +639,8 @@
 		return
 
 /mob/living/carbon/human/proc/do_cpr(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	CHECK_DNA_AND_SPECIES(C)
 
 	if(C.stat == DEAD || (C.status_flags & FAKEDEATH))
@@ -653,6 +681,8 @@
 			to_chat(C, "<span class='unconscious'>You feel a breath of fresh air... which is a sensation you don't recognise...</span>")
 
 /mob/living/carbon/human/generateStaticOverlay()
+	procstart = null
+	src.procstart = null
 	var/image/staticOverlay = image(icon('icons/effects/effects.dmi', "static"), loc = src)
 	staticOverlay.override = 1
 	staticOverlays["static"] = staticOverlay
@@ -670,6 +700,8 @@
 	staticOverlays["animal"] = staticOverlay
 
 /mob/living/carbon/human/cuff_resist(obj/item/I)
+	procstart = null
+	src.procstart = null
 	if(dna && dna.check_mutation(HULK))
 		say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ))
 		if(..(I, cuff_break = FAST_CUFFBREAK))
@@ -679,6 +711,8 @@
 			dropItemToGround(I)
 
 /mob/living/carbon/human/clean_blood()
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = src
 	if(H.gloves)
 		if(H.gloves.clean_blood())
@@ -692,6 +726,8 @@
 
 
 /mob/living/carbon/human/wash_cream()
+	procstart = null
+	src.procstart = null
 	if(creamed) //clean both to prevent a rare bug
 		cut_overlay(mutable_appearance('icons/effects/creampie.dmi', "creampie_lizard"))
 		cut_overlay(mutable_appearance('icons/effects/creampie.dmi', "creampie_human"))
@@ -700,6 +736,8 @@
 //Turns a mob black, flashes a skeleton overlay
 //Just like a cartoon!
 /mob/living/carbon/human/proc/electrocution_animation(anim_duration)
+	procstart = null
+	src.procstart = null
 	//Handle mutant parts if possible
 	if(dna && dna.species)
 		add_atom_colour("#000000", TEMPORARY_COLOUR_PRIORITY)
@@ -714,10 +752,14 @@
 		flick_overlay_view(image(icon,src,"electrocuted_generic",ABOVE_MOB_LAYER), src, anim_duration)
 
 /mob/living/carbon/human/proc/end_electrocution_animation(mutable_appearance/MA)
+	procstart = null
+	src.procstart = null
 	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#000000")
 	cut_overlay(MA)
 
 /mob/living/carbon/human/canUseTopic(atom/movable/M, be_close = 0)
+	procstart = null
+	src.procstart = null
 	if(incapacitated() || lying )
 		return
 	if(!Adjacent(M) && (M.loc != src))
@@ -728,6 +770,8 @@
 	return 1
 
 /mob/living/carbon/human/resist_restraints()
+	procstart = null
+	src.procstart = null
 	if(wear_suit && wear_suit.breakouttime)
 		changeNext_move(CLICK_CD_BREAKOUT)
 		last_special = world.time + CLICK_CD_BREAKOUT
@@ -742,11 +786,15 @@
 			R.fields["name"] = newname
 
 /mob/living/carbon/human/get_total_tint()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(glasses)
 		. += glasses.tint
 
 /mob/living/carbon/human/update_health_hud()
+	procstart = null
+	src.procstart = null
 	if(!client || !hud_used)
 		return
 	if(dna.species.update_health_hud())
@@ -791,6 +839,8 @@
 				hud_used.healthdoll.icon_state = "healthdoll_DEAD"
 
 /mob/living/carbon/human/fully_heal(admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	if(admin_revive)
 		regenerate_limbs()
 		regenerate_organs()
@@ -803,6 +853,8 @@
 	..()
 
 /mob/living/carbon/human/proc/influenceSin()
+	procstart = null
+	src.procstart = null
 	var/datum/objective/sintouched/O
 	switch(rand(1,7))//traditional seven deadly sins... except lust.
 		if(1) // acedia
@@ -831,22 +883,32 @@
 	src.mind.announce_objectives()
 
 /mob/living/carbon/human/check_weakness(obj/item/weapon, mob/living/attacker)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (dna && dna.species)
 		. += dna.species.check_weakness(weapon, attacker)
 
 /mob/living/carbon/human/is_literate()
+	procstart = null
+	src.procstart = null
 	return 1
 
 /mob/living/carbon/human/can_hold_items()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /mob/living/carbon/human/update_gravity(has_gravity,override = 0)
+	procstart = null
+	src.procstart = null
 	if(dna && dna.species) //prevents a runtime while a human is being monkeyfied
 		override = dna.species.override_float
 	..()
 
 /mob/living/carbon/human/vomit(lost_nutrition = 10, blood = 0, stun = 1, distance = 0, message = 1, toxic = 0)
+	procstart = null
+	src.procstart = null
 	if(blood && (NOBLOOD in dna.species.species_traits))
 		if(message)
 			visible_message("<span class='warning'>[src] dry heaves!</span>", \
@@ -857,6 +919,8 @@
 	..()
 
 /mob/living/carbon/human/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	..()
 	var/crashdir = get_dir(src, A)
 	var/obj/item/device/flightpack/FP = get_flightpack()
@@ -864,6 +928,8 @@
 		FP.flight_impact(A, crashdir)
 
 /mob/living/carbon/human/vv_get_dropdown()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	. += "---"
 	.["Make monkey"] = "?_src_=vars;[HrefToken()];makemonkey=[REF(src)]"
@@ -874,6 +940,8 @@
 	.["Toggle Purrbation"] = "?_src_=vars;[HrefToken()];purrbation=[REF(src)]"
 
 /mob/living/carbon/human/MouseDrop_T(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if((target != pulling) || (grab_state < GRAB_AGGRESSIVE) || (user != target) || !isliving(user) || stat || user.stat)//Get consent first :^)
 		. = ..()
 		return
@@ -881,6 +949,8 @@
 	. = ..()
 
 /mob/living/carbon/human/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!force)//humans are only meant to be ridden through piggybacking and special cases
 		return
 	if(!is_type_in_typecache(M, can_ride_typecache))
@@ -911,6 +981,8 @@
 	var/race = null
 
 /mob/living/carbon/human/species/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	set_species(race)
 

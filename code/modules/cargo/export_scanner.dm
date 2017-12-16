@@ -11,11 +11,15 @@
 	var/obj/machinery/computer/cargo/cargo_console = null
 
 /obj/item/device/export_scanner/examine(user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!cargo_console)
 		to_chat(user, "<span class='notice'>[src] is not currently linked to a cargo console.</span>")
 
 /obj/item/device/export_scanner/afterattack(obj/O, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!istype(O) || !proximity)
 		return
 

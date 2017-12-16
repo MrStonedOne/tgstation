@@ -32,20 +32,28 @@ ARCD
 	var/no_ammo_message = "<span class='warning'>The \'Low Ammo\' light on the device blinks yellow.</span>"
 
 /obj/item/construction/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	spark_system = new /datum/effect_system/spark_spread
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
 /obj/item/construction/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "\A [src]. It currently holds [matter]/[max_matter] matter-units." )
 
 /obj/item/construction/Destroy()
+	procstart = null
+	src.procstart = null
 	QDEL_NULL(spark_system)
 	. = ..()
 
 /obj/item/construction/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(iscyborg(user))
 		return
 	var/loaded = 0
@@ -68,6 +76,8 @@ ARCD
 		return ..()
 
 /obj/item/construction/proc/loadwithsheets(obj/item/stack/sheet/S, value, mob/user)
+	procstart = null
+	src.procstart = null
 	var/maxsheets = round((max_matter-matter)/value)    //calculate the max number of sheets that will fit in RCD
 	if(maxsheets > 0)
 		var/amount_to_use = min(S.amount, maxsheets)
@@ -80,14 +90,20 @@ ARCD
 	return 0
 
 /obj/item/construction/proc/activate()
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/items/deconstruct.ogg', 50, 1)
 
 /obj/item/construction/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
 	if(prob(20))
 		spark_system.start()
 
 /obj/item/construction/proc/useResource(amount, mob/user)
+	procstart = null
+	src.procstart = null
 	if(matter < amount)
 		if(user)
 			to_chat(user, no_ammo_message)
@@ -97,12 +113,16 @@ ARCD
 	return 1
 
 /obj/item/construction/proc/checkResource(amount, mob/user)
+	procstart = null
+	src.procstart = null
 	. = matter >= amount
 	if(!. && user)
 		to_chat(user, no_ammo_message)
 	return .
 
 /obj/item/construction/proc/range_check(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!(A in view(7, get_turf(user))))
 		to_chat(user, "<span class='warning'>The \'Out of Range\' light on [src] blinks red.</span>")
 		return FALSE
@@ -110,6 +130,8 @@ ARCD
 		return TRUE
 
 /obj/item/construction/proc/prox_check(proximity)
+	procstart = null
+	src.procstart = null
 	if(proximity)
 		return TRUE
 	else
@@ -137,10 +159,14 @@ ARCD
 
 
 /obj/item/construction/rcd/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] sets the RCD to 'Wall' and points it down [user.p_their()] throat! It looks like [user.p_theyre()] trying to commit suicide..</span>")
 	return (BRUTELOSS)
 
 /obj/item/construction/rcd/verb/toggle_window_type()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Window Type"
 	set category = "Object"
 	set src in usr // What does this do?
@@ -157,6 +183,8 @@ ARCD
 	to_chat(usr, "<span class='notice'>You change \the [src]'s window mode to [window_type_name].</span>")
 
 /obj/item/construction/rcd/verb/change_airlock_access()
+	procstart = null
+	src.procstart = null
 	set name = "Change Airlock Access"
 	set category = "Object"
 	set src in usr
@@ -202,6 +230,8 @@ ARCD
 	onclose(usr, "airlock")
 
 /obj/item/construction/rcd/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if (usr.stat || usr.restrained())
 		return
@@ -215,6 +245,8 @@ ARCD
 	change_airlock_access()
 
 /obj/item/construction/rcd/proc/toggle_access(acc)
+	procstart = null
+	src.procstart = null
 	if (acc == "all")
 		conf_access = null
 	else if(acc == "one")
@@ -233,6 +265,8 @@ ARCD
 				conf_access = null
 
 /obj/item/construction/rcd/verb/change_airlock_setting()
+	procstart = null
+	src.procstart = null
 	set name = "Change Airlock Setting"
 	set category = "Object"
 	set src in usr
@@ -324,6 +358,8 @@ ARCD
 
 
 /obj/item/construction/rcd/proc/rcd_create(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/rcd_results = A.rcd_vals(user, src)
 	if(!rcd_results)
 		return FALSE
@@ -336,14 +372,20 @@ ARCD
 				return TRUE
 
 /obj/item/construction/rcd/New()
+	procstart = null
+	src.procstart = null
 	..()
 	GLOB.rcd_list += src
 
 /obj/item/construction/rcd/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.rcd_list -= src
 	. = ..()
 
 /obj/item/construction/rcd/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(mode)
 		if(1)
@@ -366,11 +408,15 @@ ARCD
 		return FALSE
 
 /obj/item/construction/rcd/afterattack(atom/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	if(!prox_check(proximity))
 		return
 	rcd_create(A, user)
 
 /obj/item/construction/rcd/proc/detonate_pulse()
+	procstart = null
+	src.procstart = null
 	audible_message("<span class='danger'><b>[src] begins to vibrate and \
 		buzz loudly!</b></span>","<span class='danger'><b>[src] begins \
 		vibrating violently!</b></span>")
@@ -378,6 +424,8 @@ ARCD
 	addtimer(CALLBACK(src, .proc/detonate_pulse_explode), 50)
 
 /obj/item/construction/rcd/proc/detonate_pulse_explode()
+	procstart = null
+	src.procstart = null
 	explosion(src, 0, 0, 3, 1, flame_range = 1)
 	qdel(src)
 
@@ -389,6 +437,8 @@ ARCD
 
 
 /obj/item/construction/rcd/borg/useResource(amount, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(user))
 		return 0
 	var/mob/living/silicon/robot/borgy = user
@@ -402,6 +452,8 @@ ARCD
 	return .
 
 /obj/item/construction/rcd/borg/checkResource(amount, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!iscyborg(user))
 		return 0
 	var/mob/living/silicon/robot/borgy = user
@@ -459,6 +511,8 @@ ARCD
 	item_state = "rcd"
 
 /obj/item/construction/rcd/arcd/afterattack(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!range_check(A,user))
 		return
 	if(target_check(A,user))
@@ -496,17 +550,23 @@ ARCD
 
 
 /obj/item/construction/rld/ui_action_click(mob/user, var/datum/action/A)
+	procstart = null
+	src.procstart = null
 	if(istype(A, /datum/action/item_action/pick_color))
 		color_choice = input(user,"Choose Color") as color
 	else
 		..()
 
 /obj/item/construction/rld/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "rld-[round(matter/35)]"
 	..()
 
 
 /obj/item/construction/rld/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	switch(mode)
 		if(REMOVE_MODE)
@@ -521,6 +581,8 @@ ARCD
 
 
 /obj/item/construction/rld/proc/checkdupes(var/target)
+	procstart = null
+	src.procstart = null
 	. = list()
 	var/turf/checking = get_turf(target)
 	for(var/obj/machinery/light/dupe in checking)
@@ -529,6 +591,8 @@ ARCD
 
 
 /obj/item/construction/rld/afterattack(atom/A, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!range_check(A,user))
 		return
 	var/turf/start = get_turf(src)

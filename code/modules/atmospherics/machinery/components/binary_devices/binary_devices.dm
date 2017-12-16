@@ -7,6 +7,8 @@
 	layer = GAS_PUMP_LAYER
 
 /obj/machinery/atmospherics/components/binary/SetInitDirections()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			initialize_directions = NORTH|SOUTH
@@ -20,6 +22,8 @@
 Iconnery
 */
 /obj/machinery/atmospherics/components/binary/hide(intact)
+	procstart = null
+	src.procstart = null
 	update_icon()
 
 	..(intact)
@@ -28,4 +32,6 @@ Housekeeping and pipe network stuff
 */
 
 /obj/machinery/atmospherics/components/binary/getNodeConnects()
+	procstart = null
+	src.procstart = null
 	return list(turn(dir, 180), dir)

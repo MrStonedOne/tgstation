@@ -11,6 +11,8 @@
 	dog_fashion = /datum/dog_fashion/head/chef
 
 /obj/item/clothing/head/chefhat/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is donning [src]! It looks like [user.p_theyre()] trying to become a chef.</span>")
 	user.say("Bork Bork Bork!")
 	sleep(20)
@@ -83,10 +85,14 @@
 	dog_fashion = /datum/dog_fashion/head/detective
 
 /obj/item/clothing/head/fedora/det_hat/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to take a candy corn.</span>")
 
 /obj/item/clothing/head/fedora/det_hat/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.canUseTopic(src, be_close=TRUE))
 		..()
 		if(loc == user)

@@ -6,6 +6,8 @@
 	duration = 25
 
 /obj/effect/temp_visual/point/Initialize(mapload, set_invis = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/atom/old_loc = loc
 	forceMove(get_turf(src))

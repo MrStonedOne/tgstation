@@ -50,6 +50,8 @@
 	/obj/item/reagent_containers/food/snacks/grown/wheat))
 
 /obj/item/grown/log/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(W.sharpness)
 		user.show_message("<span class='notice'>You make [plank_name] out of \the [src]!</span>", 1)
 		var/seed_modifier = 0
@@ -80,6 +82,8 @@
 		return ..()
 
 /obj/item/grown/log/proc/CheckAccepted(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return is_type_in_typecache(I, accepted)
 
 /obj/item/grown/log/tree
@@ -96,6 +100,8 @@
 	plank_name = "rods"
 
 /obj/item/grown/log/steel/CheckAccepted(obj/item/I)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /////////BONFIRES//////////
@@ -117,6 +123,8 @@
 	density = TRUE
 
 /obj/structure/bonfire/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSTABLE))
 		return TRUE
 	if(mover.throwing)
@@ -124,6 +132,8 @@
 	return ..()
 
 /obj/structure/bonfire/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/stack/rods) && !can_buckle && !grill)
 		var/obj/item/stack/rods/R = W
 		var/choice = input(user, "What would you like to construct?", "Bonfire") as null|anything in list("Stake","Grill")
@@ -161,6 +171,8 @@
 
 
 /obj/structure/bonfire/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(burning)
 		to_chat(user, "<span class='warning'>You need to extinguish [src] before removing the logs!</span>")
 		return
@@ -177,6 +189,8 @@
 
 
 /obj/structure/bonfire/proc/CheckOxygen()
+	procstart = null
+	src.procstart = null
 	if(isopenturf(loc))
 		var/turf/open/O = loc
 		if(O.air)
@@ -186,6 +200,8 @@
 	return 0
 
 /obj/structure/bonfire/proc/StartBurning()
+	procstart = null
+	src.procstart = null
 	if(!burning && CheckOxygen())
 		icon_state = "bonfire_on_fire"
 		burning = 1
@@ -194,13 +210,19 @@
 		START_PROCESSING(SSobj, src)
 
 /obj/structure/bonfire/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	StartBurning()
 
 /obj/structure/bonfire/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(burning & !grill)
 		Burn()
 
 /obj/structure/bonfire/proc/Burn()
+	procstart = null
+	src.procstart = null
 	var/turf/current_location = get_turf(src)
 	current_location.hotspot_expose(1000,500,1)
 	for(var/A in current_location)
@@ -215,6 +237,8 @@
 			L.IgniteMob()
 
 /obj/structure/bonfire/proc/Cook()
+	procstart = null
+	src.procstart = null
 	var/turf/current_location = get_turf(src)
 	for(var/A in current_location)
 		if(A == src)
@@ -228,6 +252,8 @@
 			O.microwave_act()
 
 /obj/structure/bonfire/process()
+	procstart = null
+	src.procstart = null
 	if(!CheckOxygen())
 		extinguish()
 		return
@@ -237,6 +263,8 @@
 		Cook()
 
 /obj/structure/bonfire/extinguish()
+	procstart = null
+	src.procstart = null
 	if(burning)
 		icon_state = "bonfire"
 		burning = 0
@@ -244,9 +272,13 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/structure/bonfire/buckle_mob(mob/living/M, force = FALSE, check_loc = TRUE)
+	procstart = null
+	src.procstart = null
 	if(..())
 		M.pixel_y += 13
 
 /obj/structure/bonfire/unbuckle_mob(mob/living/buckled_mob, force=FALSE)
+	procstart = null
+	src.procstart = null
 	if(..())
 		buckled_mob.pixel_y -= 13

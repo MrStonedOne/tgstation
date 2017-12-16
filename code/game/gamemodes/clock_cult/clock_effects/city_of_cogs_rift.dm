@@ -12,12 +12,18 @@
 
 
 /obj/effect/clockwork/city_of_cogs_rift/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/city_of_cogs_rift/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/clockwork/city_of_cogs_rift/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	visible_message("<span class='warning'>The air above [loc] shimmers and pops as a [name] forms there!</span>")
 	for(var/mob/M in GLOB.player_list)
@@ -28,23 +34,33 @@
 				M.playsound_local(src, 'sound/magic/blink.ogg', 50, FALSE)
 
 /obj/effect/clockwork/city_of_cogs_rift/Destroy()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='warning'>[src] cracks as it destabilizes and breaks apart!</span>")
 	return ..()
 
 /obj/effect/clockwork/city_of_cogs_rift/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/nullrod))
 		to_chat(user, "<span class='warning'>Your [I.name] seems to have no effect on [src]!</span>")
 		return
 	. = ..()
 
 /obj/effect/clockwork/city_of_cogs_rift/attack_hand(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	beckon(AM)
 
 /obj/effect/clockwork/city_of_cogs_rift/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!QDELETED(AM))
 		beckon(AM)
 
 /obj/effect/clockwork/city_of_cogs_rift/proc/beckon(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(pick(GLOB.city_of_cogs_spawns))
 	if(is_servant_of_ratvar(AM))
 		T = GLOB.ark_of_the_clockwork_justiciar ? get_step(GLOB.ark_of_the_clockwork_justiciar, SOUTH) : get_turf(pick(GLOB.servant_spawns))

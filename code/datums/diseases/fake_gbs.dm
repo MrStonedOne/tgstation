@@ -11,6 +11,8 @@
 	severity = VIRUS_SEVERITY_BIOHAZARD
 
 /datum/disease/fake_gbs/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	switch(stage)
 		if(2)

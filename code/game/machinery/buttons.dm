@@ -18,6 +18,8 @@
 
 
 /obj/machinery/button/New(loc, ndir = 0, built = 0)
+	procstart = null
+	src.procstart = null
 	..()
 	if(built)
 		setDir(ndir)
@@ -42,6 +44,8 @@
 
 
 /obj/machinery/button/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(panel_open)
 		icon_state = "button-open"
@@ -57,6 +61,8 @@
 			icon_state = skin
 
 /obj/machinery/button/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/screwdriver))
 		if(panel_open || allowed(user))
 			default_deconstruction_screwdriver(user, "button-open", "[skin]",W)
@@ -103,6 +109,8 @@
 		return ..()
 
 /obj/machinery/button/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	req_access = list()
@@ -111,16 +119,22 @@
 	emagged = TRUE
 
 /obj/machinery/button/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!panel_open)
 		return attack_hand(user)
 
 /obj/machinery/button/proc/setup_device()
+	procstart = null
+	src.procstart = null
 	if(id && istype(device, /obj/item/device/assembly/control))
 		var/obj/item/device/assembly/control/A = device
 		A.id = id
 	initialized_button = 1
 
 /obj/machinery/button/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!initialized_button)
 		setup_device()
 	src.add_fingerprint(user)
@@ -165,6 +179,8 @@
 	addtimer(CALLBACK(src, .proc/update_icon), 15)
 
 /obj/machinery/button/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
@@ -176,6 +192,8 @@
 	var/specialfunctions = OPEN // Bitflag, see assembly file
 
 /obj/machinery/button/door/setup_device()
+	procstart = null
+	src.procstart = null
 	if(!device)
 		if(normaldoorcontrol)
 			var/obj/item/device/assembly/control/airlock/A = new(src)

@@ -9,6 +9,8 @@
 	var/obj/structure/ladder/up     //the ladder above this one
 
 /obj/structure/ladder/Initialize(mapload, obj/structure/ladder/up, obj/structure/ladder/down)
+	procstart = null
+	src.procstart = null
 	..()
 	if (up)
 		src.up = up
@@ -21,6 +23,8 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/structure/ladder/Destroy(force)
+	procstart = null
+	src.procstart = null
 	if ((resistance_flags & INDESTRUCTIBLE) && !force)
 		return QDEL_HINT_LETMELIVE
 
@@ -33,6 +37,8 @@
 	return ..()
 
 /obj/structure/ladder/LateInitialize()
+	procstart = null
+	src.procstart = null
 	// By default, discover ladders above and below us vertically
 	var/turf/T = get_turf(src)
 
@@ -52,6 +58,8 @@
 	update_icon()
 
 /obj/structure/ladder/update_icon()
+	procstart = null
+	src.procstart = null
 	if(up && down)
 		icon_state = "ladder11"
 
@@ -65,11 +73,15 @@
 		icon_state = "ladder00"
 
 /obj/structure/ladder/singularity_pull()
+	procstart = null
+	src.procstart = null
 	if (!(resistance_flags & INDESTRUCTIBLE))
 		visible_message("<span class='danger'>[src] is torn to pieces by the gravitational pull!</span>")
 		qdel(src)
 
 /obj/structure/ladder/proc/travel(going_up, mob/user, is_ghost, obj/structure/ladder/ladder)
+	procstart = null
+	src.procstart = null
 	if(!is_ghost)
 		show_fluff_message(going_up, user)
 		ladder.add_fingerprint(user)
@@ -84,6 +96,8 @@
 		user.start_pulling(AM)
 
 /obj/structure/ladder/proc/use(mob/user, is_ghost=FALSE)
+	procstart = null
+	src.procstart = null
 	if (!is_ghost && !in_range(src, user))
 		return
 
@@ -109,22 +123,34 @@
 		add_fingerprint(user)
 
 /obj/structure/ladder/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	use(user)
 
 /obj/structure/ladder/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return use(user)
 
 /obj/structure/ladder/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	return use(user)
 
 /obj/structure/ladder/attack_robot(mob/living/silicon/robot/R)
+	procstart = null
+	src.procstart = null
 	if(R.Adjacent(src))
 		return use(R)
 
 /obj/structure/ladder/attack_ghost(mob/dead/observer/user)
+	procstart = null
+	src.procstart = null
 	use(user, TRUE)
 
 /obj/structure/ladder/proc/show_fluff_message(going_up, mob/user)
+	procstart = null
+	src.procstart = null
 	if(going_up)
 		user.visible_message("[user] climbs up [src].","<span class='notice'>You climb up [src].</span>")
 	else
@@ -140,15 +166,21 @@
 	var/height = 0  // higher numbers are considered physically higher
 
 /obj/structure/ladder/unbreakable/Initialize()
+	procstart = null
+	src.procstart = null
 	GLOB.ladders += src
 	return ..()
 
 /obj/structure/ladder/unbreakable/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if (. != QDEL_HINT_LETMELIVE)
 		GLOB.ladders -= src
 
 /obj/structure/ladder/unbreakable/LateInitialize()
+	procstart = null
+	src.procstart = null
 	// Override the parent to find ladders based on being height-linked
 	if (!id || (up && down))
 		update_icon()

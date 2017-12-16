@@ -2,6 +2,8 @@
 	needs_permit = 1
 
 /obj/item/melee/proc/check_martial_counter(mob/living/carbon/human/target, mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(target.check_block())
 		target.visible_message("<span class='danger'>[target.name] blocks [src] and twists [user]'s arm behind their back!</span>",
 					"<span class='userdanger'>You block the attack!</span>")
@@ -26,6 +28,8 @@
 	materials = list(MAT_METAL = 1000)
 
 /obj/item/melee/chainofcommand/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is strangling [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (OXYLOSS)
 
@@ -64,17 +68,23 @@
 	materials = list(MAT_METAL = 1000)
 
 /obj/item/melee/sabre/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(attack_type == PROJECTILE_ATTACK)
 		final_block_chance = 0 //Don't bring a sword to a gunfight
 	return ..()
 
 /obj/item/melee/sabre/on_exit_storage(obj/item/storage/S)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/storage/belt/sabre/B = S
 	if(istype(B))
 		playsound(B, 'sound/items/unsheath.ogg', 25, 1)
 
 /obj/item/melee/sabre/on_enter_storage(obj/item/storage/S)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/storage/belt/sabre/B = S
 	if(istype(B))
@@ -95,6 +105,8 @@
 	var/on = TRUE
 
 /obj/item/melee/classic_baton/attack(mob/living/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return ..()
 
@@ -153,6 +165,8 @@
 	on = FALSE
 
 /obj/item/melee/classic_baton/telescopic/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	var/mob/living/carbon/human/H = user
 	var/obj/item/organ/brain/B = H.getorgan(/obj/item/organ/brain)
 
@@ -171,6 +185,8 @@
 		return (BRUTELOSS)
 
 /obj/item/melee/classic_baton/telescopic/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	on = !on
 	if(on)
 		to_chat(user, "<span class ='warning'>You extend the baton.</span>")
@@ -208,6 +224,8 @@
 	force_string = "INFINITE"
 
 /obj/item/melee/supermatter_sword/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	shard = new /obj/machinery/power/supermatter_shard(src)
 	qdel(shard.countdown)
@@ -216,6 +234,8 @@
 	visible_message("<span class='warning'>[src] appears, balanced ever so perfectly on its hilt. This isn't ominous at all.</span>")
 
 /obj/item/melee/supermatter_sword/process()
+	procstart = null
+	src.procstart = null
 	if(balanced || throwing || ismob(src.loc) || isnull(src.loc))
 		return
 	if(!isturf(src.loc))
@@ -228,6 +248,8 @@
 			consume_turf(T)
 
 /obj/item/melee/supermatter_sword/afterattack(target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(user && target == user)
 		user.dropItemToGround(src)
 	if(proximity_flag)
@@ -235,6 +257,8 @@
 	..()
 
 /obj/item/melee/supermatter_sword/throw_impact(target)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ismob(target))
 		var/mob/M
@@ -243,30 +267,42 @@
 	consume_everything(target)
 
 /obj/item/melee/supermatter_sword/pickup(user)
+	procstart = null
+	src.procstart = null
 	..()
 	balanced = 0
 
 /obj/item/melee/supermatter_sword/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>The blast wave smacks into [src] and rapidly flashes to ash.</span>",\
 	"<span class='italics'>You hear a loud crack as you are washed with a wave of heat.</span>")
 	consume_everything()
 
 /obj/item/melee/supermatter_sword/acid_act()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>The acid smacks into [src] and rapidly flashes to ash.</span>",\
 	"<span class='italics'>You hear a loud crack as you are washed with a wave of heat.</span>")
 	consume_everything()
 
 /obj/item/melee/supermatter_sword/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>[P] smacks into [src] and rapidly flashes to ash.</span>",\
 	"<span class='italics'>You hear a loud crack as you are washed with a wave of heat.</span>")
 	consume_everything()
 
 /obj/item/melee/supermatter_sword/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] touches [src]'s blade. It looks like [user.p_theyre()] tired of waiting for the radiation to kill [user.p_them()]!</span>")
 	user.dropItemToGround(src, TRUE)
 	shard.CollidedWith(user)
 
 /obj/item/melee/supermatter_sword/proc/consume_everything(target)
+	procstart = null
+	src.procstart = null
 	if(isnull(target))
 		shard.Consume()
 	else if(!isturf(target))
@@ -275,6 +311,8 @@
 		consume_turf(target)
 
 /obj/item/melee/supermatter_sword/proc/consume_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(istype(T, T.baseturf))
 		return //Can't void the void, baby!
 	playsound(T, 'sound/effects/supermatter.ogg', 50, 1)
@@ -285,6 +323,8 @@
 	T.CalculateAdjacentTurfs()
 
 /obj/item/melee/supermatter_sword/add_blood(list/blood_dna)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/item/melee/curator_whip
@@ -301,6 +341,8 @@
 	hitsound = 'sound/weapons/chainhit.ogg'
 
 /obj/item/melee/curator_whip/afterattack(target, mob/user, proximity_flag)
+	procstart = null
+	src.procstart = null
 	if(ishuman(target) && proximity_flag)
 		var/mob/living/carbon/human/H = target
 		H.drop_all_held_items()

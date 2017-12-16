@@ -16,11 +16,15 @@
 	var/warcry
 
 /obj/item/banner/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(inspiration_available)
 		to_chat(user, "<span class='notice'>Activate it in your hand to inspire nearby allies of this banner's allegiance!</span>")
 
 /obj/item/banner/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!inspiration_available)
 		return
 	if(morale_time > world.time)
@@ -62,6 +66,8 @@
 	return
 
 /obj/item/banner/proc/inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.adjustBruteLoss(-15)
 	H.adjustFireLoss(-15)
 	H.AdjustStun(-40)
@@ -101,6 +107,8 @@
 	inspiration_available = FALSE
 
 /obj/item/banner/medical/check_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return H.stat //Meditopia is moved to help those in need
 
 /datum/crafting_recipe/medical_banner
@@ -112,6 +120,8 @@
 	category = CAT_MISC
 
 /obj/item/banner/medical/special_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.adjustToxLoss(-15)
 	H.setOxyLoss(0)
 	H.reagents.add_reagent("inaprovaline", 5)
@@ -127,6 +137,8 @@
 	inspiration_available = FALSE
 
 /obj/item/banner/science/check_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return H.on_fire //Sciencia is pleased by dedication to the art of Toxins
 
 /datum/crafting_recipe/science_banner
@@ -166,6 +178,8 @@
 	inspiration_available = FALSE
 
 /obj/item/banner/engineering/special_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	H.radiation = 0
 
 /datum/crafting_recipe/engineering_banner
@@ -187,6 +201,8 @@
 	inspiration_available = FALSE
 
 /obj/item/banner/command/check_inspiration(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	return H.isloyal() //Command is stalwart but rewards their allies.
 
 /datum/crafting_recipe/command_banner
@@ -284,6 +300,8 @@
 
 
 /obj/item/godstaff/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
+	procstart = null
+	src.procstart = null
 	if(staffcooldown + staffwait > world.time)
 		return
 	user.visible_message("[user] chants deeply and waves their staff!")
@@ -341,6 +359,8 @@
 
 
 /obj/item/storage/box/itemset/crusader/blue/New()
+	procstart = null
+	src.procstart = null
 	..()
 	contents = list()
 	sleep(1)
@@ -351,6 +371,8 @@
 
 
 /obj/item/storage/box/itemset/crusader/red/New()
+	procstart = null
+	src.procstart = null
 	..()
 	contents = list()
 	sleep(1)

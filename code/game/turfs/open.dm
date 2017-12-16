@@ -14,6 +14,8 @@
 	icon_state = "floor"
 
 /turf/open/indestructible/TerraformTurf(path, defer_change = FALSE, ignore_air = FALSE)
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/open/indestructible/sound
@@ -21,6 +23,8 @@
 	var/sound
 
 /turf/open/indestructible/sound/Entered(var/mob/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(AM))
 		playsound(src,sound,50,1)
@@ -34,6 +38,8 @@
 	initial_gas_mix = LAVALAND_DEFAULT_ATMOS
 
 /turf/open/indestructible/necropolis/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(12))
 		icon_state = "necro[rand(2,3)]"
@@ -60,6 +66,8 @@
 /turf/open/indestructible/hierophant/two
 
 /turf/open/indestructible/hierophant/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/open/indestructible/paper
@@ -74,18 +82,26 @@
 	baseturf = /turf/open/indestructible/clock_spawn_room
 
 /turf/open/indestructible/clock_spawn_room/Entered()
+	procstart = null
+	src.procstart = null
 	..()
 	START_PROCESSING(SSfastprocess, src)
 
 /turf/open/indestructible/clock_spawn_room/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSfastprocess, src)
 	. = ..()
 
 /turf/open/indestructible/clock_spawn_room/process()
+	procstart = null
+	src.procstart = null
 	if(!port_servants())
 		STOP_PROCESSING(SSfastprocess, src)
 
 /turf/open/indestructible/clock_spawn_room/proc/port_servants()
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	for(var/mob/living/L in src)
 		if(is_servant_of_ratvar(L))
@@ -99,6 +115,8 @@
 			flash_color(L, flash_color = "#C80000", flash_time = 10)
 
 /turf/open/Initalize_Atmos(times_fired)
+	procstart = null
+	src.procstart = null
 	excited = 0
 	update_visuals()
 
@@ -146,16 +164,24 @@
 		src.atmos_adjacent_turfs = atmos_adjacent_turfs
 
 /turf/open/proc/GetHeatCapacity()
+	procstart = null
+	src.procstart = null
 	. = air.heat_capacity()
 
 /turf/open/proc/GetTemperature()
+	procstart = null
+	src.procstart = null
 	. = air.temperature
 
 /turf/open/proc/TakeTemperature(temp)
+	procstart = null
+	src.procstart = null
 	air.temperature += temp
 	air_update_turf()
 
 /turf/open/proc/freon_gas_act()
+	procstart = null
+	src.procstart = null
 	for(var/obj/I in contents)
 		if(I.resistance_flags & FREEZE_PROOF)
 			return
@@ -168,6 +194,8 @@
 	return 1
 
 /turf/open/proc/water_vapor_gas_act()
+	procstart = null
+	src.procstart = null
 	MakeSlippery(min_wet_time = 10, wet_time_to_add = 5)
 
 	for(var/mob/living/simple_animal/slime/M in src)
@@ -180,6 +208,8 @@
 	return 1
 
 /turf/open/handle_slip(mob/living/carbon/C, knockdown_amount, obj/O, lube)
+	procstart = null
+	src.procstart = null
 	if(C.movement_type & FLYING)
 		return 0
 	if(has_gravity(src))
@@ -220,6 +250,8 @@
 		return 1
 
 /turf/open/copyTurf(turf/T)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && isopenturf(T) && wet_time)
 		var/turf/open/O = T
@@ -254,6 +286,8 @@
 	HandleWet()
 
 /turf/open/proc/UpdateSlip()
+	procstart = null
+	src.procstart = null
 	var/intensity
 	var/lube_flags
 	switch(wet)
@@ -280,10 +314,14 @@
 	S.lube_flags = lube_flags
 
 /turf/open/proc/AfterSlip(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(wet == TURF_WET_LUBE)
 		L.confused = max(L.confused, 8)
 
 /turf/open/proc/MakeDry(wet_setting = TURF_WET_WATER)
+	procstart = null
+	src.procstart = null
 	if(wet > wet_setting || !wet)
 		return
 	spawn(rand(0,20))
@@ -298,6 +336,8 @@
 		UpdateSlip()
 
 /turf/open/proc/HandleWet()
+	procstart = null
+	src.procstart = null
 	if(!wet)
 		//It's possible for this handler to get called after all the wetness is
 		//cleared, so bail out if that is the case
@@ -342,6 +382,8 @@
 		addtimer(CALLBACK(src, .proc/HandleWet), 15, TIMER_UNIQUE)
 
 /turf/open/get_dumping_location()
+	procstart = null
+	src.procstart = null
 	return src
 
 /turf/open/proc/ClearWet()//Nuclear option of immediately removing slipperyness from the tile instead of the natural drying over time
@@ -352,6 +394,8 @@
 
 
 /turf/open/rad_act(pulse_strength)
+	procstart = null
+	src.procstart = null
 	if (air.gases[/datum/gas/carbon_dioxide] && air.gases[/datum/gas/oxygen])
 		air.gases[/datum/gas/carbon_dioxide][MOLES]=max(air.gases[/datum/gas/carbon_dioxide][MOLES]-(pulse_strength/1000),0)
 		air.gases[/datum/gas/oxygen][MOLES]=max(air.gases[/datum/gas/oxygen][MOLES]-(pulse_strength/2000),0)

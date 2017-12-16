@@ -27,10 +27,14 @@ interface with the mining shuttle at the landing site if a mobile beacon is also
 	circuit = /obj/item/circuitboard/computer/auxillary_base
 
 /obj/machinery/computer/auxillary_base/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	locator = new(src)
 
 /obj/machinery/computer/auxillary_base/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..(user))
 		return
 	add_fingerprint(usr)
@@ -77,6 +81,8 @@ interface with the mining shuttle at the landing site if a mobile beacon is also
 
 
 /obj/machinery/computer/auxillary_base/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -128,6 +134,8 @@ interface with the mining shuttle at the landing site if a mobile beacon is also
 	updateUsrDialog()
 
 /obj/machinery/computer/auxillary_base/proc/set_mining_mode()
+	procstart = null
+	src.procstart = null
 	if(z == ZLEVEL_MINING) //The console switches to controlling the mining shuttle once landed.
 		req_one_access = list()
 		shuttleId = "mining" //The base can only be dropped once, so this gives the console a new purpose.
@@ -135,6 +143,8 @@ interface with the mining shuttle at the landing site if a mobile beacon is also
 
 /obj/machinery/computer/auxillary_base/proc/set_landing_zone(turf/T, mob/user, var/no_restrictions)
 
+	procstart = null
+	src.procstart = null
 	var/obj/docking_port/mobile/auxillary_base/base_dock = locate(/obj/docking_port/mobile/auxillary_base) in SSshuttle.mobile
 	if(!base_dock) //Not all maps have an Aux base. This object is useless in that case.
 		to_chat(user, "<span class='warning'>This station is not equipped with an auxillary base. Please contact your Nanotrasen contractor.</span>")
@@ -186,6 +196,8 @@ interface with the mining shuttle at the landing site if a mobile beacon is also
 	var/no_restrictions = FALSE //Badmin variable to let you drop the colony ANYWHERE.
 
 /obj/item/device/assault_pod/mining/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(setting)
 		return
 
@@ -254,6 +266,8 @@ obj/docking_port/stationary/public_mining_dock
 	var/console_range = 15 //Wifi range of the beacon to find the aux base console
 
 /obj/structure/mining_shuttle_beacon/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(anchored)
 		to_chat(user, "<span class='warning'>Landing zone already set.</span>")
 		return
@@ -343,9 +357,13 @@ obj/docking_port/stationary/public_mining_dock
 	playsound(loc, 'sound/machines/ping.ogg', 50, 0)
 
 /obj/structure/mining_shuttle_beacon/proc/clear_cooldown()
+	procstart = null
+	src.procstart = null
 	anti_spam_cd = 0
 
 /obj/structure/mining_shuttle_beacon/attack_robot(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user) //So borgies can help
 
 #undef BAD_ZLEVEL

@@ -46,6 +46,8 @@
 	action_background_icon_state = "bg_demon"
 
 /obj/effect/proc_holder/spell/targeted/summon_contract/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/C in targets)
 		if(C.mind && user.mind)
 			if(C.stat == DEAD)
@@ -103,6 +105,8 @@
 	phase_allowed = 1
 
 /obj/effect/proc_holder/spell/targeted/infernal_jaunt/cast(list/targets, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	if(istype(user))
 		if(istype(user.loc, /obj/effect/dummy/slaughter/))
 			if(valid_location(user))
@@ -131,6 +135,8 @@
 	revert_cast()
 
 /obj/effect/proc_holder/spell/targeted/infernal_jaunt/proc/valid_location(mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	if(istype(get_area(user), /area/shuttle/)) // Can always phase in in a shuttle.
 		return TRUE
 	else
@@ -140,6 +146,8 @@
 	return FALSE
 
 /mob/living/proc/infernalphaseout()
+	procstart = null
+	src.procstart = null
 	dust_animation()
 	spawn_dust()
 	visible_message("<span class='warning'>[src] disappears in a flashfire!</span>")
@@ -152,6 +160,8 @@
 	fakefireextinguish()
 
 /mob/living/proc/infernalphasein()
+	procstart = null
+	src.procstart = null
 	if(notransform)
 		to_chat(src, "<span class='warning'>You're too busy to jaunt in.</span>")
 		return FALSE
@@ -189,6 +199,8 @@
 	max_targets = 10
 
 /obj/effect/proc_holder/spell/targeted/sintouch/cast(list/targets, mob/living/user = usr)
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/human/H in targets)
 		if(!H.mind)
 			continue
@@ -219,6 +231,8 @@
 
 
 /obj/effect/proc_holder/spell/targeted/summon_dancefloor/cast(list/targets, mob/user = usr)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(dancefloor_turfs)
 	LAZYINITLIST(dancefloor_turfs_types)
 

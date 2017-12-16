@@ -15,10 +15,14 @@
 	var/datum/construction/construct
 
 /obj/item/mecha_parts/chassis/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(!construct || !construct.action(W, user))
 		return ..()
 
 /obj/item/mecha_parts/chassis/attack_hand()
+	procstart = null
+	src.procstart = null
 	return
 
 /////////// Ripley
@@ -27,6 +31,8 @@
 	name = "\improper Ripley chassis"
 
 /obj/item/mecha_parts/chassis/ripley/New()
+	procstart = null
+	src.procstart = null
 	..()
 	construct = new /datum/construction/mecha/ripley_chassis(src)
 
@@ -61,6 +67,8 @@
 	name = "\improper Odysseus chassis"
 
 /obj/item/mecha_parts/chassis/odysseus/New()
+	procstart = null
+	src.procstart = null
 	..()
 	construct = new /datum/construction/mecha/odysseus_chassis(src)
 
@@ -100,6 +108,8 @@
 	name = "\improper Gygax chassis"
 
 /obj/item/mecha_parts/chassis/gygax/New()
+	procstart = null
+	src.procstart = null
 	..()
 	construct = new /datum/construction/mecha/gygax_chassis(src)
 
@@ -146,6 +156,8 @@
 	name = "\improper Durand chassis"
 
 /obj/item/mecha_parts/chassis/durand/New()
+	procstart = null
+	src.procstart = null
 	..()
 	construct = new /datum/construction/mecha/durand_chassis(src)
 
@@ -191,6 +203,8 @@
 	name = "Firefighter chassis"
 
 /obj/item/mecha_parts/chassis/firefighter/New()
+	procstart = null
+	src.procstart = null
 	..()
 	construct = new /datum/construction/mecha/firefighter_chassis(src)
 
@@ -201,6 +215,8 @@
 	name = "\improper H.O.N.K chassis"
 
 /obj/item/mecha_parts/chassis/honker/New()
+	procstart = null
+	src.procstart = null
 	..()
 	construct = new /datum/construction/mecha/honker_chassis(src)
 
@@ -241,6 +257,8 @@
 	name = "\improper Phazon chassis"
 
 /obj/item/mecha_parts/chassis/phazon/New()
+	procstart = null
+	src.procstart = null
 	..()
 	construct = new /datum/construction/mecha/phazon_chassis(src)
 

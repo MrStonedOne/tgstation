@@ -44,10 +44,14 @@
 	var/current_cd = 0
 
 /obj/machinery/computer/holodeck/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer/holodeck/LateInitialize()
+	procstart = null
+	src.procstart = null
 	if(ispath(holodeck_type, /area))
 		linked = pop(get_areas(holodeck_type, FALSE))
 	if(ispath(offline_program, /area))
@@ -71,22 +75,30 @@
 	load_program(offline_program, FALSE, FALSE)
 
 /obj/machinery/computer/holodeck/Destroy()
+	procstart = null
+	src.procstart = null
 	emergency_shutdown()
 	if(linked)
 		linked.linked = null
 	return ..()
 
 /obj/machinery/computer/holodeck/power_change()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	toggle_power(!stat)
 
 /obj/machinery/computer/holodeck/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
+	procstart = null
+	src.procstart = null
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "holodeck", name, 400, 500, master_ui, state)
 		ui.open()
 
 /obj/machinery/computer/holodeck/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["default_programs"] = program_cache
@@ -99,6 +111,8 @@
 	return data
 
 /obj/machinery/computer/holodeck/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	. = TRUE
@@ -117,6 +131,8 @@
 			nerf(emagged)
 
 /obj/machinery/computer/holodeck/process()
+	procstart = null
+	src.procstart = null
 	if(damaged && prob(10))
 		for(var/turf/T in linked)
 			if(prob(5))
@@ -149,6 +165,8 @@
 	active_power_usage = 50 + spawned.len * 3 + effects.len * 5
 
 /obj/machinery/computer/holodeck/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	if(!LAZYLEN(emag_programs))
@@ -162,18 +180,26 @@
 	nerf(!emagged)
 
 /obj/machinery/computer/holodeck/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	emergency_shutdown()
 	return ..()
 
 /obj/machinery/computer/holodeck/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	emergency_shutdown()
 	return ..()
 
 /obj/machinery/computer/holodeck/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	emergency_shutdown()
 	return ..()
 
 /obj/machinery/computer/holodeck/proc/generate_program_list()
+	procstart = null
+	src.procstart = null
 	for(var/typekey in subtypesof(program_type))
 		var/area/holodeck/A = locate(typekey) in GLOB.sortedAreas
 		if(!A || !A.contents.len)
@@ -187,6 +213,8 @@
 			LAZYADD(program_cache, list(info_this))
 
 /obj/machinery/computer/holodeck/proc/toggle_power(toggleOn = FALSE)
+	procstart = null
+	src.procstart = null
 	if(active == toggleOn)
 		return
 
@@ -200,17 +228,23 @@
 		active = FALSE
 
 /obj/machinery/computer/holodeck/proc/emergency_shutdown()
+	procstart = null
+	src.procstart = null
 	last_program = program
 	load_program(offline_program, TRUE)
 	active = FALSE
 
 /obj/machinery/computer/holodeck/proc/floorcheck()
+	procstart = null
+	src.procstart = null
 	for(var/turf/T in linked)
 		if(!T.intact || isspaceturf(T))
 			return FALSE
 	return TRUE
 
 /obj/machinery/computer/holodeck/proc/nerf(active)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in spawned)
 		I.damtype = active ? STAMINA : initial(I.damtype)
 	for(var/e in effects)
@@ -218,6 +252,8 @@
 		HE.safety(active)
 
 /obj/machinery/computer/holodeck/proc/load_program(area/A, force = FALSE, add_delay = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!is_operational())
 		A = offline_program
 		force = TRUE
@@ -255,6 +291,8 @@
 	addtimer(CALLBACK(src, .proc/finish_spawn), 30)
 
 /obj/machinery/computer/holodeck/proc/finish_spawn()
+	procstart = null
+	src.procstart = null
 	var/list/added = list()
 	for(var/obj/effect/holodeck_effect/HE in spawned)
 		effects += HE
@@ -269,6 +307,8 @@
 		S.flags_1 |= NODECONSTRUCT_1
 
 /obj/machinery/computer/holodeck/proc/derez(obj/O, silent = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	// Emagging a machine creates an anomaly in the derez systems.
 	if(O && emagged && !stat && !forced)
 		if((ismob(O) || ismob(O.loc)) && prob(50))

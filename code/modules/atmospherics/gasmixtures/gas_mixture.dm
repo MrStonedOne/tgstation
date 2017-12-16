@@ -10,6 +10,8 @@ GLOBAL_LIST_INIT(meta_gas_info, meta_gas_list()) //see ATMOSPHERICS/gas_types.dm
 GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 
 /proc/init_gaslist_cache()
+	procstart = null
+	src.procstart = null
 	. = list()
 	for(var/id in GLOB.meta_gas_info)
 		var/list/cached_gas = new(3)
@@ -29,6 +31,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	var/list/reaction_results
 
 /datum/gas_mixture/New(volume = CELL_VOLUME)
+	procstart = null
+	src.procstart = null
 	gases = new
 	temperature = 0
 	temperature_archived = 0
@@ -42,11 +46,15 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 
 	//assert_gases(args) - shorthand for calling ASSERT_GAS() once for each gas type.
 /datum/gas_mixture/proc/assert_gases()
+	procstart = null
+	src.procstart = null
 	for(var/id in args)
 		ASSERT_GAS(id, src)
 
 	//add_gases(args) - shorthand for calling add_gas() once for each gas_type.
 /datum/gas_mixture/proc/add_gases()
+	procstart = null
+	src.procstart = null
 	var/cached_gases = gases
 	for(var/id in args)
 		ADD_GAS(id, cached_gases)
@@ -57,6 +65,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 		//if assert_gas() was called only to read from the gas.
 	//By removing empty gases, processing speed is increased.
 /datum/gas_mixture/proc/garbage_collect(list/tocheck)
+	procstart = null
+	src.procstart = null
 	var/list/cached_gases = gases
 	for(var/id in (tocheck || cached_gases))
 		if(cached_gases[id][MOLES] <= 0 && cached_gases[id][ARCHIVE] <= 0)
@@ -72,6 +82,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 		. += gas_data[data] * gas_data[GAS_META][META_GAS_SPECIFIC_HEAT]
 
 /datum/gas_mixture/turf/heat_capacity()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!.)
 		. += HEAT_CAPACITY_VACUUM //we want vacuums in turfs to have the same heat capacity as space
@@ -84,6 +96,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	}
 
 /datum/gas_mixture/proc/total_moles()
+	procstart = null
+	src.procstart = null
 	var/cached_gases = gases
 	TOTAL_MOLES(cached_gases, .)
 
@@ -102,57 +116,85 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return max(0, volume)
 
 /datum/gas_mixture/proc/archive()
+	procstart = null
+	src.procstart = null
 	//Update archived versions of variables
 	//Returns: 1 in all cases
 
 /datum/gas_mixture/proc/merge(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	//Merges all air from giver into self. Deletes giver.
 	//Returns: 1 if we are mutable, 0 otherwise
 
 /datum/gas_mixture/proc/remove(amount)
+	procstart = null
+	src.procstart = null
 	//Proportionally removes amount of gas from the gas_mixture
 	//Returns: gas_mixture with the gases removed
 
 /datum/gas_mixture/proc/remove_ratio(ratio)
+	procstart = null
+	src.procstart = null
 	//Proportionally removes amount of gas from the gas_mixture
 	//Returns: gas_mixture with the gases removed
 
 /datum/gas_mixture/proc/copy()
+	procstart = null
+	src.procstart = null
 	//Creates new, identical gas mixture
 	//Returns: duplicate gas mixture
 
 /datum/gas_mixture/proc/copy_from(datum/gas_mixture/sample)
+	procstart = null
+	src.procstart = null
 	//Copies variables from sample
 	//Returns: 1 if we are mutable, 0 otherwise
 
 /datum/gas_mixture/proc/copy_from_turf(turf/model)
+	procstart = null
+	src.procstart = null
 	//Copies all gas info from the turf into the gas list along with temperature
 	//Returns: 1 if we are mutable, 0 otherwise
 
 /datum/gas_mixture/proc/parse_gas_string(gas_string)
+	procstart = null
+	src.procstart = null
 	//Copies variables from a particularly formatted string.
 	//Returns: 1 if we are mutable, 0 otherwise
 
 /datum/gas_mixture/proc/share(datum/gas_mixture/sharer)
+	procstart = null
+	src.procstart = null
 	//Performs air sharing calculations between two gas_mixtures assuming only 1 boundary length
 	//Returns: amount of gas exchanged (+ if sharer received)
 
 /datum/gas_mixture/proc/after_share(datum/gas_mixture/sharer)
+	procstart = null
+	src.procstart = null
 	//called on share's sharer to let it know it just got some gases
 
 /datum/gas_mixture/proc/temperature_share(datum/gas_mixture/sharer, conduction_coefficient)
+	procstart = null
+	src.procstart = null
 	//Performs temperature sharing calculations (via conduction) between two gas_mixtures assuming only 1 boundary length
 	//Returns: new temperature of the sharer
 
 /datum/gas_mixture/proc/compare(datum/gas_mixture/sample)
+	procstart = null
+	src.procstart = null
 	//Compares sample to self to see if within acceptable ranges that group processing may be enabled
 	//Returns: a string indicating what check failed, or "" if check passes
 
 /datum/gas_mixture/proc/react(turf/open/dump_location)
+	procstart = null
+	src.procstart = null
 	//Performs various reactions such as combustion or fusion (LOL)
 	//Returns: 1 if any reaction took place; 0 otherwise
 
 /datum/gas_mixture/archive()
+	procstart = null
+	src.procstart = null
 	var/list/cached_gases = gases
 
 	temperature_archived = temperature
@@ -162,6 +204,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return 1
 
 /datum/gas_mixture/merge(datum/gas_mixture/giver)
+	procstart = null
+	src.procstart = null
 	if(!giver)
 		return 0
 
@@ -183,6 +227,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return 1
 
 /datum/gas_mixture/remove(amount)
+	procstart = null
+	src.procstart = null
 	var/sum
 	var/list/cached_gases = gases
 	TOTAL_MOLES(cached_gases, sum)
@@ -202,6 +248,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return removed
 
 /datum/gas_mixture/remove_ratio(ratio)
+	procstart = null
+	src.procstart = null
 	if(ratio <= 0)
 		return null
 	ratio = min(ratio, 1)
@@ -221,6 +269,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return removed
 
 /datum/gas_mixture/copy()
+	procstart = null
+	src.procstart = null
 	var/list/cached_gases = gases
 	var/datum/gas_mixture/copy = new type
 	var/list/copy_gases = copy.gases
@@ -234,6 +284,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 
 
 /datum/gas_mixture/copy_from(datum/gas_mixture/sample)
+	procstart = null
+	src.procstart = null
 	var/list/cached_gases = gases //accessing datum vars is slower than proc vars
 	var/list/sample_gases = sample.gases
 
@@ -248,6 +300,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return 1
 
 /datum/gas_mixture/copy_from_turf(turf/model)
+	procstart = null
+	src.procstart = null
 	parse_gas_string(model.initial_gas_mix)
 
 	//acounts for changes in temperature
@@ -258,6 +312,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return 1
 
 /datum/gas_mixture/parse_gas_string(gas_string)
+	procstart = null
+	src.procstart = null
 	var/list/gases = src.gases
 	var/list/gas = params2list(gas_string)
 	if(gas["TEMP"])
@@ -273,6 +329,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return 1
 
 /datum/gas_mixture/share(datum/gas_mixture/sharer, atmos_adjacent_turfs = 4)
+	procstart = null
+	src.procstart = null
 	if(!sharer)
 		return 0
 
@@ -350,9 +408,13 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 		return delta_pressure * R_IDEAL_GAS_EQUATION / volume
 
 /datum/gas_mixture/after_share(datum/gas_mixture/sharer, atmos_adjacent_turfs = 4)
+	procstart = null
+	src.procstart = null
 	return
 
 /datum/gas_mixture/temperature_share(datum/gas_mixture/sharer, conduction_coefficient, sharer_temperature, sharer_heat_capacity)
+	procstart = null
+	src.procstart = null
 	//transfer of thermal energy (via conduction) between self and sharer
 	if(sharer)
 		sharer_temperature = sharer.temperature_archived
@@ -373,6 +435,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	//thermal energy of the system (self and sharer) is unchanged
 
 /datum/gas_mixture/compare(datum/gas_mixture/sample)
+	procstart = null
+	src.procstart = null
 	var/list/sample_gases = sample.gases //accessing datum vars is slower than proc vars
 	var/list/cached_gases = gases
 
@@ -399,6 +463,8 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 	return ""
 
 /datum/gas_mixture/react(turf/open/dump_location)
+	procstart = null
+	src.procstart = null
 	. = 0
 
 	reaction_results = new
@@ -438,9 +504,13 @@ GLOBAL_LIST_INIT(gaslist_cache, init_gaslist_cache())
 //O2_PP = get_partial_pressure(gas_mixture.oxygen)
 
 /datum/gas_mixture/proc/get_breath_partial_pressure(gas_pressure)
+	procstart = null
+	src.procstart = null
 	return (gas_pressure * R_IDEAL_GAS_EQUATION * temperature) / BREATH_VOLUME
 //inverse
 /datum/gas_mixture/proc/get_true_breath_pressure(partial_pressure)
+	procstart = null
+	src.procstart = null
 	return (partial_pressure * BREATH_VOLUME) / (R_IDEAL_GAS_EQUATION * temperature)
 
 //Mathematical proofs:

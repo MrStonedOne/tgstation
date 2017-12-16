@@ -22,6 +22,8 @@
 
 
 /datum/computer_file/program/power_monitor/run_program(mob/living/user)
+	procstart = null
+	src.procstart = null
 	. = ..(user)
 	search()
 	history["supply"] = list()
@@ -29,16 +31,22 @@
 
 
 /datum/computer_file/program/power_monitor/process_tick()
+	procstart = null
+	src.procstart = null
 	if(!attached)
 		search()
 	else
 		record()
 
 /datum/computer_file/program/power_monitor/proc/search()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(computer)
 	attached = locate() in T
 
 /datum/computer_file/program/power_monitor/proc/record()
+	procstart = null
+	src.procstart = null
 	if(world.time >= next_record)
 		next_record = world.time + record_interval
 
@@ -53,6 +61,8 @@
 			demand.Cut(1, 2)
 
 /datum/computer_file/program/power_monitor/ui_data()
+	procstart = null
+	src.procstart = null
 	var/list/data = get_header_data()
 	data["stored"] = record_size
 	data["interval"] = record_interval / 10

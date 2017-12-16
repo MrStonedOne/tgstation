@@ -9,6 +9,8 @@
 	actions_types = list(/datum/action/item_action/adjust)
 
 /obj/item/clothing/mask/balaclava/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	adjustmask(user)
 
 /obj/item/clothing/mask/luchador
@@ -20,6 +22,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/clothing/mask/luchador/speechModification(message)
+	procstart = null
+	src.procstart = null
 	if(copytext(message, 1, 2) != "*")
 		message = replacetext(message, "captain", "CAPITÁN")
 		message = replacetext(message, "station", "ESTACIÓN")

@@ -30,6 +30,8 @@
 	dangerous_possession = TRUE
 
 /obj/singularity/Initialize(mapload, starting_energy = 50)
+	procstart = null
+	src.procstart = null
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()
 
@@ -45,12 +47,16 @@
 	return
 
 /obj/singularity/Destroy()
+	procstart = null
+	src.procstart = null
 	STOP_PROCESSING(SSobj, src)
 	GLOB.poi_list.Remove(src)
 	GLOB.singularities.Remove(src)
 	return ..()
 
 /obj/singularity/Move(atom/newloc, direct)
+	procstart = null
+	src.procstart = null
 	if(current_size >= STAGE_FIVE || check_turfs_in(direct))
 		last_failed_movement = 0//Reset this because we moved
 		return ..()
@@ -60,19 +66,29 @@
 
 
 /obj/singularity/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	consume(user)
 	return 1
 
 /obj/singularity/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	consume(user)
 
 /obj/singularity/attack_alien(mob/user)
+	procstart = null
+	src.procstart = null
 	consume(user)
 
 /obj/singularity/attack_animal(mob/user)
+	procstart = null
+	src.procstart = null
 	consume(user)
 
 /obj/singularity/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	consume(user)
 	return 1
 
@@ -80,9 +96,13 @@
 	return 0
 
 /obj/singularity/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/singularity/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			if(current_size <= STAGE_TWO)
@@ -99,19 +119,27 @@
 
 
 /obj/singularity/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	return 0 //Will there be an impact? Who knows.  Will we see it? No.
 
 
 /obj/singularity/Collide(atom/A)
+	procstart = null
+	src.procstart = null
 	consume(A)
 	return
 
 
 /obj/singularity/CollidedWith(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	consume(AM)
 
 
 /obj/singularity/process()
+	procstart = null
+	src.procstart = null
 	if(current_size >= STAGE_TWO)
 		move()
 		radiation_pulse(src, min(5000, (energy*3)+1000), RAD_DISTANCE_COEFFICIENT*0.5)
@@ -129,6 +157,8 @@
 
 
 /obj/singularity/proc/admin_investigate_setup()
+	procstart = null
+	src.procstart = null
 	last_warning = world.time
 	var/count = locate(/obj/machinery/field/containment) in urange(30, src, 1)
 	if(!count)
@@ -136,6 +166,8 @@
 	investigate_log("was created. [count?"":"<font color='red'>No containment fields were active</font>"]", INVESTIGATE_SINGULO)
 
 /obj/singularity/proc/dissipate()
+	procstart = null
+	src.procstart = null
 	if(!dissipate)
 		return
 	if(dissipate_track >= dissipate_delay)
@@ -146,6 +178,8 @@
 
 
 /obj/singularity/proc/expand(force_size = 0)
+	procstart = null
+	src.procstart = null
 	var/temp_allowed_size = src.allowed_size
 	if(force_size)
 		temp_allowed_size = force_size
@@ -227,6 +261,8 @@
 
 
 /obj/singularity/proc/check_energy()
+	procstart = null
+	src.procstart = null
 	if(energy <= 0)
 		investigate_log("collapsed.", INVESTIGATE_SINGULO)
 		qdel(src)
@@ -251,6 +287,8 @@
 
 
 /obj/singularity/proc/eat()
+	procstart = null
+	src.procstart = null
 	set background = BACKGROUND_ENABLED
 	for(var/tile in spiral_range_turfs(grav_pull, src))
 		var/turf/T = tile
@@ -272,6 +310,8 @@
 
 
 /obj/singularity/proc/consume(atom/A)
+	procstart = null
+	src.procstart = null
 	var/gain = A.singularity_act(current_size, src)
 	src.energy += gain
 	if(istype(A, /obj/machinery/power/supermatter_shard) && !consumedSupermatter)
@@ -283,6 +323,8 @@
 
 
 /obj/singularity/proc/move(force_move = 0)
+	procstart = null
+	src.procstart = null
 	if(!move_self)
 		return 0
 
@@ -297,6 +339,8 @@
 	step(src, movement_dir)
 
 /obj/singularity/proc/check_cardinals_range(steps, retry_with_move = FALSE)
+	procstart = null
+	src.procstart = null
 	. = length(GLOB.cardinals)			//Should be 4.
 	for(var/i in GLOB.cardinals)
 		. -= check_turfs_in(i, steps)	//-1 for each working direction
@@ -308,6 +352,8 @@
 	. = !.
 
 /obj/singularity/proc/check_turfs_in(direction = 0, step = 0)
+	procstart = null
+	src.procstart = null
 	if(!direction)
 		return 0
 	var/steps = 0
@@ -361,6 +407,8 @@
 
 
 /obj/singularity/proc/can_move(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!T)
 		return 0
 	if((locate(/obj/machinery/field/containment) in T)||(locate(/obj/machinery/shieldwall) in T))
@@ -377,6 +425,8 @@
 
 
 /obj/singularity/proc/event()
+	procstart = null
+	src.procstart = null
 	var/numb = rand(1,4)
 	switch(numb)
 		if(1)//EMP
@@ -393,6 +443,8 @@
 
 
 /obj/singularity/proc/combust_mobs()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/C in urange(20, src, 1))
 		C.visible_message("<span class='warning'>[C]'s skin bursts into flame!</span>", \
 						  "<span class='userdanger'>You feel an inner fire as your skin bursts into flames!</span>")
@@ -402,6 +454,8 @@
 
 
 /obj/singularity/proc/mezzer()
+	procstart = null
+	src.procstart = null
 	for(var/mob/living/carbon/M in oviewers(8, src))
 		if(isbrain(M)) //Ignore brains
 			continue
@@ -422,10 +476,14 @@
 
 
 /obj/singularity/proc/emp_area()
+	procstart = null
+	src.procstart = null
 	empulse(src, 8, 10)
 	return
 
 /obj/singularity/singularity_act()
+	procstart = null
+	src.procstart = null
 	var/gain = (energy/2)
 	var/dist = max((current_size - 2),1)
 	explosion(src.loc,(dist),(dist*2),(dist*4))

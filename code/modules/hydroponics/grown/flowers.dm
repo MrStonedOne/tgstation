@@ -125,6 +125,8 @@
 	throw_range = 3
 
 /obj/item/grown/sunflower/attack(mob/M, mob/user)
+	procstart = null
+	src.procstart = null
 	to_chat(M, "<font color='green'><b> [user] smacks you with a sunflower!</font><font color='yellow'><b>FLOWER POWER<b></font>")
 	to_chat(user, "<font color='green'>Your sunflower's </font><font color='yellow'><b>FLOWER POWER</b></font><font color='green'>strikes [M]</font>")
 
@@ -185,10 +187,14 @@
 	grind_results = list("capsaicin" = 0, "condensedcapsaicin" = 0)
 
 /obj/item/grown/novaflower/add_juice()
+	procstart = null
+	src.procstart = null
 	..()
 	force = round((5 + seed.potency / 5), 1)
 
 /obj/item/grown/novaflower/attack(mob/living/carbon/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(isliving(M))
@@ -199,6 +205,8 @@
 			log_game("[key_name(user)] set [key_name(M)] on fire")
 
 /obj/item/grown/novaflower/afterattack(atom/A as mob|obj, mob/user,proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(force > 0)
@@ -208,6 +216,8 @@
 		qdel(src)
 
 /obj/item/grown/novaflower/pickup(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!user.gloves)
 		to_chat(user, "<span class='danger'>The [name] burns your bare hand!</span>")

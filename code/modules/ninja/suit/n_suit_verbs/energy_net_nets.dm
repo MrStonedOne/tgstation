@@ -25,6 +25,8 @@ It is possible to destroy the net by the occupant or someone else.
 
 
 /obj/structure/energy_net/play_attack_sound(damage, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	switch(damage_type)
 		if(BRUTE)
 			playsound(src, 'sound/weapons/slash.ogg', 80, 1)
@@ -32,6 +34,8 @@ It is possible to destroy the net by the occupant or someone else.
 			playsound(src, 'sound/weapons/slash.ogg', 80, 1)
 
 /obj/structure/energy_net/Destroy()
+	procstart = null
+	src.procstart = null
 	if(!success)
 		if(!QDELETED(affecting))
 			affecting.visible_message("[affecting.name] was recovered from the energy net!", "You were recovered from the energy net!", "<span class='italics'>You hear a grunt.</span>")
@@ -40,6 +44,8 @@ It is possible to destroy the net by the occupant or someone else.
 	return ..()
 
 /obj/structure/energy_net/process()
+	procstart = null
+	src.procstart = null
 	if(QDELETED(affecting)||affecting.loc!=loc)
 		qdel(src)//Get rid of the net.
 		return
@@ -74,10 +80,16 @@ It is possible to destroy the net by the occupant or someone else.
 	new /obj/effect/temp_visual/dir_setting/ninja/phase(affecting.drop_location(), affecting.dir)
 
 /obj/structure/energy_net/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand()
 
 /obj/structure/energy_net/user_buckle_mob(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return//We only want our target to be buckled
 
 /obj/structure/energy_net/user_unbuckle_mob(mob/living/buckled_mob, mob/living/user)
+	procstart = null
+	src.procstart = null
 	return//The net must be destroyed to free the target

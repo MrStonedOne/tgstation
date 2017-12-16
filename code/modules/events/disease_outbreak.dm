@@ -14,13 +14,19 @@
 
 
 /datum/round_event/disease_outbreak/announce(fake)
+	procstart = null
+	src.procstart = null
 	priority_announce("Confirmed outbreak of level 7 viral biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert", 'sound/ai/outbreak7.ogg')
 
 /datum/round_event/disease_outbreak/setup()
+	procstart = null
+	src.procstart = null
 	announceWhen = rand(15, 30)
 
 
 /datum/round_event/disease_outbreak/start()
+	procstart = null
+	src.procstart = null
 	var/advanced_virus = FALSE
 	max_severity = 3 + max(Floor((world.time - control.earliest_start)/6000),0) //3 symptoms at 20 minutes, plus 1 per 10 minutes
 	if(prob(20 + (10 * max_severity)))
@@ -75,6 +81,8 @@
 		break
 
 /datum/round_event/disease_outbreak/proc/make_virus(max_symptoms, max_level)
+	procstart = null
+	src.procstart = null
 	if(max_symptoms > SYMPTOM_LIMIT)
 		max_symptoms = SYMPTOM_LIMIT
 	var/datum/disease/advance/A = new(FALSE, null)

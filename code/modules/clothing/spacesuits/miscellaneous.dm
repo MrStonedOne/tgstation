@@ -27,6 +27,8 @@ Contains:
 	actions_types = list()
 
 /obj/item/clothing/head/helmet/space/hardsuit/deathsquad/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/clothing/suit/space/hardsuit/deathsquad
@@ -303,6 +305,8 @@ Contains:
 	resistance_flags = FIRE_PROOF
 
 /obj/item/clothing/suit/space/hardsuit/ert/paranormal/New()
+	procstart = null
+	src.procstart = null
 	..()
 	new /obj/item/nullrod(src)
 
@@ -349,6 +353,8 @@ Contains:
 	strip_delay = 65
 
 /obj/item/clothing/suit/space/fragile/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	if(!torn && prob(50))
 		to_chat(owner, "<span class='warning'>[src] tears from the damage, breaking the air-tight seal!</span>")
 		src.flags_1 &= ~STOPSPRESSUREDMAGE_1

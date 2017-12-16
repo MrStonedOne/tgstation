@@ -1,11 +1,15 @@
 
 /mob/living/silicon/grippedby(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return //can't upgrade a simple pull into a more aggressive grab.
 
 /mob/living/silicon/get_ear_protection()//no ears
 	return 2
 
 /mob/living/silicon/attack_alien(mob/living/carbon/alien/humanoid/M)
+	procstart = null
+	src.procstart = null
 	if(..()) //if harm or disarm intent
 		var/damage = 20
 		if (prob(90))
@@ -24,6 +28,8 @@
 							"<span class='userdanger'>[M] took a swipe at [src]!</span>")
 
 /mob/living/silicon/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
@@ -47,13 +53,19 @@
 				adjustStaminaLoss(damage)
 
 /mob/living/silicon/attack_paw(mob/living/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /mob/living/silicon/attack_larva(mob/living/carbon/alien/larva/L)
+	procstart = null
+	src.procstart = null
 	if(L.a_intent == INTENT_HELP)
 		visible_message("[L.name] rubs its head against [src].")
 
 /mob/living/silicon/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		..(user, 1)
 		adjustBruteLoss(rand(10, 15))
@@ -64,6 +76,8 @@
 	return 0
 
 /mob/living/silicon/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	switch(M.a_intent)
 		if ("help")
 			M.visible_message("[M] pets [src].", \
@@ -78,11 +92,15 @@
 	return 0
 
 /mob/living/silicon/attack_drone(mob/living/simple_animal/drone/M)
+	procstart = null
+	src.procstart = null
 	if(M.a_intent == INTENT_HARM)
 		return
 	return ..()
 
 /mob/living/silicon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, tesla_shock = 0, illusion = 0, stun = TRUE)
+	procstart = null
+	src.procstart = null
 	if(buckled_mobs)
 		for(var/mob/living/M in buckled_mobs)
 			unbuckle_mob(M)
@@ -90,6 +108,8 @@
 	return 0 //So borgs they don't die trying to fix wiring
 
 /mob/living/silicon/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			src.take_bodypart_damage(20)
@@ -106,6 +126,8 @@
 	..()
 
 /mob/living/silicon/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if((Proj.damage_type == BRUTE || Proj.damage_type == BURN))
 		adjustBruteLoss(Proj.damage)
 		if(prob(Proj.damage*1.5))
@@ -121,5 +143,7 @@
 	return 2
 
 /mob/living/silicon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /obj/screen/fullscreen/flash/static)
+	procstart = null
+	src.procstart = null
 	if(affect_silicon)
 		return ..()

@@ -24,6 +24,8 @@
 	quick_burst_mod = 1
 
 /obj/item/resonator/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(burst_time == 50)
 		burst_time = 30
 		to_chat(user, "<span class='info'>You set the resonator's fields to detonate after 3 seconds.</span>")
@@ -32,6 +34,8 @@
 		to_chat(user, "<span class='info'>You set the resonator's fields to detonate after 5 seconds.</span>")
 
 /obj/item/resonator/proc/CreateResonance(target, mob/user)
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(target)
 	var/obj/effect/temp_visual/resonance/R = locate(/obj/effect/temp_visual/resonance) in T
 	if(R)
@@ -43,6 +47,8 @@
 		user.changeNext_move(CLICK_CD_MELEE)
 
 /obj/item/resonator/pre_attackby(atom/target, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(check_allowed_items(target, 1))
 		CreateResonance(target, user)
 	return TRUE
@@ -60,6 +66,8 @@
 	var/obj/item/resonator/res
 
 /obj/effect/temp_visual/resonance/Initialize(mapload, set_creator, set_resonator, set_duration)
+	procstart = null
+	src.procstart = null
 	duration = set_duration
 	. = ..()
 	creator = set_creator
@@ -73,6 +81,8 @@
 	timerid = addtimer(CALLBACK(src, .proc/burst), duration, TIMER_STOPPABLE)
 
 /obj/effect/temp_visual/resonance/Destroy()
+	procstart = null
+	src.procstart = null
 	if(res)
 		res.fields -= src
 		res = null
@@ -80,6 +90,8 @@
 	. = ..()
 
 /obj/effect/temp_visual/resonance/proc/check_pressure(turf/proj_turf)
+	procstart = null
+	src.procstart = null
 	if(!proj_turf)
 		proj_turf = get_turf(src)
 	resonance_damage = initial(resonance_damage)
@@ -91,6 +103,8 @@
 	resonance_damage *= damage_multiplier
 
 /obj/effect/temp_visual/resonance/proc/burst()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	new /obj/effect/temp_visual/resonance_crush(T)
 	if(ismineralturf(T))
@@ -111,6 +125,8 @@
 	duration = 4
 
 /obj/effect/temp_visual/resonance_crush/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	transform = matrix()*1.5
 	animate(src, transform = matrix()*0.1, alpha = 50, time = 4)

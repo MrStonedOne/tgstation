@@ -5,6 +5,8 @@
 	possible_locs = list("r_arm","l_arm","r_leg","l_leg","chest","head")
 
 /datum/surgery/core_removal/can_start(mob/user, mob/living/target)
+	procstart = null
+	src.procstart = null
 	if(target.stat == DEAD)
 		return 1
 	return 0
@@ -16,9 +18,13 @@
 	time = 16
 
 /datum/surgery_step/extract_core/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	user.visible_message("[user] begins to extract a core from [target].", "<span class='notice'>You begin to extract a core from [target]...</span>")
 
 /datum/surgery_step/extract_core/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	procstart = null
+	src.procstart = null
 	var/mob/living/simple_animal/slime/slime = target
 	if(slime.cores > 0)
 		slime.cores--

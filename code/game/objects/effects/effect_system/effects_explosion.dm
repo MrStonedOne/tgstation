@@ -5,6 +5,8 @@
 	anchored = TRUE
 
 /obj/effect/particle_effect/expl_particles/New()
+	procstart = null
+	src.procstart = null
 	..()
 	QDEL_IN(src, 15)
 
@@ -12,6 +14,8 @@
 	number = 10
 
 /datum/effect_system/expl_particles/start()
+	procstart = null
+	src.procstart = null
 	for(var/i in 1 to number)
 		var/obj/effect/particle_effect/expl_particles/expl = new /obj/effect/particle_effect/expl_particles(location)
 		var/direct = pick(GLOB.alldirs)
@@ -30,18 +34,24 @@
 	pixel_y = -32
 
 /obj/effect/explosion/New()
+	procstart = null
+	src.procstart = null
 	..()
 	QDEL_IN(src, 10)
 
 /datum/effect_system/explosion
 
 /datum/effect_system/explosion/set_up(loca)
+	procstart = null
+	src.procstart = null
 	if(isturf(loca))
 		location = loca
 	else
 		location = get_turf(loca)
 
 /datum/effect_system/explosion/start()
+	procstart = null
+	src.procstart = null
 	new/obj/effect/explosion( location )
 	var/datum/effect_system/expl_particles/P = new/datum/effect_system/expl_particles()
 	P.set_up(10, 0, location)
@@ -50,9 +60,13 @@
 /datum/effect_system/explosion/smoke
 
 /datum/effect_system/explosion/smoke/proc/create_smoke()
+	procstart = null
+	src.procstart = null
 	var/datum/effect_system/smoke_spread/S = new
 	S.set_up(2, location)
 	S.start()
 /datum/effect_system/explosion/smoke/start()
+	procstart = null
+	src.procstart = null
 	..()
 	addtimer(CALLBACK(src, .proc/create_smoke), 5)

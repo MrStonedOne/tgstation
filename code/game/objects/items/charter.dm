@@ -17,6 +17,8 @@
 	var/static/regex/standard_station_regex
 
 /obj/item/station_charter/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!standard_station_regex)
 		var/prefixes = jointext(GLOB.station_prefixes, "|")
@@ -27,6 +29,8 @@
 		standard_station_regex = new(regexstr)
 
 /obj/item/station_charter/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(used)
 		to_chat(user, "The [name_type] has already been named.")
 		return
@@ -62,6 +66,8 @@
 	to_chat(GLOB.admins, "<span class='adminnotice'><b><font color=orange>CUSTOM STATION RENAME:</font></b>[ADMIN_LOOKUPFLW(user)] proposes to rename the [name_type] to [new_name] (will autoapprove in [DisplayTimeText(approval_time)]). [ADMIN_SMITE(user)] (<A HREF='?_src_=holder;[HrefToken(TRUE)];reject_custom_name=[REF(src)]'>REJECT</A>) [ADMIN_CENTCOM_REPLY(user)]</span>")
 
 /obj/item/station_charter/proc/reject_proposed(user)
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 	if(!response_timer_id)
@@ -78,6 +84,8 @@
 	response_timer_id = null
 
 /obj/item/station_charter/proc/rename_station(designation, uname, ureal_name, ukey)
+	procstart = null
+	src.procstart = null
 	set_station_name(designation)
 	minor_announce("[ureal_name] has designated your station as [station_name()]", "Captain's Charter", 0)
 	log_game("[ukey] has renamed the station as [station_name()].")
@@ -107,6 +115,8 @@
 	force = 15
 
 /obj/item/station_charter/flag/rename_station(designation, uname, ureal_name, ukey)
+	procstart = null
+	src.procstart = null
 	set_station_name(designation)
 	minor_announce("[ureal_name] has designated the planet as [station_name()]", "Captain's Banner", 0)
 	log_game("[ukey] has renamed the planet as [station_name()].")

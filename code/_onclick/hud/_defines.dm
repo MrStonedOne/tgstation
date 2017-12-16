@@ -33,15 +33,21 @@
 #define ui_back "CENTER-2:14,SOUTH:5"
 
 /proc/ui_hand_position(i) //values based on old hand ui positions (CENTER:-/+16,SOUTH:5)
+	procstart = null
+	src.procstart = null
 	var/x_off = -(!(i % 2))
 	var/y_off = round((i-1) / 2)
 	return"CENTER+[x_off]:16,SOUTH+[y_off]:5"
 
 /proc/ui_equip_position(mob/M)
+	procstart = null
+	src.procstart = null
 	var/y_off = round((M.held_items.len-1) / 2) //values based on old equip ui position (CENTER: +/-16,SOUTH+1:5)
 	return "CENTER:-16,SOUTH+[y_off+1]:5"
 
 /proc/ui_swaphand_position(mob/M, which = 1) //values based on old swaphand ui positions (CENTER: +/-16,SOUTH+1:5)
+	procstart = null
+	src.procstart = null
 	var/x_off = which == 1 ? -1 : 0
 	var/y_off = round((M.held_items.len-1) / 2)
 	return "CENTER+[x_off]:16,SOUTH+[y_off+1]:5"

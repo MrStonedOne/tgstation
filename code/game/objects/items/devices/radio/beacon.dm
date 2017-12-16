@@ -9,17 +9,25 @@
 	dog_fashion = null
 
 /obj/item/device/radio/beacon/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	GLOB.teleportbeacons += src
 
 /obj/item/device/radio/beacon/Destroy()
+	procstart = null
+	src.procstart = null
 	GLOB.teleportbeacons.Remove(src)
 	return ..()
 
 /obj/item/device/radio/beacon/Hear(message, atom/movable/speaker, message_langs, raw_message, radio_freq, list/spans, message_mode)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/device/radio/beacon/verb/alter_signal(t as text)
+	procstart = null
+	src.procstart = null
 	set name = "Alter Beacon's Signal"
 	set category = "Object"
 	set src in usr

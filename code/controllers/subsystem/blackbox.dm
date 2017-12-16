@@ -14,11 +14,15 @@ SUBSYSTEM_DEF(blackbox)
 							"science_techweb_unlock" = 2) //associative list of any feedback variables that have had their format changed since creation and their current version, remember to update this
 
 /datum/controller/subsystem/blackbox/Initialize()
+	procstart = null
+	src.procstart = null
 	triggertime = world.time
 	. = ..()
 
 //poll population
 /datum/controller/subsystem/blackbox/fire()
+	procstart = null
+	src.procstart = null
 	if(!SSdbcore.Connect())
 		return
 	var/playercount = 0
@@ -35,16 +39,22 @@ SUBSYSTEM_DEF(blackbox)
 
 
 /datum/controller/subsystem/blackbox/Recover()
+	procstart = null
+	src.procstart = null
 	feedback = SSblackbox.feedback
 	sealed = SSblackbox.sealed
 
 //no touchie
 /datum/controller/subsystem/blackbox/vv_get_var(var_name)
+	procstart = null
+	src.procstart = null
 	if(var_name == "feedback")
 		return debug_variable(var_name, deepCopyList(feedback), 0, src)
 	return ..()
 
 /datum/controller/subsystem/blackbox/vv_edit_var(var_name, var_value)
+	procstart = null
+	src.procstart = null
 	switch(var_name)
 		if("feedback")
 			return FALSE
@@ -55,6 +65,8 @@ SUBSYSTEM_DEF(blackbox)
 	return ..()
 
 /datum/controller/subsystem/blackbox/Shutdown()
+	procstart = null
+	src.procstart = null
 	sealed = FALSE
 	record_feedback("tally", "ahelp_stats", GLOB.ahelp_tickets.active_tickets.len, "unresolved")
 	for (var/obj/machinery/message_server/MS in GLOB.message_servers)
@@ -80,6 +92,8 @@ SUBSYSTEM_DEF(blackbox)
 	SSdbcore.MassInsert(format_table_name("feedback"), sqlrowlist, ignore_errors = TRUE, delayed = TRUE)
 
 /datum/controller/subsystem/blackbox/proc/Seal()
+	procstart = null
+	src.procstart = null
 	if(sealed)
 		return FALSE
 	if(IsAdminAdvancedProcCall())
@@ -89,6 +103,8 @@ SUBSYSTEM_DEF(blackbox)
 	return TRUE
 
 /datum/controller/subsystem/blackbox/proc/LogBroadcast(freq)
+	procstart = null
+	src.procstart = null
 	if(sealed)
 		return
 	switch(freq)
@@ -122,6 +138,8 @@ SUBSYSTEM_DEF(blackbox)
 			record_feedback("tally", "radio_usage", 1, "other")
 
 /datum/controller/subsystem/blackbox/proc/find_feedback_datum(key, key_type)
+	procstart = null
+	src.procstart = null
 	for(var/datum/feedback_variable/FV in feedback)
 		if(FV.key == key)
 			return FV
@@ -186,6 +204,8 @@ Versioning
 						"gun_fired" = 2)
 */
 /datum/controller/subsystem/blackbox/proc/record_feedback(key_type, key, increment, data, overwrite)
+	procstart = null
+	src.procstart = null
 	if(sealed || !key_type || !istext(key) || !isnum(increment) || !data)
 		return
 	var/datum/feedback_variable/FV = find_feedback_datum(key, key_type)
@@ -227,6 +247,8 @@ Versioning
 			CRASH("Invalid feedback key_type: [key_type]")
 
 /datum/controller/subsystem/blackbox/proc/record_feedback_recurse_list(list/L, list/key_list, increment, depth = 1)
+	procstart = null
+	src.procstart = null
 	if(depth == key_list.len)
 		if(L.Find(key_list[depth]))
 			L["[key_list[depth]]"] += increment
@@ -246,10 +268,14 @@ Versioning
 	var/list/json = list()
 
 /datum/feedback_variable/New(new_key, new_key_type)
+	procstart = null
+	src.procstart = null
 	key = new_key
 	key_type = new_key_type
 
 /datum/controller/subsystem/blackbox/proc/ReportDeath(mob/living/L)
+	procstart = null
+	src.procstart = null
 	if(sealed)
 		return
 	if(!SSdbcore.Connect())

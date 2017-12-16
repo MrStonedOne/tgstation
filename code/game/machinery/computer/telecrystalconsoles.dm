@@ -22,6 +22,8 @@ GLOBAL_LIST_INIT(possible_uplinker_IDs, list("Alfa","Bravo","Charlie","Delta","E
 	var/obj/machinery/computer/telecrystals/boss/linkedboss = null
 
 /obj/machinery/computer/telecrystals/uplinker/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/ID = pick_n_take(GLOB.possible_uplinker_IDs)
@@ -30,6 +32,8 @@ GLOBAL_LIST_INIT(possible_uplinker_IDs, list("Alfa","Bravo","Charlie","Delta","E
 	name = "[name] [ID]"
 
 /obj/machinery/computer/telecrystals/uplinker/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(uplinkholder)
 		to_chat(user, "<span class='notice'>[src] already has an uplink in it.</span>")
 		return
@@ -45,17 +49,23 @@ GLOBAL_LIST_INIT(possible_uplinker_IDs, list("Alfa","Bravo","Charlie","Delta","E
 		to_chat(user, "<span class='notice'>[I] doesn't appear to be an uplink...</span>")
 
 /obj/machinery/computer/telecrystals/uplinker/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(uplinkholder)
 		add_overlay("[initial(icon_state)]-closed")
 
 /obj/machinery/computer/telecrystals/uplinker/proc/ejectuplink()
+	procstart = null
+	src.procstart = null
 	if(uplinkholder)
 		uplinkholder.forceMove(drop_location())
 		uplinkholder = null
 		update_icon()
 
 /obj/machinery/computer/telecrystals/uplinker/proc/donateTC(amt, addLog = 1)
+	procstart = null
+	src.procstart = null
 	if(uplinkholder && linkedboss)
 		GET_COMPONENT_FROM(hidden_uplink, /datum/component/uplink, uplinkholder)
 		if(amt < 0)
@@ -70,6 +80,8 @@ GLOBAL_LIST_INIT(possible_uplinker_IDs, list("Alfa","Bravo","Charlie","Delta","E
 				linkedboss.logTransfer("[src] donated [amt] telecrystals to [linkedboss].")
 
 /obj/machinery/computer/telecrystals/uplinker/proc/giveTC(amt, addLog = 1)
+	procstart = null
+	src.procstart = null
 	if(uplinkholder && linkedboss)
 		GET_COMPONENT_FROM(hidden_uplink, /datum/component/uplink, uplinkholder)
 		if(amt < 0)
@@ -86,6 +98,8 @@ GLOBAL_LIST_INIT(possible_uplinker_IDs, list("Alfa","Bravo","Charlie","Delta","E
 ///////
 
 /obj/machinery/computer/telecrystals/uplinker/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	src.add_fingerprint(user)
@@ -112,6 +126,8 @@ GLOBAL_LIST_INIT(possible_uplinker_IDs, list("Alfa","Bravo","Charlie","Delta","E
 	return
 
 /obj/machinery/computer/telecrystals/uplinker/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -141,9 +157,13 @@ GLOBAL_LIST_INIT(possible_uplinker_IDs, list("Alfa","Bravo","Charlie","Delta","E
 	var/list/transferlog = list()
 
 /obj/machinery/computer/telecrystals/boss/proc/logTransfer(logmessage)
+	procstart = null
+	src.procstart = null
 	transferlog += ("<b>[worldtime2text()]</b> [logmessage]")
 
 /obj/machinery/computer/telecrystals/boss/proc/scanUplinkers()
+	procstart = null
+	src.procstart = null
 	for(var/obj/machinery/computer/telecrystals/uplinker/A in urange(scanrange, src.loc))
 		if(!A.linkedboss)
 			TCstations += A
@@ -165,6 +185,8 @@ GLOBAL_LIST_INIT(possible_uplinker_IDs, list("Alfa","Bravo","Charlie","Delta","E
 /////////
 
 /obj/machinery/computer/telecrystals/boss/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	src.add_fingerprint(user)
@@ -201,6 +223,8 @@ GLOBAL_LIST_INIT(possible_uplinker_IDs, list("Alfa","Bravo","Charlie","Delta","E
 	return
 
 /obj/machinery/computer/telecrystals/boss/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 

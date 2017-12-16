@@ -37,6 +37,8 @@
 				SEND_SOUND(M, s)
 
 /proc/print_command_report(text = "", title = null, announce=TRUE)
+	procstart = null
+	src.procstart = null
 	if(!title)
 		title = "Classified [command_name()] Update"
 
@@ -50,6 +52,8 @@
 	SScommunications.send_message(M)
 
 /proc/minor_announce(message, title = "Attention:", alert)
+	procstart = null
+	src.procstart = null
 	if(!message)
 		return
 

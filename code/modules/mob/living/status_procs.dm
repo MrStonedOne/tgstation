@@ -102,6 +102,8 @@
 ///////////////////////////////// FROZEN /////////////////////////////////////
 
 /mob/living/proc/IsFrozen()
+	procstart = null
+	src.procstart = null
 	return has_status_effect(/datum/status_effect/freon)
 
 ///////////////////////////////////// STUN ABSORPTION /////////////////////////////////////
@@ -119,6 +121,8 @@
 		"visible_message" = message, "self_message" = self_message, "examine_message" = examine_message)
 
 /mob/living/proc/absorb_stun(amount, ignoring_flag_presence)
+	procstart = null
+	src.procstart = null
 	if(!amount || amount <= 0 || stat || ignoring_flag_presence || !islist(stun_absorption))
 		return FALSE
 	var/priority_absorb_key

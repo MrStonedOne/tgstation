@@ -8,6 +8,8 @@
 
 
 /obj/item/device/assembly/mousetrap/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(armed)
 		to_chat(user, "The mousetrap is armed!")
@@ -15,6 +17,8 @@
 		to_chat(user, "The mousetrap is not armed.")
 
 /obj/item/device/assembly/mousetrap/activate()
+	procstart = null
+	src.procstart = null
 	if(..())
 		armed = !armed
 		if(!armed)
@@ -28,9 +32,13 @@
 			playsound(usr.loc, 'sound/weapons/handcuffs.ogg', 30, 1, -3)
 
 /obj/item/device/assembly/mousetrap/describe()
+	procstart = null
+	src.procstart = null
 	return "The pressure switch is [armed?"primed":"safe"]."
 
 /obj/item/device/assembly/mousetrap/update_icon()
+	procstart = null
+	src.procstart = null
 	if(armed)
 		icon_state = "mousetraparmed"
 	else
@@ -39,6 +47,8 @@
 		holder.update_icon()
 
 /obj/item/device/assembly/mousetrap/proc/triggered(mob/target, type = "feet")
+	procstart = null
+	src.procstart = null
 	if(!armed)
 		return
 	var/obj/item/bodypart/affecting = null
@@ -73,6 +83,8 @@
 
 
 /obj/item/device/assembly/mousetrap/attack_self(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(!armed)
 		to_chat(user, "<span class='notice'>You arm [src].</span>")
 	else
@@ -91,6 +103,8 @@
 
 
 /obj/item/device/assembly/mousetrap/attack_hand(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	if(armed)
 		if((user.disabilities & (CLUMSY | DUMB)) && prob(50))
 			var/which_hand = "l_hand"
@@ -104,6 +118,8 @@
 
 
 /obj/item/device/assembly/mousetrap/Crossed(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(armed)
 		if(ismob(AM))
 			var/mob/MM = AM
@@ -122,6 +138,8 @@
 
 
 /obj/item/device/assembly/mousetrap/on_found(mob/finder)
+	procstart = null
+	src.procstart = null
 	if(armed)
 		finder.visible_message("<span class='warning'>[finder] accidentally sets off [src], breaking their fingers.</span>", \
 							   "<span class='warning'>You accidentally trigger [src]!</span>")
@@ -131,6 +149,8 @@
 
 
 /obj/item/device/assembly/mousetrap/hitby(A as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(!armed)
 		return ..()
 	visible_message("<span class='warning'>[src] is triggered by [A].</span>")

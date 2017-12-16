@@ -70,11 +70,15 @@
 	return thealert
 
 /mob/proc/alert_timeout(obj/screen/alert/alert, category)
+	procstart = null
+	src.procstart = null
 	if(alert.timeout && alerts[category] == alert && world.time >= alert.timeout)
 		clear_alert(category)
 
 // Proc to clear an existing alert.
 /mob/proc/clear_alert(category, clear_override = FALSE)
+	procstart = null
+	src.procstart = null
 	var/obj/screen/alert/alert = alerts[category]
 	if(!alert)
 		return 0
@@ -101,10 +105,14 @@
 
 
 /obj/screen/alert/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	openToolTip(usr,src,params,title = name,content = desc,theme = alerttooltipstyle)
 
 
 /obj/screen/alert/MouseExited()
+	procstart = null
+	src.procstart = null
 	closeToolTip(usr)
 
 
@@ -224,6 +232,8 @@ If you're feeling frisky, examine yourself and click the underlined item to pull
 	icon_state = "embeddedobject"
 
 /obj/screen/alert/embeddedobject/Click()
+	procstart = null
+	src.procstart = null
 	if(isliving(usr))
 		var/mob/living/carbon/human/M = usr
 		return M.help_shake_act(M)
@@ -242,6 +252,8 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "fire"
 
 /obj/screen/alert/fire/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/living/L = usr
 	if(!istype(L) || !L.can_resist())
 		return
@@ -291,16 +303,22 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	var/mob/living/simple_animal/hostile/construct/Cviewer = null
 
 /obj/screen/alert/bloodsense/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	narnar = new('icons/mob/screen_alert.dmi', "mini_nar")
 	START_PROCESSING(SSprocessing, src)
 
 /obj/screen/alert/bloodsense/Destroy()
+	procstart = null
+	src.procstart = null
 	Cviewer = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
 /obj/screen/alert/bloodsense/process()
+	procstart = null
+	src.procstart = null
 	var/atom/blood_target
 
 	var/datum/antagonist/cult/antag = mob_viewer.mind.has_antag_datum(/datum/antagonist/cult,TRUE)
@@ -393,6 +411,8 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	icon_state = "clockinfo"
 
 /obj/screen/alert/clockwork/infodump/MouseEntered(location,control,params)
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		desc = "<font size=3><b>CHETR<br>NYY<br>HAGEHUGF-NAQ-UBABE<br>RATVAR.</b></font>"
 	else
@@ -491,6 +511,8 @@ so as to remain in compliance with the most up-to-date laws."
 	var/atom/target = null
 
 /obj/screen/alert/hackingapc/Click()
+	procstart = null
+	src.procstart = null
 	if(!usr || !usr.client)
 		return
 	if(!target)
@@ -517,6 +539,8 @@ so as to remain in compliance with the most up-to-date laws."
 	timeout = 300
 
 /obj/screen/alert/notify_cloning/Click()
+	procstart = null
+	src.procstart = null
 	if(!usr || !usr.client)
 		return
 	var/mob/dead/observer/G = usr
@@ -531,6 +555,8 @@ so as to remain in compliance with the most up-to-date laws."
 	var/action = NOTIFY_JUMP
 
 /obj/screen/alert/notify_action/Click()
+	procstart = null
+	src.procstart = null
 	if(!usr || !usr.client)
 		return
 	if(!target)
@@ -564,6 +590,8 @@ so as to remain in compliance with the most up-to-date laws."
 	desc = "You're legcuffed, which slows you down considerably. Click the alert to free yourself."
 
 /obj/screen/alert/restrained/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/living/L = usr
 	if(!istype(L) || !L.can_resist())
 		return
@@ -572,6 +600,8 @@ so as to remain in compliance with the most up-to-date laws."
 		return L.resist_restraints()
 
 /obj/screen/alert/restrained/buckled/Click()
+	procstart = null
+	src.procstart = null
 	var/mob/living/L = usr
 	if(!istype(L) || !L.can_resist())
 		return
@@ -583,6 +613,8 @@ so as to remain in compliance with the most up-to-date laws."
 
 // Re-render all alerts - also called in /datum/hud/show_hud() because it's needed there
 /datum/hud/proc/reorganize_alerts()
+	procstart = null
+	src.procstart = null
 	var/list/alerts = mymob.alerts
 	var/icon_pref
 	if(!hud_shown)
@@ -616,6 +648,8 @@ so as to remain in compliance with the most up-to-date laws."
 	var/list/alerts = list() // contains /obj/screen/alert only // On /mob so clientless mobs will throw alerts properly
 
 /obj/screen/alert/Click(location, control, params)
+	procstart = null
+	src.procstart = null
 	if(!usr || !usr.client)
 		return
 	var/paramslist = params2list(params)
@@ -626,6 +660,8 @@ so as to remain in compliance with the most up-to-date laws."
 		return usr.client.Click(master, location, control, params)
 
 /obj/screen/alert/Destroy()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	severity = 0
 	master = null

@@ -3,6 +3,8 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 
 #ifdef DEBUG
 /world/Error(exception/E, datum/e_src)
+	procstart = null
+	src.procstart = null
 	if(!istype(E)) //Something threw an unusual exception
 		log_world("\[[time_stamp()]] Uncaught exception: [E]")
 		return ..()

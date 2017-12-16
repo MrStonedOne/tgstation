@@ -6,6 +6,8 @@
 	key_type = /obj/item/key/security
 
 /obj/vehicle/ridden/secway/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/datum/component/riding/D = LoadComponent(/datum/component/riding)
 	D.vehicle_move_delay = 1

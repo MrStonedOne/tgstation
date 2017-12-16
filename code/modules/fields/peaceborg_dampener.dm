@@ -22,14 +22,20 @@
 	use_host_turf = TRUE
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/New()
+	procstart = null
+	src.procstart = null
 	tracked = list()
 	staging = list()
 	..()
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/Destroy()
+	procstart = null
+	src.procstart = null
 	return ..()
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/process()
+	procstart = null
+	src.procstart = null
 	if(!istype(projector))
 		qdel(src)
 	var/list/ranged = list()
@@ -48,6 +54,8 @@
 	..()
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/setup_edge_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	..()
 	var/image/I = get_edgeturf_overlay(get_edgeturf_direction(T))
 	var/obj/effect/abstract/proximity_checker/advanced/F = edge_turfs[T]
@@ -57,9 +65,13 @@
 	F.layer = 5
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/cleanup_edge_turf(turf/T)
+	procstart = null
+	src.procstart = null
 	..()
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/proc/get_edgeturf_overlay(direction)
+	procstart = null
+	src.procstart = null
 	switch(direction)
 		if(NORTH)
 			return edgeturf_north
@@ -81,6 +93,8 @@
 			return generic_edge
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/proc/capture_projectile(obj/item/projectile/P, track_projectile = TRUE)
+	procstart = null
+	src.procstart = null
 	if(P in tracked)
 		return
 	projector.dampen_projectile(P, track_projectile)
@@ -88,10 +102,14 @@
 		tracked += P
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/proc/release_projectile(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	projector.restore_projectile(P)
 	tracked -= P
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/field_edge_uncrossed(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_edge/F)
+	procstart = null
+	src.procstart = null
 	if(!is_turf_in_field(get_turf(AM), src))
 		if(istype(AM, /obj/item/projectile))
 			if(AM in tracked)
@@ -101,12 +119,16 @@
 	return ..()
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/field_edge_crossed(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_edge/F)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/item/projectile) && !(AM in tracked) && staging[AM] && !is_turf_in_field(staging[AM], src))
 		capture_projectile(AM)
 	staging -= AM
 	return ..()
 
 /datum/proximity_monitor/advanced/peaceborg_dampener/field_edge_canpass(atom/movable/AM, obj/effect/abstract/proximity_checker/advanced/field_edge/F, turf/entering)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/item/projectile))
 		staging[AM] = get_turf(AM)
 	. = ..()

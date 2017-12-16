@@ -5,6 +5,8 @@
 	icon_state = "random_jumpsuit"
 
 /obj/item/clothing/under/color/random/New()
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/item/clothing/under/color/C = pick(subtypesof(/obj/item/clothing/under/color) - /obj/item/clothing/under/color/random)
 	name = initial(C.name)
@@ -34,6 +36,8 @@
 	desc = "A terribly ragged and frayed grey jumpsuit. It looks like it hasn't been washed in over a decade."
 
 /obj/item/clothing/under/color/grey/glorf/hit_reaction(mob/living/carbon/human/owner, atom/movable/hitby, attack_text = "the attack", final_block_chance = 0, damage = 0, attack_type = MELEE_ATTACK)
+	procstart = null
+	src.procstart = null
 	owner.forcesay(GLOB.hit_appends)
 	return 0
 

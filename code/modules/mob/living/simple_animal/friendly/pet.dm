@@ -7,6 +7,8 @@
 	blood_volume = BLOOD_VOLUME_NORMAL
 
 /mob/living/simple_animal/pet/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/clothing/neck/petcollar) && !pcollar)
 		var/pet_icon_states = icon_states("[icon]")
 		if("[icon_state]collar" in pet_icon_states)
@@ -33,21 +35,29 @@
 		..()
 
 /mob/living/simple_animal/pet/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(pcollar)
 		pcollar = new(src)
 		regenerate_icons()
 
 /mob/living/simple_animal/pet/revive(full_heal = 0, admin_revive = 0)
+	procstart = null
+	src.procstart = null
 	if(..())
 		regenerate_icons()
 		. = 1
 
 /mob/living/simple_animal/pet/death(gibbed)
+	procstart = null
+	src.procstart = null
 	..(gibbed)
 	regenerate_icons()
 
 /mob/living/simple_animal/pet/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(collar)
 		add_overlay(collar)

@@ -30,15 +30,21 @@
 	var/obj/item/udder/udder = null
 
 /mob/living/simple_animal/hostile/retaliate/goat/Initialize()
+	procstart = null
+	src.procstart = null
 	udder = new()
 	. = ..()
 
 /mob/living/simple_animal/hostile/retaliate/goat/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(udder)
 	udder = null
 	return ..()
 
 /mob/living/simple_animal/hostile/retaliate/goat/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		//chance to go crazy and start wacking stuff
@@ -60,15 +66,21 @@
 						Move(step, get_dir(src, step))
 
 /mob/living/simple_animal/hostile/retaliate/goat/Retaliate()
+	procstart = null
+	src.procstart = null
 	..()
 	src.visible_message("<span class='danger'>[src] gets an evil-looking gleam in [p_their()] eye.</span>")
 
 /mob/living/simple_animal/hostile/retaliate/goat/Move()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!stat)
 		eat_plants()
 
 /mob/living/simple_animal/hostile/retaliate/goat/proc/eat_plants()
+	procstart = null
+	src.procstart = null
 	var/eaten = FALSE
 	var/obj/structure/spacevine/SV = locate(/obj/structure/spacevine) in loc
 	if(SV)
@@ -84,6 +96,8 @@
 		say("Nom")
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(stat == CONSCIOUS && istype(O, /obj/item/reagent_containers/glass))
 		udder.milkAnimal(O, user)
 		return 1
@@ -119,15 +133,21 @@
 	blood_volume = BLOOD_VOLUME_NORMAL
 
 /mob/living/simple_animal/cow/Initialize()
+	procstart = null
+	src.procstart = null
 	udder = new()
 	. = ..()
 
 /mob/living/simple_animal/cow/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(udder)
 	udder = null
 	return ..()
 
 /mob/living/simple_animal/cow/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(stat == CONSCIOUS && istype(O, /obj/item/reagent_containers/glass))
 		udder.milkAnimal(O, user)
 		return 1
@@ -135,11 +155,15 @@
 		return ..()
 
 /mob/living/simple_animal/cow/Life()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(stat == CONSCIOUS)
 		udder.generateMilk()
 
 /mob/living/simple_animal/cow/attack_hand(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	if(!stat && M.a_intent == INTENT_DISARM && icon_state != icon_dead)
 		M.visible_message("<span class='warning'>[M] tips over [src].</span>",
 			"<span class='notice'>You tip over [src].</span>")
@@ -194,11 +218,15 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 
 /mob/living/simple_animal/chick/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
 
 /mob/living/simple_animal/chick/Life()
+	procstart = null
+	src.procstart = null
 	. =..()
 	if(!.)
 		return
@@ -209,6 +237,8 @@
 			qdel(src)
 
 /mob/living/simple_animal/chick/holo/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	amount_grown = 0
 
@@ -249,6 +279,8 @@
 	var/static/chicken_count = 0
 
 /mob/living/simple_animal/chicken/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!body_color)
 		body_color = pick(validColors)
@@ -260,10 +292,14 @@
 	++chicken_count
 
 /mob/living/simple_animal/chicken/Destroy()
+	procstart = null
+	src.procstart = null
 	--chicken_count
 	return ..()
 
 /mob/living/simple_animal/chicken/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, food_type)) //feedin' dem chickens
 		if(!stat && eggsleft < 8)
 			var/feedmsg = "[user] feeds [O] to [name]! [pick(feedMessages)]"
@@ -276,6 +312,8 @@
 		..()
 
 /mob/living/simple_animal/chicken/Life()
+	procstart = null
+	src.procstart = null
 	. =..()
 	if(!.)
 		return
@@ -291,6 +329,8 @@
 
 /obj/item/reagent_containers/food/snacks/egg/var/amount_grown = 0
 /obj/item/reagent_containers/food/snacks/egg/process()
+	procstart = null
+	src.procstart = null
 	if(isturf(loc))
 		amount_grown += rand(1,2)
 		if(amount_grown >= 100)
@@ -306,15 +346,21 @@
 	name = "udder"
 
 /obj/item/udder/Initialize()
+	procstart = null
+	src.procstart = null
 	create_reagents(50)
 	reagents.add_reagent("milk", 20)
 	. = ..()
 
 /obj/item/udder/proc/generateMilk()
+	procstart = null
+	src.procstart = null
 	if(prob(5))
 		reagents.add_reagent("milk", rand(5, 10))
 
 /obj/item/udder/proc/milkAnimal(obj/O, mob/user)
+	procstart = null
+	src.procstart = null
 	var/obj/item/reagent_containers/glass/G = O
 	if(G.reagents.total_volume >= G.volume)
 		to_chat(user, "<span class='danger'>[O] is full.</span>")

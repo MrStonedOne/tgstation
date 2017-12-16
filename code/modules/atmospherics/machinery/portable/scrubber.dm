@@ -10,12 +10,16 @@
 	var/list/scrubbing = list(/datum/gas/plasma, /datum/gas/carbon_dioxide, /datum/gas/nitrous_oxide, /datum/gas/bz, /datum/gas/nitryl, /datum/gas/tritium, /datum/gas/hypernoblium, /datum/gas/water_vapor)
 
 /obj/machinery/portable_atmospherics/scrubber/Destroy()
+	procstart = null
+	src.procstart = null
 	var/turf/T = get_turf(src)
 	T.assume_air(air_contents)
 	air_update_turf()
 	return ..()
 
 /obj/machinery/portable_atmospherics/scrubber/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "pscrubber:[on]"
 
 	cut_overlays()
@@ -25,6 +29,8 @@
 		add_overlay("scrubber-connector")
 
 /obj/machinery/portable_atmospherics/scrubber/process_atmos()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!on)
 		return
@@ -36,6 +42,8 @@
 		scrub(T.return_air())
 
 /obj/machinery/portable_atmospherics/scrubber/proc/scrub(var/datum/gas_mixture/mixture)
+	procstart = null
+	src.procstart = null
 	var/transfer_moles = min(1, volume_rate / mixture.volume) * mixture.total_moles()
 
 	var/datum/gas_mixture/filtering = mixture.remove(transfer_moles) // Remove part of the mixture to filter.
@@ -56,6 +64,8 @@
 		air_update_turf()
 
 /obj/machinery/portable_atmospherics/scrubber/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(is_operational())
 		if(prob(50 / severity))
 			on = !on
@@ -70,6 +80,8 @@
 		ui.open()
 
 /obj/machinery/portable_atmospherics/scrubber/ui_data()
+	procstart = null
+	src.procstart = null
 	var/data = list()
 	data["on"] = on
 	data["connected"] = connected_port ? 1 : 0
@@ -88,6 +100,8 @@
 	return data
 
 /obj/machinery/portable_atmospherics/scrubber/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)
@@ -120,9 +134,13 @@
 	movable = TRUE
 
 /obj/machinery/portable_atmospherics/scrubber/huge/update_icon()
+	procstart = null
+	src.procstart = null
 	icon_state = "scrubber:[on]"
 
 /obj/machinery/portable_atmospherics/scrubber/huge/process_atmos()
+	procstart = null
+	src.procstart = null
 	if((!anchored && !movable) || !is_operational())
 		on = FALSE
 		update_icon()
@@ -137,6 +155,8 @@
 			scrub(AT.return_air())
 
 /obj/machinery/portable_atmospherics/scrubber/huge/attackby(obj/item/W, mob/user)
+	procstart = null
+	src.procstart = null
 	if(default_unfasten_wrench(user, W))
 		if(!movable)
 			on = FALSE

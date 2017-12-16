@@ -10,6 +10,8 @@
 	fakeable = FALSE
 
 /datum/round_event/ghost_role/operative/spawn_role()
+	procstart = null
+	src.procstart = null
 	var/list/candidates = get_candidates("operative", null, ROLE_OPERATIVE)
 	if(!candidates.len)
 		return NOT_ENOUGH_PLAYERS

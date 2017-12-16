@@ -15,6 +15,8 @@
 	var/datum/effect_system/trail_follow/ion/ion_trail
 
 /obj/item/tank/jetpack/New()
+	procstart = null
+	src.procstart = null
 	..()
 	if(gas_type)
 		ASSERT_GAS(gas_type,air_contents)
@@ -24,6 +26,8 @@
 	ion_trail.set_up(src)
 
 /obj/item/tank/jetpack/ui_action_click(mob/user, action)
+	procstart = null
+	src.procstart = null
 	if(istype(action, /datum/action/item_action/toggle_jetpack))
 		cycle(user)
 	else if(istype(action, /datum/action/item_action/jetpack_stabilization))
@@ -35,6 +39,8 @@
 
 
 /obj/item/tank/jetpack/proc/cycle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated())
 		return
 
@@ -50,17 +56,23 @@
 
 
 /obj/item/tank/jetpack/proc/turn_on()
+	procstart = null
+	src.procstart = null
 	on = TRUE
 	icon_state = "[initial(icon_state)]-on"
 	ion_trail.start()
 
 /obj/item/tank/jetpack/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	on = FALSE
 	stabilizers = FALSE
 	icon_state = initial(icon_state)
 	ion_trail.stop()
 
 /obj/item/tank/jetpack/proc/allow_thrust(num, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	if((num < 0.005 || air_contents.total_moles() < num))
@@ -78,6 +90,8 @@
 	return 1
 
 /obj/item/tank/jetpack/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if (istype(user, /mob/living/carbon/human/))
 		var/mob/living/carbon/human/H = user
 		H.forcesay("WHAT THE FUCK IS CARBON DIOXIDE?")
@@ -146,14 +160,20 @@
 	var/obj/item/tank/internals/tank = null
 
 /obj/item/tank/jetpack/suit/New()
+	procstart = null
+	src.procstart = null
 	..()
 	STOP_PROCESSING(SSobj, src)
 	temp_air_contents = air_contents
 
 /obj/item/tank/jetpack/suit/attack_self()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/item/tank/jetpack/suit/cycle(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/item/clothing/suit/space/hardsuit))
 		to_chat(user, "<span class='warning'>\The [src] must be connected to a hardsuit!</span>")
 		return
@@ -165,6 +185,8 @@
 	..()
 
 /obj/item/tank/jetpack/suit/turn_on()
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/item/clothing/suit/space/hardsuit) || !ishuman(loc.loc))
 		return
 	var/mob/living/carbon/human/H = loc.loc
@@ -174,12 +196,16 @@
 	..()
 
 /obj/item/tank/jetpack/suit/turn_off()
+	procstart = null
+	src.procstart = null
 	tank = null
 	air_contents = temp_air_contents
 	STOP_PROCESSING(SSobj, src)
 	..()
 
 /obj/item/tank/jetpack/suit/process()
+	procstart = null
+	src.procstart = null
 	if(!istype(loc, /obj/item/clothing/suit/space/hardsuit) || !ishuman(loc.loc))
 		turn_off()
 		return
@@ -195,14 +221,20 @@
 //Used in Process_Spacemove() and wherever you want to check for/get a jetpack
 
 /mob/proc/get_jetpack()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/living/carbon/get_jetpack()
+	procstart = null
+	src.procstart = null
 	var/obj/item/tank/jetpack/J = back
 	if(istype(J))
 		return J
 
 /mob/living/carbon/human/get_jetpack()
+	procstart = null
+	src.procstart = null
 	var/obj/item/tank/jetpack/J = ..()
 	if(!istype(J) && istype(wear_suit, /obj/item/clothing/suit/space/hardsuit))
 		var/obj/item/clothing/suit/space/hardsuit/C = wear_suit

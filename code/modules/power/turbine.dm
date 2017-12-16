@@ -71,6 +71,8 @@
 // the inlet stage of the gas turbine electricity generator
 
 /obj/machinery/power/compressor/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	// The inlet of the compressor is the direction it faces
 	gas_contained = new
@@ -90,6 +92,8 @@
 // 		return !density
 
 /obj/machinery/power/compressor/locate_machinery()
+	procstart = null
+	src.procstart = null
 	if(turbine)
 		return
 	turbine = locate() in get_step(src, get_dir(inturf, src))
@@ -97,12 +101,16 @@
 		turbine.locate_machinery()
 
 /obj/machinery/power/compressor/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/E = 0
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		E += M.rating
 	efficiency = E / 6
 
 /obj/machinery/power/compressor/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, initial(icon_state), initial(icon_state), I))
 		return
 
@@ -124,6 +132,8 @@
 	default_deconstruction_crowbar(I)
 
 /obj/machinery/power/compressor/process()
+	procstart = null
+	src.procstart = null
 	if(!turbine)
 		stat = BROKEN
 	if(stat & BROKEN || panel_open)
@@ -174,6 +184,8 @@
 #define TURBGENG 0.5
 
 /obj/machinery/power/turbine/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 // The outlet is pointed at the direction of the turbine component
 	outturf = get_step(src, dir)
@@ -182,12 +194,16 @@
 		stat |= BROKEN
 
 /obj/machinery/power/turbine/RefreshParts()
+	procstart = null
+	src.procstart = null
 	var/P = 0
 	for(var/obj/item/stock_parts/capacitor/C in component_parts)
 		P += C.rating
 	productivity = P / 6
 
 /obj/machinery/power/turbine/locate_machinery()
+	procstart = null
+	src.procstart = null
 	if(compressor)
 		return
 	compressor = locate() in get_step(src, get_dir(outturf, src))
@@ -196,6 +212,8 @@
 
 /obj/machinery/power/turbine/process()
 
+	procstart = null
+	src.procstart = null
 	if(!compressor)
 		stat = BROKEN
 
@@ -235,12 +253,16 @@
 
 /obj/machinery/power/turbine/attack_hand(mob/user)
 
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
 	interact(user)
 
 /obj/machinery/power/turbine/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(default_deconstruction_screwdriver(user, initial(icon_state), initial(icon_state), I))
 		return
 
@@ -263,6 +285,8 @@
 
 /obj/machinery/power/turbine/interact(mob/user)
 
+	procstart = null
+	src.procstart = null
 	if(!Adjacent(user)  || (stat & (NOPOWER|BROKEN)) && !issilicon(user))
 		user.unset_machine(src)
 		user << browse(null, "window=turbine")
@@ -286,6 +310,8 @@
 	return
 
 /obj/machinery/power/turbine/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -312,13 +338,19 @@
 
 
 /obj/machinery/computer/turbine_computer/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/computer/turbine_computer/LateInitialize()
+	procstart = null
+	src.procstart = null
 	locate_machinery()
 
 /obj/machinery/computer/turbine_computer/locate_machinery()
+	procstart = null
+	src.procstart = null
 	if(id)
 		for(var/obj/machinery/power/compressor/C in GLOB.machines)
 			if(C.comp_id == id)
@@ -328,6 +360,8 @@
 		compressor = locate(/obj/machinery/power/compressor) in range(5, src)
 
 /obj/machinery/computer/turbine_computer/attack_hand(var/mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 
@@ -341,6 +375,8 @@
 		ui.open()
 
 /obj/machinery/computer/turbine_computer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 
 	data["connected"] = (compressor && compressor.turbine) ? TRUE : FALSE
@@ -356,6 +392,8 @@
 	return data
 
 /obj/machinery/computer/turbine_computer/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	switch(action)

@@ -4,6 +4,8 @@
 //Either pass the mob you wish to ban in the 'banned_mob' attribute, or the banckey, banip and bancid variables. If both are passed, the mob takes priority! If a mob is not passed, banckey is the minimum that needs to be passed! banip and bancid are optional.
 /datum/admins/proc/DB_ban_record(bantype, mob/banned_mob, duration = -1, reason, job = "", banckey = null, banip = null, bancid = null)
 
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 
@@ -150,6 +152,8 @@
 
 /datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
 
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 
@@ -227,6 +231,8 @@
 
 /datum/admins/proc/DB_ban_edit(banid = null, param = null)
 
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 
@@ -291,6 +297,8 @@
 
 /datum/admins/proc/DB_ban_unban_by_id(id)
 
+	procstart = null
+	src.procstart = null
 	if(!check_rights(R_BAN))
 		return
 
@@ -331,6 +339,8 @@
 	message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban.",1)
 
 /client/proc/DB_ban_panel()
+	procstart = null
+	src.procstart = null
 	set category = "Admin"
 	set name = "Banning Panel"
 	set desc = "Edit admin permissions"
@@ -342,6 +352,8 @@
 
 
 /datum/admins/proc/DB_ban_panel(playerckey, adminckey, ip, cid, page = 0)
+	procstart = null
+	src.procstart = null
 	if(!usr.client)
 		return
 

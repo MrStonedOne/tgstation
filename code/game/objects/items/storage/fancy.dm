@@ -24,16 +24,22 @@
 	var/fancy_open = FALSE
 
 /obj/item/storage/fancy/PopulateContents()
+	procstart = null
+	src.procstart = null
 	for(var/i = 1 to storage_slots)
 		new spawn_type(src)
 
 /obj/item/storage/fancy/update_icon()
+	procstart = null
+	src.procstart = null
 	if(fancy_open)
 		icon_state = "[icon_type]box[contents.len]"
 	else
 		icon_state = "[icon_type]box"
 
 /obj/item/storage/fancy/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(fancy_open)
 		if(contents.len == 1)
@@ -42,20 +48,28 @@
 			to_chat(user, "There are [contents.len <= 0 ? "no" : "[contents.len]"] [icon_type]s left.")
 
 /obj/item/storage/fancy/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	fancy_open = !fancy_open
 	update_icon()
 
 /obj/item/storage/fancy/dump_content_at(atom/dest_object, mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		fancy_open = TRUE
 		update_icon()
 
 /obj/item/storage/fancy/handle_item_insertion(obj/item/W, prevent_warning = 0, mob/user)
+	procstart = null
+	src.procstart = null
 	fancy_open = TRUE
 	return ..()
 
 /obj/item/storage/fancy/remove_from_storage(obj/item/W, atom/new_location, burn = 0)
+	procstart = null
+	src.procstart = null
 	fancy_open = TRUE
 	return ..()
 
@@ -106,6 +120,8 @@
 	fancy_open = TRUE
 
 /obj/item/storage/fancy/candle_box/attack_self(mob_user)
+	procstart = null
+	src.procstart = null
 	return
 
 ////////////
@@ -126,10 +142,14 @@
 	spawn_type = /obj/item/clothing/mask/cigarette/space_cigarette
 
 /obj/item/storage/fancy/cigarettes/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click to extract contents.</span>")
 
 /obj/item/storage/fancy/cigarettes/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.stat || user.restrained())
 		return
 	var/obj/item/clothing/mask/cigarette/W = locate(/obj/item/clothing/mask/cigarette) in contents
@@ -142,6 +162,8 @@
 		to_chat(user, "<span class='notice'>There are no [icon_type]s left in the pack.</span>")
 
 /obj/item/storage/fancy/cigarettes/update_icon()
+	procstart = null
+	src.procstart = null
 	if(fancy_open || !contents.len)
 		cut_overlays()
 		if(!contents.len)
@@ -165,6 +187,8 @@
 		cut_overlays()
 
 /obj/item/storage/fancy/cigarettes/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+	procstart = null
+	src.procstart = null
 	if(!ismob(M))
 		return
 	var/obj/item/clothing/mask/cigarette/cig = locate(/obj/item/clothing/mask/cigarette) in contents
@@ -240,6 +264,8 @@
 	spawn_type = /obj/item/rollingpaper
 
 /obj/item/storage/fancy/rollingpapers/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(!contents.len)
 		add_overlay("[icon_state]_empty")
@@ -260,6 +286,8 @@
 	spawn_type = /obj/item/clothing/mask/cigarette/cigar
 
 /obj/item/storage/fancy/cigarettes/cigars/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(fancy_open)
 		add_overlay("[icon_state]_open")

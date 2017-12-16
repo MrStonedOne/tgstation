@@ -19,6 +19,8 @@ world
 	name = "TGstation Redirector"
 
 world/New()
+	procstart = null
+	src.procstart = null
 	..()
 	gen_configs()
 
@@ -30,6 +32,8 @@ world/New()
 	var/link = ""
 
 mob/Login()
+	procstart = null
+	src.procstart = null
 	..()
 
 	var/list/weights = list()
@@ -62,6 +66,8 @@ mob/Login()
 
 proc/extract(var/data, var/type = PLAYERS)
 
+	procstart = null
+	src.procstart = null
 	var/nextpos = 0
 
 	if(type == PLAYERS)

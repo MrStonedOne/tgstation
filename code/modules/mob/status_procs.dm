@@ -98,50 +98,74 @@
 /////////////////////////////////// RESTING ////////////////////////////////////
 
 /mob/proc/Resting(amount)
+	procstart = null
+	src.procstart = null
 	resting = max(max(resting,amount),0)
 
 /mob/living/Resting(amount)
+	procstart = null
+	src.procstart = null
 	..()
 	update_canmove()
 
 /mob/proc/SetResting(amount)
+	procstart = null
+	src.procstart = null
 	resting = max(amount,0)
 
 /mob/living/SetResting(amount)
+	procstart = null
+	src.procstart = null
 	..()
 	update_canmove()
 
 /mob/proc/AdjustResting(amount)
+	procstart = null
+	src.procstart = null
 	resting = max(resting + amount,0)
 
 /mob/living/AdjustResting(amount)
+	procstart = null
+	src.procstart = null
 	..()
 	update_canmove()
 
 /////////////////////////////////// JITTERINESS ////////////////////////////////////
 
 /mob/proc/Jitter(amount)
+	procstart = null
+	src.procstart = null
 	jitteriness = max(jitteriness,amount,0)
 
 /////////////////////////////////// DIZZINESS ////////////////////////////////////
 
 /mob/proc/Dizzy(amount)
+	procstart = null
+	src.procstart = null
 	dizziness = max(dizziness,amount,0)
 
 /////////////////////////////////// EYE DAMAGE ////////////////////////////////////
 
 /mob/proc/damage_eyes(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/adjust_eye_damage(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/set_eye_damage(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////////////// EYE_BLIND ////////////////////////////////////
 
 /mob/proc/blind_eyes(amount)
+	procstart = null
+	src.procstart = null
 	if(amount>0)
 		var/old_eye_blind = eye_blind
 		eye_blind = max(eye_blind, amount)
@@ -151,6 +175,8 @@
 			overlay_fullscreen("blind", /obj/screen/fullscreen/blind)
 
 /mob/proc/adjust_blindness(amount)
+	procstart = null
+	src.procstart = null
 	if(amount>0)
 		var/old_eye_blind = eye_blind
 		eye_blind += amount
@@ -168,6 +194,8 @@
 			clear_fullscreen("blind")
 
 /mob/proc/set_blindness(amount)
+	procstart = null
+	src.procstart = null
 	if(amount>0)
 		var/old_eye_blind = eye_blind
 		eye_blind = amount
@@ -187,6 +215,8 @@
 /////////////////////////////////// EYE_BLURRY ////////////////////////////////////
 
 /mob/proc/blur_eyes(amount)
+	procstart = null
+	src.procstart = null
 	if(amount>0)
 		var/old_eye_blurry = eye_blurry
 		eye_blurry = max(amount, eye_blurry)
@@ -194,6 +224,8 @@
 			overlay_fullscreen("blurry", /obj/screen/fullscreen/blurry)
 
 /mob/proc/adjust_blurriness(amount)
+	procstart = null
+	src.procstart = null
 	var/old_eye_blurry = eye_blurry
 	eye_blurry = max(eye_blurry+amount, 0)
 	if(amount>0)
@@ -203,6 +235,8 @@
 		clear_fullscreen("blurry")
 
 /mob/proc/set_blurriness(amount)
+	procstart = null
+	src.procstart = null
 	var/old_eye_blurry = eye_blurry
 	eye_blurry = max(amount, 0)
 	if(amount>0)
@@ -214,17 +248,25 @@
 /////////////////////////////////// DRUGGY ////////////////////////////////////
 
 /mob/proc/adjust_drugginess(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/set_drugginess(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////////////// GROSSED OUT ////////////////////////////////////
 
 /mob/proc/adjust_disgust(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/set_disgust(amount)
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////////////// BLIND DISABILITY ////////////////////////////////////
@@ -233,23 +275,33 @@
 	return
 
 /mob/proc/become_blind()
+	procstart = null
+	src.procstart = null
 	return
 
 /////////////////////////////////// NEARSIGHT DISABILITY ////////////////////////////////////
 
 /mob/proc/cure_nearsighted()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/become_nearsighted()
+	procstart = null
+	src.procstart = null
 	return
 
 
 //////////////////////////////// HUSK DISABILITY ///////////////////////////:
 
 /mob/proc/cure_husk()
+	procstart = null
+	src.procstart = null
 	return
 
 /mob/proc/become_husk()
+	procstart = null
+	src.procstart = null
 	return
 
 

@@ -13,12 +13,16 @@
 	var/inspiration = FALSE
 
 /datum/brain_trauma/special/godwoken/on_life()
+	procstart = null
+	src.procstart = null
 	..()
 	if(!inspiration && world.time > next_speech && prob(4))
 		to_chat(owner, "<span class='notice'>[pick("You feel inspired!","You feel power course through you...","You feel something within you itching to speak...")]</span>")
 		inspiration = TRUE
 
 /datum/brain_trauma/special/godwoken/on_say(message)
+	procstart = null
+	src.procstart = null
 	if(world.time > next_speech && inspiration)
 		playsound(get_turf(owner), 'sound/magic/clockwork/invoke_general.ogg', 300, 1, 5)
 		var/cooldown = voice_of_god(message, owner, list("colossus","yell"), 2)
@@ -38,6 +42,8 @@
 	var/next_portal = 0
 
 /datum/brain_trauma/special/bluespace_prophet/on_life()
+	procstart = null
+	src.procstart = null
 	if(world.time > next_portal)
 		next_portal = world.time + 100
 		var/list/turf/possible_turfs = list()
@@ -82,10 +88,14 @@
 	var/mob/living/carbon/seer
 
 /obj/effect/hallucination/simple/bluespace_stream/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	QDEL_IN(src, 300)
 
 /obj/effect/hallucination/simple/bluespace_stream/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user != seer || !linked_to)
 		return
 	var/slip_in_message = pick("slides sideways in an odd way, and disappears", "jumps into an unseen dimension",\
@@ -110,6 +120,8 @@
 	var/datum/martial_art/psychotic_brawling/psychotic_brawling
 
 /datum/brain_trauma/special/psychotic_brawling/on_gain()
+	procstart = null
+	src.procstart = null
 	..()
 	psychotic_brawling = new(null)
 	if(!psychotic_brawling.teach(owner, TRUE))
@@ -117,6 +129,8 @@
 		qdel(src)
 
 /datum/brain_trauma/special/psychotic_brawling/on_lose()
+	procstart = null
+	src.procstart = null
 	..()
 	psychotic_brawling.remove(owner)
 	QDEL_NULL(psychotic_brawling)

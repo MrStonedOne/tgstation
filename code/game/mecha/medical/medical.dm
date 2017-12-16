@@ -4,17 +4,23 @@
 
 
 /obj/mecha/medical/mechturn(direction)
+	procstart = null
+	src.procstart = null
 	setDir(direction)
 	playsound(src,'sound/mecha/mechmove01.ogg',40,1)
 	return 1
 
 /obj/mecha/medical/mechstep(direction)
+	procstart = null
+	src.procstart = null
 	var/result = step(src,direction)
 	if(result)
 		playsound(src,'sound/mecha/mechstep.ogg',25,1)
 	return result
 
 /obj/mecha/medical/mechsteprand()
+	procstart = null
+	src.procstart = null
 	var/result = step_rand(src)
 	if(result)
 		playsound(src,'sound/mecha/mechstep.ogg',25,1)

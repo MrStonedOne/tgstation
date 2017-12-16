@@ -17,6 +17,8 @@
 
 
 /datum/outfit/ninja/post_equip(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if(istype(H.wear_suit, suit))
 		var/obj/item/clothing/suit/space/space_ninja/S = H.wear_suit
 		if(istype(H.belt, belt))

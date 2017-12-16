@@ -30,6 +30,8 @@
 	var/font = PEN_FONT
 
 /obj/item/pen/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is scribbling numbers all over [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit sudoku...</span>")
 	return(BRUTELOSS)
 
@@ -54,6 +56,8 @@
 	colour = "black"
 
 /obj/item/pen/fourcolor/attack_self(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	switch(colour)
 		if("black")
 			colour = "red"
@@ -91,11 +95,15 @@
 						)
 
 /obj/item/pen/fountain/captain/reskin_obj(mob/M)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_skin)
 		desc = "It's an expensive [current_skin] fountain pen. The nib is quite sharp."
 
 /obj/item/pen/attack_self(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/deg = input(user, "What angle would you like to rotate the pen head to? (1-360)", "Rotate Pen Head") as null|num
 	if(deg && (deg > 0 && deg <= 360))
 		degrees = deg
@@ -108,6 +116,8 @@
 			hidden_uplink.interact(user)
 
 /obj/item/pen/attack(mob/living/M, mob/user,stealth)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 
@@ -124,6 +134,8 @@
 		. = ..()
 
 /obj/item/pen/afterattack(obj/O, mob/living/user, proximity)
+	procstart = null
+	src.procstart = null
 	//Changing Name/Description of items. Only works if they have the 'unique_rename' var set
 	if(isobj(O) && proximity)
 		if(O.unique_rename)
@@ -166,6 +178,8 @@
 
 
 /obj/item/pen/sleepy/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(M))
 		return
 
@@ -176,6 +190,8 @@
 
 
 /obj/item/pen/sleepy/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	create_reagents(45)
 	reagents.add_reagent("chloralhydrate2", 20)
@@ -190,6 +206,8 @@
 	var/on = FALSE
 
 /obj/item/pen/edagger/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(on)
 		on = FALSE
 		force = initial(force)
@@ -213,6 +231,8 @@
 	update_icon()
 
 /obj/item/pen/edagger/update_icon()
+	procstart = null
+	src.procstart = null
 	if(on)
 		icon_state = "edagger"
 		item_state = "edagger"

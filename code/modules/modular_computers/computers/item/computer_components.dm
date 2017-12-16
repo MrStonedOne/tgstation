@@ -14,6 +14,8 @@
 
 // Installs component.
 /obj/item/device/modular_computer/proc/install_component(obj/item/computer_hardware/H, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	if(!can_install_component(H, user))
 		return FALSE
 
@@ -30,6 +32,8 @@
 
 // Uninstalls component.
 /obj/item/device/modular_computer/proc/uninstall_component(obj/item/computer_hardware/H, mob/living/user = null)
+	procstart = null
+	src.procstart = null
 	if(H.holder != src) // Not our component at all.
 		return FALSE
 
@@ -47,6 +51,8 @@
 
 // Checks all hardware pieces to determine if name matches, if yes, returns the hardware piece, otherwise returns null
 /obj/item/device/modular_computer/proc/find_hardware_by_name(name)
+	procstart = null
+	src.procstart = null
 	for(var/i in all_components)
 		var/obj/O = all_components[i]
 		if(O.name == name)

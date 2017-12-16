@@ -36,6 +36,8 @@ Bonus
 					  <b>Stealth 3:</b> The symptom remains hidden until active."
 
 /datum/symptom/voice_change/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["stealth"] >= 3)
@@ -51,6 +53,8 @@ Bonus
 		original_language = mob_language.copy()
 
 /datum/symptom/voice_change/Activate(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/carbon/M = A.affected_mob
@@ -70,6 +74,8 @@ Bonus
 					mob_language.only_speaks_language = current_language
 
 /datum/symptom/voice_change/End(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(A.affected_mob))
 		var/mob/living/carbon/human/H = A.affected_mob

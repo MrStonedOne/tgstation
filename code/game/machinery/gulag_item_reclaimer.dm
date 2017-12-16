@@ -14,6 +14,8 @@
 	var/obj/machinery/gulag_teleporter/linked_teleporter = null
 
 /obj/machinery/gulag_item_reclaimer/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/i in contents)
 		var/obj/item/I = i
 		I.forceMove(get_turf(src))
@@ -25,12 +27,16 @@
 	return ..()
 
 /obj/machinery/gulag_item_reclaimer/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged) // emagging lets anyone reclaim all the items
 		return
 	req_access = list()
 	emagged = TRUE
 
 /obj/machinery/gulag_item_reclaimer/attackby(obj/item/I, mob/user)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/card/id/prisoner))
 		if(!inserted_id)
 			if(!user.transferItemToLoc(I, src))
@@ -50,6 +56,8 @@
 		ui.open()
 
 /obj/machinery/gulag_item_reclaimer/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	var/can_reclaim = FALSE
 
@@ -78,6 +86,8 @@
 	return data
 
 /obj/machinery/gulag_item_reclaimer/ui_act(action, list/params)
+	procstart = null
+	src.procstart = null
 	switch(action)
 		if("handle_id")
 			if(inserted_id)
@@ -97,6 +107,8 @@
 				to_chat(usr, "Access denied.")
 
 /obj/machinery/gulag_item_reclaimer/proc/drop_items(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!stored_items[user])
 		return
 	for(var/i in stored_items[user])

@@ -76,6 +76,8 @@
 	var/wall_turret_direction //The turret will try to shoot from a turf in that direction when in a wall
 
 /obj/machinery/porta_turret/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(!base)
 		base = src
@@ -96,6 +98,8 @@
 		INVOKE_ASYNC(src, .proc/popUp)
 
 /obj/machinery/porta_turret/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(!anchored)
 		icon_state = "turretCover"
@@ -117,6 +121,8 @@
 
 
 /obj/machinery/porta_turret/proc/setup(obj/item/gun/turret_gun)
+	procstart = null
+	src.procstart = null
 	if(stored_gun)
 		qdel(stored_gun)
 		stored_gun = null
@@ -145,6 +151,8 @@
 	return gun_properties
 
 /obj/machinery/porta_turret/Destroy()
+	procstart = null
+	src.procstart = null
 	//deletes its own cover with it
 	QDEL_NULL(cover)
 	base = null
@@ -157,9 +165,13 @@
 
 
 /obj/machinery/porta_turret/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 /obj/machinery/porta_turret/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		return
@@ -167,6 +179,8 @@
 	interact(user)
 
 /obj/machinery/porta_turret/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += "Status: <a href='?src=[REF(src)];power=1'>[on ? "On" : "Off"]</a><br>"
 	dat += "Behaviour controls are [locked ? "locked" : "unlocked"]<br>"
@@ -183,6 +197,8 @@
 	popup.open()
 
 /obj/machinery/porta_turret/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	usr.set_machine(src)
@@ -211,6 +227,8 @@
 		interact(usr)
 
 /obj/machinery/porta_turret/power_change()
+	procstart = null
+	src.procstart = null
 	if(!anchored)
 		update_icon()
 		return
@@ -227,6 +245,8 @@
 
 
 /obj/machinery/porta_turret/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		if(istype(I, /obj/item/crowbar))
 			//If the turret is destroyed, you can remove it with a crowbar to
@@ -280,6 +300,8 @@
 		return ..()
 
 /obj/machinery/porta_turret/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	to_chat(user, "<span class='warning'>You short out [src]'s threat assessment circuits.</span>")
@@ -293,6 +315,8 @@
 
 
 /obj/machinery/porta_turret/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(on && emp_vunerable)
 		//if the turret is on, the EMP no matter how severe disables the turret for a while
 		//and scrambles its settings, with a slight chance of having an emag effect
@@ -309,6 +333,8 @@
 	..()
 
 /obj/machinery/porta_turret/take_damage(damage, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.) //damage received
 		if(prob(30))
@@ -318,12 +344,18 @@
 			addtimer(CALLBACK(src, .proc/reset_attacked), 60)
 
 /obj/machinery/porta_turret/proc/reset_attacked()
+	procstart = null
+	src.procstart = null
 	attacked = FALSE
 
 /obj/machinery/porta_turret/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	qdel(src)
 
 /obj/machinery/porta_turret/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1) && !(stat & BROKEN))
 		stat |= BROKEN	//enables the BROKEN bit
 		update_icon()
@@ -334,6 +366,8 @@
 
 
 /obj/machinery/porta_turret/process()
+	procstart = null
+	src.procstart = null
 	//the main machinery process
 	set background = BACKGROUND_ENABLED
 
@@ -404,6 +438,8 @@
 			popDown() // no valid targets, close the cover
 
 /obj/machinery/porta_turret/proc/tryToShootAt(list/atom/movable/targets)
+	procstart = null
+	src.procstart = null
 	while(targets.len > 0)
 		var/atom/movable/M = pick(targets)
 		targets -= M
@@ -447,6 +483,8 @@
 	update_icon()
 
 /obj/machinery/porta_turret/proc/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	var/threatcount = 0	//the integer returned
 
 	if(emagged)
@@ -479,11 +517,15 @@
 
 
 /obj/machinery/porta_turret/proc/in_faction(mob/target)
+	procstart = null
+	src.procstart = null
 	if(!(faction in target.faction))
 		return 0
 	return 1
 
 /obj/machinery/porta_turret/proc/target(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(target)
 		popUp()				//pop the turret up if it's not already up.
 		setDir(get_dir(base, target))//even if you can't shoot, follow the target
@@ -492,6 +534,8 @@
 	return
 
 /obj/machinery/porta_turret/proc/shootAt(atom/movable/target)
+	procstart = null
+	src.procstart = null
 	if(!raised) //the turret has to be raised in order to fire - makes sense, right?
 		return
 
@@ -538,10 +582,14 @@
 	return A
 
 /obj/machinery/porta_turret/shuttleRotate(rotation)
+	procstart = null
+	src.procstart = null
 	if(wall_turret_direction)
 		wall_turret_direction = turn(wall_turret_direction,rotation)
 
 /obj/machinery/porta_turret/proc/setState(on, mode)
+	procstart = null
+	src.procstart = null
 	if(controllock)
 		return
 	src.on = on
@@ -580,9 +628,13 @@
 	desc = "An energy blaster auto-turret."
 
 /obj/machinery/porta_turret/syndicate/setup()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/porta_turret/syndicate/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	return 10 //Syndicate turrets shoot everything not in their faction
 
 /obj/machinery/porta_turret/syndicate/pod
@@ -595,6 +647,8 @@
 	faction = "silicon"
 
 /obj/machinery/porta_turret/ai/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	return 10 //AI turrets shoot at everything not in their faction
 
 /obj/machinery/porta_turret/aux_base
@@ -607,15 +661,21 @@
 	faction = "neutral" //Minebots, medibots, etc that should not be shot.
 
 /obj/machinery/porta_turret/aux_base/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	return 0 //Never shoot humanoids. You are on your own if Ashwalkers or the like attack!
 
 /obj/machinery/porta_turret/aux_base/setup()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/porta_turret/aux_base/interact(mob/user) //Controlled solely from the base console.
 	return
 
 /obj/machinery/porta_turret/aux_base/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	cover.name = name
 	cover.desc = desc
@@ -638,9 +698,13 @@
 	mode = TURRET_LETHAL
 
 /obj/machinery/porta_turret/centcom_shuttle/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /obj/machinery/porta_turret/centcom_shuttle/setup()
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/machinery/porta_turret/centcom_shuttle/weak
@@ -673,6 +737,8 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
 
 /obj/machinery/turretid/Initialize(mapload, ndir = 0, built = 0)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(built)
 		setDir(ndir)
@@ -682,6 +748,8 @@
 	power_change() //Checks power and initial settings
 
 /obj/machinery/turretid/Destroy()
+	procstart = null
+	src.procstart = null
 	turrets.Cut()
 	return ..()
 
@@ -703,6 +771,8 @@
 		T.cp = src
 
 /obj/machinery/turretid/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(stat & BROKEN)
 		return
 
@@ -735,6 +805,8 @@
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 
 /obj/machinery/turretid/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	if(emagged)
 		return
 	to_chat(user, "<span class='danger'>You short out the turret controls' access analysis module.</span>")
@@ -744,12 +816,16 @@
 		attack_hand(user)
 
 /obj/machinery/turretid/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!ailock || IsAdminGhost(user))
 		return attack_hand(user)
 	else
 		to_chat(user, "<span class='notice'>There seems to be a firewall preventing you from accessing this device.</span>")
 
 /obj/machinery/turretid/attack_hand(mob/user as mob)
+	procstart = null
+	src.procstart = null
 	if ( get_dist(src, user) > 0 )
 		if ( !(issilicon(user) || IsAdminGhost(user)) )
 			to_chat(user, "<span class='notice'>You are too far away.</span>")
@@ -775,6 +851,8 @@
 	popup.open()
 
 /obj/machinery/turretid/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if (locked)
@@ -788,23 +866,33 @@
 	src.attack_hand(usr)
 
 /obj/machinery/turretid/proc/toggle_lethal()
+	procstart = null
+	src.procstart = null
 	lethal = !lethal
 	updateTurrets()
 
 /obj/machinery/turretid/proc/toggle_on()
+	procstart = null
+	src.procstart = null
 	enabled = !enabled
 	updateTurrets()
 
 /obj/machinery/turretid/proc/updateTurrets()
+	procstart = null
+	src.procstart = null
 	for (var/obj/machinery/porta_turret/aTurret in turrets)
 		aTurret.setState(enabled, lethal)
 	update_icon()
 
 /obj/machinery/turretid/power_change()
+	procstart = null
+	src.procstart = null
 	..()
 	update_icon()
 
 /obj/machinery/turretid/update_icon()
+	procstart = null
+	src.procstart = null
 	..()
 	if(stat & NOPOWER)
 		icon_state = "control_off"
@@ -824,6 +912,8 @@
 	materials = list(MAT_METAL=MINERAL_MATERIAL_AMOUNT)
 
 /obj/item/gun/proc/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = list()
 	.["lethal_projectile"] = null
 	.["lethal_projectile_sound"] = null
@@ -832,6 +922,8 @@
 	.["base_icon_state"] = "standard"
 
 /obj/item/gun/energy/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 	var/obj/item/ammo_casing/primary_ammo = ammo_type[1]
@@ -848,6 +940,8 @@
 		.["lethal_projectile_sound"] = .["stun_projectile_sound"]
 
 /obj/item/gun/ballistic/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/obj/item/ammo_box/mag = mag_type
 	var/obj/item/ammo_casing/primary_ammo = initial(mag.ammo_type)
@@ -860,6 +954,8 @@
 
 
 /obj/item/gun/energy/laser/bluetag/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["stun_projectile"] = /obj/item/projectile/beam/lasertag/bluetag
 	.["lethal_projectile"] = /obj/item/projectile/beam/lasertag/bluetag
@@ -868,6 +964,8 @@
 	.["team_color"] = "blue"
 
 /obj/item/gun/energy/laser/redtag/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	.["stun_projectile"] = /obj/item/projectile/beam/lasertag/redtag
 	.["lethal_projectile"] = /obj/item/projectile/beam/lasertag/redtag
@@ -876,6 +974,8 @@
 	.["team_color"] = "red"
 
 /obj/item/gun/energy/e_gun/turret/get_turret_properties()
+	procstart = null
+	src.procstart = null
 	. = ..()
 
 /obj/machinery/porta_turret/lasertag
@@ -888,6 +988,8 @@
 	var/team_color
 
 /obj/machinery/porta_turret/lasertag/assess_perp(mob/living/carbon/human/perp)
+	procstart = null
+	src.procstart = null
 	. = 0
 	if(team_color == "blue")	//Lasertag turrets target the opposing team, how great is that? -Sieve
 		. = 0		//But does not target anyone else
@@ -908,11 +1010,15 @@
 			. += 2
 
 /obj/machinery/porta_turret/lasertag/setup(obj/item/gun/gun)
+	procstart = null
+	src.procstart = null
 	var/list/properties = ..()
 	if(properties["team_color"])
 		team_color = properties["team_color"]
 
 /obj/machinery/porta_turret/lasertag/interact(mob/user)
+	procstart = null
+	src.procstart = null
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(team_color == "blue" && istype(H.wear_suit, /obj/item/clothing/suit/redtag))
@@ -936,6 +1042,8 @@
 	team_color = "blue"
 
 /obj/machinery/porta_turret/lasertag/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(on)
 		if(team_color == "blue")

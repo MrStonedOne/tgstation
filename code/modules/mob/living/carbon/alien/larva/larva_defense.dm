@@ -1,6 +1,8 @@
 
 
 /mob/living/carbon/alien/larva/attack_hand(mob/living/carbon/human/M)
+	procstart = null
+	src.procstart = null
 	if(..())
 		var/damage = rand(1, 9)
 		if (prob(90))
@@ -19,6 +21,8 @@
 					"<span class='userdanger'>[M] has attempted to kick [src]!</span>", null, COMBAT_MESSAGE_RANGE)
 
 /mob/living/carbon/alien/larva/attack_hulk(mob/living/carbon/human/user, does_attack_animation = 0)
+	procstart = null
+	src.procstart = null
 	if(user.a_intent == INTENT_HARM)
 		..(user, 1)
 		adjustBruteLoss(5 + rand(1,9))
@@ -26,6 +30,8 @@
 		return 1
 
 /mob/living/carbon/alien/larva/do_attack_animation(atom/A, visual_effect_icon, obj/item/used_item, no_effect, end_pixel_y)
+	procstart = null
+	src.procstart = null
 	if(!no_effect && !visual_effect_icon)
 		visual_effect_icon = ATTACK_EFFECT_BITE
 	..()

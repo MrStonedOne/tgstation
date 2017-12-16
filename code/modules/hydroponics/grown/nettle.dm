@@ -46,10 +46,14 @@
 	grind_results = list("sacid" = 0)
 
 /obj/item/grown/nettle/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is eating some of [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return (BRUTELOSS|TOXLOSS)
 
 /obj/item/grown/nettle/pickup(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!iscarbon(user))
 		return FALSE
@@ -70,6 +74,8 @@
 	return TRUE
 
 /obj/item/grown/nettle/afterattack(atom/A as mob|obj, mob/user,proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(force > 0)
@@ -82,6 +88,8 @@
 	seed = /obj/item/seeds/nettle
 
 /obj/item/grown/nettle/basic/add_juice()
+	procstart = null
+	src.procstart = null
 	..()
 	force = round((5 + seed.potency / 5), 1)
 
@@ -95,16 +103,22 @@
 	grind_results = list("facid" = 1, "sacid" = 1)
 
 /obj/item/grown/nettle/death/add_juice()
+	procstart = null
+	src.procstart = null
 	..()
 	force = round((5 + seed.potency / 2.5), 1)
 
 /obj/item/grown/nettle/death/pickup(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(..())
 		if(prob(50))
 			user.Knockdown(100)
 			to_chat(user, "<span class='userdanger'>You are stunned by the Deathnettle as you try picking it up!</span>")
 
 /obj/item/grown/nettle/death/attack(mob/living/carbon/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(isliving(M))

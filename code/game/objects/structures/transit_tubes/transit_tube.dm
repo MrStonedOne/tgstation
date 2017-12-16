@@ -14,11 +14,15 @@
 	var/enter_delay = 0
 
 /obj/structure/transit_tube/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return 1
 	return !density
 
 /obj/structure/transit_tube/New(loc, newdirection)
+	procstart = null
+	src.procstart = null
 	..(loc)
 	if(newdirection)
 		setDir(newdirection)
@@ -26,16 +30,22 @@
 	generate_tube_overlays()
 
 /obj/structure/transit_tube/Destroy()
+	procstart = null
+	src.procstart = null
 	for(var/obj/structure/transit_tube_pod/P in loc)
 		P.deconstruct(FALSE)
 	return ..()
 
 /obj/structure/transit_tube/singularity_pull(S, current_size)
+	procstart = null
+	src.procstart = null
 	..()
 	if(current_size >= STAGE_FIVE)
 		deconstruct(FALSE)
 
 /obj/structure/transit_tube/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/wrench))
 		if(tube_construction)
 			for(var/obj/structure/transit_tube_pod/pod in src.loc)
@@ -58,14 +68,20 @@
 
 // Called to check if a pod should stop upon entering this tube.
 /obj/structure/transit_tube/proc/should_stop_pod(pod, from_dir)
+	procstart = null
+	src.procstart = null
 	return 0
 
 // Called when a pod stops in this tube section.
 /obj/structure/transit_tube/proc/pod_stopped(pod, from_dir)
+	procstart = null
+	src.procstart = null
 	return
 
 
 /obj/structure/transit_tube/proc/has_entrance(from_dir)
+	procstart = null
+	src.procstart = null
 	from_dir = turn(from_dir, 180)
 
 	for(var/direction in tube_dirs)
@@ -77,6 +93,8 @@
 
 
 /obj/structure/transit_tube/proc/has_exit(in_dir)
+	procstart = null
+	src.procstart = null
 	for(var/direction in tube_dirs)
 		if(direction == in_dir)
 			return 1
@@ -88,6 +106,8 @@
 // Searches for an exit direction within 45 degrees of the
 //  specified dir. Returns that direction, or 0 if none match.
 /obj/structure/transit_tube/proc/get_exit(in_dir)
+	procstart = null
+	src.procstart = null
 	var/near_dir = 0
 	var/in_dir_cw = turn(in_dir, -45)
 	var/in_dir_ccw = turn(in_dir, 45)
@@ -111,13 +131,19 @@
 //  for later tube types to interact in more interesting ways
 //  such as being very fast in one direction, but slow in others
 /obj/structure/transit_tube/proc/exit_delay(pod, to_dir)
+	procstart = null
+	src.procstart = null
 	return exit_delay
 
 /obj/structure/transit_tube/proc/enter_delay(pod, to_dir)
+	procstart = null
+	src.procstart = null
 	return enter_delay
 
 
 /obj/structure/transit_tube/proc/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(NORTH, SOUTH)
@@ -130,6 +156,8 @@
 
 
 /obj/structure/transit_tube/proc/generate_tube_overlays()
+	procstart = null
+	src.procstart = null
 	for(var/direction in tube_dirs)
 		if(direction in GLOB.diagonals)
 			if(direction & NORTH)
@@ -145,6 +173,8 @@
 
 
 /obj/structure/transit_tube/proc/create_tube_overlay(direction, shift_dir)
+	procstart = null
+	src.procstart = null
 	var/image/tube_overlay = new(dir = direction)
 	if(shift_dir)
 		tube_overlay.icon_state = "decorative_diag"
@@ -174,6 +204,8 @@
 	tube_construction = /obj/structure/c_transit_tube/diagonal
 
 /obj/structure/transit_tube/diagonal/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(NORTHEAST, SOUTHWEST)
@@ -203,6 +235,8 @@
 	tube_construction = /obj/structure/c_transit_tube/curved
 
 /obj/structure/transit_tube/curved/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(NORTH, SOUTHWEST)
@@ -218,6 +252,8 @@
 	tube_construction = /obj/structure/c_transit_tube/curved/flipped
 
 /obj/structure/transit_tube/curved/flipped/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(NORTH, SOUTHEAST)
@@ -234,6 +270,8 @@
 	tube_construction = /obj/structure/c_transit_tube/junction
 
 /obj/structure/transit_tube/junction/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(NORTH, SOUTHEAST, SOUTHWEST)//ending with the prefered direction
@@ -249,6 +287,8 @@
 	tube_construction = /obj/structure/c_transit_tube/junction/flipped
 
 /obj/structure/transit_tube/junction/flipped/init_tube_dirs()
+	procstart = null
+	src.procstart = null
 	switch(dir)
 		if(NORTH)
 			tube_dirs = list(NORTH, SOUTHWEST, SOUTHEAST)//ending with the prefered direction

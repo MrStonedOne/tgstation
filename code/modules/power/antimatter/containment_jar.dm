@@ -16,6 +16,8 @@
 
 
 /obj/item/am_containment/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	switch(severity)
 		if(1)
 			explosion(get_turf(src), 1, 2, 3, 5)//Should likely be larger but this works fine for now I guess
@@ -34,6 +36,8 @@
 	return
 
 /obj/item/am_containment/proc/usefuel(wanted)
+	procstart = null
+	src.procstart = null
 	if(fuel < wanted)
 		wanted = fuel
 	fuel -= wanted

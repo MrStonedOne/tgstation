@@ -25,12 +25,16 @@
 	var/changing_turf = FALSE
 
 /turf/vv_edit_var(var_name, new_value)
+	procstart = null
+	src.procstart = null
 	var/static/list/banned_edits = list("x", "y", "z")
 	if(var_name in banned_edits)
 		return FALSE
 	. = ..()
 
 /turf/Initialize()
+	procstart = null
+	src.procstart = null
 	if(initialized)
 		stack_trace("Warning: [src]([type]) initialized multiple times!")
 	initialized = TRUE
@@ -62,9 +66,13 @@
 	return INITIALIZE_HINT_NORMAL
 
 /turf/proc/Initalize_Atmos(times_fired)
+	procstart = null
+	src.procstart = null
 	CalculateAdjacentTurfs()
 
 /turf/Destroy(force)
+	procstart = null
+	src.procstart = null
 	. = QDEL_HINT_IWILLGC
 	if(!changing_turf)
 		stack_trace("Incorrect turf deletion")
@@ -86,9 +94,13 @@
 	..()
 
 /turf/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	user.Move_Pulled(src)
 
 /turf/proc/handleRCL(obj/item/twohanded/rcl/C, mob/user)
+	procstart = null
+	src.procstart = null
 	if(C.loaded)
 		for(var/obj/structure/cable/LC in src)
 			if(!LC.d1 || !LC.d2)
@@ -98,6 +110,8 @@
 		C.is_empty(user)
 
 /turf/attackby(obj/item/C, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return TRUE
 	if(can_lay_cable() && istype(C, /obj/item/stack/cable_coil))
@@ -115,6 +129,8 @@
 	return FALSE
 
 /turf/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(!target)
 		return FALSE
 
@@ -125,6 +141,8 @@
 	return FALSE
 
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
+	procstart = null
+	src.procstart = null
 	// First, make sure it can leave its square
 	if(isturf(mover.loc))
 		// Nothing but border objects stop you from leaving a tile, only one loop is needed
@@ -160,6 +178,8 @@
 	return TRUE //Nothing found to block so return success!
 
 /turf/Entered(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	if(explosion_level && AM.ex_check(explosion_id))
 		AM.ex_act(explosion_level)
@@ -170,6 +190,8 @@
 		reconsider_lights()
 
 /turf/open/Entered(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	..()
 	//melting
 	if(isobj(AM) && air && air.temperature > T0C)
@@ -178,31 +200,43 @@
 			O.make_unfrozen()
 
 /turf/proc/is_plasteel_floor()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /turf/proc/levelupdate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in src)
 		if(O.level == 1)
 			O.hide(src.intact)
 
 // override for space turfs, since they should never hide anything
 /turf/open/space/levelupdate()
+	procstart = null
+	src.procstart = null
 	for(var/obj/O in src)
 		if(O.level == 1)
 			O.hide(0)
 
 // Removes all signs of lattice on the pos of the turf -Donkieyo
 /turf/proc/RemoveLattice()
+	procstart = null
+	src.procstart = null
 	var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 	if(L)
 		qdel(L)
 
 //wrapper for ChangeTurf()s that you want to prevent/affect without overriding ChangeTurf() itself
 /turf/proc/TerraformTurf(path, new_baseturf, defer_change = FALSE, ignore_air = FALSE, forceop = FALSE)
+	procstart = null
+	src.procstart = null
 	return ChangeTurf(path, new_baseturf, defer_change, ignore_air, forceop)
 
 //Creates a new turf
 /turf/proc/ChangeTurf(path, new_baseturf, defer_change = FALSE, ignore_air = FALSE, forceop = FALSE)
+	procstart = null
+	src.procstart = null
 	if(!path)
 		return
 	if(!GLOB.use_preloader && path == type && !forceop) // Don't no-op if the map loader requires it to be reconstructed
@@ -258,6 +292,8 @@
 	return W
 
 /turf/proc/AfterChange(ignore_air = FALSE) //called after a turf has been replaced in ChangeTurf()
+	procstart = null
+	src.procstart = null
 	levelupdate()
 	CalculateAdjacentTurfs()
 
@@ -273,6 +309,8 @@
 	HandleTurfChange(src)
 
 /turf/open/AfterChange(ignore_air)
+	procstart = null
+	src.procstart = null
 	..()
 	RemoveLattice()
 	if(!ignore_air)
@@ -280,6 +318,8 @@
 
 //////Assimilate Air//////
 /turf/open/proc/Assimilate_Air()
+	procstart = null
+	src.procstart = null
 	var/turf_count = LAZYLEN(atmos_adjacent_turfs)
 	if(blocks_air || !turf_count) //if there weren't any open turfs, no need to update.
 		return
@@ -307,6 +347,8 @@
 	SSair.add_to_active(src)
 
 /turf/proc/ReplaceWithLattice()
+	procstart = null
+	src.procstart = null
 	ChangeTurf(baseturf)
 	new /obj/structure/lattice(locate(x, y, z))
 
@@ -320,9 +362,13 @@
 		M.take_damage(damage*2, BRUTE, "melee", 1)
 
 /turf/proc/Bless()
+	procstart = null
+	src.procstart = null
 	flags_1 |= NOJAUNT_1
 
 /turf/storage_contents_dump_act(obj/item/storage/src_object, mob/user)
+	procstart = null
+	src.procstart = null
 	if(src_object.contents.len)
 		to_chat(usr, "<span class='notice'>You start dumping out the contents...</span>")
 		if(!do_after(usr,20,target=src_object))
@@ -342,12 +388,16 @@
 
 //Distance associates with all directions movement
 /turf/proc/Distance(var/turf/T)
+	procstart = null
+	src.procstart = null
 	return get_dist(src,T)
 
 //  This Distance proc assumes that only cardinal movement is
 //  possible. It results in more efficient (CPU-wise) pathing
 //  for bots and anything else that only moves in cardinal dirs.
 /turf/proc/Distance_cardinal(turf/T)
+	procstart = null
+	src.procstart = null
 	if(!src || !T)
 		return FALSE
 	return abs(x - T.x) + abs(y - T.y)
@@ -355,6 +405,8 @@
 ////////////////////////////////////////////////////
 
 /turf/singularity_act()
+	procstart = null
+	src.procstart = null
 	if(intact)
 		for(var/obj/O in contents) //this is for deleting things like wires contained in the turf
 			if(O.level != 1)
@@ -365,12 +417,18 @@
 	return(2)
 
 /turf/proc/can_have_cabling()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /turf/proc/can_lay_cable()
+	procstart = null
+	src.procstart = null
 	return can_have_cabling() & !intact
 
 /turf/proc/visibilityChanged()
+	procstart = null
+	src.procstart = null
 	GLOB.cameranet.updateVisibility(src)
 
 /turf/proc/burn_tile()
@@ -378,6 +436,8 @@
 /turf/proc/is_shielded()
 
 /turf/contents_explosion(severity, target)
+	procstart = null
+	src.procstart = null
 	var/affecting_level
 	if(severity == 1)
 		affecting_level = 1
@@ -399,6 +459,8 @@
 			CHECK_TICK
 
 /turf/narsie_act(force, ignore_mobs, probability = 20)
+	procstart = null
+	src.procstart = null
 	. = (prob(probability) || force)
 	for(var/I in src)
 		var/atom/A = I
@@ -408,6 +470,8 @@
 			A.narsie_act()
 
 /turf/ratvar_act(force, ignore_mobs, probability = 40)
+	procstart = null
+	src.procstart = null
 	. = (prob(probability) || force)
 	for(var/I in src)
 		var/atom/A = I
@@ -417,12 +481,16 @@
 			A.ratvar_act()
 
 /turf/proc/get_smooth_underlay_icon(mutable_appearance/underlay_appearance, turf/asking_turf, adjacency_dir)
+	procstart = null
+	src.procstart = null
 	underlay_appearance.icon = icon
 	underlay_appearance.icon_state = icon_state
 	underlay_appearance.dir = adjacency_dir
 	return TRUE
 
 /turf/proc/add_blueprints(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	var/image/I = new
 	I.appearance = AM.appearance
 	I.appearance_flags = RESET_COLOR|RESET_ALPHA|RESET_TRANSFORM
@@ -434,10 +502,14 @@
 
 
 /turf/proc/add_blueprints_preround(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(!SSticker.HasRoundStarted())
 		add_blueprints(AM)
 
 /turf/proc/empty(turf_type=/turf/open/space, baseturf_type, list/ignore_typecache, forceop = FALSE)
+	procstart = null
+	src.procstart = null
 	// Remove all atoms except observers, landmarks, docking ports
 	var/static/list/ignored_atoms = typecacheof(list(/mob/dead, /obj/effect/landmark, /obj/docking_port, /atom/movable/lighting_object))
 	var/list/allowed_contents = typecache_filter_list_reverse(GetAllContentsIgnoring(ignore_typecache), ignored_atoms)
@@ -453,9 +525,13 @@
 	SSair.add_to_active(newT,1)
 
 /turf/proc/is_transition_turf()
+	procstart = null
+	src.procstart = null
 	return
 
 /turf/acid_act(acidpwr, acid_volume)
+	procstart = null
+	src.procstart = null
 	. = 1
 	var/acid_type = /obj/effect/acid
 	if(acidpwr >= 200) //alien acid power
@@ -475,10 +551,14 @@
 
 
 /turf/proc/acid_melt()
+	procstart = null
+	src.procstart = null
 	return
 
 
 /turf/proc/copyTurf(turf/T)
+	procstart = null
+	src.procstart = null
 	if(T.type != type)
 		var/obj/O
 		if(underlays.len)	//we have underlays, which implies some sort of transparency, so we want to a snapshot of the previous turf as an underlay
@@ -501,6 +581,8 @@
 	return T
 
 /turf/handle_fall(mob/faller, forced)
+	procstart = null
+	src.procstart = null
 	faller.lying = pick(90, 270)
 	if(!forced)
 		return
@@ -509,6 +591,8 @@
 	faller.drop_all_held_items()
 
 /turf/proc/add_decal(decal,group)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(decals)
 	if(!decals[group])
 		decals[group] = list()
@@ -516,11 +600,15 @@
 	add_overlay(decals[group])
 
 /turf/proc/remove_decal(group)
+	procstart = null
+	src.procstart = null
 	LAZYINITLIST(decals)
 	cut_overlay(decals[group])
 	decals[group] = null
 
 /turf/proc/photograph(limit=20)
+	procstart = null
+	src.procstart = null
 	var/image/I = new()
 	I.add_overlay(src)
 	for(var/V in contents)
@@ -535,4 +623,6 @@
 	return I
 
 /turf/AllowDrop()
+	procstart = null
+	src.procstart = null
 	return TRUE

@@ -20,11 +20,15 @@
 	var/obj/item/internal_storage //what we're storing within ourself
 
 /mob/living/simple_animal/hostile/guardian/dextrous/death(gibbed)
+	procstart = null
+	src.procstart = null
 	..()
 	if(internal_storage)
 		dropItemToGround(internal_storage)
 
 /mob/living/simple_animal/hostile/guardian/dextrous/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	if(dextrous)
 		var/msg = "<span class='info'>*---------*\nThis is [icon2html(src)] \a <b>[src]</b>!\n"
 		msg += "[desc]\n"
@@ -47,18 +51,24 @@
 		..()
 
 /mob/living/simple_animal/hostile/guardian/dextrous/Recall(forced)
+	procstart = null
+	src.procstart = null
 	if(!summoner || loc == summoner || (cooldown > world.time && !forced))
 		return FALSE
 	drop_all_held_items()
 	return ..() //lose items, then return
 
 /mob/living/simple_animal/hostile/guardian/dextrous/snapback()
+	procstart = null
+	src.procstart = null
 	if(summoner && !(get_dist(get_turf(summoner),get_turf(src)) <= range))
 		drop_all_held_items()
 		..() //lose items, then return
 
 //SLOT HANDLING BULLSHIT FOR INTERNAL STORAGE
 /mob/living/simple_animal/hostile/guardian/dextrous/doUnEquip(obj/item/I, force)
+	procstart = null
+	src.procstart = null
 	if(..())
 		update_inv_hands()
 		if(I == internal_storage)
@@ -68,6 +78,8 @@
 	return 0
 
 /mob/living/simple_animal/hostile/guardian/dextrous/can_equip(obj/item/I, slot)
+	procstart = null
+	src.procstart = null
 	switch(slot)
 		if(slot_generic_dextrous_storage)
 			if(internal_storage)
@@ -76,6 +88,8 @@
 	..()
 
 /mob/living/simple_animal/hostile/guardian/dextrous/equip_to_slot(obj/item/I, slot)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -87,16 +101,24 @@
 			to_chat(src, "<span class='danger'>You are trying to equip this item to an unsupported inventory slot. Report this to a coder!</span>")
 
 /mob/living/simple_animal/hostile/guardian/dextrous/getBackSlot()
+	procstart = null
+	src.procstart = null
 	return slot_generic_dextrous_storage
 
 /mob/living/simple_animal/hostile/guardian/dextrous/getBeltSlot()
+	procstart = null
+	src.procstart = null
 	return slot_generic_dextrous_storage
 
 /mob/living/simple_animal/hostile/guardian/dextrous/proc/update_inv_internal_storage()
+	procstart = null
+	src.procstart = null
 	if(internal_storage && client && hud_used && hud_used.hud_shown)
 		internal_storage.screen_loc = ui_id
 		client.screen += internal_storage
 
 /mob/living/simple_animal/hostile/guardian/dextrous/regenerate_icons()
+	procstart = null
+	src.procstart = null
 	..()
 	update_inv_internal_storage()

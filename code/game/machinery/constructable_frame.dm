@@ -8,12 +8,16 @@
 	var/state = 1
 
 /obj/structure/frame/examine(user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(circuit)
 		to_chat(user, "It has \a [circuit] installed.")
 
 
 /obj/structure/frame/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		new /obj/item/stack/sheet/metal(loc, 5)
 		if(circuit)
@@ -29,6 +33,8 @@
 	var/list/req_component_names = null // user-friendly names of components
 
 /obj/structure/frame/machine/examine(user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(state == 3 && req_components && req_component_names)
 		var/hasContent = 0
@@ -49,6 +55,8 @@
 			to_chat(user, "It does not require any more components.")
 
 /obj/structure/frame/machine/proc/update_namelist()
+	procstart = null
+	src.procstart = null
 	if(!req_components)
 		return
 
@@ -66,12 +74,16 @@
 			req_component_names[tname] = initial(O.name)
 
 /obj/structure/frame/machine/proc/get_req_components_amt()
+	procstart = null
+	src.procstart = null
 	var/amt = 0
 	for(var/path in req_components)
 		amt += req_components[path]
 	return amt
 
 /obj/structure/frame/machine/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	switch(state)
 		if(1)
 			if(istype(P, /obj/item/circuitboard/machine))
@@ -251,6 +263,8 @@
 
 
 /obj/structure/frame/machine/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(state >= 2)
 			new /obj/item/stack/cable_coil(loc , 5)

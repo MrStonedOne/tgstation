@@ -11,13 +11,19 @@
 	silent = TRUE
 
 /datum/antagonist/clockcult/Destroy()
+	procstart = null
+	src.procstart = null
 	qdel(hierophant_network)
 	return ..()
 
 /datum/antagonist/clockcult/get_team()
+	procstart = null
+	src.procstart = null
 	return clock_team
 
 /datum/antagonist/clockcult/create_team(datum/objective_team/clockcult/new_team)
+	procstart = null
+	src.procstart = null
 	if(!new_team && make_team)
 		//TODO blah blah same as the others, allow multiple
 		for(var/datum/antagonist/clockcult/H in GLOB.antagonists)
@@ -31,6 +37,8 @@
 	clock_team = new_team
 
 /datum/antagonist/clockcult/can_be_owned(datum/mind/new_owner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(.)
 		if(iscyborg(new_owner.current))
@@ -57,6 +65,8 @@
 				flash_color(new_owner.current, flash_color = list("#BE8700", "#BE8700", "#BE8700", rgb(0,0,0)), flash_time = 5)
 
 /datum/antagonist/clockcult/greet()
+	procstart = null
+	src.procstart = null
 	if(!owner.current || silent)
 		return
 	owner.current.visible_message("<span class='heavy_brass'>[owner.current]'s eyes glow a blazing yellow!</span>", null, null, 7, owner.current) //don't show the owner this message
@@ -65,6 +75,8 @@
 	owner.current.playsound_local(get_turf(owner.current), 'sound/ambience/antag/clockcultalr.ogg', 70, FALSE, pressure_affected = FALSE)
 
 /datum/antagonist/clockcult/on_gain()
+	procstart = null
+	src.procstart = null
 	var/mob/living/current = owner.current
 	SSticker.mode.servants_of_ratvar += owner
 	SSticker.mode.update_servant_icons_added(owner)
@@ -88,6 +100,8 @@
 	owner.memory += "<b>Ratvar's will:</b> [CLOCKCULT_OBJECTIVE]<br>" //Memorize the objectives
 
 /datum/antagonist/clockcult/apply_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	var/mob/living/current = owner.current
 	if(istype(mob_override))
@@ -140,6 +154,8 @@
 		current.add_overlay(mutable_appearance('icons/effects/genetics.dmi', "servitude", -MUTATIONS_LAYER))
 
 /datum/antagonist/clockcult/remove_innate_effects(mob/living/mob_override)
+	procstart = null
+	src.procstart = null
 	var/mob/living/current = owner.current
 	if(istype(mob_override))
 		current = mob_override
@@ -172,6 +188,8 @@
 	temp_owner.regenerate_icons()
 
 /datum/antagonist/clockcult/on_removal()
+	procstart = null
+	src.procstart = null
 	SSticker.mode.servants_of_ratvar -= owner
 	SSticker.mode.update_servant_icons_removed(owner)
 	if(!silent)
@@ -191,11 +209,15 @@
 	var/datum/mind/eminence
 
 /datum/objective_team/clockcult/proc/check_clockwork_victory()
+	procstart = null
+	src.procstart = null
 	if(GLOB.clockwork_gateway_activated)
 		return TRUE
 	return FALSE
 
 /datum/objective_team/clockcult/roundend_report()
+	procstart = null
+	src.procstart = null
 	var/list/parts = list()
 	
 	if(check_clockwork_victory())

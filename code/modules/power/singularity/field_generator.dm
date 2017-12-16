@@ -40,6 +40,8 @@ field_generator power level display
 	var/clean_up = 0
 
 /obj/machinery/field/generator/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 	if(warming_up)
 		add_overlay("+a[warming_up]")
@@ -50,16 +52,22 @@ field_generator power level display
 
 
 /obj/machinery/field/generator/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	fields = list()
 	connected_gens = list()
 
 
 /obj/machinery/field/generator/process()
+	procstart = null
+	src.procstart = null
 	if(active == FG_ONLINE)
 		calc_power()
 
 /obj/machinery/field/generator/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(state == FG_WELDED)
 		if(get_dist(src, user) <= 1)//Need to actually touch the thing to turn it on
 			if(active >= FG_CHARGING)
@@ -77,6 +85,8 @@ field_generator power level display
 		to_chat(user, "<span class='warning'>[src] needs to be firmly secured to the floor first!</span>")
 
 /obj/machinery/field/generator/can_be_unfasten_wrench(mob/user, silent)
+	procstart = null
+	src.procstart = null
 	if(state == FG_WELDED)
 		if(!silent)
 			to_chat(user, "<span class='warning'>[src] is welded to the floor!</span>")
@@ -84,6 +94,8 @@ field_generator power level display
 	return ..()
 
 /obj/machinery/field/generator/default_unfasten_wrench(mob/user, obj/item/wrench/W, time = 20)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. == SUCCESSFUL_UNFASTEN)
 		if(anchored)
@@ -92,6 +104,8 @@ field_generator power level display
 			state = FG_UNSECURED
 
 /obj/machinery/field/generator/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(active)
 		to_chat(user, "<span class='warning'>[src] needs to be off!</span>")
 		return
@@ -128,6 +142,8 @@ field_generator power level display
 		return ..()
 
 /obj/machinery/field/generator/attack_animal(mob/living/simple_animal/M)
+	procstart = null
+	src.procstart = null
 	if(M.environment_smash & ENVIRONMENT_SMASH_RWALLS && active == FG_OFFLINE && state != FG_UNSECURED)
 		state = FG_UNSECURED
 		anchored = FALSE
@@ -138,16 +154,22 @@ field_generator power level display
 		step(src, get_dir(M, src))
 
 /obj/machinery/field/generator/emp_act()
+	procstart = null
+	src.procstart = null
 	return 0
 
 
 /obj/machinery/field/generator/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	if(active)
 		return 0
 	else
 		..()
 
 /obj/machinery/field/generator/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(Proj.flag != "bullet")
 		power = min(power + Proj.damage, field_generator_max_power)
 		check_power_level()
@@ -155,17 +177,23 @@ field_generator power level display
 
 
 /obj/machinery/field/generator/Destroy()
+	procstart = null
+	src.procstart = null
 	cleanup()
 	return ..()
 
 
 /obj/machinery/field/generator/proc/check_power_level()
+	procstart = null
+	src.procstart = null
 	var/new_level = round(num_power_levels * power / field_generator_max_power)
 	if(new_level != power_level)
 		power_level = new_level
 		update_icon()
 
 /obj/machinery/field/generator/proc/turn_off()
+	procstart = null
+	src.procstart = null
 	active = FG_OFFLINE
 	spawn(1)
 		cleanup()
@@ -175,6 +203,8 @@ field_generator power level display
 			update_icon()
 
 /obj/machinery/field/generator/proc/turn_on()
+	procstart = null
+	src.procstart = null
 	active = FG_CHARGING
 	spawn(1)
 		while (warming_up<3 && active)
@@ -186,6 +216,8 @@ field_generator power level display
 
 
 /obj/machinery/field/generator/proc/calc_power(set_power_draw)
+	procstart = null
+	src.procstart = null
 	var/power_draw = 2 + fields.len
 	if(set_power_draw)
 		power_draw = set_power_draw
@@ -203,6 +235,8 @@ field_generator power level display
 
 //This could likely be better, it tends to start loopin if you have a complex generator loop setup.  Still works well enough to run the engine fields will likely recode the field gens and fields sometime -Mport
 /obj/machinery/field/generator/proc/draw_power(draw = 0, failsafe = FALSE, obj/machinery/field/generator/G = null, obj/machinery/field/generator/last = null)
+	procstart = null
+	src.procstart = null
 	if((G && (G == src)) || (failsafe >= 8))//Loopin, set fail
 		return 0
 	else
@@ -232,6 +266,8 @@ field_generator power level display
 
 
 /obj/machinery/field/generator/proc/start_fields()
+	procstart = null
+	src.procstart = null
 	if(state != FG_WELDED || !anchored)
 		turn_off()
 		return
@@ -248,6 +284,8 @@ field_generator power level display
 
 
 /obj/machinery/field/generator/proc/setup_field(NSEW)
+	procstart = null
+	src.procstart = null
 	var/turf/T = loc
 	if(!istype(T))
 		return 0
@@ -299,6 +337,8 @@ field_generator power level display
 
 
 /obj/machinery/field/generator/proc/cleanup()
+	procstart = null
+	src.procstart = null
 	clean_up = 1
 	for (var/F in fields)
 		qdel(F)
@@ -326,10 +366,14 @@ field_generator power level display
 			O.last_warning = world.time
 
 /obj/machinery/field/generator/shock(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(fields.len)
 		..()
 
 /obj/machinery/field/generator/bump_field(atom/movable/AM as mob|obj)
+	procstart = null
+	src.procstart = null
 	if(fields.len)
 		..()
 

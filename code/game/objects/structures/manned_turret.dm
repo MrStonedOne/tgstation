@@ -22,6 +22,8 @@
 	var/list/calculated_projectile_vars
 
 /obj/machinery/manned_turret/Destroy()
+	procstart = null
+	src.procstart = null
 	target = null
 	target_turf = null
 	..()
@@ -29,6 +31,8 @@
 //BUCKLE HOOKS
 
 /obj/machinery/manned_turret/unbuckle_mob(mob/living/buckled_mob,force = FALSE)
+	procstart = null
+	src.procstart = null
 	playsound(src,'sound/mecha/mechmove01.ogg', 50, 1)
 	for(var/obj/item/I in buckled_mob.held_items)
 		if(istype(I, /obj/item/gun_control))
@@ -43,6 +47,8 @@
 	STOP_PROCESSING(SSfastprocess, src)
 
 /obj/machinery/manned_turret/user_buckle_mob(mob/living/M, mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated() || !istype(user))
 		return
 	M.forceMove(get_turf(src))
@@ -68,10 +74,14 @@
 	START_PROCESSING(SSfastprocess, src)
 
 /obj/machinery/manned_turret/process()
+	procstart = null
+	src.procstart = null
 	if (!update_positioning())
 		return PROCESS_KILL
 
 /obj/machinery/manned_turret/proc/update_positioning()
+	procstart = null
+	src.procstart = null
 	if (!LAZYLEN(buckled_mobs))
 		return FALSE
 	var/mob/living/controller = buckled_mobs[1]
@@ -86,6 +96,8 @@
 			calculated_projectile_vars = calculate_projectile_angle_and_pixel_offsets(controller, C.mouseParams)
 
 /obj/machinery/manned_turret/proc/direction_track(mob/user, atom/targeted)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated())
 		return
 	setDir(get_dir(src,targeted))
@@ -125,6 +137,8 @@
 			user.pixel_y = -4
 
 /obj/machinery/manned_turret/proc/checkfire(atom/targeted_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	target = targeted_atom
 	if(target == user || user.incapacitated() || target == get_turf(src))
 		return
@@ -139,11 +153,15 @@
 		volley(user)
 
 /obj/machinery/manned_turret/proc/volley(mob/user)
+	procstart = null
+	src.procstart = null
 	target_turf = get_turf(target)
 	for(var/i in 1 to number_of_shots)
 		addtimer(CALLBACK(src, /obj/machinery/manned_turret/.proc/fire_helper, user), i*rate_of_fire)
 
 /obj/machinery/manned_turret/proc/fire_helper(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.incapacitated() || !(user in buckled_mobs))
 		return
 	update_positioning()						//REFRESH MOUSE TRACKING!!
@@ -168,6 +186,8 @@
 	projectile_type = /obj/item/projectile/bullet/manned_turret
 
 /obj/machinery/manned_turret/ultimate/checkfire(atom/targeted_atom, mob/user)
+	procstart = null
+	src.procstart = null
 	target = targeted_atom
 	if(target == user || target == get_turf(src))
 		return
@@ -190,23 +210,33 @@
         return INITIALIZE_HINT_QDEL
 
 /obj/item/gun_control/Destroy()
+	procstart = null
+	src.procstart = null
 	turret = null
 	..()
 
 /obj/item/gun_control/CanItemAutoclick()
+	procstart = null
+	src.procstart = null
 	return TRUE
 
 /obj/item/gun_control/attack_obj(obj/O, mob/living/user)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	O.attacked_by(src, user)
 
 /obj/item/gun_control/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	M.lastattacker = user.real_name
 	M.lastattackerckey = user.ckey
 	M.attacked_by(src, user)
 	add_fingerprint(user)
 
 /obj/item/gun_control/afterattack(atom/targeted_atom, mob/user, flag, params)
+	procstart = null
+	src.procstart = null
 	..()
 	var/obj/machinery/manned_turret/E = user.buckled
 	E.calculated_projectile_vars = calculate_projectile_angle_and_pixel_offsets(user, params)

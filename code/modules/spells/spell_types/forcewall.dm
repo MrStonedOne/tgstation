@@ -14,6 +14,8 @@
 	var/wall_type = /obj/effect/forcefield/wizard
 
 /obj/effect/proc_holder/spell/targeted/forcewall/cast(list/targets,mob/user = usr)
+	procstart = null
+	src.procstart = null
 	new wall_type(get_turf(user),user)
 	if(user.dir == SOUTH || user.dir == NORTH)
 		new wall_type(get_step(user, EAST),user)
@@ -27,11 +29,15 @@
 	var/mob/wizard
 
 /obj/effect/forcefield/wizard/Initialize(mapload, mob/summoner)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	wizard = summoner
 	QDEL_IN(src, 300)
 
 /obj/effect/forcefield/wizard/CanPass(atom/movable/mover, turf/target)
+	procstart = null
+	src.procstart = null
 	if(mover == wizard)
 		return 1
 	return 0

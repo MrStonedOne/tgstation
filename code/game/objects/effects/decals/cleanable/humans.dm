@@ -9,6 +9,8 @@
 	bloodiness = MAX_SHOE_BLOODINESS
 
 /obj/effect/decal/cleanable/blood/replace_decal(obj/effect/decal/cleanable/blood/C)
+	procstart = null
+	src.procstart = null
 	if (C.blood_DNA)
 		blood_DNA |= C.blood_DNA.Copy()
 	..()
@@ -19,6 +21,8 @@
 	bloodiness = 0
 
 /obj/effect/decal/cleanable/blood/old/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state += "-old" //This IS necessary because the parent /blood type uses icon randomization.
 	blood_DNA["Non-human DNA"] = "A+"
@@ -40,6 +44,8 @@
 	blood_DNA = list()
 
 /obj/effect/decal/cleanable/trail_holder/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	return 1
 
 
@@ -53,13 +59,19 @@
 	mergeable_decal = FALSE
 
 /obj/effect/decal/cleanable/blood/gibs/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	reagents.add_reagent("liquidgibs", 5)
 
 /obj/effect/decal/cleanable/blood/gibs/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	return
 
 /obj/effect/decal/cleanable/blood/gibs/proc/streak(list/directions)
+	procstart = null
+	src.procstart = null
 	set waitfor = 0
 	var/direction = pick(directions)
 	for(var/i = 0, i < pick(1, 200; 2, 150; 3, 50), i++)
@@ -97,6 +109,8 @@
 	bloodiness = 0
 
 /obj/effect/decal/cleanable/blood/gibs/old/Initialize(mapload, list/datum/disease/diseases)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	setDir(pick(1,2,4,8))
 	icon_state += "-old"
@@ -113,6 +127,8 @@
 
 
 /obj/effect/decal/cleanable/blood/drip/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	return 1
 
 
@@ -129,6 +145,8 @@
 	var/list/shoe_types = list()
 
 /obj/effect/decal/cleanable/blood/footprints/Crossed(atom/movable/O)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(O))
 		var/mob/living/carbon/human/H = O
@@ -141,6 +159,8 @@
 				update_icon()
 
 /obj/effect/decal/cleanable/blood/footprints/Uncrossed(atom/movable/O)
+	procstart = null
+	src.procstart = null
 	..()
 	if(ishuman(O))
 		var/mob/living/carbon/human/H = O
@@ -154,6 +174,8 @@
 			
 
 /obj/effect/decal/cleanable/blood/footprints/update_icon()
+	procstart = null
+	src.procstart = null
 	cut_overlays()
 
 	for(var/Ddir in GLOB.cardinals)
@@ -172,6 +194,8 @@
 
 
 /obj/effect/decal/cleanable/blood/footprints/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(shoe_types.len)
 		. += "You recognise the footprints as belonging to:\n"
@@ -182,11 +206,15 @@
 	to_chat(user, .)
 
 /obj/effect/decal/cleanable/blood/footprints/replace_decal(obj/effect/decal/cleanable/C)
+	procstart = null
+	src.procstart = null
 	if(blood_state != C.blood_state) //We only replace footprints of the same type as us
 		return
 	..()
 
 /obj/effect/decal/cleanable/blood/footprints/can_bloodcrawl_in()
+	procstart = null
+	src.procstart = null
 	if((blood_state != BLOOD_STATE_OIL) && (blood_state != BLOOD_STATE_NOT_BLOODY))
 		return 1
 	return 0

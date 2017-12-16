@@ -1,8 +1,12 @@
 
 /mob/living/silicon/pai/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	take_holo_damage(50/severity)
 	Knockdown(400/severity)
 	silent = max(30/severity, silent)
@@ -11,6 +15,8 @@
 	//Need more effects that aren't instadeath or permanent law corruption.
 
 /mob/living/silicon/pai/ex_act(severity, target)
+	procstart = null
+	src.procstart = null
 	take_holo_damage(severity * 50)
 	switch(severity)
 		if(1)	//RIP
@@ -24,6 +30,8 @@
 			Knockdown(200)
 
 /mob/living/silicon/pai/attack_hand(mob/living/carbon/human/user)
+	procstart = null
+	src.procstart = null
 	switch(user.a_intent)
 		if("help")
 			visible_message("<span class='notice'>[user] gently pats [src] on the head, eliciting an off-putting buzzing from its holographic field.</span>")
@@ -42,6 +50,8 @@
 				take_holo_damage(2)
 
 /mob/living/silicon/pai/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(Proj.stun)
 		fold_in(force = TRUE)
 		src.visible_message("<span class='warning'>The electrically-charged projectile disrupts [src]'s holomatrix, forcing [src] to fold in!</span>")
@@ -54,9 +64,13 @@
 	to_chat(src, "<span class='warning'>Your holochassis stutters and warps intensely as you attempt to interact with the object, forcing you to cease lest the field fail.</span>")
 
 /mob/living/silicon/pai/IgniteMob(var/mob/living/silicon/pai/P)
+	procstart = null
+	src.procstart = null
 	return FALSE //No we're not flammable
 
 /mob/living/silicon/pai/proc/take_holo_damage(amount)
+	procstart = null
+	src.procstart = null
 	emitterhealth = Clamp((emitterhealth - amount), -50, emittermaxhealth)
 	if(emitterhealth < 0)
 		fold_in(force = TRUE)
@@ -65,58 +79,96 @@
 	return amount
 
 /mob/living/silicon/pai/adjustBruteLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return take_holo_damage(amount)
 
 /mob/living/silicon/pai/adjustFireLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return take_holo_damage(amount)
 
 /mob/living/silicon/pai/adjustToxLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/adjustOxyLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/adjustCloneLoss(amount, updating_health = TRUE, forced = FALSE)
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/adjustStaminaLoss(amount)
+	procstart = null
+	src.procstart = null
 	take_holo_damage(amount & 0.25)
 
 /mob/living/silicon/pai/adjustBrainLoss(amount)
+	procstart = null
+	src.procstart = null
 	Knockdown(amount * 0.2)
 
 /mob/living/silicon/pai/getBruteLoss()
+	procstart = null
+	src.procstart = null
 	return emittermaxhealth - emitterhealth
 
 /mob/living/silicon/pai/getFireLoss()
+	procstart = null
+	src.procstart = null
 	return emittermaxhealth - emitterhealth
 
 /mob/living/silicon/pai/getToxLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/getOxyLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/getCloneLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/getBrainLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/getStaminaLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/setCloneLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/setBrainLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/setStaminaLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/setToxLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE
 
 /mob/living/silicon/pai/setOxyLoss()
+	procstart = null
+	src.procstart = null
 	return FALSE

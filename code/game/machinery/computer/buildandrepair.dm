@@ -4,6 +4,8 @@
 	state = 0
 
 /obj/structure/frame/computer/attackby(obj/item/P, mob/user, params)
+	procstart = null
+	src.procstart = null
 	add_fingerprint(user)
 	switch(state)
 		if(0)
@@ -137,6 +139,8 @@
 
 
 /obj/structure/frame/computer/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(state == 4)
 			new /obj/item/shard(drop_location())
@@ -146,6 +150,8 @@
 	..()
 
 /obj/structure/frame/computer/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!in_range(src, user) || !isliving(user) || user.incapacitated())
 		return

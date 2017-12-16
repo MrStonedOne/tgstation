@@ -10,6 +10,8 @@
 	foodtype = VEGETABLES
 
 /obj/item/reagent_containers/food/snacks/salad/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	eatverb = pick("crunch","devour","nibble","gnaw","gobble","chomp") //who the fuck gnaws and devours on a salad
 

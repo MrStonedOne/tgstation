@@ -9,6 +9,8 @@
 	var/mode = 0
 
 /obj/item/hand_labeler/suicide_act(mob/user)
+	procstart = null
+	src.procstart = null
 	user.visible_message("<span class='suicide'>[user] is pointing [src] at [user.p_them()]self. [user.p_theyre(TRUE)] going to label [user.p_them()]self as a suicide!</span>")
 	labels_left = max(labels_left - 1, 0)
 
@@ -36,6 +38,8 @@
 	return OXYLOSS
 
 /obj/item/hand_labeler/afterattack(atom/A, mob/user,proximity)
+	procstart = null
+	src.procstart = null
 	if(!proximity)
 		return
 	if(!mode)	//if it's off, give up.
@@ -61,6 +65,8 @@
 
 
 /obj/item/hand_labeler/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You don't have the dexterity to use [src]!</span>")
 		return
@@ -79,6 +85,8 @@
 		to_chat(user, "<span class='notice'>You turn off [src].</span>")
 
 /obj/item/hand_labeler/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(I, /obj/item/hand_labeler_refill))
 		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
@@ -89,6 +97,8 @@
 	name = "cyborg-hand labeler"
 
 /obj/item/hand_labeler/borg/afterattack(atom/A, mob/user, proximity)
+	procstart = null
+	src.procstart = null
 	..(A, user, proximity)
 	if(!iscyborg(user))
 		return

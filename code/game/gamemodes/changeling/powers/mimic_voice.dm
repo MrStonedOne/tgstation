@@ -9,6 +9,8 @@
 
 // Fake Voice
 /obj/effect/proc_holder/changeling/mimicvoice/sting_action(mob/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	if(changeling.mimicing)
 		changeling.mimicing = ""

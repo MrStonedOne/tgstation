@@ -21,6 +21,8 @@
 	var/currentSection = PRE_TITLE
 
 /obj/item/book/codex_gigas/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(is_blind(user))
 		to_chat(user, "<span class='warning'>As you are trying to read, you suddenly feel very stupid.</span>")
 		return
@@ -39,6 +41,8 @@
 
 
 /obj/item/book/codex_gigas/proc/perform_research(mob/user, devilName)
+	procstart = null
+	src.procstart = null
 	if(!devilName)
 		user.visible_message("[user] closes [title] without looking anything up.")
 		return
@@ -63,12 +67,18 @@
 	inUse = FALSE
 
 /obj/item/book/codex_gigas/proc/display_devil(datum/antagonist/devil/devil, mob/reader, devilName)
+	procstart = null
+	src.procstart = null
 	reader << browse("Information on [devilName]<br><br><br>[GLOB.lawlorify[LORE][devil.ban]]<br>[GLOB.lawlorify[LORE][devil.bane]]<br>[GLOB.lawlorify[LORE][devil.obligation]]<br>[GLOB.lawlorify[LORE][devil.banish]]<br>[devil.ascendable?"This devil may ascend given enough souls.":""]", "window=book[window_size != null ? ";size=[window_size]" : ""]")
 
 /obj/item/book/codex_gigas/proc/ask_name(mob/reader)
+	procstart = null
+	src.procstart = null
 	ui_interact(reader)
 
 /obj/item/book/codex_gigas/ui_act(action, params)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return
 	if(!action)
@@ -103,6 +113,8 @@
 		ui.open()
 
 /obj/item/book/codex_gigas/ui_data(mob/user)
+	procstart = null
+	src.procstart = null
 	var/list/data = list()
 	data["name"]=currentName
 	data["currentSection"]=currentSection

@@ -15,6 +15,8 @@
 	var/overrides_aicore_laws = FALSE // Whether the laws on the MMI, if any, override possible pre-existing laws loaded on the AI core.
 
 /obj/item/device/mmi/update_icon()
+	procstart = null
+	src.procstart = null
 	if(brain)
 		if(istype(brain, /obj/item/organ/brain/alien))
 			if(brainmob && brainmob.stat == DEAD)
@@ -32,12 +34,16 @@
 		icon_state = "mmi_empty"
 
 /obj/item/device/mmi/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	radio = new(src) //Spawns a radio inside the MMI.
 	radio.broadcasting = 0 //researching radio mmis turned the robofabs into radios because this didnt start as 0.
 	laws.set_laws_config()
 
 /obj/item/device/mmi/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	user.changeNext_move(CLICK_CD_MELEE)
 	if(istype(O, /obj/item/organ/brain)) //Time to stick a brain in it --NEO
 		var/obj/item/organ/brain/newbrain = O
@@ -79,6 +85,8 @@
 
 
 /obj/item/device/mmi/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!brain)
 		radio.on = !radio.on
 		to_chat(user, "<span class='notice'>You toggle the MMI's radio system [radio.on==1 ? "on" : "off"].</span>")
@@ -89,6 +97,8 @@
 		name = "Man-Machine Interface"
 
 /obj/item/device/mmi/proc/eject_brain(mob/user)
+	procstart = null
+	src.procstart = null
 	brainmob.container = null //Reset brainmob mmi var.
 	brainmob.forceMove(brain) //Throw mob into brain.
 	brainmob.stat = DEAD
@@ -131,9 +141,13 @@
 	return
 
 /obj/item/device/mmi/proc/replacement_ai_name()
+	procstart = null
+	src.procstart = null
 	return brainmob.name
 
 /obj/item/device/mmi/verb/Toggle_Listening()
+	procstart = null
+	src.procstart = null
 	set name = "Toggle Listening"
 	set desc = "Toggle listening channel on or off."
 	set category = "MMI"
@@ -150,6 +164,8 @@
 	to_chat(brainmob, "<span class='notice'>Radio is [radio.listening==1 ? "now" : "no longer"] receiving broadcast.</span>")
 
 /obj/item/device/mmi/emp_act(severity)
+	procstart = null
+	src.procstart = null
 	if(!brainmob || iscyborg(loc))
 		return
 	else
@@ -164,6 +180,8 @@
 	..()
 
 /obj/item/device/mmi/Destroy()
+	procstart = null
+	src.procstart = null
 	if(iscyborg(loc))
 		var/mob/living/silicon/robot/borg = loc
 		borg.mmi = null
@@ -181,11 +199,15 @@
 	return ..()
 
 /obj/item/device/mmi/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(brain)
 		eject_brain()
 	qdel(src)
 
 /obj/item/device/mmi/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(brainmob)
 		var/mob/living/brain/B = brainmob
@@ -199,6 +221,8 @@
 			to_chat(user, "<span class='notice'>The MMI indicates the brain is active.</span>")
 
 /obj/item/device/mmi/relaymove()
+	procstart = null
+	src.procstart = null
 	return //so that the MMI won't get a warning about not being able to move if it tries to move
 
 /obj/item/device/mmi/syndie
@@ -207,6 +231,8 @@
 	overrides_aicore_laws = TRUE
 
 /obj/item/device/mmi/syndie/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	laws = new /datum/ai_laws/syndicate_override()
 	radio.on = 0

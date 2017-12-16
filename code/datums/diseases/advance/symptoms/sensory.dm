@@ -33,6 +33,8 @@ Bonus
 					  <b>Transmission 8:</b> Purges alcohol in the bloodstream."
 
 /datum/symptom/mind_restoration/Start(datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	if(A.properties["resistance"] >= 6) //heal brain damage
@@ -43,6 +45,8 @@ Bonus
 		purge_alcohol = TRUE
 
 /datum/symptom/mind_restoration/Activate(var/datum/disease/advance/A)
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 	var/mob/living/M = A.affected_mob

@@ -17,6 +17,8 @@
 	var/turf/myturf
 
 /atom/movable/lighting_object/Initialize(mapload)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	verbs.Cut()
 
@@ -33,6 +35,8 @@
 	GLOB.lighting_update_objects += src
 
 /atom/movable/lighting_object/Destroy(var/force)
+	procstart = null
+	src.procstart = null
 	if (force)
 		GLOB.lighting_update_objects     -= src
 		if (loc != myturf)
@@ -50,6 +54,8 @@
 		return QDEL_HINT_LETMELIVE
 
 /atom/movable/lighting_object/proc/update()
+	procstart = null
+	src.procstart = null
 	if (loc != myturf)
 		if (loc)
 			var/turf/oldturf = get_turf(myturf)
@@ -129,21 +135,33 @@
 // Variety of overrides so the overlays don't get affected by weird things.
 
 /atom/movable/lighting_object/ex_act(severity)
+	procstart = null
+	src.procstart = null
 	return 0
 
 /atom/movable/lighting_object/singularity_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/lighting_object/singularity_pull()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/lighting_object/blob_act()
+	procstart = null
+	src.procstart = null
 	return
 
 /atom/movable/lighting_object/onTransitZ()
+	procstart = null
+	src.procstart = null
 	return
 
 // Override here to prevent things accidentally moving around overlays.
 /atom/movable/lighting_object/forceMove(atom/destination, var/no_tp=FALSE, var/harderforce = FALSE)
+	procstart = null
+	src.procstart = null
 	if(harderforce)
 		. = ..()

@@ -10,11 +10,15 @@
 	var/flipped = 0
 
 /obj/item/clothing/head/soft/dropped()
+	procstart = null
+	src.procstart = null
 	src.icon_state = "[item_color]soft"
 	src.flipped=0
 	..()
 
 /obj/item/clothing/head/soft/verb/flipcap()
+	procstart = null
+	src.procstart = null
 	set category = "Object"
 	set name = "Flip cap"
 
@@ -22,6 +26,8 @@
 
 
 /obj/item/clothing/head/soft/AltClick(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!user.canUseTopic(src, be_close=TRUE))
 		to_chat(user, "<span class='warning'>You can't do that right now!</span>")
@@ -31,6 +37,8 @@
 
 
 /obj/item/clothing/head/soft/proc/flip(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.canmove && !user.stat && !user.restrained())
 		src.flipped = !src.flipped
 		if(src.flipped)
@@ -42,6 +50,8 @@
 		usr.update_inv_head()	//so our mob-overlays update
 
 /obj/item/clothing/head/soft/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	to_chat(user, "<span class='notice'>Alt-click the cap to flip it [flipped ? "forwards" : "backwards"].</span>")
 

@@ -15,6 +15,8 @@
 
 /obj/item/stack/light_w/attackby(obj/item/O, mob/user, params)
 
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/wirecutters))
 		var/obj/item/stack/cable_coil/CC = new (user.loc)
 		CC.amount = 5

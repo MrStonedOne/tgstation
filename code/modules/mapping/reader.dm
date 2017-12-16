@@ -30,6 +30,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
  *
  */
 /dmm_suite/load_map(dmm_file as file, x_offset as num, y_offset as num, z_offset as num, cropMap as num, measureOnly as num, no_changeturf as num, lower_crop_x as num,  lower_crop_y as num, upper_crop_x as num, upper_crop_y as num)
+	procstart = null
+	src.procstart = null
 	//How I wish for RAII
 	Master.StartLoadingMap()
 	space_key = null
@@ -44,6 +46,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 	Master.StopLoadingMap()
 
 /dmm_suite/proc/load_map_impl(dmm_file, x_offset, y_offset, z_offset, cropMap, measureOnly, no_changeturf, x_lower = -INFINITY, x_upper = INFINITY, y_lower = -INFINITY, y_upper = INFINITY)
+	procstart = null
+	src.procstart = null
 	var/tfile = dmm_file//the map file we're creating
 	if(isfile(tfile))
 		tfile = file2text(tfile)
@@ -199,6 +203,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
  *
  */
 /dmm_suite/proc/parse_grid(model as text, model_key as text, xcrd as num,ycrd as num,zcrd as num, no_changeturf as num)
+	procstart = null
+	src.procstart = null
 	/*Method parse_grid()
 	- Accepts a text string containing a comma separated list of type paths of the
 		same construction as those contained in a .dmm file, and instantiates them.
@@ -335,6 +341,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 
 //Instance an atom at (x,y,z) and gives it the variables in attributes
 /dmm_suite/proc/instance_atom(path,list/attributes, turf/crds, no_changeturf)
+	procstart = null
+	src.procstart = null
 	GLOB._preloader.setup(attributes, path)
 
 	if(crds)
@@ -353,12 +361,16 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 		SSatoms.map_loader_begin()
 
 /dmm_suite/proc/create_atom(path, crds)
+	procstart = null
+	src.procstart = null
 	set waitfor = FALSE
 	. = new path (crds)
 
 //text trimming (both directions) helper proc
 //optionally removes quotes before and after the text (for variable name)
 /dmm_suite/proc/trim_text(what as text,trim_quotes=0)
+	procstart = null
+	src.procstart = null
 	if(trim_quotes)
 		return trimQuotesRegex.Replace(what, "")
 	else
@@ -368,6 +380,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 //find the position of the next delimiter,skipping whatever is comprised between opening_escape and closing_escape
 //returns 0 if reached the last delimiter
 /dmm_suite/proc/find_next_delimiter_position(text as text,initial_position as num, delimiter=",",opening_escape="\"",closing_escape="\"")
+	procstart = null
+	src.procstart = null
 	var/position = initial_position
 	var/next_delimiter = findtext(text,delimiter,position,0)
 	var/next_opening = findtext(text,opening_escape,position,0)
@@ -384,6 +398,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 //return the filled list
 /dmm_suite/proc/readlist(text as text, delimiter=",")
 
+	procstart = null
+	src.procstart = null
 	var/list/to_return = list()
 
 	var/position
@@ -436,6 +452,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 	return to_return
 
 /dmm_suite/Destroy()
+	procstart = null
+	src.procstart = null
 	..()
 	return QDEL_HINT_HARDDEL_NOW
 
@@ -449,12 +467,16 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 	var/target_path
 
 /dmm_suite/preloader/proc/setup(list/the_attributes, path)
+	procstart = null
+	src.procstart = null
 	if(the_attributes.len)
 		GLOB.use_preloader = TRUE
 		attributes = the_attributes
 		target_path = path
 
 /dmm_suite/preloader/proc/load(atom/what)
+	procstart = null
+	src.procstart = null
 	for(var/attribute in attributes)
 		var/value = attributes[attribute]
 		if(islist(value))

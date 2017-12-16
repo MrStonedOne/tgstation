@@ -9,6 +9,8 @@
 	var/state = FLOODLIGHT_NEEDS_WRENCHING
 
 /obj/structure/floodlight_frame/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/wrench) && (state == FLOODLIGHT_NEEDS_WRENCHING))
 		to_chat(user, "<span class='notice'>You secure [src].</span>")
 		anchored = TRUE
@@ -53,12 +55,16 @@
 	light_power = 1.75
 
 /obj/machinery/power/floodlight/process()
+	procstart = null
+	src.procstart = null
 	if(avail(active_power_usage))
 		add_load(active_power_usage)
 	else
 		change_setting(1)
 
 /obj/machinery/power/floodlight/proc/change_setting(val, mob/user)
+	procstart = null
+	src.procstart = null
 	if((val < 1) || (val > light_setting_list.len))
 		return
 	active_power_usage = light_setting_list[val]
@@ -84,6 +90,8 @@
 		to_chat(user, "You set [src] to [setting_text].")
 
 /obj/machinery/power/floodlight/attackby(obj/item/O, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/wrench))
 		default_unfasten_wrench(user, O, time = 20)
 		change_setting(1)
@@ -95,6 +103,8 @@
 		. = ..()
 
 /obj/machinery/power/floodlight/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	var/current = setting
 	if(current == 1)
 		current = light_setting_list.len
@@ -104,10 +114,14 @@
 	..()
 
 /obj/machinery/power/floodlight/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	attack_hand(user)
 	..()
 
 /obj/machinery/power/floodlight/obj_break(damage_flag)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		playsound(loc, 'sound/effects/glassbr3.ogg', 100, 1)
 		var/obj/structure/floodlight_frame/F = new(loc)
@@ -116,4 +130,6 @@
 		qdel(src)
 
 /obj/machinery/power/floodlight/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
+	procstart = null
+	src.procstart = null
 	playsound(src, 'sound/effects/glasshit.ogg', 75, 1)

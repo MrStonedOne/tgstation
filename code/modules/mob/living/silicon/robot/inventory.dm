@@ -3,11 +3,15 @@
 
 //Returns the thing in our active hand (whatever is in our active module-slot, in this case)
 /mob/living/silicon/robot/get_active_held_item()
+	procstart = null
+	src.procstart = null
 	return module_active
 
 
 
 /mob/living/silicon/robot/proc/uneq_module(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(!O)
 		return 0
 	O.mouse_opacity = MOUSE_OPACITY_OPAQUE
@@ -43,6 +47,8 @@
 	return 1
 
 /mob/living/silicon/robot/proc/activate_module(obj/item/O)
+	procstart = null
+	src.procstart = null
 	. = FALSE
 	if(!(O in module.modules))
 		return
@@ -77,6 +83,8 @@
 
 
 /mob/living/silicon/robot/proc/observer_screen_update(obj/item/I,add = TRUE)
+	procstart = null
+	src.procstart = null
 	if(observers && observers.len)
 		for(var/M in observers)
 			var/mob/dead/observe = M
@@ -92,13 +100,19 @@
 					break
 
 /mob/living/silicon/robot/proc/uneq_active()
+	procstart = null
+	src.procstart = null
 	uneq_module(module_active)
 
 /mob/living/silicon/robot/proc/uneq_all()
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/I in held_items)
 		uneq_module(I)
 
 /mob/living/silicon/robot/proc/activated(obj/item/O)
+	procstart = null
+	src.procstart = null
 	if(O in held_items)
 		return TRUE
 	return FALSE
@@ -122,6 +136,8 @@
 
 //get_selected_module() - Returns the slot number of the currently selected module.  Returns 0 if no modules are selected.
 /mob/living/silicon/robot/proc/get_selected_module()
+	procstart = null
+	src.procstart = null
 	if(module_active)
 		return held_items.Find(module_active)
 
@@ -189,6 +205,8 @@
 
 //cycle_modules() - Cycles through the list of selected modules.
 /mob/living/silicon/robot/proc/cycle_modules()
+	procstart = null
+	src.procstart = null
 	var/slot_start = get_selected_module()
 	if(slot_start)
 		deselect_module(slot_start) //Only deselect if we have a selected slot.
@@ -211,4 +229,6 @@
 
 
 /mob/living/silicon/robot/swap_hand()
+	procstart = null
+	src.procstart = null
 	cycle_modules()

@@ -23,10 +23,14 @@ LINEN BINS
 	var/list/dream_messages = list("white")
 
 /obj/item/bedsheet/attack(mob/living/M, mob/user)
+	procstart = null
+	src.procstart = null
 	if(!attempt_initiate_surgery(src, M, user))
 		..()
 
 /obj/item/bedsheet/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!user.dropItemToGround(src))
 		return
 	if(layer == initial(layer))
@@ -39,6 +43,8 @@ LINEN BINS
 	return
 
 /obj/item/bedsheet/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/wirecutters) || I.is_sharp())
 		var/obj/item/stack/sheet/cloth/C = new (get_turf(src), 3)
 		transfer_fingerprints_to(C)
@@ -231,6 +237,8 @@ LINEN BINS
 	desc = "If you're reading this description ingame, something has gone wrong! Honk!"
 
 /obj/item/bedsheet/random/Initialize()
+	procstart = null
+	src.procstart = null
 	. = INITIALIZE_HINT_QDEL
 	..()
 	var/type = pick(typesof(/obj/item/bedsheet) - /obj/item/bedsheet/random)
@@ -250,6 +258,8 @@ LINEN BINS
 
 
 /obj/structure/bedsheetbin/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(amount < 1)
 		to_chat(user, "There are no bed sheets in the bin.")
@@ -260,6 +270,8 @@ LINEN BINS
 
 
 /obj/structure/bedsheetbin/update_icon()
+	procstart = null
+	src.procstart = null
 	switch(amount)
 		if(0)
 			icon_state = "linenbin-empty"
@@ -269,12 +281,16 @@ LINEN BINS
 			icon_state = "linenbin-full"
 
 /obj/structure/bedsheetbin/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	if(amount)
 		amount = 0
 		update_icon()
 	..()
 
 /obj/structure/bedsheetbin/attackby(obj/item/I, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/bedsheet))
 		if(!user.transferItemToLoc(I, src))
 			return
@@ -292,10 +308,14 @@ LINEN BINS
 
 
 /obj/structure/bedsheetbin/attack_paw(mob/user)
+	procstart = null
+	src.procstart = null
 	return attack_hand(user)
 
 
 /obj/structure/bedsheetbin/attack_hand(mob/user)
+	procstart = null
+	src.procstart = null
 	if(user.lying)
 		return
 	if(amount >= 1)
@@ -322,6 +342,8 @@ LINEN BINS
 
 	add_fingerprint(user)
 /obj/structure/bedsheetbin/attack_tk(mob/user)
+	procstart = null
+	src.procstart = null
 	if(amount >= 1)
 		amount--
 

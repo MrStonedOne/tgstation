@@ -47,6 +47,8 @@
  */
 
 /datum/disease/advance/New(var/process = 1, var/datum/disease/advance/D)
+	procstart = null
+	src.procstart = null
 	if(!istype(D))
 		D = null
 	// Generate symptoms if we weren't given any.
@@ -65,6 +67,8 @@
 	return
 
 /datum/disease/advance/Destroy()
+	procstart = null
+	src.procstart = null
 	if(processing)
 		for(var/datum/symptom/S in symptoms)
 			S.End(src)
@@ -72,6 +76,8 @@
 
 // Randomly pick a symptom to activate.
 /datum/disease/advance/stage_act()
+	procstart = null
+	src.procstart = null
 	..()
 	if(symptoms && symptoms.len)
 
@@ -88,6 +94,8 @@
 // Compares type then ID.
 /datum/disease/advance/IsSame(datum/disease/advance/D)
 
+	procstart = null
+	src.procstart = null
 	if(!(istype(D, /datum/disease/advance)))
 		return 0
 
@@ -97,6 +105,8 @@
 
 // Returns the advance disease with a different reference memory.
 /datum/disease/advance/Copy(process = 0)
+	procstart = null
+	src.procstart = null
 	return new /datum/disease/advance(process, src, 1)
 
 /*
@@ -107,12 +117,16 @@
 
 // Mix the symptoms of two diseases (the src and the argument)
 /datum/disease/advance/proc/Mix(datum/disease/advance/D)
+	procstart = null
+	src.procstart = null
 	if(!(IsSame(D)))
 		var/list/possible_symptoms = shuffle(D.symptoms)
 		for(var/datum/symptom/S in possible_symptoms)
 			AddSymptom(S.Copy())
 
 /datum/disease/advance/proc/HasSymptom(datum/symptom/S)
+	procstart = null
+	src.procstart = null
 	for(var/datum/symptom/symp in symptoms)
 		if(symp.type == S.type)
 			return 1
@@ -121,6 +135,8 @@
 // Will generate new unique symptoms, use this if there are none. Returns a list of symptoms that were generated.
 /datum/disease/advance/proc/GenerateSymptoms(level_min, level_max, amount_get = 0)
 
+	procstart = null
+	src.procstart = null
 	var/list/generated = list() // Symptoms we generated.
 
 	// Generate symptoms. By default, we only choose non-deadly symptoms.
@@ -147,6 +163,8 @@
 	return generated
 
 /datum/disease/advance/proc/Refresh(new_name = FALSE)
+	procstart = null
+	src.procstart = null
 	GenerateProperties()
 	AssignProperties()
 	id = null
@@ -163,6 +181,8 @@
 //Generate disease properties based on the effects. Returns an associated list.
 /datum/disease/advance/proc/GenerateProperties()
 
+	procstart = null
+	src.procstart = null
 	if(!symptoms || !symptoms.len)
 		CRASH("We did not have any symptoms before generating properties.")
 		return
@@ -181,6 +201,8 @@
 // Assign the properties that are in the list.
 /datum/disease/advance/proc/AssignProperties()
 
+	procstart = null
+	src.procstart = null
 	if(properties && properties.len)
 		if(properties["stealth"] >= 2)
 			visibility_flags = HIDDEN_SCANNER
@@ -198,6 +220,8 @@
 
 // Assign the spread type and give it the correct description.
 /datum/disease/advance/proc/SetSpread(spread_id)
+	procstart = null
+	src.procstart = null
 	switch(spread_id)
 		if(VIRUS_SPREAD_NON_CONTAGIOUS)
 			spread_flags = VIRUS_SPREAD_NON_CONTAGIOUS
@@ -220,6 +244,8 @@
 
 /datum/disease/advance/proc/SetSeverity(level_sev)
 
+	procstart = null
+	src.procstart = null
 	switch(level_sev)
 
 		if(-INFINITY to 0)
@@ -242,6 +268,8 @@
 
 // Will generate a random cure, the less resistance the symptoms have, the harder the cure.
 /datum/disease/advance/proc/GenerateCure()
+	procstart = null
+	src.procstart = null
 	if(properties && properties.len)
 		var/res = Clamp(properties["resistance"] - (symptoms.len / 2), 1, advance_cures.len)
 		cures = list(advance_cures[res])
@@ -255,6 +283,8 @@
 
 // Randomly generate a symptom, has a chance to lose or gain a symptom.
 /datum/disease/advance/proc/Evolve(min_level, max_level)
+	procstart = null
+	src.procstart = null
 	var/s = safepick(GenerateSymptoms(min_level, max_level, 1))
 	if(s)
 		AddSymptom(s)
@@ -263,6 +293,8 @@
 
 // Randomly remove a symptom.
 /datum/disease/advance/proc/Devolve()
+	procstart = null
+	src.procstart = null
 	if(symptoms.len > 1)
 		var/s = safepick(symptoms)
 		if(s)
@@ -272,6 +304,8 @@
 
 // Randomly neuter a symptom.
 /datum/disease/advance/proc/Neuter()
+	procstart = null
+	src.procstart = null
 	if(symptoms.len)
 		var/s = safepick(symptoms)
 		if(s)
@@ -281,11 +315,15 @@
 
 // Name the disease.
 /datum/disease/advance/proc/AssignName(name = "Unknown")
+	procstart = null
+	src.procstart = null
 	src.name = name
 	return
 
 // Return a unique ID of the disease.
 /datum/disease/advance/GetDiseaseID()
+	procstart = null
+	src.procstart = null
 	if(!id)
 		var/list/L = list()
 		for(var/datum/symptom/S in symptoms)
@@ -303,6 +341,8 @@
 // we take a random symptom away and add the new one.
 /datum/disease/advance/proc/AddSymptom(datum/symptom/S)
 
+	procstart = null
+	src.procstart = null
 	if(HasSymptom(S))
 		return
 
@@ -315,11 +355,15 @@
 
 // Simply removes the symptom.
 /datum/disease/advance/proc/RemoveSymptom(datum/symptom/S)
+	procstart = null
+	src.procstart = null
 	symptoms -= S
 	return
 
 // Neuter a symptom, so it will only affect stats
 /datum/disease/advance/proc/NeuterSymptom(datum/symptom/S)
+	procstart = null
+	src.procstart = null
 	if(!S.neutered)
 		S.neutered = TRUE
 		S.name += " (neutered)"
@@ -332,6 +376,8 @@
 
 // Mix a list of advance diseases and return the mixed result.
 /proc/Advance_Mix(var/list/D_list)
+	procstart = null
+	src.procstart = null
 	var/list/diseases = list()
 
 	for(var/datum/disease/advance/A in D_list)
@@ -360,6 +406,8 @@
 	return to_return
 
 /proc/SetViruses(datum/reagent/R, list/data)
+	procstart = null
+	src.procstart = null
 	if(data)
 		var/list/preserve = list()
 		if(istype(data) && data["viruses"])
@@ -371,6 +419,8 @@
 
 /proc/AdminCreateVirus(client/user)
 
+	procstart = null
+	src.procstart = null
 	if(!user)
 		return
 
@@ -421,15 +471,23 @@
 
 
 /datum/disease/advance/proc/totalStageSpeed()
+	procstart = null
+	src.procstart = null
 	return properties["stage_rate"]
 
 /datum/disease/advance/proc/totalStealth()
+	procstart = null
+	src.procstart = null
 	return properties["stealth"]
 
 /datum/disease/advance/proc/totalResistance()
+	procstart = null
+	src.procstart = null
 	return properties["resistance"]
 
 /datum/disease/advance/proc/totalTransmittable()
+	procstart = null
+	src.procstart = null
 	return properties["transmittable"]
 
 #undef RANDOM_STARTING_LEVEL

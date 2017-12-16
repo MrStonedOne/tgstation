@@ -22,6 +22,8 @@
 	gold_core_spawnable = FRIENDLY_SPAWN
 
 /mob/living/simple_animal/crab/Life()
+	procstart = null
+	src.procstart = null
 	..()
 	//CRAB movement
 	if(!ckey && !stat)

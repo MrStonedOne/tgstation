@@ -34,6 +34,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 */
 
 /datum/reagent/consumable/ethanol/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.drunkenness < volume * boozepwr * ALCOHOL_THRESHOLD_MODIFIER)
@@ -43,6 +45,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return ..() || .
 
 /datum/reagent/consumable/ethanol/reaction_obj(obj/O, reac_volume)
+	procstart = null
+	src.procstart = null
 	if(istype(O, /obj/item/paper))
 		var/obj/item/paper/paperaffected = O
 		paperaffected.clearpaper()
@@ -95,11 +99,15 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A freezing pint of green beer. Festive."
 
 /datum/reagent/consumable/ethanol/beer/green/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.color != color)
 		M.add_atom_colour(color, TEMPORARY_COLOUR_PRIORITY)
 	return ..()
 
 /datum/reagent/consumable/ethanol/beer/green/on_mob_delete(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, color)
 
 /datum/reagent/consumable/ethanol/kahlua
@@ -114,6 +122,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	shot_glass_icon_state = "shotglasscream"
 
 /datum/reagent/consumable/ethanol/kahlua/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.dizziness = max(0,M.dizziness-5)
 	M.drowsyness = max(0,M.drowsyness-3)
 	M.AdjustSleeping(-40, FALSE)
@@ -147,6 +157,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/thirteenloko/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.drowsyness = max(0,M.drowsyness-7)
 	M.AdjustSleeping(-40)
 	if (M.bodytemperature > 310)
@@ -167,6 +179,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	shot_glass_icon_state = "shotglassclear"
 
 /datum/reagent/consumable/ethanol/vodka/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.radiation = max(M.radiation-2,0)
 	return ..()
 
@@ -183,6 +197,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A brew of milk and beer. For those alcoholics who fear osteoporosis."
 
 /datum/reagent/consumable/ethanol/bilk/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.getBruteLoss() && prob(10))
 		M.heal_bodypart_damage(1,0, 0)
 		. = 1
@@ -200,6 +216,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A glass of this is sure to prevent a meltdown."
 
 /datum/reagent/consumable/ethanol/threemileisland/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.set_drugginess(50)
 	return ..()
 
@@ -306,6 +324,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	shot_glass_icon_state = "shotglassgreen"
 
 /datum/reagent/consumable/ethanol/absinthe/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(10))
 		M.hallucination += 4 //Reference to the urban myth
 	..()
@@ -380,6 +400,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A classic mix of rum and cola."
 
 /datum/reagent/consumable/ethanol/cuba_libre/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.mind && M.mind.special_role in list("Revolutionary", "Head Revolutionary")) //Cuba Libre, the traditional drink of revolutions! Heals revolutionaries.
 		M.adjustBruteLoss(-1, 0)
 		M.adjustFireLoss(-1, 0)
@@ -444,6 +466,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A simple, yet superb mixture of Vodka and orange juice. Just the thing for the tired engineer."
 
 /datum/reagent/consumable/ethanol/screwdrivercocktail/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.mind && M.mind.assigned_role in list("Station Engineer", "Atmospheric Technician", "Chief Engineer")) //Engineers lose radiation poisoning at a massive rate.
 		M.radiation = max(M.radiation - 25, 0)
 	return ..()
@@ -471,6 +495,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "Tomato juice, mixed with Vodka and a lil' bit of lime. Tastes like liquid murder."
 
 /datum/reagent/consumable/ethanol/bloody_mary/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(iscarbon(M))
 		var/mob/living/carbon/C = M
 		if(C.blood_volume < BLOOD_VOLUME_NORMAL)
@@ -490,12 +516,16 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	var/tough_text
 
 /datum/reagent/consumable/ethanol/brave_bull/on_mob_add(mob/living/M)
+	procstart = null
+	src.procstart = null
 	tough_text = pick("brawny", "tenacious", "tough", "hardy", "sturdy") //Tuff stuff
 	to_chat(M, "<span class='notice'>You feel [tough_text]!</span>")
 	M.maxHealth += 10 //Brave Bull makes you sturdier, and thus capable of withstanding a tiny bit more punishment.
 	M.health += 10
 
 /datum/reagent/consumable/ethanol/brave_bull/on_mob_delete(mob/living/M)
+	procstart = null
+	src.procstart = null
 	to_chat(M, "<span class='notice'>You no longer feel [tough_text].</span>")
 	M.maxHealth -= 10
 	M.health = min(M.health - 10, M.maxHealth) //This can indeed crit you if you're alive solely based on alchol ingestion
@@ -513,11 +543,15 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	var/obj/effect/light_holder
 
 /datum/reagent/consumable/ethanol/tequila_sunrise/on_mob_add(mob/living/M)
+	procstart = null
+	src.procstart = null
 	to_chat(M, "<span class='notice'>You feel gentle warmth spread through your body!</span>")
 	light_holder = new(M)
 	light_holder.set_light(3, 0.7, "#FFCC00") //Tequila Sunrise makes you radiate dim light, like a sunrise!
 
 /datum/reagent/consumable/ethanol/tequila_sunrise/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(QDELETED(light_holder))
 		M.reagents.del_reagent("tequilasunrise") //If we lost our light object somehow, remove the reagent
 	else if(light_holder.loc != M)
@@ -525,6 +559,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	return ..()
 
 /datum/reagent/consumable/ethanol/tequila_sunrise/on_mob_delete(mob/living/M)
+	procstart = null
+	src.procstart = null
 	to_chat(M, "<span class='notice'>The warmth in your body fades.</span>")
 	QDEL_NULL(light_holder)
 
@@ -541,6 +577,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	shot_glass_icon_state = "toxinsspecialglass"
 
 /datum/reagent/consumable/ethanol/toxins_special/on_mob_life(var/mob/living/M as mob)
+	procstart = null
+	src.procstart = null
 	if (M.bodytemperature < 330)
 		M.bodytemperature = min(330, M.bodytemperature + (15 * TEMPERATURE_DAMAGE_COEFFICIENT)) //310 is the normal bodytemp. 310.055
 	return ..()
@@ -558,6 +596,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "Heavy, hot and strong. Just like the Iron fist of the LAW."
 
 /datum/reagent/consumable/ethanol/beepsky_smash/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.Stun(40, 0)
 	return ..()
 
@@ -585,6 +625,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	var/dorf_mode
 
 /datum/reagent/consumable/ethanol/manly_dorf/on_mob_add(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.dna.check_mutation(DWARFISM))
@@ -593,6 +635,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			dorf_mode = TRUE
 
 /datum/reagent/consumable/ethanol/manly_dorf/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(dorf_mode)
 		M.adjustBruteLoss(-2)
 		M.adjustFireLoss(-2)
@@ -634,6 +678,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	shot_glass_icon_state = "b52glass"
 
 /datum/reagent/consumable/ethanol/b52/on_mob_add(mob/living/M)
+	procstart = null
+	src.procstart = null
 	playsound(M, 'sound/effects/explosion_distant.ogg', 100, FALSE)
 
 /datum/reagent/consumable/ethanol/irishcoffee
@@ -695,6 +741,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/manhattan_proj/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.set_drugginess(30)
 	return ..()
 
@@ -721,6 +769,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "The ultimate refreshment."
 
 /datum/reagent/consumable/ethanol/antifreeze/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if (M.bodytemperature < 330)
 		M.bodytemperature = min(330, M.bodytemperature + (20 * TEMPERATURE_DAMAGE_COEFFICIENT)) //310 is the normal bodytemp. 310.055
 	return ..()
@@ -737,6 +787,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "Barefoot and pregnant."
 
 /datum/reagent/consumable/ethanol/barefoot/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M)) //Barefoot causes the imbiber to quickly regenerate brute trauma if they're not wearing shoes.
 		var/mob/living/carbon/human/H = M
 		if(!H.shoes)
@@ -835,6 +887,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A spicy mix of Vodka and Spice. Very hot."
 
 /datum/reagent/consumable/ethanol/sbiten/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if (M.bodytemperature < 360)
 		M.bodytemperature = min(360, M.bodytemperature + (50 * TEMPERATURE_DAMAGE_COEFFICIENT)) //310 is the normal bodytemp. 310.055
 	return ..()
@@ -874,6 +928,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A beer so frosty, the air around it freezes."
 
 /datum/reagent/consumable/ethanol/iced_beer/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.bodytemperature > 270)
 		M.bodytemperature = max(270, M.bodytemperature - (20 * TEMPERATURE_DAMAGE_COEFFICIENT)) //310 is the normal bodytemp. 310.055
 	return ..()
@@ -957,6 +1013,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A stingy drink."
 
 /datum/reagent/consumable/ethanol/changelingsting/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.mind) //Changeling Sting assists in the recharging of changeling chemicals.
 		var/datum/antagonist/changeling/changeling = M.mind.has_antag_datum(/datum/antagonist/changeling)
 		if(changeling)
@@ -987,6 +1045,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A syndicate bomb."
 
 /datum/reagent/consumable/ethanol/syndicatebomb/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(prob(5))
 		playsound(get_turf(M), 'sound/effects/explosionfar.ogg', 100, 1)
 	return ..()
@@ -1027,6 +1087,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A drink from Clown Heaven."
 
 /datum/reagent/consumable/ethanol/bananahonk/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if((ishuman(M) && M.job in list("Clown") ) || ismonkey(M))
 		M.heal_bodypart_damage(1,1, 0)
 		. = 1
@@ -1045,6 +1107,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A drink from Mime Heaven."
 
 /datum/reagent/consumable/ethanol/silencer/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(ishuman(M) && M.job in list("Mime"))
 		M.heal_bodypart_damage(1,1)
 		. = 1
@@ -1100,6 +1164,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 
 
 /datum/reagent/consumable/ethanol/fetching_fizz/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	for(var/obj/item/ore/O in orange(3, M))
 		step_towards(O, get_turf(M))
 	return ..()
@@ -1118,6 +1184,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "Aromatic beverage served piping hot. According to folk tales it can almost wake the dead."
 
 /datum/reagent/consumable/ethanol/hearty_punch/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if(M.health <= 0)
 		M.adjustBruteLoss(-7, 0)
 		M.adjustFireLoss(-7, 0)
@@ -1152,6 +1220,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "Nanotrasen cannot take legal responsibility for your actions after imbibing."
 
 /datum/reagent/consumable/ethanol/atomicbomb/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.set_drugginess(50)
 	M.confused = max(M.confused+2,0)
 	M.Dizzy(10)
@@ -1180,6 +1250,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "Like having your brain smashed out by a slice of lemon wrapped around a large gold brick."
 
 /datum/reagent/consumable/ethanol/gargle_blaster/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	M.dizziness +=6
 	switch(current_cycle)
 		if(15 to 45)
@@ -1208,6 +1280,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A drink that is guaranteed to knock you silly."
 
 /datum/reagent/consumable/ethanol/neurotoxin/on_mob_life(mob/living/carbon/M)
+	procstart = null
+	src.procstart = null
 	M.Knockdown(60, 1, 0)
 	M.dizziness +=6
 	switch(current_cycle)
@@ -1239,6 +1313,8 @@ All effects don't start immediately, but rather get worse over time; the rate is
 	glass_desc = "A drink enjoyed by people during the 1960's."
 
 /datum/reagent/consumable/ethanol/hippies_delight/on_mob_life(mob/living/M)
+	procstart = null
+	src.procstart = null
 	if (!M.slurring)
 		M.slurring = 1
 	switch(current_cycle)

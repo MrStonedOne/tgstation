@@ -6,6 +6,8 @@
 
 //Transform into a human.
 /obj/effect/proc_holder/changeling/humanform/sting_action(mob/living/carbon/user)
+	procstart = null
+	src.procstart = null
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	var/list/names = list()
 	for(var/datum/changelingprofile/prof in changeling.stored_profiles)

@@ -8,6 +8,8 @@
 	anchored = TRUE
 
 /obj/machinery/mineral/input/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "blank"
 
@@ -19,6 +21,8 @@
 	anchored = TRUE
 
 /obj/machinery/mineral/output/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "blank"
 
@@ -27,6 +31,8 @@
 	var/output_dir = SOUTH
 
 /obj/machinery/mineral/proc/unload_mineral(atom/movable/S)
+	procstart = null
+	src.procstart = null
 	S.forceMove(loc)
 	var/turf/T = get_step(src,output_dir)
 	if(T)

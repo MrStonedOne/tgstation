@@ -8,6 +8,8 @@
 	secure = TRUE
 
 /obj/structure/closet/secure_closet/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
+	procstart = null
+	src.procstart = null
 	if(damage_flag == "melee" && damage_amount < 20)
 		return 0
 	. = ..()

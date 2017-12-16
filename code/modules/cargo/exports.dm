@@ -27,6 +27,8 @@ Credit dupes that require a lot of manual work shouldn't be removed, unless they
  then the player gets the profit from selling his own wasted time.
 */
 /proc/export_item_and_contents(atom/movable/AM, contraband, emagged, dry_run=FALSE)
+	procstart = null
+	src.procstart = null
 	if(!GLOB.exports_list.len)
 		setupExports()
 
@@ -73,6 +75,8 @@ Credit dupes that require a lot of manual work shouldn't be removed, unless they
 	var/init_cost
 
 /datum/export/New()
+	procstart = null
+	src.procstart = null
 	..()
 	SSprocessing.processing += src
 	init_cost = cost
@@ -81,10 +85,14 @@ Credit dupes that require a lot of manual work shouldn't be removed, unless they
 
 
 /datum/export/Destroy()
+	procstart = null
+	src.procstart = null
 	SSprocessing.processing -= src
 	return ..()
 
 /datum/export/process()
+	procstart = null
+	src.procstart = null
 	..()
 	cost *= GLOB.E**(k_elasticity * (1/30))
 	if(cost > init_cost)
@@ -92,6 +100,8 @@ Credit dupes that require a lot of manual work shouldn't be removed, unless they
 
 // Checks the cost. 0 cost items are skipped in export.
 /datum/export/proc/get_cost(obj/O, contr = 0, emag = 0)
+	procstart = null
+	src.procstart = null
 	var/amount = get_amount(O, contr, emag)
 	if(k_elasticity!=0)
 		return round((cost/k_elasticity) * (1 - GLOB.E**(-1 * k_elasticity * amount)))	//anti-derivative of the marginal cost function
@@ -101,10 +111,14 @@ Credit dupes that require a lot of manual work shouldn't be removed, unless they
 // Checks the amount of exportable in object. Credits in the bill, sheets in the stack, etc.
 // Usually acts as a multiplier for a cost, so item that has 0 amount will be skipped in export.
 /datum/export/proc/get_amount(obj/O, contr = 0, emag = 0)
+	procstart = null
+	src.procstart = null
 	return 1
 
 // Checks if the item is fit for export datum.
 /datum/export/proc/applies_to(obj/O, contr = 0, emag = 0)
+	procstart = null
+	src.procstart = null
 	if(contraband && !contr)
 		return FALSE
 	if(emagged && !emag)
@@ -123,6 +137,8 @@ Credit dupes that require a lot of manual work shouldn't be removed, unless they
 // Adds item's cost and amount to the current export cycle.
 // get_cost, get_amount and applies_to do not neccesary mean a successful sale.
 /datum/export/proc/sell_object(obj/O, contr = 0, emag = 0)
+	procstart = null
+	src.procstart = null
 	var/the_cost = get_cost(O)
 	var/amount = get_amount(O)
 	total_cost += the_cost
@@ -138,6 +154,8 @@ Credit dupes that require a lot of manual work shouldn't be removed, unless they
 // Called before the end of current export cycle.
 // It must always return something if the datum adds or removes any credts.
 /datum/export/proc/total_printout(contr = 0, emag = 0)
+	procstart = null
+	src.procstart = null
 	if(!total_cost && !total_amount)
 		return ""
 	var/msg = "[total_cost] credits: Received [total_amount] "
@@ -159,12 +177,16 @@ Credit dupes that require a lot of manual work shouldn't be removed, unless they
 
 // The current export cycle is over now. Reset all the export temporary vars.
 /datum/export/proc/export_end()
+	procstart = null
+	src.procstart = null
 	total_cost = 0
 	total_amount = 0
 
 GLOBAL_LIST_EMPTY(exports_list)
 
 /proc/setupExports()
+	procstart = null
+	src.procstart = null
 	for(var/subtype in subtypesof(/datum/export))
 		var/datum/export/E = new subtype
 		if(E.export_types && E.export_types.len) // Exports without a type are invalid/base types

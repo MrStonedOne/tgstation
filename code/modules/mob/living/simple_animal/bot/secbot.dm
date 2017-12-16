@@ -45,12 +45,16 @@
 	desc = "It's Officer Beep O'sky's smaller, just-as aggressive cousin, Pipsqueak."
 
 /mob/living/simple_animal/bot/secbot/beepsky/jr/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	resize = 0.8
 	update_transform()
 
 
 /mob/living/simple_animal/bot/secbot/beepsky/explode()
+	procstart = null
+	src.procstart = null
 	var/atom/Tsec = drop_location()
 	new /obj/item/stock_parts/cell/potato(Tsec)
 	var/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass/S = new(Tsec)
@@ -64,6 +68,8 @@
 	radio_channel = "AI Private"
 
 /mob/living/simple_animal/bot/secbot/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	icon_state = "secbot[on]"
 	var/datum/job/detective/J = new/datum/job/detective
@@ -75,14 +81,20 @@
 	secsensor.add_hud_to(src)
 
 /mob/living/simple_animal/bot/secbot/turn_on()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "secbot[on]"
 
 /mob/living/simple_animal/bot/secbot/turn_off()
+	procstart = null
+	src.procstart = null
 	..()
 	icon_state = "secbot[on]"
 
 /mob/living/simple_animal/bot/secbot/bot_reset()
+	procstart = null
+	src.procstart = null
 	..()
 	target = null
 	oldtarget_name = null
@@ -92,11 +104,15 @@
 
 /mob/living/simple_animal/bot/secbot/set_custom_texts()
 
+	procstart = null
+	src.procstart = null
 	text_hack = "You overload [name]'s target identification system."
 	text_dehack = "You reboot [name] and restore the target identification."
 	text_dehack_fail = "[name] refuses to accept your authority!"
 
 /mob/living/simple_animal/bot/secbot/get_controls(mob/user)
+	procstart = null
+	src.procstart = null
 	var/dat
 	dat += hack(user)
 	dat += showpai(user)
@@ -127,6 +143,8 @@ Auto Patrol: []"},
 	return	dat
 
 /mob/living/simple_animal/bot/secbot/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	if(..())
 		return 1
 
@@ -148,6 +166,8 @@ Auto Patrol: []"},
 			update_controls()
 
 /mob/living/simple_animal/bot/secbot/proc/retaliate(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	var/judgement_criteria = judgement_criteria()
 	threatlevel = H.assess_threat(judgement_criteria, weaponcheck=CALLBACK(src, .proc/check_for_weapons))
 	threatlevel += 6
@@ -168,12 +188,16 @@ Auto Patrol: []"},
     return final
 
 /mob/living/simple_animal/bot/secbot/attack_hand(mob/living/carbon/human/H)
+	procstart = null
+	src.procstart = null
 	if((H.a_intent == INTENT_HARM) || (H.a_intent == INTENT_DISARM))
 		retaliate(H)
 
 	return ..()
 
 /mob/living/simple_animal/bot/secbot/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	..()
 	if(istype(W, /obj/item/weldingtool) && user.a_intent != INTENT_HARM) // Any intent but harm will heal, so we shouldn't get angry.
 		return
@@ -181,6 +205,8 @@ Auto Patrol: []"},
 		retaliate(user)
 
 /mob/living/simple_animal/bot/secbot/emag_act(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(emagged == 2)
 		if(user)
@@ -191,6 +217,8 @@ Auto Patrol: []"},
 		icon_state = "secbot[on]"
 
 /mob/living/simple_animal/bot/secbot/bullet_act(obj/item/projectile/Proj)
+	procstart = null
+	src.procstart = null
 	if(istype(Proj , /obj/item/projectile/beam)||istype(Proj, /obj/item/projectile/bullet))
 		if((Proj.damage_type == BURN) || (Proj.damage_type == BRUTE))
 			if(!Proj.nodamage && Proj.damage < src.health)
@@ -199,6 +227,8 @@ Auto Patrol: []"},
 
 
 /mob/living/simple_animal/bot/secbot/UnarmedAttack(atom/A)
+	procstart = null
+	src.procstart = null
 	if(!on)
 		return
 	if(iscarbon(A))
@@ -212,6 +242,8 @@ Auto Patrol: []"},
 
 
 /mob/living/simple_animal/bot/secbot/hitby(atom/movable/AM, skipcatch = FALSE, hitpush = TRUE, blocked = FALSE)
+	procstart = null
+	src.procstart = null
 	if(istype(AM, /obj/item))
 		var/obj/item/I = AM
 		if(I.throwforce < src.health && I.thrownby && ishuman(I.thrownby))
@@ -221,6 +253,8 @@ Auto Patrol: []"},
 
 
 /mob/living/simple_animal/bot/secbot/proc/cuff(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	mode = BOT_ARREST
 	playsound(loc, 'sound/weapons/cablecuff.ogg', 30, 1, -2)
 	C.visible_message("<span class='danger'>[src] is trying to put zipties on [C]!</span>",\
@@ -228,6 +262,8 @@ Auto Patrol: []"},
 	addtimer(CALLBACK(src, .proc/attempt_handcuff, C), 60)
 
 /mob/living/simple_animal/bot/secbot/proc/attempt_handcuff(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	if( !Adjacent(C) || !isturf(C.loc) ) //if he's in a closet or not adjacent, we cancel cuffing.
 		return
 	if(!C.handcuffed)
@@ -237,9 +273,13 @@ Auto Patrol: []"},
 		back_to_idle()
 
 /mob/living/simple_animal/bot/secbot/proc/update_onsprite()
+	procstart = null
+	src.procstart = null
 	icon_state = "secbot[on]"
 
 /mob/living/simple_animal/bot/secbot/proc/stun_attack(mob/living/carbon/C)
+	procstart = null
+	src.procstart = null
 	var/judgement_criteria = judgement_criteria()
 	playsound(loc, 'sound/weapons/egloves.ogg', 50, 1, -1)
 	icon_state = "secbot-c"
@@ -263,6 +303,8 @@ Auto Patrol: []"},
 							"<span class='userdanger'>[src] has stunned you!</span>")
 
 /mob/living/simple_animal/bot/secbot/handle_automated_action()
+	procstart = null
+	src.procstart = null
 	if(!..())
 		return
 
@@ -351,6 +393,8 @@ Auto Patrol: []"},
 	return
 
 /mob/living/simple_animal/bot/secbot/proc/back_to_idle()
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	mode = BOT_IDLE
 	target = null
@@ -359,6 +403,8 @@ Auto Patrol: []"},
 	INVOKE_ASYNC(src, .proc/handle_automated_action)
 
 /mob/living/simple_animal/bot/secbot/proc/back_to_hunt()
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	frustration = 0
 	mode = BOT_HUNT
@@ -366,6 +412,8 @@ Auto Patrol: []"},
 // look for a criminal in view of the bot
 
 /mob/living/simple_animal/bot/secbot/proc/look_for_perp()
+	procstart = null
+	src.procstart = null
 	anchored = FALSE
 	var/judgement_criteria = judgement_criteria()
 	for (var/mob/living/carbon/C in view(7,src)) //Let's find us a criminal
@@ -392,12 +440,16 @@ Auto Patrol: []"},
 		else
 			continue
 /mob/living/simple_animal/bot/secbot/proc/check_for_weapons(var/obj/item/slot_item)
+	procstart = null
+	src.procstart = null
 	if(slot_item && slot_item.needs_permit)
 		return 1
 	return 0
 
 /mob/living/simple_animal/bot/secbot/explode()
 
+	procstart = null
+	src.procstart = null
 	walk_to(src,0)
 	visible_message("<span class='boldannounce'>[src] blows apart!</span>")
 	var/atom/Tsec = drop_location()
@@ -418,12 +470,16 @@ Auto Patrol: []"},
 	..()
 
 /mob/living/simple_animal/bot/secbot/attack_alien(var/mob/living/carbon/alien/user as mob)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!isalien(target))
 		target = user
 		mode = BOT_HUNT
 
 /mob/living/simple_animal/bot/secbot/Crossed(atom/movable/AM)
+	procstart = null
+	src.procstart = null
 	if(ismob(AM) && target)
 		var/mob/living/carbon/C = AM
 		if(!istype(C) || !C || in_range(src, target))

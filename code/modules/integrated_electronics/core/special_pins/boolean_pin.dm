@@ -9,18 +9,26 @@
 	write_data_to_pin(new_data)
 
 /datum/integrated_io/boolean/write_data_to_pin(var/new_data)
+	procstart = null
+	src.procstart = null
 	if(new_data == FALSE || new_data == TRUE)
 		data = new_data
 		holder.on_data_written()
 
 /datum/integrated_io/boolean/scramble()
+	procstart = null
+	src.procstart = null
 	write_data_to_pin(rand(FALSE,TRUE))
 	push_data()
 
 /datum/integrated_io/boolean/display_pin_type()
+	procstart = null
+	src.procstart = null
 	return IC_FORMAT_BOOLEAN
 
 /datum/integrated_io/boolean/display_data(var/input)
+	procstart = null
+	src.procstart = null
 	if(data)
 		return "(TRUE)"
 	return "(FALSE)"

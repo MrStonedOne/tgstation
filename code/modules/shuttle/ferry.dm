@@ -9,9 +9,13 @@
 	var/aiControlDisabled = 1
 
 /obj/machinery/computer/shuttle/ferry/proc/canAIControl(mob/user)
+	procstart = null
+	src.procstart = null
 	return ((aiControlDisabled != 1));
 
 /obj/machinery/computer/shuttle/ferry/attack_ai(mob/user)
+	procstart = null
+	src.procstart = null
 	if(!src.canAIControl(user))
 		return
 
@@ -25,6 +29,8 @@
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF
 
 /obj/machinery/computer/shuttle/ferry/request/Topic(href, href_list)
+	procstart = null
+	src.procstart = null
 	..()
 	if(href_list["request"])
 		if(last_request && (last_request + cooldown > world.time))

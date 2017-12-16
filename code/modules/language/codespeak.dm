@@ -7,6 +7,8 @@
 	icon_state = "codespeak"
 
 /datum/language/codespeak/scramble(input)
+	procstart = null
+	src.procstart = null
 	var/lookup = check_cache(input)
 	if(lookup)
 		return lookup
@@ -38,6 +40,8 @@
 	var/charges = 1
 
 /obj/item/codespeak_manual/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!isliving(user))
 		return
 
@@ -51,6 +55,8 @@
 	use_charge(user)
 
 /obj/item/codespeak_manual/attack(mob/living/M, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!istype(M) || !istype(user))
 		return
 	if(M == user)
@@ -69,6 +75,8 @@
 		use_charge(user)
 
 /obj/item/codespeak_manual/proc/use_charge(mob/user)
+	procstart = null
+	src.procstart = null
 	charges--
 	if(!charges)
 		var/turf/T = get_turf(src)

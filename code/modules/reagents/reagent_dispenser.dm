@@ -12,23 +12,31 @@
 	var/reagent_id = "water" //The ID of the reagent that the dispenser uses
 
 /obj/structure/reagent_dispensers/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(. && obj_integrity > 0)
 		if(tank_volume && (damage_flag == "bullet" || damage_flag == "laser"))
 			boom()
 
 /obj/structure/reagent_dispensers/attackby(obj/item/W, mob/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(W, /obj/item/reagent_containers))
 		return 0 //so we can refill them via their afterattack.
 	else
 		return ..()
 
 /obj/structure/reagent_dispensers/Initialize()
+	procstart = null
+	src.procstart = null
 	create_reagents(tank_volume)
 	reagents.add_reagent(reagent_id, tank_volume)
 	. = ..()
 
 /obj/structure/reagent_dispensers/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(reagents.total_volume)
 		to_chat(user, "<span class='notice'>It has [reagents.total_volume] unit\s left.</span>")
@@ -37,11 +45,15 @@
 
 
 /obj/structure/reagent_dispensers/proc/boom()
+	procstart = null
+	src.procstart = null
 	visible_message("<span class='danger'>\The [src] ruptures!</span>")
 	chem_splash(loc, 5, list(reagents))
 	qdel(src)
 
 /obj/structure/reagent_dispensers/deconstruct(disassembled = TRUE)
+	procstart = null
+	src.procstart = null
 	if(!(flags_1 & NODECONSTRUCT_1))
 		if(!disassembled)
 			boom()
@@ -66,23 +78,35 @@
 	reagent_id = "welding_fuel"
 
 /obj/structure/reagent_dispensers/fueltank/boom()
+	procstart = null
+	src.procstart = null
 	explosion(get_turf(src), 0, 1, 5, flame_range = 5)
 	qdel(src)
 
 /obj/structure/reagent_dispensers/fueltank/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	boom()
 
 /obj/structure/reagent_dispensers/fueltank/ex_act()
+	procstart = null
+	src.procstart = null
 	boom()
 
 /obj/structure/reagent_dispensers/fueltank/fire_act(exposed_temperature, exposed_volume)
+	procstart = null
+	src.procstart = null
 	boom()
 
 /obj/structure/reagent_dispensers/fueltank/tesla_act()
+	procstart = null
+	src.procstart = null
 	..() //extend the zap
 	boom()
 
 /obj/structure/reagent_dispensers/fueltank/bullet_act(obj/item/projectile/P)
+	procstart = null
+	src.procstart = null
 	..()
 	if(!QDELETED(src)) //wasn't deleted by the projectile's effects.
 		if(!P.nodamage && ((P.damage_type == BURN) || (P.damage_type == BRUTE)))
@@ -95,6 +119,8 @@
 			boom()
 
 /obj/structure/reagent_dispensers/fueltank/attackby(obj/item/I, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(istype(I, /obj/item/weldingtool))
 		if(!reagents.has_reagent("welding_fuel"))
 			to_chat(user, "<span class='warning'>[src] is out of fuel!</span>")
@@ -130,6 +156,8 @@
 	reagent_id = "condensedcapsaicin"
 
 /obj/structure/reagent_dispensers/peppertank/Initialize()
+	procstart = null
+	src.procstart = null
 	. = ..()
 	if(prob(1))
 		desc = "IT'S PEPPER TIME, BITCH!"
@@ -145,6 +173,8 @@
 	var/paper_cups = 25 //Paper cups left from the cooler
 
 /obj/structure/reagent_dispensers/water_cooler/examine(mob/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if (paper_cups > 1)
 		to_chat(user, "There are [paper_cups] paper cups left.")
@@ -154,6 +184,8 @@
 		to_chat(user, "There are no paper cups left.")
 
 /obj/structure/reagent_dispensers/water_cooler/attack_hand(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!paper_cups)
 		to_chat(user, "<span class='warning'>There aren't any cups left!</span>")
 		return
@@ -170,6 +202,8 @@
 	reagent_id = "beer"
 
 /obj/structure/reagent_dispensers/beerkeg/blob_act(obj/structure/blob/B)
+	procstart = null
+	src.procstart = null
 	explosion(src.loc,0,3,5,7,10)
 	if(!QDELETED(src))
 		qdel(src)

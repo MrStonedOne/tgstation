@@ -22,6 +22,8 @@
 	var/debug = FALSE
 
 /obj/item/clockwork/replica_fabricator/scarab/fabricate(atom/target, mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(!debug && !isdrone(user))
 		return 0
 	return ..()
@@ -36,6 +38,8 @@
 	clockwork_desc = "A cyborg's internal fabricator."
 
 /obj/item/clockwork/replica_fabricator/ratvar_act()
+	procstart = null
+	src.procstart = null
 	if(GLOB.ratvar_awakens)
 		uses_power = FALSE
 		speed_multiplier = initial(speed_multiplier) * 0.25
@@ -44,6 +48,8 @@
 		speed_multiplier = initial(speed_multiplier)
 
 /obj/item/clockwork/replica_fabricator/examine(mob/living/user)
+	procstart = null
+	src.procstart = null
 	..()
 	if(is_servant_of_ratvar(user) || isobserver(user))
 		to_chat(user, "<span class='brass'>Can be used to replace walls, floors, tables, windows, windoors, and airlocks with Clockwork variants.</span>")
@@ -56,6 +62,8 @@
 			to_chat(user, "<span class='alloy'>It has access to <b>[DisplayPower(get_clockwork_power())]</b> of power.</span>")
 
 /obj/item/clockwork/replica_fabricator/attack_self(mob/living/user)
+	procstart = null
+	src.procstart = null
 	if(is_servant_of_ratvar(user))
 		if(uses_power)
 			if(!get_clockwork_power(POWER_WALL_TOTAL))
@@ -67,6 +75,8 @@
 		to_chat(user, "<span class='brass'>You use [get_clockwork_power() ? "some":"all"] of [src]'s power to produce <b>5</b> brass sheets. It now has access to <b>[DisplayPower(get_clockwork_power())]</b> of power.</span>")
 
 /obj/item/clockwork/replica_fabricator/pre_attackby(atom/target, mob/living/user, params)
+	procstart = null
+	src.procstart = null
 	if(!target || !user || !is_servant_of_ratvar(user) || istype(target, /obj/item/storage))
 		return TRUE
 	return fabricate(target, user)
@@ -74,6 +84,8 @@
 
 //A note here; return values are for if we CAN BE PUT ON A TABLE, not IF WE ARE SUCCESSFUL, unless no_table_check is TRUE
 /obj/item/clockwork/replica_fabricator/proc/fabricate(atom/target, mob/living/user, silent, no_table_check)
+	procstart = null
+	src.procstart = null
 	if(!target || !user)
 		return FALSE
 	if(repairing)

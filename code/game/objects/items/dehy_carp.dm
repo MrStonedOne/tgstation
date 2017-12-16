@@ -11,6 +11,8 @@
 
 //Attack self
 /obj/item/toy/plush/carpplushie/dehy_carp/attack_self(mob/user)
+	procstart = null
+	src.procstart = null
 	src.add_fingerprint(user)	//Anyone can add their fingerprints to it with this
 	if(!owned)
 		to_chat(user, "<span class='notice'>You pet [src]. You swear it looks up at you.</span>")
@@ -20,6 +22,8 @@
 		return ..()
 
 /obj/item/toy/plush/carpplushie/dehy_carp/proc/Swell()
+	procstart = null
+	src.procstart = null
 	desc = "It's growing!"
 	visible_message("<span class='notice'>[src] swells up!</span>")
 
