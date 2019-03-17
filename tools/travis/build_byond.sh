@@ -32,10 +32,6 @@ if [ "$BUILD_TOOLS" = false ]; then
     	echo "base /turf path use detected in maps, please replace with proper paths."
     	exit 1
 	fi;
-	if grep '^/*var/' code/**/*.dm; then
-		echo "Unmanaged global var use detected in code, please use the helpers."
-		exit 1
-	fi;
 	if grep -i 'centcomm' code/**/*.dm; then
 		echo "Misspelling(s) of CENTCOM detected in code, please remove the extra M(s)."
 		exit 1
