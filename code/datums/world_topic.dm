@@ -32,7 +32,10 @@
 	input -= "key"
 	. = Run(input)
 	if(islist(.))
-		. = list2params(.)
+		if (input["format"] == "json")
+			. = json_encode(.)
+		else
+			. = list2params(.)
 
 /datum/world_topic/proc/Run(list/input)
 	CRASH("Run() not implemented for [type]!")
