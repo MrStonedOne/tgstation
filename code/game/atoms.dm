@@ -153,6 +153,7 @@
 	var/atom/orbit_target
 	///AI controller that controls this atom. type on init, then turned into an instance during runtime
 	var/datum/ai_controller/ai_controller
+	var/static/generation_debug = 0
 
 /**
  * Called when an atom is created in byond (built in engine proc)
@@ -698,11 +699,15 @@
 		. |= UPDATE_ICON_STATE
 
 	if(updates & UPDATE_GREYSCALE)
-		var/list/colors = update_greyscale()
-		// Updating the greyscale config in update_greyscale() is fine or we would check this earlier
-		if(greyscale_config)
-			icon = SSgreyscale.GetColoredIconByType(greyscale_config, colors)
-		. |= UPDATE_GREYSCALE
+		if (generation_debug != 1)
+			var/list/colors = update_greyscale()
+			// Updating the greyscale config in update_greyscale() is fine or we would check this earlier
+			if(greyscale_config && generation_debug != 2)
+				
+				var/newicon = SSgreyscale.GetColoredIconByType(greyscale_config, colors)
+				if (generation_debug != 3)
+					icon = newicon
+			. |= UPDATE_GREYSCALE
 
 	if(updates & UPDATE_OVERLAYS)
 		if(LAZYLEN(managed_vis_overlays))
