@@ -3,6 +3,7 @@ on:
   push:
     branches:
     - master
+    - patch-617
     - 'project/**'
     - 'gh-readonly-queue/master/**'
     - 'gh-readonly-queue/project/**'
