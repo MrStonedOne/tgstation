@@ -1,5 +1,5 @@
 name: CI Suite
-on:
+on: 
   push:
     branches:
     - master
