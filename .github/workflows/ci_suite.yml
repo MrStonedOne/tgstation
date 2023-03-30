@@ -92,22 +92,22 @@ jobs:
           bash tools/ci/install_byond.sh
           source $HOME/BYOND/byond/bin/byondsetup
           tools/build/build --ci dm -DCIBUILDING -DCITESTING -DALL_MAPS
-      - uses: MrStonedOne/byond-client-compatibility-check@681d206215df0a152cd0d6189db38fec67d4a279
+      - uses: MrStonedOne/byond-client-compatibility-check@master
         with:
           dmb-location: ./tgstation.dmb
           max-required-client-version: 514
         if: success() || failure()
-      - uses: MrStonedOne/byond-client-compatibility-check@681d206215df0a152cd0d6189db38fec67d4a279
+      - uses: MrStonedOne/byond-client-compatibility-check@master
         with:
           dmb-location: ./tgstation.dmb
           max-required-client-version: 513
         if: success() || failure()
-      - uses: MrStonedOne/byond-client-compatibility-check@681d206215df0a152cd0d6189db38fec67d4a279
+      - uses: MrStonedOne/byond-client-compatibility-check@master
         with:
           dmb-location: ./tgstation.dmb
           max-required-client-version: 515.1603
         if: success() || failure()
-      - uses: MrStonedOne/byond-client-compatibility-check@681d206215df0a152cd0d6189db38fec67d4a279
+      - uses: MrStonedOne/byond-client-compatibility-check@master
         with:
           dmb-location: ./tgstation13.dmb
           max-required-client-version: 514
