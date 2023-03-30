@@ -89,6 +89,12 @@ jobs:
           bash tools/ci/install_byond.sh
           source $HOME/BYOND/byond/bin/byondsetup
           tools/build/build --ci dm -DCIBUILDING -DCITESTING -DALL_MAPS
+            - name: Restore BYOND cache
+      - uses: MrStonedOne/byond-client-compatibility-check@269375022a1a6169749b0ff1b3411edd71118350
+        with:
+          dmb-location: ./tgstation
+          max-required-client-version: 514
+          
 
   find_all_maps:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
