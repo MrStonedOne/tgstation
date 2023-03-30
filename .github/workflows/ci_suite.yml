@@ -10,10 +10,12 @@ on:
   pull_request:
     branches:
     - master
+    - patch-617
     - 'project/**'
   merge_group:
     branches:
     - master
+    - patch-617
 jobs:
   run_linters:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
