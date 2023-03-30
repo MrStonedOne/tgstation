@@ -93,7 +93,7 @@ jobs:
           source $HOME/BYOND/byond/bin/byondsetup
           tools/build/build --ci dm -DCIBUILDING -DCITESTING -DALL_MAPS
             - name: Restore BYOND cache
-      - uses: MrStonedOne/byond-client-compatibility-check@c5ed30495d338a645426a168abb3571e9c9e6e8a
+      - uses: MrStonedOne/byond-client-compatibility-check@d3311a221d7e5e4d2381fd336cf167e513da8b4c
         with:
           dmb-location: ./tgstation
           max-required-client-version: 514
