@@ -92,22 +92,26 @@ jobs:
           bash tools/ci/install_byond.sh
           source $HOME/BYOND/byond/bin/byondsetup
           tools/build/build --ci dm -DCIBUILDING -DCITESTING -DALL_MAPS
-      - uses: MrStonedOne/byond-client-compatibility-check@d3311a221d7e5e4d2381fd336cf167e513da8b4c
+      - uses: MrStonedOne/byond-client-compatibility-check@681d206215df0a152cd0d6189db38fec67d4a279
         with:
           dmb-location: ./tgstation.dmb
           max-required-client-version: 514
-      - uses: MrStonedOne/byond-client-compatibility-check@d3311a221d7e5e4d2381fd336cf167e513da8b4c
+        if: success() || failure()
+      - uses: MrStonedOne/byond-client-compatibility-check@681d206215df0a152cd0d6189db38fec67d4a279
         with:
           dmb-location: ./tgstation.dmb
           max-required-client-version: 513
-      - uses: MrStonedOne/byond-client-compatibility-check@d3311a221d7e5e4d2381fd336cf167e513da8b4c
+        if: success() || failure()
+      - uses: MrStonedOne/byond-client-compatibility-check@681d206215df0a152cd0d6189db38fec67d4a279
         with:
           dmb-location: ./tgstation.dmb
           max-required-client-version: 515.1603
-      - uses: MrStonedOne/byond-client-compatibility-check@d3311a221d7e5e4d2381fd336cf167e513da8b4c
+        if: success() || failure()
+      - uses: MrStonedOne/byond-client-compatibility-check@681d206215df0a152cd0d6189db38fec67d4a279
         with:
           dmb-location: ./tgstation13.dmb
           max-required-client-version: 514
+        if: success() || failure()
 
   find_all_maps:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
