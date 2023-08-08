@@ -52,6 +52,21 @@
 	var/datum/weakref/user
 
 /**
+ * Qdel a callback datum
+ * This is not allowed and will stack trace. callback datums are structs, if they are referenced they exist
+ *
+ * Arguments
+ * * force set to true to force the deletion to be allowed.
+ * * ... an optional list of extra arguments to pass to the proc
+ */
+/datum/callback/Destroy(force=FALSE, ...) 
+	SHOULD_CALL_PARENT(FALSE)
+	if (force)
+		return ..()
+	stack_trace("callbacks can not be qdeleted. if they are referenced they must exist.")
+	return QDEL_HINT_LETMELIVE 
+
+/**
  * Create a new callback datum
  *
  * Arguments
@@ -67,6 +82,8 @@
 		arguments = args.Copy(3)
 	if(usr)
 		user = WEAKREF(usr)
+
+
 
 /**
  * Invoke this callback
